@@ -7,7 +7,9 @@
 #define SOLVESPACE_GL3SHADER_H
 
 #if defined(WIN32) || defined(__EMSCRIPTEN__)
-#   define GL_APICALL /*static linkage*/
+#   if !defined(SOLVESPACE_ANGLE_SHARED)
+#       define GL_APICALL /*static linkage*/
+#   endif
 #   define GL_GLEXT_PROTOTYPES
 #   include <GLES2/gl2.h>
 #   include <GLES2/gl2ext.h>

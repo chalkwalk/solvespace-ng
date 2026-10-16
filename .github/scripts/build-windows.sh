@@ -22,6 +22,7 @@ if [ "$1" = "release" ]; then
         -DCMAKE_BUILD_TYPE="${BUILD_TYPE}" \
         -DENABLE_OPENMP="${ENABLE_OPENMP}" \
         -DENABLE_LTO=ON \
+        -DENABLE_NG_GUI=ON \
         -DCMAKE_GENERATOR_PLATFORM="${PLATFORM}" \
         ..
 else
@@ -31,6 +32,7 @@ else
         -DCMAKE_BUILD_TYPE="${BUILD_TYPE}" \
         -DENABLE_OPENMP="ON" \
         -DENABLE_SANITIZERS="ON" \
+        -DENABLE_NG_GUI=ON \
         -DCMAKE_GENERATOR_PLATFORM="Win32" \
         ..
 fi

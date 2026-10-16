@@ -1,3 +1,4 @@
+#include <filesystem>
 #include "solvespace.h"
 #include "platform/sdl/settingsfile.h"
 
@@ -6,7 +7,7 @@
 using namespace SolveSpace::Platform;
 
 static Path TempSettingsPath(const char *name) {
-    return Path::From(std::string(getenv("TMPDIR") ? getenv("TMPDIR") : "/tmp"))
+    return Path::From(std::filesystem::temp_directory_path().string())
                .Join(std::string("ssng-test-") + name + ".txt");
 }
 

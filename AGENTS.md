@@ -296,7 +296,22 @@ make -j$(nproc)
 make test_solvespace                 # run the regression suite
 ./bin/solvespace-testsuite <regex>   # run only matching tests, e.g. core/commands
 ```
-In-tree builds are rejected; always build in `build/`. See `README.md` for Windows (MinGW/MSVC),
+
+**Build SolveSpace NG (SDL3 + Dear ImGui frontend)**
+```sh
+git submodule update --init extlib/SDL extlib/imgui   # SDL3 is vendored (or install libsdl3-dev)
+mkdir -p build-ng && cd build-ng
+cmake .. -DCMAKE_BUILD_TYPE=Debug -DENABLE_NG_GUI=ON
+make -j$(nproc) solvespace-ng solvespace-testsuite && make test_solvespace   # includes test/ng/*
+./bin/solvespace-ng [file.slvs]
+SOLVESPACE_NG_SCREENSHOT=/tmp/shot.png ./bin/solvespace-ng f.slvs   # save a frame and exit
+SOLVESPACE_NG_SCREENSHOT_ACTION=ui.command-palette ...              # trigger a UI action first
+```
+In-tree builds are rejected; always build in `build/`. NG settings and the user keymap live in
+`SDL_GetPrefPath("solvespace","solvespace-ng")`: Linux `~/.local/share/solvespace/solvespace-ng/`,
+Windows `%APPDATA%\solvespace\solvespace-ng\`, macOS
+`~/Library/Application Support/solvespace/solvespace-ng/` (`settings.txt`, `keymap.txt`; setting
+`NG_KeymapPreset=modern|classic`). See `README.md` for Windows (MinGW/MSVC),
 macOS and Emscripten builds.
 
 **Code style**

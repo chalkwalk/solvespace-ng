@@ -565,6 +565,9 @@ static void InitSdlWindowAndImGui() {
 #if defined(_WIN32)
     // ANGLE: GLES 3.0 context.
     SDL_SetHint(SDL_HINT_OPENGL_ES_DRIVER, "1");
+    // Our ANGLE build names its DLLs without SDL's expected "lib" prefix.
+    SDL_SetHint(SDL_HINT_EGL_LIBRARY, "EGL.dll");
+    SDL_SetHint(SDL_HINT_OPENGL_LIBRARY, "GLESv2.dll");
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_ES);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 0);

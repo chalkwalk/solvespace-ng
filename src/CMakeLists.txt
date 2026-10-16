@@ -274,6 +274,12 @@ if(ENABLE_GUI AND ENABLE_NG_GUI)
         ${IMGUI_DIR}/backends)
     target_compile_definitions(imgui-sdl3 PUBLIC IMGUI_DISABLE_OBSOLETE_FUNCTIONS)
     target_link_libraries(imgui-sdl3 PUBLIC ${NG_SDL_TARGET})
+    if(WIN32)
+        # ANGLE provides GLES 3 on Windows.
+        target_compile_definitions(imgui-sdl3 PUBLIC IMGUI_IMPL_OPENGL_ES3)
+        target_include_directories(imgui-sdl3 PUBLIC ${CMAKE_SOURCE_DIR}/extlib/angle/include)
+        target_link_libraries(imgui-sdl3 PUBLIC GLESv2)
+    endif()
 
     add_library(solvespace-ng-support STATIC
         platform/sdl/settingsfile.cpp
@@ -569,3 +575,17 @@ if(APPLE)
 endif()
 
 add_subdirectory(slvs)
+
+# With ENABLE_NG_GUI, ANGLE is built as DLLs (see the top-level CMakeLists), which affects both
+# Windows GUI executables.
+
+if(WIN32 AND ENABLE_GUI AND ENABLE_NG_GUI)
+    foreach(target solvespace-ng solvespace)
+        if(TARGET ${target})
+            target_compile_definitions(${target} PRIVATE SOLVESPACE_ANGLE_SHARED)
+            add_custom_command(TARGET ${target} POST_BUILD
+                COMMAND ${CMAKE_COMMAND} -E copy_if_different
+                        $<TARGET_FILE:EGL> $<TARGET_FILE:GLESv2> $<TARGET_FILE_DIR:${target}>)
+        endif()
+    endforeach()
+endif()

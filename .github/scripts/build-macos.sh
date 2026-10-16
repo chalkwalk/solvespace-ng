@@ -41,6 +41,7 @@ cmake \
     -D ENABLE_OPENMP="${ENABLE_OPENMP}" \
     -D ENABLE_SANITIZERS="${ENABLE_SANITIZERS}" \
     -D ENABLE_LTO="${ENABLE_LTO}" \
+    -D ENABLE_NG_GUI="ON" \
     ..
 
 if [ "$3" = "xcode" ]; then
