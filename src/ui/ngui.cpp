@@ -153,6 +153,7 @@ void InitNgUi() {
 bool ShowScreenInPanel() {
     using Screen = TextWindow::Screen;
     switch(SS.TW.shown.screen) {
+        case Screen::LIST_OF_GROUPS:   OutlinerPanel().SetShown(true); return true;
         case Screen::CONFIGURATION:    PreferencesPanel().SetShown(true); return true;
         case Screen::GROUP_INFO:       ShowGroupInProperties(SS.TW.shown.group); return true;
         case Screen::GROUP_SOLVE_INFO: ProblemsPanel().SetShown(true); return true;

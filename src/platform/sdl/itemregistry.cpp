@@ -59,6 +59,7 @@ void ImGuiTestEngineHook_ItemInfo(ImGuiContext *ctx, ImGuiID id, const char *lab
     item.checkable = (flags & ImGuiItemStatusFlags_Checkable) != 0;
     item.checked   = (flags & ImGuiItemStatusFlags_Checked) != 0;
     item.opened    = (flags & ImGuiItemStatusFlags_Opened) != 0;
+    item.openable  = (flags & ImGuiItemStatusFlags_Openable) != 0;
     item.isWindow  = ImGui::FindWindowByID(id) != nullptr;
     ImGuiWindow *w    = ctx->CurrentWindow;
     ImRect       clip = (item.isWindow || !w) ? it->second : w->ClipRect;

@@ -140,6 +140,15 @@ stored in a keymap file.
 
 With nothing selected, commands act on the item under the cursor.
 
+Panels in M1c (proposed 2026-10-16 while the owner was away, to confirm): `O` Outliner, `N`
+Properties (the old browser moved to `Shift+N` and starts hidden), `Shift+P` Problems, which
+opens itself on a new solve problem but not for an open contour. Properties shows the selection,
+else the group picked in the Outliner, else the active group. Preferences, Styles, View and the
+Paste Transformed / Step Dimension / Tangent Arc panels open where the browser screen did.
+Panels take no ImGui keyboard navigation (no Tab between fields), so Tab, Space and Enter always
+reach the keymap unless a field is being typed in. `docs/m1-parity.md` lists every screen's new
+home.
+
 Typed angles that are not multiples of 90° add a construction reference line plus an angle
 constraint; multiples of 90° add horizontal/vertical (decided 2026-10-16: SolveSpace has no
 line-to-axis angle constraint). `D` replaced `constrain-distance` and `.`/`Num.` replaced
@@ -371,6 +380,9 @@ macOS and Emscripten builds.
   - `pr/headless-null-guards`: null window/menu-item guards for headless runs (from `978602ca`).
   - `pr/diameter-label-leader`: a diameter label at the centre had no leader and logged a
     zero-vector warning every frame (from `3827b2be`).
+  - `pr/hover-list-leak`: every hit test leaked the previous hover list (from `60b82650`).
+  - `pr/paste-scale-crash`: a non-expression in Paste Transformed's scale crashed (from
+    `0868c8bd`).
 - Tests: `RUN_COMMAND("<command-name>")` in `test/` runs a menu command headlessly (names in
   `src/commandnames.cpp`). Headless code paths have null windows/menu items: guard them.
   Not headless-safe yet (null FileDialog/Window under `guinone.cpp`): `open`, `save`, `save-as`,
@@ -397,6 +409,12 @@ macOS and Emscripten builds.
   inside a context menu; an unanswered nested loop fails the case. Each case starts with
   default settings in a temporary config dir; a failing case saves a screenshot to
   `ngui-failures/` in the working directory. Fixtures are copied per test directory.
+  Only visible items are found (scrolled out of view = not there): `RevealIn(panel, item)`
+  scrolls a panel with the wheel, and clicks land on the visible part of an item. ImGui combo
+  boxes don't report their label to the hooks; prefer radio buttons or selectables in panels.
+  Panel logic lives in core methods (`SolveSpaceUI::ChangeGroupOption`, `SetSetting`,
+  `Style::SetValue`, ...) shared with the old browser, plus `src/ui/*model.cpp` view models;
+  test those headlessly in `test/ng/` and the panels end to end in `test/ngui/`.
 
 **Developer docs worth reading first:** `developer_docs/IdLists_Entities_and_Remap.txt`,
 `developer_docs/Solver_Transforms.txt`.

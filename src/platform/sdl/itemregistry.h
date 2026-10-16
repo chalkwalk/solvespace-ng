@@ -18,7 +18,7 @@ struct UiItem {
     std::string id;     // the "##id" suffix without the hashes, e.g. "shown:sketch"
     std::string window; // the ImGui window it was drawn in
     float       x0, y0, x1, y1;
-    bool        checkable, checked, opened;
+    bool        checkable, checked, opened, openable;
     bool        isWindow;
     bool        visible;      // at least partly inside its window's visible area (tree nodes
                               // report themselves even when clipped)

@@ -71,7 +71,7 @@ Point2d ToWindow(Vector modelPoint); // where a model point is drawn in the main
 struct Item {
     std::string label, id, window; // id: the "##id" part of the ImGui label, without hashes
     double      x0, y0, x1, y1;
-    bool        checkable, checked, opened, isWindow;
+    bool        checkable, checked, opened, openable, isWindow; // openable: a submenu, a header
     bool        fullyVisible;       // not cut off by its window's edge
     double      vx0, vy0, vx1, vy1; // the visible part
     // The middle of the visible part, where a person would click.
