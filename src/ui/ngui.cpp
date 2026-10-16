@@ -7,6 +7,7 @@
 #include "ui/drawtool.h"
 #include "ui/grabtool.h"
 #include "ui/outliner.h"
+#include "ui/properties.h"
 #include "ui/panels.h"
 #include "ui/ngui.h"
 #include "ui/palettewidget.h"
@@ -20,6 +21,7 @@ namespace Ui {
 static CommandPalette       gPalette;
 static std::string          gModalTool;
 static std::vector<KeyHint> gModalHints;
+static bool                 gHideBrowser = false;
 
 void SetModalStatus(std::string tool, std::vector<KeyHint> hints) {
     gModalTool  = std::move(tool);
@@ -99,11 +101,16 @@ void InitNgUi() {
     Draw()   = DrawTool{};
     SetModalStatus("", {});
     ResetOutliner();
+    ResetProperties();
     OutlinerPanel().Load();
+    PropertiesPanel().Load();
+    gHideBrowser = true;
+    SS.GW.showTextWindowByDefault = false;
     ApplyTheme(LoadThemeChoice());
     Actions().Bind("ui.command-palette", [] { gPalette.Open(); });
     Actions().Bind("ui.toggle-theme", [] { ToggleTheme(); });
     Actions().Bind("ui.toggle-outliner", [] { OutlinerPanel().Toggle(); });
+    Actions().Bind("ui.toggle-properties", [] { PropertiesPanel().Toggle(); });
     Actions().Bind("ui.pie-add", [] {
         Pie().Open("Add", {
             { "Line", "line-segment" }, { "Rectangle", "rectangle" }, { "Circle", "circle" },
@@ -146,6 +153,16 @@ std::function<void()> DrawNgUi(Platform::MenuBarSdl *menuBar, const keymap::Keym
     }
     DrawStatusBar(keymap);
     std::function<void()> run = DrawOutliner();
+    if(auto changed = DrawProperties()) run = changed;
+    if(gHideBrowser) {
+        // The Properties panel replaces the property browser, which starts hidden; View >
+        // Show Property Browser brings it back.
+        gHideBrowser = false;
+        run = [] {
+            SS.GW.showTextWindow = false;
+            SS.GW.EnsureValidActives(); // syncs the window and the View menu's check mark
+        };
+    }
     if(Pie().IsOpen()) {
         std::string name = Pie().Draw();
         if(!name.empty()) return [name] { RunNamedCommand(name); };

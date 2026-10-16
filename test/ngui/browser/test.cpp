@@ -11,8 +11,16 @@ static Group *GroupNamed(const char *name) {
     return nullptr;
 }
 
+TEST_CASE(browser_starts_hidden_and_the_view_menu_shows_it) {
+    CHECK_LOAD("line.slvs");
+    CHECK_FALSE(Driver::FindItem("Property Browser").has_value());
+    ShowBrowser();
+    CHECK_TRUE(Driver::FindItem("Property Browser").has_value());
+}
+
 TEST_CASE(browser_group_link_opens_group_info) {
     CHECK_LOAD("line.slvs");
+    ShowBrowser();
     CHECK_TRUE(BrowserShows("sketch-in-plane"));
     CHECK_TRUE(ClickBrowserText("g002-sketch-in-plane", /*occurrence=*/1)); // 0: the header
     CHECK_TRUE(SS.TW.shown.screen == TextWindow::Screen::GROUP_INFO);
@@ -22,6 +30,7 @@ TEST_CASE(browser_group_link_opens_group_info) {
 
 TEST_CASE(browser_hide_all_then_show_all) {
     CHECK_LOAD("line.slvs");
+    ShowBrowser();
     CHECK_TRUE(ClickBrowserText("hide all"));
     CHECK_FALSE(GroupNamed("#references")->visible);
     CHECK_TRUE(ClickBrowserText("show all"));

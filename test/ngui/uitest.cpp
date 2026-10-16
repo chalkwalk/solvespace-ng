@@ -41,6 +41,21 @@ void DoubleClickAt(Point2d p) {
     Driver::DoubleClick(p.x, p.y);
 }
 
+void ShowBrowser() {
+    if(!SS.GW.showTextWindow) Driver::ClickMenu({ "View", "Show Property Browser" });
+}
+
+bool EditField(const std::string &labelOrId, const std::string &text) {
+    std::optional<Driver::Item> field = Driver::FindItem(labelOrId);
+    if(!field) return false;
+    Point2d c = field->Center();
+    Driver::Click(c.x, c.y);
+    Driver::Key("Ctrl+A");
+    Driver::Type(text);
+    Driver::Key("Return");
+    return true;
+}
+
 std::vector<std::string> BrowserRows() {
     std::vector<std::string> rows;
     for(int r = 0; r < SS.TW.rows; r++) {
@@ -72,7 +87,8 @@ bool ClickBrowserText(const std::string &text, int occurrence) {
             if(occurrence-- > 0) continue;
             // As TextWindow::MouseEvent maps a position to a row and column.
             const int hh = TextWindow::LINE_HEIGHT / 2;
-            double x = TextWindow::LEFT_MARGIN + (c + text.size() / 2.0) * TextWindow::CHAR_WIDTH_;
+            double x = (int)TextWindow::LEFT_MARGIN +
+                       (c + text.size() / 2.0) * (int)TextWindow::CHAR_WIDTH_;
             double y = (SS.TW.top[r] + 1 - SS.TW.scrollPos) * hh;
             if(y < 0 || y > canvas->y1 - canvas->y0) return false;
             Driver::Click(canvas->x0 + x, canvas->y0 + y);

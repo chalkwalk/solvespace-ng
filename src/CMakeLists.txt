@@ -324,6 +324,7 @@ if(ENABLE_GUI AND ENABLE_NG_GUI)
         ui/palettewidget.cpp
         ui/panels.cpp
         ui/outliner.cpp
+        ui/properties.cpp
         ui/ngui.cpp
         ui/piemenu.cpp
         ui/theme.cpp

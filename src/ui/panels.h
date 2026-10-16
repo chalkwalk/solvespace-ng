@@ -35,6 +35,7 @@ private:
 };
 
 Panel &OutlinerPanel();
+Panel &PropertiesPanel();
 
 }
 }

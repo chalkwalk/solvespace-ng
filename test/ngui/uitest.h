@@ -29,11 +29,16 @@ void ClickAt(Point2d p);
 void ShiftClickAt(Point2d p);
 void DoubleClickAt(Point2d p);
 
+// The old property browser starts hidden in NG; this shows it (View > Show Property Browser).
+void ShowBrowser();
 // The property browser: its text, row by row (non-ASCII shown as '?'), and clicking a piece of
 // text in it, e.g. a link. False if the text is not shown or is scrolled out of view.
 std::vector<std::string> BrowserRows();
 bool                     BrowserShows(const std::string &text);
 bool                     ClickBrowserText(const std::string &text, int occurrence = 0);
+
+// Replaces the text of an ImGui text field (found by label or ##id) and presses Enter.
+bool EditField(const std::string &labelOrId, const std::string &text);
 
 // Draws a line segment with the line tool by clicking its two ends; returns its request.
 hRequest DrawLine(Point2d a, Point2d b);

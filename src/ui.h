@@ -897,6 +897,7 @@ public:
     ShowConstraintMode showConstraints;
 
     bool    showTextWindow;
+    bool    showTextWindowByDefault = true; // on each new or opened file; NG has panels
     bool    showShaded;
     bool    showEdges;
     bool    showOutlines;

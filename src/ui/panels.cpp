@@ -43,7 +43,10 @@ bool Panel::Begin() {
     }
     bool open    = true;
     std::string id = title + "###panel-" + name;
-    bool visible = ImGui::Begin(id.c_str(), &open, ImGuiWindowFlags_NoSavedSettings);
+    // NoNav: a panel that has been clicked must not take Tab, Space, Enter or the arrows from
+    // the keymap; only a field being typed in gets keys.
+    bool visible = ImGui::Begin(id.c_str(), &open,
+                                ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoNav);
     if(!open) SetShown(false);
     if(!visible) ImGui::End();
     return visible;
@@ -60,6 +63,11 @@ void Panel::End() {
         settings->FreezeFloat("NG_Panel_" + name + "_H", savedH);
     }
     ImGui::End();
+}
+
+Panel &PropertiesPanel() {
+    static Panel panel("Properties", "Properties", PanelEdge::RIGHT, 340, /*shownByDefault=*/true);
+    return panel;
 }
 
 Panel &OutlinerPanel() {

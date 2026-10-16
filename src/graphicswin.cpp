@@ -450,7 +450,7 @@ void GraphicsWindow::Init() {
     showFacesNonDrawing = true;
     drawOccludedAs = DrawOccludedAs::INVISIBLE;
 
-    showTextWindow = true;
+    showTextWindow = showTextWindowByDefault;
 
     showSnapGrid = false;
     dimSolidModel = true;

@@ -8,6 +8,7 @@ ui.command-palette:     Space, F3
 ui.toggle-menu-bar:     F10
 ui.toggle-theme:        Ctrl+Alt+T
 ui.toggle-outliner:     O
+ui.toggle-properties:   N
 ui.pie-add:             Shift+A
 ui.pie-view:            `
 ui.pie-constrain:       F
@@ -68,6 +69,6 @@ zoom-out:               -
 zoom-to-fit:            Home
 perspective:            Num5
 show-grid:              Shift+G
-show-property-browser:  N
+show-property-browser:  Shift+N
 show-toolbar:           Ctrl+Shift+T
 full-screen:            F11

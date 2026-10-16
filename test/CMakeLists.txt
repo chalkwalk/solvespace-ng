@@ -137,7 +137,8 @@ set(ngui_SOURCES
     ngui/groups/test.cpp
     ngui/editing/test.cpp
     ngui/app/test.cpp
-    ngui/outliner/test.cpp)
+    ngui/outliner/test.cpp
+    ngui/properties/test.cpp)
 
 if(ENABLE_GUI AND ENABLE_NG_GUI)
     add_executable(solvespace-ng-uitest

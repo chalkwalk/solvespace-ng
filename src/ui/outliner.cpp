@@ -7,6 +7,7 @@
 #include "ui/outliner.h"
 #include "ui/outlinermodel.h"
 #include "ui/panels.h"
+#include "ui/properties.h"
 
 namespace SolveSpace {
 namespace Ui {
@@ -98,7 +99,7 @@ std::function<void()> DrawOutliner() {
                 if(ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left) && !r.references) {
                     run = [hg] { SS.GW.ActivateGroup(hg); };
                 } else {
-                    run = [hg] { ShowInBrowser(&TextWindow::ScreenSelectGroup, hg); };
+                    run = [hg] { ShowGroupInProperties(hg); };
                 }
             }
             if(ImGui::BeginPopupContextItem("##context")) {

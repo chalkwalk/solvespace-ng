@@ -1,6 +1,7 @@
 // The outliner panel, driven with the mouse and keys.
 #include "../uitest.h"
 #include "ui/ngui.h"
+#include "ui/properties.h"
 #include "harness.h"
 
 using namespace SolveSpace::UiTest;
@@ -73,11 +74,12 @@ TEST_CASE(radio_and_double_click_activate_groups) {
     CHECK_TRUE(SS.GW.activeGroup == added);
 }
 
-TEST_CASE(clicking_a_name_shows_the_group_in_the_browser) {
+TEST_CASE(clicking_a_name_shows_the_group_in_properties) {
     CHECK_LOAD("line.slvs");
-    CHECK_TRUE(Driver::ClickItem("sketch-in-plane"));
-    CHECK_TRUE(SS.TW.shown.screen == TextWindow::Screen::GROUP_INFO);
-    CHECK_TRUE(SS.TW.shown.group == Named("sketch-in-plane")->h);
+    Driver::Key("N"); // even when Properties is hidden
+    CHECK_TRUE(Driver::ClickItem("#references"));
+    CHECK_TRUE(Driver::FindItem("Properties").has_value());
+    CHECK_TRUE(Ui::PropertiesGroup() == Group::HGROUP_REFERENCES);
 }
 
 TEST_CASE(context_menu_renames_a_group) {

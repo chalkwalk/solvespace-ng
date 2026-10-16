@@ -76,11 +76,15 @@ TEST_CASE(toolbar_icon_click_starts_its_tool) {
     CHECK_TRUE(SS.GW.pending.command == Command::LINE_SEGMENT);
 }
 
-TEST_CASE(n_toggles_the_property_browser) {
+TEST_CASE(n_toggles_properties_and_shift_n_the_old_browser) {
     CHECK_LOAD("line.slvs");
-    CHECK_TRUE(Driver::FindItem("Property Browser").has_value());
+    CHECK_TRUE(Driver::FindItem("Properties").has_value());
     Driver::Key("N");
+    CHECK_FALSE(Driver::FindItem("Properties").has_value());
+    Driver::Key("N");
+    CHECK_TRUE(Driver::FindItem("Properties").has_value());
     CHECK_FALSE(Driver::FindItem("Property Browser").has_value());
-    Driver::Key("N");
+    Driver::Key("Shift+N");
     CHECK_TRUE(Driver::FindItem("Property Browser").has_value());
 }
+
