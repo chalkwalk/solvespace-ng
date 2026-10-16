@@ -1,0 +1,317 @@
+# AGENTS.md — SolveSpace NG
+
+Instructions and agreed design for AI coding agents (Claude, Gemini, Codex, …) working in this
+repository. `CLAUDE.md` and `GEMINI.md` are symlinks to this file — edit only `AGENTS.md`.
+
+This repository is a **long-lived fork of SolveSpace** (working name **SolveSpace NG**, binary
+`solvespace-ng`) that keeps SolveSpace's constraint-based modelling core and gives it a modern,
+keyboard-first UI, a pluggable geometry kernel (SolveSpace → Open CASCADE), and a multi-body
+assembly workflow for 3D-printed parts and mechanisms. It is primarily a personal tool and may
+later be promoted to an independently named project.
+
+Design agreed 2026-10-15. Sections marked **Decision** are settled; change them only with the
+owner's approval.
+
+---
+
+## 1. Goals and non-goals
+
+**Goals**
+- Keep what makes SolveSpace good: constraint-based parametric modelling, a fast solver, live
+  dragging, and heavy keyboard use.
+- A modern look and feel in the spirit of **Plasticity / Shapr3D** (minimal chrome, big viewport,
+  floating panels), with **Blender-style** keyboard speed (command palette, pie menus, modal tools
+  with typed values).
+- Fillets, chamfers and other Open CASCADE (OCCT) features **without** giving up the constraint
+  workflow: features can sit anywhere in the feature chain and still expose constrainable
+  geometry.
+- Multi-part design in one file: parts that reference each other, interlocking fit joints with
+  printer-tuned clearances, and mechanisms that can be dragged live.
+- Platforms: Linux, Windows, macOS. Web (WASM) stays supported where practical, but the web
+  build may lack OCCT-only features (the owner accepts losing web for fillets/chamfers).
+
+**Non-goals**
+- Direct modelling (push/pull, face offsets, defeaturing). These edit topology instead of
+  parameters and break the constraint paradigm.
+- Upstream contribution. Upstream's review rules (`.github/copilot-instructions.md`) don't govern
+  this fork, but we still merge upstream fixes (see §9).
+
+## 2. Licensing — Decision
+
+- SolveSpace, including the solver (`libslvs`), is **GPLv3**. All fork and app code stays
+  GPLv3. Keep existing copyright headers and attributions.
+- Code derived from SolveSpace can **not** be relicensed MIT. (The `MIT License` classifier in
+  `pyproject.toml` is upstream metadata and should not be relied on. The solver compiled into the
+  Python package is GPLv3.)
+- New, independent modules written from scratch (keymap engine, palette and pie-menu widgets,
+  theme tokens) may be **MIT** and must live under `libs/<name>/` with their own `LICENSE`. They
+  must not include or link SolveSpace code.
+- Allowed dependencies: SDL3 (zlib), Dear ImGui (MIT), lunasvg (MIT), Lucide icons (ISC), Inter
+  and JetBrains Mono fonts (OFL), OCCT (LGPL-2.1 + exception), Eigen (MPL2). Code borrowed from
+  Dune 3D (GPLv3) is fine with attribution. Avoid non-OSI or "non-commercial" licences, e.g. the
+  Dear ImGui Test Engine.
+
+## 3. Background facts (verified in this repo)
+
+- `include/slvs.h` / `src/slvs/` is **only the 2D/3D constraint solver**. Groups,
+  extrude/lathe/boolean, the NURBS and mesh kernel (`src/srf/`, `src/mesh.cpp`), the `.slvs` file
+  format and export all live in `solvespace-core` (`src/CMakeLists.txt`, ~41k lines).
+- The UI is tightly coupled to the core through the global `SS` and its `SS.GW` (graphics window)
+  and `SS.TW` (text window), with 600+ references across `src/*.cpp`.
+- The toolbar (`src/toolbar.cpp`) and the property browser ("text window", `src/textwin.cpp`,
+  `src/textscreens.cpp`, `src/confscreen.cpp`, `src/describescreen.cpp`) are custom-drawn in
+  OpenGL. The Qt6 frontend (`src/platform/guiqt.cpp`, `-DUSE_QT_GUI=ON`) only wraps these. That is
+  why a toolkit swap alone doesn't modernise the look.
+- Commands: `enum class Command` in `src/ui.h` and the `MenuEntry` table with accelerators in
+  `src/graphicswin.cpp`. Modal tool state lives in `GraphicsWindow::pending` (`enum class Pending`,
+  `src/ui.h`).
+- Solid generation: `Group::Generate()` (`src/group.cpp`) creates sketch-derived entities;
+  `Group::GenerateShellAndMesh()` (`src/groupmesh.cpp`) builds solids. The second is the kernel
+  seam.
+- Assemblies today: `Group::Type::LINKED` (`src/sketch.h`) imports another `.slvs` file as a
+  frozen rigid body with 6 DOF placement.
+- Prior art: **Dune 3D** (GPLv3) = SolveSpace solver + OCCT + GTK4 UI. Learn from it; we chose
+  not to fork it (GTK4-bound, and its UI is the layer we'd replace).
+
+## 4. Architecture — Decision (Approach A: staged fork and refactor)
+
+```
+app/      SDL3 shell: window, GL ES3 context, input, HiDPI, file dialogs
+ui/       Dear ImGui panels (custom theme) + viewport overlays: command palette,
+          pie menus, modal-tool HUD, outliner, properties, problems, keymap editor
+cmd/      Command registry, Keymap (presets: Modern, SolveSpace Classic),
+          Tool state machine (from Pending), Selection model, Undo transactions
+doc/      solvespace-core: sketch, groups, requests, constraints, solver, file I/O, export
+kernel/   IKernel interface; SolveSpaceKernel (SShell/SMesh) and OcctKernel (desktop)
+render/   existing Canvas abstraction + GL renderer, targeting GL ES 3.0 / WebGL2
+```
+
+Rules:
+1. **Dependencies only point downward.** Nothing in `doc/`, `kernel/` or `render/` may reference
+   `SS.GW`, `SS.TW`, or `ui/`. Move UI-coupled code upward one screen or command at a time. Never
+   do a big-bang rewrite.
+2. **Every user action is a registered command** (`id`, name, description, `enabled(ctx)`,
+   `run(ctx)`). Menus, palette, pies, toolbar and keymaps are views of that registry. Every
+   command must be runnable headlessly from a script.
+3. **The solver and the `.slvs` format stay backward compatible.** Old files must open unchanged.
+   New data (parts, joints, features, fit table) goes in new, versioned records.
+4. **The old frontends (GTK, Win32, Cocoa, Qt) stay buildable until M1 parity**, then get deleted.
+5. **C++20** across the project. Graphics: OpenGL, restricted to the GL ES 3.0 / WebGL2 subset
+   (ANGLE on Windows as today). A WebGPU backend is a later option behind `Canvas`.
+
+## 5. UI/UX — Decision
+
+**Layout.** The viewport fills the window and everything else floats over it.
+- **Outliner** (left, collapses to icons): Skeleton → Parts → Groups/Features → Sketches. Shows
+  cross-part dependencies.
+- **Properties** (right, follows the selection): editable fields for the selected group, entity,
+  constraint or joint. Fields accept expressions. Replaces every text-window screen.
+- **Problems**: redundant or conflicting constraints, failed solves, unstable edge references,
+  each with one click to highlight the culprits.
+- **Status/HUD bar** (bottom): active tool, the keys available right now (like Blender's status
+  bar), DOF count, solver and regeneration state.
+- **Command palette** and **pie menus** float over the viewport. The tool shelf is optional and
+  hidden by default.
+
+**Typed values become constraints.** While a modal tool is active, typed numbers fill HUD fields
+(`Tab` cycles, `Enter` confirms, `Esc` or right-click cancels). Unlike Blender, a typed value
+creates a real constraint. Example: drawing a line, type `25`, `Tab`, `30`, `Enter` and you get a
+length constraint and an angle constraint.
+
+**Keymap — "Modern" (Blender-style) preset.** A draft, to be tuned during M1. A
+**"SolveSpace Classic"** preset reproduces today's bindings. All bindings can be remapped and are
+stored in a keymap file.
+
+| Key | Action |
+|---|---|
+| `Space` / `F3` | Command palette (searches every command, shows its binding) |
+| `Tab` | Enter/exit the active sketch (like Blender's Edit Mode) |
+| `Shift+A` | Add pie: line, rectangle, circle, arc, spline, point, text, workplane |
+| `L` `B` `C` `A` | Direct: line, box/rectangle, circle, arc |
+| `D` | Smart dimension (distance, diameter or angle, inferred from the selection) |
+| `F` | Constrain pie: only the constraints valid for the selection |
+| `G` | Grab: drag under the solver; `X`/`Y`/`Z` locks an axis; type a value |
+| `E` / `Shift+R` / `Ctrl+B` | Extrude / revolve / boolean mode |
+| `H` / `Alt+H` / `Shift+H` | Hide / unhide all / isolate |
+| `A` / `Alt+A` | Select all / none |
+| `` ` `` pie, numpad `1` `3` `7` | View pie; front/right/top (`Ctrl` = opposite side); `.` frames selection |
+| MMB / `Shift`+MMB / wheel | Orbit / pan / zoom (the mouse scheme is configurable) |
+| `Ctrl+Z` / `Ctrl+Shift+Z` | Undo / redo |
+
+With nothing selected, commands act on the item under the cursor.
+
+**Visual style.**
+- Dark (default) and light themes, built from design tokens.
+- Inter for the UI and JetBrains Mono for numbers.
+- Lucide-based icons rendered with lunasvg.
+- Constraint glyphs redrawn to be crisp and coloured by state: fully constrained, under-
+  constrained, conflicting.
+- Optional matcap shading, clean edge lines, a grid on the active sketch plane.
+- Design the theme tokens first in M1, and review them on screenshots before building panels.
+  ImGui must not look like a developer tool.
+
+## 6. Kernel and features — Decision
+
+**The invariant.** Constraints reference only **solver entities**:
+- sketch entities;
+- entities that groups generate as equations of upstream parameters (as extrude does today);
+- the **derived entities** declared by new features (below).
+
+Constraints never reference raw B-rep topology parametrically. This keeps SolveSpace immune to
+the topological naming problem.
+
+**`IKernel`** (in `kernel/`). `Group::GenerateShellAndMesh()` calls it instead of `SShell`
+directly:
+
+```cpp
+struct IKernel {
+  BodyId  extrude(const Profile&, Vector dir, double depth, /*draft, …*/);
+  BodyId  revolve(...);  BodyId helix(...);  BodyId loft(...);  BodyId sweep(...);
+  BodyId  boolean(BodyId a, BodyId b, BoolOp);
+  BodyId  fillet(BodyId, std::span<const EdgeRef>, double r);
+  BodyId  chamfer(BodyId, std::span<const EdgeRef>, double d);
+  BodyId  shell(BodyId, std::span<const FaceRef>, double t);
+  BodyId  split(BodyId, const Plane&/*or sketch*/);
+  Mesh    tessellate(BodyId, double chordTol);
+  EdgeRef pickEdge(BodyId, Ray);   FaceRef pickFace(BodyId, Ray);
+  MassProps massProps(BodyId);     double minDistance(BodyId, BodyId);
+  bool    exportStep(...);         BodyId importStep(...);
+};
+```
+
+- **SolveSpaceKernel** wraps today's `SShell`/`SMesh` and behaves exactly as now. OCCT-only ops
+  report "unsupported" and the UI greys them out. Used in web builds.
+- **OcctKernel** is desktop only. It becomes the default when the kernel parity suite passes
+  (§8).
+- Mesh-mode bodies (imported STL etc.) keep the existing mesh-boolean path.
+
+**Features are ordinary groups that can sit anywhere in the chain.** Each declares the derived
+entities it creates, as solver expressions, so later sketches and constraints can use them and
+they move live during drags:
+
+| Feature | Derived entities (constrainable) |
+|---|---|
+| Shell (thickness `t`) | Inner faces = source faces offset by `t` |
+| Draft / taper on extrude (angle `α`) | Side faces = base edge + normal rotated by `α` |
+| Hole (plain, counterbore, countersink, modelled ISO threads) | Axis, centre, top/bottom points, counterbore plane |
+| Fillet `r` between two flat faces | Fillet axis line, both tangent lines |
+| Chamfer | Both chamfer edge lines |
+| Loft (two or more sketches) / sweep (profile + path sketch) | Input sketch entities, start/end profile frames |
+| Split body (plane or sketch) | Cutting plane, frame of each resulting Part |
+| Joint (§7) | Joint frame (origin + axes) on each Part |
+
+Also in M3: **mass properties** (volume, mass, centre of mass) and **STEP export/import**.
+
+**Naming edges and faces stably.** An `EdgeRef`/`FaceRef` is stored by **where it came from**, e.g.
+"extrude G3 × sketch line h7 × top cap". It is propagated through later operations using OCCT
+history (`BRepTools_History`, `Modified()`/`Generated()`). A geometric fallback (nearest edge to a
+saved midpoint and direction) covers what history can't resolve, and every fallback use raises a
+Problems entry.
+
+**Explicit limit.** Geometry with no closed-form equation, such as a fillet between curved faces
+or an edge from intersecting curved surfaces, can be **snapped to** but not parametrically
+constrained. The Problems list says so.
+
+**Regeneration.** Kernel regeneration runs on a worker thread, keeping only the newest request,
+with a tessellation cache per group. While dragging, only the sketch solve runs per frame. The
+stale mesh shows as a ghost until the new one arrives.
+
+**Later:** variable-radius fillets, STEP import as a reference body (snappable, warned),
+XCAF colours and names, exact hidden-line drawing export (`HLRBRep`).
+
+## 7. Assemblies — Decision (multi-body in one file)
+
+- **Part:** a named body with its own ordered list of groups, plus material, colour and print
+  settings. A document holds many Parts.
+- **Skeleton:** shared sketches and workplanes at the top of the document that any Part can
+  reference. This is the main co-design tool: one skeleton profile drives both the tab on Part A
+  and the slot on Part B.
+- **Cross-part references:** a Part's sketch may reference skeleton entities or groups that come
+  earlier in the document in other Parts. The dependency graph must have no cycles. Reject
+  cycles with a clear message.
+- **Placement:** each Part has a rigid transform (7 solver parameters: position + quaternion, as
+  `LINKED` groups have today), solved by assembly constraints: coincident, concentric, planar
+  contact, distance, angle, lock.
+- **Design pose vs. motion pose:**
+  - Cross-part references are resolved in the **design pose** (the authored layout).
+  - Motion joints move Parts *away* from the design pose **without rebuilding their geometry**.
+  - Dragging a mechanism is therefore a pure solve plus a mesh transform. That is real-time
+    with no kernel work.
+- **Fit joints (3D printing):** press fit, sliding fit, snap fit, dovetail, dowel pin,
+  pin-hole.
+  - Each takes its clearance from a document-wide **fit table** (e.g. `press = -0.1`,
+    `slide = 0.2`, `loose = 0.4` mm, tuned per printer).
+  - Each generates matching geometry on both Parts from one shared profile: the male side as
+    drawn, the female side offset by the clearance.
+- **Motion joints (mechanisms):** revolute, slider, cylindrical, planar, ball, and gear/rack
+  coupling (as a ratio constraint).
+  - Each leaves exactly the right DOF free and takes optional limits.
+  - `G` drags a Part within its joints, solving live.
+  - A joint value can be scrubbed or animated, with a **clearance sweep** across the range
+    (e.g. "minimum gap 0.12 mm at 47°").
+- **Split + automatic joints:** split a large body into printable Parts and add dowel or
+  dovetail fit joints at the cut.
+- **Output:**
+  - per-Part STL / 3MF / STEP, with optional "lay flat on largest face";
+  - whole assembly as STEP, or 3MF with separate objects;
+  - a simple parts list (BOM).
+- **Compatibility:** existing `LINKED` groups load as Parts whose source is an external file (for
+  reusable standard parts). An old single-body document opens as one Part.
+
+## 8. Milestones and testing
+
+Each milestone leaves a working, daily-usable app. Work in milestone order. Don't start
+M(n+1) features before M(n)'s "done when" is met, unless the owner says otherwise.
+
+| # | Scope | Done when |
+|---|---|---|
+| **M0** | C++20 bump; CI on Linux/Windows/macOS; scripted headless command runner; baseline green | Existing `test/` suite passes on all three platforms in CI |
+| **M1** | New UI at parity: `solvespace-ng` target (SDL3 + ImGui) next to the old frontends; command registry; Modern + Classic keymaps; outliner, properties and problems panels replacing every text-window screen; palette, pies, HUD with typed constraints; themes | Parity checklist complete (every `Command` and every text-window screen has a new home); then delete the GTK/Win32/Cocoa/Qt frontends |
+| **M2** | `IKernel` + `SolveSpaceKernel`; background regeneration; ghost preview | Regression output unchanged |
+| **M3** | `OcctKernel`; derived-entity framework; fillet, chamfer, shell, draft, hole/threads, loft, sweep, mass properties, STEP | Kernel parity suite passes; OCCT is the desktop default |
+| **M4** | Parts, skeleton, cross-part references, design pose, per-part export (STL/3MF/STEP), BOM, `LINKED` compatibility | An enclosure + lid co-designed in one file exports two printable parts |
+| **M5** | Fit table, fit joints, motion joints + limits, live dragging, scrubbing, clearance sweep, split with automatic joints | A printed-hinge model drags live and reports correct clearance |
+| Later | Hidden-line drawings, STEP reference import, variable fillets, WebGPU | — |
+
+**Testing requirements:**
+- The existing `test/` suite (`test/harness.cpp`, target `test_solvespace`) **stays green on
+  every commit**.
+- **Headless command tests:** UI behaviour is tested by driving registered commands from scripts,
+  not by pixel-poking ImGui.
+- **Kernel parity tests:** every model under `test/` is compared across kernels on volume, area,
+  bounding box and watertightness, within a set tolerance.
+- **Format golden files:** old `.slvs` files load, and saving then reloading gives the same file.
+  New records have version tags.
+- **Performance:** benchmarks in `bench/`. Dragging a reference assembly must hold 60 fps.
+- Use test-driven development for new logic (commands, keymap, derived entities, joints).
+
+## 9. Working in this repo
+
+**Build (Linux)**
+```sh
+git submodule update --init          # extlib/ submodules are not checked out by default
+mkdir -p build && cd build
+cmake .. -DCMAKE_BUILD_TYPE=Debug [-DUSE_QT_GUI=ON] [-DENABLE_GUI=OFF]
+make -j$(nproc)
+make test_solvespace                 # run the regression suite
+```
+In-tree builds are rejected; always build in `build/`. See `README.md` for Windows (MinGW/MSVC),
+macOS and Emscripten builds.
+
+**Code style**
+- Follow `.clang-format`: 4 spaces, no tabs, 100 columns, attached braces, no space before
+  parentheses.
+- Match the surrounding code's naming and comment density. Don't reformat code you aren't
+  changing.
+
+**Process**
+- Make small, staged changes. Each commit builds and passes tests.
+- Refactors that untangle `SS.GW`/`SS.TW` move one screen or command per commit.
+- Don't add dependencies beyond §2 without the owner's approval.
+- Update this file whenever a **Decision** changes. Record the date and the reason.
+- Branches: feature work on `ng/<milestone>-<topic>` branches, merged into `master`.
+- Upstream sync: merge `upstream/master` quarterly until M1 lands. After that, cherry-pick solver
+  and kernel fixes only.
+
+**Developer docs worth reading first:** `developer_docs/IdLists_Entities_and_Remap.txt`,
+`developer_docs/Solver_Transforms.txt`.
