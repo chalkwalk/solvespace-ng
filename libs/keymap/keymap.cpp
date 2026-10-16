@@ -133,11 +133,11 @@ std::optional<Keymap> Keymap::Parse(std::string_view text, std::string *error) {
         if(command.empty()) return fail("missing command name");
         std::string_view rest = line.substr(colon + 1);
         while(true) {
-            // Only split on commas followed by whitespace or end of line, so the chord
-            // "Ctrl+," survives.
+            // A comma is the "," key itself, not a separator, when it directly follows '+'
+            // ("Ctrl+,") or when nothing precedes it in the current chord (a bare ",").
             size_t comma = rest.find(',');
-            while(comma != std::string_view::npos && comma + 1 < rest.size() &&
-                  !std::isspace((unsigned char)rest[comma + 1])) {
+            while(comma != std::string_view::npos &&
+                  ((comma > 0 && rest[comma - 1] == '+') || Trim(rest.substr(0, comma)).empty())) {
                 comma = rest.find(',', comma + 1);
             }
             std::string_view item = Trim(rest.substr(0, comma));

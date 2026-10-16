@@ -68,3 +68,15 @@ TEST_CASE(parse_errors_report_line) {
     auto empty = Keymap::Parse("", &err);
     CHECK_TRUE(empty.has_value() && empty->Commands().empty());
 }
+
+TEST_CASE(comma_key_in_file) {
+    std::string err;
+    auto km = Keymap::Parse("configuration: Ctrl+,\nother: F2, Alt+,\nplain: ,\n", &err);
+    CHECK_TRUE(km.has_value());
+    CHECK_TRUE(*km->Lookup(*keymap::ParseChord("Ctrl+,")) == "configuration");
+    CHECK_TRUE(*km->Lookup(*keymap::ParseChord("Alt+,")) == "other");
+    CHECK_TRUE(km->ChordsFor("other").size() == 2);
+    CHECK_TRUE(*km->Lookup(*keymap::ParseChord(",")) == "plain");
+    auto again = Keymap::Parse(km->Serialize(), &err);
+    CHECK_TRUE(again.has_value());
+}
