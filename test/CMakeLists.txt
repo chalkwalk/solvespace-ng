@@ -20,6 +20,7 @@ set(testsuite_SOURCES
     core/commandnames/test.cpp
     core/commands/test.cpp
     core/viewpresets/test.cpp
+    core/visibility/test.cpp
     libs/keymap/test.cpp
     libs/palette/test.cpp
     libs/pie/test.cpp

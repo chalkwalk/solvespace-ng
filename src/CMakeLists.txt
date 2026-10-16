@@ -144,6 +144,7 @@ if(ENABLE_GUI OR ENABLE_CLI)
         modify.cpp
         mouse.cpp
         viewpresets.cpp
+        visibility.cpp
         polyline.cpp
         polygon.cpp
         resource.cpp

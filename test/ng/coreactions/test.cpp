@@ -13,3 +13,10 @@ TEST_CASE(view_actions_are_bound_and_run) {
     CHECK_TRUE(SS.GW.projRight.Minus(Vector::From(0, 1, 0)).Magnitude() < 1e-9);
     CHECK_TRUE(Actions().Run("ui.view-frame-selected"));
 }
+
+TEST_CASE(hide_actions_are_bound) {
+    RegisterCoreUiActions(false);
+    CHECK_TRUE(Actions().IsEnabled("ui.hide"));
+    CHECK_TRUE(Actions().IsEnabled("ui.unhide-all"));
+    CHECK_TRUE(Actions().IsEnabled("ui.isolate"));
+}

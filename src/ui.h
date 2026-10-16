@@ -654,6 +654,11 @@ public:
     void SnapToView(ViewPreset p, bool animate);
     bool SelectHoveredIfNothingSelected();
     void FrameSelected();
+    // Groups of the selected (or else hovered) entities and constraints.
+    std::vector<hGroup> GroupsOfSelection();
+    int  HideSelectedGroups();    // returns how many groups it hid
+    void ShowAllGroups();
+    int  IsolateSelectedGroups(); // returns how many groups stay visible (0 = did nothing)
 
     Vector VectorFromProjs(Vector rightUpForward);
     void HandlePointForZoomToFit(Vector p, Point2d *pmax, Point2d *pmin,

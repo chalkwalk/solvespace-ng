@@ -20,6 +20,9 @@ const std::vector<UiActionInfo> &UiActionList() {
         { "ui.view-top",            "View \xE2\x80\xBA Top" },
         { "ui.view-bottom",         "View \xE2\x80\xBA Bottom" },
         { "ui.view-frame-selected", "View \xE2\x80\xBA Frame Selected" },
+        { "ui.hide",                "View \xE2\x80\xBA Hide Group" },
+        { "ui.unhide-all",          "View \xE2\x80\xBA Show All Groups" },
+        { "ui.isolate",             "View \xE2\x80\xBA Isolate Group" },
         { "ui.pie-add",             "Sketch \xE2\x80\xBA Add\xE2\x80\xA6 (pie)" },
         { "ui.pie-view",            "View \xE2\x80\xBA Views\xE2\x80\xA6 (pie)" },
     };

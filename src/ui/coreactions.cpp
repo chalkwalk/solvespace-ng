@@ -20,6 +20,9 @@ void RegisterCoreUiActions(bool animate) {
     view("ui.view-top",    ViewPreset::TOP);
     view("ui.view-bottom", ViewPreset::BOTTOM);
     a.Bind("ui.view-frame-selected", [] { SS.GW.FrameSelected(); });
+    a.Bind("ui.hide",       [] { SS.GW.HideSelectedGroups(); });
+    a.Bind("ui.unhide-all", [] { SS.GW.ShowAllGroups(); });
+    a.Bind("ui.isolate",    [] { SS.GW.IsolateSelectedGroups(); });
 }
 
 }
