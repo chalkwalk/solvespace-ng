@@ -294,6 +294,7 @@ mkdir -p build && cd build
 cmake .. -DCMAKE_BUILD_TYPE=Debug [-DUSE_QT_GUI=ON] [-DENABLE_GUI=OFF]
 make -j$(nproc)
 make test_solvespace                 # run the regression suite
+./bin/solvespace-testsuite <regex>   # run only matching tests, e.g. core/commands
 ```
 In-tree builds are rejected; always build in `build/`. See `README.md` for Windows (MinGW/MSVC),
 macOS and Emscripten builds.
@@ -310,8 +311,11 @@ macOS and Emscripten builds.
 - Don't add dependencies beyond §2 without the owner's approval.
 - Update this file whenever a **Decision** changes. Record the date and the reason.
 - Branches: feature work on `ng/<milestone>-<topic>` branches, merged into `master`.
-- Upstream sync: merge `upstream/master` quarterly until M1 lands. After that, cherry-pick solver
-  and kernel fixes only.
+- Remotes: `origin` = our fork, `upstream` = `solvespace/solvespace`. (Until the fork is created,
+  `origin` still points at upstream: never push to it.) Upstream sync: merge `upstream/master`
+  quarterly until M1 lands, then cherry-pick solver/kernel fixes only.
+- Tests: `RUN_COMMAND("<command-name>")` in `test/` runs a menu command headlessly (names in
+  `src/commandnames.cpp`). Headless code paths have null windows/menu items: guard them.
 
 **Developer docs worth reading first:** `developer_docs/IdLists_Entities_and_Remap.txt`,
 `developer_docs/Solver_Transforms.txt`.
