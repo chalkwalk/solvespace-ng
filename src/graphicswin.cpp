@@ -522,7 +522,7 @@ void GraphicsWindow::AnimateOnto(Quaternion quatf, Vector offsetf) {
     if(!animateTimer) {
         animateTimer = Platform::CreateTimer();
     }
-    animateTimer->onTimeout = [=] {
+    animateTimer->onTimeout = [=, this] {
         int64_t tn = GetMilliseconds();
         if((tn - t0) < dt) {
             animateTimer->RunAfterNextFrame();
