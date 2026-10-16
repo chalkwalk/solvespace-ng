@@ -295,7 +295,8 @@ if(ENABLE_GUI AND ENABLE_NG_GUI)
         platform/sdl/debugscript.cpp
         ui/keypresets.cpp
         ui/keyrouter.cpp
-        ui/uiactions.cpp)
+        ui/uiactions.cpp
+        ui/typedfields.cpp)
     target_include_directories(solvespace-ng-support PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR})
     target_link_libraries(solvespace-ng-support PUBLIC solvespace-core keymap palette SDL3::Headers)

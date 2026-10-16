@@ -74,3 +74,25 @@ TEST_CASE(user_keymap_without_bindings_uses_preset) {
     CHECK_TRUE(err.empty());
     CHECK_TRUE(*km.Lookup(C("Space")) == "ui.command-palette");
 }
+
+TEST_CASE(modal_tools_get_chords_first) {
+    std::string err;
+    KeyRouter r;
+    r.SetKeymap(*keymap::Keymap::Parse("delete: X\nline-segment: L\n", &err));
+    int fired = 0;
+    r.onCommand = [&](Command) { fired++; };
+    r.modal = [](const keymap::Chord &c) { return c.key == "x"; };
+    CHECK_TRUE(r.Route(C("X"), false) == RouteResult::MODAL);
+    CHECK_TRUE(fired == 0);
+    CHECK_TRUE(r.Route(C("L"), false) == RouteResult::COMMAND); // the tool declined it
+}
+
+TEST_CASE(text_input_beats_modal_tools) {
+    std::string err;
+    KeyRouter r;
+    r.SetKeymap(*keymap::Keymap::Parse("delete: X\n", &err));
+    int modalCalls = 0;
+    r.modal = [&](const keymap::Chord &) { modalCalls++; return true; };
+    CHECK_TRUE(r.Route(C("X"), true) == RouteResult::SUPPRESSED);
+    CHECK_TRUE(modalCalls == 0);
+}

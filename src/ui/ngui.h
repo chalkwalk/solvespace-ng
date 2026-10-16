@@ -16,6 +16,8 @@ std::function<void()> DrawNgUi(Platform::MenuBarSdl *menuBar, const keymap::Keym
 // True while a UI-layer text field (the palette) owns the keyboard.
 bool CapturesText();
 void HandleUiAction(const std::string &action);
+// The active modal tool's key handler (KeyRouter::modal). True if it consumed the chord.
+bool ModalKey(const keymap::Chord &c);
 
 }
 }

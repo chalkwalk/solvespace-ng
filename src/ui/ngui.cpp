@@ -32,6 +32,10 @@ std::function<void()> DrawNgUi(Platform::MenuBarSdl *menuBar, const keymap::Keym
     return {};
 }
 
+bool ModalKey(const keymap::Chord &c) {
+    return false;
+}
+
 bool CapturesText() {
     return gPalette.IsOpen();
 }

@@ -24,6 +24,7 @@ static bool AllowedDuringTextInput(const keymap::Chord &c) {
 
 RouteResult KeyRouter::Route(const keymap::Chord &chord, bool textInputActive) {
     if(textInputActive && !AllowedDuringTextInput(chord)) return RouteResult::SUPPRESSED;
+    if(!textInputActive && modal && modal(chord)) return RouteResult::MODAL;
     const std::string *name = map.Lookup(chord);
     if(!name) return RouteResult::UNBOUND;
     if(name->rfind("ui.", 0) == 0) {

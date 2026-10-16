@@ -11,12 +11,15 @@
 namespace SolveSpace {
 namespace Ui {
 
-enum class RouteResult { UNBOUND, UI_ACTION, COMMAND, SUPPRESSED };
+enum class RouteResult { UNBOUND, UI_ACTION, COMMAND, SUPPRESSED, MODAL };
 
 class KeyRouter {
 public:
     std::function<void(const std::string &uiAction)> onUiAction;
     std::function<void(Command)>                     onCommand; // default: SS.GW.ActivateCommand
+    // The active modal tool (pie, grab, typed drawing) sees chords before the keymap; return
+    // true to consume one. Never called while a text field has the keyboard.
+    std::function<bool(const keymap::Chord &)>       modal;
 
     void SetKeymap(keymap::Keymap km);
     const keymap::Keymap &Keymap() const;
