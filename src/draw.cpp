@@ -418,7 +418,7 @@ GraphicsWindow::Selection GraphicsWindow::ChooseFromHoverToDrag() {
 }
 
 void GraphicsWindow::HitTestMakeSelection(Point2d mp) {
-    hoverList = {};
+    hoverList.Clear();
     Selection sel = {};
 
     // Did the view projection change? If so, invalidate bounding boxes.
