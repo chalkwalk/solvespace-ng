@@ -92,7 +92,11 @@ std::function<void()> DrawOutliner() {
                 if(ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left) && !r.references) {
                     run = [hg] { SS.GW.ActivateGroup(hg); };
                 } else {
-                    run = [hg] { ShowGroupInProperties(hg); };
+                    // The group, not whatever is selected (which Properties would show).
+                    run = [hg] {
+                        SS.GW.ClearSelection();
+                        ShowGroupInProperties(hg);
+                    };
                 }
             }
             if(ImGui::BeginPopupContextItem("##context")) {

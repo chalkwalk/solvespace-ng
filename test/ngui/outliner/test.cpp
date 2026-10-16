@@ -147,3 +147,14 @@ TEST_CASE(first_move_off_a_panel_reaches_the_canvas) {
     Driver::Move(m.x, m.y);     // a single move onto the canvas
     CHECK_TRUE(SS.GW.hover.entity == line.entity(0));
 }
+
+TEST_CASE(clicking_a_group_shows_it_even_with_a_selection) {
+    CHECK_LOAD("line.slvs");
+    hRequest line = *LastRequest(Request::Type::LINE_SEGMENT);
+    ClickAt(AtMiddle(line));
+    CHECK_TRUE(SS.GW.selection.n == 1);
+    CHECK_TRUE(Driver::ClickItem("#references"));
+    CHECK_TRUE(SS.GW.selection.n == 0);
+    CHECK_TRUE(Ui::PropertiesGroup() == Group::HGROUP_REFERENCES);
+    CHECK_FALSE(Driver::FindItem("unselect all").has_value()); // the group, not the selection
+}
