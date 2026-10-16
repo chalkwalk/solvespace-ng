@@ -1,7 +1,6 @@
 # SolveSpace NG "Modern" keymap (Blender-style). DRAFT: tuned during M1.
 # Format: <command>: <chord>[, <chord>...]
 # Command names are the stable ids from src/commandnames.cpp; "ui." names are UI actions.
-# M1b adds: G (grab).
 
 ui.command-palette:     Space, F3
 ui.toggle-menu-bar:     F10
@@ -21,6 +20,7 @@ ui.unhide-all:          Alt+H
 ui.isolate:             Shift+H
 ui.toggle-sketch:       Tab
 ui.smart-dimension:     D
+ui.grab:                G
 
 new:                    Ctrl+N
 open:                   Ctrl+O

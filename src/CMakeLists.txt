@@ -303,7 +303,8 @@ if(ENABLE_GUI AND ENABLE_NG_GUI)
         ui/uiactions.cpp
         ui/typedfields.cpp
         ui/coreactions.cpp
-        ui/statusmodel.cpp)
+        ui/statusmodel.cpp
+        ui/grabtool.cpp)
     target_include_directories(solvespace-ng-support PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR})
     target_link_libraries(solvespace-ng-support PUBLIC solvespace-core keymap palette SDL3::Headers)

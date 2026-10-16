@@ -117,3 +117,15 @@ TEST_CASE(escape_cancels_a_grab) {
     CHECK_TRUE(SS.GW.pending.operation == GraphicsWindow::Pending::NONE);
     CHECK_TRUE(P(hr.entity(1)).Minus(a0).Magnitude() < 1e-9);
 }
+
+TEST_CASE(grab_cancel_keeps_the_file_unmodified) {
+    CHECK_LOAD("line.slvs");
+    hRequest hr = FreeLine();
+    SS.unsaved = false;
+    SS.GW.ClearSelection();
+    SS.GW.MakeSelected(hr.entity(0));
+    CHECK_TRUE(SS.GW.StartGrab(Point2d::From(0, 0)));
+    SS.GW.GrabMouseMoved(Point2d::From(50, 0));
+    SS.GW.GrabCancel();
+    CHECK_FALSE(SS.unsaved);
+}

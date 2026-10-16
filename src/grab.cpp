@@ -33,6 +33,7 @@ bool GraphicsWindow::StartGrab(Point2d mouse) {
     }
     if(pending.points.n == 0) return false;
 
+    grab.wasUnsaved = SS.unsaved;
     SS.UndoRemember();
     grab.startMouse = mouse;
     grab.lastMouse  = mouse;
@@ -92,6 +93,7 @@ void GraphicsWindow::GrabCancel() {
     SS.UndoUndo();
     SS.UndoClearStack(&SS.redo);
     SS.UndoEnableMenus();
+    SS.unsaved = grab.wasUnsaved;
 }
 
 } // namespace SolveSpace
