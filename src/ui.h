@@ -687,6 +687,13 @@ public:
     void   GrabConfirm();
     void   GrabCancel();             // exact restore, no redo entry
     Vector GrabAxisVector(int axis); // workplane u/v/n when locked in one, else world X/Y/Z
+    void ContinueLineChain(Vector v); // the "start the next segment" half of a line click
+    // Typed values while drawing become constraints, then drawing goes on as after a click.
+    enum class TypedKind { NONE, LINE, CIRCLE, RECTANGLE };
+    TypedKind TypedInputKind(); // what the current pending operation accepts
+    bool CommitTypedLine(std::optional<double> lengthMm, std::optional<double> angleDeg);
+    bool CommitTypedCircle(double diameterMm);
+    bool CommitTypedRectangle(std::optional<double> widthMm, std::optional<double> heightMm);
     Command SmartDimensionCommand(); // from gs after GroupSelection(): ANGLE or DISTANCE_DIA
     void    SmartDimension();        // hover fallback, then MenuConstrain(that command)
 

@@ -25,6 +25,7 @@ set(testsuite_SOURCES
     core/smartdimension/test.cpp
     core/constraintprobe/test.cpp
     core/grab/test.cpp
+    core/typedinput/test.cpp
     libs/keymap/test.cpp
     libs/palette/test.cpp
     libs/pie/test.cpp

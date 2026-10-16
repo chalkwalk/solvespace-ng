@@ -109,7 +109,7 @@ void GraphicsWindow::StartDraggingBySelection() {
 void GraphicsWindow::MouseMoved(double x, double y, bool leftDown,
             bool middleDown, bool rightDown, bool shiftDown, bool ctrlDown)
 {
-    if(window->IsEditorVisible()) return;
+    if(window && window->IsEditorVisible()) return;
     if(context.active) return;
 
     SS.extraLine.draw = false;
@@ -959,10 +959,34 @@ bool GraphicsWindow::MouseEvent(Platform::MouseEvent event) {
     return true;
 }
 
+// The second half of a click while drawing a line: start the next segment of the chain at v,
+// coincident with the end of the current one.
+void GraphicsWindow::ContinueLineChain(Vector v) {
+    // Create a new line segment, so that we continue drawing.
+    hRequest hr = AddRequest(Request::Type::LINE_SEGMENT);
+    ReplacePending(pending.request, hr);
+    SK.GetRequest(hr)->construction = SK.GetRequest(pending.request)->construction;
+    // Displace the second point of the new line segment slightly,
+    // to avoid creating zero-length edge warnings.
+    SK.GetEntity(hr.entity(2))->PointForceTo(
+        v.Plus(projRight.ScaledBy(0.5/scale)));
+
+    // Constrain the line segments to share an endpoint
+    Constraint::ConstrainCoincident(pending.point, hr.entity(1));
+    Vector pendingPos = SK.GetEntity(pending.point)->PointGetNum();
+    SK.GetEntity(hr.entity(1))->PointForceTo(pendingPos);
+
+    // And drag an endpoint of the new line segment
+    pending.operation = Pending::DRAGGING_NEW_LINE_POINT;
+    pending.request = hr;
+    pending.point = hr.entity(2);
+    pending.description = _("click next point of line, or press Esc");
+}
+
 void GraphicsWindow::MouseLeftDown(double mx, double my, bool shiftDown, bool ctrlDown) {
     orig.mouseDown = true;
 
-    if(window->IsEditorVisible()) {
+    if(window && window->IsEditorVisible()) {
         orig.mouse = Point2d::From(mx, my);
         orig.mouseOnButtonDown = orig.mouse;
         window->HideEditor();
@@ -1293,25 +1317,7 @@ void GraphicsWindow::MouseLeftDown(double mx, double my, bool shiftDown, bool ct
                 break;
             }
 
-            // Create a new line segment, so that we continue drawing.
-            hRequest hr = AddRequest(Request::Type::LINE_SEGMENT);
-            ReplacePending(pending.request, hr);
-            SK.GetRequest(hr)->construction = SK.GetRequest(pending.request)->construction;
-            // Displace the second point of the new line segment slightly,
-            // to avoid creating zero-length edge warnings.
-            SK.GetEntity(hr.entity(2))->PointForceTo(
-                v.Plus(projRight.ScaledBy(0.5/scale)));
-
-            // Constrain the line segments to share an endpoint
-            Constraint::ConstrainCoincident(pending.point, hr.entity(1));
-            Vector pendingPos = SK.GetEntity(pending.point)->PointGetNum();
-            SK.GetEntity(hr.entity(1))->PointForceTo(pendingPos);
-
-            // And drag an endpoint of the new line segment
-            pending.operation = Pending::DRAGGING_NEW_LINE_POINT;
-            pending.request = hr;
-            pending.point = hr.entity(2);
-            pending.description = _("click next point of line, or press Esc");
+            ContinueLineChain(v);
 
             break;
         }

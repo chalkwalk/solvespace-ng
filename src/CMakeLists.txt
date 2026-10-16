@@ -148,6 +148,7 @@ if(ENABLE_GUI OR ENABLE_CLI)
         sketchfocus.cpp
         constraintprobe.cpp
         grab.cpp
+        typedinput.cpp
         polyline.cpp
         polygon.cpp
         resource.cpp
