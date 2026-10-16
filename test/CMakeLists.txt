@@ -110,7 +110,9 @@ if(ENABLE_NG_GUI)
         ng/coreactions/test.cpp
         ng/statusmodel/test.cpp
         ng/grabtool/test.cpp
-        ng/drawtool/test.cpp)
+        ng/drawtool/test.cpp
+        ng/groupedit/test.cpp
+        ng/outliner/test.cpp)
     target_link_libraries(solvespace-testsuite solvespace-ng-support)
 endif()
 
@@ -133,7 +135,8 @@ set(ngui_SOURCES
     ngui/views/test.cpp
     ngui/groups/test.cpp
     ngui/editing/test.cpp
-    ngui/app/test.cpp)
+    ngui/app/test.cpp
+    ngui/outliner/test.cpp)
 
 if(ENABLE_GUI AND ENABLE_NG_GUI)
     add_executable(solvespace-ng-uitest

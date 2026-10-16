@@ -88,3 +88,4 @@ TEST_CASE(shift_h_isolates_the_hovered_group) {
     Driver::Key("Alt+H");
     for(Group &g : SK.group) CHECK_TRUE(g.visible);
 }
+

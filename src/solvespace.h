@@ -465,6 +465,8 @@ public:
     void UndoEnableMenus();
     void UndoRemember();
     void UndoUndo();
+    // Undoable; an empty name is refused with an error message (returns false).
+    bool RenameGroup(hGroup hg, const std::string &name);
     void UndoRedo();
     void PushFromCurrentOnto(UndoStack *uk);
     void PopOntoCurrentFrom(UndoStack *uk);

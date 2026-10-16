@@ -6,6 +6,8 @@
 #include "commandnames.h"
 #include "ui/drawtool.h"
 #include "ui/grabtool.h"
+#include "ui/outliner.h"
+#include "ui/panels.h"
 #include "ui/ngui.h"
 #include "ui/palettewidget.h"
 #include "ui/piemenu.h"
@@ -96,9 +98,12 @@ void InitNgUi() {
     Grab()   = GrabTool{};
     Draw()   = DrawTool{};
     SetModalStatus("", {});
+    ResetOutliner();
+    OutlinerPanel().Load();
     ApplyTheme(LoadThemeChoice());
     Actions().Bind("ui.command-palette", [] { gPalette.Open(); });
     Actions().Bind("ui.toggle-theme", [] { ToggleTheme(); });
+    Actions().Bind("ui.toggle-outliner", [] { OutlinerPanel().Toggle(); });
     Actions().Bind("ui.pie-add", [] {
         Pie().Open("Add", {
             { "Line", "line-segment" }, { "Rectangle", "rectangle" }, { "Circle", "circle" },
@@ -140,14 +145,18 @@ std::function<void()> DrawNgUi(Platform::MenuBarSdl *menuBar, const keymap::Keym
         SetModalStatus("", {});
     }
     DrawStatusBar(keymap);
+    std::function<void()> run = DrawOutliner();
     if(Pie().IsOpen()) {
         std::string name = Pie().Draw();
         if(!name.empty()) return [name] { RunNamedCommand(name); };
     }
     if(menuBar && gPalette.IsOpen()) {
-        return gPalette.Draw(BuildPaletteEntries(Platform::FlattenMenuBar(*menuBar)), keymap);
+        if(auto chosen = gPalette.Draw(BuildPaletteEntries(Platform::FlattenMenuBar(*menuBar)),
+                                       keymap)) {
+            return chosen;
+        }
     }
-    return {};
+    return run;
 }
 
 bool ModalKey(const keymap::Chord &c) {

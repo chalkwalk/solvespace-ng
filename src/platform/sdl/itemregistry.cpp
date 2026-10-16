@@ -41,11 +41,16 @@ void ImGuiTestEngineHook_ItemInfo(ImGuiContext *ctx, ImGuiID id, const char *lab
     StartFrameIfNew(ctx);
     auto it = gRects.find(id);
     if(it == gRects.end() || label == nullptr) return;
-    std::string text = label;
+    std::string text = label, itemId;
     size_t hash = text.find("##");
-    if(hash != std::string::npos) text.erase(hash);
+    if(hash != std::string::npos) {
+        size_t start = text.find_first_not_of('#', hash);
+        if(start != std::string::npos) itemId = text.substr(start);
+        text.erase(hash);
+    }
     UiItem item;
     item.label     = text;
+    item.id        = itemId;
     item.window    = ctx->CurrentWindow ? ctx->CurrentWindow->Name : "";
     item.x0        = it->second.Min.x;
     item.y0        = it->second.Min.y;

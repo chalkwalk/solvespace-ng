@@ -15,6 +15,7 @@ namespace Platform {
 
 struct UiItem {
     std::string label;  // without any "##id" suffix
+    std::string id;     // the "##id" suffix without the hashes, e.g. "shown:sketch"
     std::string window; // the ImGui window it was drawn in
     float       x0, y0, x1, y1;
     bool        checkable, checked, opened;

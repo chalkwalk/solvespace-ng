@@ -7,6 +7,7 @@
 ui.command-palette:     Space, F3
 ui.toggle-menu-bar:     F10
 ui.toggle-theme:        Ctrl+Alt+T
+ui.toggle-outliner:     O
 ui.pie-add:             Shift+A
 ui.pie-view:            `
 ui.pie-constrain:       F

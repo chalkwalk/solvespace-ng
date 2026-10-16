@@ -762,14 +762,32 @@ static MouseEvent::Button ButtonFromState(SDL_MouseButtonFlags state) {
     return MouseEvent::Button::NONE;
 }
 
+// Whether ImGui takes a mouse event at (x, y). io.WantCaptureMouse is a frame old: the first
+// move from a panel onto the canvas (and a click in that same frame) would go nowhere. So ask
+// at the event's position, unless ImGui is busy with the mouse (dragging one of its items, a
+// popup open) or a drag that started on the canvas is still going on.
+static bool ImGuiTakesMouseAt(float x, float y) {
+    ImGuiIO      &io = ImGui::GetIO();
+    ImGuiContext &g  = *ImGui::GetCurrentContext();
+    bool ownedDown = false, canvasDown = false;
+    for(int b = 0; b < IM_ARRAYSIZE(io.MouseDown); b++) {
+        if(!io.MouseDown[b]) continue;
+        if(io.MouseDownOwned[b]) ownedDown = true; else canvasDown = true;
+    }
+    if(g.ActiveId != 0 || g.OpenPopupStack.Size > 0 || ownedDown) return io.WantCaptureMouse;
+    if(canvasDown) return false;
+    ImGuiWindow *hovered = nullptr, *underMoving = nullptr;
+    ImGui::FindHoveredWindowEx(ImVec2(x, y), false, &hovered, &underMoving);
+    return hovered != nullptr;
+}
+
 // Forwards an SDL event to the graphics window unless ImGui owns the mouse/keyboard.
 static void ForwardToMainWindow(const SDL_Event &ev) {
     WindowImplSdl *w = MainWindow();
     if(!w || gModalDepth > 0) return;
-    ImGuiIO &io = ImGui::GetIO();
     switch(ev.type) {
         case SDL_EVENT_MOUSE_MOTION: {
-            if(io.WantCaptureMouse) return;
+            if(ImGuiTakesMouseAt(ev.motion.x, ev.motion.y)) return;
             MouseEvent me = MakeMouseEvent(MouseEvent::Type::MOTION, ev.motion.x, ev.motion.y);
             me.button = ButtonFromState(ev.motion.state);
             if(w->onMouseEvent) w->onMouseEvent(me);
@@ -777,7 +795,7 @@ static void ForwardToMainWindow(const SDL_Event &ev) {
         }
         case SDL_EVENT_MOUSE_BUTTON_DOWN:
         case SDL_EVENT_MOUSE_BUTTON_UP: {
-            if(io.WantCaptureMouse) return;
+            if(ImGuiTakesMouseAt(ev.button.x, ev.button.y)) return;
             MouseEvent::Type t = ev.type == SDL_EVENT_MOUSE_BUTTON_UP ? MouseEvent::Type::RELEASE
                                : ev.button.clicks >= 2 ? MouseEvent::Type::DBL_PRESS
                                                        : MouseEvent::Type::PRESS;
@@ -787,7 +805,7 @@ static void ForwardToMainWindow(const SDL_Event &ev) {
             break;
         }
         case SDL_EVENT_MOUSE_WHEEL: {
-            if(io.WantCaptureMouse) return;
+            if(ImGuiTakesMouseAt(ev.wheel.mouse_x, ev.wheel.mouse_y)) return;
             MouseEvent me  = MakeMouseEvent(MouseEvent::Type::SCROLL_VERT, ev.wheel.mouse_x,
                                             ev.wheel.mouse_y);
             me.scrollDelta = ev.wheel.y;
@@ -1657,21 +1675,24 @@ Point2d ToWindow(Vector modelPoint) {
 std::vector<Item> Items() {
     std::vector<Item> out;
     for(const UiItem &u : LastFrameItems()) {
-        out.push_back({ u.label, u.window, u.x0, u.y0, u.x1, u.y1, u.checkable, u.checked,
-                        u.opened, u.isWindow });
+        out.push_back({ u.label, u.id, u.window, u.x0, u.y0, u.x1, u.y1, u.checkable,
+                        u.checked, u.opened, u.isWindow });
     }
     return out;
 }
 
 std::optional<Item> FindItem(const std::string &label) {
     std::vector<Item>   items = Items();
-    std::optional<Item> window;
+    std::optional<Item> byId, window;
     for(auto it = items.rbegin(); it != items.rend(); ++it) {
-        if(it->label != label) continue;
-        if(!it->isWindow) return *it;
-        if(!window) window = *it;
+        if(it->label == label) {
+            if(!it->isWindow) return *it;
+            if(!window) window = *it;
+        } else if(!byId && !it->isWindow && !label.empty() && it->id == label) {
+            byId = *it;
+        }
     }
-    return window;
+    return byId ? byId : window;
 }
 
 bool ClickItem(const std::string &label) {

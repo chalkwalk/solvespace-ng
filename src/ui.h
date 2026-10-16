@@ -660,6 +660,10 @@ public:
     int  HideSelectedGroups();    // returns how many groups it hid
     void ShowAllGroups();
     int  IsolateSelectedGroups(); // returns how many groups stay visible (0 = did nothing)
+    void IsolateGroups(const std::vector<hGroup> &keep); // #references always stays visible
+    // Group operations shared by the property browser and the outliner.
+    void ToggleGroupVisible(hGroup hg);
+    void DeleteGroup(hGroup hg); // undoable; the previous group becomes active if hg was
     // Tab: activate the group of the selection and look onto its workplane; Tab again returns.
     struct {
         bool       active;

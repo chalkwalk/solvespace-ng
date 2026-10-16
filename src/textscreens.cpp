@@ -51,12 +51,7 @@ void TextWindow::ScreenSelectGroup(int link, uint32_t v) {
     SS.TW.shown.group.v = v;
 }
 void TextWindow::ScreenToggleGroupShown(int link, uint32_t v) {
-    hGroup hg = { v };
-    Group *g = SK.GetGroup(hg);
-    g->visible = !(g->visible);
-    // If a group was just shown, then it might not have been generated
-    // previously, so regenerate.
-    SS.GenerateAll();
+    SS.GW.ToggleGroupVisible(hGroup{ v });
 }
 void TextWindow::ScreenShowGroupsSpecial(int link, uint32_t v) {
     for(hGroup hg : SK.groupOrder) {
@@ -358,24 +353,7 @@ void TextWindow::ScreenChangePitchOption(int link, uint32_t v) {
     SS.GW.Invalidate();
 }
 void TextWindow::ScreenDeleteGroup(int link, uint32_t v) {
-    SS.UndoRemember();
-
-    hGroup hg = SS.TW.shown.group;
-    if(hg == SS.GW.activeGroup) {
-        SS.GW.activeGroup = SK.GetGroup(SS.GW.activeGroup)->PreviousGroup()->h;
-    }
-
-    // Reset the text window, since we're displaying information about
-    // the group that's about to get deleted.
-    SS.TW.ClearSuper();
-
-    // This is a major change, so let's re-solve everything.
-    SK.group.RemoveById(hg);
-    SS.GenerateAll(SolveSpaceUI::Generate::ALL);
-
-    // Reset the graphics window. This will also recreate the default
-    // group if it was removed.
-    SS.GW.ClearSuper();
+    SS.GW.DeleteGroup(SS.TW.shown.group);
 }
 void TextWindow::ShowGroupInfo() {
     Group *g = SK.GetGroup(shown.group);
@@ -867,14 +845,7 @@ void TextWindow::EditControlDone(std::string s) {
             break;
 
         case Edit::GROUP_NAME:
-            if(s.empty()) {
-                Error(_("Group name cannot be empty"));
-            } else {
-                SS.UndoRemember();
-
-                Group *g = SK.GetGroup(edit.group);
-                g->name = s;
-            }
+            SS.RenameGroup(edit.group, s);
             break;
 
         case Edit::GROUP_SCALE:

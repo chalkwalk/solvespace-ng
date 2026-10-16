@@ -13,6 +13,7 @@ const std::vector<UiActionInfo> &UiActionList() {
         { "ui.command-palette", "View \xE2\x80\xBA Command Palette" },
         { "ui.toggle-menu-bar", "View \xE2\x80\xBA Toggle Menu Bar" },
         { "ui.toggle-theme",    "View \xE2\x80\xBA Toggle Theme" },
+        { "ui.toggle-outliner", "View \xE2\x80\xBA Outliner" },
         { "ui.view-front",          "View \xE2\x80\xBA Front" },
         { "ui.view-back",           "View \xE2\x80\xBA Back" },
         { "ui.view-right",          "View \xE2\x80\xBA Right" },

@@ -229,6 +229,9 @@ bool Test::Helper::CheckLoad(const char *file, int line, const char *fixture) {
         SS.AfterNewFile();
         SS.GW.offset = {};
         SS.GW.scale  = 10.0;
+#if defined(NG_UITEST)
+        Platform::Driver::Settle(); // show it, as opening a file does
+#endif
         return true;
     }
 }

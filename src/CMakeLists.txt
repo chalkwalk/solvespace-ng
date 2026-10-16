@@ -309,7 +309,8 @@ if(ENABLE_GUI AND ENABLE_NG_GUI)
         ui/coreactions.cpp
         ui/statusmodel.cpp
         ui/grabtool.cpp
-        ui/drawtool.cpp)
+        ui/drawtool.cpp
+        ui/outlinermodel.cpp)
     target_include_directories(solvespace-ng-support PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR})
     target_link_libraries(solvespace-ng-support PUBLIC solvespace-core keymap palette SDL3::Headers)
@@ -320,6 +321,8 @@ if(ENABLE_GUI AND ENABLE_NG_GUI)
         platform/guisdl.cpp
         platform/sdl/itemregistry.cpp
         ui/palettewidget.cpp
+        ui/panels.cpp
+        ui/outliner.cpp
         ui/ngui.cpp
         ui/piemenu.cpp
         ui/theme.cpp
