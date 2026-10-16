@@ -31,8 +31,10 @@ TEST_CASE(text_input_swallows_chords) {
     CHECK_TRUE(r.Route(C("L"), true) == RouteResult::SUPPRESSED);
     CHECK_TRUE(fired == 0);
     CHECK_TRUE(r.Route(C("Ctrl+S"), true) == RouteResult::COMMAND);
-    CHECK_TRUE(r.Route(C("Esc"), true) == RouteResult::COMMAND);
-    CHECK_TRUE(fired == 2);
+    // Esc belongs to the focused field (closes the palette, cancels the editor).
+    CHECK_TRUE(r.Route(C("Esc"), true) == RouteResult::SUPPRESSED);
+    CHECK_TRUE(fired == 1);
+    CHECK_TRUE(r.Route(C("Esc"), false) == RouteResult::COMMAND);
 }
 
 TEST_CASE(unknown_command_names_are_unbound) {

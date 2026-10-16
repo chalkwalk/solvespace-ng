@@ -18,7 +18,6 @@ const keymap::Keymap &KeyRouter::Keymap() const {
 
 static bool AllowedDuringTextInput(const keymap::Chord &c) {
     if(c.ctrl || c.alt) return true;
-    if(c.key == "Esc") return true;
     return c.key.size() >= 2 && c.key[0] == 'F' && isdigit((unsigned char)c.key[1]);
 }
 

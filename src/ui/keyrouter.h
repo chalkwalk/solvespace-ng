@@ -20,8 +20,8 @@ public:
 
     void SetKeymap(keymap::Keymap km);
     const keymap::Keymap &Keymap() const;
-    // With textInputActive, only chords with Ctrl/Alt, Esc and F-keys are routed; everything
-    // else is SUPPRESSED so typing never triggers commands.
+    // With textInputActive, only chords with Ctrl/Alt and F-keys are routed; everything else
+    // (including Esc, which the focused field handles) is SUPPRESSED.
     RouteResult Route(const keymap::Chord &chord, bool textInputActive);
 
 private:
