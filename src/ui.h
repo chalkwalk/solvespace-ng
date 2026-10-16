@@ -546,6 +546,10 @@ public:
     void EditControlDone(std::string s);
 };
 
+enum class ViewPreset { FRONT, BACK, RIGHT, LEFT, TOP, BOTTOM };
+// Screen right/up for a preset, Z up (Blender's numpad convention).
+void ViewPresetBasis(ViewPreset p, Vector *right, Vector *up);
+
 class GraphicsWindow {
 public:
     void Init();
@@ -645,6 +649,11 @@ public:
     Platform::TimerRef animateTimer;
     void AnimateOnto(Quaternion quatf, Vector offsetf);
     void AnimateOntoWorkplane();
+
+    // SolveSpace NG interaction
+    void SnapToView(ViewPreset p, bool animate);
+    bool SelectHoveredIfNothingSelected();
+    void FrameSelected();
 
     Vector VectorFromProjs(Vector rightUpForward);
     void HandlePointForZoomToFit(Vector p, Point2d *pmax, Point2d *pmin,

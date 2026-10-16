@@ -36,6 +36,7 @@
 #include "platform/sdl/keychord.h"
 #include "ui/keyrouter.h"
 #include "ui/uiactions.h"
+#include "ui/coreactions.h"
 #include "ui/ngui.h"
 #include "commandnames.h"
 
@@ -630,6 +631,7 @@ static void InitSdlWindowAndImGui() {
     ImGuiRenderer_Init(glslVersion);
     gShowMenuBar = GetSettings()->ThawBool("NG_ShowMenuBar", true);
     Ui::InitNgUi();
+    Ui::RegisterCoreUiActions(/*animate=*/true);
     Ui::Actions().Bind("ui.toggle-menu-bar", [] {
         gShowMenuBar = !gShowMenuBar;
         GetSettings()->FreezeBool("NG_ShowMenuBar", gShowMenuBar);

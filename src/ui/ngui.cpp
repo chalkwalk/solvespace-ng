@@ -18,6 +18,19 @@ void InitNgUi() {
     ApplyTheme(LoadThemeChoice());
     Actions().Bind("ui.command-palette", [] { gPalette.Open(); });
     Actions().Bind("ui.toggle-theme", [] { ToggleTheme(); });
+    Actions().Bind("ui.pie-add", [] {
+        Pie().Open("Add", {
+            { "Line", "line-segment" }, { "Rectangle", "rectangle" }, { "Circle", "circle" },
+            { "Arc", "arc" }, { "Spline", "cubic-spline" }, { "Point", "datum-point" },
+            { "Text", "ttf-text" }, { "Workplane", "workplane" } });
+    });
+    Actions().Bind("ui.pie-view", [] {
+        Pie().Open("View", {
+            { "Top", "ui.view-top" }, { "Right", "ui.view-right" },
+            { "Isometric", "nearest-iso" }, { "Front", "ui.view-front" },
+            { "Bottom", "ui.view-bottom" }, { "Left", "ui.view-left" },
+            { "Frame Selected", "ui.view-frame-selected" }, { "Back", "ui.view-back" } });
+    });
 }
 
 void HandleUiAction(const std::string &action) {

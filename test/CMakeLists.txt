@@ -19,6 +19,7 @@ set(testsuite_SOURCES
     core/expr/test.cpp
     core/commandnames/test.cpp
     core/commands/test.cpp
+    core/viewpresets/test.cpp
     libs/keymap/test.cpp
     libs/palette/test.cpp
     libs/pie/test.cpp
@@ -99,7 +100,8 @@ if(ENABLE_NG_GUI)
         ng/keyrouter/test.cpp
         ng/debugscript/test.cpp
         ng/uiactions/test.cpp
-        ng/typedfields/test.cpp)
+        ng/typedfields/test.cpp
+        ng/coreactions/test.cpp)
     target_link_libraries(solvespace-testsuite solvespace-ng-support)
 endif()
 

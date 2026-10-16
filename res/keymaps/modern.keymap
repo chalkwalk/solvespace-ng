@@ -1,12 +1,20 @@
 # SolveSpace NG "Modern" keymap (Blender-style). DRAFT: tuned during M1.
 # Format: <command>: <chord>[, <chord>...]
 # Command names are the stable ids from src/commandnames.cpp; "ui." names are UI actions.
-# M1b adds: Tab (sketch mode), Shift+A (add pie), F (constrain pie), G (grab), H/Alt+H/Shift+H,
-# ` (view pie), numpad views, "." frame selected.
+# M1b adds: Tab (sketch mode), F (constrain pie), G (grab), H/Alt+H/Shift+H.
 
 ui.command-palette:     Space, F3
 ui.toggle-menu-bar:     F10
 ui.toggle-theme:        Ctrl+Alt+T
+ui.pie-add:             Shift+A
+ui.pie-view:            `
+ui.view-front:          Num1
+ui.view-back:           Ctrl+Num1
+ui.view-right:          Num3
+ui.view-left:           Ctrl+Num3
+ui.view-top:            Num7
+ui.view-bottom:         Ctrl+Num7
+ui.view-frame-selected: ., Num.
 
 new:                    Ctrl+N
 open:                   Ctrl+O
@@ -50,7 +58,6 @@ group-link:             Ctrl+I
 zoom-in:                Plus, =
 zoom-out:               -
 zoom-to-fit:            Home
-center-view:            Num.
 perspective:            Num5
 show-grid:              Shift+G
 show-property-browser:  N

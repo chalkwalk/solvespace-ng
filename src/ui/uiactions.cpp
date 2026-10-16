@@ -13,6 +13,15 @@ const std::vector<UiActionInfo> &UiActionList() {
         { "ui.command-palette", "View \xE2\x80\xBA Command Palette" },
         { "ui.toggle-menu-bar", "View \xE2\x80\xBA Toggle Menu Bar" },
         { "ui.toggle-theme",    "View \xE2\x80\xBA Toggle Theme" },
+        { "ui.view-front",          "View \xE2\x80\xBA Front" },
+        { "ui.view-back",           "View \xE2\x80\xBA Back" },
+        { "ui.view-right",          "View \xE2\x80\xBA Right" },
+        { "ui.view-left",           "View \xE2\x80\xBA Left" },
+        { "ui.view-top",            "View \xE2\x80\xBA Top" },
+        { "ui.view-bottom",         "View \xE2\x80\xBA Bottom" },
+        { "ui.view-frame-selected", "View \xE2\x80\xBA Frame Selected" },
+        { "ui.pie-add",             "Sketch \xE2\x80\xBA Add\xE2\x80\xA6 (pie)" },
+        { "ui.pie-view",            "View \xE2\x80\xBA Views\xE2\x80\xA6 (pie)" },
     };
     return list;
 }
