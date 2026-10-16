@@ -8,6 +8,7 @@
 #include "ui/panels.h"
 #include "ui/properties.h"
 #include "ui/selectionmodel.h"
+#include "ui/stylespanel.h"
 
 namespace SolveSpace {
 namespace Ui {
@@ -219,10 +220,7 @@ static std::function<void()> LinkAction(const SelectionRow &r) {
             ShowGroupInProperties(hg);
         };
     }
-    if(r.style.v) {
-        // Until the Styles panel exists, the browser's style screen shows it.
-        return [hs = r.style] { ShowInPropertyBrowser(&TextWindow::ScreenShowStyleInfo, hs.v); };
-    }
+    if(r.style.v) return [hs = r.style] { ShowStyleInStyles(hs); };
     return {};
 }
 

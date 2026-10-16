@@ -72,7 +72,10 @@ struct Item {
     std::string label, id, window; // id: the "##id" part of the ImGui label, without hashes
     double      x0, y0, x1, y1;
     bool        checkable, checked, opened, isWindow;
-    Point2d Center() const { return Point2d::From((x0 + x1) / 2, (y0 + y1) / 2); }
+    bool        fullyVisible;       // not cut off by its window's edge
+    double      vx0, vy0, vx1, vy1; // the visible part
+    // The middle of the visible part, where a person would click.
+    Point2d Center() const { return Point2d::From((vx0 + vx1) / 2, (vy0 + vy1) / 2); }
 };
 std::vector<Item>   Items();
 // The last widget drawn with the label (or, failing that, with the id), else the window with

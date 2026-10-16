@@ -38,6 +38,7 @@ Panel &OutlinerPanel();
 Panel &PropertiesPanel();
 Panel &ProblemsPanel();
 Panel &PreferencesPanel();
+Panel &StylesPanel();
 
 }
 }

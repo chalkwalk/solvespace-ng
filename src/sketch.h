@@ -826,6 +826,14 @@ public:
                                            Entity *p2);
 };
 
+// What the style screens and the NG Styles panel change.
+enum class StyleOption {
+    WIDTH_IN_MM, WIDTH_IN_PIXELS, TEXT_HEIGHT_IN_MM, TEXT_HEIGHT_IN_PIXELS,
+    EXPORTABLE, VISIBLE, FILLED,                       // toggles
+    ALIGN_LEFT, ALIGN_CENTER, ALIGN_RIGHT, ALIGN_BOTTOM, ALIGN_MIDDLE, ALIGN_TOP,
+};
+enum class StyleValue { NAME, COLOR, FILL_COLOR, WIDTH, STIPPLE_WIDTH, TEXT_HEIGHT, TEXT_ANGLE };
+
 class Style {
 public:
     int         tag;
@@ -913,6 +921,14 @@ public:
 
     static void AssignSelectionToStyle(uint32_t v);
     static uint32_t CreateCustomStyle(bool rememberForUndo = true);
+    // Editing a style, undoable. Values take the browser's text: lengths in the display units
+    // or pixels (as the style measures them), colours as "r, g, b"; false (with an error
+    // message) when refused.
+    static void        ChangeOption(hStyle hs, StyleOption option);
+    static std::string ValueText(hStyle hs, StyleValue value);
+    static bool        SetValue(hStyle hs, StyleValue value, const std::string &text);
+    static void        SetStipple(hStyle hs, StipplePattern pattern);
+    static void        Delete(hStyle hs);
 
     static RgbaColor RewriteColor(RgbaColor rgb);
 

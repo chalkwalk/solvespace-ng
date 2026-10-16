@@ -46,11 +46,13 @@ void ShowBrowser() {
 }
 
 bool RevealIn(const std::string &panelTitle, const std::string &labelOrId) {
-    for(int i = 0; i < 40; i++) {
-        if(Driver::FindItem(labelOrId)) return true;
+    // Down to the bottom, then back up to the top.
+    for(int i = 0; i < 80; i++) {
+        std::optional<Driver::Item> item = Driver::FindItem(labelOrId);
+        if(item && item->fullyVisible) return true;
         std::optional<Driver::Item> panel = Driver::FindItem(panelTitle);
         if(!panel) return false;
-        Driver::Wheel((panel->x0 + panel->x1) / 2, (panel->y0 + panel->y1) / 2, -1);
+        Driver::Wheel((panel->x0 + panel->x1) / 2, (panel->y0 + panel->y1) / 2, i < 40 ? -1 : 1);
     }
     return false;
 }

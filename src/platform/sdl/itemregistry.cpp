@@ -60,8 +60,16 @@ void ImGuiTestEngineHook_ItemInfo(ImGuiContext *ctx, ImGuiID id, const char *lab
     item.checked   = (flags & ImGuiItemStatusFlags_Checked) != 0;
     item.opened    = (flags & ImGuiItemStatusFlags_Opened) != 0;
     item.isWindow  = ImGui::FindWindowByID(id) != nullptr;
-    ImGuiWindow *w = ctx->CurrentWindow;
-    item.visible   = item.isWindow || !w || w->ClipRect.Overlaps(it->second);
+    ImGuiWindow *w    = ctx->CurrentWindow;
+    ImRect       clip = (item.isWindow || !w) ? it->second : w->ClipRect;
+    ImRect       seen = it->second;
+    seen.ClipWithFull(clip);
+    item.visible      = clip.Overlaps(it->second);
+    item.fullyVisible = clip.Contains(it->second);
+    item.vx0 = seen.Min.x;
+    item.vy0 = seen.Min.y;
+    item.vx1 = seen.Max.x;
+    item.vy1 = seen.Max.y;
     gItems.push_back(item);
 }
 

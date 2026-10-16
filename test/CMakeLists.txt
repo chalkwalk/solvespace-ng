@@ -116,7 +116,8 @@ if(ENABLE_NG_GUI)
         ng/groupprops/test.cpp
         ng/selection/test.cpp
         ng/problems/test.cpp
-        ng/preferences/test.cpp)
+        ng/preferences/test.cpp
+        ng/styles/test.cpp)
     target_link_libraries(solvespace-testsuite solvespace-ng-support)
 endif()
 
@@ -143,7 +144,8 @@ set(ngui_SOURCES
     ngui/outliner/test.cpp
     ngui/properties/test.cpp
     ngui/problems/test.cpp
-    ngui/preferences/test.cpp)
+    ngui/preferences/test.cpp
+    ngui/styles/test.cpp)
 
 if(ENABLE_GUI AND ENABLE_NG_GUI)
     add_executable(solvespace-ng-uitest

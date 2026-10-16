@@ -53,6 +53,10 @@ std::string SolveSpaceUI::SettingText(Setting setting, int index) {
         case Setting::LIGHT_AMBIENT:    return ssprintf("%.2f", ambientIntensity);
         case Setting::CAMERA_TANGENT:   return ssprintf("%.3f", cameraTangent * 1000);
         case Setting::EXPLODE_DISTANCE: return MmToString(explodeDistance, true);
+        case Setting::BACKGROUND_COLOR: {
+            RgbaColor c = backgroundColor;
+            return ssprintf("%.2f, %.2f, %.2f", c.redF(), c.greenF(), c.blueF());
+        }
         default:                        return "";
     }
 }
@@ -65,14 +69,20 @@ bool SolveSpaceUI::SetSetting(Setting setting, const std::string &s, int index) 
         return true;
     }
     switch(setting) {
-        case Setting::MODEL_COLOR: {
+        case Setting::MODEL_COLOR:
+        case Setting::BACKGROUND_COLOR: {
             Vector rgb;
             if(sscanf(s.c_str(), "%lf, %lf, %lf", &rgb.x, &rgb.y, &rgb.z) != 3) {
                 Error(_("Bad format: specify color as r, g, b"));
                 return false;
             }
-            rgb               = rgb.ClampWithin(0, 1);
-            modelColor[index] = RGBf(rgb.x, rgb.y, rgb.z);
+            rgb = rgb.ClampWithin(0, 1);
+            if(setting == Setting::MODEL_COLOR) {
+                modelColor[index] = RGBf(rgb.x, rgb.y, rgb.z);
+            } else {
+                backgroundColor = RGBf(rgb.x, rgb.y, rgb.z);
+                GW.Invalidate();
+            }
             return true;
         }
         case Setting::CHORD_TOLERANCE:

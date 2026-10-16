@@ -1678,7 +1678,8 @@ std::vector<Item> Items() {
     for(const UiItem &u : LastFrameItems()) {
         if(!u.visible) continue; // a person can't see or click it either
         out.push_back({ u.label, u.id, u.window, u.x0, u.y0, u.x1, u.y1, u.checkable,
-                        u.checked, u.opened, u.isWindow });
+                        u.checked, u.opened, u.isWindow, u.fullyVisible, u.vx0, u.vy0, u.vx1,
+                        u.vy1 });
     }
     return out;
 }

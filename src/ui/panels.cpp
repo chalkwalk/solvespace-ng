@@ -90,6 +90,11 @@ Panel &PreferencesPanel() {
     return panel;
 }
 
+Panel &StylesPanel() {
+    static Panel panel("Styles", "Styles", PanelEdge::CENTER, 380, /*shownByDefault=*/false);
+    return panel;
+}
+
 Panel &OutlinerPanel() {
     static Panel panel("Outliner", "Outliner", PanelEdge::LEFT, 260, /*shownByDefault=*/true);
     return panel;

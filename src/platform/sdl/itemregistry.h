@@ -20,7 +20,10 @@ struct UiItem {
     float       x0, y0, x1, y1;
     bool        checkable, checked, opened;
     bool        isWindow;
-    bool        visible; // inside its window's visible area (tree nodes report clipped too)
+    bool        visible;      // at least partly inside its window's visible area (tree nodes
+                              // report themselves even when clipped)
+    bool        fullyVisible;
+    float       vx0, vy0, vx1, vy1; // the visible part
 };
 
 // Items of the most recent frame, in drawing order.

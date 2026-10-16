@@ -509,23 +509,12 @@ void TextWindow::ScreenChangeStyleName(int link, uint32_t v) {
 }
 
 void TextWindow::ScreenDeleteStyle(int link, uint32_t v) {
-    SS.UndoRemember();
-    hStyle hs = { v };
-    Style *s = SK.style.FindByIdNoOops(hs);
-    if(s) {
-        SK.style.RemoveById(hs);
-        // And it will get recreated automatically if something is still using
-        // the style, so no need to do anything else.
-    }
+    Style::Delete(hStyle{ v });
     SS.TW.GoToScreen(Screen::LIST_OF_STYLES);
-    SS.GW.Invalidate();
 }
 
 void TextWindow::ScreenChangeStylePatternType(int link, uint32_t v) {
-    hStyle hs = { v };
-    Style *s = Style::Get(hs);
-    s->stippleType = (StipplePattern)(link - 1);
-    SS.GW.persistentDirty = true;
+    Style::SetStipple(hStyle{ v }, (StipplePattern)(link - 1));
 }
 
 void TextWindow::ScreenChangeStyleMetric(int link, uint32_t v) {
@@ -599,152 +588,43 @@ void TextWindow::ScreenChangeStyleColor(int link, uint32_t v) {
 }
 
 void TextWindow::ScreenChangeStyleYesNo(int link, uint32_t v) {
-    SS.UndoRemember();
-    hStyle hs = { v };
-    Style *s = Style::Get(hs);
+    StyleOption option;
     switch(link) {
-        // Units for the width
-        case 'w':
-            if(s->widthAs != Style::UnitsAs::MM) {
-                s->widthAs = Style::UnitsAs::MM;
-                s->width /= SS.GW.scale;
-                s->stippleScale /= SS.GW.scale;
-            }
-            break;
-        case 'W':
-            if(s->widthAs != Style::UnitsAs::PIXELS) {
-                s->widthAs = Style::UnitsAs::PIXELS;
-                s->width *= SS.GW.scale;
-                s->stippleScale *= SS.GW.scale;
-            }
-            break;
-
-        // Units for the height
-        case 'g':
-            if(s->textHeightAs != Style::UnitsAs::MM) {
-                s->textHeightAs = Style::UnitsAs::MM;
-                s->textHeight /= SS.GW.scale;
-            }
-            break;
-
-        case 'G':
-            if(s->textHeightAs != Style::UnitsAs::PIXELS) {
-                s->textHeightAs = Style::UnitsAs::PIXELS;
-                s->textHeight *= SS.GW.scale;
-            }
-            break;
-
-        case 'e':
-            s->exportable = !(s->exportable);
-            break;
-
-        case 'v':
-            s->visible = !(s->visible);
-            break;
-
-        case 'f':
-            s->filled = !(s->filled);
-            break;
-
-        // Horizontal text alignment
-        case 'L':
-            s->textOrigin = (Style::TextOrigin)((uint32_t)s->textOrigin |  (uint32_t)Style::TextOrigin::LEFT);
-            s->textOrigin = (Style::TextOrigin)((uint32_t)s->textOrigin & ~(uint32_t)Style::TextOrigin::RIGHT);
-            break;
-        case 'H':
-            s->textOrigin = (Style::TextOrigin)((uint32_t)s->textOrigin & ~(uint32_t)Style::TextOrigin::LEFT);
-            s->textOrigin = (Style::TextOrigin)((uint32_t)s->textOrigin & ~(uint32_t)Style::TextOrigin::RIGHT);
-            break;
-        case 'R':
-            s->textOrigin = (Style::TextOrigin)((uint32_t)s->textOrigin & ~(uint32_t)Style::TextOrigin::LEFT);
-            s->textOrigin = (Style::TextOrigin)((uint32_t)s->textOrigin |  (uint32_t)Style::TextOrigin::RIGHT);
-            break;
-
-        // Vertical text alignment
-        case 'B':
-            s->textOrigin = (Style::TextOrigin)((uint32_t)s->textOrigin |  (uint32_t)Style::TextOrigin::BOT);
-            s->textOrigin = (Style::TextOrigin)((uint32_t)s->textOrigin & ~(uint32_t)Style::TextOrigin::TOP);
-            break;
-        case 'V':
-            s->textOrigin = (Style::TextOrigin)((uint32_t)s->textOrigin & ~(uint32_t)Style::TextOrigin::BOT);
-            s->textOrigin = (Style::TextOrigin)((uint32_t)s->textOrigin & ~(uint32_t)Style::TextOrigin::TOP);
-            break;
-        case 'T':
-            s->textOrigin = (Style::TextOrigin)((uint32_t)s->textOrigin & ~(uint32_t)Style::TextOrigin::BOT);
-            s->textOrigin = (Style::TextOrigin)((uint32_t)s->textOrigin |  (uint32_t)Style::TextOrigin::TOP);
-            break;
+        case 'w': option = StyleOption::WIDTH_IN_MM; break;
+        case 'W': option = StyleOption::WIDTH_IN_PIXELS; break;
+        case 'g': option = StyleOption::TEXT_HEIGHT_IN_MM; break;
+        case 'G': option = StyleOption::TEXT_HEIGHT_IN_PIXELS; break;
+        case 'e': option = StyleOption::EXPORTABLE; break;
+        case 'v': option = StyleOption::VISIBLE; break;
+        case 'f': option = StyleOption::FILLED; break;
+        case 'L': option = StyleOption::ALIGN_LEFT; break;
+        case 'H': option = StyleOption::ALIGN_CENTER; break;
+        case 'R': option = StyleOption::ALIGN_RIGHT; break;
+        case 'B': option = StyleOption::ALIGN_BOTTOM; break;
+        case 'V': option = StyleOption::ALIGN_MIDDLE; break;
+        case 'T': option = StyleOption::ALIGN_TOP; break;
+        default: return;
     }
-    SS.GW.Invalidate(/*clearPersistent=*/true);
+    Style::ChangeOption(hStyle{ v }, option);
 }
 
 bool TextWindow::EditControlDoneForStyles(const std::string &str) {
-    Style *s;
+    StyleValue value;
     switch(edit.meaning) {
-        case Edit::STYLE_STIPPLE_PERIOD:
-        case Edit::STYLE_TEXT_HEIGHT:
-        case Edit::STYLE_WIDTH: {
-            SS.UndoRemember();
-            s = Style::Get(edit.style);
-
-            double v;
-            Style::UnitsAs units = (edit.meaning == Edit::STYLE_TEXT_HEIGHT) ?
-                            s->textHeightAs : s->widthAs;
-            if(units == Style::UnitsAs::MM) {
-                v = SS.StringToMm(str);
-            } else {
-                v = atof(str.c_str());
-            }
-            v = max(0.0, v);
-            if(edit.meaning == Edit::STYLE_TEXT_HEIGHT) {
-                s->textHeight = v;
-            } else if(edit.meaning == Edit::STYLE_STIPPLE_PERIOD) {
-                s->stippleScale = v;
-            } else {
-                s->width = v;
-            }
-            break;
-        }
-        case Edit::STYLE_TEXT_ANGLE:
-            SS.UndoRemember();
-            s = Style::Get(edit.style);
-            s->textAngle = WRAP_SYMMETRIC(atof(str.c_str()), 360);
-            break;
-
+        case Edit::STYLE_STIPPLE_PERIOD: value = StyleValue::STIPPLE_WIDTH; break;
+        case Edit::STYLE_TEXT_HEIGHT:    value = StyleValue::TEXT_HEIGHT; break;
+        case Edit::STYLE_WIDTH:          value = StyleValue::WIDTH; break;
+        case Edit::STYLE_TEXT_ANGLE:     value = StyleValue::TEXT_ANGLE; break;
+        case Edit::STYLE_COLOR:          value = StyleValue::COLOR; break;
+        case Edit::STYLE_FILL_COLOR:     value = StyleValue::FILL_COLOR; break;
+        case Edit::STYLE_NAME:           value = StyleValue::NAME; break;
         case Edit::BACKGROUND_COLOR:
-        case Edit::STYLE_FILL_COLOR:
-        case Edit::STYLE_COLOR: {
-            Vector rgb;
-            if(sscanf(str.c_str(), "%lf, %lf, %lf", &rgb.x, &rgb.y, &rgb.z)==3) {
-                rgb = rgb.ClampWithin(0, 1);
-                if(edit.meaning == Edit::STYLE_COLOR) {
-                    SS.UndoRemember();
-                    s = Style::Get(edit.style);
-                    s->color = RGBf(rgb.x, rgb.y, rgb.z);
-                } else if(edit.meaning == Edit::STYLE_FILL_COLOR) {
-                    SS.UndoRemember();
-                    s = Style::Get(edit.style);
-                    s->fillColor = RGBf(rgb.x, rgb.y, rgb.z);
-                } else {
-                    SS.backgroundColor = RGBf(rgb.x, rgb.y, rgb.z);
-                }
-            } else {
-                Error(_("Bad format: specify color as r, g, b"));
-            }
-            break;
-        }
-        case Edit::STYLE_NAME:
-            if(str.empty()) {
-                Error(_("Style name cannot be empty"));
-            } else {
-                SS.UndoRemember();
-                s = Style::Get(edit.style);
-                s->name = str;
-            }
-            break;
-
+            SS.SetSetting(Setting::BACKGROUND_COLOR, str);
+            SS.GW.persistentDirty = true;
+            return true;
         default: return false;
     }
-    SS.GW.persistentDirty = true;
+    Style::SetValue(edit.style, value, str);
     return true;
 }
 
