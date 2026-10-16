@@ -146,6 +146,7 @@ if(ENABLE_GUI OR ENABLE_CLI)
         viewpresets.cpp
         visibility.cpp
         groupprops.cpp
+        constraintedit.cpp
         sketchfocus.cpp
         constraintprobe.cpp
         grab.cpp
@@ -311,7 +312,8 @@ if(ENABLE_GUI AND ENABLE_NG_GUI)
         ui/statusmodel.cpp
         ui/grabtool.cpp
         ui/drawtool.cpp
-        ui/outlinermodel.cpp)
+        ui/outlinermodel.cpp
+        ui/selectionmodel.cpp)
     target_include_directories(solvespace-ng-support PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR})
     target_link_libraries(solvespace-ng-support PUBLIC solvespace-core keymap palette SDL3::Headers)

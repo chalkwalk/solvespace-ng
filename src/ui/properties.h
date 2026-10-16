@@ -1,6 +1,7 @@
 //-----------------------------------------------------------------------------
-// The Properties panel: the settings of the group chosen in the outliner (else the active
-// group), replacing the property browser's group screen.
+// The Properties panel: the selection if there is one, else the settings of the group chosen
+// in the outliner (else the active group). Replaces the property browser's group screen and its
+// selection description.
 //-----------------------------------------------------------------------------
 #ifndef SOLVESPACE_UI_PROPERTIES_H
 #define SOLVESPACE_UI_PROPERTIES_H
@@ -12,6 +13,8 @@ namespace SolveSpace {
 namespace Ui {
 
 void   ShowGroupInProperties(hGroup hg); // and show the panel
+// Shows one of the property browser's screens, for what has no panel yet.
+void   ShowInPropertyBrowser(void (*screen)(int link, uint32_t v), uint32_t v);
 hGroup PropertiesGroup();                // the group the panel shows now
 // Draws the panel if shown. Returns what the user changed, to run after the frame.
 std::function<void()> DrawProperties();

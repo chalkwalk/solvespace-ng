@@ -1406,41 +1406,9 @@ void GraphicsWindow::EditConstraint(hConstraint constraint) {
     Vector p3 = c->GetLabelPos(GetCamera());
     Point2d p2 = ProjectPoint(p3);
 
-    std::string editValue;
-    std::string editPlaceholder;
-    switch(c->type) {
-        case Constraint::Type::COMMENT:
-            editValue = c->comment;
-            editPlaceholder = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
-            break;
-
-        default: {
-            double value = fabs(c->valA);
-
-            // If displayed as radius, also edit as radius.
-            if(c->type == Constraint::Type::DIAMETER && c->other)
-                value /= 2;
-
-            // Try showing value with default number of digits after decimal first.
-            if(c->type == Constraint::Type::LENGTH_RATIO || c->type == Constraint::Type::ARC_ARC_LEN_RATIO || c->type == Constraint::Type::ARC_LINE_LEN_RATIO) {
-                editValue = ssprintf("%.3f", value);
-            } else if(c->type == Constraint::Type::ANGLE) {
-                editValue = SS.DegreeToString(value);
-            } else {
-                editValue = SS.MmToString(value, true);
-                value /= SS.MmPerUnit();
-            }
-            // If that's not enough to represent it exactly, show the value with as many
-            // digits after decimal as required, up to 10.
-            int digits = 0;
-            while(fabs(std::stod(editValue) - value) > 1e-10) {
-                editValue = ssprintf("%.*f", digits, value);
-                digits++;
-            }
-            editPlaceholder = "10.000000";
-            break;
-        }
-    }
+    std::string editValue = SS.ConstraintEditText(constraintBeingEdited);
+    std::string editPlaceholder =
+        c->type == Constraint::Type::COMMENT ? "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" : "10.000000";
 
     double width, height;
     window->GetContentSize(&width, &height);
@@ -1467,61 +1435,7 @@ void GraphicsWindow::EditControlDone(const std::string &s) {
     window->HideEditor();
     window->Invalidate();
 
-    Constraint *c = SK.GetConstraint(constraintBeingEdited);
-
-    if(c->type == Constraint::Type::COMMENT) {
-        SS.UndoRemember();
-        c->comment = s;
-        return;
-    }
-
-    if(Expr *e = Expr::From(s, true)) {
-        SS.UndoRemember();
-
-        switch(c->type) {
-            case Constraint::Type::PROJ_PT_DISTANCE:
-            case Constraint::Type::PT_LINE_DISTANCE:
-            case Constraint::Type::PT_FACE_DISTANCE:
-            case Constraint::Type::PT_PLANE_DISTANCE:
-            case Constraint::Type::LENGTH_DIFFERENCE:
-            case Constraint::Type::ARC_ARC_DIFFERENCE:
-            case Constraint::Type::ARC_LINE_DIFFERENCE: {
-                // The sign is not displayed to the user, but this is a signed
-                // distance internally. To flip the sign, the user enters a
-                // negative distance.
-                bool wasNeg = (c->valA < 0);
-                if(wasNeg) {
-                    c->valA = -SS.ExprToMm(e);
-                } else {
-                    c->valA = SS.ExprToMm(e);
-                }
-                break;
-            }
-            case Constraint::Type::ANGLE:
-            case Constraint::Type::LENGTH_RATIO:
-            case Constraint::Type::ARC_ARC_LEN_RATIO:
-            case Constraint::Type::ARC_LINE_LEN_RATIO:
-                // These don't get the units conversion for distance, and
-                // they're always positive
-                c->valA = fabs(e->Eval());
-                break;
-
-            case Constraint::Type::DIAMETER:
-                c->valA = fabs(SS.ExprToMm(e));
-
-                // If displayed and edited as radius, convert back
-                // to diameter
-                if(c->other)
-                    c->valA *= 2;
-                break;
-
-            default:
-                // These are always positive, and they get the units conversion.
-                c->valA = fabs(SS.ExprToMm(e));
-                break;
-        }
-        SS.MarkGroupDirty(c->group);
-    }
+    SS.SetConstraintValue(constraintBeingEdited, s);
 }
 
 void GraphicsWindow::MouseScroll(double zoomMultiplyer) {

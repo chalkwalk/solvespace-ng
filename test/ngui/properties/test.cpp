@@ -111,3 +111,55 @@ TEST_CASE(properties_follows_the_outliner_and_survives_deletion) {
     CHECK_TRUE(Driver::FindItem("group-name").has_value());
 }
 
+
+TEST_CASE(selecting_a_line_shows_it_and_unselect_all_returns_to_the_group) {
+    CHECK_LOAD("line.slvs");
+    hRequest line = *LastRequest(Request::Type::LINE_SEGMENT);
+    ClickAt(AtMiddle(line));
+    CHECK_TRUE(Driver::FindItem("unselect all").has_value());
+    CHECK_FALSE(Driver::FindItem("group-name").has_value());
+    CHECK_TRUE(Driver::ClickItem("unselect all"));
+    CHECK_TRUE(SS.GW.selection.n == 0);
+    CHECK_TRUE(Driver::FindItem("group-name").has_value());
+}
+
+TEST_CASE(a_point_link_in_the_selection_selects_the_point) {
+    CHECK_LOAD("line.slvs");
+    hRequest line = *LastRequest(Request::Type::LINE_SEGMENT);
+    ClickAt(AtMiddle(line));
+    CHECK_TRUE(Driver::ClickItem("row:0")); // "thru": the first end point
+    CHECK_TRUE(SS.GW.selection.n == 1 && SS.GW.selection[0].entity == line.entity(1));
+}
+
+TEST_CASE(dimension_value_field_and_reference_checkbox) {
+    CHECK_LOAD("line.slvs");
+    hRequest line = DrawLine(Point2d::From(560, 500), Point2d::From(720, 500));
+    ClickAt(AtMiddle(line));
+    Driver::Key("D");
+    Driver::Key("Return"); // keep the measured value in the on-canvas editor
+    hConstraint dim = *LastConstraint(Constraint::Type::PT_PT_DISTANCE);
+    ClickAt(AtLabel(dim));
+    CHECK_TRUE(SS.GW.selection.n == 1 && SS.GW.selection[0].constraint == dim);
+    CHECK_TRUE(EditField("value", "30"));
+    CHECK_EQ_EPS(SK.GetConstraint(dim)->valA, 30.0);
+    Vector a = SK.GetEntity(line.entity(1))->PointGetNum();
+    Vector b = SK.GetEntity(line.entity(2))->PointGetNum();
+    CHECK_EQ_EPS(a.Minus(b).Magnitude(), 30.0);
+    ClickAt(AtLabel(dim));
+    CHECK_TRUE(Driver::ClickItem("reference"));
+    CHECK_TRUE(SK.GetConstraint(dim)->reference);
+}
+
+TEST_CASE(constrained_by_lists_a_lines_constraints) {
+    CHECK_LOAD("line.slvs");
+    hRequest line = DrawLine(Point2d::From(560, 500), Point2d::From(720, 500));
+    ClickAt(AtMiddle(line));
+    Driver::Key("D");
+    Driver::Key("Return");
+    hConstraint dim = *LastConstraint(Constraint::Type::PT_PT_DISTANCE);
+    ClickAt(AtMiddle(line));
+    CHECK_TRUE(Driver::FindItem("constrained by").has_value());
+    CHECK_TRUE(Driver::ClickItem("section0:0"));
+    CHECK_TRUE(SS.GW.selection.n == 1 && SS.GW.selection[0].constraint == dim);
+}
+

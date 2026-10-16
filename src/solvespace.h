@@ -486,6 +486,11 @@ public:
     void ToggleHelixPitchFixed(hGroup hg);
     void SetGroupColor(hGroup hg, RgbaColor rgb, bool rememberUndo); // keeps the opacity
     bool SetGroupOpacity(hGroup hg, const std::string &expr);
+    // A dimension's value as its editor shows it (display units; a radius when shown as one),
+    // and setting it from typed text (an expression; a comment's text). Undoable.
+    std::string ConstraintEditText(hConstraint hc);
+    bool        SetConstraintValue(hConstraint hc, const std::string &text);
+    void        SetTtfText(hRequest hr, const std::string &text);
     void UndoRedo();
     void PushFromCurrentOnto(UndoStack *uk);
     void PopOntoCurrentFrom(UndoStack *uk);

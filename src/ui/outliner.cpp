@@ -20,13 +20,6 @@ void ResetOutliner() {
     gRenaming = {};
 }
 
-// Until the Properties and Problems panels exist, the property browser shows the details.
-static void ShowInBrowser(void (*screen)(int, uint32_t), hGroup hg) {
-    if(!SS.GW.showTextWindow) GraphicsWindow::MenuView(Command::SHOW_TEXT_WND);
-    screen(0, hg.v);
-    SS.ScheduleShowTW();
-}
-
 static ImVec4 StatusColor(OutlinerRow::Status s) {
     switch(s) {
         case OutlinerRow::Status::OK:      return ImGui::GetStyleColorVec4(ImGuiCol_PlotHistogram);
@@ -73,7 +66,8 @@ std::function<void()> DrawOutliner() {
         ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0, 0, 0, 0));
         std::string badge = r.afterActive ? "-" : r.StatusText();
         if(ImGui::SmallButton((badge + "##status:" + r.name).c_str()) && !r.afterActive) {
-            run = [hg] { ShowInBrowser(&TextWindow::ScreenHowGroupSolved, hg); };
+            // Until the Problems panel exists, the browser's solve screen has the details.
+            run = [hg] { ShowInPropertyBrowser(&TextWindow::ScreenHowGroupSolved, hg.v); };
         }
         ImGui::PopStyleColor(2);
         ImGui::SameLine();

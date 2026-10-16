@@ -7,6 +7,7 @@
 #include "imgui.h"
 #include "ui/panels.h"
 #include "ui/properties.h"
+#include "ui/selectionmodel.h"
 
 namespace SolveSpace {
 namespace Ui {
@@ -20,6 +21,12 @@ void ResetProperties() {
 void ShowGroupInProperties(hGroup hg) {
     gShownGroup = hg;
     PropertiesPanel().SetShown(true);
+}
+
+void ShowInPropertyBrowser(void (*screen)(int link, uint32_t v), uint32_t v) {
+    if(!SS.GW.showTextWindow) GraphicsWindow::MenuView(Command::SHOW_TEXT_WND);
+    screen(0, v);
+    SS.ScheduleShowTW();
 }
 
 hGroup PropertiesGroup() {
@@ -221,10 +228,124 @@ static void DrawGroup(Group *g, std::function<void()> *run) {
     }
 }
 
+// A row's link: what clicking it shows.
+static std::function<void()> LinkAction(const SelectionRow &r) {
+    if(r.entity.v) return [he = r.entity] { TextWindow::ScreenSelectEntity(0, he.v); };
+    if(r.constraint.v) {
+        return [hc = r.constraint] { TextWindow::ScreenSelectConstraint(0, hc.v); };
+    }
+    if(r.group.v) {
+        return [hg = r.group] {
+            SS.GW.ClearSelection();
+            ShowGroupInProperties(hg);
+        };
+    }
+    if(r.style.v) {
+        // Until the Styles panel exists, the browser's style screen shows it.
+        return [hs = r.style] { ShowInPropertyBrowser(&TextWindow::ScreenShowStyleInfo, hs.v); };
+    }
+    return {};
+}
+
+static void DrawRows(const std::vector<SelectionRow> &rows, const char *idPrefix,
+                     std::function<void()> *run) {
+    if(!ImGui::BeginTable(idPrefix, 2, ImGuiTableFlags_SizingStretchProp)) return;
+    for(size_t i = 0; i < rows.size(); i++) {
+        const SelectionRow &r = rows[i];
+        ImGui::TableNextRow();
+        ImGui::TableNextColumn();
+        ImGui::TextDisabled("%s", r.label.c_str());
+        ImGui::TableNextColumn();
+        std::function<void()> link = LinkAction(r);
+        if(link) {
+            std::string label = r.value + "##" + idPrefix + ":" + std::to_string(i);
+            ImGui::PushStyleColor(ImGuiCol_Text, ImGui::GetStyleColorVec4(ImGuiCol_CheckMark));
+            if(ImGui::Selectable(label.c_str())) *run = link;
+            ImGui::PopStyleColor();
+        } else {
+            ImGui::TextWrapped("%s", r.value.c_str());
+        }
+    }
+    ImGui::EndTable();
+}
+
+static void DrawSelection(const SelectionModel &m, std::function<void()> *run) {
+    ImGui::TextDisabled("Selection");
+    ImGui::TextUnformatted(m.title.c_str());
+    if(m.constraint.v) {
+        hConstraint hc = m.constraint;
+        auto setValue  = [hc](std::string s) { SS.SetConstraintValue(hc, s); };
+        if(m.isComment) {
+            ValueField("##comment", m.valueText, run, setValue);
+        } else if(m.hasValue) {
+            ImGui::BeginDisabled(m.reference); // a reference dimension only measures
+            ValueField("##value", m.valueText, run, setValue);
+            ImGui::EndDisabled();
+            bool reference = m.reference;
+            if(ImGui::Checkbox("reference", &reference)) {
+                *run = [hc] { TextWindow::ScreenConstraintToggleReference(0, hc.v); };
+            }
+            if(m.isDiameter) {
+                bool radius = m.showAsRadius;
+                if(ImGui::Checkbox("use radius", &radius)) {
+                    *run = [hc] { TextWindow::ScreenConstraintShowAsRadius(0, hc.v); };
+                }
+            }
+        }
+    }
+    if(m.ttf.v) {
+        hRequest hr = m.ttf;
+        ImGui::TextUnformatted("text");
+        ValueField("##ttf-text", m.ttfText, run,
+                   [hr](std::string s) { SS.SetTtfText(hr, s); });
+        bool kerning = m.ttfKerning;
+        if(ImGui::Checkbox("apply kerning", &kerning)) {
+            *run = [hr] { TextWindow::ScreenToggleTtfKerning(0, hr.v); };
+        }
+        SS.fonts.LoadAll();
+        std::string current;
+        for(TtfFont &f : SS.fonts.l) {
+            if(f.FontFileBaseName() == m.ttfFont) current = f.name;
+        }
+        ImGui::SetNextItemWidth(-FLT_MIN);
+        if(ImGui::BeginCombo("##font", current.c_str())) {
+            for(int i = 0; i < SS.fonts.l.n; i++) {
+                TtfFont &f = SS.fonts.l[i];
+                std::string label = f.name + "##font:" + std::to_string(i);
+                if(ImGui::Selectable(label.c_str(), f.FontFileBaseName() == m.ttfFont)) {
+                    *run = [i] { TextWindow::ScreenSetTtfFont(0, (uint32_t)i); };
+                }
+            }
+            ImGui::EndCombo();
+        }
+    }
+    ImGui::Spacing();
+    DrawRows(m.rows, "row", run);
+    for(size_t i = 0; i < m.sections.size(); i++) {
+        const SelectionSection &s = m.sections[i];
+        std::string header = s.title + "###section:" + std::to_string(i);
+        if(ImGui::CollapsingHeader(header.c_str(), ImGuiTreeNodeFlags_DefaultOpen)) {
+            DrawRows(s.rows, ("section" + std::to_string(i)).c_str(), run);
+        }
+    }
+    ImGui::Spacing();
+    if(m.styleAssigned && ImGui::Button("remove assigned style")) {
+        *run = [] { TextWindow::ScreenAssignSelectionToStyle(0, 0); };
+    }
+    if(ImGui::Button("unselect all")) {
+        *run = [] { GraphicsWindow::MenuEdit(Command::UNSELECT_ALL); };
+    }
+}
+
 std::function<void()> DrawProperties() {
     std::function<void()> run;
     if(!PropertiesPanel().Begin()) return run;
-    if(Group *g = SK.group.FindByIdNoOops(PropertiesGroup())) DrawGroup(g, &run);
+    SelectionModel selection = BuildSelection();
+    if(!selection.empty) {
+        DrawSelection(selection, &run);
+    } else if(Group *g = SK.group.FindByIdNoOops(PropertiesGroup())) {
+        DrawGroup(g, &run);
+    }
     PropertiesPanel().End();
     return run;
 }

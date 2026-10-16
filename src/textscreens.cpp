@@ -782,11 +782,7 @@ void TextWindow::EditControlDone(std::string s) {
             break;
 
         case Edit::TTF_TEXT:
-            SS.UndoRemember();
-            if(Request *r = SK.request.FindByIdNoOops(edit.request)) {
-                r->str = s;
-                SS.MarkGroupDirty(r->group);
-            }
+            SS.SetTtfText(edit.request, s);
             break;
 
         case Edit::STEP_DIM_FINISH:
