@@ -26,6 +26,22 @@ TEST_CASE(timer_registry_rearm_and_cancel) {
     CHECK_TRUE(reg.Take(third) == nullptr);
 }
 
+TEST_CASE(timer_registry_reports_earliest_live_deadline) {
+    TimerRegistry reg;
+    auto a = std::make_shared<DummyTimer>(), b = std::make_shared<DummyTimer>();
+    CHECK_TRUE(reg.EarliestDue() == UINT64_MAX);
+    uint64_t sa = reg.Arm(a, 500);
+    uint64_t sb = reg.Arm(b, 200);
+    CHECK_TRUE(reg.EarliestDue() == 200);
+    reg.Cancel(sb);
+    CHECK_TRUE(reg.EarliestDue() == 500);
+    b.reset();
+    reg.Arm(b, 100);                         // owner already gone: never fires, never due
+    CHECK_TRUE(reg.EarliestDue() == 500);
+    reg.Take(sa);
+    CHECK_TRUE(reg.EarliestDue() == UINT64_MAX);
+}
+
 TEST_CASE(ensure_extension) {
     std::vector<FileFilter> f = { { "SolveSpace models", { "slvs" } },
                                   { "Meshes", { "stl", "obj" } } };

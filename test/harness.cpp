@@ -21,12 +21,18 @@
 #   include <unistd.h>
 #endif
 
+#if defined(NG_UITEST)
+// The UI tests run the real solvespace-ng app (guisdl.cpp) and drive it with real events.
+#   include <filesystem>
+#   include "platform/sdl/uidriver.h"
+#else
 namespace SolveSpace {
 namespace Platform {
     // These are defined in guinone.cpp, and aren't exposed in solvespace.h.
     extern std::vector<Platform::Path> fontFiles;
 }
 }
+#endif
 
 
 #ifdef TEST_BUILD_ON_WINDOWS
@@ -355,7 +361,15 @@ int Test::Case::Register(Test::Case testCase) {
 }
 
 int main(int argc, char **argv) {
+#if defined(NG_UITEST)
+    std::filesystem::path configDir = std::filesystem::temp_directory_path() /
+        ("solvespace-ng-uitest-" + std::to_string(std::random_device{}()));
+    std::filesystem::create_directories(configDir);
+    Platform::Driver::Enable(Platform::Path::From(configDir.string()));
+    std::vector<std::string> args = Platform::InitGui(argc, argv);
+#else
     std::vector<std::string> args = Platform::InitCli(argc, argv);
+#endif
 
     std::string filterPattern = ".*";
     unsigned int seed = std::random_device{}();
@@ -372,7 +386,9 @@ int main(int argc, char **argv) {
 
     fprintf(stderr, "info: using test filter `%s' and seed %u\n", filterPattern.c_str(), seed);
 
+#if !defined(NG_UITEST)
     Platform::fontFiles.push_back(HostRoot().Join("Gentium-R.ttf"));
+#endif
 
     std::mt19937 g(seed);
 
@@ -395,12 +411,40 @@ int main(int argc, char **argv) {
             continue;
         }
 
+#if defined(NG_UITEST)
+        // As the app starts: toolbar and property browser as configured (defaults here).
+        Platform::Driver::BeginCase();
+        SS.Init();
+        SS.checkClosedContour = false;
+        Platform::Driver::Settle();
+#else
         SS.Init();
         SS.showToolbar = false;
         SS.checkClosedContour = false;
+#endif
 
         Test::Helper helper = {};
         testCase.fn(&helper);
+
+#if defined(NG_UITEST)
+        for(const std::string &problem : Platform::Driver::EndCase()) {
+            helper.RecordCheck(false);
+            fprintf(stderr, "test%c%s: FAILED: %s\n", BUILD_PATH_SEP, testCaseName.c_str(),
+                    problem.c_str());
+        }
+        if(helper.failCount > 0) {
+            // What the window showed when the case gave up.
+            std::string shot = testCaseName;
+            for(char &c : shot) if(c == '/' || c == '\\') c = '.';
+            Platform::Path dir = Platform::Path::From(
+                (std::filesystem::current_path() / "ngui-failures").string());
+            std::filesystem::create_directories(dir.raw);
+            Platform::Path png = dir.Join(shot + ".png");
+            if(Platform::Driver::Screenshot(png)) {
+                fprintf(stderr, "        screenshot: %s\n", png.raw.c_str());
+            }
+        }
+#endif
 
         SK.Clear();
         SS.Clear();
@@ -438,6 +482,10 @@ int main(int argc, char **argv) {
     // At last, try to reset all caches we or our dependencies have, to make SNR
     // of memory checking tools like valgrind higher.
     cairo_debug_reset_static_data();
+#if defined(NG_UITEST)
+    std::error_code ec;
+    std::filesystem::remove_all(configDir, ec);
+#endif
 
     return (failTally > 0);
 }

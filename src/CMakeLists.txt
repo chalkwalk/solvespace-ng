@@ -311,20 +311,25 @@ if(ENABLE_GUI AND ENABLE_NG_GUI)
         ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR})
     target_link_libraries(solvespace-ng-support PUBLIC solvespace-core keymap palette SDL3::Headers)
 
-    add_executable(solvespace-ng WIN32 MACOSX_BUNDLE
+    # Everything but main(): also linked into the UI tests (test/ngui), which run the real app.
+    add_library(solvespace-ng-app OBJECT
         solvespace.cpp
-        platform/entrygui.cpp
         platform/guisdl.cpp
         ui/palettewidget.cpp
         ui/ngui.cpp
         ui/piemenu.cpp
         ui/theme.cpp
         render/gl3shader.cpp
-        render/rendergl3.cpp
+        render/rendergl3.cpp)
+    add_dependencies(solvespace-ng-app resources)
+    target_link_libraries(solvespace-ng-app PUBLIC
+        solvespace-core solvespace-ng-support pie imgui-sdl3 ${NG_SDL_TARGET} ${OPENGL_LIBRARIES})
+
+    add_executable(solvespace-ng WIN32 MACOSX_BUNDLE
+        platform/entrygui.cpp
         $<TARGET_PROPERTY:resources,EXTRA_SOURCES>)
     add_dependencies(solvespace-ng resources)
-    target_link_libraries(solvespace-ng PRIVATE
-        solvespace-core solvespace-ng-support pie imgui-sdl3 ${NG_SDL_TARGET} ${OPENGL_LIBRARIES})
+    target_link_libraries(solvespace-ng PRIVATE solvespace-ng-app)
 endif()
 
 # solvespace graphical executable

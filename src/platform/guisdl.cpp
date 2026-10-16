@@ -10,6 +10,7 @@
 #include <mutex>
 #include <SDL3/SDL.h>
 #include "imgui.h"
+#include "imgui_internal.h"
 #include "imgui_impl_sdl3.h"
 #if defined(__APPLE__)
 // macOS gives us a legacy GL 2.1 context, which has no vertex array objects.
@@ -34,6 +35,7 @@
 #include "platform/sdl/debugscript.h"
 #include "platform/sdl/deferredqueue.h"
 #include "platform/sdl/keychord.h"
+#include "platform/sdl/uidriver.h"
 #include "ui/keyrouter.h"
 #include "ui/uiactions.h"
 #include "ui/coreactions.h"
@@ -44,6 +46,7 @@ namespace SolveSpace {
 namespace Platform {
 
 class WindowImplSdl;
+static void ReleaseFramebuffer(WindowImplSdl *w);
 
 static SDL_Window    *gSdlWindow   = nullptr;
 static SDL_GLContext  gGlContext   = nullptr;
@@ -69,12 +72,23 @@ static void RunNestedLoop(const std::function<bool()> &done);
 static void DrawActivePopup();
 static void LoadDebugScript();
 
+// Test driver mode (uidriver.h): dialogs never block and held keys come from the driver.
+static bool                    gDriver          = false;
+static SDL_Keymod              gDriverMods      = SDL_KMOD_NONE;
+static float                   gDriverX         = 0, gDriverY = 0;
+static SDL_MouseButtonFlags    gDriverButtons   = 0;
+static std::vector<Driver::DialogRecord>                                     gDialogs;
+static std::function<MessageDialog::Response(const Driver::DialogRecord &)> gMessagePolicy;
+static std::deque<Path>                  gQueuedFiles;
+static std::deque<std::function<void()>> gModalSteps;
+
 //-----------------------------------------------------------------------------
 // Fatal errors
 //-----------------------------------------------------------------------------
 
 void FatalError(const std::string &message) {
-    SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "SolveSpace: fatal error",
+    fprintf(stderr, "fatal error: %s\n", message.c_str());
+    if(!gDriver) SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "SolveSpace: fatal error",
                              message.c_str(), gSdlWindow);
     abort();
 }
@@ -83,17 +97,22 @@ void FatalError(const std::string &message) {
 // Settings
 //-----------------------------------------------------------------------------
 
+static Path gConfigDir; // the test driver's; empty = the user's
+
 static Path PrefDir() {
+    if(!gConfigDir.IsEmpty()) return gConfigDir;
+    if(const char *dir = getenv("SOLVESPACE_NG_CONFIG_DIR")) return Path::From(dir);
     char *pref = SDL_GetPrefPath("solvespace", "solvespace-ng");
     Path dir = Path::From(pref ? pref : ".");
     SDL_free(pref);
     return dir;
 }
 
+static std::shared_ptr<SettingsFile> gSettings;
+
 SettingsRef GetSettings() {
-    static std::shared_ptr<SettingsFile> settings;
-    if(!settings) settings = std::make_shared<SettingsFile>(PrefDir().Join("settings.txt"));
-    return settings;
+    if(!gSettings) gSettings = std::make_shared<SettingsFile>(PrefDir().Join("settings.txt"));
+    return gSettings;
 }
 
 //-----------------------------------------------------------------------------
@@ -135,7 +154,7 @@ public:
 
     void RunAfter(unsigned milliseconds) override {
         Cancel();
-        serial = Timers().Arm(weak_from_this());
+        serial = Timers().Arm(weak_from_this(), SDL_GetTicks() + milliseconds);
         void *token = (void *)(uintptr_t)serial;
         if(milliseconds == 0) {
             TimerCallback(token, 0, 0);
@@ -215,6 +234,7 @@ public:
     int         buttonsDown = 0; // presses on the tool-window image awaiting their release
 
     explicit WindowImplSdl(Kind kind) : kind(kind) {}
+    ~WindowImplSdl() override { ReleaseFramebuffer(this); }
 
     double GetPixelDensity() override {
         float scale = SDL_GetDisplayContentScale(SDL_GetDisplayForWindow(gSdlWindow));
@@ -369,6 +389,7 @@ public:
     }
 
     Response RunModal() override {
+        if(gDriver) return RunScripted();
         std::vector<SDL_MessageBoxButtonData> sdlButtons;
         for(size_t i = 0; i < buttons.size(); i++) {
             SDL_MessageBoxButtonData b = {};
@@ -394,6 +415,18 @@ public:
         if(!SDL_ShowMessageBox(&data, &pressed) || pressed < 0) return Response::NONE;
         return buttons[pressed].second;
     }
+
+    Response RunScripted() {
+        Driver::DialogRecord rec;
+        rec.kind    = "message";
+        rec.title   = title;
+        rec.message = description.empty() ? message : message + "\n\n" + description;
+        for(const auto &b : buttons) rec.buttons.push_back(b.first);
+        gDialogs.push_back(rec);
+        if(gMessagePolicy) return gMessagePolicy(rec);
+        if(defaultIndex >= 0) return buttons[defaultIndex].second;
+        return buttons.empty() ? Response::NONE : buttons[0].second;
+    }
 };
 
 MessageDialogRef CreateMessageDialog(WindowRef parentWindow) {
@@ -410,6 +443,24 @@ static void PumpEventsOnce(bool wait);
 // a file dialog's callback must not outlive the RunModal frame that owns its result.
 static void RunNestedLoop(const std::function<bool()> &done) {
     gModalDepth++;
+    if(gDriver) {
+        // Run the steps the test queued; with none, give up after a few idle frames.
+        for(int idle = 0; !done();) {
+            if(!gModalSteps.empty()) {
+                auto step = std::move(gModalSteps.front());
+                gModalSteps.pop_front();
+                step();
+            } else if(++idle > 10) {
+                gDialogs.push_back({ "unanswered-modal", "", "a nested loop had no queued step" });
+                gActivePopup = nullptr;
+            } else {
+                PumpEventsOnce(/*wait=*/false);
+                RenderFrame();
+            }
+        }
+        gModalDepth--;
+        return;
+    }
     while(!done()) {
         PumpEventsOnce(/*wait=*/true);
         RenderFrame();
@@ -451,6 +502,13 @@ public:
     }
 
     bool RunModal() override {
+        if(gDriver) {
+            gDialogs.push_back({ isSave ? "save" : "open", title, filename.raw });
+            if(gQueuedFiles.empty()) return false;
+            filename = gQueuedFiles.front();
+            gQueuedFiles.pop_front();
+            return true;
+        }
         struct Result {
             std::atomic<bool> done{ false };
             std::mutex        mutex;
@@ -584,7 +642,7 @@ static SDL_Window *CreateSdlWindow() {
                             SDL_WINDOW_HIGH_PIXEL_DENSITY | SDL_WINDOW_HIDDEN);
 }
 
-static void InitSdlWindowAndImGui() {
+static void InitSdlWindow() {
 #if defined(_WIN32)
     // ANGLE: GLES 3.0 context.
     SDL_SetHint(SDL_HINT_OPENGL_ES_DRIVER, "1");
@@ -594,13 +652,11 @@ static void InitSdlWindowAndImGui() {
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_ES);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 0);
-    const char *glslVersion = "#version 300 es";
 #else
     // Compatibility context: the renderer uses GLSL 1.20 and no VAOs.
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_COMPATIBILITY);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
-    const char *glslVersion = "#version 120";
 #endif
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
     SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
@@ -621,6 +677,32 @@ static void InitSdlWindowAndImGui() {
     SDL_GL_MakeCurrent(gSdlWindow, gGlContext);
     SDL_GL_SetSwapInterval(1);
     SDL_StartTextInput(gSdlWindow);
+}
+
+static const char *GlslVersion() {
+#if defined(_WIN32)
+    return "#version 300 es";
+#else
+    return "#version 120";
+#endif
+}
+
+static void ShutdownImGui() {
+    ImGuiRenderer_Shutdown();
+    ImGui_ImplSDL3_Shutdown();
+    ImGui::DestroyContext();
+}
+
+// The window and GL context are made once; a new main window (the test harness makes one per
+// case) gets a fresh ImGui context and fresh NG UI state.
+static void InitSdlWindowAndImGui() {
+    bool first = gSdlWindow == nullptr;
+    if(first) {
+        InitSdlWindow();
+    } else {
+        ShutdownImGui();
+        gActivePopup = nullptr;
+    }
 
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
@@ -628,7 +710,7 @@ static void InitSdlWindowAndImGui() {
     io.IniFilename = nullptr; // layout persists through Platform::Settings instead
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
     ImGui_ImplSDL3_InitForOpenGL(gSdlWindow, gGlContext);
-    ImGuiRenderer_Init(glslVersion);
+    ImGuiRenderer_Init(GlslVersion());
     gShowMenuBar = GetSettings()->ThawBool("NG_ShowMenuBar", true);
     Ui::InitNgUi();
     Ui::RegisterCoreUiActions(/*animate=*/true);
@@ -638,8 +720,10 @@ static void InitSdlWindowAndImGui() {
     });
     ssassert(Ui::Actions().Unbound().empty(), "every ui.* action must be bound");
     LoadKeymap();
-    LoadDebugScript();
-    SDL_ShowWindow(gSdlWindow);
+    if(first) {
+        LoadDebugScript();
+        SDL_ShowWindow(gSdlWindow);
+    }
 }
 
 static WindowImplSdl *MainWindow() {
@@ -651,7 +735,7 @@ static MouseEvent MakeMouseEvent(MouseEvent::Type type, double x, double y) {
     me.type = type;
     me.x    = x;
     me.y    = y;
-    SDL_Keymod mod = SDL_GetModState();
+    SDL_Keymod mod = gDriver ? gDriverMods : SDL_GetModState();
     me.shiftDown   = (mod & SDL_KMOD_SHIFT) != 0;
     me.controlDown = (mod & SDL_KMOD_CTRL) != 0;
     return me;
@@ -699,9 +783,8 @@ static void ForwardToMainWindow(const SDL_Event &ev) {
         }
         case SDL_EVENT_MOUSE_WHEEL: {
             if(io.WantCaptureMouse) return;
-            float mx, my;
-            SDL_GetMouseState(&mx, &my);
-            MouseEvent me  = MakeMouseEvent(MouseEvent::Type::SCROLL_VERT, mx, my);
+            MouseEvent me  = MakeMouseEvent(MouseEvent::Type::SCROLL_VERT, ev.wheel.mouse_x,
+                                            ev.wheel.mouse_y);
             me.scrollDelta = ev.wheel.y;
             if(w->onMouseEvent) w->onMouseEvent(me);
             break;
@@ -805,13 +888,17 @@ static void DrawTooltip(WindowImplSdl *w, ImVec2 origin) {
 #   define GL_DEPTH_ATTACHMENT       GL_DEPTH_ATTACHMENT_EXT
 #endif
 
+static void ReleaseFramebuffer(WindowImplSdl *w) {
+    if(!w->fbo || !gGlContext) return;
+    glDeleteFramebuffers(1, &w->fbo);
+    glDeleteTextures(1, &w->fboColor);
+    glDeleteRenderbuffers(1, &w->fboDepth);
+    w->fbo = 0;
+}
+
 static void EnsureFramebuffer(WindowImplSdl *w, int pw, int ph) {
     if(w->fbo && w->fboWidth == pw && w->fboHeight == ph) return;
-    if(w->fbo) {
-        glDeleteFramebuffers(1, &w->fbo);
-        glDeleteTextures(1, &w->fboColor);
-        glDeleteRenderbuffers(1, &w->fboDepth);
-    }
+    ReleaseFramebuffer(w);
     glGenTextures(1, &w->fboColor);
     glBindTexture(GL_TEXTURE_2D, w->fboColor);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, pw, ph, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
@@ -872,6 +959,26 @@ static void LoadDebugScript() {
     gScriptWait = 2; // let the first layout settle
 }
 
+//-----------------------------------------------------------------------------
+// Event injection, shared by the debug script and the test driver (uidriver.h). Pushed events
+// take the same path as real ones; held keys and buttons are tracked here because SDL does not
+// update its own keyboard and mouse state for pushed events.
+//-----------------------------------------------------------------------------
+
+static Path gPendingShot;
+
+static SDL_Keymod ModBit(SDL_Keycode key) {
+    switch(key) {
+        case SDLK_LSHIFT: return SDL_KMOD_LSHIFT;
+        case SDLK_RSHIFT: return SDL_KMOD_RSHIFT;
+        case SDLK_LCTRL:  return SDL_KMOD_LCTRL;
+        case SDLK_RCTRL:  return SDL_KMOD_RCTRL;
+        case SDLK_LALT:   return SDL_KMOD_LALT;
+        case SDLK_RALT:   return SDL_KMOD_RALT;
+        default:          return SDL_KMOD_NONE;
+    }
+}
+
 static void PushKey(SDL_Keycode key, SDL_Keymod mod, bool down) {
     SDL_Event ev    = {};
     ev.type         = down ? SDL_EVENT_KEY_DOWN : SDL_EVENT_KEY_UP;
@@ -892,22 +999,132 @@ static void PushText(const std::string &text) {
     SDL_PushEvent(&ev);
 }
 
-static void PushMouse(SDL_EventType type, float x, float y) {
-    SDL_Event ev = {};
-    ev.type      = type;
-    if(type == SDL_EVENT_MOUSE_MOTION) {
-        ev.motion.windowID = SDL_GetWindowID(gSdlWindow);
-        ev.motion.x        = x;
-        ev.motion.y        = y;
-    } else {
-        ev.button.windowID = SDL_GetWindowID(gSdlWindow);
-        ev.button.button   = SDL_BUTTON_LEFT;
-        ev.button.down     = type == SDL_EVENT_MOUSE_BUTTON_DOWN;
-        ev.button.clicks   = 1;
-        ev.button.x        = x;
-        ev.button.y        = y;
+// "Ctrl+Shift+Keypad 1": SDL key names with modifier prefixes; "Shift", "Ctrl" and "Alt" alone
+// name the left modifier keys. False for an unknown key name.
+static bool ParseKeyChord(std::string name, SDL_Keycode *key, SDL_Keymod *mods) {
+    *mods = SDL_KMOD_NONE;
+    static const std::pair<const char *, SDL_Keymod> prefixes[] = {
+        { "Ctrl+", SDL_KMOD_LCTRL }, { "Shift+", SDL_KMOD_LSHIFT }, { "Alt+", SDL_KMOD_LALT } };
+    for(bool again = true; again;) {
+        again = false;
+        for(auto [prefix, bit] : prefixes) {
+            size_t n = strlen(prefix);
+            if(name.size() > n && name.compare(0, n, prefix) == 0) {
+                *mods = (SDL_Keymod)(*mods | bit);
+                name  = name.substr(n);
+                again = true;
+            }
+        }
     }
+    *key = name == "Shift" ? SDLK_LSHIFT
+         : name == "Ctrl"  ? SDLK_LCTRL
+         : name == "Alt"   ? SDLK_LALT
+                           : SDL_GetKeyFromName(name.c_str());
+    return *key != SDLK_UNKNOWN;
+}
+
+// The text a key types with these modifiers on the current layout, or "" for none.
+static std::string TextForKey(SDL_Keycode key, SDL_Keymod mods) {
+    if(mods & (SDL_KMOD_CTRL | SDL_KMOD_ALT)) return "";
+    SDL_Scancode sc = SDL_GetScancodeFromKey(key, nullptr);
+    SDL_Keycode produced =
+        SDL_GetKeyFromScancode(sc, (SDL_Keymod)(mods & SDL_KMOD_SHIFT), /*key_event=*/false);
+    if(produced < 32 || produced > 126) return "";
+    return std::string(1, (char)produced);
+}
+
+static const SDL_Keycode ModifierKeys[] = { SDLK_LCTRL, SDLK_LSHIFT, SDLK_LALT };
+
+// Presses the chord's modifiers that are not already held, then the key (with its text).
+// Returns the modifiers it pressed, for ReleaseChord.
+static SDL_Keymod PressChord(SDL_Keycode key, SDL_Keymod mods, bool withText) {
+    SDL_Keymod pressed = SDL_KMOD_NONE;
+    for(SDL_Keycode m : ModifierKeys) {
+        if((mods & ModBit(m)) && !(gDriverMods & ModBit(m))) {
+            gDriverMods = (SDL_Keymod)(gDriverMods | ModBit(m));
+            pressed     = (SDL_Keymod)(pressed | ModBit(m));
+            PushKey(m, gDriverMods, true);
+        }
+    }
+    if(SDL_Keymod bit = ModBit(key)) {
+        gDriverMods = (SDL_Keymod)(gDriverMods | bit);
+        PushKey(key, gDriverMods, true);
+        return (SDL_Keymod)(pressed | bit);
+    }
+    PushKey(key, gDriverMods, true);
+    if(withText) {
+        std::string text = TextForKey(key, gDriverMods);
+        if(!text.empty()) PushText(text);
+    }
+    return pressed;
+}
+
+static void ReleaseChord(SDL_Keycode key, SDL_Keymod pressed) {
+    if(!ModBit(key)) PushKey(key, gDriverMods, false);
+    for(int i = (int)(sizeof(ModifierKeys) / sizeof(ModifierKeys[0])) - 1; i >= 0; i--) {
+        SDL_Keycode m = ModifierKeys[i];
+        if(key == m || ((pressed & ModBit(m)) && (gDriverMods & ModBit(m)))) {
+            gDriverMods = (SDL_Keymod)(gDriverMods & ~ModBit(m));
+            PushKey(m, gDriverMods, false);
+        }
+    }
+}
+
+// Types one character: its key (with Shift if the layout needs it), then the text.
+static void TypeChar(char c) {
+    SDL_Keymod   need = SDL_KMOD_NONE;
+    SDL_Scancode sc   = SDL_GetScancodeFromKey((SDL_Keycode)(unsigned char)c, &need);
+    if(sc == SDL_SCANCODE_UNKNOWN && isupper((unsigned char)c)) {
+        sc   = SDL_GetScancodeFromKey((SDL_Keycode)tolower((unsigned char)c), nullptr);
+        need = SDL_KMOD_SHIFT;
+    }
+    if(sc == SDL_SCANCODE_UNKNOWN) {
+        PushText(std::string(1, c));
+        return;
+    }
+    SDL_Keycode base = SDL_GetKeyFromScancode(sc, SDL_KMOD_NONE, /*key_event=*/false);
+    SDL_Keymod  pressed =
+        PressChord(base, (need & SDL_KMOD_SHIFT) ? SDL_KMOD_LSHIFT : SDL_KMOD_NONE, false);
+    PushText(std::string(1, c));
+    ReleaseChord(base, pressed);
+}
+
+static void PushMotion(float x, float y) {
+    SDL_Event ev       = {};
+    ev.type            = SDL_EVENT_MOUSE_MOTION;
+    ev.motion.windowID = SDL_GetWindowID(gSdlWindow);
+    ev.motion.x        = x;
+    ev.motion.y        = y;
+    ev.motion.xrel     = x - gDriverX;
+    ev.motion.yrel     = y - gDriverY;
+    ev.motion.state    = gDriverButtons;
+    gDriverX = x;
+    gDriverY = y;
     SDL_PushEvent(&ev);
+}
+
+static void PushButton(Uint8 button, bool down, int clicks) {
+    if(down) {
+        gDriverButtons |= SDL_BUTTON_MASK(button);
+    } else {
+        gDriverButtons &= ~SDL_BUTTON_MASK(button);
+    }
+    SDL_Event ev       = {};
+    ev.type            = down ? SDL_EVENT_MOUSE_BUTTON_DOWN : SDL_EVENT_MOUSE_BUTTON_UP;
+    ev.button.windowID = SDL_GetWindowID(gSdlWindow);
+    ev.button.button   = button;
+    ev.button.down     = down;
+    ev.button.clicks   = (Uint8)clicks;
+    ev.button.x        = gDriverX;
+    ev.button.y        = gDriverY;
+    SDL_PushEvent(&ev);
+}
+
+static void SaveBackBuffer(const Path &path, int pw, int ph) {
+    std::shared_ptr<Pixmap> pm = Pixmap::Create(Pixmap::Format::RGBA, pw, ph);
+    glPixelStorei(GL_PACK_ALIGNMENT, 1);
+    glReadPixels(0, 0, pw, ph, GL_RGBA, GL_UNSIGNED_BYTE, &pm->data[0]);
+    pm->WritePng(path, /*flip=*/true);
 }
 
 static void RunDebugScript(int pw, int ph) {
@@ -924,50 +1141,31 @@ static void RunDebugScript(int pw, int ph) {
                 Ui::HandleUiAction(step.arg);
                 break;
             case DebugStep::Kind::KEYS:
-                for(char c : step.arg) {
-                    bool upper = isupper((unsigned char)c);
-                    SDL_Keycode key = (SDL_Keycode)tolower((unsigned char)c);
-                    SDL_Keymod mod  = upper ? SDL_KMOD_LSHIFT : SDL_KMOD_NONE;
-                    PushKey(key, mod, true);
-                    PushText(std::string(1, c));
-                    PushKey(key, mod, false);
-                }
+                for(char c : step.arg) TypeChar(c);
                 break;
             case DebugStep::Kind::KEY: {
-                std::string name = step.arg;
-                SDL_Keymod mod = SDL_KMOD_NONE;
-                for(auto [prefix, bit] : { std::pair{ "Ctrl+", SDL_KMOD_LCTRL },
-                                           std::pair{ "Shift+", SDL_KMOD_LSHIFT },
-                                           std::pair{ "Alt+", SDL_KMOD_LALT } }) {
-                    if(name.rfind(prefix, 0) == 0) {
-                        mod  = (SDL_Keymod)(mod | bit);
-                        name = name.substr(strlen(prefix));
-                    }
+                SDL_Keycode key;
+                SDL_Keymod  mods;
+                if(!ParseKeyChord(step.arg, &key, &mods)) {
+                    FatalError("SOLVESPACE_NG_SCRIPT: unknown key " + step.arg);
                 }
-                SDL_Keycode key = SDL_GetKeyFromName(name.c_str());
-                if(key == SDLK_UNKNOWN) FatalError("SOLVESPACE_NG_SCRIPT: unknown key " + name);
-                PushKey(key, mod, true);
-                PushKey(key, mod, false);
+                ReleaseChord(key, PressChord(key, mods, /*withText=*/true));
                 break;
             }
             case DebugStep::Kind::WAIT:
                 gScriptWait = step.frames;
                 return;
             case DebugStep::Kind::MOVE:
-                PushMouse(SDL_EVENT_MOUSE_MOTION, step.x, step.y);
+                PushMotion(step.x, step.y);
                 break;
             case DebugStep::Kind::CLICK:
-                PushMouse(SDL_EVENT_MOUSE_MOTION, step.x, step.y);
-                PushMouse(SDL_EVENT_MOUSE_BUTTON_DOWN, step.x, step.y);
-                PushMouse(SDL_EVENT_MOUSE_BUTTON_UP, step.x, step.y);
+                PushMotion(step.x, step.y);
+                PushButton(SDL_BUTTON_LEFT, true, 1);
+                PushButton(SDL_BUTTON_LEFT, false, 1);
                 break;
-            case DebugStep::Kind::SHOT: {
-                std::shared_ptr<Pixmap> pm = Pixmap::Create(Pixmap::Format::RGBA, pw, ph);
-                glPixelStorei(GL_PACK_ALIGNMENT, 1);
-                glReadPixels(0, 0, pw, ph, GL_RGBA, GL_UNSIGNED_BYTE, &pm->data[0]);
-                pm->WritePng(Path::From(step.arg), /*flip=*/true);
+            case DebugStep::Kind::SHOT:
+                SaveBackBuffer(Path::From(step.arg), pw, ph);
                 break;
-            }
             case DebugStep::Kind::QUIT:
                 gNeedsFrame = false;
                 ExitGui();
@@ -1016,10 +1214,16 @@ static void RenderFrame() {
     glViewport(0, 0, pw, ph);
     ImGuiRenderer_RenderDrawData(ImGui::GetDrawData());
     RunDebugScript(pw, ph);
+    if(!gPendingShot.IsEmpty()) {
+        SaveBackBuffer(gPendingShot, pw, ph);
+        gPendingShot = {};
+    }
     SDL_GL_SwapWindow(gSdlWindow);
 
     gDeferred.RunAll();
     if(!gDeferred.Empty()) gNeedsFrame = true;
+    // ImGui spreads a burst of input (fast typing) over several frames; render until it's done.
+    if(ImGui::GetCurrentContext()->InputEventsQueue.Size > 0) gNeedsFrame = true;
 }
 
 void RunGui() {
@@ -1040,11 +1244,10 @@ void ExitGui() {
 
 void ClearGui() {
     if(gSdlWindow) {
-        ImGuiRenderer_Shutdown();
-        ImGui_ImplSDL3_Shutdown();
-        ImGui::DestroyContext();
+        ShutdownImGui();
         SDL_GL_DestroyContext(gGlContext);
         SDL_DestroyWindow(gSdlWindow);
+        gGlContext = nullptr;
         gSdlWindow = nullptr;
     }
     std::static_pointer_cast<SettingsFile>(GetSettings())->Save();
@@ -1258,6 +1461,218 @@ static bool RouteKeyDown(const SDL_Event &ev) {
     auto chord = ChordFromKey(base, produced, mod);
     if(!chord) return false;
     return gKeyRouter.Route(*chord, TextEntryActive()) != Ui::RouteResult::UNBOUND;
+}
+
+//-----------------------------------------------------------------------------
+// Test driver (uidriver.h)
+//-----------------------------------------------------------------------------
+
+namespace Driver {
+
+void Enable(const Path &configDir) {
+    gDriver    = true;
+    gConfigDir = configDir;
+    SDL_SetHintWithPriority(SDL_HINT_VIDEO_DRIVER, "offscreen", SDL_HINT_DEFAULT);
+}
+
+bool Enabled() {
+    return gDriver;
+}
+
+static Uint8 SdlButton(Button b) {
+    switch(b) {
+        case Button::LEFT:   return SDL_BUTTON_LEFT;
+        case Button::MIDDLE: return SDL_BUTTON_MIDDLE;
+        case Button::RIGHT:  return SDL_BUTTON_RIGHT;
+    }
+    return SDL_BUTTON_LEFT;
+}
+
+void BeginCase() {
+    SDL_FlushEvents(SDL_EVENT_FIRST, SDL_EVENT_LAST);
+    gDialogs.clear();
+    gMessagePolicy = nullptr;
+    gQueuedFiles.clear();
+    gModalSteps.clear();
+    gScriptText.clear();
+    gDriverMods    = SDL_KMOD_NONE;
+    gDriverButtons = 0;
+    std::error_code ec;
+    std::filesystem::remove(PrefDir().Join("settings.txt").raw, ec);
+    std::filesystem::remove(PrefDir().Join("keymap.txt").raw, ec);
+    gSettings.reset();
+}
+
+std::vector<std::string> EndCase() {
+    std::vector<std::string> problems;
+    for(const DialogRecord &d : gDialogs) {
+        if(d.kind == "unanswered-modal") problems.push_back("a context menu had no queued step");
+    }
+    if(!gQueuedFiles.empty()) problems.push_back("queued file-dialog answers were not used");
+    if(!gModalSteps.empty()) problems.push_back("queued modal steps were not used");
+    return problems;
+}
+
+void Frame(int n) {
+    for(int i = 0; i < n; i++) {
+        PumpEventsOnce(/*wait=*/false);
+        RenderFrame();
+    }
+}
+
+void Settle(unsigned horizonMs) {
+    uint64_t start = SDL_GetTicks();
+    for(int frames = 0;;) {
+        PumpEventsOnce(/*wait=*/false);
+        if(frames < 3 || gNeedsFrame || !gDeferred.Empty()) {
+            RenderFrame();
+            frames++;
+        } else if(!SDL_HasEvents(SDL_EVENT_FIRST, SDL_EVENT_LAST)) {
+            uint64_t due = Timers().EarliestDue(), now = SDL_GetTicks();
+            if(due > now + horizonMs) break;
+            SDL_Delay((Uint32)std::min<uint64_t>(due > now ? due - now : 0, 5));
+        }
+        if(SDL_GetTicks() - start > 20000) {
+            fprintf(stderr, "Driver::Settle: the app is still busy after 20 s\n");
+            break;
+        }
+    }
+}
+
+void Key(const std::string &chord) {
+    SDL_Keycode key;
+    SDL_Keymod  mods;
+    if(!ParseKeyChord(chord, &key, &mods)) ssassert(false, "Driver::Key: unknown key name");
+    ReleaseChord(key, PressChord(key, mods, /*withText=*/true));
+    Settle();
+}
+
+void KeyDown(const std::string &chord) {
+    SDL_Keycode key;
+    SDL_Keymod  mods;
+    if(!ParseKeyChord(chord, &key, &mods)) ssassert(false, "Driver::KeyDown: unknown key name");
+    PressChord(key, mods, /*withText=*/true);
+    Settle();
+}
+
+void KeyUp(const std::string &chord) {
+    SDL_Keycode key;
+    SDL_Keymod  mods;
+    if(!ParseKeyChord(chord, &key, &mods)) ssassert(false, "Driver::KeyUp: unknown key name");
+    ReleaseChord(key, mods);
+    Settle();
+}
+
+void Type(const std::string &text) {
+    for(char c : text) TypeChar(c);
+    Settle();
+}
+
+void Move(double x, double y) {
+    PushMotion((float)x, (float)y);
+    Settle();
+}
+
+void Press(Button b) {
+    PushButton(SdlButton(b), true, 1);
+    Settle();
+}
+
+void Release(Button b) {
+    PushButton(SdlButton(b), false, 1);
+    Settle();
+}
+
+void Click(double x, double y, Button b) {
+    Move(x, y);
+    Press(b);
+    Release(b);
+}
+
+void DoubleClick(double x, double y) {
+    Move(x, y);
+    PushButton(SDL_BUTTON_LEFT, true, 1);
+    PushButton(SDL_BUTTON_LEFT, false, 1);
+    PushButton(SDL_BUTTON_LEFT, true, 2);
+    PushButton(SDL_BUTTON_LEFT, false, 2);
+    Settle();
+}
+
+void Drag(double x0, double y0, double x1, double y1, Button b, int steps) {
+    Move(x0, y0);
+    Press(b);
+    for(int i = 1; i <= steps; i++) {
+        double t = (double)i / steps;
+        Move(x0 + (x1 - x0) * t, y0 + (y1 - y0) * t);
+    }
+    Release(b);
+}
+
+void Wheel(double x, double y, double dy) {
+    Move(x, y);
+    SDL_Event ev      = {};
+    ev.type           = SDL_EVENT_MOUSE_WHEEL;
+    ev.wheel.windowID = SDL_GetWindowID(gSdlWindow);
+    ev.wheel.y        = (float)dy;
+    ev.wheel.mouse_x  = gDriverX;
+    ev.wheel.mouse_y  = gDriverY;
+    ev.wheel.direction = SDL_MOUSEWHEEL_NORMAL;
+    SDL_PushEvent(&ev);
+    Settle();
+}
+
+Point2d MousePos() {
+    return Point2d::From(gDriverX, gDriverY);
+}
+
+Point2d WindowSize() {
+    int w, h;
+    SDL_GetWindowSize(gSdlWindow, &w, &h);
+    return Point2d::From(w, h);
+}
+
+Point2d ToWindow(Vector modelPoint) {
+    // The inverse of GraphicsWindow::MouseEvent: origin at the centre, y up.
+    double w = 0, h = 0;
+    if(WindowImplSdl *main = MainWindow()) main->GetContentSize(&w, &h);
+    Point2d p = SS.GW.ProjectPoint(modelPoint);
+    return Point2d::From(p.x + w / 2, h / 2 - p.y);
+}
+
+bool Screenshot(const Path &png) {
+    gPendingShot = png;
+    gNeedsFrame  = true;
+    Frame(1);
+    FILE *f = OpenFile(png, "rb");
+    if(f) fclose(f);
+    return f != nullptr;
+}
+
+void ReloadKeymap() {
+    LoadKeymap();
+    Settle();
+}
+
+Path ConfigDir() {
+    return PrefDir();
+}
+
+std::vector<DialogRecord> &Dialogs() {
+    return gDialogs;
+}
+
+void OnMessage(std::function<MessageDialog::Response(const DialogRecord &)> policy) {
+    gMessagePolicy = std::move(policy);
+}
+
+void QueueFile(const Path &path) {
+    gQueuedFiles.push_back(path);
+}
+
+void DuringModal(std::function<void()> step) {
+    gModalSteps.push_back(std::move(step));
+}
+
 }
 
 }

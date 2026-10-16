@@ -90,6 +90,12 @@ static std::string MenuLabelFor(Command c) {
 }
 
 void InitNgUi() {
+    // A new main window starts with no palette, pie or modal tool state.
+    gPalette = CommandPalette{};
+    Pie()    = PieMenu{};
+    Grab()   = GrabTool{};
+    Draw()   = DrawTool{};
+    SetModalStatus("", {});
     ApplyTheme(LoadThemeChoice());
     Actions().Bind("ui.command-palette", [] { gPalette.Open(); });
     Actions().Bind("ui.toggle-theme", [] { ToggleTheme(); });

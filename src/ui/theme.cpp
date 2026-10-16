@@ -26,8 +26,9 @@ static const Tokens Light = { 0xF4F5F7, 0xFFFFFF, 0xD9DCE2, 0x1C1F24, 0x6A7280,
                               0x2F6FE0, 0x4A82E8, 0xD64545, 0.97f };
 
 static void LoadFontsOnce() {
-    if(gUiFont) return;
+    // Once per ImGui context (the test harness makes a new one for each main window).
     ImGuiIO &io = ImGui::GetIO();
+    if(gUiFont && io.Fonts->Fonts.contains(gUiFont)) return;
     ImFontConfig cfg;
     cfg.FontDataOwnedByAtlas = false; // the data lives in the embedded resource
     size_t size;

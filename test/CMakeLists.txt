@@ -120,8 +120,28 @@ target_include_directories(solvespace-testsuite
 add_dependencies(solvespace-testsuite
     resources)
 
+# UI tests: the real solvespace-ng app, driven with real SDL events (platform/sdl/uidriver.h)
+# on SDL's offscreen video driver, so no display is needed.
+set(ngui_SOURCES
+    ngui/smoke/test.cpp)
+
+if(ENABLE_GUI AND ENABLE_NG_GUI)
+    add_executable(solvespace-ng-uitest
+        harness.cpp
+        ${ngui_SOURCES}
+        ${CMAKE_SOURCE_DIR}/src/render/rendercairo.cpp
+        $<TARGET_PROPERTY:resources,EXTRA_SOURCES>)
+    target_compile_definitions(solvespace-ng-uitest PRIVATE NG_UITEST)
+    target_include_directories(solvespace-ng-uitest PRIVATE
+        ${CMAKE_SOURCE_DIR}/src ${CMAKE_BINARY_DIR}/src ${EIGEN3_INCLUDE_DIRS})
+    target_link_libraries(solvespace-ng-uitest solvespace-ng-app ${COVERAGE_LIBRARY})
+    add_dependencies(solvespace-ng-uitest resources)
+    set(ngui_COMMAND COMMAND $<TARGET_FILE:solvespace-ng-uitest>)
+endif()
+
 add_custom_target(test_solvespace
     COMMAND $<TARGET_FILE:solvespace-testsuite>
+    ${ngui_COMMAND}
     COMMENT "Testing SolveSpace"
     VERBATIM)
 
