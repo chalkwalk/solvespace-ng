@@ -19,6 +19,7 @@ set(testsuite_SOURCES
     core/expr/test.cpp
     core/commandnames/test.cpp
     core/commands/test.cpp
+    libs/keymap/test.cpp
     core/locale/test.cpp
     core/path/test.cpp
     core/prune/test.cpp
@@ -86,6 +87,7 @@ add_executable(solvespace-testsuite
 target_link_libraries(solvespace-testsuite
     solvespace-headless
     ${COVERAGE_LIBRARY})
+target_link_libraries(solvespace-testsuite keymap)
 
 target_include_directories(solvespace-testsuite
     PRIVATE
