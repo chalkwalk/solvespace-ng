@@ -5,6 +5,7 @@
 #include "imgui.h"
 #include "ui/ngui.h"
 #include "ui/palettewidget.h"
+#include "ui/piemenu.h"
 #include "ui/theme.h"
 #include "ui/uiactions.h"
 
@@ -26,6 +27,10 @@ void HandleUiAction(const std::string &action) {
 }
 
 std::function<void()> DrawNgUi(Platform::MenuBarSdl *menuBar, const keymap::Keymap &keymap) {
+    if(Pie().IsOpen()) {
+        std::string name = Pie().Draw();
+        if(!name.empty()) return [name] { RunNamedCommand(name); };
+    }
     if(menuBar && gPalette.IsOpen()) {
         return gPalette.Draw(BuildPaletteEntries(Platform::FlattenMenuBar(*menuBar)), keymap);
     }
@@ -33,6 +38,7 @@ std::function<void()> DrawNgUi(Platform::MenuBarSdl *menuBar, const keymap::Keym
 }
 
 bool ModalKey(const keymap::Chord &c) {
+    if(Pie().IsOpen()) return Pie().HandleChord(c);
     return false;
 }
 

@@ -21,6 +21,7 @@ set(testsuite_SOURCES
     core/commands/test.cpp
     libs/keymap/test.cpp
     libs/palette/test.cpp
+    libs/pie/test.cpp
     core/locale/test.cpp
     core/path/test.cpp
     core/prune/test.cpp
@@ -88,7 +89,7 @@ add_executable(solvespace-testsuite
 target_link_libraries(solvespace-testsuite
     solvespace-headless
     ${COVERAGE_LIBRARY})
-target_link_libraries(solvespace-testsuite keymap palette)
+target_link_libraries(solvespace-testsuite keymap palette pie)
 if(ENABLE_NG_GUI)
     target_sources(solvespace-testsuite PRIVATE
         ng/settingsfile/test.cpp

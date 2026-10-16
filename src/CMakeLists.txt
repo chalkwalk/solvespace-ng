@@ -307,13 +307,14 @@ if(ENABLE_GUI AND ENABLE_NG_GUI)
         platform/guisdl.cpp
         ui/palettewidget.cpp
         ui/ngui.cpp
+        ui/piemenu.cpp
         ui/theme.cpp
         render/gl3shader.cpp
         render/rendergl3.cpp
         $<TARGET_PROPERTY:resources,EXTRA_SOURCES>)
     add_dependencies(solvespace-ng resources)
     target_link_libraries(solvespace-ng PRIVATE
-        solvespace-core solvespace-ng-support imgui-sdl3 ${NG_SDL_TARGET} ${OPENGL_LIBRARIES})
+        solvespace-core solvespace-ng-support pie imgui-sdl3 ${NG_SDL_TARGET} ${OPENGL_LIBRARIES})
 endif()
 
 # solvespace graphical executable
