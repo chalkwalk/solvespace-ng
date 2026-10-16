@@ -17,6 +17,9 @@
 #include "platform/sdl/menumodel.h"
 #include "platform/sdl/timerregistry.h"
 #include "platform/sdl/dialoghelpers.h"
+#include "platform/sdl/keychord.h"
+#include "ui/keyrouter.h"
+#include "commandnames.h"
 
 namespace SolveSpace {
 namespace Platform {
@@ -30,6 +33,9 @@ static bool           gQuit        = false;
 static bool           gNeedsFrame  = true;
 static std::weak_ptr<WindowImplSdl>              gMainWindow;
 static std::vector<std::weak_ptr<WindowImplSdl>> gToolWindows;
+static bool           gShowMenuBar = true;
+static Ui::KeyRouter  gKeyRouter;
+static std::function<void(const std::string &)> gUiActionHandler; // set by the UI layer
 
 static void DrawToolWindows();
 static void DrawMainMenuBar();
@@ -524,6 +530,30 @@ std::vector<std::string> InitGui(int argc, char **argv) {
     return args;
 }
 
+static void LoadKeymap() {
+    std::string preset = GetSettings()->ThawString("NG_KeymapPreset", "modern");
+    std::string text;
+    ReadFile(PrefDir().Join("keymap.txt"), &text);
+    std::string error;
+    gKeyRouter.SetKeymap(Ui::LoadUserKeymap(preset, text, &error));
+    if(!error.empty()) {
+        // Show the problem once the main window exists.
+        static TimerRef notify = CreateTimer();
+        notify->onTimeout = [error]() { Error("%s", error.c_str()); };
+        notify->RunAfter(0);
+    }
+    gKeyRouter.onUiAction = [](const std::string &action) {
+        if(action == "ui.toggle-menu-bar") {
+            gShowMenuBar = !gShowMenuBar;
+            GetSettings()->FreezeBool("NG_ShowMenuBar", gShowMenuBar);
+        } else if(gUiActionHandler) {
+            gUiActionHandler(action);
+        } else {
+            dbp("unhandled UI action '%s'", action.c_str());
+        }
+    };
+}
+
 static SDL_Window *CreateSdlWindow() {
     return SDL_CreateWindow("SolveSpace", 1280, 800,
                             SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE |
@@ -572,6 +602,8 @@ static void InitSdlWindowAndImGui() {
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
     ImGui_ImplSDL3_InitForOpenGL(gSdlWindow, gGlContext);
     ImGui_ImplOpenGL3_Init(glslVersion);
+    gShowMenuBar = GetSettings()->ThawBool("NG_ShowMenuBar", true);
+    LoadKeymap();
     SDL_ShowWindow(gSdlWindow);
 }
 
@@ -645,7 +677,8 @@ static void ForwardToMainWindow(const SDL_Event &ev) {
             break;
         }
         case SDL_EVENT_KEY_DOWN: {
-            if(io.WantCaptureKeyboard) return;
+            // Auto-repeat of unmodified keys would start the same tool over and over.
+            if(ev.key.repeat && !(ev.key.mod & (SDL_KMOD_CTRL | SDL_KMOD_ALT))) return;
             RouteKeyDown(ev);
             break;
         }
@@ -855,10 +888,12 @@ void ClearGui() {
     SDL_Quit();
 }
 
-static bool gShowMenuBar = true;
-
 static std::string ShortcutTextFor(const MenuItemSdl &item) {
-    return item.hasAccel ? AcceleratorDescription(item.accel) : std::string();
+    if(item.commandId == 0) return "";
+    const char *name = CommandName((Command)item.commandId);
+    if(!name) return "";
+    auto chords = gKeyRouter.Keymap().ChordsFor(name);
+    return chords.empty() ? "" : keymap::FormatChord(chords[0]);
 }
 
 // Returns true if an item was activated (so popups can close).
@@ -1012,23 +1047,12 @@ static void DrawToolWindows() {
 }
 
 static bool RouteKeyDown(const SDL_Event &ev) {
-    // Translate to the legacy KeyboardEvent so core accelerators work.
-    WindowImplSdl *w = MainWindow();
-    if(!w || !w->onKeyboardEvent) return false;
-    KeyboardEvent ke = {};
-    ke.type        = KeyboardEvent::Type::PRESS;
-    ke.shiftDown   = (ev.key.mod & SDL_KMOD_SHIFT) != 0;
-    ke.controlDown = (ev.key.mod & SDL_KMOD_CTRL) != 0;
-    if(ev.key.key >= SDLK_F1 && ev.key.key <= SDLK_F12) {
-        ke.key = KeyboardEvent::Key::FUNCTION;
-        ke.num = 1 + (int)(ev.key.key - SDLK_F1);
-    } else if(ev.key.key < 0x80) {
-        ke.key = KeyboardEvent::Key::CHARACTER;
-        ke.chr = (char32_t)ev.key.key;
-    } else {
-        return false;
-    }
-    return w->onKeyboardEvent(ke);
+    SDL_Keycode base     = SDL_GetKeyFromScancode(ev.key.scancode, SDL_KMOD_NONE, false);
+    SDL_Keycode produced = SDL_GetKeyFromScancode(ev.key.scancode, ev.key.mod, false);
+    auto chord = ChordFromKey(base, produced, ev.key.mod);
+    if(!chord) return false;
+    bool textInput = ImGui::GetIO().WantTextInput;
+    return gKeyRouter.Route(*chord, textInput) != Ui::RouteResult::UNBOUND;
 }
 
 }
