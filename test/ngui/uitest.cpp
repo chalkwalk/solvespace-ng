@@ -1,4 +1,6 @@
 #include "uitest.h"
+#include "pie.h"
+#include "ui/piemenu.h"
 
 namespace SolveSpace {
 namespace UiTest {
@@ -104,6 +106,25 @@ int CountConstraints(Constraint::Type type) {
         if(c.type == type) n++;
     }
     return n;
+}
+
+std::vector<std::string> PieLabels() {
+    std::vector<std::string> labels;
+    if(!Ui::Pie().IsOpen()) return labels;
+    for(const Ui::PieItem &item : Ui::Pie().Items()) labels.push_back(item.label);
+    return labels;
+}
+
+bool PickPie(const std::string &label) {
+    const std::vector<Ui::PieItem> &items = Ui::Pie().Items();
+    for(int i = 0; i < (int)items.size(); i++) {
+        if(items[i].label != label) continue;
+        float dx, dy;
+        pie::ItemDirection(i, (int)items.size(), &dx, &dy);
+        Driver::Click(Ui::Pie().CenterX() + dx * 80, Ui::Pie().CenterY() + dy * 80);
+        return true;
+    }
+    return false;
 }
 
 bool ContextMenu(Point2d p, const std::string &item) {

@@ -39,6 +39,10 @@ std::optional<hRequest>    LastRequest(Request::Type type);
 std::optional<hConstraint> LastConstraint(Constraint::Type type);
 int                        CountConstraints(Constraint::Type type);
 
+// The open pie menu's item labels, and picking one by moving the mouse onto it and clicking.
+std::vector<std::string> PieLabels();
+bool                     PickPie(const std::string &label);
+
 // Right-clicks at p and, inside the context menu's nested loop, clicks the item labelled
 // `item`. False if the menu had no such item.
 bool ContextMenu(Point2d p, const std::string &item);

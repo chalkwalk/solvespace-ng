@@ -21,6 +21,10 @@ class PieMenu {
 public:
     void Open(std::string title, std::vector<PieItem> items); // centred at the mouse
     bool IsOpen() const { return open; }
+    const std::string          &Title() const { return title; }
+    const std::vector<PieItem> &Items() const { return items; }
+    float CenterX() const { return cx; } // window coordinates
+    float CenterY() const { return cy; }
     bool HandleChord(const keymap::Chord &c);                 // consumes every chord while open
     // Draws when open. Returns the chosen item's command name (and closes), or "".
     std::string Draw();
