@@ -347,8 +347,16 @@ macOS and Emscripten builds.
   no NG code or dependencies, following upstream's review rules in
   `.github/copilot-instructions.md` (small, no new dependencies, human-tested; upstream
   discourages AI-attributed commits, so the owner decides authorship before anything is offered).
-  Keep them on the LAN remote until the owner chooses to open a PR. Candidates so far:
-  `e220b5d8` (UndoState `groupOrder` leak) and the headless null guards in `978602ca`.
+  Keep them on the LAN remote; the owner reviews, tests, rewrites and pushes them upstream
+  personally. Agents never open PRs, push upstream, or rewrite a `pr/` branch after handing it
+  over.
+- **Standing duty for agents:** whenever NG work fixes or improves stock SolveSpace behaviour
+  (a core bug, a leak, a crash, a `wishlist.txt` item), also cut a `pr/<topic>` branch from
+  `github-master` with just that change (`git cherry-pick -x`, or the relevant hunks), verify it
+  builds and passes `test/` as stock SolveSpace (C++11, no NG), push it to `origin`, and tell the
+  owner. Existing `pr/` branches:
+  - `pr/undo-grouporder-leak`: UndoState `groupOrder` leaked on every undo step (from `e220b5d8`).
+  - `pr/headless-null-guards`: null window/menu-item guards for headless runs (from `978602ca`).
 - Tests: `RUN_COMMAND("<command-name>")` in `test/` runs a menu command headlessly (names in
   `src/commandnames.cpp`). Headless code paths have null windows/menu items: guard them.
   Not headless-safe yet (null FileDialog/Window under `guinone.cpp`): `open`, `save`, `save-as`,
