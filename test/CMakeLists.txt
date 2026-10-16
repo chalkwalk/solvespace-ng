@@ -96,7 +96,8 @@ if(ENABLE_NG_GUI)
         ng/keys/test.cpp
         ng/backend/test.cpp
         ng/keyrouter/test.cpp
-        ng/debugscript/test.cpp)
+        ng/debugscript/test.cpp
+        ng/uiactions/test.cpp)
     target_link_libraries(solvespace-testsuite solvespace-ng-support)
 endif()
 

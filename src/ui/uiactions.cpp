@@ -1,0 +1,87 @@
+//-----------------------------------------------------------------------------
+// The "ui.*" action registry.
+//-----------------------------------------------------------------------------
+#include "solvespace.h"
+#include "commandnames.h"
+#include "ui/uiactions.h"
+
+namespace SolveSpace {
+namespace Ui {
+
+const std::vector<UiActionInfo> &UiActionList() {
+    static const std::vector<UiActionInfo> list = {
+        { "ui.command-palette", "View \xE2\x80\xBA Command Palette" },
+        { "ui.toggle-menu-bar", "View \xE2\x80\xBA Toggle Menu Bar" },
+        { "ui.toggle-theme",    "View \xE2\x80\xBA Toggle Theme" },
+    };
+    return list;
+}
+
+void UiActions::Bind(const std::string &name, std::function<void()> run,
+                     std::function<bool()> enabled) {
+    entries[name] = { std::move(run), std::move(enabled) };
+}
+
+bool UiActions::IsEnabled(const std::string &name) const {
+    auto it = entries.find(name);
+    if(it == entries.end() || !it->second.run) return false;
+    return !it->second.enabled || it->second.enabled();
+}
+
+bool UiActions::Run(const std::string &name) {
+    if(!IsEnabled(name)) return false;
+    // Copy: the action may rebind itself.
+    std::function<void()> run = entries[name].run;
+    run();
+    return true;
+}
+
+std::vector<std::string> UiActions::Unbound() const {
+    std::vector<std::string> out;
+    for(const UiActionInfo &a : UiActionList()) {
+        auto it = entries.find(a.name);
+        if(it == entries.end() || !it->second.run) out.push_back(a.name);
+    }
+    return out;
+}
+
+UiActions &Actions() {
+    static UiActions actions;
+    return actions;
+}
+
+bool RunNamedCommand(const std::string &name) {
+    if(name.rfind("ui.", 0) == 0) return Actions().Run(name);
+    Command cmd = CommandFromName(name);
+    if(cmd == Command::NONE) return false;
+    SS.GW.ActivateCommand(cmd);
+    return true;
+}
+
+std::vector<PaletteEntry> BuildPaletteEntries(const std::vector<Platform::FlatMenuItem> &menu) {
+    std::vector<PaletteEntry> out;
+    for(const Platform::FlatMenuItem &fi : menu) {
+        PaletteEntry e;
+        e.label = fi.path;
+        if(fi.item->commandId) {
+            if(const char *n = CommandName((Command)fi.item->commandId)) e.commandName = n;
+        }
+        e.enabled = fi.item->enabled;
+        auto item = fi.item;
+        e.run     = [item] { if(item->onTrigger) item->onTrigger(); };
+        out.push_back(std::move(e));
+    }
+    for(const UiActionInfo &a : UiActionList()) {
+        PaletteEntry e;
+        e.label          = a.label;
+        e.commandName    = a.name;
+        e.enabled        = Actions().IsEnabled(a.name);
+        std::string name = a.name;
+        e.run            = [name] { Actions().Run(name); };
+        out.push_back(std::move(e));
+    }
+    return out;
+}
+
+}
+}

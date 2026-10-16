@@ -2,7 +2,6 @@
 // The command palette: fuzzy search over every menu item.
 //-----------------------------------------------------------------------------
 #include "solvespace.h"
-#include "commandnames.h"
 #include "fuzzy.h"
 #include "imgui.h"
 #include "imgui_internal.h"
@@ -23,17 +22,9 @@ bool CommandPalette::IsOpen() const {
     return open;
 }
 
-static std::string ShortcutFor(const Platform::MenuItemSdl &item, const keymap::Keymap &keymap) {
-    if(!item.commandId) return "";
-    const char *name = CommandName((Command)item.commandId);
-    if(!name) return "";
-    auto chords = keymap.ChordsFor(name);
-    return chords.empty() ? "" : keymap::FormatChord(chords[0]);
-}
-
-std::shared_ptr<Platform::MenuItemSdl> CommandPalette::Draw(
-    const std::vector<Platform::FlatMenuItem> &items, const keymap::Keymap &keymap) {
-    if(!open) return nullptr;
+std::function<void()> CommandPalette::Draw(const std::vector<PaletteEntry> &entries,
+                                           const keymap::Keymap &keymap) {
+    if(!open) return {};
     ImGuiIO &io = ImGui::GetIO();
     ImGui::SetNextWindowPos(ImVec2(io.DisplaySize.x * 0.5f, io.DisplaySize.y * 0.2f),
                             ImGuiCond_Always, ImVec2(0.5f, 0.0f));
@@ -64,7 +55,7 @@ std::shared_ptr<Platform::MenuItemSdl> CommandPalette::Draw(
     }
 
     std::vector<std::string> labels;
-    for(const auto &it : items) labels.push_back(it.path);
+    for(const auto &e : entries) labels.push_back(e.label);
     std::vector<size_t> ranked = palette::Rank(query, labels, 12);
     if(selected >= (int)ranked.size()) selected = std::max(0, (int)ranked.size() - 1);
     if(ImGui::IsKeyPressed(ImGuiKey_DownArrow)) {
@@ -74,12 +65,16 @@ std::shared_ptr<Platform::MenuItemSdl> CommandPalette::Draw(
 
     int activate = -1;
     for(int i = 0; i < (int)ranked.size(); i++) {
-        const Platform::FlatMenuItem &fi = items[ranked[i]];
-        std::string shortcut = ShortcutFor(*fi.item, keymap);
+        const PaletteEntry &e = entries[ranked[i]];
+        std::string shortcut;
+        if(!e.commandName.empty()) {
+            auto chords = keymap.ChordsFor(e.commandName);
+            if(!chords.empty()) shortcut = keymap::FormatChord(chords[0]);
+        }
         ImGui::PushID(i);
-        ImGui::BeginDisabled(!fi.item->enabled);
+        ImGui::BeginDisabled(!e.enabled);
         float lineRight = ImGui::GetCursorPosX() + ImGui::GetContentRegionAvail().x;
-        if(ImGui::Selectable(fi.path.c_str(), i == selected)) activate = i;
+        if(ImGui::Selectable(e.label.c_str(), i == selected)) activate = i;
         if(!shortcut.empty()) {
             ImGui::SameLine(lineRight - ImGui::CalcTextSize(shortcut.c_str()).x);
             ImGui::TextDisabled("%s", shortcut.c_str());
@@ -98,13 +93,13 @@ std::shared_ptr<Platform::MenuItemSdl> CommandPalette::Draw(
     framesOpen++;
 
     if(activate >= 0 && activate < (int)ranked.size()) {
-        const Platform::FlatMenuItem &fi = items[ranked[activate]];
+        const PaletteEntry &e = entries[ranked[activate]];
         open = false;
-        if(fi.item->enabled) return fi.item;
+        if(e.enabled) return e.run;
     } else if(close) {
         open = false;
     }
-    return nullptr;
+    return {};
 }
 
 }

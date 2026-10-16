@@ -6,6 +6,7 @@
 #include "ui/ngui.h"
 #include "ui/palettewidget.h"
 #include "ui/theme.h"
+#include "ui/uiactions.h"
 
 namespace SolveSpace {
 namespace Ui {
@@ -14,20 +15,21 @@ static CommandPalette gPalette;
 
 void InitNgUi() {
     ApplyTheme(LoadThemeChoice());
+    Actions().Bind("ui.command-palette", [] { gPalette.Open(); });
+    Actions().Bind("ui.toggle-theme", [] { ToggleTheme(); });
 }
 
 void HandleUiAction(const std::string &action) {
-    if(action == "ui.command-palette") gPalette.Open();
-    else if(action == "ui.toggle-theme") ToggleTheme();
-    else dbp("unknown UI action '%s'", action.c_str());
+    if(!Actions().Run(action)) {
+        dbp("UI action '%s' is unknown, unbound or disabled", action.c_str());
+    }
 }
 
-std::shared_ptr<Platform::MenuItemSdl> DrawNgUi(Platform::MenuBarSdl *menuBar,
-                                                const keymap::Keymap &keymap) {
+std::function<void()> DrawNgUi(Platform::MenuBarSdl *menuBar, const keymap::Keymap &keymap) {
     if(menuBar && gPalette.IsOpen()) {
-        return gPalette.Draw(Platform::FlattenMenuBar(*menuBar), keymap);
+        return gPalette.Draw(BuildPaletteEntries(Platform::FlattenMenuBar(*menuBar)), keymap);
     }
-    return nullptr;
+    return {};
 }
 
 bool CapturesText() {

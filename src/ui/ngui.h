@@ -11,9 +11,8 @@ namespace SolveSpace {
 namespace Ui {
 
 void InitNgUi(); // after the ImGui context exists
-// Returns the menu item the user picked this frame (to be run after the frame), or nullptr.
-std::shared_ptr<Platform::MenuItemSdl> DrawNgUi(Platform::MenuBarSdl *menuBar,
-                                                const keymap::Keymap &keymap);
+// Returns what the user picked this frame (to be run after the frame), or an empty function.
+std::function<void()> DrawNgUi(Platform::MenuBarSdl *menuBar, const keymap::Keymap &keymap);
 // True while a UI-layer text field (the palette) owns the keyboard.
 bool CapturesText();
 void HandleUiAction(const std::string &action);

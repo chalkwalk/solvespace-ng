@@ -1,11 +1,11 @@
 //-----------------------------------------------------------------------------
-// The command palette: fuzzy search over every menu item.
+// The command palette: fuzzy search over every menu item and ui.* action.
 //-----------------------------------------------------------------------------
 #ifndef SOLVESPACE_UI_PALETTEWIDGET_H
 #define SOLVESPACE_UI_PALETTEWIDGET_H
 
 #include "keymap.h"
-#include "platform/sdl/menumodel.h"
+#include "ui/uiactions.h"
 
 namespace SolveSpace {
 namespace Ui {
@@ -14,10 +14,10 @@ class CommandPalette {
 public:
     void Open();
     bool IsOpen() const;
-    // Draws if open. Returns the chosen enabled item (and closes), or nullptr; the caller runs
-    // it after the frame.
-    std::shared_ptr<Platform::MenuItemSdl> Draw(const std::vector<Platform::FlatMenuItem> &items,
-                                                const keymap::Keymap &keymap);
+    // Draws if open. Returns the chosen enabled entry's action (and closes), or an empty
+    // function; the caller runs it after the frame.
+    std::function<void()> Draw(const std::vector<PaletteEntry> &entries,
+                               const keymap::Keymap &keymap);
 
 private:
     bool open       = false;

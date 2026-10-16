@@ -35,6 +35,7 @@
 #include "platform/sdl/deferredqueue.h"
 #include "platform/sdl/keychord.h"
 #include "ui/keyrouter.h"
+#include "ui/uiactions.h"
 #include "ui/ngui.h"
 #include "commandnames.h"
 
@@ -52,7 +53,6 @@ static std::weak_ptr<WindowImplSdl>              gMainWindow;
 static std::vector<std::weak_ptr<WindowImplSdl>> gToolWindows;
 static bool           gShowMenuBar = true;
 static Ui::KeyRouter  gKeyRouter;
-static std::function<void(const std::string &)> gUiActionHandler; // set by the UI layer
 // UI callbacks into the core run after the frame, never while ImGui is building one: the core
 // may open a dialog (which renders frames itself) or rebuild the menus being drawn.
 static DeferredQueue  gDeferred;
@@ -573,16 +573,7 @@ static void LoadKeymap() {
         notify->onTimeout = [error]() { Error("%s", error.c_str()); };
         notify->RunAfter(0);
     }
-    gKeyRouter.onUiAction = [](const std::string &action) {
-        if(action == "ui.toggle-menu-bar") {
-            gShowMenuBar = !gShowMenuBar;
-            GetSettings()->FreezeBool("NG_ShowMenuBar", gShowMenuBar);
-        } else if(gUiActionHandler) {
-            gUiActionHandler(action);
-        } else {
-            dbp("unhandled UI action '%s'", action.c_str());
-        }
-    };
+    gKeyRouter.onUiAction = [](const std::string &action) { Ui::HandleUiAction(action); };
 }
 
 static SDL_Window *CreateSdlWindow() {
@@ -638,7 +629,11 @@ static void InitSdlWindowAndImGui() {
     ImGuiRenderer_Init(glslVersion);
     gShowMenuBar = GetSettings()->ThawBool("NG_ShowMenuBar", true);
     Ui::InitNgUi();
-    gUiActionHandler = Ui::HandleUiAction;
+    Ui::Actions().Bind("ui.toggle-menu-bar", [] {
+        gShowMenuBar = !gShowMenuBar;
+        GetSettings()->FreezeBool("NG_ShowMenuBar", gShowMenuBar);
+    });
+    ssassert(Ui::Actions().Unbound().empty(), "every ui.* action must be bound");
     LoadKeymap();
     LoadDebugScript();
     SDL_ShowWindow(gSdlWindow);
@@ -905,7 +900,7 @@ static void RunDebugScript(int pw, int ph) {
         const DebugStep &step = gScript[gScriptPos++];
         switch(step.kind) {
             case DebugStep::Kind::ACTION:
-                if(gUiActionHandler) gUiActionHandler(step.arg);
+                Ui::HandleUiAction(step.arg);
                 break;
             case DebugStep::Kind::KEYS:
                 for(char c : step.arg) {
@@ -966,9 +961,7 @@ static void RenderFrame() {
     DrawActivePopup();
     if(main && main->menuBar) {
         auto bar = std::static_pointer_cast<MenuBarSdl>(main->menuBar);
-        if(auto chosen = Ui::DrawNgUi(bar.get(), gKeyRouter.Keymap())) {
-            gDeferred.Post([chosen] { if(chosen->onTrigger) chosen->onTrigger(); });
-        }
+        if(auto run = Ui::DrawNgUi(bar.get(), gKeyRouter.Keymap())) gDeferred.Post(run);
     }
     if(main) {
         DrawEditorOverlay(main, ImVec2(0, 0));

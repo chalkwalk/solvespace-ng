@@ -4,6 +4,7 @@
 #include "ui/keyrouter.h"
 #include "ui/keypresets.h"
 #include "commandnames.h"
+#include "ui/uiactions.h"
 
 namespace SolveSpace {
 namespace Ui {
@@ -39,8 +40,10 @@ RouteResult KeyRouter::Route(const keymap::Chord &chord, bool textInputActive) {
 }
 
 bool IsKnownUiAction(const std::string &name) {
-    return name == "ui.command-palette" || name == "ui.toggle-menu-bar" ||
-           name == "ui.toggle-theme";
+    for(const UiActionInfo &a : UiActionList()) {
+        if(name == a.name) return true;
+    }
+    return false;
 }
 
 keymap::Keymap LoadUserKeymap(const std::string &preset, const std::string &userFileText,
