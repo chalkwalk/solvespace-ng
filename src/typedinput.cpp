@@ -6,9 +6,27 @@
 
 namespace SolveSpace {
 
+// Where a label goes, as MenuConstrain places it: beside a distance, inside an angle's arc.
+static Vector LabelOffset(Constraint::Type type, hEntity ptA, hEntity ptB, hEntity entityA,
+                          hEntity entityB) {
+    double size = 50 / SS.GW.scale;
+    if(type == Constraint::Type::PT_PT_DISTANCE) {
+        Vector n = SS.GW.projRight.Cross(SS.GW.projUp);
+        Vector d = SK.GetEntity(ptA)->PointGetNum().Minus(SK.GetEntity(ptB)->PointGetNum());
+        return n.Cross(d).WithMagnitude(size);
+    }
+    if(type == Constraint::Type::ANGLE) {
+        Vector bisector = SK.GetEntity(entityA)->VectorGetNum().WithMagnitude(1).Plus(
+                          SK.GetEntity(entityB)->VectorGetNum().WithMagnitude(1));
+        return bisector.WithMagnitude(size);
+    }
+    return {};
+}
+
 static hConstraint AddValued(Constraint::Type type, hEntity ptA, hEntity ptB, hEntity entityA,
                              hEntity entityB, double val) {
     Constraint c = {};
+    c.disp.offset = LabelOffset(type, ptA, ptB, entityA, entityB);
     c.group      = SS.GW.activeGroup;
     c.workplane  = SS.GW.ActiveWorkplane();
     c.type       = type;

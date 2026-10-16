@@ -139,3 +139,18 @@ TEST_CASE(typed_input_outside_a_tool_is_refused) {
     CHECK_FALSE(SS.GW.CommitTypedLine(10.0, 0.0));
     CHECK_FALSE(SS.GW.CommitTypedCircle(10.0));
 }
+
+TEST_CASE(typed_dimensions_get_a_label_offset) {
+    CHECK_LOAD("line.slvs");
+    BeginTool(Command::LINE_SEGMENT);
+    Click(300, 300);
+    CHECK_TRUE(SS.GW.CommitTypedLine(25.0, 30.0));
+    int checked = 0;
+    for(Constraint &c : SK.constraint) {
+        if(c.type == Constraint::Type::PT_PT_DISTANCE || c.type == Constraint::Type::ANGLE) {
+            CHECK_TRUE(c.disp.offset.Magnitude() > 1e-9);
+            checked++;
+        }
+    }
+    CHECK_TRUE(checked == 2);
+}
