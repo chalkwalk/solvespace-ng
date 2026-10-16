@@ -103,7 +103,8 @@ if(ENABLE_NG_GUI)
         ng/debugscript/test.cpp
         ng/uiactions/test.cpp
         ng/typedfields/test.cpp
-        ng/coreactions/test.cpp)
+        ng/coreactions/test.cpp
+        ng/statusmodel/test.cpp)
     target_link_libraries(solvespace-testsuite solvespace-ng-support)
 endif()
 

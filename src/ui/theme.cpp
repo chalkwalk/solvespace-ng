@@ -88,6 +88,9 @@ void ApplyTheme(ThemeChoice choice) {
     c[ImGuiCol_ResizeGrip]       = Hex(t.panelBorder);
     c[ImGuiCol_ResizeGripHovered] = Hex(t.accent, 0.6f);
     c[ImGuiCol_ResizeGripActive] = Hex(t.accent);
+    // The status bar's solver state: fine / problem.
+    c[ImGuiCol_PlotHistogram]    = Hex(t.accent);
+    c[ImGuiCol_PlotLinesHovered] = Hex(t.danger);
 }
 
 void ToggleTheme() {

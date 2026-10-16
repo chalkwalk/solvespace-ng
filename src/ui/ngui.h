@@ -6,6 +6,7 @@
 
 #include "keymap.h"
 #include "platform/sdl/menumodel.h"
+#include "ui/statusmodel.h"
 
 namespace SolveSpace {
 namespace Ui {
@@ -13,6 +14,8 @@ namespace Ui {
 void InitNgUi(); // after the ImGui context exists
 // Returns what the user picked this frame (to be run after the frame), or an empty function.
 std::function<void()> DrawNgUi(Platform::MenuBarSdl *menuBar, const keymap::Keymap &keymap);
+// The active modal tool's status text and key hints (empty when none is active).
+void SetModalStatus(std::string tool, std::vector<KeyHint> hints);
 // True while a UI-layer text field (the palette) owns the keyboard.
 bool CapturesText();
 void HandleUiAction(const std::string &action);
