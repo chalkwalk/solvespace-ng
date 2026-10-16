@@ -3,6 +3,7 @@
 //-----------------------------------------------------------------------------
 #include "solvespace.h"
 #include "imgui.h"
+#include "commandnames.h"
 #include "ui/ngui.h"
 #include "ui/palettewidget.h"
 #include "ui/piemenu.h"
@@ -80,6 +81,11 @@ static void DrawStatusBar(const keymap::Keymap &keymap) {
     ImGui::PopStyleVar(2);
 }
 
+static std::string MenuLabelFor(Command c) {
+    std::string l = GraphicsWindow::MenuLabel(c);
+    return l.empty() ? CommandName(c) : Platform::StripMnemonic(l);
+}
+
 void InitNgUi() {
     ApplyTheme(LoadThemeChoice());
     Actions().Bind("ui.command-palette", [] { gPalette.Open(); });
@@ -89,6 +95,17 @@ void InitNgUi() {
             { "Line", "line-segment" }, { "Rectangle", "rectangle" }, { "Circle", "circle" },
             { "Arc", "arc" }, { "Spline", "cubic-spline" }, { "Point", "datum-point" },
             { "Text", "ttf-text" }, { "Workplane", "workplane" } });
+    });
+    Actions().Bind("ui.pie-constrain", [] {
+        SS.GW.SelectHoveredIfNothingSelected();
+        SS.GW.GroupSelection();
+        std::vector<PieItem> items;
+        for(Command c : Constraint::PieCommands()) {
+            if(items.size() == 8) break;
+            if(!Constraint::AppliesToSelection(c)) continue;
+            items.push_back({ MenuLabelFor(c), CommandName(c) });
+        }
+        Pie().Open("Constrain", std::move(items));
     });
     Actions().Bind("ui.pie-view", [] {
         Pie().Open("View", {

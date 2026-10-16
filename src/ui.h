@@ -669,6 +669,8 @@ public:
     bool ToggleSketchFocus(bool animate); // false if there was nothing to do
     void ActivateGroup(hGroup hg);        // what the property browser's "active" radio does
     void LookOntoActiveWorkplane(bool animate);
+    // The translated menu text of a command ("&Horizontal"), or "" if it has no menu item.
+    static std::string MenuLabel(Command id);
     Command SmartDimensionCommand(); // from gs after GroupSelection(): ANGLE or DISTANCE_DIA
     void    SmartDimension();        // hover fallback, then MenuConstrain(that command)
 

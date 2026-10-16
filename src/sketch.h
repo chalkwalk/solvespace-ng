@@ -804,6 +804,11 @@ public:
 
     static hConstraint AddConstraint(Constraint *c, bool rememberForUndo = true);
     static void MenuConstrain(Command id);
+    // True if MenuConstrain(id) would act on the current SS.GW.gs; call GroupSelection()
+    // first. Geometry checks inside the tangent helpers are not mirrored, so a tangent may
+    // still report a bad selection when chosen.
+    static bool AppliesToSelection(Command id);
+    static const std::vector<Command> &PieCommands(); // constrain-pie candidates, by priority
     static void DeleteAllConstraintsFor(Constraint::Type type, hEntity entityA, hEntity ptA);
 
     static hConstraint ConstrainCoincident(hEntity ptA, hEntity ptB);

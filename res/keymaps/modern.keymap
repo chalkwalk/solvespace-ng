@@ -1,13 +1,14 @@
 # SolveSpace NG "Modern" keymap (Blender-style). DRAFT: tuned during M1.
 # Format: <command>: <chord>[, <chord>...]
 # Command names are the stable ids from src/commandnames.cpp; "ui." names are UI actions.
-# M1b adds: F (constrain pie), G (grab).
+# M1b adds: G (grab).
 
 ui.command-palette:     Space, F3
 ui.toggle-menu-bar:     F10
 ui.toggle-theme:        Ctrl+Alt+T
 ui.pie-add:             Shift+A
 ui.pie-view:            `
+ui.pie-constrain:       F
 ui.view-front:          Num1
 ui.view-back:           Ctrl+Num1
 ui.view-right:          Num3

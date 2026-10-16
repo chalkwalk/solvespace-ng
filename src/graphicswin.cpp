@@ -285,6 +285,13 @@ bool GraphicsWindow::KeyboardEvent(Platform::KeyboardEvent event) {
     return false;
 }
 
+std::string GraphicsWindow::MenuLabel(Command id) {
+    for(int i = 0; Menu[i].level >= 0; i++) {
+        if(Menu[i].cmd == id && Menu[i].label) return Translate(Menu[i].label);
+    }
+    return "";
+}
+
 void GraphicsWindow::PopulateMainMenu() {
     bool unique = false;
     Platform::MenuBarRef mainMenu = Platform::GetOrCreateMainMenu(&unique);
