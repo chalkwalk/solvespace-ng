@@ -122,6 +122,7 @@ if(ENABLE_GUI OR ENABLE_CLI)
 
         bsp.cpp
         clipboard.cpp
+        commandnames.cpp
         confscreen.cpp
         constraint.cpp
         describescreen.cpp

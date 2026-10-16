@@ -557,6 +557,7 @@ public:
 
     Platform::KeyboardEvent AcceleratorForCommand(Command id);
     void ActivateCommand(Command id);
+    static std::vector<Command> MenuCommands();
 
     static void MenuView(Command id);
     static void MenuEdit(Command id);

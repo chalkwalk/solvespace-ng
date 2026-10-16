@@ -207,6 +207,14 @@ void GraphicsWindow::ActivateCommand(Command cmd) {
     }
 }
 
+std::vector<Command> GraphicsWindow::MenuCommands() {
+    std::vector<Command> result;
+    for(int i = 0; Menu[i].level >= 0; i++) {
+        if(Menu[i].cmd != Command::NONE) result.push_back(Menu[i].cmd);
+    }
+    return result;
+}
+
 Platform::KeyboardEvent GraphicsWindow::AcceleratorForCommand(Command cmd) {
     int rawAccel = 0;
     for(int i = 0; Menu[i].level >= 0; i++) {
