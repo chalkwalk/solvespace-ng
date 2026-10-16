@@ -653,6 +653,12 @@ public:
 
     // SolveSpace NG interaction
     void SnapToView(ViewPreset p, bool animate);
+    // The view, from typed text (the browser's view screen and NG's View panel): the scale in
+    // pixels per display unit, the origin as "x, y, z" and a projection vector as "x, y, z".
+    // False (with an error message) when refused.
+    bool SetViewScale(const std::string &text);
+    bool SetViewOrigin(const std::string &text);
+    bool SetViewProjection(bool right, const std::string &text);
     bool SelectHoveredIfNothingSelected();
     void FrameSelected();
     // Groups of the selected (or else hovered) entities and constraints.

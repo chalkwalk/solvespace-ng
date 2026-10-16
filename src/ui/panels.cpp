@@ -9,13 +9,14 @@ namespace SolveSpace {
 namespace Ui {
 
 Panel::Panel(std::string name, std::string title, PanelEdge edge, float width,
-             bool shownByDefault)
+             bool shownByDefault, bool remembersShown)
     : name(std::move(name)), title(std::move(title)), edge(edge), width(width),
-      shownByDefault(shownByDefault), shown(shownByDefault) {}
+      shownByDefault(shownByDefault), shown(shownByDefault), remembersShown(remembersShown) {}
 
 void Panel::Load() {
     auto settings = Platform::GetSettings();
-    shown  = settings->ThawBool("NG_Panel_" + name + "_Shown", shownByDefault);
+    shown  = remembersShown ? settings->ThawBool("NG_Panel_" + name + "_Shown", shownByDefault)
+                            : shownByDefault;
     savedX = (float)settings->ThawFloat("NG_Panel_" + name + "_X", -1);
     savedY = (float)settings->ThawFloat("NG_Panel_" + name + "_Y", -1);
     savedW = (float)settings->ThawFloat("NG_Panel_" + name + "_W", -1);
@@ -23,8 +24,9 @@ void Panel::Load() {
 }
 
 void Panel::SetShown(bool s) {
+    if(s == shown) return;
     shown = s;
-    Platform::GetSettings()->FreezeBool("NG_Panel_" + name + "_Shown", shown);
+    if(remembersShown) Platform::GetSettings()->FreezeBool("NG_Panel_" + name + "_Shown", shown);
 }
 
 bool Panel::Begin() {
@@ -92,6 +94,29 @@ Panel &PreferencesPanel() {
 
 Panel &StylesPanel() {
     static Panel panel("Styles", "Styles", PanelEdge::CENTER, 380, /*shownByDefault=*/false);
+    return panel;
+}
+
+Panel &ViewPanel() {
+    static Panel panel("View", "View", PanelEdge::CENTER, 380, /*shownByDefault=*/false);
+    return panel;
+}
+
+Panel &PastePanel() {
+    static Panel panel("Paste", "Paste Transformed", PanelEdge::CENTER, 380, false,
+                       /*remembersShown=*/false);
+    return panel;
+}
+
+Panel &StepDimensionPanel() {
+    static Panel panel("StepDimension", "Step Dimension", PanelEdge::CENTER, 380, false,
+                       /*remembersShown=*/false);
+    return panel;
+}
+
+Panel &TangentArcPanel() {
+    static Panel panel("TangentArc", "Tangent Arc", PanelEdge::CENTER, 380, false,
+                       /*remembersShown=*/false);
     return panel;
 }
 

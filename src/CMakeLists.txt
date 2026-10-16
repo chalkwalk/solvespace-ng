@@ -333,6 +333,7 @@ if(ENABLE_GUI AND ENABLE_NG_GUI)
         ui/problems.cpp
         ui/prefspanel.cpp
         ui/stylespanel.cpp
+        ui/toolpanels.cpp
         ui/fields.cpp
         ui/ngui.cpp
         ui/piemenu.cpp

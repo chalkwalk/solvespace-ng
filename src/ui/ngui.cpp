@@ -10,6 +10,7 @@
 #include "ui/prefspanel.h"
 #include "ui/problems.h"
 #include "ui/stylespanel.h"
+#include "ui/toolpanels.h"
 #include "ui/properties.h"
 #include "ui/panels.h"
 #include "ui/ngui.h"
@@ -112,6 +113,7 @@ void InitNgUi() {
     ProblemsPanel().Load();
     PreferencesPanel().Load();
     StylesPanel().Load();
+    ViewPanel().Load();
     // Browser screens that have a panel open the panel.
     SS.GW.showScreenElsewhere = [] { return ShowScreenInPanel(); };
     gHideBrowser = true;
@@ -156,6 +158,11 @@ bool ShowScreenInPanel() {
         case Screen::GROUP_SOLVE_INFO: ProblemsPanel().SetShown(true); return true;
         case Screen::LIST_OF_STYLES:   StylesPanel().SetShown(true); return true;
         case Screen::STYLE_INFO:       ShowStyleInStyles(SS.TW.shown.style); return true;
+        case Screen::EDIT_VIEW:        ViewPanel().SetShown(true); return true;
+        // Their panels show themselves while the screen is current.
+        case Screen::PASTE_TRANSFORMED:
+        case Screen::STEP_DIMENSION:
+        case Screen::TANGENT_ARC:      return true;
         default:                       return false;
     }
 }
@@ -180,6 +187,7 @@ std::function<void()> DrawNgUi(Platform::MenuBarSdl *menuBar, const keymap::Keym
     if(auto changed = DrawProblems()) run = changed;
     if(auto changed = DrawPreferences()) run = changed;
     if(auto changed = DrawStyles()) run = changed;
+    if(auto changed = DrawToolPanels()) run = changed;
     if(gHideBrowser) {
         // The Properties panel replaces the property browser, which starts hidden; View >
         // Show Property Browser brings it back.

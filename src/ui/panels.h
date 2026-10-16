@@ -14,7 +14,9 @@ enum class PanelEdge { LEFT, RIGHT, BOTTOM_RIGHT, CENTER };
 
 class Panel {
 public:
-    Panel(std::string name, std::string title, PanelEdge edge, float width, bool shownByDefault);
+    // A panel that doesn't remember being shown (a tool's) is shown only while its tool is.
+    Panel(std::string name, std::string title, PanelEdge edge, float width, bool shownByDefault,
+          bool remembersShown = true);
 
     void Load(); // the shown flag from the settings; call when a main window is made
     bool Shown() const { return shown; }
@@ -30,7 +32,7 @@ private:
     std::string name, title;
     PanelEdge   edge;
     float       width;
-    bool        shownByDefault, shown;
+    bool        shownByDefault, shown, remembersShown;
     float       savedX = -1, savedY = -1, savedW = -1, savedH = -1;
 };
 
@@ -39,6 +41,10 @@ Panel &PropertiesPanel();
 Panel &ProblemsPanel();
 Panel &PreferencesPanel();
 Panel &StylesPanel();
+Panel &ViewPanel();
+Panel &PastePanel();         // shown while the browser's Paste Transformed screen is
+Panel &StepDimensionPanel(); // likewise
+Panel &TangentArcPanel();    // likewise
 
 }
 }

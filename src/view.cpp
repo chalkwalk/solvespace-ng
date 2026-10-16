@@ -117,53 +117,66 @@ void TextWindow::ScreenChangeExplodeDistance(int link, uint32_t v) {
     SS.TW.edit.meaning = Edit::EXPLODE_DISTANCE;
 }
 
+bool GraphicsWindow::SetViewScale(const std::string &text) {
+    Expr *e = Expr::From(text, /*popUpError=*/true);
+    if(!e) return false;
+    double v = e->Eval() / SS.MmPerUnit();
+    if(v <= LENGTH_EPS) {
+        Error(_("Scale cannot be zero or negative."));
+        return false;
+    }
+    scale = v;
+    Invalidate();
+    return true;
+}
+
+bool GraphicsWindow::SetViewOrigin(const std::string &text) {
+    Vector pt;
+    if(sscanf(text.c_str(), "%lf, %lf, %lf", &pt.x, &pt.y, &pt.z) != 3) {
+        Error(_("Bad format: specify x, y, z"));
+        return false;
+    }
+    offset = pt.ScaledBy(SS.MmPerUnit()).ScaledBy(-1);
+    Invalidate();
+    return true;
+}
+
+bool GraphicsWindow::SetViewProjection(bool right, const std::string &text) {
+    Vector pt;
+    if(sscanf(text.c_str(), "%lf, %lf, %lf", &pt.x, &pt.y, &pt.z) != 3) {
+        Error(_("Bad format: specify x, y, z"));
+        return false;
+    }
+    (right ? projRight : projUp) = pt;
+    NormalizeProjectionVectors();
+    Invalidate();
+    return true;
+}
+
 bool TextWindow::EditControlDoneForView(const std::string &s) {
     switch(edit.meaning) {
-        case Edit::VIEW_SCALE: {
-            Expr *e = Expr::From(s, /*popUpError=*/true);
-            if(e) {
-                double v =  e->Eval() / SS.MmPerUnit();
-                if(v > LENGTH_EPS) {
-                    SS.GW.scale = v;
-                } else {
-                    Error(_("Scale cannot be zero or negative."));
-                }
-            }
+        case Edit::VIEW_SCALE:
+            SS.GW.SetViewScale(s);
             break;
-        }
 
-        case Edit::VIEW_ORIGIN: {
-            Vector pt;
-            if(sscanf(s.c_str(), "%lf, %lf, %lf", &pt.x, &pt.y, &pt.z) == 3) {
-                pt = pt.ScaledBy(SS.MmPerUnit());
-                SS.GW.offset = pt.ScaledBy(-1);
-            } else {
-                Error(_("Bad format: specify x, y, z"));
-            }
+        case Edit::VIEW_ORIGIN:
+            SS.GW.SetViewOrigin(s);
             break;
-        }
 
         case Edit::VIEW_PROJ_RIGHT:
-        case Edit::VIEW_PROJ_UP: {
-            Vector pt;
-            if(sscanf(s.c_str(), "%lf, %lf, %lf", &pt.x, &pt.y, &pt.z) != 3) {
-                Error(_("Bad format: specify x, y, z"));
-                break;
-            }
-            if(edit.meaning == Edit::VIEW_PROJ_RIGHT) {
-                SS.GW.projRight = pt;
-                SS.GW.NormalizeProjectionVectors();
+            // Then edit up, in a second field.
+            if(SS.GW.SetViewProjection(/*right=*/true, s)) {
                 edit.meaning = Edit::VIEW_PROJ_UP;
                 HideEditControl();
                 ShowEditControl(10, ssprintf("%.3f, %.3f, %.3f", CO(SS.GW.projUp)),
                                 editControl.halfRow + 2);
                 edit.showAgain = true;
-            } else {
-                SS.GW.projUp = pt;
-                SS.GW.NormalizeProjectionVectors();
             }
             break;
-        }
+
+        case Edit::VIEW_PROJ_UP:
+            SS.GW.SetViewProjection(/*right=*/false, s);
+            break;
 
         default:
             return false;
