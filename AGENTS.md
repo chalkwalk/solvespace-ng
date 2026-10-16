@@ -338,6 +338,17 @@ macOS and Emscripten builds.
 - Upstream sync: when wanted, fetch without keeping a remote, e.g.
   `git fetch https://github.com/solvespace/solvespace.git master` then merge `FETCH_HEAD`.
   Merge upstream quarterly until M1 lands, then cherry-pick solver/kernel fixes only.
+- `github-master` mirrors the official GitHub `master` head (created 2026-10-16 at `8ef723e1`).
+  Never commit NG work to it; only fast-forward it to upstream:
+  `git fetch https://github.com/solvespace/solvespace.git master && git branch -f github-master
+  FETCH_HEAD && git push origin github-master`.
+- Upstreamable fixes (bug fixes, `wishlist.txt` items, anything useful to stock SolveSpace) go on
+  `pr/<topic>` branches cut from `github-master`, ported so they build and pass `test/` there with
+  no NG code or dependencies, following upstream's review rules in
+  `.github/copilot-instructions.md` (small, no new dependencies, human-tested; upstream
+  discourages AI-attributed commits, so the owner decides authorship before anything is offered).
+  Keep them on the LAN remote until the owner chooses to open a PR. Candidates so far:
+  `e220b5d8` (UndoState `groupOrder` leak) and the headless null guards in `978602ca`.
 - Tests: `RUN_COMMAND("<command-name>")` in `test/` runs a menu command headlessly (names in
   `src/commandnames.cpp`). Headless code paths have null windows/menu items: guard them.
   Not headless-safe yet (null FileDialog/Window under `guinone.cpp`): `open`, `save`, `save-as`,
