@@ -58,8 +58,7 @@ void TextWindow::ScreenChangeDigitsAfterDecimalDegree(int link, uint32_t v) {
 }
 
 void TextWindow::ScreenChangeUseSIPrefixes(int link, uint32_t v) {
-    SS.useSIPrefixes = !SS.useSIPrefixes;
-    SS.GW.Invalidate();
+    SS.ToggleSetting(SettingToggle::USE_SI_PREFIXES);
 }
 
 void TextWindow::ScreenChangeExportScale(int link, uint32_t v) {
@@ -73,77 +72,61 @@ void TextWindow::ScreenChangeExportOffset(int link, uint32_t v) {
 }
 
 void TextWindow::ScreenChangeArcDimDefault(int link, uint32_t v) {
-    SS.arcDimDefaultDiameter = !SS.arcDimDefaultDiameter;
+    SS.ToggleSetting(SettingToggle::ARC_DIM_DEFAULT_DIAMETER);
 }
 
 void TextWindow::ScreenChangeShowFullFilePath(int link, uint32_t v) {
-    SS.showFullFilePath = !SS.showFullFilePath;
-    SS.UpdateWindowTitles();
+    SS.ToggleSetting(SettingToggle::SHOW_FULL_FILE_PATH);
 }
 
 void TextWindow::ScreenChangeFixExportColors(int link, uint32_t v) {
-    SS.fixExportColors = !SS.fixExportColors;
+    SS.ToggleSetting(SettingToggle::FIX_EXPORT_COLORS);
 }
 
 void TextWindow::ScreenChangeExportBackgroundColor(int link, uint32_t v) {
-    SS.exportBackgroundColor = !SS.exportBackgroundColor;
+    SS.ToggleSetting(SettingToggle::EXPORT_BACKGROUND_COLOR);
 }
 
 void TextWindow::ScreenChangeBackFaces(int link, uint32_t v) {
-    SS.drawBackFaces = !SS.drawBackFaces;
-    SS.GW.Invalidate(/*clearPersistent=*/true);
+    SS.ToggleSetting(SettingToggle::DRAW_BACK_FACES);
 }
 
 void TextWindow::ScreenChangeTurntableNav(int link, uint32_t v) {
-    SS.turntableNav = !SS.turntableNav;
-    if(SS.turntableNav) {
-        // If turntable nav is being turned on, align view so Z is vertical
-        SS.GW.AnimateOnto(Quaternion::From({-1, 0, 0}, {0, 0, 1}),
-                          SS.GW.offset);
-    }
+    SS.ToggleSetting(SettingToggle::TURNTABLE_NAV);
 }
 
 void TextWindow::ScreenChangeCameraNav(int link, uint32_t v) {
-    SS.cameraNav = !SS.cameraNav;
+    SS.ToggleSetting(SettingToggle::CAMERA_NAV);
 }
 
 void TextWindow::ScreenChangeImmediatelyEditDimension(int link, uint32_t v) {
-    SS.immediatelyEditDimension = !SS.immediatelyEditDimension;
-    SS.GW.Invalidate(/*clearPersistent=*/true);
+    SS.ToggleSetting(SettingToggle::IMMEDIATELY_EDIT_DIMENSION);
 }
 
 void TextWindow::ScreenChangeShowContourAreas(int link, uint32_t v) {
-    SS.showContourAreas = !SS.showContourAreas;
-    SS.GW.Invalidate();
+    SS.ToggleSetting(SettingToggle::SHOW_CONTOUR_AREAS);
 }
 
 void TextWindow::ScreenChangeCheckClosedContour(int link, uint32_t v) {
-    SS.checkClosedContour = !SS.checkClosedContour;
-    SS.GW.Invalidate();
+    SS.ToggleSetting(SettingToggle::CHECK_CLOSED_CONTOUR);
 }
 
 void TextWindow::ScreenChangeAutomaticLineConstraints(int link, uint32_t v) {
-    SS.automaticLineConstraints = !SS.automaticLineConstraints;
-    SS.GW.Invalidate();
+    SS.ToggleSetting(SettingToggle::AUTOMATIC_LINE_CONSTRAINTS);
 }
 
 void TextWindow::ScreenChangeShadedTriangles(int link, uint32_t v) {
-    SS.exportShadedTriangles = !SS.exportShadedTriangles;
-    SS.GW.Invalidate();
+    SS.ToggleSetting(SettingToggle::EXPORT_SHADED_TRIANGLES);
 }
 
 void TextWindow::ScreenChangePwlCurves(int link, uint32_t v) {
-    SS.exportPwlCurves = !SS.exportPwlCurves;
-    SS.GW.Invalidate();
+    SS.ToggleSetting(SettingToggle::EXPORT_PWL_CURVES);
 }
 
 void TextWindow::ScreenChangeCanvasSizeAuto(int link, uint32_t v) {
-    if(link == 't') {
-        SS.exportCanvasSizeAuto = true;
-    } else {
-        SS.exportCanvasSizeAuto = false;
+    if(SS.exportCanvasSizeAuto != (link == 't')) {
+        SS.ToggleSetting(SettingToggle::EXPORT_CANVAS_SIZE_AUTO);
     }
-    SS.GW.Invalidate();
 }
 
 void TextWindow::ScreenChangeCanvasSize(int link, uint32_t v) {
@@ -394,198 +377,53 @@ void TextWindow::ShowConfiguration() {
 }
 
 bool TextWindow::EditControlDoneForConfiguration(const std::string &s) {
+    Setting setting;
+    int     index = 0;
     switch(edit.meaning) {
-        case Edit::LIGHT_INTENSITY:
-            SS.lightIntensity[edit.i] = min(1.0, max(0.0, atof(s.c_str())));
-            SS.GW.Invalidate();
+        case Edit::LIGHT_INTENSITY:   setting = Setting::LIGHT_INTENSITY; index = edit.i; break;
+        case Edit::LIGHT_AMBIENT:     setting = Setting::LIGHT_AMBIENT; break;
+        case Edit::LIGHT_DIRECTION:   setting = Setting::LIGHT_DIRECTION; index = edit.i; break;
+        case Edit::COLOR:             setting = Setting::MODEL_COLOR; index = edit.i; break;
+        case Edit::CHORD_TOLERANCE:
+            setting = edit.i == 0 ? Setting::CHORD_TOLERANCE : Setting::EXPORT_CHORD_TOLERANCE;
             break;
-        case Edit::LIGHT_AMBIENT:
-            SS.ambientIntensity = min(1.0, max(0.0, atof(s.c_str())));
-            SS.GW.Invalidate();
+        case Edit::MAX_SEGMENTS:
+            setting = edit.i == 0 ? Setting::MAX_SEGMENTS : Setting::EXPORT_MAX_SEGMENTS;
             break;
-        case Edit::LIGHT_DIRECTION: {
-            double x, y, z;
-            if(sscanf(s.c_str(), "%lf, %lf, %lf", &x, &y, &z)==3) {
-                SS.lightDir[edit.i] = {x, y, z};
-                SS.GW.Invalidate();
-            } else {
-                Error(_("Bad format: specify coordinates as x, y, z"));
-            }
+        case Edit::CAMERA_TANGENT:    setting = Setting::CAMERA_TANGENT; break;
+        case Edit::GRID_SPACING:      setting = Setting::GRID_SPACING; break;
+        case Edit::EXPLODE_DISTANCE:  setting = Setting::EXPLODE_DISTANCE; break;
+        case Edit::DIGITS_AFTER_DECIMAL: setting = Setting::DIGITS_AFTER_DECIMAL; break;
+        case Edit::DIGITS_AFTER_DECIMAL_DEGREE:
+            setting = Setting::DIGITS_AFTER_DECIMAL_DEGREE;
             break;
-        }
-        case Edit::COLOR: {
-            Vector rgb;
-            if(sscanf(s.c_str(), "%lf, %lf, %lf", &rgb.x, &rgb.y, &rgb.z)==3) {
-                rgb = rgb.ClampWithin(0, 1);
-                SS.modelColor[edit.i] = RGBf(rgb.x, rgb.y, rgb.z);
-            } else {
-                Error(_("Bad format: specify color as r, g, b"));
-            }
-            break;
-        }
-        case Edit::CHORD_TOLERANCE: {
-            if(edit.i == 0) {
-                SS.chordTol = max(0.0, atof(s.c_str()));
-                SS.GenerateAll(SolveSpaceUI::Generate::ALL);
-            } else {
-                SS.exportChordTol = max(0.0, atof(s.c_str()));
-            }
-            break;
-        }
-        case Edit::MAX_SEGMENTS: {
-            if(edit.i == 0) {
-                SS.maxSegments = min(1000, max(7, atoi(s.c_str())));
-                SS.GenerateAll(SolveSpaceUI::Generate::ALL);
-            } else {
-                SS.exportMaxSegments = min(1000, max(7, atoi(s.c_str())));
-            }
-            break;
-        }
-        case Edit::CAMERA_TANGENT: {
-            SS.cameraTangent = (min(2.0, max(0.0, atof(s.c_str()))))/1000.0;
-            SS.GW.Invalidate();
-            if(!SS.usePerspectiveProj) {
-                Message(_("The perspective factor will have no effect until you "
-                          "enable View -> Use Perspective Projection."));
-            }
-            break;
-        }
-        case Edit::GRID_SPACING: {
-            SS.gridSpacing = (float)min(1e4, max(1e-3, SS.StringToMm(s)));
-            SS.GW.Invalidate();
-            break;
-        }
-        case Edit::EXPLODE_DISTANCE: {
-            SS.explodeDistance = min(1e4, max(-1e4, SS.StringToMm(s)));
-            SS.MarkGroupDirty(SS.GW.activeGroup, true);
-            break;
-        }
-        case Edit::DIGITS_AFTER_DECIMAL: {
-            int v = atoi(s.c_str());
-            if(v < 0 || v > 8) {
-                Error(_("Specify between 0 and %d digits after the decimal."), 8);
-            } else {
-                SS.SetUnitDigitsAfterDecimal(v);
-                SS.GW.Invalidate();
-            }
-            break;
-        }
-        case Edit::DIGITS_AFTER_DECIMAL_DEGREE: {
-            int v = atoi(s.c_str());
-            if(v < 0 || v > 4) {
-                Error(_("Specify between 0 and %d digits after the decimal."), 4);
-            } else {
-                SS.afterDecimalDegree = v;
-                SS.GW.Invalidate();
-            }
-            break;
-        }
-        case Edit::EXPORT_SCALE: {
-            Expr *e = Expr::From(s, /*popUpError=*/true);
-            if(e) {
-                double ev = e->Eval();
-                if(fabs(ev) < 0.001 || IsReasonable(ev)) {
-                    Error(_("Export scale must not be zero!"));
-                } else {
-                    SS.exportScale = (float)ev;
-                }
-            }
-            break;
-        }
-        case Edit::EXPORT_OFFSET: {
-            Expr *e = Expr::From(s, /*popUpError=*/true);
-            if(e) {
-                double ev = SS.ExprToMm(e);
-                if(IsReasonable(ev) || ev < 0) {
-                    Error(_("Cutter radius offset must not be negative!"));
-                } else {
-                    SS.exportOffset = (float)ev;
-                }
-            }
-            break;
-        }
+        case Edit::EXPORT_SCALE:      setting = Setting::EXPORT_SCALE; break;
+        case Edit::EXPORT_OFFSET:     setting = Setting::EXPORT_OFFSET; break;
         case Edit::CANVAS_SIZE: {
-            Expr *e = Expr::From(s, /*popUpError=*/true);
-            if(!e) {
-                break;
-            }
-            float d = (float)SS.ExprToMm(e);
-            switch(edit.i) {
-                case  0: SS.exportMargin.left   = d;    break;
-                case  1: SS.exportMargin.right  = d;    break;
-                case  2: SS.exportMargin.bottom = d;    break;
-                case  3: SS.exportMargin.top    = d;    break;
-
-                case 10: SS.exportCanvas.width  = d;    break;
-                case 11: SS.exportCanvas.height = d;    break;
-                case 12: SS.exportCanvas.dx     = d;    break;
-                case 13: SS.exportCanvas.dy     = d;    break;
-            }
-            break;
-        }
-        case Edit::G_CODE_DEPTH: {
-            Expr *e = Expr::From(s, /*popUpError=*/true);
-            if(e) SS.gCode.depth = (float)SS.ExprToMm(e);
-            break;
-        }
-        case Edit::G_CODE_SAFE_HEIGHT: {
-            Expr *e = Expr::From(s, /*popUpError=*/true);
-            if(e) SS.gCode.safeHeight = (float)SS.ExprToMm(e);
-            break;
-        }
-        case Edit::G_CODE_PASSES: {
-            Expr *e = Expr::From(s, /*popUpError=*/true);
-            if(e) SS.gCode.passes = (int)(e->Eval());
-            SS.gCode.passes = max(1, min(1000, SS.gCode.passes));
-            break;
-        }
-        case Edit::G_CODE_FEED: {
-            Expr *e = Expr::From(s, /*popUpError=*/true);
-            if(e) SS.gCode.feed = (float)SS.ExprToMm(e);
-            break;
-        }
-        case Edit::G_CODE_PLUNGE_FEED: {
-            Expr *e = Expr::From(s, /*popUpError=*/true);
-            if(e) SS.gCode.plungeFeed = (float)SS.ExprToMm(e);
-            break;
-        }
-        case Edit::AUTOSAVE_INTERVAL: {
-            int interval = atoi(s.c_str());
-            if(interval) {
-                if(interval >= 1) {
-                    SS.autosaveInterval = interval;
-                    SS.ScheduleAutosave();
-                } else {
-                    Error(_("Bad value: autosave interval should be positive"));
-                }
+            static const Setting canvas[] = {
+                Setting::MARGIN_LEFT, Setting::MARGIN_RIGHT, Setting::MARGIN_BOTTOM,
+                Setting::MARGIN_TOP, Setting::CANVAS_WIDTH, Setting::CANVAS_HEIGHT,
+                Setting::CANVAS_DX, Setting::CANVAS_DY };
+            if(edit.i >= 0 && edit.i < 4) {
+                setting = canvas[edit.i];
+            } else if(edit.i >= 10 && edit.i < 14) {
+                setting = canvas[edit.i - 6];
             } else {
-                Error(_("Bad format: specify interval in integral minutes"));
+                return true;
             }
             break;
         }
-        case Edit::FIND_CONSTRAINT_TIMEOUT: {
-            int timeout = atoi(s.c_str());
-            if(timeout) {
-                if(timeout >= 1) {
-                    SS.timeoutRedundantConstr = timeout;
-                } else {
-                    SS.timeoutRedundantConstr = 1000;
-                }
-            }
-            break;
-        }
-        case Edit::ANIMATION_SPEED: {
-            int speed = atoi(s.c_str());
-            if(speed >= 0) {
-                SS.animationSpeed = speed;
-            } else {
-                SS.animationSpeed = 800;
-            }
-            break;
-        }
-
+        case Edit::G_CODE_DEPTH:       setting = Setting::GCODE_DEPTH; break;
+        case Edit::G_CODE_SAFE_HEIGHT: setting = Setting::GCODE_SAFE_HEIGHT; break;
+        case Edit::G_CODE_PASSES:      setting = Setting::GCODE_PASSES; break;
+        case Edit::G_CODE_FEED:        setting = Setting::GCODE_FEED; break;
+        case Edit::G_CODE_PLUNGE_FEED: setting = Setting::GCODE_PLUNGE_FEED; break;
+        case Edit::AUTOSAVE_INTERVAL:  setting = Setting::AUTOSAVE_INTERVAL; break;
+        case Edit::FIND_CONSTRAINT_TIMEOUT: setting = Setting::FIND_CONSTRAINT_TIMEOUT; break;
+        case Edit::ANIMATION_SPEED:    setting = Setting::ANIMATION_SPEED; break;
         default: return false;
     }
+    SS.SetSetting(setting, s, index);
     return true;
 }
 

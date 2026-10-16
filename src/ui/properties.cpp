@@ -2,9 +2,9 @@
 // The Properties panel. Ported from TextWindow::ShowGroupInfo; every change goes through the
 // SolveSpaceUI method the property browser uses, run after the frame.
 //-----------------------------------------------------------------------------
-#include <map>
 #include "solvespace.h"
 #include "imgui.h"
+#include "ui/fields.h"
 #include "ui/panels.h"
 #include "ui/properties.h"
 #include "ui/selectionmodel.h"
@@ -32,27 +32,6 @@ void ShowInPropertyBrowser(void (*screen)(int link, uint32_t v), uint32_t v) {
 hGroup PropertiesGroup() {
     if(gShownGroup.v && SK.group.FindByIdNoOops(gShownGroup)) return gShownGroup;
     return SS.GW.activeGroup;
-}
-
-// A text field for a value the model owns: it shows the model's value until it is edited,
-// and Enter (or leaving the field after editing) passes the text to apply.
-static void ValueField(const char *label, const std::string &value, std::function<void()> *run,
-                       std::function<void(std::string)> apply) {
-    static std::map<ImGuiID, std::string> editing;
-    ImGuiID     id = ImGui::GetID(label);
-    std::string text = editing.count(id) ? editing[id] : value;
-    char buf[256];
-    snprintf(buf, sizeof(buf), "%s", text.c_str());
-    ImGui::SetNextItemWidth(-FLT_MIN);
-    bool entered = ImGui::InputText(label, buf, sizeof(buf), ImGuiInputTextFlags_EnterReturnsTrue);
-    if(ImGui::IsItemActive()) editing[id] = buf;
-    if(entered || ImGui::IsItemDeactivatedAfterEdit()) {
-        std::string s = buf;
-        *run = [apply, s] { apply(s); };
-        editing.erase(id);
-    } else if(!ImGui::IsItemActive()) {
-        editing.erase(id);
-    }
 }
 
 static void Option(const char *label, bool on, hGroup hg, GroupOption option,

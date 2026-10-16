@@ -147,6 +147,7 @@ if(ENABLE_GUI OR ENABLE_CLI)
         visibility.cpp
         groupprops.cpp
         constraintedit.cpp
+        preferences.cpp
         sketchfocus.cpp
         constraintprobe.cpp
         grab.cpp
@@ -329,6 +330,8 @@ if(ENABLE_GUI AND ENABLE_NG_GUI)
         ui/outliner.cpp
         ui/properties.cpp
         ui/problems.cpp
+        ui/prefspanel.cpp
+        ui/fields.cpp
         ui/ngui.cpp
         ui/piemenu.cpp
         ui/theme.cpp

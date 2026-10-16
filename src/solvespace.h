@@ -433,6 +433,26 @@ enum class GroupOption {
     RELAX_CONSTRAINTS, ALLOW_REDUNDANT, SUPPRESS_DOF, ALL_DIMS_REFERENCE,
 };
 
+// Application settings the configuration and view screens edit (and the NG panels).
+enum class Setting {
+    MODEL_COLOR,                                   // index: which of the MODEL_COLORS
+    CHORD_TOLERANCE, MAX_SEGMENTS, EXPORT_CHORD_TOLERANCE, EXPORT_MAX_SEGMENTS, GRID_SPACING,
+    DIGITS_AFTER_DECIMAL, DIGITS_AFTER_DECIMAL_DEGREE, EXPORT_SCALE, EXPORT_OFFSET,
+    MARGIN_LEFT, MARGIN_RIGHT, MARGIN_BOTTOM, MARGIN_TOP,
+    CANVAS_WIDTH, CANVAS_HEIGHT, CANVAS_DX, CANVAS_DY,
+    GCODE_DEPTH, GCODE_SAFE_HEIGHT, GCODE_PASSES, GCODE_FEED, GCODE_PLUNGE_FEED,
+    AUTOSAVE_INTERVAL, FIND_CONSTRAINT_TIMEOUT, ANIMATION_SPEED,
+    LIGHT_INTENSITY, LIGHT_DIRECTION,              // index: which light
+    LIGHT_AMBIENT, CAMERA_TANGENT, EXPLODE_DISTANCE,
+};
+enum class SettingToggle {
+    USE_SI_PREFIXES, ARC_DIM_DEFAULT_DIAMETER, SHOW_FULL_FILE_PATH, FIX_EXPORT_COLORS,
+    EXPORT_BACKGROUND_COLOR, DRAW_BACK_FACES, TURNTABLE_NAV, CAMERA_NAV,
+    IMMEDIATELY_EDIT_DIMENSION, SHOW_CONTOUR_AREAS, CHECK_CLOSED_CONTOUR,
+    AUTOMATIC_LINE_CONSTRAINTS, EXPORT_SHADED_TRIANGLES, EXPORT_PWL_CURVES,
+    EXPORT_CANVAS_SIZE_AUTO,
+};
+
 class SolveSpaceUI {
 public:
     TextWindow                 *pTW;
@@ -488,6 +508,12 @@ public:
     bool SetGroupOpacity(hGroup hg, const std::string &expr);
     // A dimension's value as its editor shows it (display units; a radius when shown as one),
     // and setting it from typed text (an expression; a comment's text). Undoable.
+    // Settings: the text an edit field starts with, and applying typed text with the property
+    // browser's parsing and limits (false, with an error message, when refused).
+    std::string SettingText(Setting setting, int index = 0);
+    bool        SetSetting(Setting setting, const std::string &text, int index = 0);
+    bool        SettingOn(SettingToggle toggle);
+    void        ToggleSetting(SettingToggle toggle);
     std::string ConstraintEditText(hConstraint hc);
     bool        SetConstraintValue(hConstraint hc, const std::string &text);
     void        SetTtfText(hRequest hr, const std::string &text);

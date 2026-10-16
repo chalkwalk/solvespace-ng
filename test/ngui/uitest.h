@@ -37,6 +37,11 @@ std::vector<std::string> BrowserRows();
 bool                     BrowserShows(const std::string &text);
 bool                     ClickBrowserText(const std::string &text, int occurrence = 0);
 
+// Panels: scrolls the panel with the mouse wheel until the item is drawn (items below the fold
+// are not), and closes a panel with its title bar's close button.
+bool RevealIn(const std::string &panelTitle, const std::string &labelOrId);
+bool ClosePanel(const std::string &panelTitle);
+
 // Replaces the text of an ImGui text field (found by label or ##id) and presses Enter.
 bool EditField(const std::string &labelOrId, const std::string &text);
 

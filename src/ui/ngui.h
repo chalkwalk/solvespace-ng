@@ -19,6 +19,9 @@ void SetModalStatus(std::string tool, std::vector<KeyHint> hints);
 // True while a UI-layer text field (the palette) owns the keyboard.
 bool CapturesText();
 void HandleUiAction(const std::string &action);
+// Opens the NG panel for the property browser screen a command picked (SS.TW.shown); false if
+// that screen has no panel yet.
+bool ShowScreenInPanel();
 // The active modal tool's key handler (KeyRouter::modal). True if it consumed the chord.
 bool ModalKey(const keymap::Chord &c);
 

@@ -7,6 +7,7 @@
 #include "ui/drawtool.h"
 #include "ui/grabtool.h"
 #include "ui/outliner.h"
+#include "ui/prefspanel.h"
 #include "ui/problems.h"
 #include "ui/properties.h"
 #include "ui/panels.h"
@@ -107,6 +108,9 @@ void InitNgUi() {
     OutlinerPanel().Load();
     PropertiesPanel().Load();
     ProblemsPanel().Load();
+    PreferencesPanel().Load();
+    // Browser screens that have a panel open the panel.
+    SS.GW.showScreenElsewhere = [] { return ShowScreenInPanel(); };
     gHideBrowser = true;
     SS.GW.browserIsPrimary = false;
     ApplyTheme(LoadThemeChoice());
@@ -141,6 +145,16 @@ void InitNgUi() {
     });
 }
 
+bool ShowScreenInPanel() {
+    using Screen = TextWindow::Screen;
+    switch(SS.TW.shown.screen) {
+        case Screen::CONFIGURATION:    PreferencesPanel().SetShown(true); return true;
+        case Screen::GROUP_INFO:       ShowGroupInProperties(SS.TW.shown.group); return true;
+        case Screen::GROUP_SOLVE_INFO: ProblemsPanel().SetShown(true); return true;
+        default:                       return false;
+    }
+}
+
 void HandleUiAction(const std::string &action) {
     if(!Actions().Run(action)) {
         dbp("UI action '%s' is unknown, unbound or disabled", action.c_str());
@@ -159,6 +173,7 @@ std::function<void()> DrawNgUi(Platform::MenuBarSdl *menuBar, const keymap::Keym
     std::function<void()> run = DrawOutliner();
     if(auto changed = DrawProperties()) run = changed;
     if(auto changed = DrawProblems()) run = changed;
+    if(auto changed = DrawPreferences()) run = changed;
     if(gHideBrowser) {
         // The Properties panel replaces the property browser, which starts hidden; View >
         // Show Property Browser brings it back.

@@ -723,6 +723,9 @@ public:
     void SetWorkplaneFreeIn3d();
     hEntity ActiveWorkplane();
     void ForceTextWindowShown();
+    // Called by ForceTextWindowShown after a command picked a browser screen (SS.TW.shown):
+    // returns true if it showed that screen somewhere else (an NG panel) instead.
+    std::function<bool()> showScreenElsewhere;
 
     // Operations that must be completed by doing something with the mouse
     // are noted here.

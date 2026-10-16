@@ -65,8 +65,9 @@ Point2d WindowSize();
 void    Resize(int width, int height); // as if the person resized the window
 Point2d ToWindow(Vector modelPoint); // where a model point is drawn in the main window
 
-// ImGui items (menu entries, buttons, palette rows, panels) drawn in the last frame, by label
-// without its "##id" suffix. Windows are items too, e.g. "Property Browser".
+// ImGui items (menu entries, buttons, palette rows, panels) visible in the last frame, by label
+// without its "##id" suffix; scrolled out of view means not found. Windows are items too, e.g.
+// "Property Browser".
 struct Item {
     std::string label, id, window; // id: the "##id" part of the ImGui label, without hashes
     double      x0, y0, x1, y1;

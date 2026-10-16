@@ -60,6 +60,8 @@ void ImGuiTestEngineHook_ItemInfo(ImGuiContext *ctx, ImGuiID id, const char *lab
     item.checked   = (flags & ImGuiItemStatusFlags_Checked) != 0;
     item.opened    = (flags & ImGuiItemStatusFlags_Opened) != 0;
     item.isWindow  = ImGui::FindWindowByID(id) != nullptr;
+    ImGuiWindow *w = ctx->CurrentWindow;
+    item.visible   = item.isWindow || !w || w->ClipRect.Overlaps(it->second);
     gItems.push_back(item);
 }
 

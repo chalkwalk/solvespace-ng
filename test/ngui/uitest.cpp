@@ -45,6 +45,24 @@ void ShowBrowser() {
     if(!SS.GW.showTextWindow) Driver::ClickMenu({ "View", "Show Property Browser" });
 }
 
+bool RevealIn(const std::string &panelTitle, const std::string &labelOrId) {
+    for(int i = 0; i < 40; i++) {
+        if(Driver::FindItem(labelOrId)) return true;
+        std::optional<Driver::Item> panel = Driver::FindItem(panelTitle);
+        if(!panel) return false;
+        Driver::Wheel((panel->x0 + panel->x1) / 2, (panel->y0 + panel->y1) / 2, -1);
+    }
+    return false;
+}
+
+bool ClosePanel(const std::string &panelTitle) {
+    std::optional<Driver::Item> panel = Driver::FindItem(panelTitle);
+    if(!panel || !panel->isWindow) return false;
+    // ImGui's close button sits at the right end of the title bar.
+    Driver::Click(panel->x1 - 14, panel->y0 + 12);
+    return !Driver::FindItem(panelTitle);
+}
+
 bool EditField(const std::string &labelOrId, const std::string &text) {
     std::optional<Driver::Item> field = Driver::FindItem(labelOrId);
     if(!field) return false;

@@ -1063,6 +1063,7 @@ bool GraphicsWindow::LockedInWorkplane() {
 }
 
 void GraphicsWindow::ForceTextWindowShown() {
+    if(showScreenElsewhere && showScreenElsewhere()) return;
     if(!showTextWindow) {
         showTextWindow = true;
         showTextWndMenuItem->SetActive(true);

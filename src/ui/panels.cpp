@@ -38,7 +38,10 @@ bool Panel::Begin() {
         float top = ImGui::GetFrameHeight() + 16;
         float x   = edge == PanelEdge::LEFT ? 80.0f : io.DisplaySize.x - width - 12;
         float h   = std::max(200.0f, std::min(520.0f, io.DisplaySize.y - top - 60));
-        if(edge == PanelEdge::BOTTOM_RIGHT) {
+        if(edge == PanelEdge::CENTER) {
+            // Over the middle of the viewport, clear of the side panels.
+            x = (io.DisplaySize.x - width) / 2;
+        } else if(edge == PanelEdge::BOTTOM_RIGHT) {
             // Under the right-hand panel, above the status bar.
             h   = 220;
             top = std::max(top, io.DisplaySize.y - h - 52);
@@ -77,6 +80,12 @@ Panel &PropertiesPanel() {
 
 Panel &ProblemsPanel() {
     static Panel panel("Problems", "Problems", PanelEdge::BOTTOM_RIGHT, 340,
+                       /*shownByDefault=*/false);
+    return panel;
+}
+
+Panel &PreferencesPanel() {
+    static Panel panel("Preferences", "Preferences", PanelEdge::CENTER, 380,
                        /*shownByDefault=*/false);
     return panel;
 }

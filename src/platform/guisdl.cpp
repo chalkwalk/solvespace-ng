@@ -719,6 +719,7 @@ static void InitSdlWindowAndImGui() {
     gShowMenuBar = GetSettings()->ThawBool("NG_ShowMenuBar", true);
     Ui::InitNgUi();
     Ui::RegisterCoreUiActions(/*animate=*/true);
+    Ui::Actions().Bind("ui.reload-keymap", [] { LoadKeymap(); }); // after a preset change
     Ui::Actions().Bind("ui.toggle-menu-bar", [] {
         gShowMenuBar = !gShowMenuBar;
         GetSettings()->FreezeBool("NG_ShowMenuBar", gShowMenuBar);
@@ -1675,6 +1676,7 @@ Point2d ToWindow(Vector modelPoint) {
 std::vector<Item> Items() {
     std::vector<Item> out;
     for(const UiItem &u : LastFrameItems()) {
+        if(!u.visible) continue; // a person can't see or click it either
         out.push_back({ u.label, u.id, u.window, u.x0, u.y0, u.x1, u.y1, u.checkable,
                         u.checked, u.opened, u.isWindow });
     }
