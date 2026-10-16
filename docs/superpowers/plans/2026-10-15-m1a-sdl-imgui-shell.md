@@ -3498,7 +3498,8 @@ M1b and M1c each get their **own detailed plan**, written when the previous phas
 - **Status/HUD bar**: active tool, the keys available now, DOF count, solver state.
 - **Typed values become constraints** while drawing (`25` `Tab` `30` `Enter` → length + angle constraints). Needs the `Pending` tool state in `src/mouse.cpp` exposed through a small `ToolHud` interface in core, the first real `cmd/` extraction.
 
-**M1c — Panels replace the text window, then delete the old frontends.**
+**M1c — Panels replace the text window, then delete the old frontends.** Planned in detail in
+`2026-10-16-m1c-panels.md`.
 - **Outliner** (groups, then later Parts), **Properties** (one ImGui panel per text-window screen, ported one screen per task from `src/textscreens.cpp`, `confscreen.cpp`, `describescreen.cpp`, `style.cpp`), and **Problems**.
 - A **parity checklist** generated from `GraphicsWindow::MenuCommands()` plus the list of `TextWindow::Show*` screens. Each entry is ticked when it has a new home.
 - Constraint glyph restyle and Lucide icons (adds `lunasvg` v3.5.0, already allowed in `AGENTS.md` §2).
