@@ -4,6 +4,7 @@
 #include "solvespace.h"
 #include "imgui.h"
 #include "commandnames.h"
+#include "ui/drawtool.h"
 #include "ui/grabtool.h"
 #include "ui/ngui.h"
 #include "ui/palettewidget.h"
@@ -126,6 +127,8 @@ void HandleUiAction(const std::string &action) {
 std::function<void()> DrawNgUi(Platform::MenuBarSdl *menuBar, const keymap::Keymap &keymap) {
     if(Grab().Active()) {
         SetModalStatus(Grab().Description(), Grab().Hints());
+    } else if(Draw().Active()) {
+        SetModalStatus(Draw().Description(), Draw().Hints());
     } else {
         SetModalStatus("", {});
     }
@@ -143,6 +146,7 @@ std::function<void()> DrawNgUi(Platform::MenuBarSdl *menuBar, const keymap::Keym
 bool ModalKey(const keymap::Chord &c) {
     if(Pie().IsOpen()) return Pie().HandleChord(c);
     if(Grab().Active()) return Grab().HandleChord(c);
+    if(Draw().Active()) return Draw().HandleChord(c);
     return false;
 }
 

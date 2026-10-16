@@ -19,11 +19,14 @@ struct DebugStep {
         KEY,    // press and release one key by SDL name ("Return", "Escape", "F3")
         WAIT,   // render this many frames
         SHOT,   // save the back buffer as PNG
+        MOVE,   // move the mouse to x y (window coordinates)
+        CLICK,  // move to x y and click the left button there
         QUIT,
     };
     Kind        kind;
     std::string arg;
     int         frames = 0;
+    float       x = 0, y = 0;
 };
 
 // Steps are separated by ';'. Returns nullopt with "step N: ..." in *error on a bad step.

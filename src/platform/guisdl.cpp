@@ -892,6 +892,24 @@ static void PushText(const std::string &text) {
     SDL_PushEvent(&ev);
 }
 
+static void PushMouse(SDL_EventType type, float x, float y) {
+    SDL_Event ev = {};
+    ev.type      = type;
+    if(type == SDL_EVENT_MOUSE_MOTION) {
+        ev.motion.windowID = SDL_GetWindowID(gSdlWindow);
+        ev.motion.x        = x;
+        ev.motion.y        = y;
+    } else {
+        ev.button.windowID = SDL_GetWindowID(gSdlWindow);
+        ev.button.button   = SDL_BUTTON_LEFT;
+        ev.button.down     = type == SDL_EVENT_MOUSE_BUTTON_DOWN;
+        ev.button.clicks   = 1;
+        ev.button.x        = x;
+        ev.button.y        = y;
+    }
+    SDL_PushEvent(&ev);
+}
+
 static void RunDebugScript(int pw, int ph) {
     if(gScriptPos >= gScript.size()) return;
     gNeedsFrame = true;
@@ -935,6 +953,14 @@ static void RunDebugScript(int pw, int ph) {
             case DebugStep::Kind::WAIT:
                 gScriptWait = step.frames;
                 return;
+            case DebugStep::Kind::MOVE:
+                PushMouse(SDL_EVENT_MOUSE_MOTION, step.x, step.y);
+                break;
+            case DebugStep::Kind::CLICK:
+                PushMouse(SDL_EVENT_MOUSE_MOTION, step.x, step.y);
+                PushMouse(SDL_EVENT_MOUSE_BUTTON_DOWN, step.x, step.y);
+                PushMouse(SDL_EVENT_MOUSE_BUTTON_UP, step.x, step.y);
+                break;
             case DebugStep::Kind::SHOT: {
                 std::shared_ptr<Pixmap> pm = Pixmap::Create(Pixmap::Format::RGBA, pw, ph);
                 glPixelStorei(GL_PACK_ALIGNMENT, 1);

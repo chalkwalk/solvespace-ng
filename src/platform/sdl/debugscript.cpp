@@ -40,6 +40,8 @@ std::optional<std::vector<DebugStep>> ParseDebugScript(const std::string &text,
         else if(verb == "wait")  step.kind = DebugStep::Kind::WAIT;
         else if(verb == "shot")  step.kind = DebugStep::Kind::SHOT;
         else if(verb == "quit")  step.kind = DebugStep::Kind::QUIT;
+        else if(verb == "move")  step.kind = DebugStep::Kind::MOVE;
+        else if(verb == "click") step.kind = DebugStep::Kind::CLICK;
         else return fail("unknown step '" + verb + "'");
         if(step.kind != DebugStep::Kind::QUIT && arg.empty()) return fail(verb + " needs an argument");
         if(step.kind == DebugStep::Kind::WAIT) {
@@ -47,6 +49,15 @@ std::optional<std::vector<DebugStep>> ParseDebugScript(const std::string &text,
             long n = strtol(arg.c_str(), &end, 10);
             if(*end != '\0' || n < 0) return fail("bad frame count '" + arg + "'");
             step.frames = (int)n;
+        }
+        if(step.kind == DebugStep::Kind::MOVE || step.kind == DebugStep::Kind::CLICK) {
+            char *end;
+            step.x = strtof(arg.c_str(), &end);
+            char *end2;
+            step.y = strtof(end, &end2);
+            if(end == arg.c_str() || end2 == end || *end2 != '\0') {
+                return fail(verb + " needs 'x y', got '" + arg + "'");
+            }
         }
         step.arg = arg;
         steps.push_back(step);

@@ -30,3 +30,15 @@ TEST_CASE(reject_bad_steps) {
     CHECK_FALSE(ParseDebugScript("wait x", &err).has_value());
     CHECK_TRUE(ParseDebugScript("", &err).has_value());
 }
+
+TEST_CASE(parse_click_and_move) {
+    std::string err;
+    auto steps = ParseDebugScript("move 400 300; click 410.5 320", &err);
+    CHECK_TRUE(steps.has_value());
+    CHECK_TRUE((*steps)[0].kind == DebugStep::Kind::MOVE);
+    CHECK_TRUE((*steps)[0].x == 400 && (*steps)[0].y == 300);
+    CHECK_TRUE((*steps)[1].kind == DebugStep::Kind::CLICK);
+    CHECK_TRUE((*steps)[1].x == 410.5f && (*steps)[1].y == 320);
+    CHECK_FALSE(ParseDebugScript("click 10", &err).has_value());
+    CHECK_FALSE(ParseDebugScript("click a b", &err).has_value());
+}
