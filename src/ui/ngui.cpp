@@ -7,6 +7,7 @@
 #include "ui/drawtool.h"
 #include "ui/grabtool.h"
 #include "ui/outliner.h"
+#include "ui/problems.h"
 #include "ui/properties.h"
 #include "ui/panels.h"
 #include "ui/ngui.h"
@@ -102,15 +103,18 @@ void InitNgUi() {
     SetModalStatus("", {});
     ResetOutliner();
     ResetProperties();
+    ResetProblems();
     OutlinerPanel().Load();
     PropertiesPanel().Load();
+    ProblemsPanel().Load();
     gHideBrowser = true;
-    SS.GW.showTextWindowByDefault = false;
+    SS.GW.browserIsPrimary = false;
     ApplyTheme(LoadThemeChoice());
     Actions().Bind("ui.command-palette", [] { gPalette.Open(); });
     Actions().Bind("ui.toggle-theme", [] { ToggleTheme(); });
     Actions().Bind("ui.toggle-outliner", [] { OutlinerPanel().Toggle(); });
     Actions().Bind("ui.toggle-properties", [] { PropertiesPanel().Toggle(); });
+    Actions().Bind("ui.toggle-problems", [] { ProblemsPanel().Toggle(); });
     Actions().Bind("ui.pie-add", [] {
         Pie().Open("Add", {
             { "Line", "line-segment" }, { "Rectangle", "rectangle" }, { "Circle", "circle" },
@@ -154,6 +158,7 @@ std::function<void()> DrawNgUi(Platform::MenuBarSdl *menuBar, const keymap::Keym
     DrawStatusBar(keymap);
     std::function<void()> run = DrawOutliner();
     if(auto changed = DrawProperties()) run = changed;
+    if(auto changed = DrawProblems()) run = changed;
     if(gHideBrowser) {
         // The Properties panel replaces the property browser, which starts hidden; View >
         // Show Property Browser brings it back.

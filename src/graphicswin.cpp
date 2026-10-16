@@ -450,7 +450,7 @@ void GraphicsWindow::Init() {
     showFacesNonDrawing = true;
     drawOccludedAs = DrawOccludedAs::INVISIBLE;
 
-    showTextWindow = showTextWindowByDefault;
+    showTextWindow = browserIsPrimary;
 
     showSnapGrid = false;
     dimSolidModel = true;

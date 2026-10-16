@@ -10,7 +10,7 @@
 namespace SolveSpace {
 namespace Ui {
 
-enum class PanelEdge { LEFT, RIGHT };
+enum class PanelEdge { LEFT, RIGHT, BOTTOM_RIGHT };
 
 class Panel {
 public:
@@ -36,6 +36,7 @@ private:
 
 Panel &OutlinerPanel();
 Panel &PropertiesPanel();
+Panel &ProblemsPanel();
 
 }
 }

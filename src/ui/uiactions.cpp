@@ -15,6 +15,7 @@ const std::vector<UiActionInfo> &UiActionList() {
         { "ui.toggle-theme",    "View \xE2\x80\xBA Toggle Theme" },
         { "ui.toggle-outliner", "View \xE2\x80\xBA Outliner" },
         { "ui.toggle-properties", "View \xE2\x80\xBA Properties" },
+        { "ui.toggle-problems", "View \xE2\x80\xBA Problems" },
         { "ui.view-front",          "View \xE2\x80\xBA Front" },
         { "ui.view-back",           "View \xE2\x80\xBA Back" },
         { "ui.view-right",          "View \xE2\x80\xBA Right" },

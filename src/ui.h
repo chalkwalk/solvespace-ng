@@ -897,7 +897,9 @@ public:
     ShowConstraintMode showConstraints;
 
     bool    showTextWindow;
-    bool    showTextWindowByDefault = true; // on each new or opened file; NG has panels
+    // The property browser is the main place for details: it is shown for each new or opened
+    // file and when a solve fails. NG turns this off; its panels do that job.
+    bool    browserIsPrimary = true;
     bool    showShaded;
     bool    showEdges;
     bool    showOutlines;

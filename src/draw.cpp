@@ -896,7 +896,7 @@ void GraphicsWindow::Paint() {
                                        0.4f*bgColor.blueF());
         lighting.backgroundColor = bgColor;
         // And show the text window, which has info to debug it
-        ForceTextWindowShown();
+        if(browserIsPrimary) ForceTextWindowShown();
     }
 
     canvas->SetLighting(lighting);

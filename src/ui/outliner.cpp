@@ -61,13 +61,12 @@ std::function<void()> DrawOutliner() {
         ImGui::EndDisabled();
         ImGui::SameLine();
 
-        // Solve status; the details for now come from the browser's solve screen.
+        // Solve status; a click shows the problems.
         ImGui::PushStyleColor(ImGuiCol_Text, StatusColor(r.status));
         ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0, 0, 0, 0));
         std::string badge = r.afterActive ? "-" : r.StatusText();
         if(ImGui::SmallButton((badge + "##status:" + r.name).c_str()) && !r.afterActive) {
-            // Until the Problems panel exists, the browser's solve screen has the details.
-            run = [hg] { ShowInPropertyBrowser(&TextWindow::ScreenHowGroupSolved, hg.v); };
+            run = [] { ProblemsPanel().SetShown(true); };
         }
         ImGui::PopStyleColor(2);
         ImGui::SameLine();
