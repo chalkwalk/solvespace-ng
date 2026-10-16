@@ -35,6 +35,8 @@ static void DrawToolWindows();
 static void DrawMainMenuBar();
 static bool RouteKeyDown(const SDL_Event &e);
 static void RenderFrame();
+static void RunNestedLoop(const std::function<bool()> &done);
+static void DrawActivePopup();
 
 //-----------------------------------------------------------------------------
 // Fatal errors
@@ -133,8 +135,19 @@ static void HandleTimerEvent(const SDL_Event &ev) {
 
 static std::shared_ptr<MenuBarSdl> gMainMenu;
 
+static MenuSdl *gActivePopup = nullptr;
+static bool     gPopupOpened = false;
+
 MenuRef CreateMenu() {
-    return std::make_shared<MenuSdl>();
+    auto menu = std::make_shared<MenuSdl>();
+    menu->onPopUp = [](MenuSdl *m) {
+        gActivePopup = m;
+        gPopupOpened = false;
+        gNeedsFrame  = true;
+        RunNestedLoop([] { return gActivePopup == nullptr; });
+        m->popupRequested = false;
+    };
+    return menu;
 }
 
 MenuBarRef GetOrCreateMainMenu(bool *unique) {
@@ -790,6 +803,7 @@ static void RenderFrame() {
     WindowImplSdl *main = MainWindow();
     DrawMainMenuBar();
     DrawToolWindows();
+    DrawActivePopup();
     if(main) {
         DrawEditorOverlay(main, ImVec2(0, 0));
         DrawTooltip(main, ImVec2(0, 0));
@@ -839,6 +853,72 @@ void ClearGui() {
     }
     std::static_pointer_cast<SettingsFile>(GetSettings())->Save();
     SDL_Quit();
+}
+
+static bool gShowMenuBar = true;
+
+static std::string ShortcutTextFor(const MenuItemSdl &item) {
+    return item.hasAccel ? AcceleratorDescription(item.accel) : std::string();
+}
+
+// Returns true if an item was activated (so popups can close).
+static bool DrawMenuEntries(const MenuSdl &menu) {
+    bool activated = false;
+    for(const MenuSdl::Entry &e : menu.entries) {
+        switch(e.kind) {
+            case MenuSdl::Entry::Kind::SEPARATOR:
+                ImGui::Separator();
+                break;
+            case MenuSdl::Entry::Kind::SUBMENU:
+                if(ImGui::BeginMenu(e.label.c_str())) {
+                    activated |= DrawMenuEntries(*e.submenu);
+                    ImGui::EndMenu();
+                }
+                break;
+            case MenuSdl::Entry::Kind::ITEM: {
+                const MenuItemSdl &item = *e.item;
+                std::string shortcut = ShortcutTextFor(item);
+                bool checked = item.indicator != MenuItem::Indicator::NONE && item.active;
+                if(ImGui::MenuItem(item.label.c_str(),
+                                   shortcut.empty() ? nullptr : shortcut.c_str(), checked,
+                                   item.enabled)) {
+                    if(item.onTrigger) item.onTrigger();
+                    activated = true;
+                }
+                break;
+            }
+        }
+    }
+    return activated;
+}
+
+static void DrawMainMenuBar() {
+    WindowImplSdl *main = MainWindow();
+    if(!gShowMenuBar || !main || !main->menuBar) return;
+    auto bar = std::static_pointer_cast<MenuBarSdl>(main->menuBar);
+    if(ImGui::BeginMainMenuBar()) {
+        for(auto &m : bar->menus) {
+            if(ImGui::BeginMenu(m.first.c_str())) {
+                DrawMenuEntries(*m.second);
+                ImGui::EndMenu();
+            }
+        }
+        ImGui::EndMainMenuBar();
+    }
+}
+
+static void DrawActivePopup() {
+    if(!gActivePopup) return;
+    if(!gPopupOpened) {
+        ImGui::OpenPopup("##context");
+        gPopupOpened = true;
+    }
+    if(ImGui::BeginPopup("##context")) {
+        if(DrawMenuEntries(*gActivePopup)) ImGui::CloseCurrentPopup();
+        ImGui::EndPopup();
+    } else {
+        gActivePopup = nullptr; // dismissed (click outside / Esc) or item chosen
+    }
 }
 
 static void DrawToolWindows() {
@@ -930,7 +1010,6 @@ static void DrawToolWindows() {
         }
     }
 }
-static void DrawMainMenuBar() {}
 
 static bool RouteKeyDown(const SDL_Event &ev) {
     // Translate to the legacy KeyboardEvent so core accelerators work.
