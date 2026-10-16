@@ -173,3 +173,21 @@ TEST_CASE(drawn_line_end_snaps_to_an_existing_point) {
     CHECK_TRUE(CountConstraints(Constraint::Type::POINTS_COINCIDENT) == coincident + 1);
     CHECK_TRUE(Length(second) > 0);
 }
+
+TEST_CASE(undo_after_a_typed_line_removes_line_and_constraints) {
+    CHECK_LOAD("line.slvs");
+    int requests = SK.request.n, constraints = SK.constraint.n;
+    Driver::Key("L");
+    ClickAt(Point2d::From(500, 500));
+    Driver::Move(620, 460);
+    Driver::Type("25");
+    Driver::Key("Tab");
+    Driver::Type("30");
+    Driver::Key("Return");
+    Driver::Key("Escape");
+    Driver::Key("Escape");
+    CHECK_TRUE(SK.constraint.n > constraints);
+    Driver::Key("Ctrl+Z");
+    CHECK_TRUE(SK.request.n == requests);
+    CHECK_TRUE(SK.constraint.n == constraints);
+}

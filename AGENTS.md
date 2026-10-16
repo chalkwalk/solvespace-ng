@@ -283,6 +283,10 @@ M(n+1) features before M(n)'s "done when" is met, unless the owner says otherwis
   every commit**.
 - **Headless command tests:** UI behaviour is tested by driving registered commands from scripts,
   not by pixel-poking ImGui.
+- **UI interaction tests** (added 2026-10-16, so whole user flows are tested, not only their
+  parts): `test/ngui/` runs the real `solvespace-ng` app in-process on SDL's offscreen video
+  driver and drives it with real key, text and mouse events. Find ImGui items by label and model
+  geometry by projecting it; hard-code pixels only for fixed chrome (the toolbar).
 - **Kernel parity tests:** every model under `test/` is compared across kernels on volume, area,
   bounding box and watertightness, within a set tolerance.
 - **Format golden files:** old `.slvs` files load, and saving then reloading gives the same file.
@@ -313,6 +317,9 @@ SOLVESPACE_NG_SCREENSHOT=/tmp/shot.png ./bin/solvespace-ng f.slvs   # save a fra
 # Drive the UI with real SDL events (steps: action, keys, key [Ctrl+|Shift+|Alt+]Name, wait N,
 # shot PATH, quit). Use `timeout -s KILL`: a modal dialog blocks the event loop.
 SOLVESPACE_NG_SCRIPT="action ui.command-palette; keys extrude; wait 3; shot /tmp/p.png; quit" ...
+# UI interaction tests (also run by `make test_solvespace`); needs EGL (Mesa) but no display.
+make -j$(nproc) solvespace-ng-uitest && ./bin/solvespace-ng-uitest [regex [seed]]
+SDL_VIDEO_DRIVER=x11 ./bin/solvespace-ng-uitest ngui/grab/   # watch them run on screen
 ```
 In-tree builds are rejected; always build in `build/`. NG settings and the user keymap live in
 `SDL_GetPrefPath("solvespace","solvespace-ng")`: Linux `~/.local/share/solvespace/solvespace-ng/`,
@@ -362,6 +369,8 @@ macOS and Emscripten builds.
   owner. Existing `pr/` branches:
   - `pr/undo-grouporder-leak`: UndoState `groupOrder` leaked on every undo step (from `e220b5d8`).
   - `pr/headless-null-guards`: null window/menu-item guards for headless runs (from `978602ca`).
+  - `pr/diameter-label-leader`: a diameter label at the centre had no leader and logged a
+    zero-vector warning every frame (from `3827b2be`).
 - Tests: `RUN_COMMAND("<command-name>")` in `test/` runs a menu command headlessly (names in
   `src/commandnames.cpp`). Headless code paths have null windows/menu items: guard them.
   Not headless-safe yet (null FileDialog/Window under `guinone.cpp`): `open`, `save`, `save-as`,
@@ -374,6 +383,20 @@ macOS and Emscripten builds.
   `SS.showToolbar = false` first). Debug-script keys use SDL key names (`Keypad 1`, `Escape`,
   `Return`); `move x y` and `click x y` drive the mouse. An unknown key opens a blocking error
   dialog, which shows up as a timeout.
+- UI interaction tests (`test/ngui/<area>/test.cpp`, listed in `ngui_SOURCES` in
+  `test/CMakeLists.txt`) are ordinary `TEST_CASE`s in `solvespace-ng-uitest`. Include
+  `../uitest.h` before `harness.h`. Drive the app with `Platform::Driver`
+  (`src/platform/sdl/uidriver.h`): `Key("Shift+A")`, `Type("25")`, `Move`, `Click`,
+  `DoubleClick`, `Drag`, `Wheel`, `KeyDown("Shift")`, `ClickItem("label")`,
+  `ClickMenu({"Sketch", "Line Segment"})`. Each call renders until the app is idle (timers
+  included, so animations finish). `uitest.h` adds `At(Vector)`, `AtMiddle(line)`,
+  `AtLabel(constraint)`, `DrawLine`, `ShiftClickAt`, `PickPie("Circle")`,
+  `ClickBrowserText("hide all")` and `ContextMenu(p, "Delete")`. Dialogs never block:
+  `Driver::Dialogs()` records them, `OnMessage(policy)` answers message boxes (default: the
+  default button), `QueueFile(path)` answers the next file dialog, `DuringModal(step)` runs
+  inside a context menu; an unanswered nested loop fails the case. Each case starts with
+  default settings in a temporary config dir; a failing case saves a screenshot to
+  `ngui-failures/` in the working directory. Fixtures are copied per test directory.
 
 **Developer docs worth reading first:** `developer_docs/IdLists_Entities_and_Remap.txt`,
 `developer_docs/Solver_Transforms.txt`.

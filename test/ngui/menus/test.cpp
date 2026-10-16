@@ -69,3 +69,18 @@ TEST_CASE(palette_escape_closes_without_running) {
     Driver::Key("C"); // keys reach the keymap again
     CHECK_TRUE(SS.GW.pending.command == Command::CIRCLE);
 }
+
+TEST_CASE(toolbar_icon_click_starts_its_tool) {
+    CHECK_LOAD("line.slvs");
+    Driver::Click(17, 53); // the toolbar's first icon: Line Segment
+    CHECK_TRUE(SS.GW.pending.command == Command::LINE_SEGMENT);
+}
+
+TEST_CASE(n_toggles_the_property_browser) {
+    CHECK_LOAD("line.slvs");
+    CHECK_TRUE(Driver::FindItem("Property Browser").has_value());
+    Driver::Key("N");
+    CHECK_FALSE(Driver::FindItem("Property Browser").has_value());
+    Driver::Key("N");
+    CHECK_TRUE(Driver::FindItem("Property Browser").has_value());
+}
