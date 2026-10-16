@@ -120,7 +120,9 @@ void SolveSpaceUI::PopOntoCurrentFrom(UndoStack *uk) {
     ut->style.MoveSelfInto(&(SK.style));
     SS.GW.activeGroup = ut->activeGroup;
 
-    // No need to free it, since a shallow copy was made above
+    // No need to free the rest, since a shallow copy was made above; groupOrder was copied
+    // element by element, so it still owns its buffer.
+    ut->groupOrder.Clear();
     *ut = {};
 
     // And reset the state everywhere else in the program, since the
@@ -148,6 +150,7 @@ void SolveSpaceUI::UndoClearStack(UndoStack *uk) {
 void SolveSpaceUI::UndoClearState(UndoState *ut) {
     for(auto &g : ut->group) { g.remap.clear(); }
     ut->group.Clear();
+    ut->groupOrder.Clear();
     ut->request.Clear();
     ut->constraint.Clear();
     ut->param.Clear();

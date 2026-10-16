@@ -442,6 +442,7 @@ public:
 
         void Clear() {
             group.Clear();
+            groupOrder.Clear();
             request.Clear();
             constraint.Clear();
             param.Clear();
