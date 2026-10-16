@@ -725,7 +725,9 @@ void Constraint::DoLayout(DrawAs how, Canvas *canvas,
             if(refs) refs->push_back(ref);
 
             Vector mark = ref.Minus(center);
-            mark = mark.WithMagnitude(mark.Magnitude()-r);
+            // A label at the centre (where a new one starts) points its leader to the right.
+            Vector dir = mark.Magnitude() > LENGTH_EPS ? mark : gr;
+            mark = dir.WithMagnitude(mark.Magnitude()-r);
             DoLineTrimmedAgainstBox(canvas, hcs, ref, ref, ref.Minus(mark));
 
             Vector topLeft;
