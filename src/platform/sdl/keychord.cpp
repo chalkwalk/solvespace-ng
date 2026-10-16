@@ -68,10 +68,13 @@ std::optional<keymap::Chord> ChordFromKey(SDL_Keycode base, SDL_Keycode produced
     }
     bool baseAlnum         = base < 0x80 && std::isalnum((int)base);
     bool producedPrintable = produced >= 0x21 && produced < 0x7f;
-    // AltGr (reported as Ctrl+Alt) producing a different printable character: plain char.
-    if(c.ctrl && c.alt && producedPrintable && produced != base) {
+    // AltGr (MODE on Linux, RALT on Windows, sometimes Ctrl+Alt) producing a different
+    // character is text, not a chord: a plain printable key, or nothing for non-ASCII.
+    bool altGr = (mod & (SDL_KMOD_MODE | SDL_KMOD_RALT)) != 0 || (c.ctrl && c.alt);
+    if(altGr && produced != base) {
+        if(!producedPrintable) return std::nullopt;
         keymap::Chord plain;
-        plain.key = std::string(1, (char)produced);
+        plain.key = (produced == '+') ? "Plus" : std::string(1, (char)produced);
         return plain;
     }
     if(baseAlnum) {

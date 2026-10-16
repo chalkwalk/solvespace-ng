@@ -25,7 +25,8 @@ TEST_CASE(routes_commands_and_ui_actions) {
 TEST_CASE(text_input_swallows_chords) {
     std::string err;
     KeyRouter r;
-    r.SetKeymap(*keymap::Keymap::Parse("line-segment: L\nsave: Ctrl+S\nunselect-all: Esc\n", &err));
+    r.SetKeymap(*keymap::Keymap::Parse(
+        "line-segment: L\nsave: Ctrl+S\nunselect-all: Esc\nselect-all: Alt+A\n", &err));
     int fired = 0;
     r.onCommand = [&](Command) { fired++; };
     CHECK_TRUE(r.Route(C("L"), true) == RouteResult::SUPPRESSED);
@@ -35,6 +36,7 @@ TEST_CASE(text_input_swallows_chords) {
     CHECK_TRUE(r.Route(C("Esc"), true) == RouteResult::SUPPRESSED);
     CHECK_TRUE(fired == 1);
     CHECK_TRUE(r.Route(C("Esc"), false) == RouteResult::COMMAND);
+    CHECK_TRUE(r.Route(C("Alt+A"), true) == RouteResult::SUPPRESSED); // AltGr text on Windows
 }
 
 TEST_CASE(unknown_command_names_are_unbound) {
@@ -56,4 +58,19 @@ TEST_CASE(bad_user_keymap_falls_back_to_preset) {
     km = LoadUserKeymap("modern", "undo: F9\n", &err);
     CHECK_TRUE(*km.Lookup(C("F9")) == "undo");
     CHECK_TRUE(km.Lookup(C("Shift+C")) == nullptr); // a valid user file replaces the preset
+}
+
+TEST_CASE(user_keymap_with_unknown_command_falls_back) {
+    std::string err;
+    keymap::Keymap km = LoadUserKeymap("modern", "undo: F9\nline-segmnet: L\n", &err);
+    CHECK_TRUE(err.find("line 2") != std::string::npos);
+    CHECK_TRUE(err.find("line-segmnet") != std::string::npos);
+    CHECK_TRUE(*km.Lookup(C("Shift+C")) == "arc");
+}
+
+TEST_CASE(user_keymap_without_bindings_uses_preset) {
+    std::string err;
+    keymap::Keymap km = LoadUserKeymap("modern", "# just a comment\n\n   \n", &err);
+    CHECK_TRUE(err.empty());
+    CHECK_TRUE(*km.Lookup(C("Space")) == "ui.command-palette");
 }

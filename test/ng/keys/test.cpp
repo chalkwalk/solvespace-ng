@@ -76,3 +76,13 @@ TEST_CASE(modern_preset_is_valid) {
     CHECK_TRUE(*modern->Lookup(*keymap::ParseChord("Shift+C")) == "arc");
     CHECK_TRUE(*modern->Lookup(*keymap::ParseChord("Space")) == "ui.command-palette");
 }
+
+TEST_CASE(altgr_on_linux_and_windows_is_text_not_a_chord) {
+    // Linux reports AltGr as MODE, Windows as RALT; the caller passes the AltGr-layer keycode.
+    CHECK_EQ_STR(F(ChordFromKey(SDLK_Q, SDLK_AT, SDL_KMOD_MODE)), "@");
+    CHECK_EQ_STR(F(ChordFromKey(SDLK_Q, SDLK_AT, SDL_KMOD_RALT)), "@");
+    // Polish AltGr+A produces U+0105: plain text, never "Alt+A".
+    CHECK_EQ_STR(F(ChordFromKey(SDLK_A, (SDL_Keycode)0x105, SDL_KMOD_RALT)), "<none>");
+    // Right Alt on a layout without an AltGr level is an ordinary Alt chord.
+    CHECK_EQ_STR(F(ChordFromKey(SDLK_A, SDLK_A, SDL_KMOD_RALT)), "Alt+A");
+}

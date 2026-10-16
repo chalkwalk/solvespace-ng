@@ -17,7 +17,7 @@ const keymap::Keymap &KeyRouter::Keymap() const {
 }
 
 static bool AllowedDuringTextInput(const keymap::Chord &c) {
-    if(c.ctrl || c.alt) return true;
+    if(c.ctrl) return true;
     return c.key.size() >= 2 && c.key[0] == 'F' && isdigit((unsigned char)c.key[1]);
 }
 
@@ -38,6 +38,11 @@ RouteResult KeyRouter::Route(const keymap::Chord &chord, bool textInputActive) {
     return RouteResult::COMMAND;
 }
 
+bool IsKnownUiAction(const std::string &name) {
+    return name == "ui.command-palette" || name == "ui.toggle-menu-bar" ||
+           name == "ui.toggle-theme";
+}
+
 keymap::Keymap LoadUserKeymap(const std::string &preset, const std::string &userFileText,
                               std::string *error) {
     keymap::Keymap base;
@@ -51,13 +56,19 @@ keymap::Keymap LoadUserKeymap(const std::string &preset, const std::string &user
     }
     if(userFileText.empty()) return base;
     std::string parseError;
-    auto user = keymap::Keymap::Parse(userFileText, &parseError);
+    auto isKnown = [](const std::string &name) {
+        return IsKnownUiAction(name) || CommandFromName(name) != Command::NONE;
+    };
+    auto user = keymap::Keymap::Parse(userFileText, &parseError, isKnown);
     if(!user) {
         std::string message = "keymap.txt " + parseError;
         dbp("%s; using the %s preset", message.c_str(), preset.c_str());
         if(error) *error = message;
         return base;
     }
+    // A file with only comments or blank lines would otherwise unbind everything, including
+    // the palette, leaving no way back.
+    if(user->Commands().empty()) return base;
     return *user;
 }
 

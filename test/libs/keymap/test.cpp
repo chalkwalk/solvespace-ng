@@ -80,3 +80,12 @@ TEST_CASE(comma_key_in_file) {
     auto again = Keymap::Parse(km->Serialize(), &err);
     CHECK_TRUE(again.has_value());
 }
+
+TEST_CASE(parse_with_command_validator) {
+    std::string err;
+    auto known = [](const std::string &name) { return name == "undo" || name == "redo"; };
+    CHECK_TRUE(Keymap::Parse("undo: Ctrl+Z\nredo: Ctrl+Y\n", &err, known).has_value());
+    CHECK_FALSE(Keymap::Parse("undo: Ctrl+Z\nreddo: Ctrl+Y\n", &err, known).has_value());
+    CHECK_TRUE(err.find("line 2") != std::string::npos);
+    CHECK_TRUE(err.find("reddo") != std::string::npos);
+}

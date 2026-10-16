@@ -3,6 +3,7 @@
 #ifndef KEYMAP_KEYMAP_H
 #define KEYMAP_KEYMAP_H
 
+#include <functional>
 #include <map>
 #include <optional>
 #include <string>
@@ -32,7 +33,10 @@ public:
     std::vector<Chord> ChordsFor(const std::string &command) const;
     std::vector<std::string> Commands() const;
 
-    static std::optional<Keymap> Parse(std::string_view text, std::string *error);
+    // If isKnownCommand is given, a binding for a command it rejects is a parse error.
+    static std::optional<Keymap> Parse(
+        std::string_view text, std::string *error,
+        const std::function<bool(const std::string &)> &isKnownCommand = nullptr);
     std::string Serialize() const;
 
 private:

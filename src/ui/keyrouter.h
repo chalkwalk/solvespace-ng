@@ -20,8 +20,8 @@ public:
 
     void SetKeymap(keymap::Keymap km);
     const keymap::Keymap &Keymap() const;
-    // With textInputActive, only chords with Ctrl/Alt and F-keys are routed; everything else
-    // (including Esc, which the focused field handles) is SUPPRESSED.
+    // With textInputActive, only Ctrl chords and F-keys are routed; everything else (including
+    // Esc, which the focused field handles, and Alt, which may be AltGr text) is SUPPRESSED.
     RouteResult Route(const keymap::Chord &chord, bool textInputActive);
 
 private:
@@ -30,6 +30,9 @@ private:
 
 // The preset ("modern" | "classic"); a non-empty, valid user keymap file replaces it. On a
 // parse error the preset is returned and *error describes the problem.
+// The "ui.*" actions the UI layer implements.
+bool IsKnownUiAction(const std::string &name);
+
 keymap::Keymap LoadUserKeymap(const std::string &preset, const std::string &userFileText,
                               std::string *error);
 

@@ -110,7 +110,8 @@ static std::string_view Trim(std::string_view s) {
     return s;
 }
 
-std::optional<Keymap> Keymap::Parse(std::string_view text, std::string *error) {
+std::optional<Keymap> Keymap::Parse(std::string_view text, std::string *error,
+                                    const std::function<bool(const std::string &)> &isKnownCommand) {
     Keymap km;
     int lineNo = 0;
     size_t pos = 0;
@@ -131,6 +132,9 @@ std::optional<Keymap> Keymap::Parse(std::string_view text, std::string *error) {
         if(colon == std::string_view::npos) return fail("expected '<command>: <chord>[, ...]'");
         std::string command(Trim(line.substr(0, colon)));
         if(command.empty()) return fail("missing command name");
+        if(isKnownCommand && !isKnownCommand(command)) {
+            return fail("unknown command '" + command + "'");
+        }
         std::string_view rest = line.substr(colon + 1);
         while(true) {
             // A comma is the "," key itself, not a separator, when it directly follows '+'
