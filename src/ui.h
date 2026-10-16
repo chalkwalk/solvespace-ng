@@ -10,6 +10,7 @@
 
 #include <cstdint>
 #include <memory>
+#include <optional>
 #include <set>
 #include <string>
 #include <vector>
@@ -671,6 +672,20 @@ public:
     void LookOntoActiveWorkplane(bool animate);
     // The translated menu text of a command ("&Horizontal"), or "" if it has no menu item.
     static std::string MenuLabel(Command id);
+    // G: move the selection under the solver without holding a button.
+    struct {
+        Point2d                                 startMouse, lastMouse;
+        std::vector<std::pair<hEntity, Vector>> start; // dragged points, start positions
+        int                                     axis;  // -1 free, 0/1/2 = X/Y/Z (or u/v/n)
+        std::optional<double>                   typedMm;
+    } grab;
+    bool   StartGrab(Point2d mouse); // selection, else hover; false (no undo entry) if nothing
+    void   GrabMouseMoved(Point2d mouse);
+    void   GrabSetAxis(int axis);    // the same axis again unlocks
+    void   GrabSetTyped(std::optional<double> mm);
+    void   GrabConfirm();
+    void   GrabCancel();             // exact restore, no redo entry
+    Vector GrabAxisVector(int axis); // workplane u/v/n when locked in one, else world X/Y/Z
     Command SmartDimensionCommand(); // from gs after GroupSelection(): ANGLE or DISTANCE_DIA
     void    SmartDimension();        // hover fallback, then MenuConstrain(that command)
 
@@ -711,6 +726,7 @@ public:
         DRAGGING_NORMAL             = 9,
         DRAGGING_NEW_RADIUS         = 10,
         DRAGGING_MARQUEE            = 11,
+        GRABBING                    = 12,
     };
 
     struct {

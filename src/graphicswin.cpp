@@ -1110,6 +1110,10 @@ Vector GraphicsWindow::SnapToGrid(Vector p) {
 void GraphicsWindow::MenuEdit(Command id) {
     switch(id) {
         case Command::UNSELECT_ALL:
+            if(SS.GW.pending.operation == Pending::GRABBING) {
+                SS.GW.GrabCancel();
+                break;
+            }
             SS.GW.GroupSelection();
             // If there's nothing selected to de-select, and no operation
             // to cancel, then perhaps they want to return to the home

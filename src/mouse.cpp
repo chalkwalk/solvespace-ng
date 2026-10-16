@@ -485,6 +485,10 @@ void GraphicsWindow::MouseMoved(double x, double y, bool leftDown,
             Invalidate();
             return;
 
+        case Pending::GRABBING:
+            GrabMouseMoved(mp);
+            break;
+
         case Pending::NONE:
         case Pending::COMMAND:
             ssassert(false, "Unexpected pending operation");
@@ -533,6 +537,11 @@ void GraphicsWindow::MouseMiddleOrRightDown(double x, double y) {
 void GraphicsWindow::MouseRightUp(double x, double y) {
     SS.extraLine.draw = false;
     Invalidate();
+
+    if(pending.operation == Pending::GRABBING) {
+        GrabCancel();
+        return;
+    }
 
     // Don't show a context menu if the user is right-clicking the toolbar,
     // or if they are finishing a pan.
@@ -960,6 +969,11 @@ void GraphicsWindow::MouseLeftDown(double mx, double my, bool shiftDown, bool ct
         return;
     }
     SS.TW.HideEditControl();
+
+    if(pending.operation == Pending::GRABBING) {
+        GrabConfirm();
+        return;
+    }
 
     if(SS.showToolbar) {
         if(ToolbarMouseDown((int)mx, (int)my)) return;

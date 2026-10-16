@@ -24,6 +24,7 @@ set(testsuite_SOURCES
     core/sketchfocus/test.cpp
     core/smartdimension/test.cpp
     core/constraintprobe/test.cpp
+    core/grab/test.cpp
     libs/keymap/test.cpp
     libs/palette/test.cpp
     libs/pie/test.cpp
