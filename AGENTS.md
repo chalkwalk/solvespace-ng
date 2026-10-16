@@ -328,9 +328,16 @@ macOS and Emscripten builds.
 - Don't add dependencies beyond §2 without the owner's approval.
 - Update this file whenever a **Decision** changes. Record the date and the reason.
 - Branches: feature work on `ng/<milestone>-<topic>` branches, merged into `master`.
-- Remotes: `origin` = our fork, `upstream` = `solvespace/solvespace`. (Until the fork is created,
-  `origin` still points at upstream: never push to it.) Upstream sync: merge `upstream/master`
-  quarterly until M1 lands, then cherry-pick solver/kernel fixes only.
+- Remotes (decided 2026-10-16): the only remote is `origin` =
+  `<the owner's LAN repo>`, a private bare repo on the owner's LAN. The
+  GitHub remote (`solvespace/solvespace`) was removed on purpose: nothing goes to the official
+  repo unless the owner decides the work is excellent enough to offer, and a public GitHub fork
+  is only being considered. Never add a GitHub remote or push anywhere else without the owner's
+  say-so. GitHub Actions CI therefore does not run; verify Windows/macOS manually or once a fork
+  exists.
+- Upstream sync: when wanted, fetch without keeping a remote, e.g.
+  `git fetch https://github.com/solvespace/solvespace.git master` then merge `FETCH_HEAD`.
+  Merge upstream quarterly until M1 lands, then cherry-pick solver/kernel fixes only.
 - Tests: `RUN_COMMAND("<command-name>")` in `test/` runs a menu command headlessly (names in
   `src/commandnames.cpp`). Headless code paths have null windows/menu items: guard them.
   Not headless-safe yet (null FileDialog/Window under `guinone.cpp`): `open`, `save`, `save-as`,
