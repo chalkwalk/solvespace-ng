@@ -19,6 +19,7 @@ ui.hide:                H
 ui.unhide-all:          Alt+H
 ui.isolate:             Shift+H
 ui.toggle-sketch:       Tab
+ui.smart-dimension:     D
 
 new:                    Ctrl+N
 open:                   Ctrl+O
@@ -50,7 +51,6 @@ ttf-text:               Shift+T
 toggle-construction:    T
 split-curves:           I
 
-constrain-distance:     D
 constrain-reference-distance: Shift+D
 constrain-angle:        Alt+D
 

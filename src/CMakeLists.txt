@@ -146,6 +146,7 @@ if(ENABLE_GUI OR ENABLE_CLI)
         viewpresets.cpp
         visibility.cpp
         sketchfocus.cpp
+        constraintprobe.cpp
         polyline.cpp
         polygon.cpp
         resource.cpp

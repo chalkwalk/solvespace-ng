@@ -22,6 +22,7 @@ set(testsuite_SOURCES
     core/viewpresets/test.cpp
     core/visibility/test.cpp
     core/sketchfocus/test.cpp
+    core/smartdimension/test.cpp
     libs/keymap/test.cpp
     libs/palette/test.cpp
     libs/pie/test.cpp

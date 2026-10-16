@@ -669,6 +669,8 @@ public:
     bool ToggleSketchFocus(bool animate); // false if there was nothing to do
     void ActivateGroup(hGroup hg);        // what the property browser's "active" radio does
     void LookOntoActiveWorkplane(bool animate);
+    Command SmartDimensionCommand(); // from gs after GroupSelection(): ANGLE or DISTANCE_DIA
+    void    SmartDimension();        // hover fallback, then MenuConstrain(that command)
 
     Vector VectorFromProjs(Vector rightUpForward);
     void HandlePointForZoomToFit(Vector p, Point2d *pmax, Point2d *pmin,

@@ -24,6 +24,7 @@ const std::vector<UiActionInfo> &UiActionList() {
         { "ui.unhide-all",          "View \xE2\x80\xBA Show All Groups" },
         { "ui.isolate",             "View \xE2\x80\xBA Isolate Group" },
         { "ui.toggle-sketch",       "Sketch \xE2\x80\xBA Enter/Exit Sketch" },
+        { "ui.smart-dimension",     "Constrain \xE2\x80\xBA Smart Dimension" },
         { "ui.pie-add",             "Sketch \xE2\x80\xBA Add\xE2\x80\xA6 (pie)" },
         { "ui.pie-view",            "View \xE2\x80\xBA Views\xE2\x80\xA6 (pie)" },
     };
