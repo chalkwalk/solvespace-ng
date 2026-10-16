@@ -169,6 +169,7 @@ public:
     // Offscreen target (TOOL windows).
     unsigned    fbo = 0, fboColor = 0, fboDepth = 0;
     int         fboWidth = 0, fboHeight = 0;
+    bool        wasHovered = false;
 
     explicit WindowImplSdl(Kind kind) : kind(kind) {}
 
@@ -708,6 +709,76 @@ static void DrawTooltip(WindowImplSdl *w, ImVec2 origin) {
     }
 }
 
+#if defined(__APPLE__)
+#   define glGenFramebuffers         glGenFramebuffersEXT
+#   define glBindFramebuffer         glBindFramebufferEXT
+#   define glFramebufferTexture2D    glFramebufferTexture2DEXT
+#   define glGenRenderbuffers        glGenRenderbuffersEXT
+#   define glBindRenderbuffer        glBindRenderbufferEXT
+#   define glRenderbufferStorage     glRenderbufferStorageEXT
+#   define glFramebufferRenderbuffer glFramebufferRenderbufferEXT
+#   define glDeleteFramebuffers      glDeleteFramebuffersEXT
+#   define glDeleteRenderbuffers     glDeleteRenderbuffersEXT
+#   define GL_FRAMEBUFFER            GL_FRAMEBUFFER_EXT
+#   define GL_RENDERBUFFER           GL_RENDERBUFFER_EXT
+#   define GL_COLOR_ATTACHMENT0      GL_COLOR_ATTACHMENT0_EXT
+#   define GL_DEPTH_ATTACHMENT       GL_DEPTH_ATTACHMENT_EXT
+#endif
+
+static void EnsureFramebuffer(WindowImplSdl *w, int pw, int ph) {
+    if(w->fbo && w->fboWidth == pw && w->fboHeight == ph) return;
+    if(w->fbo) {
+        glDeleteFramebuffers(1, &w->fbo);
+        glDeleteTextures(1, &w->fboColor);
+        glDeleteRenderbuffers(1, &w->fboDepth);
+    }
+    glGenTextures(1, &w->fboColor);
+    glBindTexture(GL_TEXTURE_2D, w->fboColor);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, pw, ph, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glGenRenderbuffers(1, &w->fboDepth);
+    glBindRenderbuffer(GL_RENDERBUFFER, w->fboDepth);
+    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT16, pw, ph);
+    glGenFramebuffers(1, &w->fbo);
+    glBindFramebuffer(GL_FRAMEBUFFER, w->fbo);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, w->fboColor, 0);
+    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, w->fboDepth);
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    w->fboWidth  = pw;
+    w->fboHeight = ph;
+}
+
+static void RenderToolWindowsOffscreen() {
+    for(auto &weak : gToolWindows) {
+        auto w = weak.lock();
+        if(!w || !w->visible || !w->onRender) continue;
+        double ratio = w->GetDevicePixelRatio();
+        int pw = std::max(1, (int)(w->width * ratio)), ph = std::max(1, (int)(w->height * ratio));
+        EnsureFramebuffer(w.get(), pw, ph);
+        glBindFramebuffer(GL_FRAMEBUFFER, w->fbo);
+        w->onRender();
+        glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    }
+}
+
+// Development aid: SOLVESPACE_NG_SCREENSHOT=<file.png> renders a few frames, saves the back
+// buffer, and exits. Window-system screenshots of GL windows can be stale under XWayland.
+static void WriteDebugScreenshotIfRequested(int pw, int ph) {
+    static const char *path = getenv("SOLVESPACE_NG_SCREENSHOT");
+    static int frames = 0;
+    if(!path) return;
+    gNeedsFrame = true; // keep rendering until the layout has settled
+    if(++frames < 10) return;
+    std::shared_ptr<Pixmap> pm = Pixmap::Create(Pixmap::Format::RGBA, pw, ph);
+    glPixelStorei(GL_PACK_ALIGNMENT, 1);
+    glReadPixels(0, 0, pw, ph, GL_RGBA, GL_UNSIGNED_BYTE, &pm->data[0]);
+    pm->WritePng(Path::From(path), /*flip=*/true);
+    path = nullptr;
+    gNeedsFrame = false;
+    ExitGui();
+}
+
 static void RenderFrame() {
     if(!gSdlWindow) return;
     gNeedsFrame = false;
@@ -728,6 +799,8 @@ static void RenderFrame() {
         }
     }
     ImGui::Render();
+    // ImGui only samples tool-window textures when the draw data is rendered below.
+    RenderToolWindowsOffscreen();
 
     int pw, ph;
     SDL_GetWindowSizeInPixels(gSdlWindow, &pw, &ph);
@@ -740,6 +813,7 @@ static void RenderFrame() {
     }
     glViewport(0, 0, pw, ph);
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+    WriteDebugScreenshotIfRequested(pw, ph);
     SDL_GL_SwapWindow(gSdlWindow);
 }
 
@@ -767,7 +841,95 @@ void ClearGui() {
     SDL_Quit();
 }
 
-static void DrawToolWindows() {}
+static void DrawToolWindows() {
+    for(auto it = gToolWindows.begin(); it != gToolWindows.end();) {
+        auto w = it->lock();
+        if(!w) {
+            it = gToolWindows.erase(it);
+            continue;
+        }
+        ++it;
+        if(!w->visible) continue;
+
+        ImGui::SetNextWindowSize(ImVec2(440, 680), ImGuiCond_FirstUseEver);
+        ImGui::SetNextWindowPos(ImVec2(ImGui::GetIO().DisplaySize.x - 460, 40),
+                                ImGuiCond_FirstUseEver);
+        bool open = true;
+        std::string name = (w->title.empty() ? std::string("Property Browser") : w->title) +
+                           "###toolwindow";
+        ImGui::Begin(name.c_str(), &open,
+                     ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse);
+        ImVec2 avail = ImGui::GetContentRegionAvail();
+        float  sbW   = w->scrollbarVisible ? 14.0f : 0.0f;
+        w->width  = std::max(1.0f, avail.x - sbW);
+        w->height = std::max(1.0f, avail.y);
+
+        // Create/resize the target now, so the texture recorded below is the one rendered into
+        // this frame (otherwise the first frame would record texture 0).
+        double ratio = w->GetDevicePixelRatio();
+        EnsureFramebuffer(w.get(), std::max(1, (int)(w->width * ratio)),
+                          std::max(1, (int)(w->height * ratio)));
+
+        ImVec2 origin = ImGui::GetCursorScreenPos();
+        // Flip vertically: GL's texture origin is bottom-left.
+        ImGui::Image((ImTextureID)(intptr_t)w->fboColor,
+                     ImVec2((float)w->width, (float)w->height), ImVec2(0, 1), ImVec2(1, 0));
+        bool hovered = ImGui::IsItemHovered();
+
+        // Synthesize Platform mouse events for the image area.
+        ImGuiIO &io = ImGui::GetIO();
+        double   lx = io.MousePos.x - origin.x, ly = io.MousePos.y - origin.y;
+        auto send = [&](MouseEvent::Type type, MouseEvent::Button button) {
+            MouseEvent me = MakeMouseEvent(type, lx, ly);
+            me.button     = button;
+            if(w->onMouseEvent) w->onMouseEvent(me);
+        };
+        if(hovered) {
+            if(io.MouseDelta.x != 0 || io.MouseDelta.y != 0) {
+                send(MouseEvent::Type::MOTION, io.MouseDown[0] ? MouseEvent::Button::LEFT
+                                                               : MouseEvent::Button::NONE);
+            }
+            for(int b = 0; b < 3; b++) {
+                MouseEvent::Button btn = b == 0 ? MouseEvent::Button::LEFT
+                                       : b == 1 ? MouseEvent::Button::RIGHT
+                                                : MouseEvent::Button::MIDDLE;
+                if(ImGui::IsMouseDoubleClicked(b)) send(MouseEvent::Type::DBL_PRESS, btn);
+                else if(ImGui::IsMouseClicked(b)) send(MouseEvent::Type::PRESS, btn);
+                if(ImGui::IsMouseReleased(b)) send(MouseEvent::Type::RELEASE, btn);
+            }
+            if(io.MouseWheel != 0 && w->scrollbarVisible) {
+                w->SetScrollbarPosition(w->scrollPos - io.MouseWheel * 3);
+                if(w->onScrollbarAdjusted) w->onScrollbarAdjusted(w->scrollPos);
+            }
+            ImGui::SetMouseCursor(w->cursor == Window::Cursor::HAND ? ImGuiMouseCursor_Hand
+                                                                    : ImGuiMouseCursor_Arrow);
+            w->wasHovered = true;
+        } else if(w->wasHovered) {
+            // Mouse left the image: let the core clear its hover highlight once.
+            send(MouseEvent::Type::LEAVE, MouseEvent::Button::NONE);
+            w->wasHovered = false;
+        }
+
+        if(w->scrollbarVisible) {
+            ImGui::SameLine(0, 0);
+            float maxStart = (float)std::max(w->scrollMin, w->scrollMax - w->scrollPage);
+            float inverted = maxStart - (float)w->scrollPos; // slider bottom = scrolled down
+            if(ImGui::VSliderFloat("##scroll", ImVec2(sbW, (float)w->height), &inverted,
+                                   (float)w->scrollMin, maxStart, "")) {
+                w->SetScrollbarPosition(maxStart - inverted);
+                if(w->onScrollbarAdjusted) w->onScrollbarAdjusted(w->scrollPos);
+            }
+        }
+
+        DrawEditorOverlay(w.get(), origin);
+        DrawTooltip(w.get(), origin);
+        ImGui::End();
+
+        if(!open) {
+            if(w->onClose) w->onClose(); else w->visible = false;
+        }
+    }
+}
 static void DrawMainMenuBar() {}
 
 static bool RouteKeyDown(const SDL_Event &ev) {
