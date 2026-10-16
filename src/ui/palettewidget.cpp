@@ -32,7 +32,8 @@ std::function<void()> CommandPalette::Draw(const std::vector<PaletteEntry> &entr
     ImGui::Begin("##palette", nullptr,
                  ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoSavedSettings |
                  ImGuiWindowFlags_AlwaysAutoResize);
-    if(!fieldActive) {
+    // Not while another item (a row being clicked) is active: taking focus would cancel it.
+    if(!fieldActive && !ImGui::IsAnyItemActive()) {
         // Characters typed right after opening arrive before the field can take focus; keep them.
         std::string typed;
         for(ImWchar c : io.InputQueueCharacters) {

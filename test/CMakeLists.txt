@@ -123,7 +123,8 @@ add_dependencies(solvespace-testsuite
 # UI tests: the real solvespace-ng app, driven with real SDL events (platform/sdl/uidriver.h)
 # on SDL's offscreen video driver, so no display is needed.
 set(ngui_SOURCES
-    ngui/smoke/test.cpp)
+    ngui/smoke/test.cpp
+    ngui/menus/test.cpp)
 
 if(ENABLE_GUI AND ENABLE_NG_GUI)
     add_executable(solvespace-ng-uitest

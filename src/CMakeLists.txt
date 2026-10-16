@@ -283,7 +283,10 @@ if(ENABLE_GUI AND ENABLE_NG_GUI)
     target_include_directories(imgui-sdl3 PUBLIC
         ${IMGUI_DIR}
         ${IMGUI_DIR}/backends)
-    target_compile_definitions(imgui-sdl3 PUBLIC IMGUI_DISABLE_OBSOLETE_FUNCTIONS)
+    # The test-engine hooks (platform/sdl/itemregistry.cpp) let UI tests find items by label;
+    # they cost nothing unless the test driver turns them on.
+    target_compile_definitions(imgui-sdl3 PUBLIC IMGUI_DISABLE_OBSOLETE_FUNCTIONS
+                                                 IMGUI_ENABLE_TEST_ENGINE)
     target_link_libraries(imgui-sdl3 PUBLIC ${NG_SDL_TARGET})
     if(WIN32)
         # ANGLE provides GLES 3 on Windows.
@@ -315,6 +318,7 @@ if(ENABLE_GUI AND ENABLE_NG_GUI)
     add_library(solvespace-ng-app OBJECT
         solvespace.cpp
         platform/guisdl.cpp
+        platform/sdl/itemregistry.cpp
         ui/palettewidget.cpp
         ui/ngui.cpp
         ui/piemenu.cpp

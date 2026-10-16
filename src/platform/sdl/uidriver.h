@@ -10,6 +10,7 @@
 #define SOLVESPACE_SDL_UIDRIVER_H
 
 #include <functional>
+#include <optional>
 #include <string>
 #include <vector>
 #include "solvespace.h"
@@ -62,6 +63,21 @@ void    Wheel(double x, double y, double dy);
 Point2d MousePos();
 Point2d WindowSize();
 Point2d ToWindow(Vector modelPoint); // where a model point is drawn in the main window
+
+// ImGui items (menu entries, buttons, palette rows, panels) drawn in the last frame, by label
+// without its "##id" suffix. Windows are items too, e.g. "Property Browser".
+struct Item {
+    std::string label, window;
+    double      x0, y0, x1, y1;
+    bool        checkable, checked, opened, isWindow;
+    Point2d Center() const { return Point2d::From((x0 + x1) / 2, (y0 + y1) / 2); }
+};
+std::vector<Item>   Items();
+// The last widget drawn with the label, else the window with that name.
+std::optional<Item> FindItem(const std::string &label);
+bool ClickItem(const std::string &label);               // false if no such item
+// Clicks through a menu path, e.g. { "Sketch", "Line Segment" }. False if a step is missing.
+bool ClickMenu(const std::vector<std::string> &path);
 
 bool Screenshot(const Path &png);
 void ReloadKeymap(); // after writing keymap.txt or changing NG_KeymapPreset

@@ -36,6 +36,7 @@
 #include "platform/sdl/deferredqueue.h"
 #include "platform/sdl/keychord.h"
 #include "platform/sdl/uidriver.h"
+#include "platform/sdl/itemregistry.h"
 #include "ui/keyrouter.h"
 #include "ui/uiactions.h"
 #include "ui/coreactions.h"
@@ -709,6 +710,7 @@ static void InitSdlWindowAndImGui() {
     ImGuiIO &io = ImGui::GetIO();
     io.IniFilename = nullptr; // layout persists through Platform::Settings instead
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
+    ImGui::GetCurrentContext()->TestEngineHookItems = gDriver; // record items for the driver
     ImGui_ImplSDL3_InitForOpenGL(gSdlWindow, gGlContext);
     ImGuiRenderer_Init(GlslVersion());
     gShowMenuBar = GetSettings()->ThawBool("NG_ShowMenuBar", true);
@@ -1637,6 +1639,41 @@ Point2d ToWindow(Vector modelPoint) {
     if(WindowImplSdl *main = MainWindow()) main->GetContentSize(&w, &h);
     Point2d p = SS.GW.ProjectPoint(modelPoint);
     return Point2d::From(p.x + w / 2, h / 2 - p.y);
+}
+
+std::vector<Item> Items() {
+    std::vector<Item> out;
+    for(const UiItem &u : LastFrameItems()) {
+        out.push_back({ u.label, u.window, u.x0, u.y0, u.x1, u.y1, u.checkable, u.checked,
+                        u.opened, u.isWindow });
+    }
+    return out;
+}
+
+std::optional<Item> FindItem(const std::string &label) {
+    std::vector<Item>   items = Items();
+    std::optional<Item> window;
+    for(auto it = items.rbegin(); it != items.rend(); ++it) {
+        if(it->label != label) continue;
+        if(!it->isWindow) return *it;
+        if(!window) window = *it;
+    }
+    return window;
+}
+
+bool ClickItem(const std::string &label) {
+    std::optional<Item> item = FindItem(label);
+    if(!item) return false;
+    Point2d c = item->Center();
+    Click(c.x, c.y);
+    return true;
+}
+
+bool ClickMenu(const std::vector<std::string> &path) {
+    for(const std::string &label : path) {
+        if(!ClickItem(label)) return false;
+    }
+    return true;
 }
 
 bool Screenshot(const Path &png) {
