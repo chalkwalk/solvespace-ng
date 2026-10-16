@@ -30,6 +30,7 @@ set(testsuite_SOURCES
     libs/palette/test.cpp
     libs/pie/test.cpp
     core/locale/test.cpp
+    core/paste/test.cpp
     core/path/test.cpp
     core/prune/test.cpp
     core/solver/test.cpp

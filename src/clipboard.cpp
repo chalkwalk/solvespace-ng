@@ -390,6 +390,7 @@ bool TextWindow::EditControlDoneForPaste(const std::string &s) {
 
         case Edit::PASTE_SCALE: {
             e = Expr::From(s, /*popUpError=*/true);
+            if(!e) break;
             double v = e->Eval();
             if(fabs(v) > 1e-6) {
                 shown.paste.scale = shown.paste.scale < 0 ? -v : v;
