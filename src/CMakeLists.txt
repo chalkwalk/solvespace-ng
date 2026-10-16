@@ -274,6 +274,12 @@ if(ENABLE_GUI AND ENABLE_NG_GUI)
         ${IMGUI_DIR}/backends)
     target_compile_definitions(imgui-sdl3 PUBLIC IMGUI_DISABLE_OBSOLETE_FUNCTIONS)
     target_link_libraries(imgui-sdl3 PUBLIC ${NG_SDL_TARGET})
+
+    add_library(solvespace-ng-support STATIC
+        platform/sdl/settingsfile.cpp)
+    target_include_directories(solvespace-ng-support PUBLIC
+        ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR})
+    target_link_libraries(solvespace-ng-support PUBLIC solvespace-core keymap palette)
 endif()
 
 # solvespace graphical executable
