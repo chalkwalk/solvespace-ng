@@ -316,6 +316,8 @@ macOS and Emscripten builds.
   quarterly until M1 lands, then cherry-pick solver/kernel fixes only.
 - Tests: `RUN_COMMAND("<command-name>")` in `test/` runs a menu command headlessly (names in
   `src/commandnames.cpp`). Headless code paths have null windows/menu items: guard them.
+  Not headless-safe yet (null FileDialog/Window under `guinone.cpp`): `open`, `save`, `save-as`,
+  `import`, all `export-*`, `group-link`, `image`, `exit`, `zoom-in`, `zoom-out`, `full-screen`.
 
 **Developer docs worth reading first:** `developer_docs/IdLists_Entities_and_Remap.txt`,
 `developer_docs/Solver_Transforms.txt`.

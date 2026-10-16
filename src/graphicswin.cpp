@@ -210,7 +210,16 @@ void GraphicsWindow::ActivateCommand(Command cmd) {
 std::vector<Command> GraphicsWindow::MenuCommands() {
     std::vector<Command> result;
     for(int i = 0; Menu[i].level >= 0; i++) {
-        if(Menu[i].cmd != Command::NONE) result.push_back(Menu[i].cmd);
+        switch(Menu[i].cmd) {
+            // Rows that only open a submenu; activating them asserts.
+            case Command::NONE:
+            case Command::OPEN_RECENT:
+            case Command::GROUP_RECENT:
+            case Command::LOCALE:
+                break;
+            default:
+                result.push_back(Menu[i].cmd);
+        }
     }
     return result;
 }

@@ -2,6 +2,7 @@
 // Stable, human-readable identifiers for menu commands.
 //
 // These strings are persisted in user keymap files: never rename one, only add.
+// Submenu headers (OPEN_RECENT, GROUP_RECENT, LOCALE) are not invocable and have no name.
 //-----------------------------------------------------------------------------
 #include "solvespace.h"
 #include "commandnames.h"
@@ -17,7 +18,6 @@ static const CommandNameEntry CommandNames[] = {
     // File
     { Command::NEW,               "new"                },
     { Command::OPEN,              "open"               },
-    { Command::OPEN_RECENT,       "open-recent"        },
     { Command::SAVE,              "save"               },
     { Command::SAVE_AS,           "save-as"            },
     { Command::EXPORT_IMAGE,      "export-image"       },
@@ -90,7 +90,6 @@ static const CommandNameEntry CommandNames[] = {
     { Command::GROUP_ROT,         "group-step-rotate"  },
     { Command::GROUP_TRANS,       "group-step-translate" },
     { Command::GROUP_LINK,        "group-link"         },
-    { Command::GROUP_RECENT,      "group-link-recent"  },
     // Constrain
     { Command::DISTANCE_DIA,      "constrain-distance" },
     { Command::REF_DISTANCE,      "constrain-reference-distance" },
@@ -123,7 +122,6 @@ static const CommandNameEntry CommandNames[] = {
     { Command::STOP_TRACING,      "stop-tracing"       },
     { Command::STEP_DIM,          "step-dimension"     },
     // Help
-    { Command::LOCALE,            "language"           },
     { Command::WEBSITE,           "website"            },
     { Command::GITHUB,            "github-commit"      },
     { Command::ABOUT,             "about"              },

@@ -29,6 +29,19 @@ TEST_CASE(every_menu_command_has_a_name) {
 TEST_CASE(names_are_unique) {
     std::set<std::string> seen;
     for(Command cmd : GraphicsWindow::MenuCommands()) {
-        CHECK_TRUE(seen.insert(CommandName(cmd)).second);
+        const char *name = CommandName(cmd);
+        CHECK_TRUE(name != nullptr);
+        CHECK_TRUE(seen.insert(name).second);
+    }
+}
+
+TEST_CASE(submenu_headers_are_not_invocable_commands) {
+    // These menu rows only open submenus; ActivateCommand on them asserts.
+    const Command headers[] = { Command::OPEN_RECENT, Command::GROUP_RECENT, Command::LOCALE };
+    for(Command header : headers) {
+        CHECK_TRUE(CommandName(header) == nullptr);
+        for(Command cmd : GraphicsWindow::MenuCommands()) {
+            CHECK_TRUE(cmd != header);
+        }
     }
 }
