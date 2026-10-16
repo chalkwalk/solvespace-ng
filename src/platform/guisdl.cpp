@@ -1502,10 +1502,10 @@ void BeginCase() {
     gScriptText.clear();
     gDriverMods    = SDL_KMOD_NONE;
     gDriverButtons = 0;
+    gSettings.reset(); // first: it saves itself when destroyed
     std::error_code ec;
     std::filesystem::remove(PrefDir().Join("settings.txt").raw, ec);
     std::filesystem::remove(PrefDir().Join("keymap.txt").raw, ec);
-    gSettings.reset();
 }
 
 std::vector<std::string> EndCase() {

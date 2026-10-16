@@ -127,7 +127,13 @@ set(ngui_SOURCES
     ngui/smoke/test.cpp
     ngui/menus/test.cpp
     ngui/browser/test.cpp
-    ngui/drawing/test.cpp)
+    ngui/drawing/test.cpp
+    ngui/grab/test.cpp
+    ngui/constrain/test.cpp
+    ngui/views/test.cpp
+    ngui/groups/test.cpp
+    ngui/editing/test.cpp
+    ngui/app/test.cpp)
 
 if(ENABLE_GUI AND ENABLE_NG_GUI)
     add_executable(solvespace-ng-uitest

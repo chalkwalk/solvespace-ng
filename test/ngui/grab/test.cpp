@@ -1,0 +1,94 @@
+// G (grab): drag the selection under the solver with the mouse, axis keys and typed values.
+#include "../uitest.h"
+#include "ui/grabtool.h"
+#include "harness.h"
+
+using namespace SolveSpace::UiTest;
+
+static Vector P(hEntity e) {
+    return SK.GetEntity(e)->PointGetNum();
+}
+
+static hRequest SelectedLine() {
+    hRequest line = DrawLine(Point2d::From(500, 520), Point2d::From(600, 520));
+    ClickAt(AtMiddle(line));
+    return line;
+}
+
+TEST_CASE(grab_follows_the_mouse_and_click_confirms) {
+    CHECK_LOAD("line.slvs");
+    hRequest line = SelectedLine();
+    Vector a0 = P(line.entity(1));
+    Point2d m = AtMiddle(line);
+    Driver::Key("G");
+    CHECK_TRUE(Ui::Grab().Active());
+    Driver::Move(m.x + 40, m.y - 30);
+    CHECK_TRUE(Near(AtPoint(line.entity(1)), At(a0).Plus(Point2d::From(40, -30))));
+    Driver::Click(m.x + 40, m.y - 30);
+    CHECK_FALSE(Ui::Grab().Active());
+    CHECK_TRUE(P(line.entity(1)).Minus(a0).Magnitude() > 1);
+    Driver::Key("Ctrl+Z"); // one undo step for the whole grab
+    CHECK_TRUE(P(line.entity(1)).Minus(a0).Magnitude() < 1e-6);
+}
+
+TEST_CASE(grab_escape_restores_exactly) {
+    CHECK_LOAD("line.slvs");
+    hRequest line = SelectedLine();
+    Vector a0 = P(line.entity(1)), b0 = P(line.entity(2));
+    Point2d m = AtMiddle(line);
+    Driver::Key("G");
+    Driver::Move(m.x + 60, m.y + 25);
+    Driver::Key("Escape");
+    CHECK_FALSE(Ui::Grab().Active());
+    CHECK_TRUE(P(line.entity(1)).Equals(a0) && P(line.entity(2)).Equals(b0));
+}
+
+TEST_CASE(grab_right_click_cancels) {
+    CHECK_LOAD("line.slvs");
+    hRequest line = SelectedLine();
+    Vector a0 = P(line.entity(1));
+    Point2d m = AtMiddle(line);
+    Driver::Key("G");
+    Driver::Move(m.x + 60, m.y + 25);
+    Driver::Click(m.x + 60, m.y + 25, Driver::Button::RIGHT);
+    CHECK_FALSE(Ui::Grab().Active());
+    CHECK_TRUE(P(line.entity(1)).Equals(a0));
+}
+
+TEST_CASE(grab_axis_lock_and_typed_distance) {
+    CHECK_LOAD("line.slvs");
+    hRequest line = SelectedLine();
+    Vector a0 = P(line.entity(1));
+    Point2d m = AtMiddle(line);
+    Driver::Key("G");
+    Driver::Move(m.x + 30, m.y - 40);
+    Driver::Key("X");
+    Driver::Type("15");
+    CHECK_TRUE(Ui::Grab().Description().find("15") != std::string::npos);
+    Driver::Key("Return");
+    CHECK_FALSE(Ui::Grab().Active());
+    Vector d = P(line.entity(1)).Minus(a0);
+    CHECK_EQ_EPS(d.Magnitude(), 15.0);
+    CHECK_TRUE(fabs(d.Dot(SS.GW.GrabAxisVector(0))) > 15 - 1e-6);
+    CHECK_TRUE(SK.request.FindByIdNoOops(line) != nullptr); // X never deletes while grabbing
+}
+
+TEST_CASE(grab_hover_fallback_moves_the_line_under_the_mouse) {
+    CHECK_LOAD("line.slvs");
+    hRequest line = DrawLine(Point2d::From(500, 520), Point2d::From(600, 520));
+    Vector a0 = P(line.entity(1));
+    Point2d m = AtMiddle(line);
+    Driver::Move(m.x, m.y);
+    Driver::Key("G");
+    CHECK_TRUE(Ui::Grab().Active());
+    Driver::Move(m.x, m.y + 50);
+    Driver::Key("Return");
+    CHECK_TRUE(P(line.entity(1)).Minus(a0).Magnitude() > 1);
+}
+
+TEST_CASE(grab_with_nothing_to_grab_does_nothing) {
+    CHECK_LOAD("line.slvs");
+    Driver::Move(200, 650);
+    Driver::Key("G");
+    CHECK_FALSE(Ui::Grab().Active());
+}

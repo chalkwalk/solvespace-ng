@@ -5,6 +5,10 @@
 namespace SolveSpace {
 namespace UiTest {
 
+bool Near(Point2d a, Point2d b) {
+    return a.Minus(b).Magnitude() < 1.0;
+}
+
 Point2d At(Vector modelPoint) {
     return Driver::ToWindow(modelPoint);
 }

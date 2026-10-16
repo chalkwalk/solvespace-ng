@@ -15,6 +15,9 @@ namespace Driver = SolveSpace::Platform::Driver;
 namespace SolveSpace {
 namespace UiTest {
 
+// Within a pixel.
+bool Near(Point2d a, Point2d b);
+
 // Model points and entities on screen (window coordinates).
 Point2d At(Vector modelPoint);
 Point2d AtPoint(hEntity point);
