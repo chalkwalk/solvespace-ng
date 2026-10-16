@@ -73,7 +73,7 @@ std::string Style::ValueText(hStyle hs, StyleValue value) {
     return "";
 }
 
-bool Style::SetValue(hStyle hs, StyleValue value, const std::string &str) {
+bool Style::SetValue(hStyle hs, StyleValue value, const std::string &str, bool rememberUndo) {
     switch(value) {
         case StyleValue::NAME:
             if(str.empty()) {
@@ -91,7 +91,7 @@ bool Style::SetValue(hStyle hs, StyleValue value, const std::string &str) {
                 return false;
             }
             rgb = rgb.ClampWithin(0, 1);
-            SS.UndoRemember();
+            if(rememberUndo) SS.UndoRemember();
             Style *s = Style::Get(hs);
             (value == StyleValue::COLOR ? s->color : s->fillColor) = RGBf(rgb.x, rgb.y, rgb.z);
             break;

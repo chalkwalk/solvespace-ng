@@ -22,9 +22,10 @@ void ShowStyleInStyles(hStyle hs) {
     StylesPanel().SetShown(true);
 }
 
-static bool ColourEdit(const char *label, RgbaColor c, std::string *text) {
-    float rgb[3] = { c.redF(), c.greenF(), c.blueF() };
-    if(!ImGui::ColorEdit3(label, rgb, ImGuiColorEditFlags_NoInputs)) return false;
+// A colour field; *text gets the new colour as "r, g, b", *first whether a gesture started.
+static bool ColourEdit(const char *label, RgbaColor c, std::string *text, bool *first) {
+    float now[3] = { c.redF(), c.greenF(), c.blueF() }, rgb[3];
+    if(!ColourField(label, now, rgb, first)) return false;
     *text = ssprintf("%f, %f, %f", rgb[0], rgb[1], rgb[2]);
     return true;
 }
@@ -67,8 +68,9 @@ static void DrawStyle(Style *s, std::function<void()> *run) {
 
     ImGui::SeparatorText("line stroke");
     std::string text;
-    if(ColourEdit("color##stroke", s->color, &text)) {
-        *run = [hs, text] { Style::SetValue(hs, StyleValue::COLOR, text); };
+    bool        first;
+    if(ColourEdit("stroke color", s->color, &text, &first)) {
+        *run = [hs, text, first] { Style::SetValue(hs, StyleValue::COLOR, text, first); };
     }
     Value("width", "##width", hs, StyleValue::WIDTH, run);
     Value("stipple width", "##stipple-width", hs, StyleValue::STIPPLE_WIDTH, run);
@@ -93,8 +95,10 @@ static void DrawStyle(Style *s, std::function<void()> *run) {
 
     if(custom) {
         ImGui::SeparatorText("contour fill");
-        if(ColourEdit("color##fill", s->fillColor, &text)) {
-            *run = [hs, text] { Style::SetValue(hs, StyleValue::FILL_COLOR, text); };
+        if(ColourEdit("fill color", s->fillColor, &text, &first)) {
+            *run = [hs, text, first] {
+                Style::SetValue(hs, StyleValue::FILL_COLOR, text, first);
+            };
         }
         Check("contours are filled", s->filled, hs, StyleOption::FILLED, run);
     }
@@ -160,7 +164,8 @@ std::function<void()> DrawStyles() {
         run = [] { TextWindow::ScreenLoadFactoryDefaultStyles(0, 0); };
     }
     std::string text;
-    if(ColourEdit("background color", SS.backgroundColor, &text)) {
+    bool        first;
+    if(ColourEdit("background color", SS.backgroundColor, &text, &first)) {
         run = [text] { SS.SetSetting(Setting::BACKGROUND_COLOR, text); };
     }
     if(gShown.v) {

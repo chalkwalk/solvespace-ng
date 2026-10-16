@@ -35,7 +35,8 @@ bool Enabled();
 // Per test case: forget recorded dialogs and queued answers, release held keys and buttons,
 // and delete the settings and keymap files (call before SS.Init()).
 void BeginCase();
-// Problems the case left behind (unanswered modals, unused queued answers); empty if none.
+// Problems the case left behind (unanswered modals, unused queued answers, an app that never
+// went idle); empty if none.
 std::vector<std::string> EndCase();
 
 void Frame(int n = 1);

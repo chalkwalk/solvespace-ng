@@ -15,6 +15,11 @@ namespace Ui {
 void ValueField(const char *label, const std::string &value, std::function<void()> *run,
                 std::function<void(std::string)> apply);
 
+// A colour swatch labelled `label` that opens a picker. Returns true while the colour changes,
+// with the new colour in rgb; *gestureStart is true for the first change of a click or drag,
+// so the caller can make the whole gesture one undo step.
+bool ColourField(const char *label, const float current[3], float rgb[3], bool *gestureStart);
+
 }
 }
 

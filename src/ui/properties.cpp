@@ -137,14 +137,12 @@ static void DrawGroup(Group *g, std::function<void()> *run) {
         ImGui::SameLine();
         combine("intersection", C::INTERSECTION);
         if(type != Type::LINKED) {
-            float rgb[3] = { g->color.redF(), g->color.greenF(), g->color.blueF() };
-            if(ImGui::ColorEdit3("color", rgb, ImGuiColorEditFlags_NoInputs)) {
-                // One undo step per edit, not per frame of a drag.
-                bool first = ImGui::IsItemActivated() || !ImGui::IsItemActive();
+            float now[3] = { g->color.redF(), g->color.greenF(), g->color.blueF() }, rgb[3];
+            bool  first;
+            if(ColourField("color", now, rgb, &first)) {
+                // One undo step per click or drag, not per frame of it.
                 RgbaColor c = RgbaColor::FromFloat(rgb[0], rgb[1], rgb[2]);
                 *run = [hg, c, first] { SS.SetGroupColor(hg, c, first); };
-            } else if(ImGui::IsItemActivated()) {
-                *run = [] { SS.UndoRemember(); };
             }
             ImGui::TextUnformatted("opacity");
             ValueField("##opacity", ssprintf("%.2f", g->color.alphaF()), run,

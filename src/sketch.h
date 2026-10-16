@@ -926,7 +926,8 @@ public:
     // message) when refused.
     static void        ChangeOption(hStyle hs, StyleOption option);
     static std::string ValueText(hStyle hs, StyleValue value);
-    static bool        SetValue(hStyle hs, StyleValue value, const std::string &text);
+    static bool        SetValue(hStyle hs, StyleValue value, const std::string &text,
+                                bool rememberUndo = true);
     static void        SetStipple(hStyle hs, StipplePattern pattern);
     static void        Delete(hStyle hs);
 

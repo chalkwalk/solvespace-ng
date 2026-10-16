@@ -54,7 +54,8 @@ TEST_CASE(outliner_reports_a_failed_solve) {
     c.valA      = 10.0;
     Constraint::AddConstraint(&c, /*rememberForUndo=*/false);
     SS.GenerateAll(SolveSpaceUI::Generate::ALL);
-    const OutlinerRow *sketch = Row(BuildOutliner(), "sketch-in-plane");
+    std::vector<OutlinerRow> rows = BuildOutliner();
+    const OutlinerRow *sketch = Row(rows, "sketch-in-plane");
     CHECK_TRUE(sketch->status == OutlinerRow::Status::ERROR);
     CHECK_EQ_STR(sketch->StatusText(), "ERR");
 }

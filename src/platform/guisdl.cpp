@@ -84,6 +84,7 @@ static std::vector<Driver::DialogRecord>                                     gDi
 static std::function<MessageDialog::Response(const Driver::DialogRecord &)> gMessagePolicy;
 static std::deque<Path>                  gQueuedFiles;
 static std::deque<std::function<void()>> gModalSteps;
+static int                               gSettleTimeouts = 0;
 
 //-----------------------------------------------------------------------------
 // Fatal errors
@@ -1519,6 +1520,7 @@ void BeginCase() {
     gQueuedFiles.clear();
     gModalSteps.clear();
     gScriptText.clear();
+    gSettleTimeouts = 0;
     gDriverMods    = SDL_KMOD_NONE;
     gDriverButtons = 0;
     gSettings.reset(); // first: it saves itself when destroyed
@@ -1534,6 +1536,7 @@ std::vector<std::string> EndCase() {
     }
     if(!gQueuedFiles.empty()) problems.push_back("queued file-dialog answers were not used");
     if(!gModalSteps.empty()) problems.push_back("queued modal steps were not used");
+    if(gSettleTimeouts > 0) problems.push_back("the app never went idle (a busy loop?)");
     return problems;
 }
 
@@ -1545,19 +1548,23 @@ void Frame(int n) {
 }
 
 void Settle(unsigned horizonMs) {
-    uint64_t start = SDL_GetTicks();
+    uint64_t    start = SDL_GetTicks();
+    const char *busy  = "";
     for(int frames = 0;;) {
         PumpEventsOnce(/*wait=*/false);
         if(frames < 3 || gNeedsFrame || !gDeferred.Empty()) {
+            busy = gNeedsFrame ? "a frame was requested" : "deferred work";
             RenderFrame();
             frames++;
         } else if(!SDL_HasEvents(SDL_EVENT_FIRST, SDL_EVENT_LAST)) {
             uint64_t due = Timers().EarliestDue(), now = SDL_GetTicks();
             if(due > now + horizonMs) break;
+            busy = "a timer is due";
             SDL_Delay((Uint32)std::min<uint64_t>(due > now ? due - now : 0, 5));
         }
         if(SDL_GetTicks() - start > 20000) {
-            fprintf(stderr, "Driver::Settle: the app is still busy after 20 s\n");
+            fprintf(stderr, "Driver::Settle: the app is still busy after 20 s (%s)\n", busy);
+            gSettleTimeouts++;
             break;
         }
     }

@@ -163,3 +163,18 @@ TEST_CASE(constrained_by_lists_a_lines_constraints) {
     CHECK_TRUE(SS.GW.selection.n == 1 && SS.GW.selection[0].constraint == dim);
 }
 
+
+TEST_CASE(dragging_in_the_colour_picker_is_one_undo_step) {
+    CHECK_LOAD("line.slvs");
+    Extrude();
+    CHECK_TRUE(Driver::ClickItem("color")); // opens the picker
+    std::optional<Driver::Item> sv = Driver::FindItem("sv");
+    CHECK_TRUE(sv.has_value());
+    int undo = SS.undo.cnt;
+    Driver::Drag(sv->x0 + 5, sv->y0 + 5, sv->x1 - 5, sv->y1 - 5, Driver::Button::LEFT, 10);
+    CHECK_TRUE(SS.undo.cnt == undo + 1);
+    Driver::Key("Escape");
+    RgbaColor dragged = Active()->color;
+    Driver::Key("Ctrl+Z");
+    CHECK_FALSE(Active()->color.Equals(dragged)); // the whole drag undone at once
+}

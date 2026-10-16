@@ -29,14 +29,14 @@ static void Field(const char *label, const char *id, Setting s, std::function<vo
 static void Display(std::function<void()> *run) {
     ImGui::TextDisabled("model colours");
     for(int i = 0; i < SS.MODEL_COLORS; i++) {
-        RgbaColor c   = SS.modelColor[i];
-        float     rgb[3] = { c.redF(), c.greenF(), c.blueF() };
-        std::string label = "##colour:" + std::to_string(i);
-        if(ImGui::ColorEdit3(label.c_str(), rgb, ImGuiColorEditFlags_NoInputs)) {
+        RgbaColor c      = SS.modelColor[i];
+        float     now[3] = { c.redF(), c.greenF(), c.blueF() }, rgb[3];
+        bool      first;
+        if(ColourField(std::to_string(i + 1).c_str(), now, rgb, &first)) {
             std::string text = ssprintf("%f, %f, %f", rgb[0], rgb[1], rgb[2]);
             *run = [i, text] { SS.SetSetting(Setting::MODEL_COLOR, text, i); };
         }
-        if(i + 1 < SS.MODEL_COLORS) ImGui::SameLine();
+        if((i + 1) % 4 != 0 && i + 1 < SS.MODEL_COLORS) ImGui::SameLine();
     }
     Field("chord tolerance (%)", "##chord-tolerance", Setting::CHORD_TOLERANCE, run);
     ImGui::TextDisabled("%g mm, %d triangles", SS.chordTolCalculated,
