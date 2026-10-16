@@ -18,6 +18,20 @@ std::string EnsureExtension(const std::string &path, const std::vector<FileFilte
     return path + "." + f.extensions[0];
 }
 
+std::string SuggestedSavePath(const std::string &suggested, const std::string &folder,
+                              const std::vector<FileFilter> &filters) {
+    size_t slash = suggested.find_last_of("/\\");
+    std::string dir  = slash == std::string::npos ? "" : suggested.substr(0, slash);
+    std::string name = slash == std::string::npos ? suggested : suggested.substr(slash + 1);
+    size_t dot = name.find_last_of('.');
+    std::string stem = (dot == std::string::npos || dot == 0) ? name : name.substr(0, dot);
+    if(stem.empty()) stem = "untitled";
+    if(!folder.empty()) dir = folder;
+    std::string path = dir.empty() ? stem : dir + "/" + stem;
+    if(!filters.empty() && !filters[0].extensions.empty()) path += "." + filters[0].extensions[0];
+    return path;
+}
+
 std::string SdlFilterPattern(const FileFilter &filter) {
     std::string out;
     for(size_t i = 0; i < filter.extensions.size(); i++) {

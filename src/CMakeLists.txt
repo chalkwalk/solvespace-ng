@@ -267,8 +267,13 @@ if(ENABLE_GUI AND ENABLE_NG_GUI)
         ${IMGUI_DIR}/imgui_draw.cpp
         ${IMGUI_DIR}/imgui_tables.cpp
         ${IMGUI_DIR}/imgui_widgets.cpp
-        ${IMGUI_DIR}/backends/imgui_impl_sdl3.cpp
-        ${IMGUI_DIR}/backends/imgui_impl_opengl3.cpp)
+        ${IMGUI_DIR}/backends/imgui_impl_sdl3.cpp)
+    if(APPLE)
+        # Legacy GL 2.1 context on macOS: no vertex array objects for the GL3 backend.
+        target_sources(imgui-sdl3 PRIVATE ${IMGUI_DIR}/backends/imgui_impl_opengl2.cpp)
+    else()
+        target_sources(imgui-sdl3 PRIVATE ${IMGUI_DIR}/backends/imgui_impl_opengl3.cpp)
+    endif()
     target_include_directories(imgui-sdl3 PUBLIC
         ${IMGUI_DIR}
         ${IMGUI_DIR}/backends)
@@ -287,6 +292,7 @@ if(ENABLE_GUI AND ENABLE_NG_GUI)
         platform/sdl/keychord.cpp
         platform/sdl/timerregistry.cpp
         platform/sdl/dialoghelpers.cpp
+        platform/sdl/debugscript.cpp
         ui/keypresets.cpp
         ui/keyrouter.cpp)
     target_include_directories(solvespace-ng-support PUBLIC

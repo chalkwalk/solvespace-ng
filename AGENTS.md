@@ -305,7 +305,9 @@ cmake .. -DCMAKE_BUILD_TYPE=Debug -DENABLE_NG_GUI=ON
 make -j$(nproc) solvespace-ng solvespace-testsuite && make test_solvespace   # includes test/ng/*
 ./bin/solvespace-ng [file.slvs]
 SOLVESPACE_NG_SCREENSHOT=/tmp/shot.png ./bin/solvespace-ng f.slvs   # save a frame and exit
-SOLVESPACE_NG_SCREENSHOT_ACTION=ui.command-palette ...              # trigger a UI action first
+# Drive the UI with real SDL events (steps: action, keys, key [Ctrl+|Shift+|Alt+]Name, wait N,
+# shot PATH, quit). Use `timeout -s KILL`: a modal dialog blocks the event loop.
+SOLVESPACE_NG_SCRIPT="action ui.command-palette; keys extrude; wait 3; shot /tmp/p.png; quit" ...
 ```
 In-tree builds are rejected; always build in `build/`. NG settings and the user keymap live in
 `SDL_GetPrefPath("solvespace","solvespace-ng")`: Linux `~/.local/share/solvespace/solvespace-ng/`,

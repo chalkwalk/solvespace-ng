@@ -22,10 +22,16 @@ void HandleUiAction(const std::string &action) {
     else dbp("unknown UI action '%s'", action.c_str());
 }
 
-void DrawNgUi(Platform::MenuBarSdl *menuBar, const keymap::Keymap &keymap) {
+std::shared_ptr<Platform::MenuItemSdl> DrawNgUi(Platform::MenuBarSdl *menuBar,
+                                                const keymap::Keymap &keymap) {
     if(menuBar && gPalette.IsOpen()) {
-        gPalette.Draw(Platform::FlattenMenuBar(*menuBar), keymap);
+        return gPalette.Draw(Platform::FlattenMenuBar(*menuBar), keymap);
     }
+    return nullptr;
+}
+
+bool CapturesText() {
+    return gPalette.IsOpen();
 }
 
 }

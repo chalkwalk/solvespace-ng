@@ -5,18 +5,34 @@
 // TOOL windows (the property browser) draw into offscreen framebuffers shown as ImGui panels.
 //-----------------------------------------------------------------------------
 #include <atomic>
+#include <deque>
 #include <filesystem>
 #include <mutex>
 #include <SDL3/SDL.h>
 #include "imgui.h"
 #include "imgui_impl_sdl3.h"
-#include "imgui_impl_opengl3.h"
+#if defined(__APPLE__)
+// macOS gives us a legacy GL 2.1 context, which has no vertex array objects.
+#   include "imgui_impl_opengl2.h"
+#   define ImGuiRenderer_Init(glsl)       ImGui_ImplOpenGL2_Init()
+#   define ImGuiRenderer_Shutdown         ImGui_ImplOpenGL2_Shutdown
+#   define ImGuiRenderer_NewFrame         ImGui_ImplOpenGL2_NewFrame
+#   define ImGuiRenderer_RenderDrawData   ImGui_ImplOpenGL2_RenderDrawData
+#else
+#   include "imgui_impl_opengl3.h"
+#   define ImGuiRenderer_Init(glsl)       ImGui_ImplOpenGL3_Init(glsl)
+#   define ImGuiRenderer_Shutdown         ImGui_ImplOpenGL3_Shutdown
+#   define ImGuiRenderer_NewFrame         ImGui_ImplOpenGL3_NewFrame
+#   define ImGuiRenderer_RenderDrawData   ImGui_ImplOpenGL3_RenderDrawData
+#endif
 #include "solvespace.h"
 #include "render/gl3shader.h"
 #include "platform/sdl/settingsfile.h"
 #include "platform/sdl/menumodel.h"
 #include "platform/sdl/timerregistry.h"
 #include "platform/sdl/dialoghelpers.h"
+#include "platform/sdl/debugscript.h"
+#include "platform/sdl/deferredqueue.h"
 #include "platform/sdl/keychord.h"
 #include "ui/keyrouter.h"
 #include "ui/ngui.h"
@@ -37,6 +53,12 @@ static std::vector<std::weak_ptr<WindowImplSdl>> gToolWindows;
 static bool           gShowMenuBar = true;
 static Ui::KeyRouter  gKeyRouter;
 static std::function<void(const std::string &)> gUiActionHandler; // set by the UI layer
+// UI callbacks into the core run after the frame, never while ImGui is building one: the core
+// may open a dialog (which renders frames itself) or rebuild the menus being drawn.
+static DeferredQueue  gDeferred;
+// > 0 while a file dialog or context menu runs its nested loop; the canvas and keymap are inert.
+static int            gModalDepth     = 0;
+static bool           gCloseRequested = false;
 
 static void DrawToolWindows();
 static void DrawMainMenuBar();
@@ -44,6 +66,7 @@ static bool RouteKeyDown(const SDL_Event &e);
 static void RenderFrame();
 static void RunNestedLoop(const std::function<bool()> &done);
 static void DrawActivePopup();
+static void LoadDebugScript();
 
 //-----------------------------------------------------------------------------
 // Fatal errors
@@ -140,8 +163,6 @@ static void HandleTimerEvent(const SDL_Event &ev) {
 // Menus
 //-----------------------------------------------------------------------------
 
-static std::shared_ptr<MenuBarSdl> gMainMenu;
-
 static MenuSdl *gActivePopup = nullptr;
 static bool     gPopupOpened = false;
 
@@ -158,9 +179,9 @@ MenuRef CreateMenu() {
 }
 
 MenuBarRef GetOrCreateMainMenu(bool *unique) {
+    // A fresh bar each time, as in guigtk.cpp: the core installs it with SetMenuBar.
     *unique = false;
-    if(!gMainMenu) gMainMenu = std::make_shared<MenuBarSdl>();
-    return gMainMenu;
+    return std::make_shared<MenuBarSdl>();
 }
 
 //-----------------------------------------------------------------------------
@@ -190,6 +211,7 @@ public:
     unsigned    fbo = 0, fboColor = 0, fboDepth = 0;
     int         fboWidth = 0, fboHeight = 0;
     bool        wasHovered = false;
+    int         buttonsDown = 0; // presses on the tool-window image awaiting their release
 
     explicit WindowImplSdl(Kind kind) : kind(kind) {}
 
@@ -383,11 +405,15 @@ MessageDialogRef CreateMessageDialog(WindowRef parentWindow) {
 
 static void PumpEventsOnce(bool wait);
 
+// Runs until done(), even if the app is asked to quit meanwhile (the request is deferred):
+// a file dialog's callback must not outlive the RunModal frame that owns its result.
 static void RunNestedLoop(const std::function<bool()> &done) {
-    while(!done() && !gQuit) {
+    gModalDepth++;
+    while(!done()) {
         PumpEventsOnce(/*wait=*/true);
         RenderFrame();
     }
+    gModalDepth--;
 }
 
 //-----------------------------------------------------------------------------
@@ -399,6 +425,7 @@ public:
     bool                    isSave;
     std::string             title;
     Path                    filename;
+    Path                    folder;   // remembered by ThawChoices
     std::vector<FileFilter> filters;
 
     explicit FileDialogImplSdl(bool isSave) : isSave(isSave) {}
@@ -407,7 +434,10 @@ public:
     void SetCurrentName(std::string name) override { filename = filename.Parent().Join(name); }
     Path GetFilename() override { return filename; }
     void SetFilename(Path path) override { filename = path; }
-    void SuggestFilename(Path path) override { filename = path; }
+    void SuggestFilename(Path path) override {
+        if(!isSave) return; // as in guigtk.cpp: suggestions only apply to save dialogs
+        filename = Path::From(SuggestedSavePath(path.raw, folder.raw, filters));
+    }
     void AddFilter(std::string name, std::vector<std::string> extensions) override {
         filters.push_back({ name, extensions });
     }
@@ -415,8 +445,8 @@ public:
         settings->FreezeString("Dialog_" + key + "_Folder", filename.Parent().raw);
     }
     void ThawChoices(SettingsRef settings, const std::string &key) override {
-        std::string folder = settings->ThawString("Dialog_" + key + "_Folder", "");
-        if(!folder.empty() && filename.IsEmpty()) filename = Path::From(folder).Join("");
+        folder = Path::From(settings->ThawString("Dialog_" + key + "_Folder", ""));
+        if(!folder.IsEmpty() && filename.IsEmpty()) filename = folder.Join("");
     }
 
     bool RunModal() override {
@@ -605,11 +635,12 @@ static void InitSdlWindowAndImGui() {
     io.IniFilename = nullptr; // layout persists through Platform::Settings instead
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
     ImGui_ImplSDL3_InitForOpenGL(gSdlWindow, gGlContext);
-    ImGui_ImplOpenGL3_Init(glslVersion);
+    ImGuiRenderer_Init(glslVersion);
     gShowMenuBar = GetSettings()->ThawBool("NG_ShowMenuBar", true);
     Ui::InitNgUi();
     gUiActionHandler = Ui::HandleUiAction;
     LoadKeymap();
+    LoadDebugScript();
     SDL_ShowWindow(gSdlWindow);
 }
 
@@ -647,7 +678,7 @@ static MouseEvent::Button ButtonFromState(SDL_MouseButtonFlags state) {
 // Forwards an SDL event to the graphics window unless ImGui owns the mouse/keyboard.
 static void ForwardToMainWindow(const SDL_Event &ev) {
     WindowImplSdl *w = MainWindow();
-    if(!w) return;
+    if(!w || gModalDepth > 0) return;
     ImGuiIO &io = ImGui::GetIO();
     switch(ev.type) {
         case SDL_EVENT_MOUSE_MOTION: {
@@ -701,11 +732,9 @@ static void HandleEvent(const SDL_Event &ev) {
     ImGui_ImplSDL3_ProcessEvent(&ev);
     switch(ev.type) {
         case SDL_EVENT_QUIT:
-        case SDL_EVENT_WINDOW_CLOSE_REQUESTED: {
-            WindowImplSdl *w = MainWindow();
-            if(w && w->onClose) w->onClose(); else gQuit = true;
+        case SDL_EVENT_WINDOW_CLOSE_REQUESTED:
+            gCloseRequested = true; // handled by the top-level loop, never inside a modal
             return;
-        }
         default:
             ForwardToMainWindow(ev);
     }
@@ -742,7 +771,8 @@ static void DrawEditorOverlay(WindowImplSdl *w, ImVec2 origin) {
     ImGui::SetNextItemWidth(std::max((float)w->editorMinWidth, textWidth) + 2 * pad.x);
     if(ImGui::InputText("##text", buf, sizeof(buf), ImGuiInputTextFlags_EnterReturnsTrue)) {
         w->editorVisible = false;
-        if(w->onEditingDone) w->onEditingDone(buf);
+        auto onDone = w->onEditingDone;
+        gDeferred.Post([onDone, text = std::string(buf)] { if(onDone) onDone(text); });
     } else {
         w->editorText = buf;
         if(ImGui::IsKeyPressed(ImGuiKey_Escape)) w->editorVisible = false;
@@ -814,34 +844,119 @@ static void RenderToolWindowsOffscreen() {
     }
 }
 
-// Development aid: SOLVESPACE_NG_SCREENSHOT=<file.png> renders a few frames, saves the back
-// buffer, and exits. Window-system screenshots of GL windows can be stale under XWayland.
-static void WriteDebugScreenshotIfRequested(int pw, int ph) {
-    static const char *path = getenv("SOLVESPACE_NG_SCREENSHOT");
-    static int frames = 0;
-    if(!path) return;
-    gNeedsFrame = true; // keep rendering until the layout has settled
-    if(frames == 2) {
-        // SOLVESPACE_NG_SCREENSHOT_ACTION=<ui.action> triggers a UI action before capturing.
+//-----------------------------------------------------------------------------
+// Development and test driver. SOLVESPACE_NG_SCRIPT="action ui.command-palette; keys line;
+// key Return; wait 5; shot a.png; quit" runs steps between frames, injecting real SDL events.
+// Shorthands: SOLVESPACE_NG_SCREENSHOT=<png> [SOLVESPACE_NG_SCREENSHOT_ACTION=<ui.action>].
+// (Window-system captures of GL windows are unreliable under XWayland.)
+//-----------------------------------------------------------------------------
+
+static std::vector<DebugStep>  gScript;
+static size_t                  gScriptPos  = 0;
+static int                     gScriptWait = 0;
+static std::deque<std::string> gScriptText; // keeps injected TEXT_INPUT strings alive
+
+static void LoadDebugScript() {
+    std::string text;
+    if(const char *script = getenv("SOLVESPACE_NG_SCRIPT")) {
+        text = script;
+    } else if(const char *shot = getenv("SOLVESPACE_NG_SCREENSHOT")) {
         if(const char *action = getenv("SOLVESPACE_NG_SCREENSHOT_ACTION")) {
-            if(gUiActionHandler) gUiActionHandler(action);
+            text += std::string("action ") + action + "; ";
+        }
+        text += std::string("wait 8; shot ") + shot + "; quit";
+    }
+    if(text.empty()) return;
+    std::string error;
+    auto steps = ParseDebugScript(text, &error);
+    if(!steps) FatalError("SOLVESPACE_NG_SCRIPT: " + error);
+    gScript     = *steps;
+    gScriptWait = 2; // let the first layout settle
+}
+
+static void PushKey(SDL_Keycode key, SDL_Keymod mod, bool down) {
+    SDL_Event ev    = {};
+    ev.type         = down ? SDL_EVENT_KEY_DOWN : SDL_EVENT_KEY_UP;
+    ev.key.windowID = SDL_GetWindowID(gSdlWindow);
+    ev.key.key      = key;
+    ev.key.scancode = SDL_GetScancodeFromKey(key, nullptr);
+    ev.key.mod      = mod;
+    ev.key.down     = down;
+    SDL_PushEvent(&ev);
+}
+
+static void PushText(const std::string &text) {
+    gScriptText.push_back(text);
+    SDL_Event ev     = {};
+    ev.type          = SDL_EVENT_TEXT_INPUT;
+    ev.text.windowID = SDL_GetWindowID(gSdlWindow);
+    ev.text.text     = gScriptText.back().c_str();
+    SDL_PushEvent(&ev);
+}
+
+static void RunDebugScript(int pw, int ph) {
+    if(gScriptPos >= gScript.size()) return;
+    gNeedsFrame = true;
+    if(gScriptWait > 0) {
+        gScriptWait--;
+        return;
+    }
+    while(gScriptPos < gScript.size()) {
+        const DebugStep &step = gScript[gScriptPos++];
+        switch(step.kind) {
+            case DebugStep::Kind::ACTION:
+                if(gUiActionHandler) gUiActionHandler(step.arg);
+                break;
+            case DebugStep::Kind::KEYS:
+                for(char c : step.arg) {
+                    bool upper = isupper((unsigned char)c);
+                    SDL_Keycode key = (SDL_Keycode)tolower((unsigned char)c);
+                    SDL_Keymod mod  = upper ? SDL_KMOD_LSHIFT : SDL_KMOD_NONE;
+                    PushKey(key, mod, true);
+                    PushText(std::string(1, c));
+                    PushKey(key, mod, false);
+                }
+                break;
+            case DebugStep::Kind::KEY: {
+                std::string name = step.arg;
+                SDL_Keymod mod = SDL_KMOD_NONE;
+                for(auto [prefix, bit] : { std::pair{ "Ctrl+", SDL_KMOD_LCTRL },
+                                           std::pair{ "Shift+", SDL_KMOD_LSHIFT },
+                                           std::pair{ "Alt+", SDL_KMOD_LALT } }) {
+                    if(name.rfind(prefix, 0) == 0) {
+                        mod  = (SDL_Keymod)(mod | bit);
+                        name = name.substr(strlen(prefix));
+                    }
+                }
+                SDL_Keycode key = SDL_GetKeyFromName(name.c_str());
+                if(key == SDLK_UNKNOWN) FatalError("SOLVESPACE_NG_SCRIPT: unknown key " + name);
+                PushKey(key, mod, true);
+                PushKey(key, mod, false);
+                break;
+            }
+            case DebugStep::Kind::WAIT:
+                gScriptWait = step.frames;
+                return;
+            case DebugStep::Kind::SHOT: {
+                std::shared_ptr<Pixmap> pm = Pixmap::Create(Pixmap::Format::RGBA, pw, ph);
+                glPixelStorei(GL_PACK_ALIGNMENT, 1);
+                glReadPixels(0, 0, pw, ph, GL_RGBA, GL_UNSIGNED_BYTE, &pm->data[0]);
+                pm->WritePng(Path::From(step.arg), /*flip=*/true);
+                break;
+            }
+            case DebugStep::Kind::QUIT:
+                gNeedsFrame = false;
+                ExitGui();
+                return;
         }
     }
-    if(++frames < 10) return;
-    std::shared_ptr<Pixmap> pm = Pixmap::Create(Pixmap::Format::RGBA, pw, ph);
-    glPixelStorei(GL_PACK_ALIGNMENT, 1);
-    glReadPixels(0, 0, pw, ph, GL_RGBA, GL_UNSIGNED_BYTE, &pm->data[0]);
-    pm->WritePng(Path::From(path), /*flip=*/true);
-    path = nullptr;
-    gNeedsFrame = false;
-    ExitGui();
 }
 
 static void RenderFrame() {
     if(!gSdlWindow) return;
     gNeedsFrame = false;
 
-    ImGui_ImplOpenGL3_NewFrame();
+    ImGuiRenderer_NewFrame();
     ImGui_ImplSDL3_NewFrame();
     ImGui::NewFrame();
 
@@ -850,7 +965,10 @@ static void RenderFrame() {
     DrawToolWindows();
     DrawActivePopup();
     if(main && main->menuBar) {
-        Ui::DrawNgUi(static_cast<MenuBarSdl *>(main->menuBar.get()), gKeyRouter.Keymap());
+        auto bar = std::static_pointer_cast<MenuBarSdl>(main->menuBar);
+        if(auto chosen = Ui::DrawNgUi(bar.get(), gKeyRouter.Keymap())) {
+            gDeferred.Post([chosen] { if(chosen->onTrigger) chosen->onTrigger(); });
+        }
     }
     if(main) {
         DrawEditorOverlay(main, ImVec2(0, 0));
@@ -874,15 +992,23 @@ static void RenderFrame() {
         glClear(GL_COLOR_BUFFER_BIT);
     }
     glViewport(0, 0, pw, ph);
-    ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-    WriteDebugScreenshotIfRequested(pw, ph);
+    ImGuiRenderer_RenderDrawData(ImGui::GetDrawData());
+    RunDebugScript(pw, ph);
     SDL_GL_SwapWindow(gSdlWindow);
+
+    gDeferred.RunAll();
+    if(!gDeferred.Empty()) gNeedsFrame = true;
 }
 
 void RunGui() {
     while(!gQuit) {
         PumpEventsOnce(/*wait=*/true);
         if(gNeedsFrame) RenderFrame();
+        if(gCloseRequested && gModalDepth == 0) {
+            gCloseRequested = false;
+            WindowImplSdl *w = MainWindow();
+            if(w && w->onClose) w->onClose(); else gQuit = true;
+        }
     }
 }
 
@@ -892,7 +1018,7 @@ void ExitGui() {
 
 void ClearGui() {
     if(gSdlWindow) {
-        ImGui_ImplOpenGL3_Shutdown();
+        ImGuiRenderer_Shutdown();
         ImGui_ImplSDL3_Shutdown();
         ImGui::DestroyContext();
         SDL_GL_DestroyContext(gGlContext);
@@ -932,7 +1058,9 @@ static bool DrawMenuEntries(const MenuSdl &menu) {
                 if(ImGui::MenuItem(item.label.c_str(),
                                    shortcut.empty() ? nullptr : shortcut.c_str(), checked,
                                    item.enabled)) {
-                    if(item.onTrigger) item.onTrigger();
+                    // Keep the item alive: running it may rebuild this very menu.
+                    std::shared_ptr<MenuItemSdl> chosen = e.item;
+                    gDeferred.Post([chosen] { if(chosen->onTrigger) chosen->onTrigger(); });
                     activated = true;
                 }
                 break;
@@ -1001,40 +1129,57 @@ static void DrawToolWindows() {
                           std::max(1, (int)(w->height * ratio)));
 
         ImVec2 origin = ImGui::GetCursorScreenPos();
+        ImVec2 size((float)w->width, (float)w->height);
         // Flip vertically: GL's texture origin is bottom-left.
-        ImGui::Image((ImTextureID)(intptr_t)w->fboColor,
-                     ImVec2((float)w->width, (float)w->height), ImVec2(0, 1), ImVec2(1, 0));
+        ImGui::GetWindowDrawList()->AddImage((ImTextureID)(intptr_t)w->fboColor, origin,
+                                             ImVec2(origin.x + size.x, origin.y + size.y),
+                                             ImVec2(0, 1), ImVec2(1, 0));
+        // An interactive item over the image, so drags go to the core instead of moving the
+        // panel, and a press that leaves the image still delivers its release.
+        ImGui::InvisibleButton("##toolwindow-input", size,
+                               ImGuiButtonFlags_MouseButtonLeft | ImGuiButtonFlags_MouseButtonRight |
+                               ImGuiButtonFlags_MouseButtonMiddle);
         bool hovered = ImGui::IsItemHovered();
+        bool active  = ImGui::IsItemActive();
 
-        // Synthesize Platform mouse events for the image area.
+        // Synthesize Platform mouse events, delivered after the frame.
         ImGuiIO &io = ImGui::GetIO();
         double   lx = io.MousePos.x - origin.x, ly = io.MousePos.y - origin.y;
         auto send = [&](MouseEvent::Type type, MouseEvent::Button button) {
             MouseEvent me = MakeMouseEvent(type, lx, ly);
             me.button     = button;
-            if(w->onMouseEvent) w->onMouseEvent(me);
+            auto onMouse  = w->onMouseEvent;
+            gDeferred.Post([onMouse, me] { if(onMouse) onMouse(me); });
         };
-        if(hovered) {
+        static const MouseEvent::Button buttons[3] = {
+            MouseEvent::Button::LEFT, MouseEvent::Button::RIGHT, MouseEvent::Button::MIDDLE };
+        if(hovered || active) {
             if(io.MouseDelta.x != 0 || io.MouseDelta.y != 0) {
                 send(MouseEvent::Type::MOTION, io.MouseDown[0] ? MouseEvent::Button::LEFT
                                                                : MouseEvent::Button::NONE);
             }
-            for(int b = 0; b < 3; b++) {
-                MouseEvent::Button btn = b == 0 ? MouseEvent::Button::LEFT
-                                       : b == 1 ? MouseEvent::Button::RIGHT
-                                                : MouseEvent::Button::MIDDLE;
-                if(ImGui::IsMouseDoubleClicked(b)) send(MouseEvent::Type::DBL_PRESS, btn);
-                else if(ImGui::IsMouseClicked(b)) send(MouseEvent::Type::PRESS, btn);
-                if(ImGui::IsMouseReleased(b)) send(MouseEvent::Type::RELEASE, btn);
+        }
+        for(int b = 0; b < 3; b++) {
+            if(hovered && ImGui::IsMouseClicked(b)) {
+                send(ImGui::IsMouseDoubleClicked(b) ? MouseEvent::Type::DBL_PRESS
+                                                    : MouseEvent::Type::PRESS, buttons[b]);
+                w->buttonsDown |= 1 << b;
             }
+            if((w->buttonsDown & (1 << b)) && ImGui::IsMouseReleased(b)) {
+                send(MouseEvent::Type::RELEASE, buttons[b]);
+                w->buttonsDown &= ~(1 << b);
+            }
+        }
+        if(hovered) {
             if(io.MouseWheel != 0 && w->scrollbarVisible) {
                 w->SetScrollbarPosition(w->scrollPos - io.MouseWheel * 3);
-                if(w->onScrollbarAdjusted) w->onScrollbarAdjusted(w->scrollPos);
+                auto onScroll = w->onScrollbarAdjusted;
+                gDeferred.Post([onScroll, pos = w->scrollPos] { if(onScroll) onScroll(pos); });
             }
             ImGui::SetMouseCursor(w->cursor == Window::Cursor::HAND ? ImGuiMouseCursor_Hand
                                                                     : ImGuiMouseCursor_Arrow);
             w->wasHovered = true;
-        } else if(w->wasHovered) {
+        } else if(w->wasHovered && !active) {
             // Mouse left the image: let the core clear its hover highlight once.
             send(MouseEvent::Type::LEAVE, MouseEvent::Button::NONE);
             w->wasHovered = false;
@@ -1047,7 +1192,8 @@ static void DrawToolWindows() {
             if(ImGui::VSliderFloat("##scroll", ImVec2(sbW, (float)w->height), &inverted,
                                    (float)w->scrollMin, maxStart, "")) {
                 w->SetScrollbarPosition(maxStart - inverted);
-                if(w->onScrollbarAdjusted) w->onScrollbarAdjusted(w->scrollPos);
+                auto onScroll = w->onScrollbarAdjusted;
+                gDeferred.Post([onScroll, pos = w->scrollPos] { if(onScroll) onScroll(pos); });
             }
         }
 
@@ -1056,18 +1202,40 @@ static void DrawToolWindows() {
         ImGui::End();
 
         if(!open) {
-            if(w->onClose) w->onClose(); else w->visible = false;
+            std::weak_ptr<WindowImplSdl> weak = w;
+            gDeferred.Post([weak] {
+                if(auto tw = weak.lock()) {
+                    if(tw->onClose) tw->onClose(); else tw->visible = false;
+                }
+            });
         }
     }
 }
 
+// True if a text field is or is about to be focused. ImGui only reports WantTextInput a frame
+// after a field takes focus, and keys typed right after opening one arrive before that frame.
+static bool TextEntryActive() {
+    if(ImGui::GetIO().WantTextInput || Ui::CapturesText()) return true;
+    if(WindowImplSdl *main = MainWindow()) {
+        if(main->editorVisible) return true;
+    }
+    for(auto &weak : gToolWindows) {
+        if(auto w = weak.lock()) {
+            if(w->editorVisible) return true;
+        }
+    }
+    return false;
+}
+
 static bool RouteKeyDown(const SDL_Event &ev) {
-    SDL_Keycode base     = SDL_GetKeyFromScancode(ev.key.scancode, SDL_KMOD_NONE, false);
-    SDL_Keycode produced = SDL_GetKeyFromScancode(ev.key.scancode, ev.key.mod, false);
-    auto chord = ChordFromKey(base, produced, ev.key.mod);
+    SDL_Keymod  mod  = ev.key.mod;
+    SDL_Keycode base = SDL_GetKeyFromScancode(ev.key.scancode, SDL_KMOD_NONE, false);
+    // Right Alt may be AltGr: look the key up on the AltGr level (MODE) too.
+    SDL_Keymod layer = (mod & SDL_KMOD_RALT) ? (SDL_Keymod)(mod | SDL_KMOD_MODE) : mod;
+    SDL_Keycode produced = SDL_GetKeyFromScancode(ev.key.scancode, layer, false);
+    auto chord = ChordFromKey(base, produced, mod);
     if(!chord) return false;
-    bool textInput = ImGui::GetIO().WantTextInput;
-    return gKeyRouter.Route(*chord, textInput) != Ui::RouteResult::UNBOUND;
+    return gKeyRouter.Route(*chord, TextEntryActive()) != Ui::RouteResult::UNBOUND;
 }
 
 }

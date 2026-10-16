@@ -5,14 +5,16 @@
 #include "commandnames.h"
 #include "fuzzy.h"
 #include "imgui.h"
+#include "imgui_internal.h"
 #include "ui/palettewidget.h"
 
 namespace SolveSpace {
 namespace Ui {
 
 void CommandPalette::Open() {
-    open       = true;
-    framesOpen = 0;
+    open        = true;
+    framesOpen  = 0;
+    fieldActive = false;
     query[0]   = '\0';
     selected   = 0;
 }
@@ -29,9 +31,9 @@ static std::string ShortcutFor(const Platform::MenuItemSdl &item, const keymap::
     return chords.empty() ? "" : keymap::FormatChord(chords[0]);
 }
 
-void CommandPalette::Draw(const std::vector<Platform::FlatMenuItem> &items,
-                          const keymap::Keymap &keymap) {
-    if(!open) return;
+std::shared_ptr<Platform::MenuItemSdl> CommandPalette::Draw(
+    const std::vector<Platform::FlatMenuItem> &items, const keymap::Keymap &keymap) {
+    if(!open) return nullptr;
     ImGuiIO &io = ImGui::GetIO();
     ImGui::SetNextWindowPos(ImVec2(io.DisplaySize.x * 0.5f, io.DisplaySize.y * 0.2f),
                             ImGuiCond_Always, ImVec2(0.5f, 0.0f));
@@ -39,9 +41,27 @@ void CommandPalette::Draw(const std::vector<Platform::FlatMenuItem> &items,
     ImGui::Begin("##palette", nullptr,
                  ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoSavedSettings |
                  ImGuiWindowFlags_AlwaysAutoResize);
-    if(framesOpen == 0) ImGui::SetKeyboardFocusHere();
+    if(!fieldActive) {
+        // Characters typed right after opening arrive before the field can take focus; keep them.
+        std::string typed;
+        for(ImWchar c : io.InputQueueCharacters) {
+            if(c >= 0x20 && c < 0x7f) typed += (char)c;
+        }
+        io.InputQueueCharacters.resize(0);
+        strncat(query, typed.c_str(), sizeof(query) - strlen(query) - 1);
+        ImGui::SetKeyboardFocusHere();
+    }
     ImGui::SetNextItemWidth(-1);
     ImGui::InputTextWithHint("##query", "Type a command...", query, sizeof(query));
+    bool justActivated = !fieldActive && ImGui::IsItemActive();
+    fieldActive = ImGui::IsItemActive();
+    if(justActivated) {
+        // Focusing selects the field's text; put the cursor after what was already typed.
+        if(ImGuiInputTextState *state = ImGui::GetInputTextState(ImGui::GetItemID())) {
+            int end = (int)strlen(query);
+            state->SetSelection(end, end);
+        }
+    }
 
     std::vector<std::string> labels;
     for(const auto &it : items) labels.push_back(it.path);
@@ -80,10 +100,11 @@ void CommandPalette::Draw(const std::vector<Platform::FlatMenuItem> &items,
     if(activate >= 0 && activate < (int)ranked.size()) {
         const Platform::FlatMenuItem &fi = items[ranked[activate]];
         open = false;
-        if(fi.item->enabled && fi.item->onTrigger) fi.item->onTrigger();
+        if(fi.item->enabled) return fi.item;
     } else if(close) {
         open = false;
     }
+    return nullptr;
 }
 
 }
