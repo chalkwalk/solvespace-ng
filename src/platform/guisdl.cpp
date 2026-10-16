@@ -19,6 +19,7 @@
 #include "platform/sdl/dialoghelpers.h"
 #include "platform/sdl/keychord.h"
 #include "ui/keyrouter.h"
+#include "ui/ngui.h"
 #include "commandnames.h"
 
 namespace SolveSpace {
@@ -603,6 +604,8 @@ static void InitSdlWindowAndImGui() {
     ImGui_ImplSDL3_InitForOpenGL(gSdlWindow, gGlContext);
     ImGui_ImplOpenGL3_Init(glslVersion);
     gShowMenuBar = GetSettings()->ThawBool("NG_ShowMenuBar", true);
+    Ui::InitNgUi();
+    gUiActionHandler = Ui::HandleUiAction;
     LoadKeymap();
     SDL_ShowWindow(gSdlWindow);
 }
@@ -815,6 +818,12 @@ static void WriteDebugScreenshotIfRequested(int pw, int ph) {
     static int frames = 0;
     if(!path) return;
     gNeedsFrame = true; // keep rendering until the layout has settled
+    if(frames == 2) {
+        // SOLVESPACE_NG_SCREENSHOT_ACTION=<ui.action> triggers a UI action before capturing.
+        if(const char *action = getenv("SOLVESPACE_NG_SCREENSHOT_ACTION")) {
+            if(gUiActionHandler) gUiActionHandler(action);
+        }
+    }
     if(++frames < 10) return;
     std::shared_ptr<Pixmap> pm = Pixmap::Create(Pixmap::Format::RGBA, pw, ph);
     glPixelStorei(GL_PACK_ALIGNMENT, 1);
@@ -837,6 +846,9 @@ static void RenderFrame() {
     DrawMainMenuBar();
     DrawToolWindows();
     DrawActivePopup();
+    if(main && main->menuBar) {
+        Ui::DrawNgUi(static_cast<MenuBarSdl *>(main->menuBar.get()), gKeyRouter.Keymap());
+    }
     if(main) {
         DrawEditorOverlay(main, ImVec2(0, 0));
         DrawTooltip(main, ImVec2(0, 0));
