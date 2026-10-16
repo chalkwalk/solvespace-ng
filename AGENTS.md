@@ -125,20 +125,25 @@ stored in a keymap file.
 | Key | Action |
 |---|---|
 | `Space` / `F3` | Command palette (searches every command, shows its binding) |
-| `Tab` | Enter/exit the active sketch (like Blender's Edit Mode) |
+| `Tab` | Sketch focus: activate the group of the selection and look onto its workplane; `Tab` again returns (while drawing, `Tab` cycles the typed-value fields) |
 | `Shift+A` | Add pie: line, rectangle, circle, arc, spline, point, text, workplane |
 | `L` `B` `C` `Shift+C` | Direct: line, box/rectangle, circle, arc (`A` is select-all) |
 | `D` | Smart dimension (distance, diameter or angle, inferred from the selection) |
 | `F` | Constrain pie: only the constraints valid for the selection |
 | `G` | Grab: drag under the solver; `X`/`Y`/`Z` locks an axis; type a value |
 | `E` / `Shift+R` / `Ctrl+B` | Extrude / revolve / boolean mode |
-| `H` / `Alt+H` / `Shift+H` | Hide / unhide all / isolate |
+| `H` / `Alt+H` / `Shift+H` | Hide / show all / isolate **groups** (SolveSpace has no per-entity hide) |
 | `A` / `Alt+A` | Select all / none |
 | `` ` `` pie, numpad `1` `3` `7` | View pie; front/right/top (`Ctrl` = opposite side); `.` frames selection |
 | MMB / `Shift`+MMB / wheel | Orbit / pan / zoom (the mouse scheme is configurable) |
 | `Ctrl+Z` / `Ctrl+Shift+Z` | Undo / redo |
 
 With nothing selected, commands act on the item under the cursor.
+
+Typed angles that are not multiples of 90° add a construction reference line plus an angle
+constraint; multiples of 90° add horizontal/vertical (decided 2026-10-16: SolveSpace has no
+line-to-axis angle constraint). `D` replaced `constrain-distance` and `.`/`Num.` replaced
+`center-view` in the Modern preset (both remain in the menus and the palette).
 
 **Visual style.**
 - Dark (default) and light themes, built from design tokens.
@@ -361,6 +366,14 @@ macOS and Emscripten builds.
   `src/commandnames.cpp`). Headless code paths have null windows/menu items: guard them.
   Not headless-safe yet (null FileDialog/Window under `guinone.cpp`): `open`, `save`, `save-as`,
   `import`, all `export-*`, `group-link`, `image`, `exit`, `zoom-in`, `zoom-out`, `full-screen`.
+- NG UI actions (`ui.*`) are listed in `src/ui/uiactions.cpp`; core-backed ones are bound in
+  `src/ui/coreactions.cpp` and implemented as `GraphicsWindow` methods so tests can call them.
+  Modal tools (pie, grab, typed drawing) see chords before the keymap via `KeyRouter::modal`;
+  test them through `Ui::Grab()`, `Ui::Draw()` and the core `Grab*` / `CommitTyped*` methods.
+  Headless tests can click: `SS.GW.MouseLeftDown/Up` tolerate a null window (set
+  `SS.showToolbar = false` first). Debug-script keys use SDL key names (`Keypad 1`, `Escape`,
+  `Return`); `move x y` and `click x y` drive the mouse. An unknown key opens a blocking error
+  dialog, which shows up as a timeout.
 
 **Developer docs worth reading first:** `developer_docs/IdLists_Entities_and_Remap.txt`,
 `developer_docs/Solver_Transforms.txt`.

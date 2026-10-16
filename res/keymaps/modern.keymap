@@ -1,6 +1,8 @@
 # SolveSpace NG "Modern" keymap (Blender-style). DRAFT: tuned during M1.
 # Format: <command>: <chord>[, <chord>...]
-# Command names are the stable ids from src/commandnames.cpp; "ui." names are UI actions.
+# Command names are the stable ids from src/commandnames.cpp; "ui." names are UI actions
+# (listed in src/ui/uiactions.cpp). While drawing or grabbing, digits, '.', '-', the numpad,
+# Tab and Enter go to the typed-value fields first, so numpad views don't fire then.
 
 ui.command-palette:     Space, F3
 ui.toggle-menu-bar:     F10

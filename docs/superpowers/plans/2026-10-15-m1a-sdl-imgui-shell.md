@@ -3487,7 +3487,8 @@ Expected: Ubuntu, Windows and macOS jobs are green. M1a is done when this passes
 
 M1b and M1c each get their **own detailed plan**, written when the previous phase merges. Their code depends on the panel/overlay framework, the keymap and the theme that M1a creates, and on what using M1a daily reveals. The scope below is fixed by `AGENTS.md` §5 and §8.
 
-**M1b — Interaction model (Modern keymap complete).** New UI commands in `src/ui/`, each a registered `ui.*` action with headless tests:
+**M1b — Interaction model (Modern keymap complete).** Planned in detail in
+`2026-10-16-m1b-interaction.md`. New UI commands in `src/ui/`, each a registered `ui.*` action with headless tests:
 - **Pie menus** (`src/ui/piemenu.{h,cpp}`): `Shift+A` add, `F` constrain (shows only constraints valid for the current selection), `` ` `` view.
 - **`Tab` sketch mode**: enter/exit the active sketch group.
 - **`G` grab**: drag under the solver, `X`/`Y`/`Z` axis locks.
