@@ -279,6 +279,8 @@ if(ENABLE_GUI AND ENABLE_NG_GUI)
         platform/sdl/settingsfile.cpp
         platform/sdl/menumodel.cpp
         platform/sdl/keychord.cpp
+        platform/sdl/timerregistry.cpp
+        platform/sdl/dialoghelpers.cpp
         ui/keypresets.cpp)
     target_include_directories(solvespace-ng-support PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR})
