@@ -21,6 +21,7 @@ set(testsuite_SOURCES
     core/commands/test.cpp
     core/viewpresets/test.cpp
     core/visibility/test.cpp
+    core/sketchfocus/test.cpp
     libs/keymap/test.cpp
     libs/palette/test.cpp
     libs/pie/test.cpp

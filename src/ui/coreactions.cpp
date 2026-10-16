@@ -23,6 +23,7 @@ void RegisterCoreUiActions(bool animate) {
     a.Bind("ui.hide",       [] { SS.GW.HideSelectedGroups(); });
     a.Bind("ui.unhide-all", [] { SS.GW.ShowAllGroups(); });
     a.Bind("ui.isolate",    [] { SS.GW.IsolateSelectedGroups(); });
+    a.Bind("ui.toggle-sketch", [animate] { SS.GW.ToggleSketchFocus(animate); });
 }
 
 }

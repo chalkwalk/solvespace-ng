@@ -424,6 +424,7 @@ void GraphicsWindow::Init() {
              "Group order can't be empty since we will activate the last group.");
     activeGroup = *SK.groupOrder.Last();
     SK.GetGroup(activeGroup)->Activate();
+    sketchFocusReturn = {};
 
     showWorkplanes = false;
     showNormals = true;

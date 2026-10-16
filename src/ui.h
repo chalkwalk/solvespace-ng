@@ -659,6 +659,16 @@ public:
     int  HideSelectedGroups();    // returns how many groups it hid
     void ShowAllGroups();
     int  IsolateSelectedGroups(); // returns how many groups stay visible (0 = did nothing)
+    // Tab: activate the group of the selection and look onto its workplane; Tab again returns.
+    struct {
+        bool       active;
+        hGroup     group;
+        Quaternion view;
+        Vector     offset;
+    } sketchFocusReturn;
+    bool ToggleSketchFocus(bool animate); // false if there was nothing to do
+    void ActivateGroup(hGroup hg);        // what the property browser's "active" radio does
+    void LookOntoActiveWorkplane(bool animate);
 
     Vector VectorFromProjs(Vector rightUpForward);
     void HandlePointForZoomToFit(Vector p, Point2d *pmax, Point2d *pmin,

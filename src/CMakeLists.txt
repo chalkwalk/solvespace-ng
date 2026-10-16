@@ -145,6 +145,7 @@ if(ENABLE_GUI OR ENABLE_CLI)
         mouse.cpp
         viewpresets.cpp
         visibility.cpp
+        sketchfocus.cpp
         polyline.cpp
         polygon.cpp
         resource.cpp
