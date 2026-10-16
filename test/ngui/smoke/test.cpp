@@ -36,3 +36,18 @@ TEST_CASE(clicks_draw_a_line_where_the_mouse_is) {
     CHECK_TRUE(Near(Driver::ToWindow(a), Point2d::From(600, 420)));
     CHECK_TRUE(Near(Driver::ToWindow(b), Point2d::From(760, 300)));
 }
+
+TEST_CASE(clicks_still_land_right_after_a_resize) {
+    CHECK_LOAD("line.slvs");
+    Driver::Resize(1000, 640);
+    CHECK_TRUE(Near(Driver::WindowSize(), Point2d::From(1000, 640)));
+    Driver::Key("L");
+    Driver::Click(400, 380);
+    Driver::Click(520, 300);
+    Driver::Key("Escape");
+    Request *r = &SK.request[SK.request.n - 1];
+    CHECK_TRUE(Near(Driver::ToWindow(SK.GetEntity(r->h.entity(1))->PointGetNum()),
+                    Point2d::From(400, 380)));
+    CHECK_TRUE(Near(Driver::ToWindow(SK.GetEntity(r->h.entity(2))->PointGetNum()),
+                    Point2d::From(520, 300)));
+}

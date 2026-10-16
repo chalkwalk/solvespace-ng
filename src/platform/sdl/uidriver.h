@@ -62,6 +62,7 @@ void    Drag(double x0, double y0, double x1, double y1, Button b = Button::LEFT
 void    Wheel(double x, double y, double dy);
 Point2d MousePos();
 Point2d WindowSize();
+void    Resize(int width, int height); // as if the person resized the window
 Point2d ToWindow(Vector modelPoint); // where a model point is drawn in the main window
 
 // ImGui items (menu entries, buttons, palette rows, panels) drawn in the last frame, by label

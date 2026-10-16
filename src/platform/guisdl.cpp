@@ -1640,6 +1640,12 @@ Point2d WindowSize() {
     return Point2d::From(w, h);
 }
 
+void Resize(int width, int height) {
+    SDL_SetWindowSize(gSdlWindow, width, height);
+    SDL_SyncWindow(gSdlWindow);
+    Settle();
+}
+
 Point2d ToWindow(Vector modelPoint) {
     // The inverse of GraphicsWindow::MouseEvent: origin at the centre, y up.
     double w = 0, h = 0;
