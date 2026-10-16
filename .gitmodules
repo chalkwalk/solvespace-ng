@@ -26,3 +26,9 @@
 [submodule "extlib/eigen"]
 	path = extlib/eigen
 	url = https://gitlab.com/libeigen/eigen.git
+[submodule "extlib/SDL"]
+	path = extlib/SDL
+	url = https://github.com/libsdl-org/SDL.git
+[submodule "extlib/imgui"]
+	path = extlib/imgui
+	url = https://github.com/ocornut/imgui.git

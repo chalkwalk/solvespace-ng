@@ -60,6 +60,8 @@ set(ENABLE_GUI        ON CACHE BOOL
     "Whether the graphical interface is enabled")
 set(USE_QT_GUI        OFF CACHE BOOL
     "Whether the Qt library used to build graphical interface")
+set(ENABLE_NG_GUI     OFF CACHE BOOL
+    "Whether to build the SDL3 + Dear ImGui interface (solvespace-ng)")
 set(ENABLE_CLI        ${INCLUDE_NATIVE_COMPONENTS} CACHE BOOL
     "Whether the command line interface is enabled")
 set(ENABLE_TESTS      ${INCLUDE_NATIVE_COMPONENTS} CACHE BOOL
@@ -411,6 +413,31 @@ if(ENABLE_GUI)
             pkg_check_modules(JSONC REQUIRED json-c)
             pkg_check_modules(GTKMM REQUIRED gtkmm-3.0>=3.18 pangomm-1.4 x11)
         endif()
+    endif()
+endif()
+
+# SolveSpace NG (SDL3 + Dear ImGui) dependencies
+
+if(ENABLE_NG_GUI)
+    if(NOT ENABLE_GUI)
+        message(FATAL_ERROR "ENABLE_NG_GUI requires ENABLE_GUI (for OpenGL and the renderer)")
+    endif()
+
+    if(NOT (WIN32 OR APPLE))
+        find_package(SDL3 3.2 CONFIG QUIET)
+    endif()
+    if(SDL3_FOUND)
+        message(STATUS "Using system SDL3 ${SDL3_VERSION}")
+        set(NG_SDL_TARGET SDL3::SDL3)
+    else()
+        message(STATUS "Using in-tree SDL3")
+        include(AddVendoredSubdirectory)
+        set(SDL_SHARED       OFF CACHE BOOL "" FORCE)
+        set(SDL_STATIC       ON  CACHE BOOL "" FORCE)
+        set(SDL_TEST_LIBRARY OFF CACHE BOOL "" FORCE)
+        set(SDL_EXAMPLES     OFF CACHE BOOL "" FORCE)
+        add_vendored_subdirectory(extlib/SDL)
+        set(NG_SDL_TARGET SDL3::SDL3-static)
     endif()
 endif()
 

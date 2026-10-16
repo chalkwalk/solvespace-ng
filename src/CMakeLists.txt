@@ -258,6 +258,24 @@ if(ENABLE_GUI OR ENABLE_CLI)
     endif()
 endif()
 
+# Dear ImGui with SDL3 + OpenGL3 backends, for solvespace-ng
+
+if(ENABLE_GUI AND ENABLE_NG_GUI)
+    set(IMGUI_DIR ${CMAKE_SOURCE_DIR}/extlib/imgui)
+    add_library(imgui-sdl3 STATIC
+        ${IMGUI_DIR}/imgui.cpp
+        ${IMGUI_DIR}/imgui_draw.cpp
+        ${IMGUI_DIR}/imgui_tables.cpp
+        ${IMGUI_DIR}/imgui_widgets.cpp
+        ${IMGUI_DIR}/backends/imgui_impl_sdl3.cpp
+        ${IMGUI_DIR}/backends/imgui_impl_opengl3.cpp)
+    target_include_directories(imgui-sdl3 PUBLIC
+        ${IMGUI_DIR}
+        ${IMGUI_DIR}/backends)
+    target_compile_definitions(imgui-sdl3 PUBLIC IMGUI_DISABLE_OBSOLETE_FUNCTIONS)
+    target_link_libraries(imgui-sdl3 PUBLIC ${NG_SDL_TARGET})
+endif()
+
 # solvespace graphical executable
 
 if(ENABLE_GUI)
