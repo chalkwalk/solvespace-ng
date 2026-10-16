@@ -48,3 +48,35 @@ authorization from the GNOME Foundation or Bitstream Inc., respectively. For
 further information, contact: fonts at gnome dot org.
 
                                   -----------
+
+        Inter 4.1, ./res/fonts/ng/Inter-Regular.ttf
+                                       ~
+Copyright (c) 2016 The Inter Project Authors (https://github.com/rsms/inter).
+Licensed under the SIL Open Font License, Version 1.1; the full license text is
+in ./res/fonts/ng/OFL-Inter.txt.
+
+                                  -----------
+
+        JetBrains Mono 2.304, ./res/fonts/ng/JetBrainsMono-Regular.ttf
+                                       ~
+Copyright 2020 The JetBrains Mono Project Authors
+(https://github.com/JetBrains/JetBrainsMono). Licensed under the SIL Open Font
+License, Version 1.1; the full license text is in
+./res/fonts/ng/OFL-JetBrainsMono.txt.
+
+                                  -----------
+
+        SDL 3.4.16, ./extlib/SDL
+                                       ~
+Simple DirectMedia Layer (https://libsdl.org). Licensed under the zlib license;
+the full license text is in ./extlib/SDL/LICENSE.txt.
+
+                                  -----------
+
+        Dear ImGui 1.92.9b (docking), ./extlib/imgui
+                                       ~
+Copyright (c) 2014-2026 Omar Cornut (https://github.com/ocornut/imgui).
+Licensed under the MIT License; the full license text is in
+./extlib/imgui/LICENSE.txt.
+
+                                  -----------

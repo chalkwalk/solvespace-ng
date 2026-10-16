@@ -300,6 +300,8 @@ add_resources(
     fonts/private/7-stipple-zigzag.png
     fonts/unicode.lff.gz
     keymaps/modern.keymap
+    fonts/ng/Inter-Regular.ttf
+    fonts/ng/JetBrainsMono-Regular.ttf
     fonts/BitstreamVeraSans-Roman-builtin.ttf
     shaders/imesh.frag
     shaders/imesh.vert

@@ -293,6 +293,7 @@ if(ENABLE_GUI AND ENABLE_NG_GUI)
         platform/guisdl.cpp
         ui/palettewidget.cpp
         ui/ngui.cpp
+        ui/theme.cpp
         render/gl3shader.cpp
         render/rendergl3.cpp
         $<TARGET_PROPERTY:resources,EXTRA_SOURCES>)
