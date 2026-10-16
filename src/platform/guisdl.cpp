@@ -73,6 +73,8 @@ static void RunNestedLoop(const std::function<bool()> &done);
 static void DrawActivePopup();
 static void LoadDebugScript();
 
+namespace Driver { void Settle(unsigned horizonMs); }
+
 // Test driver mode (uidriver.h): dialogs never block and held keys come from the driver.
 static bool                    gDriver          = false;
 static SDL_Keymod              gDriverMods      = SDL_KMOD_NONE;
@@ -448,6 +450,7 @@ static void RunNestedLoop(const std::function<bool()> &done) {
         // Run the steps the test queued; with none, give up after a few idle frames.
         for(int idle = 0; !done();) {
             if(!gModalSteps.empty()) {
+                Driver::Settle(/*horizonMs=*/0); // let the menu appear first
                 auto step = std::move(gModalSteps.front());
                 gModalSteps.pop_front();
                 step();
@@ -1363,7 +1366,7 @@ static void DrawToolWindows() {
                                              ImVec2(0, 1), ImVec2(1, 0));
         // An interactive item over the image, so drags go to the core instead of moving the
         // panel, and a press that leaves the image still delivers its release.
-        ImGui::InvisibleButton("##toolwindow-input", size,
+        ImGui::InvisibleButton("toolwindow-canvas", size, // findable by UI tests
                                ImGuiButtonFlags_MouseButtonLeft | ImGuiButtonFlags_MouseButtonRight |
                                ImGuiButtonFlags_MouseButtonMiddle);
         bool hovered = ImGui::IsItemHovered();
@@ -1592,11 +1595,15 @@ void Click(double x, double y, Button b) {
 }
 
 void DoubleClick(double x, double y) {
+    // One button change per frame, as with a real mouse: the core acts on each press at once
+    // (the second opens a dimension's editor), while ImGui sees it on the next frame.
     Move(x, y);
-    PushButton(SDL_BUTTON_LEFT, true, 1);
-    PushButton(SDL_BUTTON_LEFT, false, 1);
-    PushButton(SDL_BUTTON_LEFT, true, 2);
-    PushButton(SDL_BUTTON_LEFT, false, 2);
+    for(int clicks = 1; clicks <= 2; clicks++) {
+        PushButton(SDL_BUTTON_LEFT, true, clicks);
+        Frame(1);
+        PushButton(SDL_BUTTON_LEFT, false, clicks);
+        Frame(1);
+    }
     Settle();
 }
 
