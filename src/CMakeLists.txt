@@ -285,6 +285,17 @@ if(ENABLE_GUI AND ENABLE_NG_GUI)
     target_include_directories(solvespace-ng-support PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR})
     target_link_libraries(solvespace-ng-support PUBLIC solvespace-core keymap palette SDL3::Headers)
+
+    add_executable(solvespace-ng WIN32 MACOSX_BUNDLE
+        solvespace.cpp
+        platform/entrygui.cpp
+        platform/guisdl.cpp
+        render/gl3shader.cpp
+        render/rendergl3.cpp
+        $<TARGET_PROPERTY:resources,EXTRA_SOURCES>)
+    add_dependencies(solvespace-ng resources)
+    target_link_libraries(solvespace-ng PRIVATE
+        solvespace-core solvespace-ng-support imgui-sdl3 ${NG_SDL_TARGET} ${OPENGL_LIBRARIES})
 endif()
 
 # solvespace graphical executable
