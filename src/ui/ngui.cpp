@@ -37,7 +37,8 @@ static void DrawStatusBar(const keymap::Keymap &keymap) {
     ImGui::Begin("##statusbar", nullptr,
                  ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoSavedSettings |
                  ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoFocusOnAppearing |
-                 ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNav);
+                 ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNav |
+                 ImGuiWindowFlags_NoInputs); // the canvas keeps hover, clicks and grabs here
     ImDrawList *dl = ImGui::GetWindowDrawList();
     ImGui::AlignTextToFramePadding();
     if(!m.tool.empty()) {

@@ -99,6 +99,9 @@ bool GraphicsWindow::CommitTypedLine(std::optional<double> lengthMm,
                                   Entity::NO_ENTITY, ref.entity(0));
             AddValued(Constraint::Type::ANGLE, Entity::NO_ENTITY, Entity::NO_ENTITY,
                       ref.entity(0), hr.entity(0), a <= 180 ? a : 360 - a);
+            // Pin the reference line's free end too, so it adds no degree of freedom.
+            Constraint::Constrain(Constraint::Type::EQUAL_LENGTH_LINES, Entity::NO_ENTITY,
+                                  Entity::NO_ENTITY, ref.entity(0), hr.entity(0));
         }
     }
     SS.MarkGroupDirty(activeGroup);
@@ -122,6 +125,7 @@ bool GraphicsWindow::CommitTypedCircle(double diameterMm) {
 bool GraphicsWindow::CommitTypedRectangle(std::optional<double> widthMm,
                                           std::optional<double> heightMm) {
     if(TypedInputKind() != TypedKind::RECTANGLE || (!widthMm && !heightMm)) return false;
+    if((widthMm && *widthMm <= LENGTH_EPS) || (heightMm && *heightMm <= LENGTH_EPS)) return false;
     hRequest lns[4];
     for(int i = 0; i < 4; i++) lns[i] = pending.requests[i];
     EntityBase *n = SK.GetEntity(ActiveWorkplane())->Normal();

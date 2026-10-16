@@ -129,3 +129,75 @@ TEST_CASE(grab_cancel_keeps_the_file_unmodified) {
     SS.GW.GrabCancel();
     CHECK_FALSE(SS.unsaved);
 }
+
+TEST_CASE(grab_cancel_after_another_undo_step_keeps_that_step) {
+    CHECK_LOAD("line.slvs");
+    hRequest hr = FreeLine();
+    Vector b0 = P(hr.entity(2));
+    SS.GW.ClearSelection();
+    SS.GW.MakeSelected(hr.entity(0));
+    CHECK_TRUE(SS.GW.StartGrab(Point2d::From(0, 0)));
+    SS.GW.GrabMouseMoved(Point2d::From(50, 0));
+    // Something else records an undo step while the grab runs (not via ActivateCommand).
+    int constraints = SK.constraint.n;
+    Constraint::MenuConstrain(Command::HORIZONTAL);
+    CHECK_TRUE(SK.constraint.n == constraints + 1);
+    SS.GW.GrabCancel();
+    CHECK_TRUE(SS.GW.pending.operation == GraphicsWindow::Pending::NONE);
+    CHECK_TRUE(SK.constraint.n == constraints + 1); // the other step survives
+    (void)b0;
+}
+
+TEST_CASE(commands_confirm_a_running_grab_first) {
+    CHECK_LOAD("line.slvs");
+    hRequest hr = FreeLine();
+    Vector a0 = P(hr.entity(1));
+    int undo0 = SS.undo.cnt;
+    SS.GW.ClearSelection();
+    SS.GW.MakeSelected(hr.entity(0));
+    CHECK_TRUE(SS.GW.StartGrab(Point2d::From(0, 0)));
+    SS.GW.GrabMouseMoved(Point2d::From(50, 0));
+    SS.GW.ActivateCommand(Command::HORIZONTAL);
+    CHECK_TRUE(SS.GW.pending.operation == GraphicsWindow::Pending::NONE);
+    CHECK_TRUE(SS.undo.cnt == undo0 + 2); // the grab, then the constraint
+    RUN_COMMAND("undo");                  // removes the constraint, keeps the move
+    CHECK_TRUE(P(hr.entity(1)).Minus(a0).Magnitude() > 1e-3);
+}
+
+TEST_CASE(grab_skips_points_that_cannot_be_dragged) {
+    CHECK_LOAD("groups.slvs");
+    SS.GW.ActivateGroup(SK.groupOrder[SK.groupOrder.n - 1]);
+    hEntity fixed = {};
+    for(Entity &e : SK.entity) {
+        if(e.IsPoint() && !e.CanBeDragged()) {
+            fixed = e.h;
+            break;
+        }
+    }
+    CHECK_TRUE(fixed.v != 0);
+    int undo0 = SS.undo.cnt;
+    SS.GW.ClearSelection();
+    SS.GW.MakeSelected(fixed);
+    CHECK_FALSE(SS.GW.StartGrab(Point2d::From(0, 0)));
+    CHECK_TRUE(SS.undo.cnt == undo0);
+}
+
+TEST_CASE(grab_skips_groups_after_the_active_one) {
+    CHECK_LOAD("groups.slvs");
+    hGroup first = {}, last = SK.groupOrder[SK.groupOrder.n - 1];
+    for(hGroup hg : SK.groupOrder) {
+        if(hg != Group::HGROUP_REFERENCES) {
+            first = hg;
+            break;
+        }
+    }
+    hEntity later = {};
+    for(Entity &e : SK.entity) {
+        if(e.group == last && e.IsPoint() && e.CanBeDragged()) later = e.h;
+    }
+    CHECK_TRUE(later.v != 0);
+    SS.GW.ActivateGroup(first);
+    SS.GW.ClearSelection();
+    SS.GW.MakeSelected(later);
+    CHECK_FALSE(SS.GW.StartGrab(Point2d::From(0, 0)));
+}

@@ -28,13 +28,21 @@ bool GraphicsWindow::StartGrab(Point2d mouse) {
     if(pending.operation != Pending::NONE) return false;
     SelectHoveredIfNothingSelected();
     pending.points.Clear();
+    // What a mouse drag could move: draggable entities in the active group or earlier ones.
+    int activeOrder = SK.GetGroup(activeGroup)->order;
     for(const Selection &s : selection) {
-        if(s.entity.v) StartDraggingByEntity(s.entity);
+        if(!s.entity.v) continue;
+        Entity *e = SK.GetEntity(s.entity);
+        if(e->type == Entity::Type::WORKPLANE || !e->CanBeDragged()) continue;
+        if(SK.GetGroup(e->group)->order > activeOrder) continue;
+        StartDraggingByEntity(s.entity);
     }
     if(pending.points.n == 0) return false;
 
     grab.wasUnsaved = SS.unsaved;
     SS.UndoRemember();
+    grab.undoCnt    = SS.undo.cnt;
+    grab.undoWrite  = SS.undo.write;
     grab.startMouse = mouse;
     grab.lastMouse  = mouse;
     grab.axis       = -1;
@@ -88,6 +96,12 @@ void GraphicsWindow::GrabCancel() {
     if(pending.operation != Pending::GRABBING) return;
     ClearPending();
     grab.start.clear();
+    // If something else recorded an undo step meanwhile, undoing would revert that step
+    // instead of the grab; keep everything as it is (as a confirm would).
+    if(SS.undo.cnt != grab.undoCnt || SS.undo.write != grab.undoWrite) {
+        Invalidate();
+        return;
+    }
     // StartGrab remembered the state just before the grab; return to it and forget the redo
     // entry the undo would leave.
     SS.UndoUndo();

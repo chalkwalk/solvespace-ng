@@ -154,3 +154,35 @@ TEST_CASE(typed_dimensions_get_a_label_offset) {
     }
     CHECK_TRUE(checked == 2);
 }
+
+static int ActiveDof() {
+    SS.GenerateAll(SolveSpaceUI::Generate::ALL);
+    return SK.GetGroup(SS.GW.activeGroup)->solved.dof;
+}
+
+TEST_CASE(typed_angle_adds_no_extra_freedom) {
+    CHECK_LOAD("line.slvs");
+    BeginTool(Command::LINE_SEGMENT);
+    Click(300, 300);
+    CHECK_TRUE(SS.GW.CommitTypedLine(25.0, 90.0)); // vertical: no reference line
+    SS.GW.ClearPending();
+    int dofRight = ActiveDof();
+
+    CHECK_LOAD("line.slvs");
+    BeginTool(Command::LINE_SEGMENT);
+    Click(300, 300);
+    CHECK_TRUE(SS.GW.CommitTypedLine(25.0, 30.0)); // reference line + angle
+    SS.GW.ClearPending();
+    CHECK_TRUE(ActiveDof() == dofRight);
+}
+
+TEST_CASE(typed_rectangle_rejects_zero_and_negative_sizes) {
+    CHECK_LOAD("line.slvs");
+    BeginTool(Command::RECTANGLE);
+    Click(300, 300);
+    int n = SK.constraint.n;
+    CHECK_FALSE(SS.GW.CommitTypedRectangle(0.0, 20.0));
+    CHECK_FALSE(SS.GW.CommitTypedRectangle(30.0, -20.0));
+    CHECK_TRUE(SK.constraint.n == n);
+    CHECK_TRUE(SS.GW.TypedInputKind() == GraphicsWindow::TypedKind::RECTANGLE);
+}

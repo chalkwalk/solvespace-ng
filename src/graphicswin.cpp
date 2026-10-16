@@ -199,6 +199,9 @@ const MenuEntry Menu[] = {
 #undef KR
 
 void GraphicsWindow::ActivateCommand(Command cmd) {
+    // Any command but Esc (which cancels it) ends a running grab by keeping it, so the grab's
+    // undo step stays its own.
+    if(pending.operation == Pending::GRABBING && cmd != Command::UNSELECT_ALL) GrabConfirm();
     for(int i = 0; Menu[i].level >= 0; i++) {
         if(cmd == Menu[i].cmd) {
             (Menu[i].fn)((Command)Menu[i].cmd);
@@ -338,7 +341,8 @@ void GraphicsWindow::PopulateMainMenu() {
             if(Menu[i].accel != 0) {
                 menuItem->SetAccelerator(AcceleratorForCommand(Menu[i].cmd));
             }
-            menuItem->onTrigger = std::bind(Menu[i].fn, Menu[i].cmd);
+            Command cmd = Menu[i].cmd;
+            menuItem->onTrigger = [cmd] { SS.GW.ActivateCommand(cmd); };
             menuItem->commandId = (uint32_t)Menu[i].cmd;
 
             if(Menu[i].cmd == Command::SHOW_GRID) {

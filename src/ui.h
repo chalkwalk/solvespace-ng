@@ -679,6 +679,7 @@ public:
         int                                     axis;  // -1 free, 0/1/2 = X/Y/Z (or u/v/n)
         std::optional<double>                   typedMm;
         bool                                    wasUnsaved; // restored by a cancel
+        int                                     undoCnt, undoWrite; // the grab's own entry
     } grab;
     bool   StartGrab(Point2d mouse); // selection, else hover; false (no undo entry) if nothing
     void   GrabMouseMoved(Point2d mouse);
