@@ -164,6 +164,9 @@ public:
     };
 
     std::function<void()>   onTrigger;
+    // The Command this item activates, or 0. Lets non-native frontends (palette, keymap
+    // display) relate menu items to commands without parsing labels.
+    uint32_t                commandId = 0;
 
     virtual ~MenuItem() = default;
 

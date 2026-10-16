@@ -276,7 +276,8 @@ if(ENABLE_GUI AND ENABLE_NG_GUI)
     target_link_libraries(imgui-sdl3 PUBLIC ${NG_SDL_TARGET})
 
     add_library(solvespace-ng-support STATIC
-        platform/sdl/settingsfile.cpp)
+        platform/sdl/settingsfile.cpp
+        platform/sdl/menumodel.cpp)
     target_include_directories(solvespace-ng-support PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR})
     target_link_libraries(solvespace-ng-support PUBLIC solvespace-core keymap palette)

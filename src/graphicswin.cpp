@@ -332,6 +332,7 @@ void GraphicsWindow::PopulateMainMenu() {
                 menuItem->SetAccelerator(AcceleratorForCommand(Menu[i].cmd));
             }
             menuItem->onTrigger = std::bind(Menu[i].fn, Menu[i].cmd);
+            menuItem->commandId = (uint32_t)Menu[i].cmd;
 
             if(Menu[i].cmd == Command::SHOW_GRID) {
                 showGridMenuItem = menuItem;
