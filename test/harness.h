@@ -36,6 +36,7 @@ public:
     bool CheckRender(const char *file, int line, const char *fixture);
     bool CheckRenderXY(const char *file, int line, const char *fixture);
     bool CheckRenderIso(const char *file, int line, const char *fixture);
+    bool RunCommand(const char *file, int line, const char *name);
 };
 
 class Case {
@@ -76,3 +77,5 @@ using namespace SolveSpace;
     do { if(!helper->CheckRenderXY(__FILE__, __LINE__, reference)) return; } while(0)
 #define CHECK_RENDER_ISO(reference) \
     do { if(!helper->CheckRenderIso(__FILE__, __LINE__, reference)) return; } while(0)
+#define RUN_COMMAND(name) \
+    do { if(!helper->RunCommand(__FILE__, __LINE__, name)) return; } while(0)

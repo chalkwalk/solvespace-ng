@@ -33,8 +33,9 @@ void SolveSpaceUI::UndoRedo() {
 }
 
 void SolveSpaceUI::UndoEnableMenus() {
-    SS.GW.undoMenuItem->SetEnabled(undo.cnt > 0);
-    SS.GW.redoMenuItem->SetEnabled(redo.cnt > 0);
+    // Menu items are absent in headless builds.
+    if(SS.GW.undoMenuItem) SS.GW.undoMenuItem->SetEnabled(undo.cnt > 0);
+    if(SS.GW.redoMenuItem) SS.GW.redoMenuItem->SetEnabled(redo.cnt > 0);
 }
 
 void SolveSpaceUI::PushFromCurrentOnto(UndoStack *uk) {

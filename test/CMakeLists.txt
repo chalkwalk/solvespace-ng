@@ -18,6 +18,7 @@ set(testsuite_SOURCES
     analysis/contour_area/test.cpp
     core/expr/test.cpp
     core/commandnames/test.cpp
+    core/commands/test.cpp
     core/locale/test.cpp
     core/path/test.cpp
     core/prune/test.cpp

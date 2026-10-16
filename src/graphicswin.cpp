@@ -1060,7 +1060,7 @@ void GraphicsWindow::DeleteTaggedRequests() {
 
     // An edit might be in progress for the just-deleted item. So
     // now it's not.
-    window->HideEditor();
+    if(window) window->HideEditor();
     SS.TW.HideEditControl();
     // And clear out the selection, which could contain that item.
     ClearSuper();
@@ -1100,8 +1100,8 @@ void GraphicsWindow::MenuEdit(Command id) {
                SS.GW.gs.constraints     == 0 &&
                SS.GW.pending.operation  == Pending::NONE)
             {
-                if(!(SS.TW.window->IsEditorVisible() ||
-                     SS.GW.window->IsEditorVisible()))
+                if(!((SS.TW.window && SS.TW.window->IsEditorVisible()) ||
+                     (SS.GW.window && SS.GW.window->IsEditorVisible())))
                 {
                     if(SS.TW.shown.screen == TextWindow::Screen::STYLE_INFO) {
                         SS.TW.GoToScreen(TextWindow::Screen::LIST_OF_STYLES);

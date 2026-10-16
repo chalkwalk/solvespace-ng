@@ -11,6 +11,7 @@
 #include <cairo.h>
 
 #include "solvespace.h"
+#include "commandnames.h"
 
 #include "harness.h"
 
@@ -328,6 +329,19 @@ bool Test::Helper::CheckRenderIso(const char *file, int line, const char *fixtur
     SS.GW.projRight = Vector::From(0.707,  0.000, -0.707);
     SS.GW.projUp    = Vector::From(-0.408, 0.816, -0.408);
     return CheckRender(file, line, fixture);
+}
+
+bool Test::Helper::RunCommand(const char *file, int line, const char *name) {
+    Command cmd = CommandFromName(name);
+    if(cmd == Command::NONE) {
+        PrintFailure(file, line, ssprintf("unknown command '%s'", name));
+        RecordCheck(false);
+        return false;
+    }
+    SS.GW.ActivateCommand(cmd);
+    // Headless timers never fire; flush the regenerate/show work a real event loop would run.
+    SS.Refresh();
+    return RecordCheck(true);
 }
 
 // Avoid global constructors; using a global static vector instead of a local one
