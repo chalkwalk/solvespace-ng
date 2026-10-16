@@ -127,7 +127,7 @@ stored in a keymap file.
 | `Space` / `F3` | Command palette (searches every command, shows its binding) |
 | `Tab` | Enter/exit the active sketch (like Blender's Edit Mode) |
 | `Shift+A` | Add pie: line, rectangle, circle, arc, spline, point, text, workplane |
-| `L` `B` `C` `A` | Direct: line, box/rectangle, circle, arc |
+| `L` `B` `C` `Shift+C` | Direct: line, box/rectangle, circle, arc (`A` is select-all) |
 | `D` | Smart dimension (distance, diameter or angle, inferred from the selection) |
 | `F` | Constrain pie: only the constraints valid for the selection |
 | `G` | Grab: drag under the solver; `X`/`Y`/`Z` locks an axis; type a value |

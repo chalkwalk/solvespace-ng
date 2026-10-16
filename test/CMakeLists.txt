@@ -92,7 +92,8 @@ target_link_libraries(solvespace-testsuite keymap palette)
 if(ENABLE_NG_GUI)
     target_sources(solvespace-testsuite PRIVATE
         ng/settingsfile/test.cpp
-        ng/menumodel/test.cpp)
+        ng/menumodel/test.cpp
+        ng/keys/test.cpp)
     target_link_libraries(solvespace-testsuite solvespace-ng-support)
 endif()
 

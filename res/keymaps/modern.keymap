@@ -1,0 +1,58 @@
+# SolveSpace NG "Modern" keymap (Blender-style). DRAFT: tuned during M1.
+# Format: <command>: <chord>[, <chord>...]
+# Command names are the stable ids from src/commandnames.cpp; "ui." names are UI actions.
+# M1b adds: Tab (sketch mode), Shift+A (add pie), F (constrain pie), G (grab), H/Alt+H/Shift+H,
+# ` (view pie), numpad views, "." frame selected.
+
+ui.command-palette:     Space, F3
+ui.toggle-menu-bar:     F10
+ui.toggle-theme:        Ctrl+Alt+T
+
+new:                    Ctrl+N
+open:                   Ctrl+O
+save:                   Ctrl+S
+save-as:                Ctrl+Shift+S
+exit:                   Ctrl+Q
+undo:                   Ctrl+Z
+redo:                   Ctrl+Shift+Z, Ctrl+Y
+cut:                    Ctrl+X
+copy:                   Ctrl+C
+paste:                  Ctrl+V
+paste-transformed:      Ctrl+Shift+V
+delete:                 Delete, X
+select-all:             A
+unselect-all:           Alt+A, Esc
+select-edge-chain:      Ctrl+L
+configuration:          Ctrl+,
+regenerate-all:         F5
+
+datum-point:            P
+line-segment:           L
+construction-line-segment: Shift+L
+rectangle:              B
+circle:                 C
+arc:                    Shift+C
+tangent-arc:            Alt+C
+cubic-spline:           Shift+B
+ttf-text:               Shift+T
+toggle-construction:    T
+split-curves:           I
+
+constrain-distance:     D
+constrain-reference-distance: Shift+D
+constrain-angle:        Alt+D
+
+group-extrude:          E
+group-revolve:          Shift+R
+group-sketch-workplane: Shift+W
+group-link:             Ctrl+I
+
+zoom-in:                Plus, =
+zoom-out:               -
+zoom-to-fit:            Home
+center-view:            Num.
+perspective:            Num5
+show-grid:              Shift+G
+show-property-browser:  N
+show-toolbar:           Ctrl+Shift+T
+full-screen:            F11

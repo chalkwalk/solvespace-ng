@@ -277,10 +277,12 @@ if(ENABLE_GUI AND ENABLE_NG_GUI)
 
     add_library(solvespace-ng-support STATIC
         platform/sdl/settingsfile.cpp
-        platform/sdl/menumodel.cpp)
+        platform/sdl/menumodel.cpp
+        platform/sdl/keychord.cpp
+        ui/keypresets.cpp)
     target_include_directories(solvespace-ng-support PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR})
-    target_link_libraries(solvespace-ng-support PUBLIC solvespace-core keymap palette)
+    target_link_libraries(solvespace-ng-support PUBLIC solvespace-core keymap palette SDL3::Headers)
 endif()
 
 # solvespace graphical executable
