@@ -112,7 +112,8 @@ if(ENABLE_NG_GUI)
         ng/grabtool/test.cpp
         ng/drawtool/test.cpp
         ng/groupedit/test.cpp
-        ng/outliner/test.cpp)
+        ng/outliner/test.cpp
+        ng/groupprops/test.cpp)
     target_link_libraries(solvespace-testsuite solvespace-ng-support)
 endif()
 

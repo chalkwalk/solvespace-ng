@@ -222,83 +222,24 @@ void TextWindow::ScreenSelectConstraint(int link, uint32_t v) {
 }
 
 void TextWindow::ScreenChangeGroupOption(int link, uint32_t v) {
-    SS.UndoRemember();
-    Group *g = SK.GetGroup(SS.TW.shown.group);
-
+    GroupOption option;
     switch(link) {
-        case 's':
-            if(g->subtype == Group::Subtype::TWO_SIDED)
-                g->subtype = Group::Subtype::ONE_SIDED;
-            if(g->subtype == Group::Subtype::TWO_SKEWED)
-                g->subtype = Group::Subtype::ONE_SKEWED;
-            break;
-        case 'S':
-            if(g->subtype == Group::Subtype::ONE_SIDED)
-                g->subtype = Group::Subtype::TWO_SIDED;
-            if(g->subtype == Group::Subtype::ONE_SKEWED)
-                g->subtype = Group::Subtype::TWO_SKEWED;
-            break;
-        case 'w':
-            if(g->subtype == Group::Subtype::ONE_SIDED) {
-                g->subtype = Group::Subtype::ONE_SKEWED;
-                break;
-            }
-            if(g->subtype == Group::Subtype::TWO_SIDED) {
-                g->subtype = Group::Subtype::TWO_SKEWED;
-                break;
-            }
-            if(g->subtype == Group::Subtype::ONE_SKEWED) {
-                g->subtype = Group::Subtype::ONE_SIDED;
-                break;
-            }
-            if(g->subtype == Group::Subtype::TWO_SKEWED) {
-                g->subtype = Group::Subtype::TWO_SIDED;
-                break;
-            }
-            break;
-
-        case 'k': g->skipFirst = true; break;
-        case 'K': g->skipFirst = false; break;
-
-        case 'c':
-            if(g->type == Group::Type::EXTRUDE) {
-                // When an extrude group is first created, it's positioned for a union
-                // extrusion. If no constraints were added, flip it when we switch between
-                // union/assemble and difference/intersection modes to avoid manual work doing the same.
-                if(g->meshCombine != (Group::CombineAs)v && g->GetNumConstraints() == 0) {
-                    // I apologise for this if statement
-                    if((((Group::CombineAs::DIFFERENCE == g->meshCombine) ||
-                         (Group::CombineAs::INTERSECTION == g->meshCombine)) &&
-                        (Group::CombineAs::DIFFERENCE != (Group::CombineAs)v) &&
-                        (Group::CombineAs::INTERSECTION != (Group::CombineAs)v)) ||
-                       ((Group::CombineAs::DIFFERENCE != g->meshCombine) &&
-                        (Group::CombineAs::INTERSECTION != g->meshCombine) &&
-                        ((Group::CombineAs::DIFFERENCE == (Group::CombineAs)v) ||
-                         (Group::CombineAs::INTERSECTION == (Group::CombineAs)v)))) {
-                        g->ExtrusionForceVectorTo(g->ExtrusionGetVector().Negated());
-                    }
-                }
-            }
-            g->meshCombine = (Group::CombineAs)v;
-            break;
-
-        case 'P': g->suppress = !(g->suppress); break;
-
-        case 'r': g->relaxConstraints = !(g->relaxConstraints); break;
-
-        case 'e': g->allowRedundant = !(g->allowRedundant); break;
-
-        case 'D': g->suppressDofCalculation = !(g->suppressDofCalculation); break;
-
-        case 'v': g->visible = !(g->visible); break;
-
-        case 'd': g->allDimsReference = !(g->allDimsReference); break;
-
-        case 'f': g->forceToMesh = !(g->forceToMesh); break;
+        case 's': option = GroupOption::ONE_SIDED; break;
+        case 'S': option = GroupOption::TWO_SIDED; break;
+        case 'w': option = GroupOption::SKEWED; break;
+        case 'k': option = GroupOption::START_WITH_COPY; break;
+        case 'K': option = GroupOption::START_WITH_ORIGINAL; break;
+        case 'c': option = GroupOption::COMBINE; break;
+        case 'P': option = GroupOption::SUPPRESS_SOLID; break;
+        case 'r': option = GroupOption::RELAX_CONSTRAINTS; break;
+        case 'e': option = GroupOption::ALLOW_REDUNDANT; break;
+        case 'D': option = GroupOption::SUPPRESS_DOF; break;
+        case 'v': option = GroupOption::VISIBLE; break;
+        case 'd': option = GroupOption::ALL_DIMS_REFERENCE; break;
+        case 'f': option = GroupOption::FORCE_TO_MESH; break;
+        default: return;
     }
-
-    SS.MarkGroupDirty(g->h);
-    SS.GW.ClearSuper();
+    SS.ChangeGroupOption(SS.TW.shown.group, option, (Group::CombineAs)v);
 }
 
 void TextWindow::ScreenColor(int link, uint32_t v) {
@@ -343,14 +284,7 @@ void TextWindow::ScreenChangeHelixPitch(int link, uint32_t v) {
     SS.TW.edit.group.v = v;
 }
 void TextWindow::ScreenChangePitchOption(int link, uint32_t v) {
-    Group *g = SK.GetGroup(SS.TW.shown.group);
-    if(g->valB == 0.0) {
-        g->valB = SK.GetParam(g->h.param(7))->val * PI /
-              (SK.GetParam(g->h.param(3))->val);
-    } else {
-        g->valB = 0.0;
-    }
-    SS.GW.Invalidate();
+    SS.ToggleHelixPitchFixed(SS.TW.shown.group);
 }
 void TextWindow::ScreenDeleteGroup(int link, uint32_t v) {
     SS.GW.DeleteGroup(SS.TW.shown.group);
@@ -812,36 +746,7 @@ void TextWindow::EditControlDone(std::string s) {
 
     switch(edit.meaning) {
         case Edit::TIMES_REPEATED:
-            if(Expr *e = Expr::From(s, /*popUpError=*/true)) {
-                SS.UndoRemember();
-
-                double ev = e->Eval();
-                if((int)ev < 1) {
-                    Error(_("Can't repeat fewer than 1 time."));
-                    break;
-                }
-                if((int)ev > 999) {
-                    Error(_("Can't repeat more than 999 times."));
-                    break;
-                }
-
-                Group *g = SK.GetGroup(edit.group);
-                g->valA = ev;
-
-                if(g->type == Group::Type::ROTATE) {
-                    // If the group does not contain any constraints, then
-                    // set the numerical guess to space the copies uniformly
-                    // over one rotation. Don't touch the guess if we're
-                    // already constrained, because that would break
-                    // convergence.
-                    if(g->GetNumConstraints() == 0) {
-                        double copies = (g->skipFirst) ? (ev + 1) : ev;
-                        SK.GetParam(g->h.param(3))->val = PI/(2*copies);
-                    }
-                }
-
-                SS.MarkGroupDirty(g->h);
-            }
+            SS.SetGroupRepeat(edit.group, s);
             break;
 
         case Edit::GROUP_NAME:
@@ -849,56 +754,31 @@ void TextWindow::EditControlDone(std::string s) {
             break;
 
         case Edit::GROUP_SCALE:
-            if(Expr *e = Expr::From(s, /*popUpError=*/true)) {
-                double ev = e->Eval();
-                if(fabs(ev) < 1e-6) {
-                    Error(_("Scale cannot be zero."));
-                } else {
-                    Group *g = SK.GetGroup(edit.group);
-                    g->scale = ev;
-                    SS.MarkGroupDirty(g->h);
-                }
-            }
+            SS.SetGroupScale(edit.group, s);
             break;
 
-        case Edit::HELIX_PITCH:  // stored in valB
-            if(Expr *e = Expr::From(s, /*popUpError=*/true)) {
-                double ev = e->Eval();
-                Group *g = SK.GetGroup(edit.group);
-                g->valB = ev * SS.MmPerUnit();
-                SS.MarkGroupDirty(g->h);
-            }
+        case Edit::HELIX_PITCH:
+            SS.SetHelixPitch(edit.group, s);
             break;
 
         case Edit::GROUP_COLOR: {
             Vector rgb;
             if(sscanf(s.c_str(), "%lf, %lf, %lf", &rgb.x, &rgb.y, &rgb.z)==3) {
                 rgb = rgb.ClampWithin(0, 1);
-
-                Group *g = SK.group.FindByIdNoOops(SS.TW.shown.group);
-                if(!g) break;
-                g->color = RgbaColor::FromFloat((float)rgb.x, (float)rgb.y, (float)rgb.z,
-                                                g->color.alphaF());
-
-                SS.MarkGroupDirty(g->h);
-                SS.GW.ClearSuper();
+                if(SK.group.FindByIdNoOops(SS.TW.shown.group)) {
+                    // ScreenColor remembered the undo state when the editor opened.
+                    SS.SetGroupColor(SS.TW.shown.group,
+                                     RgbaColor::FromFloat((float)rgb.x, (float)rgb.y,
+                                                          (float)rgb.z),
+                                     /*rememberUndo=*/false);
+                }
             } else {
                 Error(_("Bad format: specify color as r, g, b"));
             }
             break;
         }
         case Edit::GROUP_OPACITY:
-            if(Expr *e = Expr::From(s, /*popUpError=*/true)) {
-                double alpha = e->Eval();
-                if(alpha < 0 || alpha > 1) {
-                    Error(_("Opacity must be between zero and one."));
-                } else {
-                    Group *g = SK.GetGroup(edit.group);
-                    g->color.alpha = (int)(255.1f * alpha);
-                    SS.MarkGroupDirty(g->h);
-                    SS.GW.ClearSuper();
-                }
-            }
+            SS.SetGroupOpacity(edit.group, s);
             break;
 
         case Edit::TTF_TEXT:

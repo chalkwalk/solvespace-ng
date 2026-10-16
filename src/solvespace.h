@@ -424,6 +424,15 @@ public:
 #undef ENTITY
 #undef CONSTRAINT
 
+// The group settings the property browser and the Properties panel change.
+enum class GroupOption {
+    ONE_SIDED, TWO_SIDED, SKEWED,           // extrude / revolve / translate sides; skew toggles
+    START_WITH_ORIGINAL, START_WITH_COPY,  // step translate / rotate
+    COMBINE,                               // solid model as (with a CombineAs)
+    SUPPRESS_SOLID, VISIBLE, FORCE_TO_MESH, // toggles
+    RELAX_CONSTRAINTS, ALLOW_REDUNDANT, SUPPRESS_DOF, ALL_DIMS_REFERENCE,
+};
+
 class SolveSpaceUI {
 public:
     TextWindow                 *pTW;
@@ -467,6 +476,16 @@ public:
     void UndoUndo();
     // Undoable; an empty name is refused with an error message (returns false).
     bool RenameGroup(hGroup hg, const std::string &name);
+    // Group settings, each one undo step (colour: when rememberUndo). The string setters take
+    // an expression and refuse a bad or out-of-range value with an error message (false).
+    void ChangeGroupOption(hGroup hg, GroupOption option,
+                           Group::CombineAs combine = Group::CombineAs::UNION);
+    bool SetGroupRepeat(hGroup hg, const std::string &expr);
+    bool SetGroupScale(hGroup hg, const std::string &expr);
+    bool SetHelixPitch(hGroup hg, const std::string &expr); // in display units
+    void ToggleHelixPitchFixed(hGroup hg);
+    void SetGroupColor(hGroup hg, RgbaColor rgb, bool rememberUndo); // keeps the opacity
+    bool SetGroupOpacity(hGroup hg, const std::string &expr);
     void UndoRedo();
     void PushFromCurrentOnto(UndoStack *uk);
     void PopOntoCurrentFrom(UndoStack *uk);

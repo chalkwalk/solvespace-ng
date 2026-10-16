@@ -145,6 +145,7 @@ if(ENABLE_GUI OR ENABLE_CLI)
         mouse.cpp
         viewpresets.cpp
         visibility.cpp
+        groupprops.cpp
         sketchfocus.cpp
         constraintprobe.cpp
         grab.cpp
