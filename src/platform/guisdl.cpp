@@ -820,8 +820,6 @@ static void ForwardToMainWindow(const SDL_Event &ev) {
             break;
         }
         case SDL_EVENT_KEY_DOWN: {
-            // Auto-repeat of unmodified keys would start the same tool over and over.
-            if(ev.key.repeat && !(ev.key.mod & (SDL_KMOD_CTRL | SDL_KMOD_ALT))) return;
             RouteKeyDown(ev);
             break;
         }
@@ -1004,7 +1002,7 @@ static SDL_Keymod ModBit(SDL_Keycode key) {
     }
 }
 
-static void PushKey(SDL_Keycode key, SDL_Keymod mod, bool down) {
+static void PushKey(SDL_Keycode key, SDL_Keymod mod, bool down, bool repeat = false) {
     SDL_Event ev    = {};
     ev.type         = down ? SDL_EVENT_KEY_DOWN : SDL_EVENT_KEY_UP;
     ev.key.windowID = SDL_GetWindowID(gSdlWindow);
@@ -1012,6 +1010,7 @@ static void PushKey(SDL_Keycode key, SDL_Keymod mod, bool down) {
     ev.key.scancode = SDL_GetScancodeFromKey(key, nullptr);
     ev.key.mod      = mod;
     ev.key.down     = down;
+    ev.key.repeat   = repeat;
     SDL_PushEvent(&ev);
 }
 
@@ -1485,7 +1484,9 @@ static bool RouteKeyDown(const SDL_Event &ev) {
     SDL_Keycode produced = SDL_GetKeyFromScancode(ev.key.scancode, layer, false);
     auto chord = ChordFromKey(base, produced, mod);
     if(!chord) return false;
-    return gKeyRouter.Route(*chord, TextEntryActive()) != Ui::RouteResult::UNBOUND;
+    Ui::RouteResult r = ev.key.repeat ? gKeyRouter.RouteRepeat(*chord, TextEntryActive())
+                                      : gKeyRouter.Route(*chord, TextEntryActive());
+    return r != Ui::RouteResult::UNBOUND;
 }
 
 //-----------------------------------------------------------------------------
@@ -1591,6 +1592,22 @@ void KeyUp(const std::string &chord) {
     SDL_Keymod  mods;
     if(!ParseKeyChord(chord, &key, &mods)) ssassert(false, "Driver::KeyUp: unknown key name");
     ReleaseChord(key, mods);
+    Settle();
+}
+
+void KeyRepeat(const std::string &chord, int repeats) {
+    SDL_Keycode key;
+    SDL_Keymod  mods;
+    if(!ParseKeyChord(chord, &key, &mods)) ssassert(false, "Driver::KeyRepeat: unknown key name");
+    SDL_Keymod pressed = PressChord(key, mods, /*withText=*/true);
+    Settle();
+    for(int i = 0; i < repeats; i++) {
+        PushKey(key, gDriverMods, true, /*repeat=*/true);
+        std::string text = TextForKey(key, gDriverMods);
+        if(!text.empty()) PushText(text);
+        Settle();
+    }
+    ReleaseChord(key, pressed);
     Settle();
 }
 

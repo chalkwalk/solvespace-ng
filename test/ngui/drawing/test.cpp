@@ -191,3 +191,25 @@ TEST_CASE(undo_after_a_typed_line_removes_line_and_constraints) {
     CHECK_TRUE(SK.request.n == requests);
     CHECK_TRUE(SK.constraint.n == constraints);
 }
+
+TEST_CASE(holding_backspace_keeps_deleting_a_typed_value) {
+    CHECK_LOAD("line.slvs");
+    Driver::Key("C");
+    ClickAt(Point2d::From(500, 500));
+    Driver::Move(540, 500);
+    Driver::Type("1234");
+    Driver::KeyRepeat("Backspace", 2); // the press and two repeats: three characters
+    Driver::Key("Return");
+    CHECK_EQ_EPS(SK.GetConstraint(*LastConstraint(Constraint::Type::DIAMETER))->valA, 1.0);
+}
+
+TEST_CASE(holding_a_tool_key_starts_the_tool_once) {
+    CHECK_LOAD("line.slvs");
+    int before = SK.request.n;
+    Driver::KeyRepeat("L", 5);
+    CHECK_TRUE(SS.GW.pending.command == Command::LINE_SEGMENT);
+    ClickAt(Point2d::From(500, 500));
+    ClickAt(Point2d::From(600, 500));
+    Driver::Key("Escape");
+    CHECK_TRUE(SK.request.n == before + 1);
+}

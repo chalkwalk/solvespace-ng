@@ -22,6 +22,12 @@ static bool AllowedDuringTextInput(const keymap::Chord &c) {
     return c.key.size() >= 2 && c.key[0] == 'F' && isdigit((unsigned char)c.key[1]);
 }
 
+RouteResult KeyRouter::RouteRepeat(const keymap::Chord &chord, bool textInputActive) {
+    if(chord.ctrl || chord.alt) return Route(chord, textInputActive);
+    if(!textInputActive && modal && modal(chord)) return RouteResult::MODAL;
+    return RouteResult::SUPPRESSED;
+}
+
 RouteResult KeyRouter::Route(const keymap::Chord &chord, bool textInputActive) {
     if(textInputActive && !AllowedDuringTextInput(chord)) return RouteResult::SUPPRESSED;
     if(!textInputActive && modal && modal(chord)) return RouteResult::MODAL;

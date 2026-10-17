@@ -96,3 +96,24 @@ TEST_CASE(text_input_beats_modal_tools) {
     CHECK_TRUE(r.Route(C("X"), true) == RouteResult::SUPPRESSED);
     CHECK_TRUE(modalCalls == 0);
 }
+
+TEST_CASE(key_repeat_reaches_only_the_modal_tool) {
+    std::string err;
+    KeyRouter r;
+    r.SetKeymap(*keymap::Keymap::Parse("line-segment: L\nundo: Ctrl+Z\n", &err));
+    int commands = 0, modalKeys = 0;
+    bool toolActive = false;
+    r.onCommand = [&](Command) { commands++; };
+    r.modal     = [&](const keymap::Chord &) { if(toolActive) modalKeys++; return toolActive; };
+    // No tool: a held unmodified key must not start the same command over and over.
+    CHECK_TRUE(r.RouteRepeat(C("L"), false) == RouteResult::SUPPRESSED);
+    CHECK_TRUE(commands == 0);
+    // Ctrl chords repeat as before (holding Ctrl+Z undoes step after step).
+    CHECK_TRUE(r.RouteRepeat(C("Ctrl+Z"), false) == RouteResult::COMMAND);
+    // A typed field in a tool: holding Backspace keeps deleting.
+    toolActive = true;
+    CHECK_TRUE(r.RouteRepeat(C("Backspace"), false) == RouteResult::MODAL);
+    CHECK_TRUE(modalKeys == 1);
+    // While a text field has the keyboard, the field handles repeats itself.
+    CHECK_TRUE(r.RouteRepeat(C("Backspace"), true) == RouteResult::SUPPRESSED);
+}

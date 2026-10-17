@@ -51,6 +51,8 @@ void Key(const std::string &chord);
 void KeyDown(const std::string &chord);
 void KeyUp(const std::string &chord);
 void Type(const std::string &text); // one key press (with text) per character
+// Holds a key down long enough for the keyboard to auto-repeat it `repeats` times.
+void KeyRepeat(const std::string &chord, int repeats);
 
 // Window coordinates in logical pixels, origin top-left.
 void    Move(double x, double y);

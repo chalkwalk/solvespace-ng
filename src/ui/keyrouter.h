@@ -26,6 +26,10 @@ public:
     // With textInputActive, only Ctrl chords and F-keys are routed; everything else (including
     // Esc, which the focused field handles, and Alt, which may be AltGr text) is SUPPRESSED.
     RouteResult Route(const keymap::Chord &chord, bool textInputActive);
+    // A key held down (auto-repeat). Ctrl/Alt chords route as usual; other keys go only to the
+    // modal tool (Backspace or digits in a typed field), never to the keymap, so holding a key
+    // doesn't start the same tool over and over.
+    RouteResult RouteRepeat(const keymap::Chord &chord, bool textInputActive);
 
 private:
     keymap::Keymap map;
