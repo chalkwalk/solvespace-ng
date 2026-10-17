@@ -314,15 +314,13 @@ void GraphicsWindow::MouseMoved(double x, double y, bool leftDown,
         }
 
         case Pending::DRAGGING_NEW_LINE_POINT:
-            if(!ctrlDown) {
-                SS.GW.pending.hasSuggestion =
-                    SS.GW.SuggestLineConstraint(SS.GW.pending.request, &SS.GW.pending.suggestion);
-            } else {
-                SS.GW.pending.hasSuggestion = false;
-            }
-            // fallthrough
         case Pending::DRAGGING_NEW_POINT:
             UpdateDraggedPoint(pending.point, x, y);
+            // Suggest from where the point is now, not where the last event left it.
+            if(pending.operation == Pending::DRAGGING_NEW_LINE_POINT) {
+                pending.hasSuggestion =
+                    !ctrlDown && SuggestLineConstraint(pending.request, &pending.suggestion);
+            }
             HitTestMakeSelection(mp);
             SS.MarkGroupDirtyByEntity(pending.point);
             orig.mouse = mp;
@@ -504,6 +502,55 @@ void GraphicsWindow::ClearPending(bool scheduleShowTW) {
     }
 }
 
+void GraphicsWindow::CancelPendingNew() {
+    // The entity being placed was the last thing remembered for undo.
+    ClearSuper();
+    SS.UndoUndo();
+    SS.UndoClearStack(&SS.redo);
+    SS.UndoEnableMenus();
+}
+
+void GraphicsWindow::RecordChainStep() {
+    pending.chain.push_back({ pending.request, SK.constraint.MaximumId(),
+                              SK.request.MaximumId() });
+}
+
+bool GraphicsWindow::RemoveLastLineSegment() {
+    if(pending.operation != Pending::DRAGGING_NEW_LINE_POINT) return false;
+    if(pending.chain.size() < 2) {
+        CancelPendingNew();
+        return true;
+    }
+    std::vector<decltype(pending.chain)::value_type> chain = pending.chain;
+    chain.pop_back();
+    decltype(pending.chain)::value_type prev = chain.back();
+    Command command = pending.command;
+
+    // Undo drops the segment under the cursor; then whatever the click that placed the
+    // previous segment added (constraints, a typed angle's reference line) goes too.
+    CancelPendingNew();
+    SK.constraint.ClearTags();
+    for(Constraint &c : SK.constraint) c.tag = (c.h.v > prev.constraintMark);
+    SK.constraint.RemoveTagged();
+    SK.request.ClearTags();
+    for(Request &r : SK.request) r.tag = (r.h.v > prev.requestMark);
+    SK.request.RemoveTagged();
+
+    pending.operation   = Pending::DRAGGING_NEW_LINE_POINT;
+    pending.command     = command;
+    pending.request     = prev.line;
+    pending.point       = prev.line.entity(2);
+    pending.description = _("click next point of line, or press Esc");
+    pending.chain       = chain;
+    AddToPending(prev.line);
+    SS.MarkGroupDirty(activeGroup);
+    SS.GenerateAll(SolveSpaceUI::Generate::ALL);
+    MouseMoved(currentMousePosition.x, currentMousePosition.y, false, false, false, false,
+               false);
+    Invalidate();
+    return true;
+}
+
 bool GraphicsWindow::IsFromPending(hRequest r) {
     for(auto &req : pending.requests) {
         if(req == r) return true;
@@ -550,22 +597,19 @@ void GraphicsWindow::MouseRightUp(double x, double y) {
 
     if(context.active) return;
 
-    if(pending.operation == Pending::DRAGGING_NEW_LINE_POINT && pending.hasSuggestion) {
-        Constraint::TryConstrain(SS.GW.pending.suggestion,
-            Entity::NO_ENTITY, Entity::NO_ENTITY, pending.request.entity(0));
-    }
-
     if(pending.operation == Pending::DRAGGING_NEW_LINE_POINT ||
-       pending.operation == Pending::DRAGGING_NEW_CUBIC_POINT ||
        pending.operation == Pending::DRAGGING_NEW_ARC_POINT ||
        pending.operation == Pending::DRAGGING_NEW_RADIUS ||
-       pending.operation == Pending::DRAGGING_NEW_POINT
-       )
+       pending.operation == Pending::DRAGGING_NEW_POINT)
     {
         // Special case; use a right click to stop drawing lines, since
-        // a left click would draw another one. This is quicker and more
-        // intuitive than hitting escape. Likewise for other entities
-        // for consistency.
+        // a left click would draw another one. Like Esc, this drops what
+        // follows the cursor: the line segment that the next click would
+        // have placed. Likewise for other entities for consistency.
+        CancelPendingNew();
+        return;
+    }
+    if(pending.operation == Pending::DRAGGING_NEW_CUBIC_POINT) {
         ClearPending();
         return;
     }
@@ -981,6 +1025,7 @@ void GraphicsWindow::ContinueLineChain(Vector v) {
     pending.request = hr;
     pending.point = hr.entity(2);
     pending.description = _("click next point of line, or press Esc");
+    RecordChainStep();
 }
 
 void GraphicsWindow::MouseLeftDown(double mx, double my, bool shiftDown, bool ctrlDown) {
@@ -1048,6 +1093,7 @@ void GraphicsWindow::MouseLeftDown(double mx, double my, bool shiftDown, bool ct
                     pending.point = hr.entity(2);
                     pending.description = _("click next point of line, or press Esc");
                     SK.GetEntity(pending.point)->PointForceTo(v);
+                    RecordChainStep();
                     break;
 
                 case Command::RECTANGLE: {
@@ -1297,8 +1343,9 @@ void GraphicsWindow::MouseLeftDown(double mx, double my, bool shiftDown, bool ct
                     {
                         // If we constrained by the hovered point, then we
                         // would create a zero-length line segment. That's
-                        // not good, so just stop drawing.
-                        ClearPending();
+                        // not good, so just stop drawing, without the
+                        // segment that started there.
+                        CancelPendingNew();
                         break;
                     }
                 }
@@ -1423,8 +1470,16 @@ void GraphicsWindow::EditConstraint(hConstraint constraint) {
 }
 
 void GraphicsWindow::MouseLeftDoubleClick(double mx, double my) {
-    if(window->IsEditorVisible()) return;
+    if(window && window->IsEditorVisible()) return;
     SS.TW.HideEditControl();
+
+    // The first click placed the last point; end the chain there. (Backends that send
+    // the second press as well end it in MouseLeftDown, on the point just placed.)
+    if(pending.operation == Pending::DRAGGING_NEW_LINE_POINT) {
+        CancelPendingNew();
+        Invalidate();
+        return;
+    }
 
     if(hover.constraint.v) {
         EditConstraint(hover.constraint);

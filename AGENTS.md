@@ -151,7 +151,13 @@ home.
 
 Typed angles that are not multiples of 90° add a construction reference line plus an angle
 constraint; multiples of 90° add horizontal/vertical (decided 2026-10-16: SolveSpace has no
-line-to-axis angle constraint). `D` replaced `constrain-distance` and `.`/`Num.` replaced
+line-to-axis angle constraint). Ending a line chain (decided 2026-10-17, after comparing Inkscape, FreeCAD, Fusion 360, Onshape
+and AutoCAD): the segment following the cursor is only a preview. Right-click, Esc, or Enter
+with nothing typed end the chain without it. A double-click, or clicking the last point again,
+ends the chain at that point. Backspace with nothing typed removes the last placed segment
+(with the constraints its click or typed values added) and keeps drawing. For future UX calls
+like this, prefer the modern, industry-standard behaviour.
+`D` replaced `constrain-distance` and `.`/`Num.` replaced
 `center-view` in the Modern preset (both remain in the menus and the palette).
 
 **Visual style.**

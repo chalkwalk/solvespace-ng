@@ -157,10 +157,16 @@ TEST_CASE(constrained_by_lists_a_lines_constraints) {
     Driver::Key("D");
     Driver::Key("Return");
     hConstraint dim = *LastConstraint(Constraint::Type::PT_PT_DISTANCE);
-    ClickAt(AtMiddle(line));
-    CHECK_TRUE(Driver::FindItem("constrained by").has_value());
-    CHECK_TRUE(Driver::ClickItem("section0:0"));
-    CHECK_TRUE(SS.GW.selection.n == 1 && SS.GW.selection[0].constraint == dim);
+    // The line was drawn horizontally, so it is constrained by that and the dimension.
+    bool found = false;
+    for(int i = 0; i < 2; i++) {
+        ClickAt(AtMiddle(line));
+        CHECK_TRUE(Driver::FindItem("constrained by").has_value());
+        CHECK_TRUE(Driver::ClickItem("section0:" + std::to_string(i)));
+        CHECK_TRUE(SS.GW.selection.n == 1 && SS.GW.selection[0].constraint.v != 0);
+        if(SS.GW.selection[0].constraint == dim) found = true;
+    }
+    CHECK_TRUE(found);
 }
 
 

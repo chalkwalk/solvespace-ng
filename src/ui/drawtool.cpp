@@ -36,13 +36,22 @@ bool DrawTool::Active() {
 
 bool DrawTool::HandleChord(const keymap::Chord &c) {
     if(!Active() || c.ctrl || c.alt) return false;
+    bool enter = (c.key == "Enter" || c.key == "NumEnter");
+    if(lastKind == TypedKind::LINE && !fields.Any() && !c.shift) {
+        // With nothing typed, Backspace steps back one segment and Enter ends the chain.
+        if(c.key == "Backspace") return SS.GW.RemoveLastLineSegment();
+        if(enter) {
+            SS.GW.CancelPendingNew();
+            return true;
+        }
+    }
     if(fields.HandleChord(c)) return true;
     if(c.key == "Esc") {
         if(!fields.Any()) return false;
         fields.Clear();
         return true;
     }
-    if(c.key != "Enter" && c.key != "NumEnter") return false;
+    if(!enter) return false;
     if(!fields.Any()) return false;
     bool ok = false;
     switch(lastKind) {
@@ -76,6 +85,10 @@ std::string DrawTool::Description() {
 }
 
 std::vector<KeyHint> DrawTool::Hints() {
+    if(lastKind == TypedKind::LINE && !fields.Any()) {
+        return { { "0-9", "Value" }, { "Backspace", "Remove last segment" },
+                 { "Enter / Esc / RMB", "Finish" } };
+    }
     return { { "0-9", "Value" }, { "Tab", "Next field" }, { "Enter", "Apply" },
              { "Esc", "Clear / cancel" } };
 }

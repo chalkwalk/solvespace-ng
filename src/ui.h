@@ -768,8 +768,19 @@ public:
 
         bool                 hasSuggestion;
         Constraint::Type     suggestion;
+
+        // Each segment of the line chain being drawn, with the highest ids in use when it
+        // became the segment under the cursor, so Backspace can take later work back out.
+        struct ChainStep {
+            hRequest line;
+            uint32_t constraintMark, requestMark;
+        };
+        std::vector<ChainStep> chain;
     } pending;
     void ClearPending(bool scheduleShowTW = true);
+    void CancelPendingNew();      // Esc: drop what is being placed, e.g. the segment to the cursor
+    void RecordChainStep();
+    bool RemoveLastLineSegment(); // Backspace while drawing a line chain
     bool IsFromPending(hRequest r);
     void AddToPending(hRequest r);
     void ReplacePending(hRequest before, hRequest after);

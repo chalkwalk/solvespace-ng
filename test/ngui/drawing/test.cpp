@@ -213,3 +213,131 @@ TEST_CASE(holding_a_tool_key_starts_the_tool_once) {
     Driver::Key("Escape");
     CHECK_TRUE(SK.request.n == before + 1);
 }
+
+// Ending a line chain (decided 2026-10-17, as Inkscape, FreeCAD, Fusion 360 and Onshape do): the
+// segment following the cursor is a preview, never part of the result.
+static bool EndsNear(hRequest line, Point2d p) {
+    return At(SK.GetEntity(line.entity(2))->PointGetNum()).DistanceTo(p) < 2;
+}
+
+static hRequest LastLine() {
+    hRequest last = {};
+    for(Request &r : SK.request) {
+        if(r.type == Request::Type::LINE_SEGMENT) last = r.h;
+    }
+    return last;
+}
+
+TEST_CASE(right_click_ends_a_chain_without_the_segment_to_the_cursor) {
+    CHECK_LOAD("line.slvs");
+    int before = SK.request.n;
+    Driver::Key("L");
+    ClickAt(Point2d::From(450, 500));
+    ClickAt(Point2d::From(550, 500));
+    ClickAt(Point2d::From(550, 600));
+    Driver::Click(600, 650, Driver::Button::RIGHT);
+    CHECK_TRUE(SK.request.n == before + 2);
+    CHECK_TRUE(SS.GW.pending.operation == GraphicsWindow::Pending::NONE);
+    CHECK_TRUE(EndsNear(LastLine(), Point2d::From(550, 600)));
+}
+
+TEST_CASE(double_click_ends_a_chain_at_that_point) {
+    CHECK_LOAD("line.slvs");
+    int before = SK.request.n;
+    Driver::Key("L");
+    ClickAt(Point2d::From(450, 500));
+    ClickAt(Point2d::From(550, 500));
+    DoubleClickAt(Point2d::From(550, 600));
+    CHECK_TRUE(SK.request.n == before + 2);
+    CHECK_TRUE(SS.GW.pending.operation == GraphicsWindow::Pending::NONE);
+    CHECK_TRUE(EndsNear(LastLine(), Point2d::From(550, 600)));
+}
+
+TEST_CASE(clicking_the_last_point_again_ends_a_chain) {
+    CHECK_LOAD("line.slvs");
+    int before = SK.request.n;
+    Driver::Key("L");
+    ClickAt(Point2d::From(450, 500));
+    ClickAt(Point2d::From(550, 500));
+    Driver::Move(600, 560);
+    ClickAt(Point2d::From(550, 500));
+    CHECK_TRUE(SK.request.n == before + 1);
+    CHECK_TRUE(SS.GW.pending.operation == GraphicsWindow::Pending::NONE);
+}
+
+TEST_CASE(enter_with_nothing_typed_ends_a_chain) {
+    CHECK_LOAD("line.slvs");
+    int before = SK.request.n;
+    Driver::Key("L");
+    ClickAt(Point2d::From(450, 500));
+    ClickAt(Point2d::From(550, 500));
+    Driver::Move(600, 560);
+    Driver::Key("Return");
+    CHECK_TRUE(SK.request.n == before + 1);
+    CHECK_TRUE(SS.GW.pending.operation == GraphicsWindow::Pending::NONE);
+}
+
+TEST_CASE(backspace_removes_the_last_segment_and_keeps_drawing) {
+    CHECK_LOAD("line.slvs");
+    int before = SK.request.n;
+    Driver::Key("L");
+    ClickAt(Point2d::From(450, 500));
+    ClickAt(Point2d::From(550, 500));
+    ClickAt(Point2d::From(550, 600));
+    Driver::Key("Backspace");
+    CHECK_TRUE(SS.GW.pending.operation == GraphicsWindow::Pending::DRAGGING_NEW_LINE_POINT);
+    CHECK_TRUE(SK.request.n == before + 2); // the first segment and the one being drawn
+    ClickAt(Point2d::From(650, 500));
+    Driver::Key("Escape");
+    CHECK_TRUE(SK.request.n == before + 2);
+    CHECK_TRUE(EndsNear(LastLine(), Point2d::From(650, 500)));
+    // Undo goes back through what is left, one segment at a time.
+    Driver::Key("Ctrl+Z");
+    CHECK_TRUE(SK.request.n == before + 1);
+}
+
+TEST_CASE(backspace_removes_a_typed_segment_with_its_constraints) {
+    CHECK_LOAD("line.slvs");
+    int requests = SK.request.n, constraints = SK.constraint.n;
+    Driver::Key("L");
+    ClickAt(Point2d::From(500, 500));
+    Driver::Move(620, 460);
+    Driver::Type("25");
+    Driver::Key("Tab");
+    Driver::Type("30");
+    Driver::Key("Return");
+    CHECK_TRUE(SK.constraint.n > constraints);
+    Driver::Key("Backspace");
+    CHECK_TRUE(SS.GW.pending.operation == GraphicsWindow::Pending::DRAGGING_NEW_LINE_POINT);
+    CHECK_TRUE(SK.request.n == requests + 1);
+    CHECK_TRUE(SK.constraint.n == constraints);
+    Driver::Key("Escape");
+    CHECK_TRUE(SK.request.n == requests);
+}
+
+TEST_CASE(backspace_before_the_second_point_cancels_the_line) {
+    CHECK_LOAD("line.slvs");
+    int before = SK.request.n;
+    Driver::Key("L");
+    ClickAt(Point2d::From(450, 500));
+    Driver::Move(520, 520);
+    Driver::Key("Backspace");
+    CHECK_TRUE(SK.request.n == before);
+    CHECK_TRUE(SS.GW.pending.operation == GraphicsWindow::Pending::NONE);
+}
+
+TEST_CASE(a_quick_move_then_click_suggests_from_where_the_mouse_is) {
+    // One motion event from a horizontal stub straight down: the segment must come out
+    // vertical, not horizontal from where the previous event left it.
+    CHECK_LOAD("line.slvs");
+    int vertical = CountConstraints(Constraint::Type::VERTICAL);
+    int horizontal = CountConstraints(Constraint::Type::HORIZONTAL);
+    Driver::Key("L");
+    ClickAt(Point2d::From(450, 500));
+    ClickAt(Point2d::From(550, 500)); // horizontal; the next segment starts as a stub
+    ClickAt(Point2d::From(550, 600));
+    Driver::Key("Escape");
+    CHECK_TRUE(CountConstraints(Constraint::Type::VERTICAL) == vertical + 1);
+    CHECK_TRUE(CountConstraints(Constraint::Type::HORIZONTAL) == horizontal + 1);
+    CHECK_TRUE(EndsNear(LastLine(), Point2d::From(550, 600)));
+}
