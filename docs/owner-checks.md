@@ -86,6 +86,6 @@ Found by reviews and tests; fixed ones move to the hands-on list above with thei
 | Issue | Status |
 |---|---|
 | GL objects deleted after the GL context at exit (canvases, window framebuffers) | fixed: freed in `ClearGui` first (no automated test: the harness never exits) |
-| 3 C++20 deprecation warnings (implicit `this` capture) in `textwin.cpp`, `guigtk.cpp`, `exportvector.cpp` | open (two files go with the old frontends) |
+| C++20 deprecation warnings: enum/float arithmetic in `textwin.cpp` (the old browser, deleted in M1c task 10) and a `libdxfrw` copy assignment in `exportvector.cpp` | harmless; left |
 | `settingsfile` remove/rename use narrow paths: non-ASCII Windows profile paths fail | open (needs a Windows check) |
 | Test nits: `every_menu_command_has_a_name` covers only menu commands; the expected-failure test prints `FAILED` on every run | open |
