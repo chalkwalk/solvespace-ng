@@ -28,6 +28,8 @@ void GraphicsWindow::LookOntoActiveWorkplane(bool animate) {
 }
 
 bool GraphicsWindow::ToggleSketchFocus(bool animate) {
+    // Not in the middle of drawing or dragging something (a picked tool is fine).
+    if(pending.operation != Pending::NONE && pending.operation != Pending::COMMAND) return false;
     if(sketchFocusReturn.active) {
         sketchFocusReturn.active = false;
         hGroup back = sketchFocusReturn.group;
@@ -45,8 +47,12 @@ bool GraphicsWindow::ToggleSketchFocus(bool animate) {
     }
 
     hGroup              target = activeGroup;
-    std::vector<hGroup> groups = GroupsOfSelection();
-    if(!groups.empty()) target = groups[0];
+    // Never #references: activating it would hide every group after it.
+    for(hGroup hg : GroupsOfSelection()) {
+        if(hg == Group::HGROUP_REFERENCES) continue;
+        target = hg;
+        break;
+    }
     if(target == activeGroup && !LockedInWorkplane()) return false;
 
     sketchFocusReturn.active = true;

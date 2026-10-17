@@ -43,6 +43,10 @@ bin/solvespace-ng`.
       `Ctrl` shortcuts still work.
 - [ ] Moving the pointer from a highlighted line onto a panel un-highlights the line.
 
+### Sketch focus (2026-10-17)
+- [ ] `Tab` over the XY/YZ/ZX planes doesn't hide your groups; `Tab` while drawing an arc or
+      spline does nothing.
+
 ## Decisions waiting for the owner
 - Merge order: `ng/m1a-shell` > `ng/m1b-interaction` > `ng/m1-ui-harness` > `ng/m1c-panels` >
   `ng/m1c-feedback` > `master`.
@@ -69,7 +73,7 @@ Found by reviews and tests; fixed ones move to the hands-on list above with thei
 | `Z` axis lock does nothing in a workplane | fixed |
 | Isolate (`Shift+H`) can hide the active group | as intended: isolate shows only that group (as in Blender and Onshape), and drawing in the hidden active group shows it again (tested) |
 | Grab's hover fallback leaves the item selected | fixed |
-| `Tab` over `#references` hides your groups; `Tab` while drawing an arc/spline switches group | open |
+| `Tab` over `#references` hides your groups; `Tab` while drawing an arc/spline switches group | fixed |
 | A typed angle outside a workplane is silently ignored | open |
 | Debug script (`SOLVESPACE_NG_SCRIPT`) drops typed characters | open |
 | Mouse wheel ignores "natural scrolling" (flipped direction) | open |

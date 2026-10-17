@@ -66,3 +66,26 @@ TEST_CASE(tab_back_after_group_deleted_falls_back) {
     CHECK_TRUE(SS.GW.ToggleSketchFocus(false));
     CHECK_TRUE(SS.GW.activeGroup == SK.groupOrder[SK.groupOrder.n - 1]);
 }
+
+TEST_CASE(tab_never_activates_the_references) {
+    // Activating #references would hide every group after it.
+    CHECK_LOAD("groups.slvs");
+    hGroup last = SK.groupOrder[SK.groupOrder.n - 1];
+    SS.GW.ActivateGroup(last);
+    SS.GW.ClearSelection();
+    SS.GW.MakeSelected(Request::HREQUEST_REFERENCE_XY.entity(0));
+    SS.GW.ToggleSketchFocus(false);
+    CHECK_TRUE(SS.GW.activeGroup == last);
+}
+
+TEST_CASE(tab_while_drawing_keeps_the_group) {
+    CHECK_LOAD("groups.slvs");
+    hGroup last = SK.groupOrder[SK.groupOrder.n - 1];
+    SS.GW.ActivateGroup(last);
+    SS.GW.ClearSelection();
+    SS.GW.MakeSelected(LineIn(FirstSketch()));
+    SS.GW.pending.operation = GraphicsWindow::Pending::DRAGGING_NEW_ARC_POINT;
+    CHECK_FALSE(SS.GW.ToggleSketchFocus(false));
+    CHECK_TRUE(SS.GW.activeGroup == last);
+    SS.GW.pending.operation = GraphicsWindow::Pending::NONE;
+}
