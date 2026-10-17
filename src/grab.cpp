@@ -26,6 +26,8 @@ Vector GraphicsWindow::GrabAxisVector(int axis) {
 
 bool GraphicsWindow::StartGrab(Point2d mouse) {
     if(pending.operation != Pending::NONE) return false;
+    // Grabbing what is under the mouse, like a mouse drag, leaves nothing selected after.
+    grab.byHover = selection.IsEmpty();
     SelectHoveredIfNothingSelected();
     pending.points.Clear();
     // What a mouse drag could move: draggable entities in the active group or earlier ones.
@@ -37,7 +39,10 @@ bool GraphicsWindow::StartGrab(Point2d mouse) {
         if(SK.GetGroup(e->group)->order > activeOrder) continue;
         StartDraggingByEntity(s.entity);
     }
-    if(pending.points.n == 0) return false;
+    if(pending.points.n == 0) {
+        if(grab.byHover) ClearSelection();
+        return false;
+    }
 
     grab.wasUnsaved = SS.unsaved;
     // Like UndoRemember, but redo survives until the grab is confirmed: a cancelled grab
@@ -116,6 +121,7 @@ void GraphicsWindow::GrabConfirm() {
     SS.UndoEnableMenus();
     ClearPending();
     grab.start.clear();
+    if(grab.byHover) ClearSelection();
     Invalidate();
 }
 
@@ -123,6 +129,7 @@ void GraphicsWindow::GrabCancel() {
     if(pending.operation != Pending::GRABBING) return;
     ClearPending();
     grab.start.clear();
+    if(grab.byHover) ClearSelection();
     // If something else recorded an undo step meanwhile, undoing would revert that step
     // instead of the grab; keep everything as it is (as a confirm would).
     if(SS.undo.cnt != grab.undoCnt || SS.undo.write != grab.undoWrite) {

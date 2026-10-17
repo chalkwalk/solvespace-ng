@@ -32,6 +32,7 @@ bin/solvespace-ng`.
 - [ ] A right *click* still cancels a grab.
 - [ ] Undo something, grab, cancel with Esc: Redo still brings back what you undid.
 - [ ] In a workplane sketch, `Z` does nothing while grabbing and the hint shows only `X Y`.
+- [ ] `G` with nothing selected grabs what's under the mouse and leaves nothing selected.
 
 ### Pie menus (2026-10-17)
 - [ ] A click in a pie's centre closes it; so does its own key pressed again (`Shift+A`,
@@ -67,7 +68,7 @@ Found by reviews and tests; fixed ones move to the hands-on list above with thei
 | Cancelling a grab clears the redo stack | fixed |
 | `Z` axis lock does nothing in a workplane | fixed |
 | Isolate (`Shift+H`) can hide the active group | as intended: isolate shows only that group (as in Blender and Onshape), and drawing in the hidden active group shows it again (tested) |
-| Grab's hover fallback leaves the item selected | open |
+| Grab's hover fallback leaves the item selected | fixed |
 | `Tab` over `#references` hides your groups; `Tab` while drawing an arc/spline switches group | open |
 | A typed angle outside a workplane is silently ignored | open |
 | Debug script (`SOLVESPACE_NG_SCRIPT`) drops typed characters | open |

@@ -84,6 +84,15 @@ TEST_CASE(grab_hover_fallback_moves_the_line_under_the_mouse) {
     Driver::Move(m.x, m.y + 50);
     Driver::Key("Return");
     CHECK_TRUE(P(line.entity(1)).Minus(a0).Magnitude() > 1);
+    // Like a mouse drag, grabbing what was under the mouse doesn't leave it selected.
+    CHECK_TRUE(SS.GW.selection.n == 0);
+    // Nor does a cancelled one.
+    m = AtMiddle(line);
+    Driver::Move(m.x, m.y);
+    Driver::Key("G");
+    Driver::Move(m.x, m.y + 30);
+    Driver::Key("Escape");
+    CHECK_TRUE(SS.GW.selection.n == 0);
 }
 
 TEST_CASE(grab_with_nothing_to_grab_does_nothing) {
