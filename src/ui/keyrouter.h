@@ -20,6 +20,8 @@ public:
     // The active modal tool (pie, grab, typed drawing) sees chords before the keymap; return
     // true to consume one. Never called while a text field has the keyboard.
     std::function<bool(const keymap::Chord &)>       modal;
+    // The modal tool's hook for held keys (auto-repeat); `modal` when unset.
+    std::function<bool(const keymap::Chord &)>       modalRepeat;
 
     void SetKeymap(keymap::Keymap km);
     const keymap::Keymap &Keymap() const;

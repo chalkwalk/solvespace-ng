@@ -14,8 +14,9 @@ PieMenu &Pie() {
     return pie;
 }
 
-void PieMenu::Open(std::string t, std::vector<PieItem> it) {
+void PieMenu::Open(std::string t, std::vector<PieItem> it, std::string by) {
     title       = std::move(t);
+    openedBy    = std::move(by);
     items       = std::move(it);
     ImVec2 m    = ImGui::GetIO().MousePos;
     if(!ImGui::IsMousePosValid(&m)) m = ImVec2(ImGui::GetIO().DisplaySize.x / 2,
@@ -49,7 +50,8 @@ std::string PieMenu::Draw() {
     ImGui::SetNextWindowSize(io.DisplaySize);
     ImGui::Begin("##pie", nullptr,
                  ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoBackground |
-                 ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoMove);
+                 ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoMove |
+                 ImGuiWindowFlags_NoNav);
     ImGui::InvisibleButton("##pie-capture", io.DisplaySize,
                            ImGuiButtonFlags_MouseButtonLeft | ImGuiButtonFlags_MouseButtonRight);
 
@@ -93,7 +95,10 @@ std::string PieMenu::Draw() {
                     ImGui::GetColorU32(items[i].enabled ? ImGuiCol_Text : ImGuiCol_TextDisabled),
                     text.c_str());
     }
-    if(ImGui::IsMouseClicked(ImGuiMouseButton_Left)) picked = highlighted;
+    if(ImGui::IsMouseClicked(ImGuiMouseButton_Left)) {
+        // A click in the centre, away from every item, closes the pie.
+        if(highlighted >= 0) picked = highlighted; else cancelled = true;
+    }
     if(ImGui::IsMouseClicked(ImGuiMouseButton_Right)) cancelled = true;
     // An empty pie only explains itself; any click or confirm closes it.
     if(items.empty() && (picked >= 0 || ImGui::IsMouseClicked(ImGuiMouseButton_Left))) {

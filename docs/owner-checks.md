@@ -32,6 +32,10 @@ bin/solvespace-ng`.
 - [ ] A right *click* still cancels a grab.
 - [ ] Undo something, grab, cancel with Esc: Redo still brings back what you undid.
 
+### Pie menus (2026-10-17)
+- [ ] A click in a pie's centre closes it; so does its own key pressed again (`Shift+A`,
+      `F`, `` ` ``). Holding the key down keeps it open.
+
 ## Decisions waiting for the owner
 - Merge order: `ng/m1a-shell` > `ng/m1b-interaction` > `ng/m1-ui-harness` > `ng/m1c-panels` >
   `ng/m1c-feedback` > `master`.
@@ -51,7 +55,7 @@ Found by reviews and tests; fixed ones move to the hands-on list above with thei
 |---|---|
 | Right-drag pan during a grab cancels it | fixed |
 | Zoom or orbit during a grab makes points jump | fixed |
-| Pie: a click in the centre dead zone, or the pie's key again, doesn't close it | open |
+| Pie: a click in the centre dead zone, or the pie's key again, doesn't close it | fixed |
 | Keys pressed while a menu-bar dropdown is open still run commands | open |
 | Hover stays on the canvas item when the pointer moves onto a panel | open |
 | Cancelling a grab clears the redo stack | fixed |

@@ -44,6 +44,31 @@ TEST_CASE(pie_escape_and_right_click_cancel) {
     CHECK_TRUE(SS.GW.pending.operation == GraphicsWindow::Pending::NONE);
 }
 
+TEST_CASE(pie_closes_on_a_click_in_its_centre) {
+    CHECK_LOAD("line.slvs");
+    Driver::Move(500, 500);
+    Driver::Key("Shift+A");
+    CHECK_TRUE(Ui::Pie().IsOpen());
+    Driver::Click(Ui::Pie().CenterX(), Ui::Pie().CenterY());
+    CHECK_FALSE(Ui::Pie().IsOpen());
+    CHECK_TRUE(SS.GW.pending.operation == GraphicsWindow::Pending::NONE);
+}
+
+TEST_CASE(pie_key_again_closes_it_but_holding_it_does_not) {
+    CHECK_LOAD("line.slvs");
+    Driver::Move(500, 500);
+    Driver::KeyRepeat("Shift+A", 3); // held: opens once and stays open
+    CHECK_TRUE(Ui::Pie().IsOpen());
+    Driver::Key("Shift+A");
+    CHECK_FALSE(Ui::Pie().IsOpen());
+    Driver::Key("`");
+    CHECK_TRUE(Ui::Pie().IsOpen() && Ui::Pie().Title() == "View");
+    Driver::Key("F"); // another pie's key is swallowed, not a toggle
+    CHECK_TRUE(Ui::Pie().IsOpen() && Ui::Pie().Title() == "View");
+    Driver::Key("`");
+    CHECK_FALSE(Ui::Pie().IsOpen());
+}
+
 TEST_CASE(pie_click_does_not_reach_the_canvas) {
     CHECK_LOAD("line.slvs");
     int before = SK.request.n;

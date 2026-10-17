@@ -638,7 +638,8 @@ static void LoadKeymap() {
         notify->RunAfter(0);
     }
     gKeyRouter.onUiAction = [](const std::string &action) { Ui::HandleUiAction(action); };
-    gKeyRouter.modal      = Ui::ModalKey;
+    gKeyRouter.modal       = Ui::ModalKey;
+    gKeyRouter.modalRepeat = Ui::ModalRepeatKey;
 }
 
 static SDL_Window *CreateSdlWindow() {

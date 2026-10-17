@@ -25,6 +25,7 @@ namespace Ui {
 static CommandPalette       gPalette;
 static std::string          gModalTool;
 static std::vector<KeyHint> gModalHints;
+static const keymap::Keymap *gKeymap = nullptr; // the router's, for ModalKey
 static bool                 gHideBrowser = false;
 
 void SetModalStatus(std::string tool, std::vector<KeyHint> hints) {
@@ -128,7 +129,7 @@ void InitNgUi() {
         Pie().Open("Add", {
             { "Line", "line-segment" }, { "Rectangle", "rectangle" }, { "Circle", "circle" },
             { "Arc", "arc" }, { "Spline", "cubic-spline" }, { "Point", "datum-point" },
-            { "Text", "ttf-text" }, { "Workplane", "workplane" } });
+            { "Text", "ttf-text" }, { "Workplane", "workplane" } }, "ui.pie-add");
     });
     Actions().Bind("ui.pie-constrain", [] {
         SS.GW.SelectHoveredIfNothingSelected();
@@ -139,14 +140,15 @@ void InitNgUi() {
             if(!Constraint::AppliesToSelection(c)) continue;
             items.push_back({ MenuLabelFor(c), CommandName(c) });
         }
-        Pie().Open("Constrain", std::move(items));
+        Pie().Open("Constrain", std::move(items), "ui.pie-constrain");
     });
     Actions().Bind("ui.pie-view", [] {
         Pie().Open("View", {
             { "Top", "ui.view-top" }, { "Right", "ui.view-right" },
             { "Isometric", "nearest-iso" }, { "Front", "ui.view-front" },
             { "Bottom", "ui.view-bottom" }, { "Left", "ui.view-left" },
-            { "Frame Selected", "ui.view-frame-selected" }, { "Back", "ui.view-back" } });
+            { "Frame Selected", "ui.view-frame-selected" }, { "Back", "ui.view-back" } },
+                   "ui.pie-view");
     });
 }
 
@@ -175,6 +177,7 @@ void HandleUiAction(const std::string &action) {
 }
 
 std::function<void()> DrawNgUi(Platform::MenuBarSdl *menuBar, const keymap::Keymap &keymap) {
+    gKeymap = &keymap;
     if(Grab().Active()) {
         SetModalStatus(Grab().Description(), Grab().Hints());
     } else if(Draw().Active()) {
@@ -212,10 +215,23 @@ std::function<void()> DrawNgUi(Platform::MenuBarSdl *menuBar, const keymap::Keym
 }
 
 bool ModalKey(const keymap::Chord &c) {
-    if(Pie().IsOpen()) return Pie().HandleChord(c);
+    if(Pie().IsOpen()) {
+        // The key that opened the pie closes it again, as in Blender.
+        const std::string *name = gKeymap ? gKeymap->Lookup(c) : nullptr;
+        if(name && *name == Pie().OpenedBy()) {
+            Pie().Cancel();
+            return true;
+        }
+        return Pie().HandleChord(c);
+    }
     if(Grab().Active()) return Grab().HandleChord(c);
     if(Draw().Active()) return Draw().HandleChord(c);
     return false;
+}
+
+bool ModalRepeatKey(const keymap::Chord &c) {
+    if(Pie().IsOpen()) return true; // holding the pie's key keeps it open
+    return ModalKey(c);
 }
 
 bool CapturesText() {

@@ -24,7 +24,8 @@ static bool AllowedDuringTextInput(const keymap::Chord &c) {
 
 RouteResult KeyRouter::RouteRepeat(const keymap::Chord &chord, bool textInputActive) {
     if(chord.ctrl || chord.alt) return Route(chord, textInputActive);
-    if(!textInputActive && modal && modal(chord)) return RouteResult::MODAL;
+    auto &hook = modalRepeat ? modalRepeat : modal;
+    if(!textInputActive && hook && hook(chord)) return RouteResult::MODAL;
     return RouteResult::SUPPRESSED;
 }
 

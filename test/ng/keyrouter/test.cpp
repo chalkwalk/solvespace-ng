@@ -117,3 +117,15 @@ TEST_CASE(key_repeat_reaches_only_the_modal_tool) {
     // While a text field has the keyboard, the field handles repeats itself.
     CHECK_TRUE(r.RouteRepeat(C("Backspace"), true) == RouteResult::SUPPRESSED);
 }
+
+TEST_CASE(a_separate_modal_hook_can_take_held_keys) {
+    std::string err;
+    KeyRouter r;
+    r.SetKeymap(*keymap::Keymap::Parse("ui.pie-add: Shift+A\n", &err));
+    int fresh = 0, held = 0;
+    r.modal       = [&](const keymap::Chord &) { fresh++; return true; };
+    r.modalRepeat = [&](const keymap::Chord &) { held++; return true; };
+    CHECK_TRUE(r.Route(C("Shift+A"), false) == RouteResult::MODAL);
+    CHECK_TRUE(r.RouteRepeat(C("Shift+A"), false) == RouteResult::MODAL);
+    CHECK_TRUE(fresh == 1 && held == 1);
+}

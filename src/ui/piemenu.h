@@ -19,7 +19,10 @@ struct PieItem {
 
 class PieMenu {
 public:
-    void Open(std::string title, std::vector<PieItem> items); // centred at the mouse
+    // Centred at the mouse; `openedBy` is the action that opened it, whose key closes it again.
+    void Open(std::string title, std::vector<PieItem> items, std::string openedBy = "");
+    const std::string &OpenedBy() const { return openedBy; }
+    void Cancel() { cancelled = true; }
     bool IsOpen() const { return open; }
     const std::string          &Title() const { return title; }
     const std::vector<PieItem> &Items() const { return items; }
@@ -31,7 +34,7 @@ public:
 
 private:
     bool                 open = false;
-    std::string          title;
+    std::string          title, openedBy;
     std::vector<PieItem> items;
     float                cx = 0, cy = 0;
     int                  highlighted = -1;
