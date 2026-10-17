@@ -1286,6 +1286,16 @@ void ExitGui() {
 
 void ClearGui() {
     if(gSdlWindow) {
+        // Free GL objects while their context still exists: the canvases would otherwise be
+        // destroyed with SS, after main returns, and call glDelete* with no context.
+        SDL_GL_MakeCurrent(gSdlWindow, gGlContext);
+        SS.GW.persistentCanvas.reset();
+        SS.GW.canvas.reset();
+        SS.TW.canvas.reset();
+        if(WindowImplSdl *main = MainWindow()) ReleaseFramebuffer(main);
+        for(auto &weak : gToolWindows) {
+            if(auto w = weak.lock()) ReleaseFramebuffer(w.get());
+        }
         ShutdownImGui();
         SDL_GL_DestroyContext(gGlContext);
         SDL_DestroyWindow(gSdlWindow);

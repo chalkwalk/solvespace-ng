@@ -78,5 +78,14 @@ Found by reviews and tests; fixed ones move to the hands-on list above with thei
 | A typed angle outside a workplane is silently ignored | fixed: no angle field outside a workplane |
 | Debug script (`SOLVESPACE_NG_SCRIPT`) drops typed characters | fixed |
 | Mouse wheel ignores "natural scrolling" (flipped direction) | as intended: SDL already gives the direction the OS asks for, as stock SolveSpace gets it from GTK |
-| A triple-click counts as a second double-click | open |
+| A triple-click counts as a second double-click | as intended: it only re-opens what the double-click opened; a plain press would close a dimension's editor instead |
 | `#` can't be bound in `keymap.txt`; a UTF-8 BOM breaks its first line | fixed |
+
+### Internal (no visible effect; for developers)
+
+| Issue | Status |
+|---|---|
+| GL objects deleted after the GL context at exit (canvases, window framebuffers) | fixed: freed in `ClearGui` first (no automated test: the harness never exits) |
+| 3 C++20 deprecation warnings (implicit `this` capture) in `textwin.cpp`, `guigtk.cpp`, `exportvector.cpp` | open (two files go with the old frontends) |
+| `settingsfile` remove/rename use narrow paths: non-ASCII Windows profile paths fail | open (needs a Windows check) |
+| Test nits: `every_menu_command_has_a_name` covers only menu commands; the expected-failure test prints `FAILED` on every run | open |
