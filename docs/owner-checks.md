@@ -39,6 +39,7 @@ bin/solvespace-ng`.
 ### Menus (2026-10-17)
 - [ ] With a menu-bar dropdown open, letters don't start tools; arrows move, Esc closes it;
       `Ctrl` shortcuts still work.
+- [ ] Moving the pointer from a highlighted line onto a panel un-highlights the line.
 
 ## Decisions waiting for the owner
 - Merge order: `ng/m1a-shell` > `ng/m1b-interaction` > `ng/m1-ui-harness` > `ng/m1c-panels` >
@@ -61,7 +62,7 @@ Found by reviews and tests; fixed ones move to the hands-on list above with thei
 | Zoom or orbit during a grab makes points jump | fixed |
 | Pie: a click in the centre dead zone, or the pie's key again, doesn't close it | fixed |
 | Keys pressed while a menu-bar dropdown is open still run commands | fixed |
-| Hover stays on the canvas item when the pointer moves onto a panel | open |
+| Hover stays on the canvas item when the pointer moves onto a panel | fixed |
 | Cancelling a grab clears the redo stack | fixed |
 | `Z` axis lock does nothing in a workplane | open |
 | Isolate (`Shift+H`) can hide the active group | open |

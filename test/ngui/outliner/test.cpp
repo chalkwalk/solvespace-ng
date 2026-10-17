@@ -158,3 +158,14 @@ TEST_CASE(clicking_a_group_shows_it_even_with_a_selection) {
     CHECK_TRUE(Ui::PropertiesGroup() == Group::HGROUP_REFERENCES);
     CHECK_FALSE(Driver::FindItem("unselect all").has_value()); // the group, not the selection
 }
+
+TEST_CASE(moving_onto_a_panel_unhovers_the_canvas) {
+    CHECK_LOAD("line.slvs");
+    hRequest line = DrawLine(Point2d::From(500, 620), Point2d::From(600, 620));
+    Point2d m = AtMiddle(line);
+    Driver::Move(m.x, m.y);
+    CHECK_TRUE(SS.GW.hover.entity.v != 0);
+    Point2d row = Driver::FindItem("sketch-in-plane")->Center();
+    Driver::Move(row.x, row.y);
+    CHECK_TRUE(SS.GW.hover.IsEmpty());
+}

@@ -784,13 +784,24 @@ static bool ImGuiTakesMouseAt(float x, float y) {
     return hovered != nullptr;
 }
 
+static bool gPointerOnCanvas = false;
+
 // Forwards an SDL event to the graphics window unless ImGui owns the mouse/keyboard.
 static void ForwardToMainWindow(const SDL_Event &ev) {
     WindowImplSdl *w = MainWindow();
     if(!w || gModalDepth > 0) return;
     switch(ev.type) {
         case SDL_EVENT_MOUSE_MOTION: {
-            if(ImGuiTakesMouseAt(ev.motion.x, ev.motion.y)) return;
+            if(ImGuiTakesMouseAt(ev.motion.x, ev.motion.y)) {
+                // Onto a panel or menu: the canvas sees the pointer leave, so nothing stays
+                // highlighted under it.
+                if(gPointerOnCanvas && w->onMouseEvent) {
+                    w->onMouseEvent(MakeMouseEvent(MouseEvent::Type::LEAVE, 0, 0));
+                }
+                gPointerOnCanvas = false;
+                return;
+            }
+            gPointerOnCanvas = true;
             MouseEvent me = MakeMouseEvent(MouseEvent::Type::MOTION, ev.motion.x, ev.motion.y);
             me.button = ButtonFromState(ev.motion.state);
             if(w->onMouseEvent) w->onMouseEvent(me);
