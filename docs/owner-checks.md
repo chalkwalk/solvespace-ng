@@ -76,7 +76,7 @@ Found by reviews and tests; fixed ones move to the hands-on list above with thei
 | Grab's hover fallback leaves the item selected | fixed |
 | `Tab` over `#references` hides your groups; `Tab` while drawing an arc/spline switches group | fixed |
 | A typed angle outside a workplane is silently ignored | fixed: no angle field outside a workplane |
-| Debug script (`SOLVESPACE_NG_SCRIPT`) drops typed characters | open |
+| Debug script (`SOLVESPACE_NG_SCRIPT`) drops typed characters | fixed |
 | Mouse wheel ignores "natural scrolling" (flipped direction) | open |
 | A triple-click counts as a second double-click | open |
 | `#` can't be bound in `keymap.txt`; a UTF-8 BOM breaks its first line | open |

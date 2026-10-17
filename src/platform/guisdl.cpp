@@ -1166,6 +1166,12 @@ static void SaveBackBuffer(const Path &path, int pw, int ph) {
 static void RunDebugScript(int pw, int ph) {
     if(gScriptPos >= gScript.size()) return;
     gNeedsFrame = true;
+    // Typed text reaches ImGui a character or so per frame: finish it before the next step,
+    // or "keys toggle theme; key Return" presses Return after "toggl".
+    if(ImGui::GetCurrentContext()->InputEventsQueue.Size > 0 ||
+       SDL_HasEvents(SDL_EVENT_FIRST, SDL_EVENT_LAST)) {
+        return;
+    }
     if(gScriptWait > 0) {
         gScriptWait--;
         return;
