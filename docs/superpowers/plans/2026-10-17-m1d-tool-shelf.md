@@ -7,6 +7,13 @@ industry standard). Executed inline (native). The look is for the owner to revie
 screenshots (AGENTS.md §5: review the visual style on screenshots); `docs/owner-checks.md`
 gets the review items.
 
+**Status (2026-10-17):** tasks 1–4 done on `ng/m1c-feedback`. Rulings: missing icon files are
+caught by the model test (`LoadResource` asserts), the runtime fallback covers broken SVGs;
+the shelf is capped at 560 px so it sits between the side panels, and a section that doesn't fit
+whole starts a new row; the narrow-window case became "shrink the window" (the app's minimum
+size is 720×636). Extra fixes found by the tests: frames continue while an auto-sized window
+fits; panels are kept on screen on resize; every panel reloads its settings per main window.
+
 **Goal:** Replace SolveSpace's custom-drawn left toolbar (`src/toolbar.cpp`) in NG with a
 floating ImGui tool shelf, hidden by default, whose buttons are Lucide-style icons rendered by
 lunasvg; one of the two items left before the old frontends can go (`docs/m1-parity.md`).
@@ -50,7 +57,9 @@ style: "Lucide-based icons rendered with lunasvg"), §2 (allowed dependencies), 
    again, never reused stale. (Task 3: the cache is cleared in `ShutdownImGui`; the suite runs
    several shelf cases in one process.)
 4. A missing or broken icon resource: the button falls back to its text label, no crash.
-   (Task 3 test: `IconTexture("no-such-icon", 24) == 0`.)
+   (Task 3 test: `IconTextureFromSvg("broken", "not an svg", 24) == 0`.) Ruling (Task 3):
+   `LoadResource` asserts on a missing name, so missing files are caught by the Task 2 model
+   test (it loads every icon) and the runtime fallback covers broken SVGs.
 5. A narrow window: the shelf wraps into rows and every button stays reachable. (Task 3 test at
    640×480.)
 

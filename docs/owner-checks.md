@@ -48,6 +48,19 @@ bin/solvespace-ng`.
 - [ ] `Tab` over the XY/YZ/ZX planes doesn't hide your groups; `Tab` while drawing an arc or
       spline does nothing.
 
+### Tool shelf (2026-10-17, M1d)
+Screenshots: `docs/owner-review/shelf-dark.png`, `shelf-light.png`, and every icon in
+`docs/owner-review/icons.png` (20 from Lucide, 14 drawn for NG: arc, tangent arc, point,
+construction, angle, horizontal, vertical, parallel, perpendicular, point on, symmetric, same
+orientation, other angle, helix).
+- [ ] View ▸ Show Toolbar shows the "Tools" shelf at the top; the old left toolbar is gone.
+- [ ] Each button starts its tool; hovering shows its name and key.
+- [ ] The icons read clearly in both themes. Weakest to my eye: "other angle", and "vertical"
+      looks a little like the text tool's T. Say which to redraw.
+- [ ] Placement: centred at the top between the Outliner and Properties. Alternative: a
+      vertical strip at the left edge (where the old toolbar was), with the Outliner moved right.
+- [ ] Shrinking the window keeps every panel on screen.
+
 ## Decisions waiting for the owner
 - Merge order: `ng/m1a-shell` > `ng/m1b-interaction` > `ng/m1-ui-harness` > `ng/m1c-panels` >
   `ng/m1c-feedback` > `master`.

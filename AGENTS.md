@@ -111,7 +111,8 @@ Rules:
 - **Status/HUD bar** (bottom): active tool, the keys available right now (like Blender's status
   bar), DOF count, solver and regeneration state.
 - **Command palette** and **pie menus** float over the viewport. The tool shelf is optional and
-  hidden by default.
+  hidden by default. (Built 2026-10-17: View ▸ Show Toolbar shows a "Tools" panel of Lucide-style
+  icon buttons for every old-toolbar tool; NG never draws the custom toolbar.)
 
 **Typed values become constraints.** While a modal tool is active, typed numbers fill HUD fields
 (`Tab` cycles, `Enter` confirms, `Esc` or right-click cancels). Unlike Blender, a typed value
@@ -301,7 +302,7 @@ M(n+1) features before M(n)'s "done when" is met, unless the owner says otherwis
 - **UI interaction tests** (added 2026-10-16, so whole user flows are tested, not only their
   parts): `test/ngui/` runs the real `solvespace-ng` app in-process on SDL's offscreen video
   driver and drives it with real key, text and mouse events. Find ImGui items by label and model
-  geometry by projecting it; hard-code pixels only for fixed chrome (the toolbar).
+  geometry by projecting it; never hard-code pixels.
   `test/ngui/sessions/` chains many features on one model, the way a person works, and ends
   each session with undo to the start, redo to the end, and a save/reopen round trip.
   `test/x11/run.py` (added 2026-10-17) runs the real binary on Xvfb, types and clicks through
