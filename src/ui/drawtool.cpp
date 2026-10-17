@@ -22,7 +22,11 @@ void DrawTool::Sync() {
     lastKind   = kind;
     lastTarget = target;
     switch(kind) {
-        case TypedKind::LINE:      fields = TypedFields({ "length", "angle" }); break;
+        // An angle needs a plane to be measured in.
+        case TypedKind::LINE:
+            fields = SS.GW.LockedInWorkplane() ? TypedFields({ "length", "angle" })
+                                               : TypedFields({ "length" });
+            break;
         case TypedKind::CIRCLE:    fields = TypedFields({ "diameter" }); break;
         case TypedKind::RECTANGLE: fields = TypedFields({ "width", "height" }); break;
         case TypedKind::NONE:      fields = TypedFields(std::vector<std::string>{}); break;

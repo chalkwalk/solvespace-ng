@@ -17,6 +17,7 @@ bin/solvespace-ng`.
 - [ ] Backspace (nothing typed) takes back the last segment and keeps drawing; with a value
       typed it edits the value. Backspace before the second point cancels the line.
 - [ ] Quick flicks then a click: horizontal/vertical constraints match the segment you see.
+- [ ] In a 3D sketch (New Group > Sketch In 3d) the line tool offers only a length field.
 
 ### Theme (2026-10-17, `46874f16`, `88e0dfe3`)
 - [ ] `Ctrl+Alt+T` opens your terminal again, not the theme; the theme is in the palette
@@ -74,7 +75,7 @@ Found by reviews and tests; fixed ones move to the hands-on list above with thei
 | Isolate (`Shift+H`) can hide the active group | as intended: isolate shows only that group (as in Blender and Onshape), and drawing in the hidden active group shows it again (tested) |
 | Grab's hover fallback leaves the item selected | fixed |
 | `Tab` over `#references` hides your groups; `Tab` while drawing an arc/spline switches group | fixed |
-| A typed angle outside a workplane is silently ignored | open |
+| A typed angle outside a workplane is silently ignored | fixed: no angle field outside a workplane |
 | Debug script (`SOLVESPACE_NG_SCRIPT`) drops typed characters | open |
 | Mouse wheel ignores "natural scrolling" (flipped direction) | open |
 | A triple-click counts as a second double-click | open |

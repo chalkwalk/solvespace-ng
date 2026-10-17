@@ -366,3 +366,18 @@ TEST_CASE(a_quick_move_then_click_suggests_from_where_the_mouse_is) {
     CHECK_TRUE(CountConstraints(Constraint::Type::HORIZONTAL) == horizontal + 1);
     CHECK_TRUE(EndsNear(LastLine(), Point2d::From(550, 600)));
 }
+
+TEST_CASE(a_line_in_3d_offers_no_angle_field) {
+    // Outside a workplane there is no plane to measure an angle in.
+    CHECK_LOAD("line.slvs");
+    Driver::ClickMenu({ "New Group", "Sketch In 3d" });
+    CHECK_FALSE(SS.GW.LockedInWorkplane());
+    Driver::Key("L");
+    ClickAt(Point2d::From(500, 600));
+    Driver::Move(560, 600);
+    Driver::Type("25");
+    Driver::Key("Tab");
+    CHECK_TRUE(Ui::Draw().Description().find("angle") == std::string::npos);
+    Driver::Key("Escape");
+    Driver::Key("Escape");
+}
