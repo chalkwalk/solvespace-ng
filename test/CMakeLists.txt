@@ -166,11 +166,33 @@ if(ENABLE_GUI AND ENABLE_NG_GUI)
     set(ngui_COMMAND COMMAND $<TARGET_FILE:solvespace-ng-uitest>)
 endif()
 
+# Black-box tests of the real binary on a virtual X server (test/x11/run.py), when the tools
+# are installed: make test_ng_x11, and part of test_solvespace.
+if(ENABLE_GUI AND ENABLE_NG_GUI AND NOT WIN32 AND NOT APPLE)
+    find_program(XVFB_EXECUTABLE Xvfb)
+    find_program(XDOTOOL_EXECUTABLE xdotool)
+    find_package(Python3 COMPONENTS Interpreter)
+    if(XVFB_EXECUTABLE AND XDOTOOL_EXECUTABLE AND Python3_Interpreter_FOUND)
+        set(ngx11_COMMAND COMMAND ${Python3_EXECUTABLE} -I
+            ${CMAKE_CURRENT_SOURCE_DIR}/x11/run.py $<TARGET_FILE:solvespace-ng>)
+        add_custom_target(test_ng_x11 ${ngx11_COMMAND}
+            DEPENDS solvespace-ng
+            COMMENT "Testing SolveSpace NG through X11"
+            VERBATIM)
+    else()
+        message(STATUS "NG X11 tests disabled: needs Xvfb, xdotool and python3")
+    endif()
+endif()
+
 add_custom_target(test_solvespace
     COMMAND $<TARGET_FILE:solvespace-testsuite>
     ${ngui_COMMAND}
+    ${ngx11_COMMAND}
     COMMENT "Testing SolveSpace"
     VERBATIM)
+if(ngx11_COMMAND)
+    add_dependencies(test_solvespace solvespace-ng)
+endif()
 
 # coverage reports
 

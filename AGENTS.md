@@ -302,6 +302,11 @@ M(n+1) features before M(n)'s "done when" is met, unless the owner says otherwis
   parts): `test/ngui/` runs the real `solvespace-ng` app in-process on SDL's offscreen video
   driver and drives it with real key, text and mouse events. Find ImGui items by label and model
   geometry by projecting it; hard-code pixels only for fixed chrome (the toolbar).
+  `test/ngui/sessions/` chains many features on one model, the way a person works, and ends
+  each session with undo to the start, redo to the end, and a save/reopen round trip.
+  `test/x11/run.py` (added 2026-10-17) runs the real binary on Xvfb, types and clicks through
+  xdotool (the X11 input path a keyboard and mouse take) and checks the saved `.slvs` file.
+  Every bug the owner reports gets a test in one of these tiers first.
 - **Kernel parity tests:** every model under `test/` is compared across kernels on volume, area,
   bounding box and watertightness, within a set tolerance.
 - **Format golden files:** old `.slvs` files load, and saving then reloading gives the same file.
@@ -335,6 +340,10 @@ SOLVESPACE_NG_SCRIPT="action ui.command-palette; keys extrude; wait 3; shot /tmp
 # UI interaction tests (also run by `make test_solvespace`); needs EGL (Mesa) but no display.
 make -j$(nproc) solvespace-ng-uitest && ./bin/solvespace-ng-uitest [regex [seed]]
 SDL_VIDEO_DRIVER=x11 ./bin/solvespace-ng-uitest ngui/grab/   # watch them run on screen
+# Black-box tests of the real binary on Xvfb, driven with xdotool and checked through the saved
+# file (also run by test_solvespace when Xvfb, xdotool and python3 are installed).
+make test_ng_x11        # or: python3 ../test/x11/run.py bin/solvespace-ng [filter]
+NGX11_SHOW=:0 python3 ../test/x11/run.py bin/solvespace-ng   # watch on your own display
 ```
 In-tree builds are rejected; always build in `build/`. NG settings and the user keymap live in
 `SDL_GetPrefPath("solvespace","solvespace-ng")`: Linux `~/.local/share/solvespace/solvespace-ng/`,
