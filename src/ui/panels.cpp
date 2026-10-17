@@ -35,7 +35,7 @@ bool Panel::Begin() {
     ImGuiIO &io = ImGui::GetIO();
     if(savedW > 0 && savedH > 0) {
         ImGui::SetNextWindowPos(ImVec2(savedX, savedY), ImGuiCond_FirstUseEver);
-        ImGui::SetNextWindowSize(ImVec2(savedW, savedH), ImGuiCond_FirstUseEver);
+        if(!autoSize) ImGui::SetNextWindowSize(ImVec2(savedW, savedH), ImGuiCond_FirstUseEver);
     } else {
         // Below the menu bar, clear of the status bar below.
         float top = ImGui::GetFrameHeight() + 16;
