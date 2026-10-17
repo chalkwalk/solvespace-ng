@@ -312,6 +312,7 @@ if(ENABLE_GUI AND ENABLE_NG_GUI)
         ui/typedfields.cpp
         ui/coreactions.cpp
         ui/statusmodel.cpp
+        ui/iconraster.cpp
         ui/grabtool.cpp
         ui/drawtool.cpp
         ui/outlinermodel.cpp
@@ -320,6 +321,7 @@ if(ENABLE_GUI AND ENABLE_NG_GUI)
     target_include_directories(solvespace-ng-support PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR})
     target_link_libraries(solvespace-ng-support PUBLIC solvespace-core keymap palette SDL3::Headers)
+    target_link_libraries(solvespace-ng-support PRIVATE lunasvg::lunasvg)
 
     # Everything but main(): also linked into the UI tests (test/ngui), which run the real app.
     add_library(solvespace-ng-app OBJECT

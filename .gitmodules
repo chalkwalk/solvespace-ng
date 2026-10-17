@@ -32,3 +32,6 @@
 [submodule "extlib/imgui"]
 	path = extlib/imgui
 	url = https://github.com/ocornut/imgui.git
+[submodule "extlib/lunasvg"]
+	path = extlib/lunasvg
+	url = https://github.com/sammycage/lunasvg.git

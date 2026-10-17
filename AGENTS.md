@@ -328,7 +328,7 @@ make test_solvespace                 # run the regression suite
 
 **Build SolveSpace NG (SDL3 + Dear ImGui frontend)**
 ```sh
-git submodule update --init extlib/SDL extlib/imgui   # SDL3 is vendored (or install libsdl3-dev)
+git submodule update --init extlib/SDL extlib/imgui extlib/lunasvg   # SDL3 is vendored (or install libsdl3-dev)
 mkdir -p build-ng && cd build-ng
 cmake .. -DCMAKE_BUILD_TYPE=Debug -DENABLE_NG_GUI=ON
 make -j$(nproc) solvespace-ng solvespace-testsuite && make test_solvespace   # includes test/ng/*

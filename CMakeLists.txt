@@ -444,6 +444,15 @@ if(ENABLE_NG_GUI)
         add_vendored_subdirectory(extlib/SDL)
         set(NG_SDL_TARGET SDL3::SDL3-static)
     endif()
+
+    # lunasvg (MIT, bundles plutovg): renders the Lucide-style SVG icons.
+    include(AddVendoredSubdirectory)
+    set(LUNASVG_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
+    set(LUNASVG_DISABLE_LOAD_SYSTEM_FONTS ON CACHE BOOL "" FORCE)
+    set(NG_SAVED_BUILD_SHARED_LIBS ${BUILD_SHARED_LIBS})
+    set(BUILD_SHARED_LIBS OFF)
+    add_vendored_subdirectory(extlib/lunasvg)
+    set(BUILD_SHARED_LIBS ${NG_SAVED_BUILD_SHARED_LIBS})
 endif()
 
 # code coverage
