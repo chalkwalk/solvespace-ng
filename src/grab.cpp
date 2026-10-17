@@ -40,11 +40,18 @@ bool GraphicsWindow::StartGrab(Point2d mouse) {
     if(pending.points.n == 0) return false;
 
     grab.wasUnsaved = SS.unsaved;
-    SS.UndoRemember();
+    // Like UndoRemember, but redo survives until the grab is confirmed: a cancelled grab
+    // changes nothing.
+    SS.PushFromCurrentOnto(&SS.undo);
+    SS.UndoEnableMenus();
     grab.undoCnt    = SS.undo.cnt;
     grab.undoWrite  = SS.undo.write;
     grab.startMouse = mouse;
     grab.lastMouse  = mouse;
+    grab.baseMouse  = mouse;
+    grab.baseDelta  = {};
+    grab.freeDelta  = {};
+    RecordGrabView();
     grab.axis       = -1;
     grab.typedMm.reset();
     grab.start.clear();
@@ -54,14 +61,29 @@ bool GraphicsWindow::StartGrab(Point2d mouse) {
     return true;
 }
 
+void GraphicsWindow::RecordGrabView() {
+    grab.viewScale  = scale;
+    grab.viewOffset = offset;
+    grab.viewRight  = projRight;
+    grab.viewUp     = projUp;
+}
+
 void GraphicsWindow::GrabMouseMoved(Point2d mouse) {
     if(pending.operation != Pending::GRABBING) return;
+    if(scale != grab.viewScale || !offset.EqualsExactly(grab.viewOffset) ||
+       !projRight.EqualsExactly(grab.viewRight) || !projUp.EqualsExactly(grab.viewUp)) {
+        grab.baseDelta = grab.freeDelta;
+        grab.baseMouse = mouse;
+        RecordGrabView();
+    }
+    grab.freeDelta = grab.baseDelta.Plus(
+        projRight.ScaledBy((mouse.x - grab.baseMouse.x) / scale)
+            .Plus(projUp.ScaledBy((mouse.y - grab.baseMouse.y) / scale)));
     Vector delta;
     if(grab.axis >= 0 && grab.typedMm) {
         delta = GrabAxisVector(grab.axis).ScaledBy(*grab.typedMm);
     } else {
-        delta = projRight.ScaledBy((mouse.x - grab.startMouse.x) / scale)
-                    .Plus(projUp.ScaledBy((mouse.y - grab.startMouse.y) / scale));
+        delta = grab.freeDelta;
         if(grab.axis >= 0) {
             Vector ax = GrabAxisVector(grab.axis);
             delta     = ax.ScaledBy(delta.Dot(ax));
@@ -87,6 +109,9 @@ void GraphicsWindow::GrabSetTyped(std::optional<double> mm) {
 
 void GraphicsWindow::GrabConfirm() {
     if(pending.operation != Pending::GRABBING) return;
+    SS.unsaved = true;
+    SS.UndoClearStack(&SS.redo);
+    SS.UndoEnableMenus();
     ClearPending();
     grab.start.clear();
     Invalidate();
@@ -102,10 +127,8 @@ void GraphicsWindow::GrabCancel() {
         Invalidate();
         return;
     }
-    // StartGrab remembered the state just before the grab; return to it and forget the redo
-    // entry the undo would leave.
-    SS.UndoUndo();
-    SS.UndoClearStack(&SS.redo);
+    // StartGrab remembered the state just before the grab; return to it, leaving redo alone.
+    SS.PopOntoCurrentFrom(&SS.undo);
     SS.UndoEnableMenus();
     SS.unsaved = grab.wasUnsaved;
 }

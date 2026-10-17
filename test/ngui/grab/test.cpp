@@ -92,3 +92,79 @@ TEST_CASE(grab_with_nothing_to_grab_does_nothing) {
     Driver::Key("G");
     CHECK_FALSE(Ui::Grab().Active());
 }
+
+TEST_CASE(right_drag_pans_during_a_grab_without_cancelling) {
+    CHECK_LOAD("line.slvs");
+    hRequest line = SelectedLine();
+    Vector a0 = P(line.entity(1));
+    Point2d m = AtMiddle(line);
+    Driver::Key("G");
+    Driver::Move(m.x + 40, m.y);
+    Vector moved = P(line.entity(1));
+    Driver::Drag(m.x + 40, m.y, m.x + 140, m.y + 60, Driver::Button::RIGHT);
+    CHECK_TRUE(Ui::Grab().Active());
+    // Panning moves the view, not the grabbed points.
+    CHECK_TRUE(P(line.entity(1)).Minus(moved).Magnitude() < 1e-6);
+    Driver::Key("Return");
+    CHECK_TRUE(P(line.entity(1)).Minus(a0).Magnitude() > 1);
+}
+
+TEST_CASE(zooming_during_a_grab_keeps_the_points_in_place) {
+    CHECK_LOAD("line.slvs");
+    hRequest line = SelectedLine();
+    Point2d m = AtMiddle(line);
+    Driver::Key("G");
+    Driver::Move(m.x + 40, m.y);
+    Vector moved = P(line.entity(1));
+    Driver::Wheel(m.x + 40, m.y, 3);
+    CHECK_TRUE(Ui::Grab().Active());
+    // The next small move continues from there instead of jumping by the zoom factor.
+    Driver::Move(m.x + 41, m.y);
+    CHECK_TRUE(P(line.entity(1)).Minus(moved).Magnitude() < 2 / SS.GW.scale);
+    Driver::Key("Escape");
+}
+
+TEST_CASE(orbiting_during_a_grab_keeps_the_points_in_place) {
+    CHECK_LOAD("line.slvs");
+    hRequest line = SelectedLine();
+    Point2d m = AtMiddle(line);
+    Driver::Key("G");
+    Driver::Move(m.x + 40, m.y);
+    Vector moved = P(line.entity(1));
+    Driver::Drag(m.x + 40, m.y, m.x + 90, m.y + 40, Driver::Button::MIDDLE);
+    CHECK_TRUE(Ui::Grab().Active());
+    Driver::Move(m.x + 91, m.y + 40);
+    CHECK_TRUE(P(line.entity(1)).Minus(moved).Magnitude() < 2 / SS.GW.scale);
+    Driver::Key("Escape");
+}
+
+TEST_CASE(a_cancelled_grab_keeps_redo) {
+    CHECK_LOAD("line.slvs");
+    int requests = SK.request.n;
+    DrawLine(Point2d::From(500, 620), Point2d::From(600, 620));
+    Driver::Key("Ctrl+Z");
+    CHECK_TRUE(SK.request.n == requests);
+    hRequest line = *LastRequest(Request::Type::LINE_SEGMENT);
+    ClickAt(AtMiddle(line));
+    Point2d m = AtMiddle(line);
+    Driver::Key("G");
+    Driver::Move(m.x + 30, m.y + 20);
+    Driver::Key("Escape");
+    Driver::Key("Ctrl+Shift+Z"); // the undone line comes back
+    CHECK_TRUE(SK.request.n == requests + 1);
+}
+
+TEST_CASE(a_confirmed_grab_ends_redo) {
+    CHECK_LOAD("line.slvs");
+    int requests = SK.request.n;
+    DrawLine(Point2d::From(500, 620), Point2d::From(600, 620));
+    Driver::Key("Ctrl+Z");
+    hRequest line = *LastRequest(Request::Type::LINE_SEGMENT);
+    ClickAt(AtMiddle(line));
+    Point2d m = AtMiddle(line);
+    Driver::Key("G");
+    Driver::Move(m.x + 30, m.y + 20);
+    Driver::Key("Return");
+    Driver::Key("Ctrl+Shift+Z"); // nothing to redo after a new change
+    CHECK_TRUE(SK.request.n == requests);
+}

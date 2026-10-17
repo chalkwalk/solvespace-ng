@@ -26,6 +26,12 @@ bin/solvespace-ng`.
 - [ ] A line style colour you changed yourself stays when switching theme.
 - [ ] The theme and canvas colours survive a restart.
 
+### Grab (2026-10-17)
+- [ ] While grabbing (`G`), pan with a right-drag, zoom with the wheel and orbit with the
+      middle button: the grab carries on, and the points stay put until you move the mouse.
+- [ ] A right *click* still cancels a grab.
+- [ ] Undo something, grab, cancel with Esc: Redo still brings back what you undid.
+
 ## Decisions waiting for the owner
 - Merge order: `ng/m1a-shell` > `ng/m1b-interaction` > `ng/m1-ui-harness` > `ng/m1c-panels` >
   `ng/m1c-feedback` > `master`.
@@ -43,12 +49,12 @@ Found by reviews and tests; fixed ones move to the hands-on list above with thei
 
 | Issue | Status |
 |---|---|
-| Right-drag pan during a grab cancels it | open |
-| Zoom or orbit during a grab makes points jump | open |
+| Right-drag pan during a grab cancels it | fixed |
+| Zoom or orbit during a grab makes points jump | fixed |
 | Pie: a click in the centre dead zone, or the pie's key again, doesn't close it | open |
 | Keys pressed while a menu-bar dropdown is open still run commands | open |
 | Hover stays on the canvas item when the pointer moves onto a panel | open |
-| Cancelling a grab clears the redo stack | open |
+| Cancelling a grab clears the redo stack | fixed |
 | `Z` axis lock does nothing in a workplane | open |
 | Isolate (`Shift+H`) can hide the active group | open |
 | Grab's hover fallback leaves the item selected | open |

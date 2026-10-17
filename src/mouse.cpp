@@ -586,7 +586,8 @@ void GraphicsWindow::MouseRightUp(double x, double y) {
     Invalidate();
 
     if(pending.operation == Pending::GRABBING) {
-        GrabCancel();
+        // A right-drag pans the view and keeps grabbing; a right-click cancels.
+        if(!orig.startedMoving) GrabCancel();
         return;
     }
 

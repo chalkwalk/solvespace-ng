@@ -685,6 +685,12 @@ public:
     // G: move the selection under the solver without holding a button.
     struct {
         Point2d                                 startMouse, lastMouse;
+        // The mouse movement since baseMouse adds to baseDelta; a zoom, pan or orbit starts a
+        // new base, so the points stay where they are instead of jumping.
+        Point2d                                 baseMouse;
+        Vector                                  baseDelta, freeDelta;
+        double                                  viewScale;
+        Vector                                  viewOffset, viewRight, viewUp;
         std::vector<std::pair<hEntity, Vector>> start; // dragged points, start positions
         int                                     axis;  // -1 free, 0/1/2 = X/Y/Z (or u/v/n)
         std::optional<double>                   typedMm;
@@ -693,6 +699,7 @@ public:
     } grab;
     bool   StartGrab(Point2d mouse); // selection, else hover; false (no undo entry) if nothing
     void   GrabMouseMoved(Point2d mouse);
+    void   RecordGrabView();
     void   GrabSetAxis(int axis);    // the same axis again unlocks
     void   GrabSetTyped(std::optional<double> mm);
     void   GrabConfirm();
