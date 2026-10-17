@@ -929,6 +929,9 @@ public:
     static bool        SetValue(hStyle hs, StyleValue value, const std::string &text,
                                 bool rememberUndo = true);
     static void        SetStipple(hStyle hs, StipplePattern pattern);
+    // Switch the default styles and background between the dark (stock) and light palettes;
+    // colours the user changed (matching neither palette) stay. Saved to the settings.
+    static void        UseThemeColors(bool light);
     static void        Delete(hStyle hs);
 
     static RgbaColor RewriteColor(RgbaColor rgb);

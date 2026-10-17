@@ -48,6 +48,8 @@ ThemeChoice LoadThemeChoice() {
 
 void ApplyTheme(ThemeChoice choice) {
     LoadFontsOnce();
+    // The drawing area follows too, except for colours the user picked.
+    Style::UseThemeColors(choice == ThemeChoice::LIGHT);
     const Tokens &t = choice == ThemeChoice::DARK ? Dark : Light;
     ImGuiStyle &s = ImGui::GetStyle();
     s.WindowRounding    = 10;

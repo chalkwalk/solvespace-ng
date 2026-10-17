@@ -134,4 +134,48 @@ void Style::Delete(hStyle hs) {
     SS.GW.Invalidate();
 }
 
+// The light palette for the default styles; the dark one is SolveSpace's own (Defaults).
+// Yellow hover and white lines vanish on white, so those change most.
+static const struct {
+    uint32_t  style;
+    RgbaColor light;
+} LightColors[] = {
+    { Style::ACTIVE_GRP,   RGBf(0.10, 0.11, 0.13) },
+    { Style::CONSTRUCTION, RGBf(0.10, 0.55, 0.10) },
+    { Style::INACTIVE_GRP, RGBf(0.65, 0.45, 0.20) },
+    { Style::DATUM,        RGBf(0.00, 0.55, 0.00) },
+    { Style::SOLID_EDGE,   RGBf(0.25, 0.25, 0.25) },
+    { Style::CONSTRAINT,   RGBf(0.75, 0.00, 0.75) },
+    { Style::SELECTED,     RGBf(0.90, 0.00, 0.00) },
+    { Style::HOVERED,      RGBf(0.95, 0.55, 0.00) },
+    { Style::CONTOUR_FILL, RGBf(0.80, 0.92, 0.92) },
+    { Style::NORMALS,      RGBf(0.00, 0.40, 0.40) },
+    { Style::ANALYZE,      RGBf(0.00, 0.60, 0.70) },
+    { Style::DRAW_ERROR,   RGBf(1.00, 0.00, 0.00) },
+    { Style::DIM_SOLID,    RGBf(0.90, 0.90, 0.90) },
+    { Style::HIDDEN_EDGE,  RGBf(0.55, 0.55, 0.55) },
+    { Style::OUTLINE,      RGBf(0.20, 0.20, 0.20) },
+};
+static const RgbaColor DarkBackground = RGBi(0, 0, 0), LightBackground = RGBi(0xF4, 0xF5, 0xF7);
+
+void Style::UseThemeColors(bool light) {
+    Platform::SettingsRef settings = Platform::GetSettings();
+    for(const Default *d = &Defaults[0]; d->h.v; d++) {
+        for(const auto &lc : LightColors) {
+            if(lc.style != d->h.v) continue;
+            RgbaColor from = light ? d->color : lc.light, to = light ? lc.light : d->color;
+            Style *s = Get(d->h);
+            if(s->color.Equals(from)) s->color = to;
+        }
+    }
+    RgbaColor fromBg = light ? DarkBackground : LightBackground;
+    if(SS.backgroundColor.Equals(fromBg)) {
+        SS.backgroundColor = light ? LightBackground : DarkBackground;
+    }
+    FreezeDefaultStyles(settings);
+    settings->FreezeColor("BackgroundColor", SS.backgroundColor);
+    SS.GW.persistentDirty = true;
+    SS.GW.Invalidate();
+}
+
 }

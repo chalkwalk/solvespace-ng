@@ -22,6 +22,39 @@ TEST_CASE(the_palette_toggles_the_theme_and_remembers_it) {
     CHECK_TRUE(before != after);
 }
 
+TEST_CASE(the_light_theme_lightens_the_drawing_area_too) {
+    CHECK_LOAD("line.slvs");
+    CHECK_TRUE(SS.backgroundColor.Equals(RGBi(0, 0, 0)));
+    Driver::Key("Ctrl+,");
+    CHECK_TRUE(RevealIn("Preferences", "SolveSpace NG"));
+    CHECK_TRUE(Driver::ClickItem("SolveSpace NG"));
+    CHECK_TRUE(RevealIn("Preferences", "light theme"));
+    CHECK_TRUE(Driver::ClickItem("light theme"));
+    CHECK_TRUE(SS.backgroundColor.red > 200);
+    // Saved, so a new file or the next start draws the same.
+    Platform::SettingsRef settings = Platform::GetSettings();
+    CHECK_TRUE(settings->ThawColor("BackgroundColor", RGBi(1, 2, 3)).Equals(SS.backgroundColor));
+    CHECK_TRUE(settings->ThawColor(Style::CnfColor("ActiveGrp"), RGBi(1, 2, 3))
+                   .Equals(Style::Color(hStyle{ Style::ACTIVE_GRP })));
+    // And most of the window, which is mostly drawing area, is light.
+    CHECK_TRUE(ClosePanel("Preferences"));
+    Platform::Path shot = Driver::ConfigDir().Join("light.png");
+    CHECK_TRUE(Driver::Screenshot(shot));
+    std::shared_ptr<Pixmap> px = Pixmap::ReadPng(shot);
+    CHECK_TRUE(px != nullptr);
+    int light = 0, samples = 0;
+    for(size_t y = 0; px && y < px->height; y += px->height / 10) {
+        for(size_t x = 0; x < px->width; x += px->width / 10, samples++) {
+            if(px->GetPixel(x, y).red > 200) light++;
+        }
+    }
+    CHECK_TRUE(light * 10 > samples * 6);
+    Driver::Key("Ctrl+,");
+    CHECK_TRUE(RevealIn("Preferences", "dark theme"));
+    CHECK_TRUE(Driver::ClickItem("dark theme"));
+    CHECK_TRUE(SS.backgroundColor.Equals(RGBi(0, 0, 0)));
+}
+
 TEST_CASE(f10_hides_and_shows_the_menu_bar) {
     CHECK_LOAD("line.slvs");
     CHECK_TRUE(Driver::FindItem("Sketch").has_value());

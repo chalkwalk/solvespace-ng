@@ -51,3 +51,32 @@ TEST_CASE(background_colour_is_a_setting) {
                SS.backgroundColor.green == (uint8_t)(0.2 * 255));
     CHECK_FALSE(SS.SetSetting(Setting::BACKGROUND_COLOR, "dark"));
 }
+
+static bool Same(RgbaColor a, RgbaColor b) {
+    return a.Equals(b);
+}
+
+TEST_CASE(canvas_colours_follow_the_theme_unless_customised) {
+    CHECK_LOAD("line.slvs");
+    const hStyle active = { Style::ACTIVE_GRP }, hovered = { Style::HOVERED },
+                 constraint = { Style::CONSTRAINT };
+    RgbaColor stockActive = Style::Color(active), stockHovered = Style::Color(hovered);
+    CHECK_TRUE(Same(SS.backgroundColor, RGBi(0, 0, 0)));
+    Style::Get(constraint)->color = RGBi(0, 0, 255); // the user's own colour
+
+    Style::UseThemeColors(/*light=*/true);
+    CHECK_TRUE(SS.backgroundColor.red > 200 && SS.backgroundColor.green > 200);
+    CHECK_TRUE(Style::Color(active).red < 80); // dark lines on a light background
+    CHECK_FALSE(Same(Style::Color(hovered), stockHovered));
+    CHECK_TRUE(Same(Style::Color(constraint), RGBi(0, 0, 255)));
+
+    RgbaColor lightActive = Style::Color(active);
+    Style::UseThemeColors(/*light=*/true); // already light: nothing moves
+    CHECK_TRUE(Same(Style::Color(active), lightActive));
+
+    Style::UseThemeColors(/*light=*/false);
+    CHECK_TRUE(Same(SS.backgroundColor, RGBi(0, 0, 0)));
+    CHECK_TRUE(Same(Style::Color(active), stockActive));
+    CHECK_TRUE(Same(Style::Color(hovered), stockHovered));
+    CHECK_TRUE(Same(Style::Color(constraint), RGBi(0, 0, 255)));
+}
