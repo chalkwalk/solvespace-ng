@@ -678,6 +678,8 @@ public:
         Vector     offset;
     } sketchFocusReturn;
     bool ToggleSketchFocus(bool animate); // false if there was nothing to do
+    // The custom-drawn toolbar (toolbar.cpp); NG shows its tool shelf for View > Show Toolbar.
+    bool classicToolbar = true;
     void ActivateGroup(hGroup hg);        // what the property browser's "active" radio does
     void LookOntoActiveWorkplane(bool animate);
     // The translated menu text of a command ("&Horizontal"), or "" if it has no menu item.

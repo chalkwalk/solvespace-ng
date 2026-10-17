@@ -16,6 +16,7 @@
 #include "ui/ngui.h"
 #include "ui/palettewidget.h"
 #include "ui/piemenu.h"
+#include "ui/shelf.h"
 #include "ui/theme.h"
 #include "ui/uiactions.h"
 
@@ -115,10 +116,15 @@ void InitNgUi() {
     PreferencesPanel().Load();
     StylesPanel().Load();
     ViewPanel().Load();
+    PastePanel().Load();
+    StepDimensionPanel().Load();
+    TangentArcPanel().Load();
+    ShelfPanel().Load();
     // Browser screens that have a panel open the panel.
     SS.GW.showScreenElsewhere = [] { return ShowScreenInPanel(); };
     gHideBrowser = true;
     SS.GW.browserIsPrimary = false;
+    SS.GW.classicToolbar   = false; // View > Show Toolbar shows the tool shelf
     ApplyTheme(LoadThemeChoice());
     Actions().Bind("ui.command-palette", [] { gPalette.Open(); });
     Actions().Bind("ui.toggle-theme", [] { ToggleTheme(); });
@@ -192,6 +198,7 @@ std::function<void()> DrawNgUi(Platform::MenuBarSdl *menuBar, const keymap::Keym
     if(auto changed = DrawPreferences()) run = changed;
     if(auto changed = DrawStyles()) run = changed;
     if(auto changed = DrawToolPanels()) run = changed;
+    if(auto changed = DrawShelf(keymap)) run = changed;
     if(gHideBrowser) {
         // The Properties panel replaces the property browser, which starts hidden; View >
         // Show Property Browser brings it back.

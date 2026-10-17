@@ -152,6 +152,7 @@ bool GraphicsWindow::ToolbarMouseDown(int x, int y) {
 bool GraphicsWindow::ToolbarDrawOrHitTest(int mx, int my, UiCanvas *canvas,
                                           Command *hitCommand, int *hitX, int *hitY)
 {
+    if(!classicToolbar) return false;
     double width, height;
     window->GetContentSize(&width, &height);
 

@@ -3,6 +3,7 @@
 //-----------------------------------------------------------------------------
 #include "solvespace.h"
 #include "imgui.h"
+#include "imgui_internal.h"
 #include "ui/panels.h"
 
 namespace SolveSpace {
@@ -36,27 +37,47 @@ bool Panel::Begin() {
         ImGui::SetNextWindowPos(ImVec2(savedX, savedY), ImGuiCond_FirstUseEver);
         ImGui::SetNextWindowSize(ImVec2(savedW, savedH), ImGuiCond_FirstUseEver);
     } else {
-        // Below the menu bar, clear of the toolbar on the left and the status bar below.
+        // Below the menu bar, clear of the status bar below.
         float top = ImGui::GetFrameHeight() + 16;
-        float x   = edge == PanelEdge::LEFT ? 80.0f : io.DisplaySize.x - width - 12;
+        float x   = edge == PanelEdge::LEFT ? 12.0f : io.DisplaySize.x - width - 12;
         float h   = std::max(200.0f, std::min(520.0f, io.DisplaySize.y - top - 60));
-        if(edge == PanelEdge::CENTER) {
+        if(edge == PanelEdge::CENTER || edge == PanelEdge::TOP) {
             // Over the middle of the viewport, clear of the side panels.
-            x = (io.DisplaySize.x - width) / 2;
+            x = (io.DisplaySize.x - std::min(width, io.DisplaySize.x - 24)) / 2;
         } else if(edge == PanelEdge::BOTTOM_RIGHT) {
             // Under the right-hand panel, above the status bar.
             h   = 220;
             top = std::max(top, io.DisplaySize.y - h - 52);
         }
         ImGui::SetNextWindowPos(ImVec2(x, top), ImGuiCond_FirstUseEver);
-        ImGui::SetNextWindowSize(ImVec2(width, h), ImGuiCond_FirstUseEver);
+        if(!autoSize) ImGui::SetNextWindowSize(ImVec2(width, h), ImGuiCond_FirstUseEver);
     }
     bool open    = true;
     std::string id = title + "###panel-" + name;
+    // Keep the panel on screen when the window has shrunk under it: smaller if it must be,
+    // then moved back inside.
+    if(ImGuiWindow *w = ImGui::FindWindowByName(id.c_str())) {
+        ImVec2 size = w->Size;
+        if(!autoSize) {
+            size.x = std::min(size.x, io.DisplaySize.x);
+            size.y = std::min(size.y, io.DisplaySize.y);
+            if(size.x != w->Size.x || size.y != w->Size.y) {
+                ImGui::SetNextWindowSize(size);
+                SS.GW.Invalidate(); // and draw again, now that it fits
+            }
+        }
+        float x = std::max(0.0f, std::min(w->Pos.x, io.DisplaySize.x - size.x));
+        float y = std::max(0.0f, std::min(w->Pos.y, io.DisplaySize.y - size.y));
+        if(x != w->Pos.x || y != w->Pos.y) {
+            ImGui::SetNextWindowPos(ImVec2(x, y));
+            SS.GW.Invalidate();
+        }
+    }
     // NoNav: a panel that has been clicked must not take Tab, Space, Enter or the arrows from
     // the keymap; only a field being typed in gets keys.
-    bool visible = ImGui::Begin(id.c_str(), &open,
-                                ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoNav);
+    ImGuiWindowFlags flags = ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoNav;
+    if(autoSize) flags |= ImGuiWindowFlags_AlwaysAutoResize;
+    bool visible = ImGui::Begin(id.c_str(), &open, flags);
     if(!open) SetShown(false);
     if(!visible) ImGui::End();
     return visible;
@@ -73,6 +94,17 @@ void Panel::End() {
         settings->FreezeFloat("NG_Panel_" + name + "_H", savedH);
     }
     ImGui::End();
+}
+
+Panel &ShelfPanel() {
+    // Shown or not is SS.showToolbar (View > Show Toolbar), which the core saves.
+    static Panel panel = [] {
+        Panel p("Shelf", "Tools", PanelEdge::TOP, 560, /*shownByDefault=*/false,
+                /*remembersShown=*/false);
+        p.autoSize = true;
+        return p;
+    }();
+    return panel;
 }
 
 Panel &PropertiesPanel() {

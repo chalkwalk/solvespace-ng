@@ -662,7 +662,7 @@ void Entity::Draw(DrawAs how, Canvas *canvas) {
                     double h = 60 - camera.height / 2.0;
                     double w = 60 - camera.width  / 2.0;
                     // Shift the axis to the right if they would overlap with the toolbar.
-                    if(SS.showToolbar) {
+                    if(SS.showToolbar && SS.GW.classicToolbar) {
                         if(h + 30 > -(32*18 + 3*16 + 8) / 2)
                             w += 60;
                     }

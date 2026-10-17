@@ -337,6 +337,7 @@ if(ENABLE_GUI AND ENABLE_NG_GUI)
         ui/prefspanel.cpp
         ui/stylespanel.cpp
         ui/toolpanels.cpp
+        ui/shelf.cpp
         ui/fields.cpp
         ui/ngui.cpp
         ui/piemenu.cpp

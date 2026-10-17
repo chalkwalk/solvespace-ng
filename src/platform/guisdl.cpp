@@ -37,6 +37,8 @@
 #include "platform/sdl/keychord.h"
 #include "platform/sdl/uidriver.h"
 #include "platform/sdl/itemregistry.h"
+#include "platform/sdl/icontextures.h"
+#include "ui/iconraster.h"
 #include "ui/keyrouter.h"
 #include "ui/uiactions.h"
 #include "ui/coreactions.h"
@@ -115,7 +117,13 @@ static Path PrefDir() {
 static std::shared_ptr<SettingsFile> gSettings;
 
 SettingsRef GetSettings() {
-    if(!gSettings) gSettings = std::make_shared<SettingsFile>(PrefDir().Join("settings.txt"));
+    if(!gSettings) {
+        gSettings = std::make_shared<SettingsFile>(PrefDir().Join("settings.txt"));
+        // NG's View > Show Toolbar shows the tool shelf, which starts hidden (AGENTS.md 5).
+        if(gSettings->ThawBool("ShowToolbar", true) != gSettings->ThawBool("ShowToolbar", false)) {
+            gSettings->FreezeBool("ShowToolbar", false);
+        }
+    }
     return gSettings;
 }
 
@@ -693,7 +701,10 @@ static const char *GlslVersion() {
 #endif
 }
 
+static void FreeIconTextures();
+
 static void ShutdownImGui() {
+    FreeIconTextures();
     ImGuiRenderer_Shutdown();
     ImGui_ImplSDL3_Shutdown();
     ImGui::DestroyContext();
@@ -929,6 +940,42 @@ static void ReleaseFramebuffer(WindowImplSdl *w) {
     glDeleteTextures(1, &w->fboColor);
     glDeleteRenderbuffers(1, &w->fboDepth);
     w->fbo = 0;
+}
+
+// Icon textures, by "<name>@<px>"; 0 for an icon that doesn't rasterize.
+static std::map<std::string, GLuint> gIconTextures;
+
+static void FreeIconTextures() {
+    for(auto &[key, tex] : gIconTextures) {
+        if(tex && gGlContext) glDeleteTextures(1, &tex);
+    }
+    gIconTextures.clear();
+}
+
+ImTextureID IconTextureFromSvg(const std::string &key, std::string_view svg, int px) {
+    std::string cacheKey = key + "@" + std::to_string(px);
+    auto it = gIconTextures.find(cacheKey);
+    if(it != gIconTextures.end()) return (ImTextureID)(intptr_t)it->second;
+    GLuint tex = 0;
+    if(std::optional<Ui::IconImage> im = Ui::RasterizeIcon(svg, px)) {
+        glGenTextures(1, &tex);
+        glBindTexture(GL_TEXTURE_2D, tex);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, im->width, im->height, 0, GL_RGBA,
+                     GL_UNSIGNED_BYTE, im->rgba.data());
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+        glBindTexture(GL_TEXTURE_2D, 0);
+    }
+    gIconTextures[cacheKey] = tex;
+    return (ImTextureID)(intptr_t)tex;
+}
+
+ImTextureID IconTexture(const std::string &name, int px) {
+    size_t      size = 0;
+    const char *svg  = (const char *)LoadResource("icons/ng/" + name + ".svg", &size);
+    return IconTextureFromSvg(name, std::string_view(svg, size), px);
 }
 
 static void EnsureFramebuffer(WindowImplSdl *w, int pw, int ph) {
@@ -1266,6 +1313,21 @@ static void RenderFrame() {
     if(!gDeferred.Empty()) gNeedsFrame = true;
     // ImGui spreads a burst of input (fast typing) over several frames; render until it's done.
     if(ImGui::GetCurrentContext()->InputEventsQueue.Size > 0) gNeedsFrame = true;
+    // A window that sizes itself to its contents (the tool shelf) is hidden while it measures
+    // them and takes its size on a later frame; without more frames it would stay blank or
+    // clipped until the next input.
+    // (A few frames at most: a size that wobbles by rounding must not keep the app busy.)
+    static int fitFrames = 0;
+    bool       fitting   = false;
+    for(ImGuiWindow *w : ImGui::GetCurrentContext()->Windows) {
+        if(!w->Active) continue;
+        ImVec2 next = ImGui::CalcWindowNextAutoFitSize(w);
+        bool   grows = (w->Flags & ImGuiWindowFlags_AlwaysAutoResize) &&
+                       (fabsf(w->Size.x - next.x) > 1 || fabsf(w->Size.y - next.y) > 1);
+        if(w->Hidden || grows) fitting = true;
+    }
+    fitFrames = fitting ? fitFrames + 1 : 0;
+    if(fitting && fitFrames <= 4) gNeedsFrame = true;
 }
 
 void RunGui() {

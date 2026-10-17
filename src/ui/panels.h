@@ -10,7 +10,7 @@
 namespace SolveSpace {
 namespace Ui {
 
-enum class PanelEdge { LEFT, RIGHT, BOTTOM_RIGHT, CENTER };
+enum class PanelEdge { LEFT, RIGHT, BOTTOM_RIGHT, CENTER, TOP };
 
 class Panel {
 public:
@@ -19,6 +19,7 @@ public:
           bool remembersShown = true);
 
     void Load(); // the shown flag from the settings; call when a main window is made
+    bool autoSize = false; // sized by its contents (the tool shelf)
     bool Shown() const { return shown; }
     void SetShown(bool s);
     void Toggle() { SetShown(!shown); }
@@ -45,6 +46,7 @@ Panel &ViewPanel();
 Panel &PastePanel();         // shown while the browser's Paste Transformed screen is
 Panel &StepDimensionPanel(); // likewise
 Panel &TangentArcPanel();    // likewise
+Panel &ShelfPanel();         // the tool shelf; shown while SS.showToolbar
 
 }
 }

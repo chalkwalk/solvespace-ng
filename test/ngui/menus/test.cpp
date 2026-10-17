@@ -72,9 +72,11 @@ TEST_CASE(palette_escape_closes_without_running) {
 }
 
 TEST_CASE(toolbar_icon_click_starts_its_tool) {
+    // NG's toolbar is the tool shelf (View > Show Toolbar).
     CHECK_LOAD("line.slvs");
-    Driver::Click(17, 53); // the toolbar's first icon: Line Segment
-    CHECK_TRUE(SS.GW.pending.command == Command::LINE_SEGMENT);
+    CHECK_TRUE(Driver::ClickMenu({ "View", "Show Toolbar" }));
+    CHECK_TRUE(Driver::ClickItem("Rectangle"));
+    CHECK_TRUE(SS.GW.pending.command == Command::RECTANGLE);
 }
 
 TEST_CASE(n_toggles_properties_and_shift_n_the_old_browser) {
