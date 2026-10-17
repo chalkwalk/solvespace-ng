@@ -66,7 +66,7 @@ Found by reviews and tests; fixed ones move to the hands-on list above with thei
 | Hover stays on the canvas item when the pointer moves onto a panel | fixed |
 | Cancelling a grab clears the redo stack | fixed |
 | `Z` axis lock does nothing in a workplane | fixed |
-| Isolate (`Shift+H`) can hide the active group | open |
+| Isolate (`Shift+H`) can hide the active group | as intended: isolate shows only that group (as in Blender and Onshape), and drawing in the hidden active group shows it again (tested) |
 | Grab's hover fallback leaves the item selected | open |
 | `Tab` over `#references` hides your groups; `Tab` while drawing an arc/spline switches group | open |
 | A typed angle outside a workplane is silently ignored | open |

@@ -128,6 +128,10 @@ TEST_CASE(context_menu_isolates_a_group) {
     CHECK_TRUE(Named("sketch-in-plane")->visible);
     CHECK_FALSE(Named("sketch-in-3d")->visible);
     CHECK_TRUE(Named("#references")->visible);
+    // The active group was hidden too; drawing in it shows it again, so nothing new is
+    // invisible.
+    DrawLine(Point2d::From(500, 640), Point2d::From(600, 640));
+    CHECK_TRUE(Named("sketch-in-3d")->visible);
 }
 
 TEST_CASE(panel_clicks_never_reach_the_canvas) {
