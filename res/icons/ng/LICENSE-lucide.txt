@@ -1,28 +1,13 @@
 These icons are copied unchanged from Lucide 0.577.0 (https://lucide.dev), under the ISC
 licence below:
 
-    arrow-up-from-line.svg
-    axis-3d.svg
     box.svg
-    circle.svg
-    copy.svg
     equal.svg
     image.svg
-    layers-plus.svg
-    link.svg
-    parentheses.svg
-    rectangle-horizontal.svg
-    rotate-3d.svg
-    rotate-ccw.svg
-    rotate-cw-square.svg
-    ruler-dimension-line.svg
-    scan.svg
-    scissors.svg
-    slash.svg
-    spline.svg
-    type.svg
+    package-plus.svg
 
-The other icons in this directory were drawn for SolveSpace NG in Lucide's style and are
+The other icons in this directory were drawn for SolveSpace NG in Lucide's style, following the CAD
+conventions in docs/research/cad-icon-conventions.md, and are
 part of SolveSpace NG (GPLv3).
 
 ----

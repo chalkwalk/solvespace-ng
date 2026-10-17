@@ -50,13 +50,12 @@ bin/solvespace-ng`.
 
 ### Tool shelf (2026-10-17, M1d)
 Screenshots: `docs/owner-review/shelf-dark.png`, `shelf-light.png`, and every icon in
-`docs/owner-review/icons.png` (20 from Lucide, 14 drawn for NG: arc, tangent arc, point,
-construction, angle, horizontal, vertical, parallel, perpendicular, point on, symmetric, same
-orientation, other angle, helix).
+`docs/owner-review/icons.png`. Redrawn 2026-10-17 after researching other CAD apps
+(`docs/research/cad-icon-conventions.md`): sketch tools show their points, constraints are their
+on-sketch glyphs (`—` `|` `//` `⊥` `=` `>¦<`), features follow Fusion/Onshape/FreeCAD.
 - [ ] View ▸ Show Toolbar shows the "Tools" shelf at the top; the old left toolbar is gone.
 - [ ] Each button starts its tool; hovering shows its name and key.
-- [ ] The icons read clearly in both themes. Weakest to my eye: "other angle", and "vertical"
-      looks a little like the text tool's T. Say which to redraw.
+- [ ] The icons read clearly in both themes and look like what you know from other CAD.
 - [ ] Placement: centred at the top between the Outliner and Properties. Alternative: a
       vertical strip at the left edge (where the old toolbar was), with the Outliner moved right.
 - [ ] Shrinking the window keeps every panel on screen.
