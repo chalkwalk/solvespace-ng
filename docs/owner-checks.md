@@ -31,6 +31,7 @@ bin/solvespace-ng`.
       middle button: the grab carries on, and the points stay put until you move the mouse.
 - [ ] A right *click* still cancels a grab.
 - [ ] Undo something, grab, cancel with Esc: Redo still brings back what you undid.
+- [ ] In a workplane sketch, `Z` does nothing while grabbing and the hint shows only `X Y`.
 
 ### Pie menus (2026-10-17)
 - [ ] A click in a pie's centre closes it; so does its own key pressed again (`Shift+A`,
@@ -64,7 +65,7 @@ Found by reviews and tests; fixed ones move to the hands-on list above with thei
 | Keys pressed while a menu-bar dropdown is open still run commands | fixed |
 | Hover stays on the canvas item when the pointer moves onto a panel | fixed |
 | Cancelling a grab clears the redo stack | fixed |
-| `Z` axis lock does nothing in a workplane | open |
+| `Z` axis lock does nothing in a workplane | fixed |
 | Isolate (`Shift+H`) can hide the active group | open |
 | Grab's hover fallback leaves the item selected | open |
 | `Tab` over `#references` hides your groups; `Tab` while drawing an arc/spline switches group | open |

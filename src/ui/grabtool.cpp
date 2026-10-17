@@ -54,8 +54,8 @@ std::string GrabTool::Description() const {
 }
 
 std::vector<KeyHint> GrabTool::Hints() const {
-    return { { "X Y Z", "Axis" }, { "0-9", "Distance" }, { "Enter", "Confirm" },
-             { "Esc", "Cancel" } };
+    return { { SS.GW.LockedInWorkplane() ? "X Y" : "X Y Z", "Axis" }, { "0-9", "Distance" },
+             { "Enter", "Confirm" }, { "Esc", "Cancel" } };
 }
 
 }

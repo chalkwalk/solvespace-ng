@@ -98,6 +98,8 @@ void GraphicsWindow::GrabMouseMoved(Point2d mouse) {
 }
 
 void GraphicsWindow::GrabSetAxis(int axis) {
+    // Points drawn in a workplane stay in it: locking to its normal would freeze the grab.
+    if(axis == 2 && LockedInWorkplane()) return;
     grab.axis = grab.axis == axis ? -1 : axis;
     GrabMouseMoved(grab.lastMouse);
 }

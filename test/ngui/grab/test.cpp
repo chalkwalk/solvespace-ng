@@ -168,3 +168,20 @@ TEST_CASE(a_confirmed_grab_ends_redo) {
     Driver::Key("Ctrl+Shift+Z"); // nothing to redo after a new change
     CHECK_TRUE(SK.request.n == requests);
 }
+
+TEST_CASE(z_does_nothing_in_a_workplane) {
+    // Sketch points can't leave their workplane: locking to its normal would freeze the grab.
+    CHECK_LOAD("line.slvs");
+    hRequest line = SelectedLine();
+    Vector a0 = P(line.entity(1));
+    Point2d m = AtMiddle(line);
+    Driver::Key("G");
+    Driver::Key("Z");
+    CHECK_TRUE(SS.GW.grab.axis == -1);
+    Driver::Move(m.x + 40, m.y - 30);
+    CHECK_TRUE(P(line.entity(1)).Minus(a0).Magnitude() > 1);
+    bool offersZ = false;
+    for(const Ui::KeyHint &h : Ui::Grab().Hints()) offersZ |= h.keys.find('Z') != std::string::npos;
+    CHECK_FALSE(offersZ);
+    Driver::Key("Escape");
+}
