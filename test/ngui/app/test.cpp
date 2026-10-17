@@ -11,10 +11,13 @@ static void WriteText(const Platform::Path &path, const std::string &text) {
     fclose(f);
 }
 
-TEST_CASE(ctrl_alt_t_toggles_the_theme_and_remembers_it) {
+TEST_CASE(the_palette_toggles_the_theme_and_remembers_it) {
+    // No default key: Ctrl+Alt+T, the obvious one, opens a terminal on most Linux desktops.
     CHECK_LOAD("line.slvs");
     std::string before = Platform::GetSettings()->ThawString("NG_Theme", "dark");
-    Driver::Key("Ctrl+Alt+T");
+    Driver::Key("Space");
+    Driver::Type("toggle theme");
+    Driver::Key("Return");
     std::string after = Platform::GetSettings()->ThawString("NG_Theme", "dark");
     CHECK_TRUE(before != after);
 }

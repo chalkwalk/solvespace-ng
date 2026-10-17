@@ -86,3 +86,50 @@ TEST_CASE(altgr_on_linux_and_windows_is_text_not_a_chord) {
     // Right Alt on a layout without an AltGr level is an ordinary Alt chord.
     CHECK_EQ_STR(F(ChordFromKey(SDLK_A, SDLK_A, SDL_KMOD_RALT)), "Alt+A");
 }
+
+// Chords that desktops (GNOME, KDE, Windows, X) take before the app sees them, so binding one
+// makes a command unreachable or does something else entirely (Ctrl+Alt+T opens a terminal).
+static const char *const DesktopChords[] = {
+    "Ctrl+Alt+T", "Ctrl+Alt+L", "Ctrl+Alt+D", "Ctrl+Alt+Delete", "Ctrl+Alt+Backspace",
+    "Ctrl+Alt+Esc", "Ctrl+Alt+Tab", "Ctrl+Alt+Left", "Ctrl+Alt+Right", "Ctrl+Alt+Up",
+    "Ctrl+Alt+Down", "Ctrl+Shift+Alt+Left", "Ctrl+Shift+Alt+Right", "Ctrl+Shift+Alt+Up",
+    "Ctrl+Shift+Alt+Down", "Alt+Tab", "Alt+Shift+Tab", "Alt+Esc", "Alt+Space", "Alt+`",
+    "Alt+F1", "Alt+F2", "Alt+F4", "Alt+F7", "Alt+F8", "Alt+F10", "Ctrl+Esc", "Ctrl+Shift+Esc",
+};
+
+static std::vector<std::string> DesktopClashes(const keymap::Keymap &km, bool uiOnly) {
+    std::vector<std::string> clashes;
+    for(const char *text : DesktopChords) {
+        std::optional<keymap::Chord> chord = keymap::ParseChord(text);
+        if(!chord) {
+            clashes.push_back(std::string("unparsable ") + text);
+            continue;
+        }
+        const std::string *cmd = km.Lookup(*chord);
+        if(cmd && (!uiOnly || cmd->rfind("ui.", 0) == 0)) clashes.push_back(*cmd + ": " + text);
+    }
+    for(int f = 1; f <= 12; f++) {
+        std::string text = "Ctrl+Alt+F" + std::to_string(f); // switches virtual terminal
+        const std::string *cmd = km.Lookup(*keymap::ParseChord(text));
+        if(cmd && (!uiOnly || cmd->rfind("ui.", 0) == 0)) clashes.push_back(*cmd + ": " + text);
+    }
+    return clashes;
+}
+
+TEST_CASE(modern_preset_avoids_desktop_shortcuts) {
+    std::string err;
+    auto modern = SolveSpace::Ui::ModernPreset(&err);
+    CHECK_TRUE(modern.has_value());
+    std::vector<std::string> clashes = DesktopClashes(*modern, /*uiOnly=*/false);
+    for(const std::string &c : clashes) dbp("desktop shortcut bound: %s", c.c_str());
+    CHECK_TRUE(clashes.empty());
+}
+
+TEST_CASE(classic_preset_adds_no_desktop_shortcuts) {
+    // Classic keeps SolveSpace's own accelerators as they are; the NG actions it adds must not
+    // clash.
+    std::vector<std::string> clashes =
+        DesktopClashes(SolveSpace::Ui::ClassicPreset(), /*uiOnly=*/true);
+    for(const std::string &c : clashes) dbp("desktop shortcut bound: %s", c.c_str());
+    CHECK_TRUE(clashes.empty());
+}

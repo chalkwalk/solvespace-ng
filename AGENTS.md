@@ -389,6 +389,9 @@ macOS and Emscripten builds.
   - `pr/hover-list-leak`: every hit test leaked the previous hover list (from `60b82650`).
   - `pr/paste-scale-crash`: a non-expression in Paste Transformed's scale crashed (from
     `0868c8bd`).
+  - `pr/line-chain-ending`: right-click (and a second click on the last point) kept the line
+    segment following the cursor; a stale horizontal/vertical suggestion after a quick move
+    (from `9bdd5553`; sits on `pr/headless-null-guards`).
 - Tests: `RUN_COMMAND("<command-name>")` in `test/` runs a menu command headlessly (names in
   `src/commandnames.cpp`). Headless code paths have null windows/menu items: guard them.
   Not headless-safe yet (null FileDialog/Window under `guinone.cpp`): `open`, `save`, `save-as`,
