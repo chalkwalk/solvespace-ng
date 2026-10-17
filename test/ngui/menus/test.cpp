@@ -1,4 +1,5 @@
 #include "solvespace.h"
+#include "../uitest.h"
 #include "platform/sdl/uidriver.h"
 #include "ui/ngui.h"
 
@@ -88,3 +89,25 @@ TEST_CASE(n_toggles_properties_and_shift_n_the_old_browser) {
     CHECK_TRUE(Driver::FindItem("Property Browser").has_value());
 }
 
+
+TEST_CASE(keys_with_a_menu_open_do_not_run_tools) {
+    CHECK_LOAD("line.slvs");
+    CHECK_TRUE(Driver::ClickItem("Sketch"));
+    CHECK_TRUE(Driver::FindItem("Line Segment").has_value()); // the dropdown is open
+    Driver::Key("L");
+    CHECK_TRUE(SS.GW.pending.operation == GraphicsWindow::Pending::NONE);
+    Driver::Key("Escape"); // closes the dropdown
+    CHECK_FALSE(Driver::FindItem("Line Segment").has_value());
+    Driver::Move(600, 600);
+    Driver::Key("L");
+    CHECK_TRUE(SS.GW.pending.command == Command::LINE_SEGMENT);
+}
+
+TEST_CASE(ctrl_shortcuts_still_work_with_a_menu_open) {
+    CHECK_LOAD("line.slvs");
+    int requests = SK.request.n;
+    SolveSpace::UiTest::DrawLine(Point2d::From(500, 620), Point2d::From(600, 620));
+    CHECK_TRUE(Driver::ClickItem("Edit"));
+    Driver::Key("Ctrl+Z");
+    CHECK_TRUE(SK.request.n == requests);
+}

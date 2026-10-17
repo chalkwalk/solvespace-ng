@@ -1485,8 +1485,13 @@ static bool RouteKeyDown(const SDL_Event &ev) {
     SDL_Keycode produced = SDL_GetKeyFromScancode(ev.key.scancode, layer, false);
     auto chord = ChordFromKey(base, produced, mod);
     if(!chord) return false;
-    Ui::RouteResult r = ev.key.repeat ? gKeyRouter.RouteRepeat(*chord, TextEntryActive())
-                                      : gKeyRouter.Route(*chord, TextEntryActive());
+    // An open menu (bar dropdown, context menu, combo) takes the keys as a text field does:
+    // ImGui moves through it and Esc closes it; only Ctrl chords and F-keys run commands.
+    bool menuOpen = ImGui::IsPopupOpen("", ImGuiPopupFlags_AnyPopupId |
+                                               ImGuiPopupFlags_AnyPopupLevel);
+    bool captured = TextEntryActive() || menuOpen;
+    Ui::RouteResult r = ev.key.repeat ? gKeyRouter.RouteRepeat(*chord, captured)
+                                      : gKeyRouter.Route(*chord, captured);
     return r != Ui::RouteResult::UNBOUND;
 }
 
