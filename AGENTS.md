@@ -113,6 +113,9 @@ Rules:
 - **Command palette** and **pie menus** float over the viewport. The tool shelf is optional and
   hidden by default. (Built 2026-10-17: View ▸ Show Toolbar shows a "Tools" panel of Lucide-style
   icon buttons for every old-toolbar tool; NG never draws the custom toolbar.)
+- **View cube** (added 2026-10-17, as in Fusion 360, Onshape and FreeCAD): top right of the
+  viewport, left of any panel there. Click a face to look at it, an edge or a corner to look
+  between its faces (Z up, as the numpad views); drag it to orbit.
 
 **Typed values become constraints.** While a modal tool is active, typed numbers fill HUD fields
 (`Tab` cycles, `Enter` confirms, `Esc` or right-click cancels). Unlike Blender, a typed value

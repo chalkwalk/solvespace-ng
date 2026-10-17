@@ -17,6 +17,7 @@
 #include "ui/palettewidget.h"
 #include "ui/piemenu.h"
 #include "ui/shelf.h"
+#include "ui/viewcube.h"
 #include "ui/theme.h"
 #include "ui/uiactions.h"
 
@@ -199,6 +200,7 @@ std::function<void()> DrawNgUi(Platform::MenuBarSdl *menuBar, const keymap::Keym
     if(auto changed = DrawStyles()) run = changed;
     if(auto changed = DrawToolPanels()) run = changed;
     if(auto changed = DrawShelf(keymap)) run = changed;
+    if(auto changed = DrawViewCube()) run = changed;
     if(gHideBrowser) {
         // The Properties panel replaces the property browser, which starts hidden; View >
         // Show Property Browser brings it back.

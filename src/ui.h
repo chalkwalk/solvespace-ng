@@ -550,6 +550,9 @@ public:
 enum class ViewPreset { FRONT, BACK, RIGHT, LEFT, TOP, BOTTOM };
 // Screen right/up for a preset, Z up (Blender's numpad convention).
 void ViewPresetBasis(ViewPreset p, Vector *right, Vector *up);
+// The screen basis for looking from `toViewer`: Z kept up, or for a view straight down (up),
+// +Y (-Y) up, as the presets do. (The view cube's edges and corners.)
+void ViewBasisFor(Vector toViewer, Vector *right, Vector *up);
 
 class GraphicsWindow {
 public:
@@ -653,6 +656,8 @@ public:
 
     // SolveSpace NG interaction
     void SnapToView(ViewPreset p, bool animate);
+    void SnapToDirection(Vector toViewer, bool animate); // the view cube's faces, edges, corners
+    void OrbitBy(double dx, double dy);                  // as a middle-drag of (dx, dy) pixels
     // The view, from typed text (the browser's view screen and NG's View panel): the scale in
     // pixels per display unit, the origin as "x, y, z" and a projection vector as "x, y, z".
     // False (with an error message) when refused.

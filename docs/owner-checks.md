@@ -60,6 +60,16 @@ on-sketch glyphs (`—` `|` `//` `⊥` `=` `>¦<`), features follow Fusion/Onsha
       vertical strip at the left edge (where the old toolbar was), with the Outliner moved right.
 - [ ] Shrinking the window keeps every panel on screen.
 
+### View cube (2026-10-17)
+Screenshots: `docs/owner-review/viewcube-dark.png`, `viewcube-light.png`.
+- [ ] The cube in the top right turns with the view; faces are labelled.
+- [ ] Clicking a face looks straight at it (same as the numpad views); an edge or corner looks
+      between its faces; the part under the mouse is highlighted first.
+- [ ] Dragging the cube orbits the view; the drag never selects or moves anything.
+- [ ] It stays left of the Properties panel and moves into the corner when Properties closes.
+- [ ] Clicks just outside the cube but inside its square (the corners of its area) are taken
+      by the cube, not the canvas. Tell me if you notice it.
+
 ## Decisions waiting for the owner
 - Merge order: `ng/m1a-shell` > `ng/m1b-interaction` > `ng/m1-ui-harness` > `ng/m1c-panels` >
   `ng/m1c-feedback` > `master`.

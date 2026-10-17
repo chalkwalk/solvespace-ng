@@ -121,7 +121,8 @@ if(ENABLE_NG_GUI)
         ng/styles/test.cpp
         ng/viewedit/test.cpp
         ng/icons/test.cpp
-        ng/shelf/test.cpp)
+        ng/shelf/test.cpp
+        ng/viewcube/test.cpp)
     target_link_libraries(solvespace-testsuite solvespace-ng-support)
 endif()
 
