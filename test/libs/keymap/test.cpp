@@ -89,3 +89,29 @@ TEST_CASE(parse_with_command_validator) {
     CHECK_TRUE(err.find("line 2") != std::string::npos);
     CHECK_TRUE(err.find("reddo") != std::string::npos);
 }
+
+TEST_CASE(hash_key_in_file) {
+    std::string err;
+    auto km = Keymap::Parse("# a comment line\n"
+                            "a: #\n"
+                            "b: Shift+#, X  # a comment after a chord\n"
+                            "c: Y, Ctrl+#\n", &err);
+    CHECK_TRUE(km.has_value());
+    CHECK_TRUE(*km->Lookup(*keymap::ParseChord("#")) == "a");
+    CHECK_TRUE(*km->Lookup(*keymap::ParseChord("Shift+#")) == "b");
+    CHECK_TRUE(*km->Lookup(*keymap::ParseChord("X")) == "b");
+    CHECK_TRUE(km->ChordsFor("c").size() == 2);
+    // And it survives a round trip.
+    auto again = Keymap::Parse(km->Serialize(), &err);
+    CHECK_TRUE(again.has_value() && *again->Lookup(*keymap::ParseChord("#")) == "a");
+    // Right after a comma, too.
+    auto afterComma = Keymap::Parse("c: Y, #\n", &err);
+    CHECK_TRUE(afterComma.has_value() && *afterComma->Lookup(*keymap::ParseChord("#")) == "c");
+}
+
+TEST_CASE(utf8_bom_is_ignored) {
+    std::string err;
+    auto km = Keymap::Parse("\xEF\xBB\xBFline-segment: L\n", &err);
+    CHECK_TRUE(km.has_value());
+    CHECK_TRUE(*km->Lookup(*keymap::ParseChord("L")) == "line-segment");
+}

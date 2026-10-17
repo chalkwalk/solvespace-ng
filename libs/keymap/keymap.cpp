@@ -110,18 +110,32 @@ static std::string_view Trim(std::string_view s) {
     return s;
 }
 
+// '#' starts a comment at the start of a line, or after a space that follows a chord
+// ("L  # draws a line"). Right after ':', ',' or '+' it is the '#' key itself ("Shift+#").
+static std::string_view StripComment(std::string_view line) {
+    for(size_t i = 0; i < line.size(); i++) {
+        if(line[i] != '#') continue;
+        size_t before = line.find_last_not_of(" \t", i == 0 ? std::string_view::npos : i - 1);
+        if(i == 0 || before == std::string_view::npos) return {};
+        char prev = line[before];
+        bool spaced = before + 1 < i;
+        if(spaced && prev != ':' && prev != ',' && prev != '+') return line.substr(0, i);
+    }
+    return line;
+}
+
 std::optional<Keymap> Keymap::Parse(std::string_view text, std::string *error,
                                     const std::function<bool(const std::string &)> &isKnownCommand) {
     Keymap km;
     int lineNo = 0;
     size_t pos = 0;
+    if(text.substr(0, 3) == "\xEF\xBB\xBF") pos = 3; // a UTF-8 byte order mark
     while(pos <= text.size()) {
         size_t nl = text.find('\n', pos);
         std::string_view line = text.substr(pos, nl == std::string_view::npos ? nl : nl - pos);
         pos = (nl == std::string_view::npos) ? text.size() + 1 : nl + 1;
         lineNo++;
-        size_t hash = line.find('#');
-        if(hash != std::string_view::npos) line = line.substr(0, hash);
+        line = StripComment(line);
         line = Trim(line);
         if(line.empty()) continue;
         auto fail = [&](const std::string &why) -> std::optional<Keymap> {
