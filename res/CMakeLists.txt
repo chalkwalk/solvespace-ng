@@ -302,6 +302,40 @@ add_resources(
     keymaps/modern.keymap
     fonts/ng/Inter-Regular.ttf
     fonts/ng/JetBrainsMono-Regular.ttf
+    icons/ng/angle.svg
+    icons/ng/arc.svg
+    icons/ng/arrow-up-from-line.svg
+    icons/ng/axis-3d.svg
+    icons/ng/box.svg
+    icons/ng/circle.svg
+    icons/ng/construction-line.svg
+    icons/ng/copy.svg
+    icons/ng/dot-point.svg
+    icons/ng/equal.svg
+    icons/ng/helix.svg
+    icons/ng/horizontal.svg
+    icons/ng/image.svg
+    icons/ng/layers-plus.svg
+    icons/ng/link.svg
+    icons/ng/other-angle.svg
+    icons/ng/parallel.svg
+    icons/ng/parentheses.svg
+    icons/ng/perpendicular.svg
+    icons/ng/point-on.svg
+    icons/ng/rectangle-horizontal.svg
+    icons/ng/rotate-3d.svg
+    icons/ng/rotate-ccw.svg
+    icons/ng/rotate-cw-square.svg
+    icons/ng/ruler-dimension-line.svg
+    icons/ng/same-orientation.svg
+    icons/ng/scan.svg
+    icons/ng/scissors.svg
+    icons/ng/slash.svg
+    icons/ng/spline.svg
+    icons/ng/symmetric.svg
+    icons/ng/tangent-arc.svg
+    icons/ng/type.svg
+    icons/ng/vertical.svg
     fonts/BitstreamVeraSans-Roman-builtin.ttf
     shaders/imesh.frag
     shaders/imesh.vert

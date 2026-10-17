@@ -313,6 +313,7 @@ if(ENABLE_GUI AND ENABLE_NG_GUI)
         ui/coreactions.cpp
         ui/statusmodel.cpp
         ui/iconraster.cpp
+        ui/shelfmodel.cpp
         ui/grabtool.cpp
         ui/drawtool.cpp
         ui/outlinermodel.cpp
