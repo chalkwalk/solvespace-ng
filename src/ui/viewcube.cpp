@@ -66,6 +66,9 @@ std::function<void()> DrawViewCube() {
     Vector right = SS.GW.projRight, up = SS.GW.projUp;
 
     ImGui::InvisibleButton("##viewcube", ImVec2(Box, Box));
+    // See-through until the mouse is on it, so it hides little of the model (as FreeCAD's).
+    bool  over    = ImGui::IsItemHovered() || ImGui::IsItemActive();
+    float opacity = over ? 0.97f : 0.8f;
     ImGuiIO &io = ImGui::GetIO();
     Point2d  mouse = Point2d::From(io.MousePos.x, io.MousePos.y);
     std::optional<Vector> hovered;
@@ -86,8 +89,8 @@ std::function<void()> DrawViewCube() {
     ImVec4      face   = ImGui::GetStyleColorVec4(ImGuiCol_FrameBg);
     ImVec4      text   = ImGui::GetStyleColorVec4(ImGuiCol_Text);
     // Edges in the text colour, so the cube reads in either theme.
-    ImU32       border = ImGui::GetColorU32(ImGuiCol_Text, 0.45f);
-    face.w = 0.92f;
+    ImU32       border = ImGui::GetColorU32(ImGuiCol_Text, 0.45f * opacity);
+    face.w = opacity;
     for(const CubeFace &f : ViewCubeFaces(right, up, gCenter, CubeSize)) {
         if(!f.visible) continue;
         // Faces turned away from the viewer are drawn a little darker.
@@ -100,7 +103,7 @@ std::function<void()> DrawViewCube() {
             ImVec2 mid((q[0].x + q[2].x) / 2, (q[0].y + q[2].y) / 2);
             ImVec2 ts = ImGui::CalcTextSize(f.label.c_str());
             ImVec4 t  = text;
-            t.w       = std::min(1.0f, (float)f.facing * 1.4f);
+            t.w       = std::min(1.0f, (float)f.facing * 1.4f) * opacity;
             dl->AddText(ImVec2(mid.x - ts.x / 2, mid.y - ts.y / 2), ImGui::GetColorU32(t),
                         f.label.c_str());
         }

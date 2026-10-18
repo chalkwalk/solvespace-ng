@@ -69,8 +69,10 @@ Screenshots: `docs/owner-review/viewcube-dark.png`, `viewcube-light.png`.
       between its faces; the part under the mouse is highlighted first.
 - [ ] Dragging the cube orbits the view; the drag never selects or moves anything.
 - [ ] It stays left of the Properties panel and moves into the corner when Properties closes.
+- [ ] It is 80% opaque until the mouse is on it, then solid.
 - [ ] Clicks just outside the cube but inside its square (the corners of its area) are taken
       by the cube, not the canvas. Tell me if you notice it.
+- The bottom-left X/Y/Z axes stay: they are the reference normals, selectable for constraints.
 
 ## Decisions waiting for the owner
 - Merge order: `ng/m1a-shell` > `ng/m1b-interaction` > `ng/m1-ui-harness` > `ng/m1c-panels` >
