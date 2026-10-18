@@ -304,7 +304,6 @@ add_resources(
     fonts/ng/JetBrainsMono-Regular.ttf
     icons/ng/angle.svg
     icons/ng/arc.svg
-    icons/ng/box.svg
     icons/ng/circle.svg
     icons/ng/circular-pattern.svg
     icons/ng/construction.svg
@@ -314,13 +313,14 @@ add_resources(
     icons/ng/helix.svg
     icons/ng/horizontal.svg
     icons/ng/image.svg
+    icons/ng/insert-part.svg
+    icons/ng/isometric.svg
     icons/ng/lathe.svg
     icons/ng/line.svg
     icons/ng/linear-pattern.svg
     icons/ng/new-sketch.svg
     icons/ng/normal-to.svg
     icons/ng/other-angle.svg
-    icons/ng/package-plus.svg
     icons/ng/parallel.svg
     icons/ng/perpendicular.svg
     icons/ng/point-on.svg

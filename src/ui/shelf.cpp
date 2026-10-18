@@ -30,7 +30,22 @@ std::function<void()> DrawShelf(const keymap::Keymap &keymap) {
         // Drawn at the framebuffer's resolution, so icons stay crisp on HiDPI screens.
         float       scale = std::max(1.0f, io.DisplayFramebufferScale.x);
         const float icon  = 22;
-        ImVec4      tint  = ImGui::GetStyleColorVec4(ImGuiCol_Text);
+        // The icons mirror the drawing area: its line styles' colours, and the theme's.
+        auto rgb = [](RgbaColor c) {
+            return ((uint32_t)c.red << 16) | ((uint32_t)c.green << 8) | (uint32_t)c.blue;
+        };
+        auto imRgb = [](ImGuiCol col) {
+            ImVec4 c = ImGui::GetStyleColorVec4(col);
+            return ((uint32_t)(c.x * 255 + 0.5f) << 16) | ((uint32_t)(c.y * 255 + 0.5f) << 8) |
+                   (uint32_t)(c.z * 255 + 0.5f);
+        };
+        IconPalette palette;
+        palette.text         = imRgb(ImGuiCol_Text);
+        palette.entity       = rgb(Style::Color(hStyle{ Style::ACTIVE_GRP }));
+        palette.point        = rgb(Style::Color(hStyle{ Style::DATUM }));
+        palette.constraint   = rgb(Style::Color(hStyle{ Style::CONSTRAINT }));
+        palette.construction = rgb(Style::Color(hStyle{ Style::CONSTRUCTION }));
+        palette.solid        = imRgb(ImGuiCol_CheckMark); // the theme's accent
         // Rows wrap at this width, so a narrow window still shows every button.
         float maxWidth = std::min(560.0f, io.DisplaySize.x - 24) - st.WindowPadding.x * 2;
         float rowWidth = 0;
@@ -48,14 +63,15 @@ std::function<void()> DrawShelf(const keymap::Keymap &keymap) {
             for(const ShelfItem &item : sections[si].items) {
                 if(sectionWidth > 0) sectionWidth += spacing;
                 sectionWidth += buttonWidth(item, Platform::IconTexture(
-                                                      item.icon, (int)(icon * scale + 0.5f)));
+                                                      item.icon, (int)(icon * scale + 0.5f), palette));
             }
             bool newRow = rowWidth > 0 && rowWidth + spacing + 12 + sectionWidth > maxWidth;
             for(size_t ii = 0; ii < sections[si].items.size(); ii++) {
                 const ShelfItem &item = sections[si].items[ii];
                 std::string      id    = std::string("##shelf-") + CommandName(item.command);
                 std::string      label = item.label + id;
-                ImTextureID tex = Platform::IconTexture(item.icon, (int)(icon * scale + 0.5f));
+                ImTextureID tex =
+                    Platform::IconTexture(item.icon, (int)(icon * scale + 0.5f), palette);
                 float width = buttonWidth(item, tex);
                 // A wider gap between sections.
                 float gap = spacing + (ii == 0 && si > 0 ? 12 : 0);
@@ -71,7 +87,7 @@ std::function<void()> DrawShelf(const keymap::Keymap &keymap) {
                 bool clicked;
                 if(tex) {
                     clicked = ImGui::ImageButton(id.c_str(), tex, ImVec2(icon, icon), ImVec2(0, 0),
-                                                 ImVec2(1, 1), ImVec4(0, 0, 0, 0), tint);
+                                                 ImVec2(1, 1));
                     // Image buttons report no label; give the UI tests one to find.
                     ImGuiContext &g = *GImGui;
                     (void)g;

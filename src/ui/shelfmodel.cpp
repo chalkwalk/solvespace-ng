@@ -45,8 +45,8 @@ static const struct {
     { "Groups",    Command::GROUP_TRANS,    "linear-pattern" },
     { "Groups",    Command::GROUP_WRKPL,    "new-sketch" },
     { "Groups",    Command::GROUP_3D,       "sketch-3d" },
-    { "Groups",    Command::GROUP_LINK,     "package-plus" },
-    { "View",      Command::NEAREST_ISO,    "box" },
+    { "Groups",    Command::GROUP_LINK,     "insert-part" },
+    { "View",      Command::NEAREST_ISO,    "isometric" },
     { "View",      Command::ONTO_WORKPLANE, "normal-to" },
 };
 

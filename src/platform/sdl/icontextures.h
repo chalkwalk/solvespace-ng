@@ -8,14 +8,17 @@
 #include <string>
 #include <string_view>
 #include "imgui.h"
+#include "ui/iconraster.h"
 
 namespace SolveSpace {
 namespace Platform {
 
-// The icon "icons/ng/<name>.svg" at px x px; 0 if it doesn't rasterize.
-ImTextureID IconTexture(const std::string &name, int px);
+// The icon "icons/ng/<name>.svg" at px x px in the palette's colours; 0 if it doesn't
+// rasterize. Cached per size and palette, so a theme or style change draws it afresh.
+ImTextureID IconTexture(const std::string &name, int px, const Ui::IconPalette &palette = {});
 // The same for SVG text, cached under `key`.
-ImTextureID IconTextureFromSvg(const std::string &key, std::string_view svg, int px);
+ImTextureID IconTextureFromSvg(const std::string &key, std::string_view svg, int px,
+                               const Ui::IconPalette &palette = {});
 
 }
 }

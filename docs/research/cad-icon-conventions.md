@@ -59,9 +59,16 @@ square onto it.
 
 ## Applied to NG
 
-Every shelf icon follows the table above; the SolveSpace-only commands get the nearest
-convention (Split Curves at Intersection: two crossing lines with the split point, as FreeCAD's
-Split; Other Supplementary Angle: crossing lines with the angle on the other side).
+Second pass (owner review, 2026-10-17): SolveSpace's own toolbar icons already follow these
+conventions *and* look like the drawing area (white lines, green square points, magenta
+constraint marks such as `H`, `V`, `|<-10->|`, `REF`), which ties each tool to what it draws;
+and FreeCAD's shaded feature icons read as 3D far better than outlines. So the NG icons
+(`res/icons/ng/generate.py`) are vector redraws in that spirit: sketch tools and constraints are
+miniatures of the canvas, coloured at run time from the drawing's line styles (Active group,
+Datum, Constraint, Construction), and features are small solids shaded in the theme's accent
+colour. Changing the theme or a line-style colour recolours the icons. SolveSpace-only commands
+get the nearest convention (Split Curves at Intersection: crossing lines with the split point;
+Other Supplementary Angle: crossing lines with the angle on the other side).
 
 ## Panel layouts
 

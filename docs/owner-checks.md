@@ -53,6 +53,8 @@ Screenshots: `docs/owner-review/shelf-dark.png`, `shelf-light.png`, and every ic
 `docs/owner-review/icons.png`. Redrawn 2026-10-17 after researching other CAD apps
 (`docs/research/cad-icon-conventions.md`): sketch tools show their points, constraints are their
 on-sketch glyphs (`—` `|` `//` `⊥` `=` `>¦<`), features follow Fusion/Onshape/FreeCAD.
+Third pass (v3): miniatures of the drawing area in its own line-style colours (as stock
+SolveSpace's toolbar), features as shaded solids in the theme accent; `generate.py` writes them.
 - [ ] View ▸ Show Toolbar shows the "Tools" shelf at the top; the old left toolbar is gone.
 - [ ] Each button starts its tool; hovering shows its name and key.
 - [ ] The icons read clearly in both themes and look like what you know from other CAD.

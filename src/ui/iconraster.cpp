@@ -1,6 +1,8 @@
 //-----------------------------------------------------------------------------
 // Icons drawn into pixels with lunasvg.
 //-----------------------------------------------------------------------------
+#include <algorithm>
+#include <cstdio>
 #include <cstring>
 #include <string>
 #include <lunasvg.h>
@@ -9,13 +11,42 @@
 namespace SolveSpace {
 namespace Ui {
 
-std::optional<IconImage> RasterizeIcon(std::string_view svg, int px) {
+static std::string Hex(uint32_t rgb) {
+    char buf[8];
+    snprintf(buf, sizeof(buf), "#%06x", rgb & 0xffffff);
+    return buf;
+}
+
+// A colour mixed towards white (t > 0) or black (t < 0).
+static uint32_t Shade(uint32_t rgb, double t) {
+    uint32_t out = 0;
+    for(int shift = 0; shift <= 16; shift += 8) {
+        double c = (rgb >> shift) & 0xff;
+        c        = t > 0 ? c + (255 - c) * t : c * (1 + t);
+        out |= (uint32_t)std::min(255.0, std::max(0.0, c + 0.5)) << shift;
+    }
+    return out;
+}
+
+std::optional<IconImage> RasterizeIcon(std::string_view svg, int px,
+                                       const IconPalette &palette) {
     if(px <= 0) return std::nullopt;
-    // Lucide strokes with currentColor; draw white so the UI can tint it with any colour.
     std::string text(svg);
-    const std::string current = "currentColor";
-    for(size_t at; (at = text.find(current)) != std::string::npos;) {
-        text.replace(at, current.size(), "#ffffff");
+    const std::pair<std::string, uint32_t> colours[] = {
+        { "currentColor", palette.text },
+        { "#e00001", palette.entity },
+        { "#e00002", palette.point },
+        { "#e00003", palette.constraint },
+        { "#e00004", palette.construction },
+        { "#e00005", Shade(palette.solid, 0.35) },
+        { "#e00006", palette.solid },
+        { "#e00007", Shade(palette.solid, -0.35) },
+    };
+    for(const auto &[placeholder, rgb] : colours) {
+        std::string value = Hex(rgb);
+        for(size_t at; (at = text.find(placeholder)) != std::string::npos;) {
+            text.replace(at, placeholder.size(), value);
+        }
     }
     std::unique_ptr<lunasvg::Document> doc = lunasvg::Document::loadFromData(text);
     if(!doc) return std::nullopt;

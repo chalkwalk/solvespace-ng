@@ -952,12 +952,16 @@ static void FreeIconTextures() {
     gIconTextures.clear();
 }
 
-ImTextureID IconTextureFromSvg(const std::string &key, std::string_view svg, int px) {
-    std::string cacheKey = key + "@" + std::to_string(px);
+ImTextureID IconTextureFromSvg(const std::string &key, std::string_view svg, int px,
+                               const Ui::IconPalette &palette) {
+    char colours[64];
+    snprintf(colours, sizeof(colours), "/%x/%x/%x/%x/%x/%x", palette.text, palette.entity,
+             palette.point, palette.constraint, palette.construction, palette.solid);
+    std::string cacheKey = key + "@" + std::to_string(px) + colours;
     auto it = gIconTextures.find(cacheKey);
     if(it != gIconTextures.end()) return (ImTextureID)(intptr_t)it->second;
     GLuint tex = 0;
-    if(std::optional<Ui::IconImage> im = Ui::RasterizeIcon(svg, px)) {
+    if(std::optional<Ui::IconImage> im = Ui::RasterizeIcon(svg, px, palette)) {
         glGenTextures(1, &tex);
         glBindTexture(GL_TEXTURE_2D, tex);
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, im->width, im->height, 0, GL_RGBA,
@@ -972,10 +976,10 @@ ImTextureID IconTextureFromSvg(const std::string &key, std::string_view svg, int
     return (ImTextureID)(intptr_t)tex;
 }
 
-ImTextureID IconTexture(const std::string &name, int px) {
+ImTextureID IconTexture(const std::string &name, int px, const Ui::IconPalette &palette) {
     size_t      size = 0;
     const char *svg  = (const char *)LoadResource("icons/ng/" + name + ".svg", &size);
-    return IconTextureFromSvg(name, std::string_view(svg, size), px);
+    return IconTextureFromSvg(name, std::string_view(svg, size), px, palette);
 }
 
 static void EnsureFramebuffer(WindowImplSdl *w, int pw, int ph) {
