@@ -108,6 +108,53 @@ def dimension(y_line, y_dim, label):
             + mark(text(label, 12 - (len(label) * 4.2 - 1.1) / 2, y_dim - 3.5, 7.0), 1.3))
 
 
+
+def ellipse_pt(cx, cy, rx, ry, deg):
+    t = math.radians(deg)
+    return cx + rx * math.cos(t), cy + ry * math.sin(t)
+
+
+def revolve_icon():
+    """A round solid with a wedge cut out: a partial revolution (lathe is the full one)."""
+    cx, top, h, rx, ry = 12, 7.5, 9, 8.5, 3.2
+    a0, a1 = -25, 65                      # the cut-out wedge, front right (y grows downwards)
+    p0 = ellipse_pt(cx, top, rx, ry, a0)
+    p1 = ellipse_pt(cx, top, rx, ry, a1)
+    left = (cx - rx, top)
+    f = lambda p, dy=0: f'{p[0]:.2f} {p[1] + dy:.2f}'
+    stroke = f'stroke="{DARK}" stroke-width="0.8"'
+    side = (f'<path d="M{f(p1)}V{p1[1] + h:.2f}A{rx} {ry} 0 0 1 {f(left, h)}V{top}'
+            f'A{rx} {ry} 0 0 0 {f(p1)}z" fill="{MID}" {stroke} />')
+    cut1 = f'<path d="M{cx} {top}L{f(p0)}v{h}L{cx} {top + h}z" fill="{MID}" {stroke} />'
+    cut2 = f'<path d="M{cx} {top}L{f(p1)}v{h}L{cx} {top + h}z" fill="{DARK}" {stroke} />'
+    topface = (f'<path d="M{cx} {top}L{f(p1)}A{rx} {ry} 0 1 1 {f(p0)}z" fill="{LIT}" {stroke} />')
+    return (side + cut1 + cut2 + topface + chrome(f'M{cx} 1v22', 1.2, '2 1.8'))
+
+
+def helix_icon():
+    """A coiled tube around its axis: back strands dark and thin, front strands lit and thick."""
+    cx, rx, tilt, y0, pitch, turns = 12, 7.5, 3.4, 4.5, 7.5, 2.0
+    pts = []
+    steps = int(turns * 48)
+    for i in range(steps + 1):
+        t = 2 * math.pi * turns * i / steps
+        pts.append((cx + rx * math.cos(t), y0 + pitch * t / (2 * math.pi) + tilt * math.sin(t),
+                    math.sin(t) >= 0))
+    def runs(front):
+        out, cur = [], []
+        for x, y, f in pts:
+            if f == front:
+                cur.append(f'{x:.2f} {y:.2f}')
+            elif cur:
+                out.append('M' + ' L'.join(cur)); cur = []
+        if cur: out.append('M' + ' L'.join(cur))
+        return ' '.join(out)
+    back, front = runs(False), runs(True)
+    return (f'<path d="{back}" stroke="{MID}" stroke-width="1.6" opacity="0.8" />'
+            + chrome(f'M{cx} 1v22', 1.2, '2 1.8')
+            + f'<path d="{front}" stroke="{DARK}" stroke-width="3.4" />'
+            + f'<path d="{front}" stroke="{LIT}" stroke-width="1.8" />')
+
 ICONS = {
     # Sketch: entities as the canvas draws them.
     'line': line('M5 19 19 5') + pt(5, 19) + pt(19, 5),
@@ -159,17 +206,8 @@ ICONS = {
               f'<ellipse cx="12" cy="7" rx="6" ry="2.4" fill="{LIT}" stroke="{DARK}" stroke-width="0.8" />'
               + chrome('M12 1v22', 1.2, '2 1.8')
               + chrome('M3 12.5a9 3.2 0 1 0 3-2.6 ' + arrowhead(5.8, 10.0, 1, -0.5, 2), 1.3)),
-    'revolve': (f'<path d="M12 7v10a6 2.4 0 0 0 6-2.4V4.6A6 2.4 0 0 1 12 7z" fill="{MID}" '
-                f'stroke="{DARK}" stroke-width="0.8" />'
-                f'<path d="M12 7a6 2.4 0 0 0 6-2.4L12 4.6z" fill="{LIT}" stroke="{DARK}" stroke-width="0.8" />'
-                + line('M11 7H5v10h6', 1.3) + pt(5, 7, 2.6) + pt(5, 17, 2.6)
-                + chrome('M12 1v22', 1.2, '2 1.8')
-                + chrome('M4 13a8.5 3 0 0 0 10 3.4 ' + arrowhead(14.4, 16.3, 1, -0.2, 2), 1.3)),
-    'helix': (chrome('M12 1v22', 1.2, '2 1.8')
-              + f'<path d="M5 5c4 0 14 1 14 3s-14 1-14 4 14 1 14 3-14 1-14 4 14 1 14 2" '
-                f'stroke="{DARK}" stroke-width="3.4" />'
-              + f'<path d="M5 5c4 0 14 1 14 3s-14 1-14 4 14 1 14 3-14 1-14 4 14 1 14 2" '
-                f'stroke="{LIT}" stroke-width="1.6" />'),
+    'revolve': revolve_icon(),
+    'helix': helix_icon(),
     'circular-pattern': (chrome('M12 4.5a7.5 7.5 0 1 1-6.5 3.75', 1.1, '2 1.6')
                          + cube(9.5, 1.5, 4.4) + cube(16.5, 13.5, 4.4) + cube(1.5, 13.5, 4.4)),
     'linear-pattern': (cube(1.5, 8, 4.6) + cube(9, 8, 4.6) + cube(16.5, 8, 4.6)
