@@ -192,7 +192,7 @@ static void DescribeEntity(Entity *e, SelectionModel *m) {
     }
     if(e->IsStylable()) {
         if(e->style.v) {
-            SelectionRow style = Value("style", Style::Get(e->style)->DescriptionString());
+            SelectionRow style = Value("style", Style::DisplayName(e->style));
             style.style        = e->style;
             rows.push_back(style);
         } else {

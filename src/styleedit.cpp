@@ -178,4 +178,21 @@ void Style::UseThemeColors(bool light) {
     SS.GW.Invalidate();
 }
 
+std::string Style::DisplayName(hStyle hs) {
+    static const std::pair<uint32_t, const char *> names[] = {
+        { ACTIVE_GRP, "Active group lines" }, { CONSTRUCTION, "Construction lines" },
+        { INACTIVE_GRP, "Inactive group lines" }, { DATUM, "Points" },
+        { SOLID_EDGE, "Solid edges" }, { CONSTRAINT, "Constraints" },
+        { SELECTED, "Selected" }, { HOVERED, "Hovered" }, { CONTOUR_FILL, "Contour fill" },
+        { NORMALS, "Normals" }, { ANALYZE, "Analysis" }, { DRAW_ERROR, "Errors" },
+        { DIM_SOLID, "Dimmed solids" }, { HIDDEN_EDGE, "Hidden edges" },
+        { OUTLINE, "Outlines" },
+    };
+    for(auto &[h, name] : names) {
+        if(hs.v == h) return name;
+    }
+    Style *s = Style::Get(hs);
+    return s->name.empty() ? s->DescriptionString() : s->name;
+}
+
 }

@@ -194,8 +194,6 @@ TEST_CASE(switching_keymaps_in_the_middle_of_a_session) {
 
     // Classic from Preferences: S draws a line, as in stock SolveSpace.
     Driver::Key("Ctrl+,");
-    CHECK_TRUE(RevealIn("Preferences", "SolveSpace NG"));
-    CHECK_TRUE(Driver::ClickItem("SolveSpace NG"));
     CHECK_TRUE(RevealIn("Preferences", "classic keys"));
     CHECK_TRUE(Driver::ClickItem("classic keys"));
     CHECK_TRUE(ClosePanel("Preferences"));

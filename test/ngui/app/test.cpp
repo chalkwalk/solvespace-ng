@@ -26,8 +26,6 @@ TEST_CASE(the_light_theme_lightens_the_drawing_area_too) {
     CHECK_LOAD("line.slvs");
     CHECK_TRUE(SS.backgroundColor.Equals(RGBi(0, 0, 0)));
     Driver::Key("Ctrl+,");
-    CHECK_TRUE(RevealIn("Preferences", "SolveSpace NG"));
-    CHECK_TRUE(Driver::ClickItem("SolveSpace NG"));
     CHECK_TRUE(RevealIn("Preferences", "light theme"));
     CHECK_TRUE(Driver::ClickItem("light theme"));
     CHECK_TRUE(SS.backgroundColor.red > 200);

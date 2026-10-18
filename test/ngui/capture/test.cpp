@@ -126,10 +126,10 @@ TEST_CASE(preferences) {
     CHECK_LOAD("line.slvs");
     Driver::Key("Ctrl+,");
     Shot("panel-6-preferences", Panel("Preferences"));
-    for(const char *section : { "SolveSpace NG", "Export" }) {
+    for(const char *section : { "Export" }) {
         if(RevealIn("Preferences", section)) Driver::ClickItem(section);
     }
-    RevealIn("Preferences", "SolveSpace NG");
+    RevealIn("Preferences", "Export");
     Shot("panel-7-preferences-more", Panel("Preferences"));
 }
 

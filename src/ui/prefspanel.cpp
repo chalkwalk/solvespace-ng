@@ -133,6 +133,8 @@ static void Ng(std::function<void()> *run) {
 std::function<void()> DrawPreferences() {
     std::function<void()> run;
     if(!PreferencesPanel().Begin()) return run;
+    // NG's own settings (theme, keys) first (owner review 2026-10-17, P11).
+    if(ImGui::CollapsingHeader("SolveSpace NG", ImGuiTreeNodeFlags_DefaultOpen)) Ng(&run);
     if(ImGui::CollapsingHeader("Display", ImGuiTreeNodeFlags_DefaultOpen)) Display(&run);
     if(ImGui::CollapsingHeader("Navigation")) Navigation(&run);
     if(ImGui::CollapsingHeader("Export")) Export(&run);
@@ -142,7 +144,6 @@ std::function<void()> DrawPreferences() {
         Field("autosave interval (minutes)", "##autosave-interval", Setting::AUTOSAVE_INTERVAL,
               &run);
     }
-    if(ImGui::CollapsingHeader("SolveSpace NG")) Ng(&run);
     if(ImGui::CollapsingHeader("About")) {
         const char *vendor = "", *renderer = "", *version = "";
         if(SS.GW.canvas) SS.GW.canvas->GetIdent(&vendor, &renderer, &version);

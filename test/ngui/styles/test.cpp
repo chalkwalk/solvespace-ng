@@ -80,9 +80,16 @@ TEST_CASE(selection_style_link_opens_the_style) {
     ClickAt(AtMiddle(line));
     std::optional<Driver::Item> link;
     for(const Driver::Item &i : Driver::Items()) {
-        if(i.label == Style::Get(hs)->DescriptionString()) link = i;
+        if(i.label == Style::DisplayName(hs)) link = i;
     }
     CHECK_TRUE(link.has_value());
     Driver::Click(link->Center().x, link->Center().y);
     CHECK_TRUE(StylesShown());
+}
+
+TEST_CASE(built_in_styles_are_listed_by_what_they_colour) {
+    CHECK_LOAD("line.slvs");
+    CHECK_TRUE(Driver::ClickMenu({ "Edit", "Line Styles..." }));
+    CHECK_TRUE(Driver::FindItem("Active group lines").has_value());
+    CHECK_TRUE(Driver::FindItem("Constraints").has_value());
 }

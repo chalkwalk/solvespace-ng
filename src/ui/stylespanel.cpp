@@ -63,7 +63,7 @@ static void DrawStyle(Style *s, std::function<void()> *run) {
             };
         }
     } else {
-        ImGui::TextUnformatted(s->DescriptionString().c_str());
+        ImGui::TextUnformatted(Style::DisplayName(hs).c_str());
     }
 
     ImGui::SeparatorText("line stroke");
@@ -152,7 +152,7 @@ std::function<void()> DrawStyles() {
         ImGui::ColorButton("##swatch", ImVec4(rgb[0], rgb[1], rgb[2], 1),
                            ImGuiColorEditFlags_NoTooltip, ImVec2(16, 16));
         ImGui::SameLine();
-        std::string label = s.DescriptionString() + "##style:" + std::to_string(hs.v);
+        std::string label = Style::DisplayName(hs) + "##style:" + std::to_string(hs.v);
         if(ImGui::Selectable(label.c_str(), hs == gShown)) run = [hs] { gShown = hs; };
         ImGui::PopID();
     }

@@ -80,3 +80,14 @@ TEST_CASE(canvas_colours_follow_the_theme_unless_customised) {
     CHECK_TRUE(Same(Style::Color(hovered), stockHovered));
     CHECK_TRUE(Same(Style::Color(constraint), RGBi(0, 0, 255)));
 }
+
+TEST_CASE(built_in_styles_have_readable_names) {
+    // (P10) The built-in styles read as what they colour; a custom style shows its own name.
+    CHECK_LOAD("line.slvs");
+    CHECK_EQ_STR(Style::DisplayName(hStyle{ Style::ACTIVE_GRP }), "Active group lines");
+    CHECK_EQ_STR(Style::DisplayName(hStyle{ Style::DATUM }), "Points");
+    CHECK_EQ_STR(Style::DisplayName(hStyle{ Style::CONSTRAINT }), "Constraints");
+    hStyle hs = { Style::CreateCustomStyle() };
+    Style::SetValue(hs, StyleValue::NAME, "hidden lines");
+    CHECK_EQ_STR(Style::DisplayName(hs), "hidden lines");
+}

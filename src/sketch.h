@@ -932,6 +932,9 @@ public:
     // Switch the default styles and background between the dark (stock) and light palettes;
     // colours the user changed (matching neither palette) stay. Saved to the settings.
     static void        UseThemeColors(bool light);
+    // What a style is called in NG's panels: the built-in ones by what they colour ("Active
+    // group lines"), a custom one by its own name.
+    static std::string DisplayName(hStyle hs);
     static void        Delete(hStyle hs);
 
     static RgbaColor RewriteColor(RgbaColor rgb);

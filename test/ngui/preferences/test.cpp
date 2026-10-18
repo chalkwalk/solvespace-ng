@@ -24,10 +24,14 @@ TEST_CASE(toggles_and_fields_change_settings) {
     CHECK_LOAD("line.slvs");
     Driver::Key("Ctrl+,");
     bool si = SS.useSIPrefixes;
+    // Below the SolveSpace NG section, which comes first.
+    CHECK_TRUE(RevealIn("Preferences", "use SI prefixes for distances"));
     CHECK_TRUE(Driver::ClickItem("use SI prefixes for distances"));
     CHECK_TRUE(SS.useSIPrefixes == !si);
+    CHECK_TRUE(RevealIn("Preferences", "max-segments"));
     CHECK_TRUE(EditField("max-segments", "64"));
     CHECK_TRUE(SS.maxSegments == 64);
+    CHECK_TRUE(RevealIn("Preferences", "digits"));
     CHECK_TRUE(EditField("digits", "3"));
     CHECK_TRUE(SS.UnitDigitsAfterDecimal() == 3);
 }
@@ -36,6 +40,7 @@ TEST_CASE(a_bad_value_is_refused_with_a_message) {
     CHECK_LOAD("line.slvs");
     Driver::Key("Ctrl+,");
     int digits = SS.UnitDigitsAfterDecimal();
+    CHECK_TRUE(RevealIn("Preferences", "digits"));
     CHECK_TRUE(EditField("digits", "12"));
     CHECK_TRUE(SS.UnitDigitsAfterDecimal() == digits);
     CHECK_TRUE(Driver::Dialogs().size() == 1);
@@ -58,8 +63,6 @@ TEST_CASE(export_section_opens_and_takes_lengths) {
 TEST_CASE(classic_keys_take_effect_at_once) {
     CHECK_LOAD("line.slvs");
     Driver::Key("Ctrl+,");
-    CHECK_TRUE(RevealIn("Preferences", "SolveSpace NG"));
-    CHECK_TRUE(Driver::ClickItem("SolveSpace NG"));
     CHECK_TRUE(RevealIn("Preferences", "classic keys"));
     CHECK_TRUE(Driver::ClickItem("classic keys"));
     Driver::Move(600, 650); // off the panel, onto the canvas
@@ -80,3 +83,11 @@ TEST_CASE(context_menu_group_info_opens_properties) {
 }
 
 
+
+TEST_CASE(the_ng_section_comes_first) {
+    // (P11) Theme and keys are what people look for: visible without scrolling.
+    CHECK_LOAD("line.slvs");
+    Driver::Key("Ctrl+,");
+    std::optional<Driver::Item> light = Driver::FindItem("light theme");
+    CHECK_TRUE(light && light->fullyVisible);
+}
