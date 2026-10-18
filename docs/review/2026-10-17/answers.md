@@ -38,3 +38,6 @@ pie icons · P13 context menu names and NG actions · P14 Problems names with ic
    Plasticity (and vim-style unmodified keys) for a proposed Modern keymap, with Helix/Lathe.
 3. Research panel layouts (left-stacked Outliner + Properties, vertical tool column).
 4. One review round for 2 and 3, each screen once.
+
+Items 2-4: research in `docs/research/keymap-and-layout.md`; round
+`~/solvespace-ng-blind/2026-10-17-keys-layout` (spec `keys-layout.json`) asks K1-K6, L1 and V1.

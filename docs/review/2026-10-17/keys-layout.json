@@ -1,0 +1,51 @@
+{
+ "title": "SolveSpace NG review 4: keys and layout",
+ "brief": "One round, eight questions, each picture once. For each row pick a, b, c (or d for the layout) as the question says, and add a note if you want it different. A complete answer is a letter on every row. Nothing is built yet; the research is in docs/research/keymap-and-layout.md. * in a table = not re-checked against that app's own list.",
+ "blind": false,
+ "columns": [
+  "decision [a/b/c/d]",
+  "note"
+ ],
+ "sheets": [
+  {
+   "image": "/tmp/claude-1002/-home-programming-solvespace/c582823e-99bd-43cc-9f69-ae7cbc9a8c39/scratchpad/layouts-sheet.png",
+   "label": "L1 layout",
+   "question": "L1. Window layout (mock-ups cut from the app). a = now: Outliner left, Properties right, shelf on top. b = your idea: tool column + Outliner over Properties, all on the left. c = tool column left, Outliner over Properties on the right (Blender, SketchUp, Plasticity). d = Outliner over Properties left, tools along the top (FreeCAD, SOLIDWORKS). My pick: c (tools and panels on opposite sides, as every app with a tool column does)."
+  },
+  {
+   "image": "/tmp/claude-1002/-home-programming-solvespace/c582823e-99bd-43cc-9f69-ae7cbc9a8c39/scratchpad/keys/keys-k1-sketch.png",
+   "label": "K1 sketch keys",
+   "question": "K1. Sketch tools on the industry letters: R rectangle, A arc, S spline; select all moves to Ctrl+A. a = yes, b = keep NG now, c = other (note)."
+  },
+  {
+   "image": "/tmp/claude-1002/-home-programming-solvespace/c582823e-99bd-43cc-9f69-ae7cbc9a8c39/scratchpad/keys/keys-k2-hv-hide.png",
+   "label": "K2 H/V vs hide",
+   "question": "K2. H and V: a = horizontal / vertical (Onshape, FreeCAD, Classic), hiding moves to Onshape's Y / Shift+Y / Shift+I. b = keep Blender's H / Alt+H / Shift+H for hiding; horizontal and vertical stay in the F pie. My pick: a (constraining is far more frequent than hiding groups)."
+  },
+  {
+   "image": "/tmp/claude-1002/-home-programming-solvespace/c582823e-99bd-43cc-9f69-ae7cbc9a8c39/scratchpad/keys/keys-k3-constraints.png",
+   "label": "K3 constraints",
+   "question": "K3. The other constraints on letters (column Proposed). a = all of them, b = only Onshape's I, B/T and M, c = none (F pie only, as now)."
+  },
+  {
+   "image": "/tmp/claude-1002/-home-programming-solvespace/c582823e-99bd-43cc-9f69-ae7cbc9a8c39/scratchpad/keys/keys-k4-construction.png",
+   "label": "K4 construction",
+   "question": "K4. X toggles construction (Fusion) and stops deleting; Backspace deletes (Onshape, Shapr3D). a = yes, b = keep T and X as now, c = other."
+  },
+  {
+   "image": "/tmp/claude-1002/-home-programming-solvespace/c582823e-99bd-43cc-9f69-ae7cbc9a8c39/scratchpad/keys/keys-k5-groups.png",
+   "label": "K5 groups",
+   "question": "K5. Your Helix and Lathe question: no app binds them. a = Alt+R lathe (revolve all the way) and Alt+E helix (extrude while turning); patterns stay in the palette. b = no keys for them, c = other keys (note)."
+  },
+  {
+   "image": "/tmp/claude-1002/-home-programming-solvespace/c582823e-99bd-43cc-9f69-ae7cbc9a8c39/scratchpad/keys/keys-k6-views.png",
+   "label": "K6 views",
+   "question": "K6. Views without a numpad: add Onshape's Shift+1..7 beside the numpad keys, and W looks at the active sketch. a = yes, b = numpad only, c = other (e.g. FreeCAD's bare digits; they clash with typed values)."
+  },
+  {
+   "image": "/tmp/claude-1002/-home-programming-solvespace/c582823e-99bd-43cc-9f69-ae7cbc9a8c39/scratchpad/sheets7/menu-3-view.png",
+   "label": "V1 view menu",
+   "question": "V1. Your note was 'View: rethink'. This is it after P3/P4 (Standard Views, Panels, View Settings, Light Theme). a = good, b = rethink further (note what you miss from other apps)."
+  }
+ ]
+}
