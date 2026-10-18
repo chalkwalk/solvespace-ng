@@ -354,7 +354,15 @@ SDL_VIDEO_DRIVER=x11 ./bin/solvespace-ng-uitest ngui/grab/   # watch them run on
 # file (also run by test_solvespace when Xvfb, xdotool and python3 are installed).
 make test_ng_x11        # or: python3 ../test/x11/run.py bin/solvespace-ng [filter]
 NGX11_SHOW=:0 python3 ../test/x11/run.py bin/solvespace-ng   # watch on your own display
+# Owner review rounds (blindweb, $BLINDWEB; its server on
+# <the review host> serves ~/*-blind): capture every menu, panel and overlay in both themes,
+# put them side by side, and write rounds from a spec (docs/review/<date>/*.json).
+NG_CAPTURE_DIR=/tmp/cap ./bin/solvespace-ng-uitest ngui/capture/
+NG_CAPTURE_DIR=/tmp/cap NG_CAPTURE_THEME=light ./bin/solvespace-ng-uitest ngui/capture/
+python3 ../tools/review/combine.py /tmp/cap /tmp/sheets
+python3 $BLINDWEB/make_round.py SPEC.json ~/solvespace-ng-blind/<date>-<name>
 ```
+The owner's answers land in each round's `scores.md`.
 In-tree builds are rejected; always build in `build/`. NG settings and the user keymap live in
 `SDL_GetPrefPath("solvespace","solvespace-ng")`: Linux `~/.local/share/solvespace/solvespace-ng/`,
 Windows `%APPDATA%\solvespace\solvespace-ng\`, macOS

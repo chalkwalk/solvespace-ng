@@ -1,0 +1,116 @@
+{
+ "title": "SolveSpace NG review 2: panels and overlays",
+ "brief": "Every panel and overlay, dark and light. Keep, tweak or rethink, with a note.",
+ "blind": false,
+ "columns": [
+  "verdict [keep/tweak/rethink]",
+  "note"
+ ],
+ "sheets": [
+  {
+   "image": "/tmp/claude-1002/-home-programming-solvespace/c582823e-99bd-43cc-9f69-ae7cbc9a8c39/scratchpad/sheets/window-1-overview.png",
+   "label": "window",
+   "question": "The whole window (dark only): Outliner left, tool shelf top, Properties right, view cube bottom left, status bar."
+  },
+  {
+   "image": "/tmp/claude-1002/-home-programming-solvespace/c582823e-99bd-43cc-9f69-ae7cbc9a8c39/scratchpad/sheets/panel-1-outliner.png",
+   "label": "outliner",
+   "question": "Outliner: active radio, visibility, status (ok / degrees of freedom left / ERR), name. Onshape and Fusion show a type icon per row and call the references 'Origin' / 'Default geometry'."
+  },
+  {
+   "image": "/tmp/claude-1002/-home-programming-solvespace/c582823e-99bd-43cc-9f69-ae7cbc9a8c39/scratchpad/sheets/panel-2-properties-group.png",
+   "label": "properties group",
+   "question": "Properties of a group (nothing selected)."
+  },
+  {
+   "image": "/tmp/claude-1002/-home-programming-solvespace/c582823e-99bd-43cc-9f69-ae7cbc9a8c39/scratchpad/sheets/panel-3-properties-line.png",
+   "label": "properties line",
+   "question": "Properties of a selected line. Labels come from the old browser ('thru', 'len', 'from request'); lengths have no units."
+  },
+  {
+   "image": "/tmp/claude-1002/-home-programming-solvespace/c582823e-99bd-43cc-9f69-ae7cbc9a8c39/scratchpad/sheets/panel-4-properties-dimension.png",
+   "label": "properties dimension",
+   "question": "Properties of a selected dimension: the value shows full precision (16.4924225025), and the line it constrains is listed twice."
+  },
+  {
+   "image": "/tmp/claude-1002/-home-programming-solvespace/c582823e-99bd-43cc-9f69-ae7cbc9a8c39/scratchpad/sheets/panel-5-problems.png",
+   "label": "problems",
+   "question": "Problems, after constraining a dimensioned line both horizontal and vertical."
+  },
+  {
+   "image": "/tmp/claude-1002/-home-programming-solvespace/c582823e-99bd-43cc-9f69-ae7cbc9a8c39/scratchpad/sheets/panel-6-preferences.png",
+   "label": "preferences",
+   "question": "Preferences, top (Display section)."
+  },
+  {
+   "image": "/tmp/claude-1002/-home-programming-solvespace/c582823e-99bd-43cc-9f69-ae7cbc9a8c39/scratchpad/sheets/panel-7-preferences-more.png",
+   "label": "preferences more",
+   "question": "Preferences, bottom: the NG section (theme, keys) comes last."
+  },
+  {
+   "image": "/tmp/claude-1002/-home-programming-solvespace/c582823e-99bd-43cc-9f69-ae7cbc9a8c39/scratchpad/sheets/panel-8-styles.png",
+   "label": "styles",
+   "question": "Line styles: the built-in styles show internal names (s001-#def-active-grp)."
+  },
+  {
+   "image": "/tmp/claude-1002/-home-programming-solvespace/c582823e-99bd-43cc-9f69-ae7cbc9a8c39/scratchpad/sheets/panel-9-view.png",
+   "label": "view",
+   "question": "View panel (Edit > View Projection): scale, origin, projection, lighting."
+  },
+  {
+   "image": "/tmp/claude-1002/-home-programming-solvespace/c582823e-99bd-43cc-9f69-ae7cbc9a8c39/scratchpad/sheets/panel-10-paste-transformed.png",
+   "label": "paste transformed",
+   "question": "Paste Transformed."
+  },
+  {
+   "image": "/tmp/claude-1002/-home-programming-solvespace/c582823e-99bd-43cc-9f69-ae7cbc9a8c39/scratchpad/sheets/panel-11-step-dimension.png",
+   "label": "step dimension",
+   "question": "Step Dimension (shows the internal name c002-pt-pt-distance)."
+  },
+  {
+   "image": "/tmp/claude-1002/-home-programming-solvespace/c582823e-99bd-43cc-9f69-ae7cbc9a8c39/scratchpad/sheets/panel-12-tangent-arc.png",
+   "label": "tangent arc",
+   "question": "Tangent Arc settings."
+  },
+  {
+   "image": "/tmp/claude-1002/-home-programming-solvespace/c582823e-99bd-43cc-9f69-ae7cbc9a8c39/scratchpad/sheets/overlay-1-tool-shelf.png",
+   "label": "shelf",
+   "question": "Tool shelf (View > Show Toolbar)."
+  },
+  {
+   "image": "/tmp/claude-1002/-home-programming-solvespace/c582823e-99bd-43cc-9f69-ae7cbc9a8c39/scratchpad/sheets/overlay-2-palette.png",
+   "label": "palette",
+   "question": "Command palette (Space), searching 'con'."
+  },
+  {
+   "image": "/tmp/claude-1002/-home-programming-solvespace/c582823e-99bd-43cc-9f69-ae7cbc9a8c39/scratchpad/sheets/overlay-3-pie-add.png",
+   "label": "pie add",
+   "question": "Add pie (Shift+A): text only; Blender's pies carry icons."
+  },
+  {
+   "image": "/tmp/claude-1002/-home-programming-solvespace/c582823e-99bd-43cc-9f69-ae7cbc9a8c39/scratchpad/sheets/overlay-4-pie-constrain.png",
+   "label": "pie constrain",
+   "question": "Constrain pie (F) for two lines: only the constraints that apply."
+  },
+  {
+   "image": "/tmp/claude-1002/-home-programming-solvespace/c582823e-99bd-43cc-9f69-ae7cbc9a8c39/scratchpad/sheets/overlay-5-pie-view.png",
+   "label": "pie view",
+   "question": "View pie (`)."
+  },
+  {
+   "image": "/tmp/claude-1002/-home-programming-solvespace/c582823e-99bd-43cc-9f69-ae7cbc9a8c39/scratchpad/sheets/overlay-6-status-bar.png",
+   "label": "status bar",
+   "question": "Status bar: keys for now, active group, degrees of freedom, solver state."
+  },
+  {
+   "image": "/tmp/claude-1002/-home-programming-solvespace/c582823e-99bd-43cc-9f69-ae7cbc9a8c39/scratchpad/sheets/overlay-7-view-cube.png",
+   "label": "view cube",
+   "question": "View cube with the reference axes."
+  },
+  {
+   "image": "/tmp/claude-1002/-home-programming-solvespace/c582823e-99bd-43cc-9f69-ae7cbc9a8c39/scratchpad/sheets/overlay-8-context-menu.png",
+   "label": "context menu",
+   "question": "Right-click menu on a line: 'Group Info' / 'Style Info' are the old browser's names (they open Properties now); no Grab, Dimension, Constrain or Hide."
+  }
+ ]
+}

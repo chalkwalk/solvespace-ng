@@ -154,7 +154,8 @@ set(ngui_SOURCES
     ngui/toolpanels/test.cpp
     ngui/parity/test.cpp
     ngui/sessions/test.cpp
-    ngui/shelf/test.cpp)
+    ngui/shelf/test.cpp
+    ngui/capture/test.cpp)
 
 if(ENABLE_GUI AND ENABLE_NG_GUI)
     add_executable(solvespace-ng-uitest

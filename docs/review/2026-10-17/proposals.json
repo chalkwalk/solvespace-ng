@@ -1,0 +1,81 @@
+{
+ "title": "SolveSpace NG review 3: proposed simple improvements",
+ "brief": "Small changes, each with a test, none touching the file format. Yes, no or later, and a note if you want it different. Old names stay searchable in the palette.",
+ "blind": false,
+ "columns": [
+  "do it [yes/no/later]",
+  "note"
+ ],
+ "sheets": [
+  {
+   "image": "/tmp/claude-1002/-home-programming-solvespace/c582823e-99bd-43cc-9f69-ae7cbc9a8c39/scratchpad/sheets/menu-1-file.png",
+   "label": "P1 export submenu",
+   "question": "P1. File: put the seven Export items under one 'Export' submenu (as Fusion, Onshape, FreeCAD)."
+  },
+  {
+   "image": "/tmp/claude-1002/-home-programming-solvespace/c582823e-99bd-43cc-9f69-ae7cbc9a8c39/scratchpad/sheets/menu-2-edit.png",
+   "label": "P2 preferences",
+   "question": "P2. Rename Edit > Configuration... to 'Preferences...' (Fusion, FreeCAD, Blender) and move View Projection... to the View menu."
+  },
+  {
+   "image": "/tmp/claude-1002/-home-programming-solvespace/c582823e-99bd-43cc-9f69-ae7cbc9a8c39/scratchpad/sheets/menu-3-view.png",
+   "label": "P3 view panels",
+   "question": "P3. View menu: a Panels group with Outliner (O), Properties (N), Problems (Shift+P), Tool Shelf (renamed from Show Toolbar) and Toggle Theme; 'Show Property Browser' becomes 'Classic Property Browser'."
+  },
+  {
+   "image": "/tmp/claude-1002/-home-programming-solvespace/c582823e-99bd-43cc-9f69-ae7cbc9a8c39/scratchpad/sheets/menu-3-view.png",
+   "label": "P4 standard views",
+   "question": "P4. View menu: a Standard Views submenu (Front 1, Back, Right 3, Left, Top 7, Bottom, Isometric) showing the numpad keys."
+  },
+  {
+   "image": "/tmp/claude-1002/-home-programming-solvespace/c582823e-99bd-43cc-9f69-ae7cbc9a8c39/scratchpad/sheets/menu-5-sketch.png",
+   "label": "P5 names",
+   "question": "P5. Consistent names and capitals: 2D/3D ('Sketch in 3D', 'Export 2D View'), and short tool names (Arc, Spline, Text). The long names stay in the palette."
+  },
+  {
+   "image": "/tmp/claude-1002/-home-programming-solvespace/c582823e-99bd-43cc-9f69-ae7cbc9a8c39/scratchpad/sheets/menu-6-constrain.png",
+   "label": "P6 menu keys",
+   "question": "P6. Show the Modern key next to a menu item whenever a key does the same thing (D on Distance / Diameter)."
+  },
+  {
+   "image": "/tmp/claude-1002/-home-programming-solvespace/c582823e-99bd-43cc-9f69-ae7cbc9a8c39/scratchpad/sheets/panel-1-outliner.png",
+   "label": "P7 outliner icons",
+   "question": "P7. Outliner: the shelf's icon for each group's type (sketch, extrude, lathe...), and the status as '4 DOF' (degrees of freedom left) rather than a bare 4."
+  },
+  {
+   "image": "/tmp/claude-1002/-home-programming-solvespace/c582823e-99bd-43cc-9f69-ae7cbc9a8c39/scratchpad/sheets/panel-4-properties-dimension.png",
+   "label": "P8 values",
+   "question": "P8. Properties: dimension values at the display precision with units (16.49 mm; still takes an expression), units on lengths, no duplicate rows."
+  },
+  {
+   "image": "/tmp/claude-1002/-home-programming-solvespace/c582823e-99bd-43cc-9f69-ae7cbc9a8c39/scratchpad/sheets/panel-3-properties-line.png",
+   "label": "P9 labels",
+   "question": "P9. Properties: plain labels (from / to, length, group) instead of the old browser's (thru, len, from request r005-...)."
+  },
+  {
+   "image": "/tmp/claude-1002/-home-programming-solvespace/c582823e-99bd-43cc-9f69-ae7cbc9a8c39/scratchpad/sheets/panel-8-styles.png",
+   "label": "P10 style names",
+   "question": "P10. Styles: readable names for the built-in styles (Active group lines, Construction, Points, Constraints, Selected, Hovered...)."
+  },
+  {
+   "image": "/tmp/claude-1002/-home-programming-solvespace/c582823e-99bd-43cc-9f69-ae7cbc9a8c39/scratchpad/sheets/panel-7-preferences-more.png",
+   "label": "P11 prefs order",
+   "question": "P11. Preferences: the NG section (theme, keys) first rather than last."
+  },
+  {
+   "image": "/tmp/claude-1002/-home-programming-solvespace/c582823e-99bd-43cc-9f69-ae7cbc9a8c39/scratchpad/sheets/overlay-3-pie-add.png",
+   "label": "P12 pie icons",
+   "question": "P12. Pies: the shelf icons beside each item, as Blender's pies show."
+  },
+  {
+   "image": "/tmp/claude-1002/-home-programming-solvespace/c582823e-99bd-43cc-9f69-ae7cbc9a8c39/scratchpad/sheets/overlay-8-context-menu.png",
+   "label": "P13 context menu",
+   "question": "P13. Right-click menu: 'Group Properties' / 'Style Properties' instead of Group Info / Style Info, and add Grab (G), Dimension (D), Constrain... (F), Hide Group (H)."
+  },
+  {
+   "image": "/tmp/claude-1002/-home-programming-solvespace/c582823e-99bd-43cc-9f69-ae7cbc9a8c39/scratchpad/sheets/panel-5-problems.png",
+   "label": "P14 problems names",
+   "question": "P14. Problems: name the culprits as 'Vertical (c003)' with their icon, and the group by its name only."
+  }
+ ]
+}

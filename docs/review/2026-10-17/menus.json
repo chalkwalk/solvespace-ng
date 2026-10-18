@@ -1,0 +1,51 @@
+{
+ "title": "SolveSpace NG review 1: menus",
+ "brief": "Each menu, dark and light. For each: keep as is, tweak, or rethink, and a note. The questions say how Fusion 360, Onshape, FreeCAD, SOLIDWORKS and Blender arrange the same things. Concrete proposals are in round 3.",
+ "blind": false,
+ "columns": [
+  "verdict [keep/tweak/rethink]",
+  "note"
+ ],
+ "sheets": [
+  {
+   "image": "/tmp/claude-1002/-home-programming-solvespace/c582823e-99bd-43cc-9f69-ae7cbc9a8c39/scratchpad/sheets/menu-1-file.png",
+   "label": "file",
+   "question": "File. Others: Fusion, Onshape and FreeCAD group the many export formats under one Export submenu; Linux/macOS apps say Quit rather than Exit."
+  },
+  {
+   "image": "/tmp/claude-1002/-home-programming-solvespace/c582823e-99bd-43cc-9f69-ae7cbc9a8c39/scratchpad/sheets/menu-2-edit.png",
+   "label": "edit",
+   "question": "Edit. Others: Configuration is 'Preferences' in Fusion, FreeCAD and Blender; view settings sit in View, not Edit."
+  },
+  {
+   "image": "/tmp/claude-1002/-home-programming-solvespace/c582823e-99bd-43cc-9f69-ae7cbc9a8c39/scratchpad/sheets/menu-3-view.png",
+   "label": "view",
+   "question": "View. Others: Blender and Fusion list their panels here with keys, and FreeCAD/SOLIDWORKS have a Standard Views submenu (Front, Top, Right, Isometric). NG panels (Outliner O, Properties N, Problems Shift+P), the theme and the numpad views are missing; 'Show Toolbar' now shows the tool shelf."
+  },
+  {
+   "image": "/tmp/claude-1002/-home-programming-solvespace/c582823e-99bd-43cc-9f69-ae7cbc9a8c39/scratchpad/sheets/menu-4-new-group.png",
+   "label": "new group",
+   "question": "New Group (Fusion's Create menu). Capitals are inconsistent: 'Sketch In 3d' (others write 3D). Lathe and Helix have no key."
+  },
+  {
+   "image": "/tmp/claude-1002/-home-programming-solvespace/c582823e-99bd-43cc-9f69-ae7cbc9a8c39/scratchpad/sheets/menu-5-sketch.png",
+   "label": "sketch",
+   "question": "Sketch. Others name tools briefly: Arc, Spline, Text (here 'Arc of a Circle', 'Bezier Cubic Spline', 'Text in TrueType Font')."
+  },
+  {
+   "image": "/tmp/claude-1002/-home-programming-solvespace/c582823e-99bd-43cc-9f69-ae7cbc9a8c39/scratchpad/sheets/menu-6-constrain.png",
+   "label": "constrain",
+   "question": "Constrain. The Modern keys reach these through D (dimension) and F (constrain pie), so most show no key; 'Distance / Diameter' could at least show D."
+  },
+  {
+   "image": "/tmp/claude-1002/-home-programming-solvespace/c582823e-99bd-43cc-9f69-ae7cbc9a8c39/scratchpad/sheets/menu-7-analyze.png",
+   "label": "analyze",
+   "question": "Analyze (Fusion's Inspect). Matches what others offer; 'Step Dimension' is SolveSpace's own."
+  },
+  {
+   "image": "/tmp/claude-1002/-home-programming-solvespace/c582823e-99bd-43cc-9f69-ae7cbc9a8c39/scratchpad/sheets/menu-8-help.png",
+   "label": "help",
+   "question": "Help. Others add a keyboard shortcut list; NG could show the keymap here."
+  }
+ ]
+}
