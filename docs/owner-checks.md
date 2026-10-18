@@ -74,6 +74,21 @@ Screenshots: `docs/owner-review/viewcube-dark.png`, `viewcube-light.png`.
 - [ ] It is 80% opaque until the mouse is on it, then solid.
 - [ ] In a small window it moves right of the Outliner when there is room.
 
+### Review answers P1-P14 (2026-10-17, `f20994bb`..`a8b41809`)
+From `docs/review/2026-10-17/answers.md`; the next review round shows them again.
+- [ ] Menus: File has an Export submenu and Quit; View has Standard Views, the panels with
+      check marks, and Light Theme; Analyze is Inspect; Help lists the keyboard shortcuts. Each
+      item shows the key of the current keymap (switch to Classic and look again).
+- [ ] Outliner: the first row is "Origin"; every group has its type icon and a DOF column
+      that shows 0 when fully constrained.
+- [ ] Properties: plain labels, lengths with their unit at the display precision; a
+      constraint's type reads "Distance", "Vertical"...
+- [ ] Styles and Preferences: readable style names; the SolveSpace NG section is first.
+- [ ] Pies (`Shift+A`, `F`): each item has its icon.
+- [ ] Right-click a selection: Grab, Dimension, Constrain..., Hide Group come first, with their
+      keys; "Group Properties" / "Style Properties" replace the Info items.
+- [ ] Problems: the group by its name; culprits as "Vertical (c003)" with their icon.
+
 ## Decisions waiting for the owner
 - Merge order: `ng/m1a-shell` > `ng/m1b-interaction` > `ng/m1-ui-harness` > `ng/m1c-panels` >
   `ng/m1c-feedback` > `master`.
