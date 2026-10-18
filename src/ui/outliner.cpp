@@ -6,6 +6,7 @@
 #include "imgui.h"
 #include "ui/outliner.h"
 #include "ui/outlinermodel.h"
+#include "ui/icons.h"
 #include "ui/panels.h"
 #include "ui/properties.h"
 
@@ -37,12 +38,24 @@ std::function<void()> DrawOutliner() {
     if(gRenaming.v && !SK.group.FindByIdNoOops(gRenaming)) gRenaming = {};
 
     float radioWidth = ImGui::GetFrameHeight();
+    // Columns as Fusion's browser: active, shown, degrees of freedom left, type and name.
+    if(!ImGui::BeginTable("##outliner-table", 4, ImGuiTableFlags_SizingFixedFit)) {
+        OutlinerPanel().End();
+        return run;
+    }
+    ImGui::TableSetupColumn("##active", ImGuiTableColumnFlags_WidthFixed);
+    ImGui::TableSetupColumn("##shown", ImGuiTableColumnFlags_WidthFixed);
+    ImGui::TableSetupColumn("DOF", ImGuiTableColumnFlags_WidthFixed);
+    ImGui::TableSetupColumn("Group", ImGuiTableColumnFlags_WidthStretch);
+    ImGui::TableHeadersRow();
     for(const OutlinerRow &r : BuildOutliner()) {
         hGroup hg = r.group;
         ImGui::PushID((int)hg.v);
         if(r.afterActive) {
             ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.55f);
         }
+        ImGui::TableNextRow();
+        ImGui::TableNextColumn();
 
         // Active radio; #references can't be activated.
         if(r.references) {
@@ -50,7 +63,7 @@ std::function<void()> DrawOutliner() {
         } else if(ImGui::RadioButton(("##active:" + r.name).c_str(), r.active) && !r.active) {
             run = [hg] { SS.GW.ActivateGroup(hg); };
         }
-        ImGui::SameLine();
+        ImGui::TableNextColumn();
 
         // Shown; groups after the active one aren't generated, so their state can't change.
         bool shown = r.visible;
@@ -59,7 +72,7 @@ std::function<void()> DrawOutliner() {
             run = [hg] { SS.GW.ToggleGroupVisible(hg); };
         }
         ImGui::EndDisabled();
-        ImGui::SameLine();
+        ImGui::TableNextColumn();
 
         // Solve status; a click shows the problems.
         ImGui::PushStyleColor(ImGuiCol_Text, StatusColor(r.status));
@@ -69,7 +82,13 @@ std::function<void()> DrawOutliner() {
             run = [] { ProblemsPanel().SetShown(true); };
         }
         ImGui::PopStyleColor(2);
-        ImGui::SameLine();
+        ImGui::TableNextColumn();
+        // The group's type, as the tool shelf draws it.
+        float iconSize = ImGui::GetFrameHeight() - 2;
+        if(ImTextureID tex = Icon(r.icon, iconSize)) {
+            ImGui::Image(tex, ImVec2(iconSize, iconSize));
+            ImGui::SameLine();
+        }
 
         if(gRenaming == hg) {
             if(gRenameFocus) {
@@ -87,7 +106,7 @@ std::function<void()> DrawOutliner() {
                 gRenaming = {}; // Esc or a click elsewhere
             }
         } else {
-            if(ImGui::Selectable((r.name + "##name:" + r.name).c_str(), false,
+            if(ImGui::Selectable((r.displayName + "##name:" + r.name).c_str(), false,
                                  ImGuiSelectableFlags_AllowDoubleClick)) {
                 if(ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left) && !r.references) {
                     run = [hg] { SS.GW.ActivateGroup(hg); };
@@ -118,6 +137,7 @@ std::function<void()> DrawOutliner() {
         if(r.afterActive) ImGui::PopStyleVar();
         ImGui::PopID();
     }
+    ImGui::EndTable();
     OutlinerPanel().End();
     return run;
 }

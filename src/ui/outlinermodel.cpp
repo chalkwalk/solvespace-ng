@@ -8,12 +8,27 @@ namespace Ui {
 
 std::string OutlinerRow::StatusText() const {
     switch(status) {
-        case Status::OK:      return "ok";
+        case Status::OK:      return "0";
         case Status::DOF:     return dof > 999 ? "###" : std::to_string(dof);
         case Status::WARNING: return "!";
         case Status::ERROR:   return "ERR";
     }
     return "";
+}
+
+static const char *IconFor(Group::Type t) {
+    switch(t) {
+        case Group::Type::DRAWING_3D:        return "sketch-3d";
+        case Group::Type::DRAWING_WORKPLANE: return "new-sketch";
+        case Group::Type::EXTRUDE:           return "extrude";
+        case Group::Type::LATHE:             return "lathe";
+        case Group::Type::REVOLVE:           return "revolve";
+        case Group::Type::HELIX:             return "helix";
+        case Group::Type::ROTATE:            return "circular-pattern";
+        case Group::Type::TRANSLATE:         return "linear-pattern";
+        case Group::Type::LINKED:            return "insert-part";
+    }
+    return "isometric";
 }
 
 std::vector<OutlinerRow> BuildOutliner() {
@@ -31,6 +46,8 @@ std::vector<OutlinerRow> BuildOutliner() {
         r.name        = g->name;
         r.type        = g->type;
         r.references  = hg == Group::HGROUP_REFERENCES;
+        r.displayName = r.references ? "Origin" : g->name;
+        r.icon        = r.references ? "origin" : IconFor(g->type);
         r.active      = hg == SS.GW.activeGroup;
         r.visible     = g->visible;
         r.suppressed  = g->suppress;

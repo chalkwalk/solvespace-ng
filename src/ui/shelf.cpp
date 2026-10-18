@@ -6,6 +6,7 @@
 #include "imgui_internal.h"
 #include "commandnames.h"
 #include "platform/sdl/icontextures.h"
+#include "ui/icons.h"
 #include "ui/panels.h"
 #include "ui/shelf.h"
 #include "ui/shelfmodel.h"
@@ -30,22 +31,7 @@ std::function<void()> DrawShelf(const keymap::Keymap &keymap) {
         // Drawn at the framebuffer's resolution, so icons stay crisp on HiDPI screens.
         float       scale = std::max(1.0f, io.DisplayFramebufferScale.x);
         const float icon  = 22;
-        // The icons mirror the drawing area: its line styles' colours, and the theme's.
-        auto rgb = [](RgbaColor c) {
-            return ((uint32_t)c.red << 16) | ((uint32_t)c.green << 8) | (uint32_t)c.blue;
-        };
-        auto imRgb = [](ImGuiCol col) {
-            ImVec4 c = ImGui::GetStyleColorVec4(col);
-            return ((uint32_t)(c.x * 255 + 0.5f) << 16) | ((uint32_t)(c.y * 255 + 0.5f) << 8) |
-                   (uint32_t)(c.z * 255 + 0.5f);
-        };
-        IconPalette palette;
-        palette.text         = imRgb(ImGuiCol_Text);
-        palette.entity       = rgb(Style::Color(hStyle{ Style::ACTIVE_GRP }));
-        palette.point        = rgb(Style::Color(hStyle{ Style::DATUM }));
-        palette.constraint   = rgb(Style::Color(hStyle{ Style::CONSTRAINT }));
-        palette.construction = rgb(Style::Color(hStyle{ Style::CONSTRUCTION }));
-        palette.solid        = imRgb(ImGuiCol_CheckMark); // the theme's accent
+        IconPalette palette = CurrentIconPalette();
         // Rows wrap at this width, so a narrow window still shows every button.
         float maxWidth = std::min(560.0f, io.DisplaySize.x - 24) - st.WindowPadding.x * 2;
         float rowWidth = 0;

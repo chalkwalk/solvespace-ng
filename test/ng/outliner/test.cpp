@@ -17,11 +17,16 @@ TEST_CASE(outliner_lists_groups_in_order_with_state) {
     std::vector<OutlinerRow> rows = BuildOutliner();
     CHECK_TRUE(rows.size() == 2);
     CHECK_TRUE(rows[0].references && !rows[0].active);
-    CHECK_EQ_STR(rows[0].StatusText(), "ok");
+    // Fully constrained shows 0 in the DOF column; the references are the Origin, as Fusion.
+    CHECK_EQ_STR(rows[0].StatusText(), "0");
+    CHECK_EQ_STR(rows[0].displayName, "Origin");
+    CHECK_EQ_STR(rows[0].icon, "origin");
     const OutlinerRow *sketch = Row(rows, "sketch-in-plane");
     CHECK_TRUE(sketch && sketch->active && sketch->visible && !sketch->afterActive);
     CHECK_TRUE(sketch->status == OutlinerRow::Status::DOF);
     CHECK_EQ_STR(sketch->StatusText(), std::to_string(sketch->dof));
+    CHECK_EQ_STR(sketch->displayName, "sketch-in-plane");
+    CHECK_EQ_STR(sketch->icon, "new-sketch"); // the shelf's icon for a sketch in a workplane
 }
 
 TEST_CASE(outliner_marks_groups_after_the_active_one) {

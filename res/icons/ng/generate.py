@@ -225,6 +225,10 @@ ICONS = {
                   + line('M8 17.5 15 14.5', 1.4) + pt(8, 17.5, 2.4) + pt(15, 14.5, 2.4)
                   + chrome('M12 1.5v10 ' + arrowhead(12, 12, 0, 1, 2.4))),
     'isometric': cube(5, 10, 11),
+    'origin': ('<path d="M8 16V3" stroke="#3a7bff" stroke-width="1.8" />'
+               '<path d="M8 16h13" stroke="#e8443a" stroke-width="1.8" />'
+               '<path d="M8 16l-5.5 5.5" stroke="#33b24a" stroke-width="1.8" />'
+               + pt(8, 16, 3)),
     'insert-part': cube(3, 11, 10) + chrome('M19 2v7 M15.5 5.5h7', 1.8),
 }
 

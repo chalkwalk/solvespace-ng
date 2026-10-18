@@ -17,6 +17,8 @@ struct OutlinerRow {
 
     hGroup      group;
     std::string name;
+    std::string displayName; // "Origin" for #references (Fusion's name), else the name
+    std::string icon;        // the shelf icon for the group's type (res/icons/ng)
     Group::Type type;
     bool        references;  // #references: always first, can't be activated
     bool        active, visible, suppressed;
@@ -24,7 +26,7 @@ struct OutlinerRow {
     Status      status;
     int         dof;
 
-    std::string StatusText() const; // "ok", the DOF count, "!" or "ERR"
+    std::string StatusText() const; // degrees of freedom left (0 when fully constrained), "!" or "ERR"
 };
 
 std::vector<OutlinerRow> BuildOutliner();

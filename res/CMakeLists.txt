@@ -320,6 +320,7 @@ add_resources(
     icons/ng/linear-pattern.svg
     icons/ng/new-sketch.svg
     icons/ng/normal-to.svg
+    icons/ng/origin.svg
     icons/ng/other-angle.svg
     icons/ng/parallel.svg
     icons/ng/perpendicular.svg

@@ -36,7 +36,10 @@ TEST_CASE(o_toggles_the_outliner) {
 
 TEST_CASE(outliner_lists_every_group_with_its_status) {
     CHECK_LOAD("line.slvs");
-    CHECK_TRUE(Driver::FindItem("#references").has_value());
+    CHECK_TRUE(Driver::FindItem("Origin").has_value());
+    CHECK_TRUE(Driver::FindItem("DOF").has_value()); // the column's header
+    std::optional<Driver::Item> origin = Driver::FindItem("status:#references");
+    CHECK_TRUE(origin && origin->label == "0"); // fully constrained
     CHECK_TRUE(Driver::FindItem("sketch-in-plane").has_value());
     std::optional<Driver::Item> badge = Driver::FindItem("status:sketch-in-plane");
     CHECK_TRUE(badge && badge->label == std::to_string(Named("sketch-in-plane")->solved.dof));
@@ -77,7 +80,7 @@ TEST_CASE(radio_and_double_click_activate_groups) {
 TEST_CASE(clicking_a_name_shows_the_group_in_properties) {
     CHECK_LOAD("line.slvs");
     Driver::Key("N"); // even when Properties is hidden
-    CHECK_TRUE(Driver::ClickItem("#references"));
+    CHECK_TRUE(Driver::ClickItem("Origin"));
     CHECK_TRUE(Driver::FindItem("Properties").has_value());
     CHECK_TRUE(Ui::PropertiesGroup() == Group::HGROUP_REFERENCES);
 }
@@ -157,7 +160,7 @@ TEST_CASE(clicking_a_group_shows_it_even_with_a_selection) {
     hRequest line = *LastRequest(Request::Type::LINE_SEGMENT);
     ClickAt(AtMiddle(line));
     CHECK_TRUE(SS.GW.selection.n == 1);
-    CHECK_TRUE(Driver::ClickItem("#references"));
+    CHECK_TRUE(Driver::ClickItem("Origin"));
     CHECK_TRUE(SS.GW.selection.n == 0);
     CHECK_TRUE(Ui::PropertiesGroup() == Group::HGROUP_REFERENCES);
     CHECK_FALSE(Driver::FindItem("unselect all").has_value()); // the group, not the selection

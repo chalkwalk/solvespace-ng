@@ -100,7 +100,7 @@ TEST_CASE(properties_follows_the_outliner_and_survives_deletion) {
     CHECK_LOAD("line.slvs");
     Driver::ClickMenu({ "New Group", "Sketch in 3D" });
     hGroup added = SS.GW.activeGroup;
-    CHECK_TRUE(Click("#references"));
+    CHECK_TRUE(Click("Origin"));
     CHECK_TRUE(Ui::PropertiesGroup() == Group::HGROUP_REFERENCES);
     CHECK_TRUE(Click("sketch-in-3d"));
     CHECK_TRUE(Ui::PropertiesGroup() == added);

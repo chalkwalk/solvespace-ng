@@ -91,6 +91,19 @@ void ApplyTheme(ThemeChoice choice) {
     c[ImGuiCol_ResizeGrip]       = Hex(t.panelBorder);
     c[ImGuiCol_ResizeGripHovered] = Hex(t.accent, 0.6f);
     c[ImGuiCol_ResizeGripActive] = Hex(t.accent);
+    // Tables, scrollbars and tabs: unset, they keep ImGui's dark defaults in the light theme.
+    c[ImGuiCol_TableHeaderBg]        = Hex(t.bg);
+    c[ImGuiCol_TableBorderStrong]    = Hex(t.panelBorder);
+    c[ImGuiCol_TableBorderLight]     = Hex(t.panelBorder, 0.6f);
+    c[ImGuiCol_TableRowBg]           = Hex(t.panel, 0.0f);
+    c[ImGuiCol_TableRowBgAlt]        = Hex(t.bg, 0.5f);
+    c[ImGuiCol_ScrollbarBg]          = Hex(t.panel, 0.0f);
+    c[ImGuiCol_ScrollbarGrab]        = Hex(t.panelBorder);
+    c[ImGuiCol_ScrollbarGrabHovered] = Hex(t.textMuted, 0.6f);
+    c[ImGuiCol_ScrollbarGrabActive]  = Hex(t.accent);
+    c[ImGuiCol_Tab]                  = Hex(t.accent, 0.15f);
+    c[ImGuiCol_TabHovered]           = Hex(t.accentHover, 0.35f);
+    c[ImGuiCol_TabSelected]          = Hex(t.accent, 0.35f);
     // The status bar's solver state: fine / problem.
     c[ImGuiCol_PlotHistogram]    = Hex(t.accent);
     c[ImGuiCol_PlotLinesHovered] = Hex(t.danger);

@@ -342,6 +342,7 @@ if(ENABLE_GUI AND ENABLE_NG_GUI)
         ui/shelf.cpp
         ui/viewcube.cpp
         ui/shortcuts.cpp
+        ui/icons.cpp
         ui/fields.cpp
         ui/ngui.cpp
         ui/piemenu.cpp
