@@ -13,11 +13,12 @@
 namespace SolveSpace {
 namespace Ui {
 
-static const double CubeSize   = 24;  // half the side of a face seen square on
-static const double AxisLength = 62;  // from the cube's centre, past its corners
-static const float  Box        = 150; // the area cube, axes and labels may cover
+static const double CubeSize   = 22;  // half the side of a face seen square on
+// The axes start at the cube's -X -Y -Z corner and run along its edges, past the far corners.
+static const double AxisLength = 2 * CubeSize + 20;
+static const float  Box        = 180; // the area cube, axes and labels may cover
 
-static Point2d gCenter;
+static Point2d gCenter, gAxesOrigin;
 static bool    gPressed = false, gDragging = false;
 static Point2d gPressAt;
 
@@ -27,6 +28,10 @@ Point2d ViewCubeCenter() {
 
 double ViewCubeSize() {
     return CubeSize;
+}
+
+Point2d ViewCubeAxesOrigin() {
+    return gAxesOrigin;
 }
 
 bool ViewCubeTakesMouseAt(double x, double y, bool canvasPressed) {
@@ -85,14 +90,22 @@ std::function<void()> DrawViewCube() {
                  ImGuiWindowFlags_NoInputs | ImGuiWindowFlags_NoFocusOnAppearing |
                  ImGuiWindowFlags_NoBringToFrontOnFocus);
     ImGui::PopStyleVar();
-    Point2d center = Point2d::From(at.x + Box / 2, at.y + Box / 2);
-    if(!center.Equals(gCenter)) {
-        gCenter = center;
-        // The canvas draws the axes from here (pixels from the view centre, y up).
-        SS.GW.referenceAxesAnchor =
-            Point2d::From(center.x - io.DisplaySize.x / 2, io.DisplaySize.y / 2 - center.y);
-        SS.GW.referenceAxesLength = AxisLength;
-        SS.GW.Invalidate(/*clearPersistent=*/true);
+    gCenter = Point2d::From(at.x + Box / 2, at.y + Box / 2);
+    {
+        // The canvas draws the axes from the cube's -X -Y -Z corner, so that corner is the
+        // origin (pixels from the view centre, y up). It moves as the view turns.
+        Vector  corner = Vector::From(-1, -1, -1);
+        Point2d origin = Point2d::From(gCenter.x + CubeSize * corner.Dot(SS.GW.projRight),
+                                       gCenter.y - CubeSize * corner.Dot(SS.GW.projUp));
+        gAxesOrigin    = origin;
+        Point2d anchor =
+            Point2d::From(origin.x - io.DisplaySize.x / 2, io.DisplaySize.y / 2 - origin.y);
+        if(!SS.GW.referenceAxesAnchor || !SS.GW.referenceAxesAnchor->Equals(anchor, 0.01) ||
+           SS.GW.referenceAxesLength != AxisLength) {
+            SS.GW.referenceAxesAnchor = anchor;
+            SS.GW.referenceAxesLength = AxisLength;
+            SS.GW.Invalidate(/*clearPersistent=*/true);
+        }
     }
     // The cube's area, findable by the UI tests as "viewcube" (the window takes no input).
     ImGui::InvisibleButton("##viewcube", ImVec2(Box, Box));
@@ -157,7 +170,8 @@ std::function<void()> DrawViewCube() {
             dl->AddConvexPolyFilled(q, 4, hi);
         }
     }
-    // Name the axes at their tips, in the canvas's axis colours.
+    // Name the axes at their tips, in the canvas's axis colours (beyond the cube's own area).
+    dl->PushClipRect(ImVec2(0, 0), io.DisplaySize, false);
     const struct { const char *name; Vector dir; ImU32 colour; } axes[] = {
         { "X", { 1, 0, 0 }, IM_COL32(230, 60, 60, 255) },
         { "Y", { 0, 1, 0 }, IM_COL32(40, 180, 60, 255) },
@@ -167,11 +181,13 @@ std::function<void()> DrawViewCube() {
         double sx = a.dir.Dot(right), sy = -a.dir.Dot(up);
         double len = sqrt(sx * sx + sy * sy);
         if(len < 0.25) continue; // pointing at or away from the viewer: no room for a label
-        double  d   = AxisLength + 9;
+        double  d   = AxisLength + 9 / len;
         ImVec2  ts  = ImGui::CalcTextSize(a.name);
-        ImVec2  pos((float)(gCenter.x + sx * d - ts.x / 2), (float)(gCenter.y + sy * d - ts.y / 2));
+        ImVec2  pos((float)(gAxesOrigin.x + sx * d - ts.x / 2),
+                    (float)(gAxesOrigin.y + sy * d - ts.y / 2));
         dl->AddText(pos, a.colour, a.name);
     }
+    dl->PopClipRect();
     ImGui::End();
     return run;
 }

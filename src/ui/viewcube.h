@@ -16,6 +16,8 @@ std::function<void()> DrawViewCube();
 // Where it was drawn last frame (window coordinates) and its half-size, for ViewCubeFaces.
 Point2d ViewCubeCenter();
 double  ViewCubeSize();
+// Where the reference axes start: the cube's -X -Y -Z corner, on screen (window coordinates).
+Point2d ViewCubeAxesOrigin();
 // Whether a mouse event at (x, y) is the cube's: over one of its faces, or during a press
 // that started on one. Everything else around it (the axes) belongs to the canvas.
 // A canvas press in progress (a marquee, say) keeps the mouse even over the cube.

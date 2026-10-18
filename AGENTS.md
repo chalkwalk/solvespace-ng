@@ -115,7 +115,8 @@ Rules:
   icon buttons for every old-toolbar tool; NG never draws the custom toolbar.)
 - **View cube** (added 2026-10-17, as in Fusion 360, Onshape, Shapr3D and FreeCAD, which all
   show axes with their cube): bottom left of the viewport, where SolveSpace has always drawn its
-  X/Y/Z axes, which now come out of the cube (decided with the owner, 2026-10-17: in keeping
+  X/Y/Z axes, which now start at the cube's -X -Y -Z corner and run along its edges, as in
+  Onshape and Fusion (decided with the owner, 2026-10-17: in keeping
   with SolveSpace, and the corner never has to dodge panels). The axes are still the reference
   planes' normals, selectable for constraints (`GraphicsWindow::referenceAxesAnchor`); the cube
   takes the mouse only over its faces. Click a face to look at it, an edge or a corner to look

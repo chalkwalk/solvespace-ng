@@ -130,7 +130,13 @@ TEST_CASE(an_axis_beside_the_cube_can_be_selected) {
     CHECK_LOAD("line.slvs");
     Driver::Key("Keypad 1"); // Z points up the screen
     Point2d c = Ui::ViewCubeCenter();
-    ClickAt(Point2d::From(c.x, c.y - 52)); // past the cube, on the Z axis
+    double  s = Ui::ViewCubeSize(), len = SS.GW.referenceAxesLength;
+    // The axes start at the cube's -X -Y -Z corner: from the front, its bottom left. Z runs up
+    // the cube's left edge and past its top.
+    Point2d origin = Ui::ViewCubeAxesOrigin();
+    CHECK_TRUE(Near(origin, Point2d::From(c.x - s, c.y + s)));
+    CHECK_TRUE(len > 2 * s + 10);
+    ClickAt(Point2d::From(origin.x, origin.y - len + 6)); // past the cube, on the Z axis
     hEntity zAxis = SK.GetEntity(Request::HREQUEST_REFERENCE_XY.entity(0))->normal;
     CHECK_TRUE(SS.GW.selection.n == 1 && SS.GW.selection[0].entity == zAxis);
     CHECK_TRUE(ViewIs(ViewPreset::FRONT)); // and the view stayed
@@ -140,7 +146,7 @@ TEST_CASE(clicks_beside_the_cube_reach_the_canvas) {
     CHECK_LOAD("line.slvs");
     Driver::Key("Keypad 1");
     Point2d c = Ui::ViewCubeCenter();
-    ClickAt(Point2d::From(c.x + 55, c.y - 55)); // inside its area, off the cube and the axes
+    ClickAt(Point2d::From(c.x + 50, c.y - 50)); // inside its area, off the cube and the axes
     CHECK_TRUE(ViewIs(ViewPreset::FRONT));
     CHECK_TRUE(SS.GW.selection.n == 0);
 }
