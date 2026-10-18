@@ -119,3 +119,28 @@ TEST_CASE(a_line_lists_the_constraints_on_it) {
     }
     CHECK_TRUE(found);
 }
+
+TEST_CASE(constraints_have_readable_names_and_icons) {
+    // (P14) "Vertical (c003)" rather than "c003-vertical", with the icon the shelf uses.
+    Constraint c = {};
+    c.h.v  = 3;
+    c.type = Constraint::Type::VERTICAL;
+    CHECK_EQ_STR(ConstraintLabel(c), "Vertical (c003)");
+    CHECK_EQ_STR(ConstraintIcon(c.type), "vertical");
+    CHECK_EQ_STR(ConstraintTypeName(Constraint::Type::PT_PT_DISTANCE), "Distance");
+    CHECK_EQ_STR(ConstraintIcon(Constraint::Type::PT_PT_DISTANCE), "dimension");
+    CHECK_EQ_STR(ConstraintTypeName(Constraint::Type::PT_ON_LINE), "Point on line");
+    CHECK_EQ_STR(ConstraintIcon(Constraint::Type::COMMENT), "");
+}
+
+TEST_CASE(a_dimension_shows_its_readable_type) {
+    CHECK_LOAD("line.slvs");
+    hConstraint dim = Dimension(Line(), 12.5);
+    GraphicsWindow::Selection sel = {};
+    sel.constraint = dim;
+    SS.GW.selection.Add(&sel);
+    SelectionModel m = BuildSelection();
+    const SelectionRow *type = Row(m, "type");
+    CHECK_TRUE(type != nullptr);
+    if(type) CHECK_EQ_STR(type->value, "Distance");
+}

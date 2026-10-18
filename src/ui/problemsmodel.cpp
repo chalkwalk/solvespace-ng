@@ -11,7 +11,7 @@ static void AddSolveProblem(Group *g, std::vector<Problem> *out) {
     if(g->IsSolvedOkay()) return;
     Problem p;
     p.group     = g->h;
-    p.groupName = g->DescriptionString();
+    p.groupName = g->name;
     p.timedOut  = g->solved.timeout;
     switch(g->solved.how) {
         case SolveResult::DIDNT_CONVERGE:
@@ -55,7 +55,7 @@ static void AddContourProblem(Group *g, std::vector<Problem> *out) {
     if(!SS.checkClosedContour || sketch->polyError.how == PolyError::GOOD) return;
     Problem p;
     p.group     = g->h;
-    p.groupName = g->DescriptionString();
+    p.groupName = g->name;
     p.kind      = Problem::Kind::CONTOUR;
     switch(sketch->polyError.how) {
         case PolyError::NOT_CLOSED:        p.title = "not closed contour, or not all same style"; break;
@@ -77,7 +77,7 @@ std::vector<Problem> BuildProblems() {
         if(g->booleanFailed) {
             Problem p;
             p.group          = hg;
-            p.groupName      = g->DescriptionString();
+            p.groupName      = g->name;
             p.kind           = Problem::Kind::BOOLEAN;
             p.title          = "the Boolean operation failed";
             p.detail         = "Forcing NURBS surfaces to a triangle mesh may fix it.";

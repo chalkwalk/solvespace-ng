@@ -13,6 +13,12 @@ namespace SolveSpace {
 namespace Ui {
 
 // One labelled value. At most one link is set; clicking the row selects (or shows) it.
+// A constraint type as people say it ("Point on line"), the shelf icon for it ("" if none),
+// and a constraint named for lists: "Vertical (c003)".
+std::string ConstraintTypeName(Constraint::Type type);
+std::string ConstraintIcon(Constraint::Type type);
+std::string ConstraintLabel(const Constraint &c);
+
 struct SelectionRow {
     std::string label, value;
     hEntity     entity;

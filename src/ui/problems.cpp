@@ -7,7 +7,9 @@
 #include "ui/panels.h"
 #include "ui/problems.h"
 #include "ui/problemsmodel.h"
+#include "ui/icons.h"
 #include "ui/properties.h"
+#include "ui/selectionmodel.h"
 
 namespace SolveSpace {
 namespace Ui {
@@ -62,9 +64,16 @@ std::function<void()> DrawProblems() {
             for(hConstraint hc : p.culprits) {
                 Constraint *c = SK.constraint.FindByIdNoOops(hc);
                 if(!c) continue;
-                std::string label = "   " + c->DescriptionString() + "##culprit:" +
-                                    std::to_string(hc.v);
+                // Named and drawn as the Constrain menu and the tool shelf show them.
+                ImGui::Indent();
+                float iconSize = ImGui::GetFrameHeight() - 2;
+                if(ImTextureID tex = Icon(ConstraintIcon(c->type), iconSize)) {
+                    ImGui::Image(tex, ImVec2(iconSize, iconSize));
+                    ImGui::SameLine();
+                }
+                std::string label = ConstraintLabel(*c) + "##culprit:" + std::to_string(hc.v);
                 if(ImGui::Selectable(label.c_str())) run = [hc] { SelectConstraints({ hc }); };
+                ImGui::Unindent();
             }
             if(p.timedOut) ImGui::TextDisabled("Some were left out: the search timed out.");
         }

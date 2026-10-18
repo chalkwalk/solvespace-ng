@@ -69,3 +69,15 @@ TEST_CASE(an_open_contour_is_a_problem_when_contours_are_checked) {
     SS.checkClosedContour = false;
     CHECK_TRUE(BuildProblems().empty());
 }
+
+TEST_CASE(a_problem_names_its_group_by_name_only) {
+    // (P14) The group as the Outliner names it, not "g002-sketch-in-3d".
+    CHECK_LOAD("line.slvs");
+    hRequest line = Line();
+    Length(line, 10);
+    Length(line, 10);
+    SS.GenerateAll(SolveSpaceUI::Generate::ALL);
+    std::vector<Problem> problems = BuildProblems();
+    CHECK_TRUE(problems.size() == 1);
+    if(problems.size() == 1) CHECK_EQ_STR(problems[0].groupName, SK.GetGroup(SS.GW.activeGroup)->name);
+}

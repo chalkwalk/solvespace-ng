@@ -6,6 +6,75 @@
 namespace SolveSpace {
 namespace Ui {
 
+namespace {
+struct ConstraintKind {
+    Constraint::Type type;
+    const char      *name, *icon;
+};
+using T = Constraint::Type;
+const ConstraintKind ConstraintKinds[] = {
+    { T::POINTS_COINCIDENT, "Coincident", "point-on" },
+    { T::PT_PT_DISTANCE, "Distance", "dimension" },
+    { T::PT_LINE_DISTANCE, "Point to line distance", "dimension" },
+    { T::PT_PLANE_DISTANCE, "Point to plane distance", "dimension" },
+    { T::PT_FACE_DISTANCE, "Point to face distance", "dimension" },
+    { T::PROJ_PT_DISTANCE, "Projected distance", "dimension" },
+    { T::PT_IN_PLANE, "Point in plane", "point-on" },
+    { T::PT_ON_LINE, "Point on line", "point-on" },
+    { T::PT_ON_FACE, "Point on face", "point-on" },
+    { T::EQUAL_LENGTH_LINES, "Equal length", "equal" },
+    { T::EQ_LEN_PT_LINE_D, "Equal length and distance", "equal" },
+    { T::EQ_PT_LN_DISTANCES, "Equal distances", "equal" },
+    { T::LENGTH_RATIO, "Length ratio", "dimension" },
+    { T::ARC_ARC_LEN_RATIO, "Arc length ratio", "dimension" },
+    { T::ARC_LINE_LEN_RATIO, "Arc to line length ratio", "dimension" },
+    { T::LENGTH_DIFFERENCE, "Length difference", "dimension" },
+    { T::ARC_ARC_DIFFERENCE, "Arc length difference", "dimension" },
+    { T::ARC_LINE_DIFFERENCE, "Arc to line length difference", "dimension" },
+    { T::SYMMETRIC, "Symmetric", "symmetric" },
+    { T::SYMMETRIC_HORIZ, "Symmetric horizontally", "symmetric" },
+    { T::SYMMETRIC_VERT, "Symmetric vertically", "symmetric" },
+    { T::SYMMETRIC_LINE, "Symmetric about line", "symmetric" },
+    { T::AT_MIDPOINT, "Midpoint", "point-on" },
+    { T::HORIZONTAL, "Horizontal", "horizontal" },
+    { T::VERTICAL, "Vertical", "vertical" },
+    { T::DIAMETER, "Diameter", "dimension" },
+    { T::PT_ON_CIRCLE, "Point on circle", "point-on" },
+    { T::SAME_ORIENTATION, "Same orientation", "same-orientation" },
+    { T::ANGLE, "Angle", "angle" },
+    { T::PARALLEL, "Parallel", "parallel" },
+    { T::ARC_LINE_TANGENT, "Tangent", "parallel" },
+    { T::CUBIC_LINE_TANGENT, "Tangent", "parallel" },
+    { T::CURVE_CURVE_TANGENT, "Tangent", "parallel" },
+    { T::PERPENDICULAR, "Perpendicular", "perpendicular" },
+    { T::EQUAL_RADIUS, "Equal radius", "equal" },
+    { T::EQUAL_ANGLE, "Equal angle", "equal" },
+    { T::EQUAL_LINE_ARC_LEN, "Equal line and arc length", "equal" },
+    { T::WHERE_DRAGGED, "Lock", "" },
+    { T::COMMENT, "Comment", "" },
+};
+const ConstraintKind *FindKind(Constraint::Type type) {
+    for(const ConstraintKind &k : ConstraintKinds) {
+        if(k.type == type) return &k;
+    }
+    return nullptr;
+}
+}
+
+std::string ConstraintTypeName(Constraint::Type type) {
+    const ConstraintKind *k = FindKind(type);
+    return k ? k->name : "Constraint";
+}
+
+std::string ConstraintIcon(Constraint::Type type) {
+    const ConstraintKind *k = FindKind(type);
+    return k ? k->icon : "";
+}
+
+std::string ConstraintLabel(const Constraint &c) {
+    return ssprintf("%s (c%03x)", ConstraintTypeName(c.type).c_str(), c.h.v);
+}
+
 static std::string Coords(Vector p) {
     return "(" + SS.MmToString(p.x) + ", " + SS.MmToString(p.y) + ", " + SS.MmToString(p.z) +
            ")";
@@ -223,7 +292,7 @@ static void DescribeEntity(Entity *e, SelectionModel *m) {
         for(hConstraint hc : on) {
             Constraint *c = SK.GetConstraint(hc);
             if(c->reference != reference) continue;
-            SelectionRow row = Value("", c->DescriptionString());
+            SelectionRow row = Value("", ConstraintLabel(*c));
             row.constraint   = hc;
             s.rows.push_back(row);
         }
@@ -244,7 +313,7 @@ static void DescribeFaces(SelectionModel *m) {
 }
 
 static void DescribeConstraint(Constraint *c, SelectionModel *m) {
-    std::string desc = c->DescriptionString();
+    std::string desc = ConstraintTypeName(c->type);
     m->constraint    = c->h;
     m->reference     = c->reference;
     if(c->type == Constraint::Type::COMMENT) {

@@ -2,6 +2,7 @@
 #include "../uitest.h"
 #include "ui/piemenu.h"
 #include "ui/problemsmodel.h"
+#include "ui/selectionmodel.h"
 #include "harness.h"
 
 using namespace SolveSpace::UiTest;
@@ -87,3 +88,15 @@ TEST_CASE(an_open_contour_does_not_pop_problems_up) {
     CHECK_TRUE(Driver::FindItem("sketch-in-plane").has_value()); // the outliner row, at least
 }
 
+
+TEST_CASE(a_culprit_is_listed_by_its_readable_name) {
+    // (P14) "Vertical (c003)", with its icon; clicking it selects that constraint.
+    CHECK_LOAD("line.slvs");
+    OverConstrainedLine();
+    std::vector<Ui::Problem> problems = Ui::BuildProblems();
+    CHECK_TRUE(problems.size() == 1 && !problems[0].culprits.empty());
+    if(problems.empty() || problems[0].culprits.empty()) return;
+    hConstraint hc = problems[0].culprits[0];
+    CHECK_TRUE(Driver::ClickItem(Ui::ConstraintLabel(*SK.GetConstraint(hc))));
+    CHECK_TRUE(SS.GW.selection.n == 1 && SS.GW.selection[0].constraint == hc);
+}
