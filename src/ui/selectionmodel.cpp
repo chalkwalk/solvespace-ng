@@ -15,6 +15,22 @@ static std::string Numbers(Vector p) {
     return ssprintf("(%.3f, %.3f, %.3f)", p.x, p.y, p.z);
 }
 
+// A length in the current unit, with the unit (owner review 2026-10-17, P8).
+static std::string Len(double mm) {
+    return SS.MmToString(mm) + " " + SS.UnitName();
+}
+
+// "LINE SEGMENT" reads "Line segment".
+static std::string SentenceCase(std::string s) {
+    for(size_t i = 1; i < s.size(); i++) s[i] = (char)tolower((unsigned char)s[i]);
+    for(auto [from, to] : { std::pair{ "Truetype", "TrueType" }, std::pair{ " c2 ", " C2 " },
+                            std::pair{ "bezier", "B\xC3\xA9zier" }, std::pair{ "?? entity", "Entity" } }) {
+        size_t at = s.find(from);
+        if(at != std::string::npos) s.replace(at, strlen(from), to);
+    }
+    return s;
+}
+
 static SelectionRow Value(std::string label, std::string value) {
     SelectionRow r = {};
     r.label = std::move(label);
@@ -36,8 +52,8 @@ static SelectionRow EntityRow(std::string label, hEntity he, std::string value) 
 
 static SelectionRow WorkplaneRow(hEntity workplane) {
     Entity *w = SK.GetEntity(workplane);
-    if(w->h.isFromRequest()) return EntityRow("in workplane", w->h, w->DescriptionString());
-    SelectionRow r = Value("in workplane", w->DescriptionString());
+    if(w->h.isFromRequest()) return EntityRow("workplane", w->h, w->DescriptionString());
+    SelectionRow r = Value("workplane", w->DescriptionString());
     r.group        = w->h.group();
     return r;
 }
@@ -63,7 +79,7 @@ static void DescribeEntity(Entity *e, SelectionModel *m) {
         case Entity::Type::NORMAL_N_ROT_AA: {
             Quaternion q = e->NormalGetNum();
             m->title = "NORMAL / COORDINATE SYSTEM";
-            rows.push_back(Value("basis n", Numbers(q.RotationN())));
+            rows.push_back(Value("normal", Numbers(q.RotationN())));
             rows.push_back(Value("u", Numbers(q.RotationU())));
             rows.push_back(Value("v", Numbers(q.RotationV())));
             break;
@@ -79,9 +95,9 @@ static void DescribeEntity(Entity *e, SelectionModel *m) {
             Vector p0 = SK.GetEntity(e->point[0])->PointGetNum();
             Vector p1 = SK.GetEntity(e->point[1])->PointGetNum();
             m->title  = "LINE SEGMENT";
-            rows.push_back(PointRow("thru", e->point[0]));
-            rows.push_back(PointRow("", e->point[1]));
-            rows.push_back(Value("len", SS.MmToString(p1.Minus(p0).Magnitude())));
+            rows.push_back(PointRow("from", e->point[0]));
+            rows.push_back(PointRow("to", e->point[1]));
+            rows.push_back(Value("length", Len(p1.Minus(p0).Magnitude())));
             break;
         }
         case Entity::Type::CUBIC_PERIODIC:
@@ -108,18 +124,18 @@ static void DescribeEntity(Entity *e, SelectionModel *m) {
             rows.push_back(PointRow("center", e->point[0]));
             rows.push_back(PointRow("endpoints", e->point[1]));
             rows.push_back(PointRow("", e->point[2]));
-            rows.push_back(Value("diameter", SS.MmToString(r * 2)));
-            rows.push_back(Value("radius", SS.MmToString(r)));
-            rows.push_back(Value("arc len", SS.MmToString(dtheta * r)));
+            rows.push_back(Value("diameter", Len(r * 2)));
+            rows.push_back(Value("radius", Len(r)));
+            rows.push_back(Value("arc length", Len(dtheta * r)));
             break;
         }
         case Entity::Type::CIRCLE: {
             double r = e->CircleGetRadiusNum();
             m->title = "CIRCLE";
             rows.push_back(PointRow("center", e->point[0]));
-            rows.push_back(Value("diameter", SS.MmToString(r * 2)));
-            rows.push_back(Value("radius", SS.MmToString(r)));
-            rows.push_back(Value("circumference", SS.MmToString(2 * PI * r)));
+            rows.push_back(Value("diameter", Len(r * 2)));
+            rows.push_back(Value("radius", Len(r)));
+            rows.push_back(Value("circumference", Len(2 * PI * r)));
             break;
         }
         case Entity::Type::FACE_NORMAL_PT:
@@ -131,7 +147,7 @@ static void DescribeEntity(Entity *e, SelectionModel *m) {
         case Entity::Type::FACE_N_ROT_AXIS_TRANS:
             m->title = "PLANE FACE";
             rows.push_back(Value("normal", Numbers(e->FaceGetNormalNum())));
-            rows.push_back(EntityRow("thru", e->h, Coords(e->FaceGetPointNum())));
+            rows.push_back(EntityRow("through", e->h, Coords(e->FaceGetPointNum())));
             break;
 
         case Entity::Type::TTF_TEXT:
@@ -161,26 +177,26 @@ static void DescribeEntity(Entity *e, SelectionModel *m) {
     if(e->h.isFromRequest()) {
         Request *r = SK.GetRequest(e->h.request());
         if(e->h == r->h.entity(0)) {
-            rows.push_back(Value("from request", r->DescriptionString()));
+            rows.push_back(Value("sketch entity", r->DescriptionString()));
         } else {
-            rows.push_back(EntityRow("from request", r->h.entity(0), r->DescriptionString()));
+            rows.push_back(EntityRow("sketch entity", r->h.entity(0), r->DescriptionString()));
         }
     }
-    SelectionRow group = Value("in group", SK.GetGroup(e->group)->DescriptionString());
+    SelectionRow group = Value("group", SK.GetGroup(e->group)->DescriptionString());
     group.group        = e->group;
     rows.push_back(group);
     if(e->workplane == Entity::FREE_IN_3D) {
-        rows.push_back(Value("in workplane", "none (free in 3d)"));
+        rows.push_back(Value("workplane", "none (free in 3d)"));
     } else {
         rows.push_back(WorkplaneRow(e->workplane));
     }
     if(e->IsStylable()) {
         if(e->style.v) {
-            SelectionRow style = Value("in style", Style::Get(e->style)->DescriptionString());
+            SelectionRow style = Value("style", Style::Get(e->style)->DescriptionString());
             style.style        = e->style;
             rows.push_back(style);
         } else {
-            rows.push_back(Value("in style", "none"));
+            rows.push_back(Value("style", "none"));
         }
     }
     if(e->construction) rows.push_back(Value("construction", "yes"));
@@ -236,24 +252,37 @@ static void DescribeConstraint(Constraint *c, SelectionModel *m) {
         m->isComment = true;
         m->valueText = c->comment;
         if(c->ptA != Entity::NO_ENTITY) {
-            m->rows.push_back(PointRow("attached to point", c->ptA));
-            m->rows.push_back(Value("distance", SS.MmToString(c->disp.offset.Magnitude())));
-            m->rows.push_back(Value("d(x, y, z)", Coords(c->disp.offset)));
+            m->rows.push_back(PointRow("attached to", c->ptA));
+            m->rows.push_back(Value("distance", Len(c->disp.offset.Magnitude())));
+            m->rows.push_back(Value("offset (x, y, z)", Coords(c->disp.offset)));
         }
     } else if(c->HasLabel()) {
         m->title      = c->reference ? "REFERENCE" : "DIMENSION";
         m->hasValue   = true;
-        m->valueText  = SS.ConstraintEditText(c->h);
+        // At the display precision, as the canvas shows it (the unit beside the field).
+        double value = fabs(c->valA);
+        if(c->type == Constraint::Type::DIAMETER && c->other) value /= 2;
+        if(c->type == Constraint::Type::LENGTH_RATIO ||
+           c->type == Constraint::Type::ARC_ARC_LEN_RATIO ||
+           c->type == Constraint::Type::ARC_LINE_LEN_RATIO) {
+            m->valueText = ssprintf("%.3f", value);
+        } else if(c->type == Constraint::Type::ANGLE) {
+            m->valueText = SS.DegreeToString(value);
+            m->unit      = "\xC2\xB0";
+        } else {
+            m->valueText = SS.MmToString(value, true);
+            m->unit      = SS.UnitName();
+        }
         m->isDiameter = c->type == Constraint::Type::DIAMETER;
         m->showAsRadius = c->other;
     } else {
         m->title = "CONSTRAINT";
     }
-    m->rows.push_back(Value("is", desc));
+    m->rows.push_back(Value("type", desc));
 
     if(c->IsProjectible()) {
         if(c->workplane == Entity::FREE_IN_3D) {
-            m->rows.push_back(Value("in workplane", "none (not projected)"));
+            m->rows.push_back(Value("workplane", "none (not projected)"));
         } else {
             m->rows.push_back(WorkplaneRow(c->workplane));
         }
@@ -261,9 +290,12 @@ static void DescribeConstraint(Constraint *c, SelectionModel *m) {
 
     SelectionSection s;
     s.title = c->reference ? "measures" : "constrains";
+    std::set<std::string> listed; // both end points of one line: the line once
     for(hEntity he : { c->ptA, c->ptB, c->entityA, c->entityB, c->entityC, c->entityD }) {
         if(he == Entity::NO_ENTITY || !he.isFromRequest()) continue;
-        s.rows.push_back(EntityRow("", he, SK.GetEntity(he)->DescriptionString()));
+        std::string name = SK.GetEntity(he)->DescriptionString();
+        if(!listed.insert(name).second) continue;
+        s.rows.push_back(EntityRow("", he, name));
     }
     if(!s.rows.empty()) m->sections.push_back(s);
 }
@@ -282,21 +314,21 @@ SelectionModel BuildSelection() {
         Vector p0 = SK.GetEntity(gs.point[0])->PointGetNum();
         Vector p1 = SK.GetEntity(gs.point[1])->PointGetNum();
         m.title   = "TWO POINTS";
-        m.rows.push_back(PointRow("at", gs.point[0]));
-        m.rows.push_back(PointRow("", gs.point[1]));
-        m.rows.push_back(Value("d", SS.MmToString(p1.Minus(p0).Magnitude())));
-        m.rows.push_back(Value("d(x, y, z)", Coords(p1.Minus(p0))));
+        m.rows.push_back(PointRow("from", gs.point[0]));
+        m.rows.push_back(PointRow("to", gs.point[1]));
+        m.rows.push_back(Value("distance", Len(p1.Minus(p0).Magnitude())));
+        m.rows.push_back(Value("offset (x, y, z)", Coords(p1.Minus(p0))));
     } else if(gs.n == 2 && gs.points == 1 && gs.circlesOrArcs == 1) {
         Entity *ec = SK.GetEntity(gs.entity[0]);
         Vector  p  = SK.GetEntity(gs.point[0])->PointGetNum();
         Vector  c  = SK.GetEntity(ec->point[0])->PointGetNum();
         double  r  = ec->CircleGetRadiusNum();
         m.title    = ec->type == Entity::Type::CIRCLE ? "POINT AND A CIRCLE" : "POINT AND AN ARC";
-        m.rows.push_back(PointRow("pt at", gs.point[0]));
+        m.rows.push_back(PointRow("point", gs.point[0]));
         m.rows.push_back(PointRow("center", ec->point[0]));
-        m.rows.push_back(Value("diameter", SS.MmToString(r * 2)));
-        m.rows.push_back(Value("radius", SS.MmToString(r)));
-        m.rows.push_back(Value("distance", SS.MmToString(p.Minus(c).Magnitude() - r)));
+        m.rows.push_back(Value("diameter", Len(r * 2)));
+        m.rows.push_back(Value("radius", Len(r)));
+        m.rows.push_back(Value("distance", Len(p.Minus(c).Magnitude() - r)));
     } else if(gs.n == 2 && gs.faces == 1 && gs.points == 1) {
         Vector pt = SK.GetEntity(gs.point[0])->PointGetNum();
         Vector n  = SK.GetEntity(gs.face[0])->FaceGetNormalNum();
@@ -304,17 +336,17 @@ SelectionModel BuildSelection() {
         m.title   = "A POINT AND A PLANE FACE";
         m.rows.push_back(PointRow("point", gs.point[0]));
         m.rows.push_back(Value("plane normal", Numbers(n)));
-        m.rows.push_back(EntityRow("plane thru", gs.face[0], Coords(pl)));
-        m.rows.push_back(Value("distance", SS.MmToString(n.Dot(pl) - n.Dot(pt))));
+        m.rows.push_back(EntityRow("plane through", gs.face[0], Coords(pl)));
+        m.rows.push_back(Value("distance", Len(n.Dot(pl) - n.Dot(pt))));
     } else if(gs.n == 3 && gs.points == 2 && gs.vectors == 1) {
         Vector p0 = SK.GetEntity(gs.point[0])->PointGetNum();
         Vector p1 = SK.GetEntity(gs.point[1])->PointGetNum();
         Vector v  = SK.GetEntity(gs.vector[0])->VectorGetNum().WithMagnitude(1);
         m.title   = "TWO POINTS AND A VECTOR";
-        m.rows.push_back(PointRow("pointA", gs.point[0]));
-        m.rows.push_back(PointRow("pointB", gs.point[1]));
+        m.rows.push_back(PointRow("point A", gs.point[0]));
+        m.rows.push_back(PointRow("point B", gs.point[1]));
         m.rows.push_back(EntityRow("vector", gs.vector[0], Numbers(v)));
-        m.rows.push_back(Value("proj_d", SS.MmToString(p1.Minus(p0).Dot(v))));
+        m.rows.push_back(Value("projected distance", Len(p1.Minus(p0).Dot(v))));
     } else if(gs.n == 2 && gs.lineSegments == 1 && gs.points == 1) {
         Entity *ln  = SK.GetEntity(gs.entity[0]);
         Vector  lp0 = SK.GetEntity(ln->point[0])->PointGetNum();
@@ -322,16 +354,16 @@ SelectionModel BuildSelection() {
         Entity *p   = SK.GetEntity(gs.point[0]);
         Vector  pp  = p->PointGetNum();
         m.title     = "LINE SEGMENT AND POINT";
-        m.rows.push_back(PointRow("ln thru", ln->point[0]));
+        m.rows.push_back(PointRow("line through", ln->point[0]));
         m.rows.push_back(PointRow("", ln->point[1]));
         m.rows.push_back(PointRow("point", gs.point[0]));
-        m.rows.push_back(Value("pt-ln distance",
+        m.rows.push_back(Value("distance to line",
                                SS.MmToString(pp.DistanceToLine(lp0, lp1.Minus(lp0)))));
         hEntity wrkpl = SS.GW.ActiveWorkplane();
         if(wrkpl != Entity::FREE_IN_3D && !(p->workplane == wrkpl && ln->workplane == wrkpl)) {
             Vector ppw = pp.ProjectInto(wrkpl), lp0w = lp0.ProjectInto(wrkpl),
                    lp1w = lp1.ProjectInto(wrkpl);
-            m.rows.push_back(Value("in workplane",
+            m.rows.push_back(Value("workplane",
                                    SS.MmToString(ppw.DistanceToLine(lp0w, lp1w.Minus(lp0w)))));
         }
     } else if(gs.n == 2 && gs.vectors == 2) {
@@ -339,12 +371,12 @@ SelectionModel BuildSelection() {
         Vector v1 = SK.GetEntity(gs.entity[1])->VectorGetNum().WithMagnitude(1);
         double theta = acos(v0.Dot(v1));
         m.title      = "TWO VECTORS";
-        m.rows.push_back(EntityRow("vectorA", gs.entity[0], Numbers(v0)));
-        m.rows.push_back(EntityRow("vectorB", gs.entity[1], Numbers(v1)));
+        m.rows.push_back(EntityRow("vector A", gs.entity[0], Numbers(v0)));
+        m.rows.push_back(EntityRow("vector B", gs.entity[1], Numbers(v1)));
         m.rows.push_back(Value("angle", ssprintf("%.2f degrees", theta * 180 / PI)));
         while(theta < PI / 2) theta += PI;
         while(theta > PI / 2) theta -= PI;
-        m.rows.push_back(Value("or angle", ssprintf("%.2f (mod 180)", theta * 180 / PI)));
+        m.rows.push_back(Value("or", ssprintf("%.2f (mod 180)", theta * 180 / PI)));
     } else if(gs.n == 2 && gs.faces == 2) {
         m.title = "TWO PLANE FACES";
         DescribeFaces(&m);
@@ -354,11 +386,11 @@ SelectionModel BuildSelection() {
         m.rows.push_back(Value("angle", ssprintf("%.2f degrees", theta * 180 / PI)));
         while(theta < PI / 2) theta += PI;
         while(theta > PI / 2) theta -= PI;
-        m.rows.push_back(Value("or angle", ssprintf("%.2f (mod 180)", theta * 180 / PI)));
+        m.rows.push_back(Value("or", ssprintf("%.2f (mod 180)", theta * 180 / PI)));
         if(fabs(theta) < 0.01) {
             Vector p0 = SK.GetEntity(gs.face[0])->FaceGetPointNum();
             Vector p1 = SK.GetEntity(gs.face[1])->FaceGetPointNum();
-            m.rows.push_back(Value("distance", SS.MmToString(p1.Minus(p0).Dot(n0))));
+            m.rows.push_back(Value("distance", Len(p1.Minus(p0).Dot(n0))));
         }
     } else if(gs.n == 3 && gs.faces == 3) {
         m.title = "THREE PLANE FACES";
@@ -376,6 +408,7 @@ SelectionModel BuildSelection() {
         Constraint *c = SK.GetConstraint(gs.constraint[i]);
         if(c->type == Constraint::Type::COMMENT && c->disp.style.v) m.styleAssigned = true;
     }
+    m.title = SentenceCase(m.title);
     return m;
 }
 

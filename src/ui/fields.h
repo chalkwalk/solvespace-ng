@@ -11,9 +11,11 @@ namespace SolveSpace {
 namespace Ui {
 
 // A text field showing the model's value until it is edited; Enter (or leaving the field
-// after editing) sets *run to apply the text after the frame.
+// after editing) sets *run to apply the text after the frame, but only if it differs from the
+// value shown: a value shown rounded (16.49 for 16.4924) is never changed by an Enter alone.
+// `suffix` (a unit) is shown after the field.
 void ValueField(const char *label, const std::string &value, std::function<void()> *run,
-                std::function<void(std::string)> apply);
+                std::function<void(std::string)> apply, const char *suffix = nullptr);
 
 // A colour swatch labelled `label` that opens a picker. Returns true while the colour changes,
 // with the new colour in rgb; *gestureStart is true for the first change of a click or drag,

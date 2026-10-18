@@ -29,7 +29,7 @@ struct SelectionSection {
 struct SelectionModel {
     bool                          empty = true;
     int                           count = 0;
-    std::string                   title; // "LINE SEGMENT", "TWO POINTS", "DIMENSION", ...
+    std::string                   title; // "Line segment", "Two points", "Dimension", ...
     std::vector<SelectionRow>     rows;
     std::vector<SelectionSection> sections;
 
@@ -37,7 +37,8 @@ struct SelectionModel {
     hConstraint constraint;
     bool        isComment = false, hasValue = false, reference = false;
     bool        isDiameter = false, showAsRadius = false;
-    std::string valueText; // as the dimension editor shows it
+    std::string valueText; // at the display precision
+    std::string unit;      // shown beside the value: "mm", "\xC2\xB0", or nothing for a ratio
 
     // A TrueType text entity from a request.
     hRequest    ttf;

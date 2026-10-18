@@ -254,7 +254,7 @@ static void DrawSelection(const SelectionModel &m, std::function<void()> *run) {
             ValueField("##comment", m.valueText, run, setValue);
         } else if(m.hasValue) {
             ImGui::BeginDisabled(m.reference); // a reference dimension only measures
-            ValueField("##value", m.valueText, run, setValue);
+            ValueField("##value", m.valueText, run, setValue, m.unit.c_str());
             ImGui::EndDisabled();
             bool reference = m.reference;
             if(ImGui::Checkbox("reference", &reference)) {

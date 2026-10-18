@@ -184,3 +184,21 @@ TEST_CASE(dragging_in_the_colour_picker_is_one_undo_step) {
     Driver::Key("Ctrl+Z");
     CHECK_FALSE(Active()->color.Equals(dragged)); // the whole drag undone at once
 }
+
+TEST_CASE(enter_on_an_unedited_value_keeps_the_exact_dimension) {
+    // The field shows 2 decimals (P8); Enter alone must not round the dimension to them.
+    CHECK_LOAD("line.slvs");
+    hRequest line = DrawLine(Point2d::From(560, 500), Point2d::From(717, 463));
+    ClickAt(AtMiddle(line));
+    Driver::Key("D");
+    Driver::Key("Return");
+    hConstraint dim = *LastConstraint(Constraint::Type::PT_PT_DISTANCE);
+    double exact = SK.GetConstraint(dim)->valA;
+    CHECK_TRUE(fabs(exact * 100 - round(exact * 100)) > 1e-6); // not a 2-decimal value
+    ClickAt(AtLabel(dim));
+    std::optional<Driver::Item> field = Driver::FindItem("value");
+    CHECK_TRUE(field.has_value());
+    if(field) Driver::Click(field->Center().x, field->Center().y);
+    Driver::Key("Return");
+    CHECK_TRUE(SK.GetConstraint(dim)->valA == exact);
+}

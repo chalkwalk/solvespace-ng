@@ -10,20 +10,29 @@ namespace SolveSpace {
 namespace Ui {
 
 void ValueField(const char *label, const std::string &value, std::function<void()> *run,
-                std::function<void(std::string)> apply) {
+                std::function<void(std::string)> apply, const char *suffix) {
     static std::map<ImGuiID, std::string> editing;
     ImGuiID     id   = ImGui::GetID(label);
     std::string text = editing.count(id) ? editing[id] : value;
     char buf[256];
     snprintf(buf, sizeof(buf), "%s", text.c_str());
-    ImGui::SetNextItemWidth(-FLT_MIN);
+    bool hasSuffix = suffix && *suffix;
+    ImGui::SetNextItemWidth(hasSuffix ? -(ImGui::CalcTextSize(suffix).x +
+                                          ImGui::GetStyle().ItemSpacing.x)
+                                      : -FLT_MIN);
     bool entered = ImGui::InputText(label, buf, sizeof(buf), ImGuiInputTextFlags_EnterReturnsTrue);
-    if(ImGui::IsItemActive()) editing[id] = buf;
-    if(entered || ImGui::IsItemDeactivatedAfterEdit()) {
+    bool active  = ImGui::IsItemActive();
+    bool edited  = ImGui::IsItemDeactivatedAfterEdit();
+    if(hasSuffix) {
+        ImGui::SameLine();
+        ImGui::TextDisabled("%s", suffix);
+    }
+    if(active) editing[id] = buf;
+    if(entered || edited) {
         std::string s = buf;
-        *run = [apply, s] { apply(s); };
+        if(s != value) *run = [apply, s] { apply(s); };
         editing.erase(id);
-    } else if(!ImGui::IsItemActive()) {
+    } else if(!active) {
         editing.erase(id);
     }
 }
