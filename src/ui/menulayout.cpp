@@ -350,3 +350,40 @@ void ApplyMenuLayout(MenuBarSdl &bar,
 
 }
 }
+
+namespace SolveSpace {
+namespace Ui {
+
+void ApplyContextMenuLayout(MenuSdl &menu, bool itemsSelected) {
+    static const std::pair<const char *, const char *> renamed[] = {
+        { "Group Info", "Group Properties" }, { "Style Info", "Style Properties" } };
+    for(MenuSdl::Entry &e : menu.entries) {
+        if(e.kind != MenuSdl::Entry::Kind::ITEM) continue;
+        for(const auto &r : renamed) {
+            if(e.label != r.first) continue;
+            e.label = e.item->label = r.second;
+            e.item->searchAlias     = r.first;
+        }
+    }
+    if(!itemsSelected) return;
+    // What one does next with a selection, with the keys that do it on the canvas.
+    static const std::pair<const char *, const char *> actions[] = {
+        { "Grab", "ui.grab" },
+        { "Dimension", "ui.smart-dimension" },
+        { "Constrain...", "ui.pie-constrain" },
+        { "Hide Group", "ui.hide" } };
+    std::vector<MenuSdl::Entry> first;
+    for(const auto &a : actions) {
+        auto        item = std::make_shared<MenuItemSdl>();
+        std::string name = a.second;
+        item->label      = a.first;
+        item->action     = name;
+        item->onTrigger  = [name] { RunNamedCommand(name); };
+        first.push_back({ MenuSdl::Entry::Kind::ITEM, item, nullptr, item->label });
+    }
+    first.push_back({ MenuSdl::Entry::Kind::SEPARATOR, nullptr, nullptr, "" });
+    menu.entries.insert(menu.entries.begin(), first.begin(), first.end());
+}
+
+}
+}

@@ -118,3 +118,43 @@ TEST_CASE(menus_show_the_keys_of_the_current_preset) {
     CHECK_EQ_STR(SolveSpace::Ui::ShortcutText(outliner, modern), "O");
     CHECK_TRUE(SolveSpace::Ui::ShortcutText(outliner, classic).empty()); // no key in Classic
 }
+
+// (P13) The canvas's context menu: NG's names, and NG's actions for what is selected first.
+static MenuSdl StockContextMenu(std::shared_ptr<MenuItemSdl> *groupInfo) {
+    MenuSdl menu;
+    *groupInfo = std::static_pointer_cast<MenuItemSdl>(menu.AddItem("Group Info"));
+    menu.AddItem("Style Info");
+    menu.AddSeparator();
+    menu.AddItem("Delete");
+    return menu;
+}
+
+TEST_CASE(context_menu_uses_ng_names_and_actions) {
+    std::shared_ptr<MenuItemSdl> groupInfo;
+    MenuSdl menu = StockContextMenu(&groupInfo);
+    SolveSpace::Ui::ApplyContextMenuLayout(menu, /*itemsSelected=*/true);
+    const char *actions[][2] = { { "Grab", "ui.grab" },
+                                 { "Dimension", "ui.smart-dimension" },
+                                 { "Constrain...", "ui.pie-constrain" },
+                                 { "Hide Group", "ui.hide" } };
+    CHECK_TRUE(menu.entries.size() == 4 + 1 + 4);
+    if(menu.entries.size() != 9) return;
+    for(int i = 0; i < 4; i++) {
+        CHECK_TRUE(menu.entries[i].label == actions[i][0]);
+        CHECK_TRUE(menu.entries[i].item->label == actions[i][0]);
+        CHECK_TRUE(menu.entries[i].item->action == actions[i][1]);
+    }
+    CHECK_TRUE(menu.entries[4].kind == MenuSdl::Entry::Kind::SEPARATOR);
+    const MenuSdl::Entry *props = Find(menu, "Group Properties");
+    CHECK_TRUE(props && props->item == groupInfo && groupInfo->label == "Group Properties");
+    CHECK_TRUE(Find(menu, "Style Properties") != nullptr);
+    CHECK_TRUE(Find(menu, "Group Info") == nullptr);
+}
+
+TEST_CASE(context_menu_without_a_selection_gets_no_actions) {
+    std::shared_ptr<MenuItemSdl> groupInfo;
+    MenuSdl menu;
+    menu.AddItem("Select All");
+    SolveSpace::Ui::ApplyContextMenuLayout(menu, /*itemsSelected=*/false);
+    CHECK_TRUE(menu.entries.size() == 1);
+}

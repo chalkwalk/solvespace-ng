@@ -6,6 +6,7 @@
 #include "harness.h"
 
 namespace Driver = SolveSpace::Platform::Driver;
+using namespace SolveSpace::UiTest;
 
 TEST_CASE(menu_bar_click_starts_the_line_tool) {
     CHECK_LOAD("line.slvs");
@@ -169,4 +170,14 @@ TEST_CASE(the_palette_still_finds_old_names) {
     Driver::Type("configuration");
     Driver::Key("Return");
     CHECK_TRUE(Driver::FindItem("Preferences").has_value());
+}
+
+TEST_CASE(context_menu_offers_grab_for_the_selection) {
+    // (P13) Right-click a line: Grab is the first item and starts grabbing it.
+    CHECK_LOAD("line.slvs");
+    hRequest line = *LastRequest(Request::Type::LINE_SEGMENT);
+    Point2d  m    = AtMiddle(line);
+    CHECK_TRUE(ContextMenu(m, "Grab"));
+    CHECK_TRUE(SS.GW.pending.operation == GraphicsWindow::Pending::GRABBING);
+    Driver::Key("Escape");
 }

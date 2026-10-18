@@ -203,6 +203,7 @@ static bool     gPopupOpened = false;
 MenuRef CreateMenu() {
     auto menu = std::make_shared<MenuSdl>();
     menu->onPopUp = [](MenuSdl *m) {
+        Ui::ApplyContextMenuLayout(*m, !SS.GW.selection.IsEmpty());
         gActivePopup = m;
         gPopupOpened = false;
         gNeedsFrame  = true;

@@ -29,6 +29,10 @@ std::string CommandLabel(Command c);
 // else its alias's (Distance / Diameter shows D, the smart dimension, in Modern).
 std::string ShortcutText(const Platform::MenuItemSdl &item, const keymap::Keymap &keymap);
 
+// The canvas's context menu as the core built it, in NG's words ("Group Properties"), with
+// NG's actions for a selection first: Grab, Dimension, Constrain..., Hide Group.
+void ApplyContextMenuLayout(Platform::MenuSdl &menu, bool itemsSelected);
+
 }
 }
 

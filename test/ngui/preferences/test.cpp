@@ -70,14 +70,14 @@ TEST_CASE(classic_keys_take_effect_at_once) {
     CHECK_TRUE(SS.GW.pending.command == Command::LINE_SEGMENT);
 }
 
-TEST_CASE(context_menu_group_info_opens_properties) {
+TEST_CASE(context_menu_group_properties_opens_properties) {
     CHECK_LOAD("line.slvs");
     Driver::ClickMenu({ "New Group", "Sketch in 3D" });
     hRequest line = *LastRequest(Request::Type::LINE_SEGMENT);
     hGroup   sketch = SK.GetRequest(line)->group;
     Point2d  m = AtMiddle(line);
     ClickAt(m);
-    CHECK_TRUE(ContextMenu(m, "Group Info"));
+    CHECK_TRUE(ContextMenu(m, "Group Properties"));
     CHECK_TRUE(Ui::PropertiesGroup() == sketch);
     CHECK_FALSE(SS.GW.showTextWindow);
 }
