@@ -64,15 +64,15 @@ SolveSpace's toolbar), features as shaded solids in the theme accent; `generate.
 
 ### View cube (2026-10-17)
 Screenshots: `docs/owner-review/viewcube-dark.png`, `viewcube-light.png`.
-- [ ] The cube in the top right turns with the view; faces are labelled.
+- [ ] The cube sits in the bottom left with the X/Y/Z axes coming out of it (labelled), and
+      turns with the view.
 - [ ] Clicking a face looks straight at it (same as the numpad views); an edge or corner looks
       between its faces; the part under the mouse is highlighted first.
 - [ ] Dragging the cube orbits the view; the drag never selects or moves anything.
-- [ ] It stays left of the Properties panel and moves into the corner when Properties closes.
+- [ ] The axes beside the cube can still be selected for constraints (e.g. parallel to Z),
+      and clicks just off the cube reach the drawing.
 - [ ] It is 80% opaque until the mouse is on it, then solid.
-- [ ] Clicks just outside the cube but inside its square (the corners of its area) are taken
-      by the cube, not the canvas. Tell me if you notice it.
-- The bottom-left X/Y/Z axes stay: they are the reference normals, selectable for constraints.
+- [ ] In a small window it moves right of the Outliner when there is room.
 
 ## Decisions waiting for the owner
 - Merge order: `ng/m1a-shell` > `ng/m1b-interaction` > `ng/m1-ui-harness` > `ng/m1c-panels` >

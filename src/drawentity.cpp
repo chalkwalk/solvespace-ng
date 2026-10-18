@@ -653,7 +653,12 @@ void Entity::Draw(DrawAs how, Canvas *canvas) {
 
                 Quaternion q = NormalGetNum();
                 Vector tail;
-                if(asReference) {
+                if(asReference && SS.GW.referenceAxesAnchor) {
+                    stroke.width = 2;
+                    Point2d a = *SS.GW.referenceAxesAnchor;
+                    tail = camera.projRight.ScaledBy(a.x / camera.scale).Plus(
+                           camera.projUp.ScaledBy(a.y / camera.scale)).Minus(camera.offset);
+                } else if(asReference) {
                     // Draw an extra copy of the x, y, and z axes, that's
                     // always in the corner of the view and at the front.
                     // So those are always available, perhaps useful.
@@ -674,7 +679,8 @@ void Entity::Draw(DrawAs how, Canvas *canvas) {
                 tail = camera.AlignToPixelGrid(tail);
 
                 hcs = canvas->GetStroke(stroke);
-                Vector v = (q.RotationN()).WithMagnitude(50.0 / camera.scale);
+                double length = asReference ? SS.GW.referenceAxesLength : 50.0;
+                Vector v = (q.RotationN()).WithMagnitude(length / camera.scale);
                 Vector tip = tail.Plus(v);
                 canvas->DrawLine(tail, tip, hcs);
 

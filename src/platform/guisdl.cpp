@@ -40,6 +40,7 @@
 #include "platform/sdl/icontextures.h"
 #include "ui/iconraster.h"
 #include "ui/keyrouter.h"
+#include "ui/viewcube.h"
 #include "ui/uiactions.h"
 #include "ui/coreactions.h"
 #include "ui/ngui.h"
@@ -789,6 +790,8 @@ static bool ImGuiTakesMouseAt(float x, float y) {
         if(io.MouseDownOwned[b]) ownedDown = true; else canvasDown = true;
     }
     if(g.ActiveId != 0 || g.OpenPopupStack.Size > 0 || ownedDown) return io.WantCaptureMouse;
+    // The view cube takes no ImGui input: it claims its faces, and a press that began on one.
+    if(Ui::ViewCubeTakesMouseAt(x, y, canvasDown)) return true;
     if(canvasDown) return false;
     ImGuiWindow *hovered = nullptr, *underMoving = nullptr;
     ImGui::FindHoveredWindowEx(ImVec2(x, y), false, &hovered, &underMoving);

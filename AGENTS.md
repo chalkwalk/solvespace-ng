@@ -113,11 +113,14 @@ Rules:
 - **Command palette** and **pie menus** float over the viewport. The tool shelf is optional and
   hidden by default. (Built 2026-10-17: View ▸ Show Toolbar shows a "Tools" panel of Lucide-style
   icon buttons for every old-toolbar tool; NG never draws the custom toolbar.)
-- **View cube** (added 2026-10-17, as in Fusion 360, Onshape and FreeCAD): top right of the
-  viewport, left of any panel there. Click a face to look at it, an edge or a corner to look
+- **View cube** (added 2026-10-17, as in Fusion 360, Onshape, Shapr3D and FreeCAD, which all
+  show axes with their cube): bottom left of the viewport, where SolveSpace has always drawn its
+  X/Y/Z axes, which now come out of the cube (decided with the owner, 2026-10-17: in keeping
+  with SolveSpace, and the corner never has to dodge panels). The axes are still the reference
+  planes' normals, selectable for constraints (`GraphicsWindow::referenceAxesAnchor`); the cube
+  takes the mouse only over its faces. Click a face to look at it, an edge or a corner to look
   between its faces (Z up, as the numpad views); drag it to orbit. 80% opaque until the mouse
-  is on it. It does not replace SolveSpace's X/Y/Z axes in the bottom-left corner: those are the
-  reference planes' normals, selectable for constraints (decided with the owner, 2026-10-17).
+  is on it.
 
 **Typed values become constraints.** While a modal tool is active, typed numbers fill HUD fields
 (`Tab` cycles, `Enter` confirms, `Esc` or right-click cancels). Unlike Blender, a typed value

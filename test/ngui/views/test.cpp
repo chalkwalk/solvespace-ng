@@ -117,14 +117,45 @@ TEST_CASE(dragging_the_view_cube_orbits) {
     CHECK_TRUE(SS.GW.pending.operation == GraphicsWindow::Pending::NONE);
 }
 
-TEST_CASE(view_cube_keeps_clear_of_the_properties_panel) {
+TEST_CASE(view_cube_sits_bottom_left_with_the_axes) {
     CHECK_LOAD("line.slvs");
-    std::optional<Driver::Item> props = Driver::FindItem("Properties");
-    std::optional<Driver::Item> cube  = Driver::FindItem("viewcube");
-    CHECK_TRUE(props && cube);
-    if(props && cube) CHECK_TRUE(cube->x1 <= props->x0 || cube->y0 >= props->y1);
-    // With Properties closed it moves into the corner.
+    std::optional<Driver::Item> cube = Driver::FindItem("viewcube");
+    CHECK_TRUE(cube.has_value());
+    if(cube) CHECK_TRUE(cube->x0 < 40 && cube->y1 > Driver::WindowSize().y - 80);
+    CHECK_TRUE(SS.GW.referenceAxesAnchor.has_value());
+}
+
+TEST_CASE(an_axis_beside_the_cube_can_be_selected) {
+    // The axes are SolveSpace's reference normals: selectable, e.g. for "parallel to Z".
+    CHECK_LOAD("line.slvs");
+    Driver::Key("Keypad 1"); // Z points up the screen
+    Point2d c = Ui::ViewCubeCenter();
+    ClickAt(Point2d::From(c.x, c.y - 52)); // past the cube, on the Z axis
+    hEntity zAxis = SK.GetEntity(Request::HREQUEST_REFERENCE_XY.entity(0))->normal;
+    CHECK_TRUE(SS.GW.selection.n == 1 && SS.GW.selection[0].entity == zAxis);
+    CHECK_TRUE(ViewIs(ViewPreset::FRONT)); // and the view stayed
+}
+
+TEST_CASE(clicks_beside_the_cube_reach_the_canvas) {
+    CHECK_LOAD("line.slvs");
+    Driver::Key("Keypad 1");
+    Point2d c = Ui::ViewCubeCenter();
+    ClickAt(Point2d::From(c.x + 55, c.y - 55)); // inside its area, off the cube and the axes
+    CHECK_TRUE(ViewIs(ViewPreset::FRONT));
+    CHECK_TRUE(SS.GW.selection.n == 0);
+}
+
+TEST_CASE(view_cube_moves_right_of_a_tall_outliner) {
+    CHECK_LOAD("line.slvs");
+    Driver::Resize(720, 480); // the app's minimum height stops it at 636
+    Point2d ws = Driver::WindowSize();
+    // With both side panels there is no free spot: it stays in its corner, on screen.
+    std::optional<Driver::Item> cube = Driver::FindItem("viewcube");
+    CHECK_TRUE(cube && cube->x1 <= ws.x);
+    // Without Properties it moves right of the Outliner, which reaches down beside it.
     CHECK_TRUE(ClosePanel("Properties"));
+    std::optional<Driver::Item> outliner = Driver::FindItem("Outliner");
     cube = Driver::FindItem("viewcube");
-    CHECK_TRUE(cube && cube->x1 > Driver::WindowSize().x - 20);
+    CHECK_TRUE(outliner && cube);
+    if(outliner && cube) CHECK_TRUE(cube->x0 >= outliner->x1 && cube->x1 <= ws.x);
 }

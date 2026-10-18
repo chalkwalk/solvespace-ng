@@ -685,6 +685,11 @@ public:
     bool ToggleSketchFocus(bool animate); // false if there was nothing to do
     // The custom-drawn toolbar (toolbar.cpp); NG shows its tool shelf for View > Show Toolbar.
     bool classicToolbar = true;
+    // The reference X/Y/Z axes (the normals of #references, selectable for constraints): where
+    // they start, in pixels from the view centre with y up, and their length in pixels. Unset,
+    // they start 60 px in from the bottom-left corner. (NG draws them out of its view cube.)
+    std::optional<Point2d> referenceAxesAnchor;
+    double                 referenceAxesLength = 50;
     void ActivateGroup(hGroup hg);        // what the property browser's "active" radio does
     void LookOntoActiveWorkplane(bool animate);
     // The translated menu text of a command ("&Horizontal"), or "" if it has no menu item.

@@ -37,3 +37,19 @@ TEST_CASE(orbit_by_turns_the_view_and_keeps_it_square) {
     }
     SS.turntableNav = false;
 }
+
+TEST_CASE(reference_axes_drawn_at_an_anchor_can_be_hovered) {
+    // NG draws SolveSpace's corner X/Y/Z axes out of its view cube; they stay selectable.
+    SS.GW.SnapToView(ViewPreset::FRONT, false);
+    SS.GW.referenceAxesAnchor = Point2d::From(-300, -200); // pixels from the centre, y up
+    SS.GW.referenceAxesLength = 60;
+    hEntity zAxis = SK.GetEntity(Request::HREQUEST_REFERENCE_XY.entity(0))->normal;
+    hEntity xAxis = SK.GetEntity(Request::HREQUEST_REFERENCE_YZ.entity(0))->normal;
+    // From the front, Z points up the screen and X to the right.
+    SS.GW.HitTestMakeSelection(Point2d::From(-300, -200 + 50));
+    CHECK_TRUE(SS.GW.hover.entity == zAxis);
+    SS.GW.HitTestMakeSelection(Point2d::From(-300 + 50, -200));
+    CHECK_TRUE(SS.GW.hover.entity == xAxis);
+    SS.GW.referenceAxesAnchor.reset();
+    SS.GW.referenceAxesLength = 50;
+}
