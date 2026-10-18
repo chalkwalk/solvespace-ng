@@ -4,6 +4,7 @@
 #include "solvespace.h"
 #include "imgui.h"
 #include "pie.h"
+#include "ui/icons.h"
 #include "ui/piemenu.h"
 
 namespace SolveSpace {
@@ -77,11 +78,16 @@ std::string PieMenu::Draw() {
         dl->AddText(ImVec2(cx - ns.x / 2, cy + dead + 6),
                     ImGui::GetColorU32(ImGuiCol_TextDisabled), none);
     }
+    iconsDrawn = 0;
+    const float iconSize = ImGui::GetTextLineHeight() + 2, iconGap = 6;
     for(int i = 0; i < (int)items.size(); i++) {
         float dx, dy;
         pie::ItemDirection(i, (int)items.size(), &dx, &dy);
         std::string text = std::to_string(i + 1) + "  " + items[i].label;
+        ImTextureID icon = items[i].icon.empty() ? ImTextureID() : Icon(items[i].icon, iconSize);
         ImVec2 sz = ImGui::CalcTextSize(text.c_str());
+        float  iconW = icon ? iconSize + iconGap : 0;
+        sz.x += iconW;
         ImVec2 pad(st.FramePadding.x * 2, st.FramePadding.y * 2);
         ImVec2 c(cx + dx * radius, cy + dy * radius);
         // Push labels outward so they never overlap the centre on the left/right.
@@ -91,7 +97,12 @@ std::string PieMenu::Draw() {
         ImGuiCol bg = i == highlighted ? ImGuiCol_ButtonHovered : ImGuiCol_PopupBg;
         dl->AddRectFilled(a, b, ImGui::GetColorU32(bg), st.FrameRounding);
         dl->AddRect(a, b, ImGui::GetColorU32(ImGuiCol_Border), st.FrameRounding);
-        dl->AddText(ImVec2(a.x + pad.x, a.y + pad.y),
+        if(icon) {
+            float iy = (a.y + b.y - iconSize) / 2;
+            dl->AddImage(icon, ImVec2(a.x + pad.x, iy), ImVec2(a.x + pad.x + iconSize, iy + iconSize));
+            iconsDrawn++;
+        }
+        dl->AddText(ImVec2(a.x + pad.x + iconW, a.y + pad.y),
                     ImGui::GetColorU32(items[i].enabled ? ImGuiCol_Text : ImGuiCol_TextDisabled),
                     text.c_str());
     }

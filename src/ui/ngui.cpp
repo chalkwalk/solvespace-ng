@@ -18,6 +18,7 @@
 #include "ui/piemenu.h"
 #include "ui/menulayout.h"
 #include "ui/shelf.h"
+#include "ui/shelfmodel.h"
 #include "ui/shortcuts.h"
 #include "ui/viewcube.h"
 #include "ui/theme.h"
@@ -137,9 +138,12 @@ void InitNgUi() {
     Actions().Bind("ui.show-shortcuts", [] { ShortcutsPanel().Toggle(); });
     Actions().Bind("ui.pie-add", [] {
         Pie().Open("Add", {
-            { "Line", "line-segment" }, { "Rectangle", "rectangle" }, { "Circle", "circle" },
-            { "Arc", "arc" }, { "Spline", "cubic-spline" }, { "Point", "datum-point" },
-            { "Text", "ttf-text" }, { "Workplane", "workplane" } }, "ui.pie-add");
+            { "Line", "line-segment", true, "line" },
+            { "Rectangle", "rectangle", true, "rectangle" },
+            { "Circle", "circle", true, "circle" }, { "Arc", "arc", true, "arc" },
+            { "Spline", "cubic-spline", true, "spline" },
+            { "Point", "datum-point", true, "point" }, { "Text", "ttf-text", true, "text" },
+            { "Workplane", "workplane", true, "new-sketch" } }, "ui.pie-add");
     });
     Actions().Bind("ui.pie-constrain", [] {
         SS.GW.SelectHoveredIfNothingSelected();
@@ -148,7 +152,7 @@ void InitNgUi() {
         for(Command c : Constraint::PieCommands()) {
             if(items.size() == 8) break;
             if(!Constraint::AppliesToSelection(c)) continue;
-            items.push_back({ MenuLabelFor(c), CommandName(c) });
+            items.push_back({ MenuLabelFor(c), CommandName(c), true, CommandIcon(c) });
         }
         Pie().Open("Constrain", std::move(items), "ui.pie-constrain");
     });

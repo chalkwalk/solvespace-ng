@@ -1,6 +1,7 @@
 // Drawing with keys, the Add pie and typed values, as a person does it.
 #include "../uitest.h"
 #include "ui/drawtool.h"
+#include "platform/sdl/icontextures.h"
 #include "ui/piemenu.h"
 #include "harness.h"
 
@@ -379,5 +380,19 @@ TEST_CASE(a_line_in_3d_offers_no_angle_field) {
     Driver::Key("Tab");
     CHECK_TRUE(Ui::Draw().Description().find("angle") == std::string::npos);
     Driver::Key("Escape");
+    Driver::Key("Escape");
+}
+
+TEST_CASE(pie_items_show_their_icons) {
+    // (P12) As Blender's pies: each tool's shelf icon beside its name.
+    CHECK_LOAD("line.slvs");
+    Driver::Move(500, 500);
+    Driver::Key("Shift+A");
+    CHECK_TRUE(Ui::Pie().IsOpen());
+    for(const Ui::PieItem &i : Ui::Pie().Items()) {
+        CHECK_FALSE(i.icon.empty());
+        CHECK_TRUE(Platform::IconTexture(i.icon, 20) != 0);
+    }
+    CHECK_TRUE(Ui::Pie().IconsDrawn() == (int)Ui::Pie().Items().size());
     Driver::Key("Escape");
 }

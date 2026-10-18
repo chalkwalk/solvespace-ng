@@ -51,6 +51,13 @@ static const struct {
     { "View",      Command::ONTO_WORKPLANE, "normal-to" },
 };
 
+std::string CommandIcon(Command c) {
+    for(const auto &b : Buttons) {
+        if(b.command == c) return b.icon;
+    }
+    return "";
+}
+
 std::vector<ShelfSection> BuildShelf(const keymap::Keymap &keymap) {
     std::vector<ShelfSection> sections;
     for(const auto &b : Buttons) {

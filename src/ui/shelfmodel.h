@@ -26,6 +26,8 @@ struct ShelfSection {
 };
 
 std::vector<ShelfSection> BuildShelf(const keymap::Keymap &keymap);
+// The shelf's icon for a command (for pies and menus); "" if it has none.
+std::string CommandIcon(Command c);
 
 }
 }

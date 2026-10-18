@@ -15,6 +15,7 @@ struct PieItem {
     std::string label;
     std::string commandName; // core command or ui.* action
     bool        enabled = true;
+    std::string icon;       // res/icons/ng, drawn before the label; may be empty
 };
 
 class PieMenu {
@@ -26,6 +27,7 @@ public:
     bool IsOpen() const { return open; }
     const std::string          &Title() const { return title; }
     const std::vector<PieItem> &Items() const { return items; }
+    int   IconsDrawn() const { return iconsDrawn; } // last frame, for the UI tests
     float CenterX() const { return cx; } // window coordinates
     float CenterY() const { return cy; }
     bool HandleChord(const keymap::Chord &c);                 // consumes every chord while open
@@ -40,6 +42,7 @@ private:
     int                  highlighted = -1;
     int                  picked      = -1;
     bool                 cancelled   = false;
+    int                  iconsDrawn  = 0;
 };
 
 PieMenu &Pie();
