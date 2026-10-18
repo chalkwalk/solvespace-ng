@@ -21,7 +21,7 @@ static void ClickId(const std::string &id) {
 }
 
 static hGroup NewGroup3d() {
-    Driver::ClickMenu({ "New Group", "Sketch In 3d" });
+    Driver::ClickMenu({ "New Group", "Sketch in 3D" });
     return SS.GW.activeGroup;
 }
 

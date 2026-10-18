@@ -24,6 +24,7 @@ void HandleUiAction(const std::string &action);
 bool ShowScreenInPanel();
 // The active modal tool's key handler (KeyRouter::modal). True if it consumed the chord.
 bool ModalKey(const keymap::Chord &c);
+bool ActionChecked(const std::string &action); // a toggle action's check mark in the menus
 bool ModalRepeatKey(const keymap::Chord &c); // a held key (auto-repeat)
 
 }

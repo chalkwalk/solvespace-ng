@@ -207,7 +207,7 @@ TEST_CASE(switching_keymaps_in_the_middle_of_a_session) {
     CHECK_TRUE(SK.request.n == requests + 1);
 
     // And back to Modern: Classic has no key for Preferences, so through the Edit menu.
-    CHECK_TRUE(Driver::ClickMenu({ "Edit", "Configuration..." }));
+    CHECK_TRUE(Driver::ClickMenu({ "Edit", "Preferences..." }));
     CHECK_TRUE(RevealIn("Preferences", "modern keys"));
     CHECK_TRUE(Driver::ClickItem("modern keys"));
     CHECK_TRUE(ClosePanel("Preferences"));

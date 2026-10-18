@@ -33,7 +33,7 @@ TEST_CASE(e_extrudes_the_sketch_into_a_new_group) {
 // A new 3D sketch group after the fixture's sketch; returns the fixture's line.
 static hRequest FixtureLineThenNewGroup() {
     hRequest line = *LastRequest(Request::Type::LINE_SEGMENT);
-    Driver::ClickMenu({ "New Group", "Sketch In 3d" });
+    Driver::ClickMenu({ "New Group", "Sketch in 3D" });
     return line;
 }
 

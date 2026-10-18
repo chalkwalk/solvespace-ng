@@ -12,7 +12,7 @@ static bool PreferencesShown() {
 TEST_CASE(configuration_command_and_key_open_preferences) {
     CHECK_LOAD("line.slvs");
     CHECK_FALSE(PreferencesShown());
-    CHECK_TRUE(Driver::ClickMenu({ "Edit", "Configuration..." }));
+    CHECK_TRUE(Driver::ClickMenu({ "Edit", "Preferences..." }));
     CHECK_TRUE(PreferencesShown());
     CHECK_FALSE(SS.GW.showTextWindow); // not the old browser
     CHECK_TRUE(ClosePanel("Preferences"));
@@ -69,7 +69,7 @@ TEST_CASE(classic_keys_take_effect_at_once) {
 
 TEST_CASE(context_menu_group_info_opens_properties) {
     CHECK_LOAD("line.slvs");
-    Driver::ClickMenu({ "New Group", "Sketch In 3d" });
+    Driver::ClickMenu({ "New Group", "Sketch in 3D" });
     hRequest line = *LastRequest(Request::Type::LINE_SEGMENT);
     hGroup   sketch = SK.GetRequest(line)->group;
     Point2d  m = AtMiddle(line);

@@ -56,7 +56,9 @@ std::function<void()> CommandPalette::Draw(const std::vector<PaletteEntry> &entr
     }
 
     std::vector<std::string> labels;
-    for(const auto &e : entries) labels.push_back(e.label);
+    for(const auto &e : entries) {
+        labels.push_back(e.keywords.empty() ? e.label : e.label + " (" + e.keywords + ")");
+    }
     std::vector<size_t> ranked = palette::Rank(query, labels, 12);
     if(selected >= (int)ranked.size()) selected = std::max(0, (int)ranked.size() - 1);
     if(ImGui::IsKeyPressed(ImGuiKey_DownArrow)) {
@@ -68,8 +70,9 @@ std::function<void()> CommandPalette::Draw(const std::vector<PaletteEntry> &entr
     for(int i = 0; i < (int)ranked.size(); i++) {
         const PaletteEntry &e = entries[ranked[i]];
         std::string shortcut;
-        if(!e.commandName.empty()) {
-            auto chords = keymap.ChordsFor(e.commandName);
+        for(const std::string &name : { e.commandName, e.keyAlias }) {
+            if(name.empty() || !shortcut.empty()) continue;
+            auto chords = keymap.ChordsFor(name);
             if(!chords.empty()) shortcut = keymap::FormatChord(chords[0]);
         }
         ImGui::PushID(i);

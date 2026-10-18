@@ -107,6 +107,12 @@ Panel &ShelfPanel() {
     return panel;
 }
 
+Panel &ShortcutsPanel() {
+    static Panel panel("Shortcuts", "Keyboard Shortcuts", PanelEdge::CENTER, 460,
+                       /*shownByDefault=*/false, /*remembersShown=*/false);
+    return panel;
+}
+
 Panel &PropertiesPanel() {
     static Panel panel("Properties", "Properties", PanelEdge::RIGHT, 340, /*shownByDefault=*/true);
     return panel;

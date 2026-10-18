@@ -1,0 +1,35 @@
+//-----------------------------------------------------------------------------
+// NG's menu bar: SolveSpace's commands rearranged, renamed and joined by the ui.* actions
+// (owner review 2026-10-17, docs/review/2026-10-17/answers.md). The items the core built are
+// moved, never recreated, so its pointers to them (check marks, Undo) stay valid; renamed items
+// keep their old label for the palette's search; anything the layout doesn't place stays in
+// its menu.
+//-----------------------------------------------------------------------------
+#ifndef SOLVESPACE_UI_MENULAYOUT_H
+#define SOLVESPACE_UI_MENULAYOUT_H
+
+#include <functional>
+#include <string>
+#include "keymap.h"
+#include "platform/sdl/menumodel.h"
+
+namespace SolveSpace {
+namespace Ui {
+
+// `actionChecked` says whether a toggle action (ui.toggle-outliner...) is on, for its check
+// mark; it may be empty.
+void ApplyMenuLayout(Platform::MenuBarSdl &bar,
+                     std::function<bool(const std::string &action)> actionChecked);
+
+// What NG calls a command (its menu label: "Line", "Link Part..."), for the shelf, pies and
+// panels; the core's label for a command the layout doesn't rename.
+std::string CommandLabel(Command c);
+
+// The key shown beside a menu item in the current keymap: its action's or command's own,
+// else its alias's (Distance / Diameter shows D, the smart dimension, in Modern).
+std::string ShortcutText(const Platform::MenuItemSdl &item, const keymap::Keymap &keymap);
+
+}
+}
+
+#endif

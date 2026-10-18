@@ -81,7 +81,7 @@ TEST_CASE(bad_value_is_refused_with_a_message) {
 
 TEST_CASE(step_translate_repeat_count) {
     CHECK_LOAD("line.slvs");
-    CHECK_TRUE(Driver::ClickMenu({ "New Group", "Step Translating" }));
+    CHECK_TRUE(Driver::ClickMenu({ "New Group", "Linear Pattern" }));
     CHECK_TRUE(Active()->type == Group::Type::TRANSLATE);
     CHECK_TRUE(EditField("repeat", "4"));
     CHECK_EQ_EPS(Active()->valA, 4.0);
@@ -98,7 +98,7 @@ TEST_CASE(request_list_click_selects_the_request) {
 
 TEST_CASE(properties_follows_the_outliner_and_survives_deletion) {
     CHECK_LOAD("line.slvs");
-    Driver::ClickMenu({ "New Group", "Sketch In 3d" });
+    Driver::ClickMenu({ "New Group", "Sketch in 3D" });
     hGroup added = SS.GW.activeGroup;
     CHECK_TRUE(Click("#references"));
     CHECK_TRUE(Ui::PropertiesGroup() == Group::HGROUP_REFERENCES);

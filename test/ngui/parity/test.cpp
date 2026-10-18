@@ -3,6 +3,7 @@
 #include <set>
 #include "../uitest.h"
 #include "platform/sdl/menumodel.h"
+#include "ui/menulayout.h"
 #include "harness.h"
 
 using namespace SolveSpace::UiTest;
@@ -92,7 +93,7 @@ TEST_CASE(every_menu_command_is_in_the_menu_bar_and_palette) {
     std::set<std::string> labels = MenuBarLabels();
     CHECK_TRUE(labels.size() > 50);
     for(Command c : GraphicsWindow::MenuCommands()) {
-        std::string label = Platform::StripMnemonic(GraphicsWindow::MenuLabel(c));
+        std::string label = SolveSpace::Ui::CommandLabel(c); // NG's name for it (ui/menulayout.h)
         if(!labels.count(label)) fprintf(stderr, "not in the menu bar: '%s'\n", label.c_str());
         CHECK_TRUE(labels.count(label) == 1);
     }

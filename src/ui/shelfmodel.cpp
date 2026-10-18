@@ -4,6 +4,7 @@
 #include "solvespace.h"
 #include "commandnames.h"
 #include "platform/sdl/menumodel.h"
+#include "ui/menulayout.h"
 #include "ui/shelfmodel.h"
 
 namespace SolveSpace {
@@ -59,8 +60,7 @@ std::vector<ShelfSection> BuildShelf(const keymap::Keymap &keymap) {
         ShelfItem item;
         item.command = b.command;
         item.icon    = b.icon;
-        std::string menu = GraphicsWindow::MenuLabel(b.command);
-        item.label = menu.empty() ? CommandName(b.command) : Platform::StripMnemonic(menu);
+        item.label   = CommandLabel(b.command);
         std::vector<keymap::Chord> chords = keymap.ChordsFor(CommandName(b.command));
         if(!chords.empty()) item.keys = keymap::FormatChord(chords[0]);
         sections.back().items.push_back(item);

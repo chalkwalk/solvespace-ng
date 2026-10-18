@@ -20,6 +20,11 @@ public:
     Indicator     indicator = Indicator::NONE;
     bool          enabled   = true;
     bool          active    = false;
+    // NG's menu layout (ui/menulayout.h): a ui.* action this item runs instead of a command,
+    // another keymap name whose keys do the same job (shown when the item has none of its
+    // own), a former label the palette still finds it by, and a live check mark.
+    std::string           action, keyAlias, searchAlias;
+    std::function<bool()> isActive;
 
     void SetAccelerator(KeyboardEvent a) override;
     void SetIndicator(Indicator t) override;

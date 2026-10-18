@@ -45,6 +45,8 @@ bool RunNamedCommand(const std::string &name);
 struct PaletteEntry {
     std::string           label;       // "Sketch › Circle"
     std::string           commandName; // for the shortcut column; may be empty
+    std::string           keyAlias;    // shortcut column fallback (menulayout.h)
+    std::string           keywords;    // searched too: a menu item's former name
     bool                  enabled = true;
     std::function<void()> run;
 };

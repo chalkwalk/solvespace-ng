@@ -32,6 +32,7 @@ const std::vector<UiActionInfo> &UiActionList() {
         { "ui.pie-add",             "Sketch \xE2\x80\xBA Add\xE2\x80\xA6 (pie)" },
         { "ui.pie-constrain",       "Constrain \xE2\x80\xBA Constrain\xE2\x80\xA6 (pie)" },
         { "ui.pie-view",            "View \xE2\x80\xBA Views\xE2\x80\xA6 (pie)" },
+        { "ui.show-shortcuts",      "Help \xE2\x80\xBA Keyboard Shortcuts" },
     };
     return list;
 }
@@ -79,18 +80,25 @@ bool RunNamedCommand(const std::string &name) {
 
 std::vector<PaletteEntry> BuildPaletteEntries(const std::vector<Platform::FlatMenuItem> &menu) {
     std::vector<PaletteEntry> out;
+    std::set<std::string>     inMenus; // actions the menus already offer
     for(const Platform::FlatMenuItem &fi : menu) {
         PaletteEntry e;
         e.label = fi.path;
-        if(fi.item->commandId) {
+        if(!fi.item->action.empty()) {
+            e.commandName = fi.item->action;
+            inMenus.insert(fi.item->action);
+        } else if(fi.item->commandId) {
             if(const char *n = CommandName((Command)fi.item->commandId)) e.commandName = n;
         }
+        e.keyAlias = fi.item->keyAlias;
+        e.keywords = fi.item->searchAlias;
         e.enabled = fi.item->enabled;
         auto item = fi.item;
         e.run     = [item] { if(item->onTrigger) item->onTrigger(); };
         out.push_back(std::move(e));
     }
     for(const UiActionInfo &a : UiActionList()) {
+        if(inMenus.count(a.name)) continue;
         PaletteEntry e;
         e.label          = a.label;
         e.commandName    = a.name;

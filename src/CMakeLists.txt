@@ -315,6 +315,7 @@ if(ENABLE_GUI AND ENABLE_NG_GUI)
         ui/iconraster.cpp
         ui/shelfmodel.cpp
         ui/viewcubemodel.cpp
+        ui/menulayout.cpp
         ui/grabtool.cpp
         ui/drawtool.cpp
         ui/outlinermodel.cpp
@@ -340,6 +341,7 @@ if(ENABLE_GUI AND ENABLE_NG_GUI)
         ui/toolpanels.cpp
         ui/shelf.cpp
         ui/viewcube.cpp
+        ui/shortcuts.cpp
         ui/fields.cpp
         ui/ngui.cpp
         ui/piemenu.cpp

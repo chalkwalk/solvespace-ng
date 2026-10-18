@@ -18,7 +18,7 @@ static int ShelfButtons() {
 
 static bool ShowShelf() {
     // Every button is there as soon as the app is idle (an auto-sized window takes two frames).
-    return Driver::ClickMenu({ "View", "Show Toolbar" }) && ShelfShown() && ShelfButtons() == 34;
+    return Driver::ClickMenu({ "View", "Tool Shelf" }) && ShelfShown() && ShelfButtons() == 34;
 }
 
 TEST_CASE(shelf_starts_hidden_and_the_old_toolbar_is_gone) {
@@ -36,14 +36,14 @@ TEST_CASE(view_menu_shows_and_hides_the_shelf) {
     CHECK_TRUE(ClosePanel("Tools"));
     CHECK_FALSE(SS.showToolbar);
     CHECK_TRUE(ShowShelf());
-    CHECK_TRUE(Driver::ClickMenu({ "View", "Show Toolbar" }));
+    CHECK_TRUE(Driver::ClickMenu({ "View", "Tool Shelf" }));
     CHECK_FALSE(ShelfShown());
 }
 
 TEST_CASE(a_shelf_button_starts_its_tool) {
     CHECK_LOAD("line.slvs");
     CHECK_TRUE(ShowShelf());
-    CHECK_TRUE(Driver::ClickItem("Line Segment"));
+    CHECK_TRUE(Driver::ClickItem("Line"));
     CHECK_TRUE(SS.GW.pending.command == Command::LINE_SEGMENT);
     CHECK_TRUE(Ui::ShelfTextFallbacks() == 0); // every button had its icon
 }
@@ -52,9 +52,9 @@ TEST_CASE(each_shelf_section_starts_its_own_row) {
     CHECK_LOAD("line.slvs");
     CHECK_TRUE(ShowShelf());
     auto y = [](const char *label) { return Driver::FindItem(label)->y0; };
-    CHECK_TRUE(y("Line Segment") < y("Distance / Diameter"));
-    CHECK_TRUE(y("Distance / Diameter") == y("Toggle Reference Dim"));
-    CHECK_TRUE(y("Toggle Reference Dim") < y("Extrude"));
+    CHECK_TRUE(y("Line") < y("Distance / Diameter"));
+    CHECK_TRUE(y("Distance / Diameter") == y("Toggle Reference"));
+    CHECK_TRUE(y("Toggle Reference") < y("Extrude"));
 }
 
 TEST_CASE(a_constraint_button_with_nothing_selected_explains) {

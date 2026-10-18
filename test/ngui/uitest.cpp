@@ -42,7 +42,7 @@ void DoubleClickAt(Point2d p) {
 }
 
 void ShowBrowser() {
-    if(!SS.GW.showTextWindow) Driver::ClickMenu({ "View", "Show Property Browser" });
+    if(!SS.GW.showTextWindow) Driver::ClickMenu({ "View", "Classic Property Browser" });
 }
 
 bool RevealIn(const std::string &panelTitle, const std::string &labelOrId) {

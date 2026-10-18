@@ -40,6 +40,7 @@
 #include "platform/sdl/icontextures.h"
 #include "ui/iconraster.h"
 #include "ui/keyrouter.h"
+#include "ui/menulayout.h"
 #include "ui/viewcube.h"
 #include "ui/uiactions.h"
 #include "ui/coreactions.h"
@@ -283,7 +284,11 @@ public:
         if(kind == Kind::TOPLEVEL) SDL_SetWindowTitle(gSdlWindow, t.c_str());
     }
 
-    void SetMenuBar(MenuBarRef mb) override { menuBar = mb; }
+    void SetMenuBar(MenuBarRef mb) override {
+        // NG's layout of the core's menus (ui/menulayout.h).
+        if(mb) Ui::ApplyMenuLayout(*std::static_pointer_cast<MenuBarSdl>(mb), Ui::ActionChecked);
+        menuBar = mb;
+    }
 
     void GetContentSize(double *w, double *h) override {
         if(kind == Kind::TOPLEVEL) {
@@ -1375,14 +1380,6 @@ void ClearGui() {
     SDL_Quit();
 }
 
-static std::string ShortcutTextFor(const MenuItemSdl &item) {
-    if(item.commandId == 0) return "";
-    const char *name = CommandName((Command)item.commandId);
-    if(!name) return "";
-    auto chords = gKeyRouter.Keymap().ChordsFor(name);
-    return chords.empty() ? "" : keymap::FormatChord(chords[0]);
-}
-
 // Returns true if an item was activated (so popups can close).
 static bool DrawMenuEntries(const MenuSdl &menu) {
     bool activated = false;
@@ -1399,8 +1396,9 @@ static bool DrawMenuEntries(const MenuSdl &menu) {
                 break;
             case MenuSdl::Entry::Kind::ITEM: {
                 const MenuItemSdl &item = *e.item;
-                std::string shortcut = ShortcutTextFor(item);
-                bool checked = item.indicator != MenuItem::Indicator::NONE && item.active;
+                std::string shortcut = Ui::ShortcutText(item, gKeyRouter.Keymap());
+                bool checked = item.indicator != MenuItem::Indicator::NONE &&
+                               (item.isActive ? item.isActive() : item.active);
                 if(ImGui::MenuItem(item.label.c_str(),
                                    shortcut.empty() ? nullptr : shortcut.c_str(), checked,
                                    item.enabled)) {

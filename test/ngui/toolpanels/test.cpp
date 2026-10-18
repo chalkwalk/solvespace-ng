@@ -10,7 +10,7 @@ static bool Shown(const char *title) {
 
 TEST_CASE(view_projection_command_opens_the_view_panel) {
     CHECK_LOAD("line.slvs");
-    CHECK_TRUE(Driver::ClickMenu({ "Edit", "View Projection..." }));
+    CHECK_TRUE(Driver::ClickMenu({ "View", "View Settings..." }));
     CHECK_TRUE(Shown("View"));
     CHECK_FALSE(SS.GW.showTextWindow);
     CHECK_TRUE(EditField("view-scale", "20"));
@@ -57,7 +57,7 @@ TEST_CASE(step_dimension_steps_to_the_finish) {
     Driver::Key("Return");
     hConstraint dim = *LastConstraint(Constraint::Type::PT_PT_DISTANCE);
     ClickAt(AtLabel(dim));
-    CHECK_TRUE(Driver::ClickMenu({ "Analyze", "Step Dimension..." }));
+    CHECK_TRUE(Driver::ClickMenu({ "Inspect", "Step Dimension..." }));
     CHECK_TRUE(Shown("Step Dimension"));
     CHECK_TRUE(EditField("step-finish", "30"));
     CHECK_TRUE(EditField("step-steps", "3"));

@@ -47,6 +47,7 @@ Panel &PastePanel();         // shown while the browser's Paste Transformed scre
 Panel &StepDimensionPanel(); // likewise
 Panel &TangentArcPanel();    // likewise
 Panel &ShelfPanel();         // the tool shelf; shown while SS.showToolbar
+Panel &ShortcutsPanel();     // Help > Keyboard Shortcuts
 
 }
 }

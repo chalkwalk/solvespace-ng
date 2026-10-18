@@ -78,14 +78,14 @@ TEST_CASE(menus) {
     const char *menus[][2] = { { "File", "menu-1-file" },       { "Edit", "menu-2-edit" },
                                { "View", "menu-3-view" },       { "New Group", "menu-4-new-group" },
                                { "Sketch", "menu-5-sketch" },   { "Constrain", "menu-6-constrain" },
-                               { "Analyze", "menu-7-analyze" }, { "Help", "menu-8-help" } };
+                               { "Inspect", "menu-7-analyze" }, { "Help", "menu-8-help" } };
     for(auto &m : menus) Menu(m[0], m[1]);
 }
 
 TEST_CASE(main_window) {
     if(!Begin()) return;
     CHECK_LOAD("line.slvs");
-    Driver::ClickMenu({ "View", "Show Toolbar" });
+    Driver::ClickMenu({ "View", "Tool Shelf" });
     Driver::Move(700, 700);
     Shot("window-1-overview", Box{});
 }
@@ -93,7 +93,7 @@ TEST_CASE(main_window) {
 TEST_CASE(outliner_and_properties) {
     if(!Begin()) return;
     CHECK_LOAD("line.slvs");
-    Driver::ClickMenu({ "New Group", "Sketch In 3d" });
+    Driver::ClickMenu({ "New Group", "Sketch in 3D" });
     Shot("panel-1-outliner", Panel("Outliner"));
     Shot("panel-2-properties-group", Panel("Properties"));
     hRequest line = DrawLine(Point2d::From(600, 600), Point2d::From(760, 560));
@@ -143,7 +143,7 @@ TEST_CASE(styles) {
 TEST_CASE(view_panel) {
     if(!Begin()) return;
     CHECK_LOAD("line.slvs");
-    Driver::ClickMenu({ "Edit", "View Projection..." });
+    Driver::ClickMenu({ "View", "View Settings..." });
     Shot("panel-9-view", Panel("View"));
 }
 
@@ -160,7 +160,7 @@ TEST_CASE(tool_panels) {
     Driver::Key("D");
     Driver::Key("Return");
     ClickAt(AtLabel(*LastConstraint(Constraint::Type::PT_PT_DISTANCE)));
-    Driver::ClickMenu({ "Analyze", "Step Dimension..." });
+    Driver::ClickMenu({ "Inspect", "Step Dimension..." });
     Shot("panel-11-step-dimension", Panel("Step Dimension"));
     ClosePanel("Step Dimension");
     Driver::Key("Escape");
@@ -171,9 +171,9 @@ TEST_CASE(tool_panels) {
 TEST_CASE(overlays) {
     if(!Begin()) return;
     CHECK_LOAD("line.slvs");
-    Driver::ClickMenu({ "View", "Show Toolbar" });
+    Driver::ClickMenu({ "View", "Tool Shelf" });
     Shot("overlay-1-tool-shelf", Panel("Tools"));
-    Driver::ClickMenu({ "View", "Show Toolbar" });
+    Driver::ClickMenu({ "View", "Tool Shelf" });
     Driver::Move(700, 600);
     Driver::Key("Space");
     Driver::Type("con");

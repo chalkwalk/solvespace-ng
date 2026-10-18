@@ -16,7 +16,9 @@
 #include "ui/ngui.h"
 #include "ui/palettewidget.h"
 #include "ui/piemenu.h"
+#include "ui/menulayout.h"
 #include "ui/shelf.h"
+#include "ui/shortcuts.h"
 #include "ui/viewcube.h"
 #include "ui/theme.h"
 #include "ui/uiactions.h"
@@ -96,8 +98,7 @@ static void DrawStatusBar(const keymap::Keymap &keymap) {
 }
 
 static std::string MenuLabelFor(Command c) {
-    std::string l = GraphicsWindow::MenuLabel(c);
-    return l.empty() ? CommandName(c) : Platform::StripMnemonic(l);
+    return CommandLabel(c);
 }
 
 void InitNgUi() {
@@ -121,6 +122,7 @@ void InitNgUi() {
     StepDimensionPanel().Load();
     TangentArcPanel().Load();
     ShelfPanel().Load();
+    ShortcutsPanel().Load();
     // Browser screens that have a panel open the panel.
     SS.GW.showScreenElsewhere = [] { return ShowScreenInPanel(); };
     gHideBrowser = true;
@@ -132,6 +134,7 @@ void InitNgUi() {
     Actions().Bind("ui.toggle-outliner", [] { OutlinerPanel().Toggle(); });
     Actions().Bind("ui.toggle-properties", [] { PropertiesPanel().Toggle(); });
     Actions().Bind("ui.toggle-problems", [] { ProblemsPanel().Toggle(); });
+    Actions().Bind("ui.show-shortcuts", [] { ShortcutsPanel().Toggle(); });
     Actions().Bind("ui.pie-add", [] {
         Pie().Open("Add", {
             { "Line", "line-segment" }, { "Rectangle", "rectangle" }, { "Circle", "circle" },
@@ -201,6 +204,9 @@ std::function<void()> DrawNgUi(Platform::MenuBarSdl *menuBar, const keymap::Keym
     if(auto changed = DrawToolPanels()) run = changed;
     if(auto changed = DrawShelf(keymap)) run = changed;
     if(auto changed = DrawViewCube()) run = changed;
+    if(menuBar) {
+        if(auto chosen = DrawShortcuts(*menuBar, keymap)) run = chosen;
+    }
     if(gHideBrowser) {
         // The Properties panel replaces the property browser, which starts hidden; View >
         // Show Property Browser brings it back.
@@ -241,6 +247,15 @@ bool ModalKey(const keymap::Chord &c) {
 bool ModalRepeatKey(const keymap::Chord &c) {
     if(Pie().IsOpen()) return true; // holding the pie's key keeps it open
     return ModalKey(c);
+}
+
+bool ActionChecked(const std::string &action) {
+    if(action == "ui.toggle-outliner") return OutlinerPanel().Shown();
+    if(action == "ui.toggle-properties") return PropertiesPanel().Shown();
+    if(action == "ui.toggle-problems") return ProblemsPanel().Shown();
+    if(action == "ui.toggle-theme") return LoadThemeChoice() == ThemeChoice::LIGHT;
+    if(action == "ui.toggle-menu-bar") return true; // seen only while it is shown
+    return false;
 }
 
 bool CapturesText() {
