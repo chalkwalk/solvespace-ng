@@ -221,6 +221,7 @@ void SolveSpaceUI::GenerateAll(Generate type, bool andFindFree, bool genForBBox)
 
     // If we're generating entities for display, first we need to find
     // the bounding box to turn relative chord tolerance to absolute.
+    if(!genForBBox) derivedTopologyChanged = {};
     if(!SS.exportMode && !genForBBox) {
         GenerateAll(type, andFindFree, /*genForBBox=*/true);
         BBox box = SK.CalculateEntityBBox(/*includeInvisibles=*/true);
@@ -398,6 +399,18 @@ void SolveSpaceUI::GenerateAll(Generate type, bool andFindFree, bool genForBBox)
     allConsistent = true;
     SS.GW.persistentDirty = true;
     SS.centerOfMass.dirty = true;
+
+    // A fillet or chamfer found new faces at its edges on the fresh solid: solve the groups
+    // from it on again, against those (once; the solid is the same the second time).
+    static int repeating = 0;
+    if(!genForBBox && derivedTopologyChanged.v != 0 && repeating == 0 &&
+       SK.group.FindByIdNoOops(derivedTopologyChanged)) {
+        hGroup hg = derivedTopologyChanged;
+        repeating++;
+        MarkGroupDirty(hg);
+        GenerateAll(Generate::DIRTY, andFindFree, /*genForBBox=*/false);
+        repeating--;
+    }
 
     endMillis = GetMilliseconds();
 

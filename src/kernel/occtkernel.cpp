@@ -15,6 +15,7 @@
 #include <BRepAlgoAPI_BooleanOperation.hxx>
 #include <BRepAlgoAPI_Common.hxx>
 #include <BRepAlgoAPI_Cut.hxx>
+#include <BRepAdaptor_Surface.hxx>
 #include <BRepAlgoAPI_Fuse.hxx>
 #include <BRepBuilderAPI_MakeEdge.hxx>
 #include <BRepBuilderAPI_MakeFace.hxx>
@@ -44,6 +45,7 @@
 #include <TopExp.hxx>
 #include <TopExp_Explorer.hxx>
 #include <Standard_Failure.hxx>
+#include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
 #include <TopTools_IndexedMapOfShape.hxx>
 #include <TopTools_MapOfShape.hxx>
 #include <TopTools_ShapeMapHasher.hxx>
@@ -709,6 +711,50 @@ bool KernelExportStep(const std::shared_ptr<const KernelShape> &ks,
     Interface_Static::SetCVal("write.step.unit", "MM");
     if(writer.Transfer(shape, STEPControl_AsIs) != IFSelect_RetDone) return false;
     return writer.Write(filename.raw.c_str()) == IFSelect_RetDone;
+}
+
+
+KernelEdgeFacesResult KernelEdgeFaces(const std::shared_ptr<const KernelShape> &ks, Vector a,
+                                      Vector b, KernelEdgeFace out[2]) {
+    if(IsEmpty(ks)) return KernelEdgeFacesResult::NOT_FOUND;
+    std::vector<SBezier> line = { SBezier::From(a, b) };
+    TopTools_IndexedDataMapOfShapeListOfShape facesOf;
+    TopExp::MapShapesAndAncestors(ks->shape, TopAbs_EDGE, TopAbs_FACE, facesOf);
+    for(int i = 1; i <= facesOf.Extent(); i++) {
+        const TopoDS_Edge &edge = TopoDS::Edge(facesOf.FindKey(i));
+        if(BRep_Tool::Degenerated(edge) || !OnCurves(edge, line)) continue;
+        const TopTools_ListOfShape &faces = facesOf(i);
+        if(faces.Extent() != 2) return KernelEdgeFacesResult::NOT_PLANAR;
+        int n = 0;
+        for(const TopoDS_Shape &shape : faces) {
+            const TopoDS_Face &face = TopoDS::Face(shape);
+            BRepAdaptor_Surface surface(face, /*restriction=*/false);
+            if(surface.GetType() != GeomAbs_Plane) return KernelEdgeFacesResult::NOT_PLANAR;
+            gp_Dir normal = surface.Plane().Axis().Direction();
+            if(face.Orientation() == TopAbs_REVERSED) normal.Reverse();
+            // The face's boundary runs anticlockwise about its outward normal, so the face
+            // lies to the left of the edge as the boundary runs along it.
+            TopAbs_Orientation along = TopAbs_FORWARD;
+            for(TopExp_Explorer ex(face, TopAbs_EDGE); ex.More(); ex.Next()) {
+                if(ex.Current().IsSame(edge)) {
+                    along = ex.Current().Orientation();
+                    break;
+                }
+            }
+            BRepAdaptor_Curve curve(edge);
+            gp_Pnt            p;
+            gp_Vec            tangent;
+            curve.D1((curve.FirstParameter() + curve.LastParameter()) / 2, p, tangent);
+            if(along == TopAbs_REVERSED) tangent.Reverse();
+            gp_Vec into = gp_Vec(normal).Crossed(tangent);
+            out[n].into = Vec(into.Normalized().XYZ());
+            const FaceInfo *info = ks->faces.Seek(face);
+            out[n].face = info ? info->face : 0;
+            n++;
+        }
+        return KernelEdgeFacesResult::FOUND;
+    }
+    return KernelEdgeFacesResult::NOT_FOUND;
 }
 
 }

@@ -130,6 +130,18 @@ bool KernelAvailable(KernelKind kind);
 bool KernelExportStep(const std::shared_ptr<const KernelShape> &shape,
                       const Platform::Path &filename, double scale);
 
+// One of the two faces at a straight edge of a B-rep: its name (a face entity's handle, or 0)
+// and the direction from the edge into the face, perpendicular to the edge.
+struct KernelEdgeFace {
+    uint32_t face = 0;
+    Vector   into = {};
+};
+enum class KernelEdgeFacesResult { NOT_FOUND, NOT_PLANAR, FOUND };
+// The two faces of shape meeting at the B-rep edge that lies on the segment ab, if both are
+// planar.
+KernelEdgeFacesResult KernelEdgeFaces(const std::shared_ptr<const KernelShape> &shape, Vector a,
+                                      Vector b, KernelEdgeFace out[2]);
+
 // Combines the job's previous body and result->thisBody as triangle meshes into
 // result->running.mesh: the path for meshes and groups forced to a mesh.
 void CombineAsMeshes(const KernelJob &job, KernelResult *result);

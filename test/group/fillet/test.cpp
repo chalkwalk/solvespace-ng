@@ -76,6 +76,22 @@ TEST_CASE(fillets_need_the_occt_kernel) {
     CHECK_TRUE(MakeFeature(Command::GROUP_FILLET, { Edge(5, Group::REMAP_TOP) }) == nullptr);
 }
 
+// filleted.slvs: box.slvs, its top front edge filleted (r = 2), and a point in a 3D sketch on
+// the fillet's first tangent line. With SolveSpace's kernel the fillet's lines still exist (on
+// the edge), so the constraint on them is kept.
+TEST_CASE(derived_lines_exist_without_occt) {
+    CHECK_LOAD("filleted.slvs");
+    Group *g = nullptr;
+    for(Group &gi : SK.group) {
+        if(gi.type == Group::Type::FILLET) g = &gi;
+    }
+    CHECK_TRUE(g != nullptr && g->edges.size() == 1);
+    CHECK_TRUE(SK.constraint.n == 5);
+    CHECK_TRUE(SK.entity.FindByIdNoOops(g->Remap(g->edges[0], Group::REMAP_FILLET_TANGENT_1)));
+    CHECK_TRUE(SK.entity.FindByIdNoOops(g->Remap(g->edges[0], Group::REMAP_FILLET_AXIS)));
+    CHECK_TRUE(g->featureProblem.find("Open CASCADE") != std::string::npos);
+}
+
 #ifdef HAVE_OCCT
 TEST_CASE(fillet_group_is_made_from_selected_edges) {
     CHECK_LOAD("box.slvs");
@@ -187,6 +203,144 @@ TEST_CASE(a_fillet_with_the_solvespace_kernel_keeps_the_solid_and_says_so) {
     g = SK.GetGroup(hg);
     CHECK_EQ_EPS(Volume(g), 6000);
     CHECK_TRUE(g->featureProblem.find("Open CASCADE") != std::string::npos);
+}
+
+// Derived entities: a fillet's tangent lines and axis, a chamfer's edge lines, made for each
+// straight edge between planar faces and handled Remap(edge, REMAP_FILLET_...).
+namespace {
+
+Entity *FeatureLine(Group *g, hEntity edge, int which) {
+    return SK.entity.FindByIdNoOops(g->Remap(edge, which));
+}
+
+bool LineIs(Entity *line, Vector a, Vector b) {
+    if(line == nullptr || line->type != Entity::Type::LINE_SEGMENT) return false;
+    Vector p = SK.GetEntity(line->point[0])->PointGetNum();
+    Vector q = SK.GetEntity(line->point[1])->PointGetNum();
+    return (p.Equals(a, 1e-6) && q.Equals(b, 1e-6)) || (p.Equals(b, 1e-6) && q.Equals(a, 1e-6));
+}
+
+// One of the two lines is a-b and the other c-d.
+bool LinesAre(Entity *one, Entity *two, Vector a, Vector b, Vector c, Vector d) {
+    return (LineIs(one, a, b) && LineIs(two, c, d)) || (LineIs(one, c, d) && LineIs(two, a, b));
+}
+
+// A point in a new 3D sketch, constrained onto a line.
+hEntity PointOn(hEntity line) {
+    Group::MenuGroup(Command::GROUP_3D);
+    hRequest hr = SS.GW.AddRequest(Request::Type::DATUM_POINT, /*rememberForUndo=*/false);
+    SS.GenerateAll(SolveSpaceUI::Generate::ALL);
+    SK.GetEntity(hr.entity(0))->PointForceTo(SK.GetEntity(SK.GetEntity(line)->point[0])
+                                                  ->PointGetNum().Plus({ 3, 1, 1 }));
+    Constraint::Constrain(Constraint::Type::PT_ON_LINE, hr.entity(0), Entity::NO_ENTITY, line);
+    SS.GenerateAll(SolveSpaceUI::Generate::ALL);
+    return hr.entity(0);
+}
+
+}
+
+TEST_CASE(a_fillet_declares_its_tangent_lines_and_axis) {
+    CHECK_LOAD("box.slvs");
+    SS.kernelKind = KernelKind::OCCT;
+    hEntity edge = Edge(5, Group::REMAP_TOP); // (0, 0, 30) to (10, 0, 30)
+    Group  *g    = MakeFeature(Command::GROUP_FILLET, { edge });
+    Resize(g, "2");
+    CHECK_TRUE(LinesAre(FeatureLine(g, edge, Group::REMAP_FILLET_TANGENT_1),
+                        FeatureLine(g, edge, Group::REMAP_FILLET_TANGENT_2),
+                        { 0, 2, 30 }, { 10, 2, 30 }, { 0, 0, 28 }, { 10, 0, 28 }));
+    CHECK_TRUE(LineIs(FeatureLine(g, edge, Group::REMAP_FILLET_AXIS), { 0, 2, 28 },
+                      { 10, 2, 28 }));
+}
+
+TEST_CASE(a_chamfer_declares_its_edge_lines) {
+    CHECK_LOAD("box.slvs");
+    SS.kernelKind = KernelKind::OCCT;
+    hEntity edge = Edge(6, Group::REMAP_TOP); // (10, 0, 30) to (10, 20, 30)
+    Group  *g    = MakeFeature(Command::GROUP_CHAMFER, { edge });
+    Resize(g, "2");
+    CHECK_TRUE(LinesAre(FeatureLine(g, edge, Group::REMAP_CHAMFER_EDGE_1),
+                        FeatureLine(g, edge, Group::REMAP_CHAMFER_EDGE_2),
+                        { 8, 0, 30 }, { 8, 20, 30 }, { 10, 0, 28 }, { 10, 20, 28 }));
+}
+
+TEST_CASE(a_point_on_a_tangent_line_follows_a_change_upstream) {
+    CHECK_LOAD("box.slvs");
+    SS.kernelKind = KernelKind::OCCT;
+    hEntity edge = Edge(5, Group::REMAP_TOP);
+    Group  *g    = MakeFeature(Command::GROUP_FILLET, { edge });
+    Resize(g, "2");
+    hEntity axis = g->Remap(edge, Group::REMAP_FILLET_AXIS);
+    hEntity pt   = PointOn(axis);
+    CHECK_EQ_EPS(SK.GetEntity(pt)->PointGetNum().z, 28);
+    // Forty deep: the axis, and the point on it, move up with the top face in one
+    // regeneration, without waiting for the solid.
+    SK.GetParam(Extrusion()->h.param(2))->val = 20;
+    SS.GenerateAll(SolveSpaceUI::Generate::ALL);
+    CHECK_EQ_EPS(SK.GetEntity(pt)->PointGetNum().z, 38);
+    CHECK_EQ_EPS(SK.GetEntity(pt)->PointGetNum().y, 2);
+}
+
+TEST_CASE(a_point_on_a_tangent_line_follows_a_face_turning_upstream) {
+    CHECK_LOAD("box.slvs");
+    SS.kernelKind = KernelKind::OCCT;
+    hEntity edge = Edge(5, Group::REMAP_TOP);
+    Group  *g    = MakeFeature(Command::GROUP_FILLET, { edge });
+    Resize(g, "2");
+    hEntity top = g->Remap(edge, Group::REMAP_FILLET_TANGENT_1);
+    if(SK.GetEntity(SK.GetEntity(top)->point[0])->PointGetNum().z < 29.5) {
+        top = g->Remap(edge, Group::REMAP_FILLET_TANGENT_2);
+    }
+    hEntity pt = PointOn(top);
+    // The front face turns: its far corner moves from (10, 0) to (10, -5). The tangent line on
+    // the top stays 2 from the turned edge, in the plane of the top, in one regeneration.
+    SK.GetEntity(hRequest{ 5 }.entity(2))->PointForceTo({ 10, -5, 0 });
+    SK.GetEntity(hRequest{ 6 }.entity(1))->PointForceTo({ 10, -5, 0 });
+    SS.GenerateAll(SolveSpaceUI::Generate::ALL);
+    Vector p = SK.GetEntity(pt)->PointGetNum();
+    CHECK_EQ_EPS(p.z, 30);
+    CHECK_EQ_EPS(p.DistanceToLine({ 0, 0, 30 }, { 10, -5, 0 }), 2);
+}
+
+TEST_CASE(a_constraint_on_a_tangent_line_survives_undo_and_reload) {
+    CHECK_LOAD("box.slvs");
+    SS.kernelKind = KernelKind::OCCT;
+    hEntity edge = Edge(5, Group::REMAP_TOP);
+    Group  *g    = MakeFeature(Command::GROUP_FILLET, { edge });
+    Resize(g, "2");
+    hEntity line = g->Remap(edge, Group::REMAP_FILLET_TANGENT_1);
+    hEntity pt   = PointOn(line);
+    int     constraints = SK.constraint.n;
+    SS.UndoRemember();
+    SK.GetParam(Extrusion()->h.param(2))->val = 20;
+    SS.GenerateAll(SolveSpaceUI::Generate::ALL);
+    SS.UndoUndo();
+    CHECK_TRUE(SK.constraint.n == constraints);
+
+    Platform::Path path = helper->GetAssetPath(__FILE__, "tangent.slvs", "out");
+    CHECK_TRUE(SS.SaveToFile(path));
+    CHECK_TRUE(SS.LoadFromFile(path));
+    SS.AfterNewFile();
+    SS.kernelKind = KernelKind::OCCT;
+    SS.GenerateAll(SolveSpaceUI::Generate::ALL);
+    CHECK_TRUE(SK.constraint.n == constraints);
+    Entity *l = SK.GetEntity(line);
+    Vector  a = SK.GetEntity(l->point[0])->PointGetNum();
+    Vector  b = SK.GetEntity(l->point[1])->PointGetNum();
+    CHECK_TRUE(SK.GetEntity(pt)->PointGetNum().DistanceToLine(a, b.Minus(a)) < 1e-6);
+    remove(path.raw.c_str());
+}
+
+TEST_CASE(a_rounded_edge_is_hidden_while_the_fillet_is_shown) {
+    CHECK_LOAD("box.slvs");
+    SS.kernelKind = KernelKind::OCCT;
+    hEntity edge = Edge(5, Group::REMAP_TOP);
+    Group  *box  = Extrusion();
+    MakeFeature(Command::GROUP_FILLET, { edge });
+    CHECK_FALSE(SK.GetEntity(edge)->IsVisible());
+    CHECK_TRUE(SK.GetEntity(Edge(7, Group::REMAP_TOP))->IsVisible());
+    SS.GW.activeGroup = box->h;
+    SS.GenerateAll(SolveSpaceUI::Generate::ALL);
+    CHECK_TRUE(SK.GetEntity(edge)->IsVisible());
 }
 
 #endif

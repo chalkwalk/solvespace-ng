@@ -332,6 +332,11 @@ bool KernelExportStep(const std::shared_ptr<const KernelShape> &, const Platform
                       double) {
     return false;
 }
+
+KernelEdgeFacesResult KernelEdgeFaces(const std::shared_ptr<const KernelShape> &, Vector, Vector,
+                                      KernelEdgeFace[2]) {
+    return KernelEdgeFacesResult::NOT_FOUND;
+}
 #endif
 
 IKernel &Kernel() {

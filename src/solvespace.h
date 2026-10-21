@@ -742,6 +742,9 @@ public:
     Clipboard clipboard;
 
     void MarkGroupDirty(hGroup hg, bool onlyThis = false);
+    // The first fillet or chamfer whose edges' faces changed while generating: the groups
+    // after it are solved again against them (Group::MakeFeatureLines).
+    hGroup derivedTopologyChanged = {};
     void MarkGroupDirtyByEntity(hEntity he);
 
     // Consistency checking on the sketch: stuff with missing dependencies

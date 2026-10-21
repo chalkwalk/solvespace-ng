@@ -840,6 +840,7 @@ void Group::Generate(EntityList *entity, ParamList *param)
         }
         case Type::FILLET:
         case Type::CHAMFER:
+            MakeFeatureLines(entity);
             return;
 
         case Type::LINKED:
@@ -1004,6 +1005,103 @@ void Group::MakeExtrusionLines(EntityList *el, hEntity in) {
         en.h = Remap(ep->h, REMAP_LINE_TO_FACE);
         en.type = Entity::Type::FACE_XPROD;
         el->Add(&en);
+    }
+}
+
+void Group::AddFeatureLine(EntityList *el, hEntity edge, int which, Vector a, Vector b) {
+    Entity en = {};
+    en.group  = h;
+    en.type   = Entity::Type::POINT_N_COPY;
+    en.h      = Remap(edge, which + 10);
+    en.numPoint = a;
+    el->Add(&en);
+    en.h        = Remap(edge, which + 20);
+    en.numPoint = b;
+    el->Add(&en);
+
+    en.type     = Entity::Type::LINE_SEGMENT;
+    en.numPoint = {};
+    en.point[0] = Remap(edge, which + 10);
+    en.point[1] = Remap(edge, which + 20);
+    en.h        = Remap(edge, which);
+    el->Add(&en);
+}
+
+// A face entity's normal now, or zero if there is none.
+static Vector FaceNormalNow(uint32_t face) {
+    Entity *f = face ? SK.entity.FindByIdNoOops(hEntity{ face }) : nullptr;
+    return (f && f->IsFace()) ? f->FaceGetNormalNum() : Vector::From(0, 0, 0);
+}
+
+// The derived entities of a fillet or chamfer (AGENTS.md section 6): along each straight edge
+// between two planar faces, a fillet's two tangent lines and its axis, or a chamfer's two
+// edge lines. They always exist, so constraints on them survive any regeneration; with no
+// faces known (no OCCT solid yet) they lie on the edge.
+void Group::MakeFeatureLines(EntityList *el) {
+    bool   fillet = type == Type::FILLET;
+    Group *prevg  = RunningMeshGroup();
+    std::shared_ptr<const KernelShape> shape = prevg ? prevg->runningShape : nullptr;
+    edgeFaces.resize(edges.size());
+    for(size_t i = 0; i < edges.size(); i++) {
+        Entity *e = SK.entity.FindByIdNoOops(edges[i]);
+        if(e == nullptr) continue;
+        e->roundedBy = h;
+        if(e->type != Entity::Type::LINE_SEGMENT) continue;
+        Vector a = SK.GetEntity(e->point[0])->PointGetNum();
+        Vector b = SK.GetEntity(e->point[1])->PointGetNum();
+        Vector t = b.Minus(a).WithMagnitude(1);
+
+        // The faces, from the previous solid when it has this edge; else as last found.
+        EdgeFaces     &known = edgeFaces[i];
+        KernelEdgeFace found[2];
+        if(KernelEdgeFaces(shape, a, b, found) == KernelEdgeFacesResult::FOUND) {
+            if(found[1].face != 0 && found[1].face < found[0].face) swap(found[0], found[1]);
+            EdgeFaces now;
+            now.known = true;
+            for(int j = 0; j < 2; j++) {
+                now.face[j] = found[j].face;
+                now.into[j] = found[j].into;
+                Vector d    = FaceNormalNow(found[j].face).Cross(t);
+                now.sign[j] = d.Magnitude() < LENGTH_EPS ? 0 : d.Dot(found[j].into) >= 0 ? 1 : -1;
+            }
+            bool changed = !known.known;
+            for(int j = 0; j < 2; j++) {
+                changed = changed || known.face[j] != now.face[j] || known.sign[j] != now.sign[j];
+            }
+            if(changed && SS.derivedTopologyChanged.v == 0) SS.derivedTopologyChanged = h;
+            known = now;
+        }
+
+        Vector u[2] = {};
+        for(int j = 0; j < 2 && known.known; j++) {
+            Vector d = FaceNormalNow(known.face[j]).Cross(t);
+            u[j]     = (known.sign[j] != 0 && d.Magnitude() > LENGTH_EPS)
+                           ? d.WithMagnitude(known.sign[j]) : known.into[j];
+        }
+        double r = valA;
+        if(fillet) {
+            // The circle of radius r tangent to both faces: its tangent points are set back
+            // r / tan(a/2) from the edge, its centre r / sin(a/2) along the bisector.
+            double half = acos(std::max(-1.0, std::min(1.0, u[0].Dot(u[1])))) / 2;
+            double back = 0, out = 0;
+            Vector mid  = u[0].Plus(u[1]);
+            if(known.known && half > 1e-6 && mid.Magnitude() > LENGTH_EPS) {
+                back = r / tan(half);
+                out  = r / sin(half);
+                mid  = mid.WithMagnitude(1);
+            }
+            AddFeatureLine(el, edges[i], REMAP_FILLET_TANGENT_1, a.Plus(u[0].ScaledBy(back)),
+                           b.Plus(u[0].ScaledBy(back)));
+            AddFeatureLine(el, edges[i], REMAP_FILLET_TANGENT_2, a.Plus(u[1].ScaledBy(back)),
+                           b.Plus(u[1].ScaledBy(back)));
+            AddFeatureLine(el, edges[i], REMAP_FILLET_AXIS, a.Plus(mid.ScaledBy(out)),
+                           b.Plus(mid.ScaledBy(out)));
+        } else {
+            AddFeatureLine(el, edges[i], REMAP_CHAMFER_EDGE_1, a.Plus(u[0].ScaledBy(r)),
+                           b.Plus(u[0].ScaledBy(r)));
+            AddFeatureLine(el, edges[i], REMAP_CHAMFER_EDGE_2, a.Plus(u[1].ScaledBy(r)),
+                           b.Plus(u[1].ScaledBy(r)));
+        }
     }
 }
 

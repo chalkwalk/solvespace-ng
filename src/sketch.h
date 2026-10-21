@@ -266,6 +266,16 @@ public:
     // FILLET, CHAMFER: the edges, entities made by solid groups; valA is the radius or the
     // distance, in mm.
     std::vector<hEntity> edges;
+    // For each edge, the two faces of the solid that meet there, found on the previous
+    // group's solid (topology only; their planes come from the face entities, so the lines
+    // made along the edge follow a drag at once). Not saved.
+    struct EdgeFaces {
+        bool     known   = false;
+        uint32_t face[2] = {};  // face entity handles, or 0
+        double   sign[2] = {};  // the direction into face i is sign[i] (normal x edge)
+        Vector   into[2] = {};  // as found, for a face without an entity
+    };
+    std::vector<EdgeFaces> edgeFaces;
 
     SShell          thisShell;
     SShell          runningShell;
@@ -328,6 +338,13 @@ public:
         REMAP_PT_TO_ARC    = 1008,
         REMAP_PT_TO_NORMAL = 1009,
         REMAP_LATHE_ARC_CENTER = 1010,
+        // A fillet's or chamfer's lines along an edge: Remap(edge, n) is the line, its points
+        // Remap(edge, n + 10) and Remap(edge, n + 20).
+        REMAP_FILLET_TANGENT_1 = 1020,
+        REMAP_FILLET_TANGENT_2 = 1021,
+        REMAP_FILLET_AXIS      = 1022,
+        REMAP_CHAMFER_EDGE_1   = 1023,
+        REMAP_CHAMFER_EDGE_2   = 1024,
     };
     // Whether an entity is an edge of a solid a fillet or chamfer can take: a curve that a
     // solid group made.
@@ -336,6 +353,8 @@ public:
     // A copy of the names this group has given (kernel/facenamer.h), for a worker thread.
     SnapshotFaceNamer FaceSnapshot() const;
     void MakeExtrusionLines(EntityList *el, hEntity in);
+    void MakeFeatureLines(EntityList *el);
+    void AddFeatureLine(EntityList *el, hEntity edge, int which, Vector a, Vector b);
     void MakeLatheCircles(EntityList *el, ParamList *param, hEntity in, Vector pt, Vector axis);
     void MakeLatheSurfacesSelectable(EntityList *el, hEntity in, Vector axis);
     void MakeRevolveEndFaces(EntityList *el, hEntity pt, int ai, int af);
@@ -605,13 +624,15 @@ public:
     // Note EntityBase({}); without explicitly value-initializing
     // the base class, MSVC2013 will default-initialize it, leaving
     // POD members with indeterminate value.
-    Entity() : EntityBase({}), forceHidden(), actPoint(), actNormal(),
+    Entity() : EntityBase({}), forceHidden(), roundedBy(), actPoint(), actNormal(),
         actDistance(), actVisible(), style(), construction(),
         beziers(), edges(), edgesChordTol(), screenBBox(), screenBBoxValid() {};
 
     // A linked entity that was hidden in the source file ends up hidden
     // here too.
     bool        forceHidden;
+    // The fillet or chamfer group that rounds this edge away; hidden from that group on.
+    hGroup      roundedBy;
 
     // All points/normals/distances have their numerical value; this is
     // a convenience, to simplify the link/assembly code, so that the

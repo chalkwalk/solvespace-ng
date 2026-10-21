@@ -179,6 +179,13 @@ bool Entity::IsVisible() const {
 
     if(forceHidden) return false;
 
+    // An edge a fillet or chamfer rounds away, while that group is shown.
+    if(roundedBy.v) {
+        Group *rounding = SK.group.FindByIdNoOops(roundedBy);
+        Group *active   = SK.group.FindByIdNoOops(SS.GW.activeGroup);
+        if(rounding && active && rounding->order <= active->order) return false;
+    }
+
     return true;
 }
 
