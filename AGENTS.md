@@ -60,7 +60,7 @@ owner's approval.
   and `SS.TW` (text window), with 600+ references across `src/*.cpp`.
 - The toolbar (`src/toolbar.cpp`) and the property browser ("text window", `src/textwin.cpp`,
   `src/textscreens.cpp`, `src/confscreen.cpp`, `src/describescreen.cpp`) are custom-drawn in
-  OpenGL. The Qt6 frontend (`src/platform/guiqt.cpp`, `-DUSE_QT_GUI=ON`) only wraps these. That is
+  OpenGL. The Qt6 frontend (`src/platform/guiqt.cpp`, retired 2026-10-21) only wrapped these. That is
   why a toolkit swap alone doesn't modernise the look.
 - Commands: `enum class Command` in `src/ui.h` and the `MenuEntry` table with accelerators in
   `src/graphicswin.cpp`. Modal tool state lives in `GraphicsWindow::pending` (`enum class Pending`,
@@ -96,6 +96,8 @@ Rules:
 3. **The solver and the `.slvs` format stay backward compatible.** Old files must open unchanged.
    New data (parts, joints, features, fit table) goes in new, versioned records.
 4. **The old frontends (GTK, Win32, Cocoa, Qt) stay buildable until M1 parity**, then get deleted.
+   (Done 2026-10-21 with the owner's go-ahead: the desktop builds only `solvespace-ng`; the web
+   build keeps `guihtml`; `guinone` stays for headless use. The core's TextWindow remains for now.)
 5. **C++20** across the project. Graphics: OpenGL, restricted to the GL ES 3.0 / WebGL2 subset
    (ANGLE on Windows as today). A WebGPU backend is a later option behind `Canvas`.
 
@@ -165,7 +167,7 @@ only when no field has the keyboard.
 With nothing selected, commands act on the item under the cursor.
 
 Panels in M1c (proposed 2026-10-16 while the owner was away, to confirm): `O` Outliner, `N`
-Properties (the old browser moved to `Shift+N` and starts hidden), `Shift+P` Problems, which
+Properties (the old browser, briefly on `Shift+N`, was retired 2026-10-21), `Shift+P` Problems, which
 opens itself on a new solve problem but not for an open contour. Properties shows the selection,
 else the group picked in the Outliner, else the active group. Preferences, Styles, View and the
 Paste Transformed / Step Dimension / Tangent Arc panels open where the browser screen did.
@@ -356,13 +358,9 @@ M(n+1) features before M(n)'s "done when" is met, unless the owner says otherwis
 
 ## 9. Working in this repo
 
-**Build (Linux)**
+**Build (Linux)**: the default build is SolveSpace NG; see below. Stock SolveSpace is built
+only from `github-master` (worktrees for the `pr/` branches), never from NG branches.
 ```sh
-git submodule update --init          # extlib/ submodules are not checked out by default
-mkdir -p build && cd build
-cmake .. -DCMAKE_BUILD_TYPE=Debug [-DUSE_QT_GUI=ON] [-DENABLE_GUI=OFF]
-make -j$(nproc)
-make test_solvespace                 # run the regression suite
 ./bin/solvespace-testsuite <regex>   # run only matching tests, e.g. core/commands
 ```
 
@@ -370,7 +368,7 @@ make test_solvespace                 # run the regression suite
 ```sh
 git submodule update --init extlib/SDL extlib/imgui extlib/lunasvg   # SDL3 is vendored (or install libsdl3-dev)
 mkdir -p build-ng && cd build-ng
-cmake .. -DCMAKE_BUILD_TYPE=Debug -DENABLE_NG_GUI=ON
+cmake .. -DCMAKE_BUILD_TYPE=Debug     # ENABLE_NG_GUI is on by default
 make -j$(nproc) solvespace-ng solvespace-testsuite && make test_solvespace   # includes test/ng/*
 ./bin/solvespace-ng [file.slvs]
 SOLVESPACE_NG_SCREENSHOT=/tmp/shot.png ./bin/solvespace-ng f.slvs   # save a frame and exit

@@ -110,15 +110,16 @@ Screenshots: `docs/owner-review/glyphs.png` (under, fully constrained, failed; d
 - [ ] Let go: the solid is exact; saving and exporting right after give the final shape.
 
 ## Decisions waiting for the owner
-- Merge order: `ng/m1a-shell` > `ng/m1b-interaction` > `ng/m1-ui-harness` > `ng/m1c-panels` >
-  `ng/m1c-feedback` > `master`.
+- Merge order: agreed 2026-10-21; `master` fast-forwarded through `ng/m1a-shell` ... `ng/m2-kernel`
+  > `ng/m1-remove-frontends`.
 - `pr/` branches to review: `undo-grouporder-leak`, `headless-null-guards`,
   `diameter-label-leader`, `hover-list-leak`, `paste-scale-crash`, `line-chain-ending`
   (stacked on `headless-null-guards`).
-- M1c proposals (AGENTS.md §5): `O` / `N` / `Shift+P` panel keys, the hidden old browser, no
-  keyboard navigation in panels, Problems opening itself.
-- M1c task 10 (delete the old frontends): needs your go-ahead, after deciding what replaces
-  the left toolbar and the icon / constraint-glyph restyle.
+- M1c proposals (AGENTS.md §5): `O` / `N` / `Shift+P` panel keys, no keyboard navigation in
+  panels, Problems opening itself.
+- M1c task 10 (delete the old frontends): done 2026-10-21 with your go-ahead. Still to do: a
+  macOS bundle and Windows resources for `solvespace-ng`, checked on those platforms.
+- M3: Open CASCADE as a submodule (measured: see `docs/research/occt-vendoring.md`).
 
 ## Open issues (known, being worked through)
 

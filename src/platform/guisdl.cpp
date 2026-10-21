@@ -218,7 +218,7 @@ MenuRef CreateMenu() {
 }
 
 MenuBarRef GetOrCreateMainMenu(bool *unique) {
-    // A fresh bar each time, as in guigtk.cpp: the core installs it with SetMenuBar.
+    // A fresh bar each time, as the retired GTK frontend did: the core installs it with SetMenuBar.
     *unique = false;
     return std::make_shared<MenuBarSdl>();
 }
@@ -512,7 +512,7 @@ public:
     Path GetFilename() override { return filename; }
     void SetFilename(Path path) override { filename = path; }
     void SuggestFilename(Path path) override {
-        if(!isSave) return; // as in guigtk.cpp: suggestions only apply to save dialogs
+        if(!isSave) return; // as in the retired GTK frontend: suggestions only apply to save dialogs
         filename = Path::From(SuggestedSavePath(path.raw, folder.raw, filters));
     }
     void AddFilter(std::string name, std::vector<std::string> extensions) override {
@@ -901,7 +901,7 @@ static void PumpEventsOnce(bool wait) {
 
 static void DrawEditorOverlay(WindowImplSdl *w, ImVec2 origin) {
     if(!w->editorVisible) return;
-    // As in guigtk.cpp start_editing(): the core passes the text baseline, so lift the entry
+    // As the retired GTK frontend did: the core passes the text baseline, so lift the entry
     // by the font ascent (~0.8 em) plus the frame padding.
     ImVec2 pad = ImGui::GetStyle().FramePadding;
     ImGui::SetNextWindowPos(

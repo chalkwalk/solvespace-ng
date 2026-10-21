@@ -4,23 +4,8 @@ include(GNUInstallDirs)
 
 set(HAVE_SPACEWARE ${SPACEWARE_FOUND})
 
-if(NOT WIN32 OR APPLE)
-    if(GTKMM_gtkmm-3.0_VERSION VERSION_LESS "3.24.0")
-        set(HAVE_GTK_FILECHOOSERNATIVE 0)
-    else()
-        set(HAVE_GTK_FILECHOOSERNATIVE 1)
-    endif()
-endif()
-
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/config.h.in
                ${CMAKE_CURRENT_BINARY_DIR}/config.h)
-
-if(USE_QT_GUI)
-    set(CMAKE_AUTOMOC ON)
-    find_package(Qt6 COMPONENTS Core Gui OpenGLWidgets Widgets REQUIRED)
-    # find_package(Qt5 COMPONENTS Core Gui Widgets REQUIRED)
-    qt_add_resources(RESOURCE_FILES ../res/qt-resources.qrc)
-endif()
 
 # solvespace dependencies
 add_library(slvs_deps INTERFACE)
@@ -38,10 +23,8 @@ target_link_libraries(slvs_deps INTERFACE
     ${FREETYPE_LIBRARY}
     mimalloc-static)
 
-if(NOT USE_QT_GUI OR ENABLE_CLI)
-    target_include_directories(slvs_deps SYSTEM INTERFACE ${CAIRO_INCLUDE_DIRS})
-    target_link_libraries(slvs_deps INTERFACE ${CAIRO_LIBRARIES})
-endif()
+target_include_directories(slvs_deps SYSTEM INTERFACE ${CAIRO_INCLUDE_DIRS})
+target_link_libraries(slvs_deps INTERFACE ${CAIRO_LIBRARIES})
 
 if(Backtrace_FOUND)
     target_include_directories(slvs_deps SYSTEM INTERFACE
@@ -103,9 +86,7 @@ VERSION_GIT_HASH=${solvespace_GIT_HASH}\n\
 
 if(ENABLE_GUI OR ENABLE_CLI)
     set(every_platform_SOURCES
-        platform/guiwin.cpp
-        platform/guigtk.cpp
-        platform/guimac.mm
+        platform/guisdl.cpp
         platform/guihtml.cpp)
 
     # solvespace library
@@ -363,16 +344,13 @@ if(ENABLE_GUI AND ENABLE_NG_GUI)
     target_link_libraries(solvespace-ng PRIVATE solvespace-ng-app)
 endif()
 
-# solvespace graphical executable
+# solvespace graphical executable: the web build (guihtml). The desktop is solvespace-ng.
 
-if(ENABLE_GUI)
-    add_executable(solvespace WIN32 MACOSX_BUNDLE
+if(ENABLE_GUI AND EMSCRIPTEN)
+    add_executable(solvespace
         ${solvespace_core_gl_SOURCES}
+        platform/entrygui.cpp
         $<TARGET_PROPERTY:resources,EXTRA_SOURCES>)
-
-    if(NOT USE_QT_GUI)
-        target_sources(solvespace PRIVATE platform/entrygui.cpp)
-    endif()
 
     add_dependencies(solvespace
         resources)
@@ -394,155 +372,82 @@ if(ENABLE_GUI)
         message(FATAL_ERROR "Unsupported OpenGL version ${OPENGL}")
     endif()
 
-    # Platform-specific
-    if(WIN32 AND NOT USE_QT_GUI)
-        target_sources(solvespace PRIVATE
-            platform/guiwin.cpp)
-
-        target_link_libraries(solvespace PRIVATE comctl32)
-    elseif(APPLE)
-        target_compile_options(solvespace PRIVATE -fobjc-arc)
-        target_compile_definitions(solvespace PRIVATE GL_SILENCE_DEPRECATION)
-
-        target_sources(solvespace PRIVATE
-            platform/guimac.mm)
-        set_target_properties(solvespace PROPERTIES
-            OUTPUT_NAME SolveSpace
-            XCODE_ATTRIBUTE_ENABLE_HARDENED_RUNTIME "YES"
-            XCODE_ATTRIBUTE_PRODUCT_BUNDLE_IDENTIFIER "com.solvespace"
-            RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
-    elseif(EMSCRIPTEN)
-        # Due to the response file hack below, we need a version of Emscripten that
-        # passes arguments via a response file to the `file_packager` utility, but
-        # this was not the case prior to version 4.0.8 of Emscripten.
-        # See https://github.com/emscripten-core/emscripten/pull/24107
-        if(NOT EMSCRIPTEN_VERSION OR EMSCRIPTEN_VERSION VERSION_LESS "4.0.8")
-            message(FATAL_ERROR "The Emscripten build requires at least version 4.0.8")
-        endif()
-
-        target_compile_features(solvespace PRIVATE cxx_std_17)
-
-        set(SHELL "${CMAKE_CURRENT_SOURCE_DIR}/platform/html/emshell.html")
-        # Add internal quotes to paths used in the response file to ensure that paths
-        # that contain spaces are handled correctly
-        set(RESP_LINK_FLAGS
-            --bind --shell-file "\"${SHELL}\"" --no-heap-copy
-            "-s ALLOW_MEMORY_GROWTH=1" "-s WASM=1"
-            "-s ASYNCIFY=1" "-s DYNCALLS=1" "-s ASSERTIONS=1"
-            "-s TOTAL_STACK=33554432" "-s TOTAL_MEMORY=134217728")
-
-        get_target_property(resource_list resources SOURCES)
-        foreach(resource ${resource_list})
-            # Strip everything before `res/...`, and map the source path to the stripped
-            # path in the virtual Emscripten fileystem
-            file(RELATIVE_PATH target_path "${CMAKE_SOURCE_DIR}" "${resource}")
-            list(APPEND RESP_LINK_FLAGS "--preload-file \"${resource}\"@\"${target_path}\"")
-        endforeach()
-
-        if(CMAKE_BUILD_TYPE STREQUAL Debug)
-            list(APPEND RESP_LINK_FLAGS
-                --emrun --emit-symbol-map
-                "-s DEMANGLE_SUPPORT=1"
-                "-s SAFE_HEAP=1")
-        endif()
-
-        target_sources(solvespace PRIVATE
-            platform/guihtml.cpp)
-
-        # Pass arguments through a response file in order to avoid exceeding the maximum
-        # command line length (the Emscripten tools on Windows are all wrapped by batch
-        # scripts, and as such are subject to the CMD length limit of 8KiB).
-        set(resp_file_path "${CMAKE_CURRENT_BINARY_DIR}/emscripten_flags.rsp")
-        file(GENERATE OUTPUT "${resp_file_path}" CONTENT "$<JOIN:${RESP_LINK_FLAGS},\n>")
-
-        # NOTE: it would be ideal if we could portably specify that linking depends on the
-        # response file (and the files that are specified in it), but unfortunately there
-        # is no way to reliably trigger a relink like that without using LINK_DEPENDS,
-        # which only works with the Ninja and Makefile generators.
-        # This means that using e.g. the Visual Studio of Xcode generators will not work
-        # correctly when any of the link time dependencies changes, so the output artefact
-        # needs to be explicitly deleted in order to trigger a relink.
-        set_target_properties(solvespace PROPERTIES
-            SUFFIX ".html"
-            LINK_FLAGS "@${resp_file_path}"
-            LINK_DEPENDS "${SHELL};${resp_file_path};${resource_list}")
-
-        add_custom_command(
-            TARGET solvespace POST_BUILD
-            COMMAND ${CMAKE_COMMAND} -E copy_if_different
-                    ${CMAKE_CURRENT_SOURCE_DIR}/platform/html/solvespaceui.css
-                    ${EXECUTABLE_OUTPUT_PATH}/solvespaceui.css
-            COMMENT "Copying UI stylesheet"
-            VERBATIM)
-        add_custom_command(
-            TARGET solvespace POST_BUILD
-            COMMAND ${CMAKE_COMMAND} -E copy_if_different
-                    ${CMAKE_CURRENT_SOURCE_DIR}/platform/html/solvespaceui.js
-                    ${EXECUTABLE_OUTPUT_PATH}/solvespaceui.js
-            COMMENT "Copying UI script solvespaceui.js"
-            VERBATIM)
-        add_custom_command(
-            TARGET solvespace POST_BUILD
-            COMMAND ${CMAKE_COMMAND} -E copy_if_different
-                    ${CMAKE_CURRENT_SOURCE_DIR}/platform/html/filemanagerui.js
-                    ${EXECUTABLE_OUTPUT_PATH}/filemanagerui.js
-            COMMENT "Copying UI script filemanagerui.sj"
-            VERBATIM)
-    elseif(USE_QT_GUI)
-        set_target_properties(solvespace PROPERTIES
-            OUTPUT_NAME solvespace-qt)
-
-        target_sources(solvespace PRIVATE
-            platform/guiqt.cpp
-            platform/guiqt.h
-            ${RESOURCE_FILES})
-
-        target_include_directories(solvespace SYSTEM PRIVATE
-            ${FONTCONFIG_INCLUDE_DIRS})
-        target_link_directories(solvespace PRIVATE
-            ${FONTCONFIG_LIBRARY_DIRS})
-        target_link_libraries(solvespace PRIVATE
-            ${FONTCONFIG_LIBRARIES}
-            Qt6::Core Qt6::Gui Qt6::OpenGLWidgets Qt6::Widgets
-            # Qt5::Core Qt5::Gui Qt5::Widgets
-         )
-    else()
-        target_sources(solvespace PRIVATE
-            platform/guigtk.cpp)
-
-        target_include_directories(solvespace SYSTEM PRIVATE
-            ${GTKMM_INCLUDE_DIRS}
-            ${JSONC_INCLUDE_DIRS}
-            ${FONTCONFIG_INCLUDE_DIRS})
-        target_link_directories(solvespace PRIVATE
-            ${GTKMM_LIBRARY_DIRS}
-            ${JSONC_LIBRARY_DIRS}
-            ${FONTCONFIG_LIBRARY_DIRS})
-        target_link_libraries(solvespace PRIVATE
-            ${GTKMM_LIBRARIES}
-            ${JSONC_LIBRARIES}
-            ${FONTCONFIG_LIBRARIES})
+    # Due to the response file hack below, we need a version of Emscripten that
+    # passes arguments via a response file to the `file_packager` utility, but
+    # this was not the case prior to version 4.0.8 of Emscripten.
+    # See https://github.com/emscripten-core/emscripten/pull/24107
+    if(NOT EMSCRIPTEN_VERSION OR EMSCRIPTEN_VERSION VERSION_LESS "4.0.8")
+        message(FATAL_ERROR "The Emscripten build requires at least version 4.0.8")
     endif()
 
-    if(WIN32)
-        if(MSVC)
-            set_target_properties(solvespace PROPERTIES
-                LINK_FLAGS "/MANIFEST:NO /SAFESEH:NO /INCREMENTAL:NO /OPT:REF")
-        elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang" AND MSVC_VERSION)
-            # Hack to fix broken build with clang (not clang-cl) on Windows with CMake >= 3.22
-            # which unconditionally adds "-Xlinker /MANIFEST:EMBED" to the command line
-            # for non-MSVC and non-MINGW compilers, and breaks the clang build where
-            # manifest are specified through resource files.
-            # See:
-            # https://gitlab.kitware.com/cmake/cmake/-/merge_requests/6929
-            # https://gitlab.kitware.com/cmake/cmake/-/merge_requests/6534
-            # https://gitlab.kitware.com/cmake/cmake/-/issues/22611
-            string(REPLACE " -Xlinker /MANIFEST:EMBED" ""
-                CMAKE_CXX_LINK_EXECUTABLE "${CMAKE_CXX_LINK_EXECUTABLE}")
-            target_link_options(solvespace PRIVATE
-                "SHELL:-Xlinker /MANIFEST:NO")
-        endif()
+    target_compile_features(solvespace PRIVATE cxx_std_17)
+
+    set(SHELL "${CMAKE_CURRENT_SOURCE_DIR}/platform/html/emshell.html")
+    # Add internal quotes to paths used in the response file to ensure that paths
+    # that contain spaces are handled correctly
+    set(RESP_LINK_FLAGS
+        --bind --shell-file "\"${SHELL}\"" --no-heap-copy
+        "-s ALLOW_MEMORY_GROWTH=1" "-s WASM=1"
+        "-s ASYNCIFY=1" "-s DYNCALLS=1" "-s ASSERTIONS=1"
+        "-s TOTAL_STACK=33554432" "-s TOTAL_MEMORY=134217728")
+
+    get_target_property(resource_list resources SOURCES)
+    foreach(resource ${resource_list})
+        # Strip everything before `res/...`, and map the source path to the stripped
+        # path in the virtual Emscripten fileystem
+        file(RELATIVE_PATH target_path "${CMAKE_SOURCE_DIR}" "${resource}")
+        list(APPEND RESP_LINK_FLAGS "--preload-file \"${resource}\"@\"${target_path}\"")
+    endforeach()
+
+    if(CMAKE_BUILD_TYPE STREQUAL Debug)
+        list(APPEND RESP_LINK_FLAGS
+            --emrun --emit-symbol-map
+            "-s DEMANGLE_SUPPORT=1"
+            "-s SAFE_HEAP=1")
     endif()
+
+    target_sources(solvespace PRIVATE
+        platform/guihtml.cpp)
+
+    # Pass arguments through a response file in order to avoid exceeding the maximum
+    # command line length (the Emscripten tools on Windows are all wrapped by batch
+    # scripts, and as such are subject to the CMD length limit of 8KiB).
+    set(resp_file_path "${CMAKE_CURRENT_BINARY_DIR}/emscripten_flags.rsp")
+    file(GENERATE OUTPUT "${resp_file_path}" CONTENT "$<JOIN:${RESP_LINK_FLAGS},\n>")
+
+    # NOTE: it would be ideal if we could portably specify that linking depends on the
+    # response file (and the files that are specified in it), but unfortunately there
+    # is no way to reliably trigger a relink like that without using LINK_DEPENDS,
+    # which only works with the Ninja and Makefile generators.
+    # This means that using e.g. the Visual Studio of Xcode generators will not work
+    # correctly when any of the link time dependencies changes, so the output artefact
+    # needs to be explicitly deleted in order to trigger a relink.
+    set_target_properties(solvespace PROPERTIES
+        SUFFIX ".html"
+        LINK_FLAGS "@${resp_file_path}"
+        LINK_DEPENDS "${SHELL};${resp_file_path};${resource_list}")
+
+    add_custom_command(
+        TARGET solvespace POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different
+                ${CMAKE_CURRENT_SOURCE_DIR}/platform/html/solvespaceui.css
+                ${EXECUTABLE_OUTPUT_PATH}/solvespaceui.css
+        COMMENT "Copying UI stylesheet"
+        VERBATIM)
+    add_custom_command(
+        TARGET solvespace POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different
+                ${CMAKE_CURRENT_SOURCE_DIR}/platform/html/solvespaceui.js
+                ${EXECUTABLE_OUTPUT_PATH}/solvespaceui.js
+        COMMENT "Copying UI script solvespaceui.js"
+        VERBATIM)
+    add_custom_command(
+        TARGET solvespace POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different
+                ${CMAKE_CURRENT_SOURCE_DIR}/platform/html/filemanagerui.js
+                ${EXECUTABLE_OUTPUT_PATH}/filemanagerui.js
+        COMMENT "Copying UI script filemanagerui.sj"
+        VERBATIM)
 endif()
 
 if(ENABLE_CLI)
@@ -586,8 +491,8 @@ endif()
 # solvespace unix package
 
 if(NOT (WIN32 OR APPLE OR EMSCRIPTEN))
-    if(ENABLE_GUI)
-        install(TARGETS solvespace
+    if(TARGET solvespace-ng)
+        install(TARGETS solvespace-ng
             COMPONENT   solvespace
             RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
     endif()
@@ -598,9 +503,9 @@ if(NOT (WIN32 OR APPLE OR EMSCRIPTEN))
     endif()
 endif()
 
-# solvespace macOS package
+# solvespace macOS package (the retired Cocoa app's bundle; solvespace-ng's is still to do)
 
-if(APPLE)
+if(APPLE AND TARGET solvespace)
     set(LIBOMP_LIB_PATH ${OpenMP_CXX_INCLUDE_DIRS}/../lib/libomp.dylib)
     set(LIBOMP_LINK_PATH "@executable_path/../Resources/libomp.dylib")
     set(LIBOMP_LINK_PATH_UTILS "@executable_path/SolveSpace.app/Contents/Resources/libomp.dylib")

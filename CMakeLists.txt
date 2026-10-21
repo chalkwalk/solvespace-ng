@@ -58,9 +58,14 @@ endif()
 
 set(ENABLE_GUI        ON CACHE BOOL
     "Whether the graphical interface is enabled")
-set(USE_QT_GUI        OFF CACHE BOOL
-    "Whether the Qt library used to build graphical interface")
-set(ENABLE_NG_GUI     OFF CACHE BOOL
+# The desktop interface is SolveSpace NG (SDL3 + Dear ImGui); the GTK, Win32, Cocoa and Qt
+# frontends were retired after M1 parity (2026-10-21). The web build keeps its own (guihtml).
+if(EMSCRIPTEN)
+    set(ENABLE_NG_GUI_DEFAULT OFF)
+else()
+    set(ENABLE_NG_GUI_DEFAULT ON)
+endif()
+set(ENABLE_NG_GUI     ${ENABLE_NG_GUI_DEFAULT} CACHE BOOL
     "Whether to build the SDL3 + Dear ImGui interface (solvespace-ng)")
 set(ENABLE_CLI        ${INCLUDE_NATIVE_COMPONENTS} CACHE BOOL
     "Whether the command line interface is enabled")
@@ -366,9 +371,7 @@ if(ENABLE_GUI OR ENABLE_CLI)
         find_package(ZLIB REQUIRED)
         find_package(PNG REQUIRED)
         find_package(Freetype REQUIRED)
-        if (NOT USE_QT_GUI OR ENABLE_CLI OR ENABLE_TESTS)
-            find_package(Cairo REQUIRED)
-        endif()
+        find_package(Cairo REQUIRED)
     endif()
 endif()
 
@@ -413,11 +416,6 @@ if(ENABLE_GUI)
     else()
         find_package(OpenGL REQUIRED)
         find_package(SpaceWare)
-        pkg_check_modules(FONTCONFIG REQUIRED fontconfig)
-        if (NOT USE_QT_GUI)
-            pkg_check_modules(JSONC REQUIRED json-c)
-            pkg_check_modules(GTKMM REQUIRED gtkmm-3.0>=3.18 pangomm-1.4 x11)
-        endif()
     endif()
 endif()
 

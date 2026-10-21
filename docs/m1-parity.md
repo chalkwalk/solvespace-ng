@@ -20,8 +20,7 @@ whole NG menu bar.
 | Step dimension | **Step Dimension** | Analyze ▸ Step Dimension |
 | Tangent arc settings | **Tangent Arc** | Sketch ▸ Tangent Arc at Point with nothing selected |
 
-The old browser starts hidden and is never forced open; View ▸ Show Property Browser
-(`Shift+N`) still shows it until it is deleted.
+The old browser is never shown: its floating panel was deleted on 2026-10-21.
 
 ## Commands
 
@@ -38,5 +37,7 @@ accelerator.
 - [x] Lucide icons via lunasvg (the shelf's).
 - [x] Constraint glyphs coloured by state (2026-10-21; shapes kept: the shelf icons mirror
       them). Owner to look at it hands-on.
-- [ ] Then delete `guigtk.cpp`, `guiwin.cpp`, `guimac.mm`, `guiqt.*`, their CMake branches and
-      the floating property-browser panel.
+- [x] Then delete `guigtk.cpp`, `guiwin.cpp`, `guimac.mm`, `guiqt.*`, their CMake branches and
+      the floating property-browser panel (2026-10-21, owner's go-ahead; branch
+      `ng/m1-remove-frontends`). Still to do: a macOS bundle and Windows resources for
+      `solvespace-ng`, checked on those platforms.

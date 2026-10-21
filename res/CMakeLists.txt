@@ -182,11 +182,7 @@ else()
                 RENAME      snap.solvespace.png)
         endforeach()
     else()
-        if(USE_QT_GUI)
-            set(SS_EXE solvespace-qt)
-        else()
-            set(SS_EXE solvespace)
-        endif()
+        set(SS_EXE solvespace-ng)
         configure_file(
             ${CMAKE_CURRENT_SOURCE_DIR}/freedesktop/solvespace.desktop.in
             ${CMAKE_CURRENT_BINARY_DIR}/freedesktop/${SS_EXE}.desktop)
