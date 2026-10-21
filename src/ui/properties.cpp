@@ -117,6 +117,21 @@ static void DrawGroup(Group *g, std::function<void()> *run) {
         if(ImGui::Checkbox("fixed pitch", &f)) *run = [hg] { SS.ToggleHelixPitchFixed(hg); };
     }
 
+    if(type == Type::FILLET || type == Type::CHAMFER) {
+        ImGui::TextUnformatted(type == Type::FILLET ? "radius" : "distance");
+        ValueField("##feature-size", SS.MmToString(g->valA), run,
+                   [hg](std::string s) { SS.SetFeatureSize(hg, s); });
+        ImGui::TextDisabled("%d edge%s", (int)g->edges.size(), g->edges.size() == 1 ? "" : "s");
+        if(!g->featureProblem.empty()) {
+            std::string problem = g->featureProblem + ".";
+            problem[0]          = (char)toupper(problem[0]);
+            ImGui::PushStyleColor(ImGuiCol_Text,
+                                  ImGui::GetStyleColorVec4(ImGuiCol_PlotLinesHovered));
+            ImGui::TextWrapped("%s", problem.c_str());
+            ImGui::PopStyleColor();
+        }
+    }
+
     if(type == Type::EXTRUDE || type == Type::LATHE || type == Type::REVOLVE ||
        type == Type::LINKED || type == Type::HELIX) {
         using C = Group::CombineAs;

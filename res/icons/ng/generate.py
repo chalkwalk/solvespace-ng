@@ -83,6 +83,21 @@ def cube(x, y, s, stroke=DARK):
             f'<path d="{front}" fill="{MID}" stroke="{stroke}" stroke-width="0.8" />')
 
 
+def edged_block(left, right):
+    """A 12 wide block whose front top edge is cut from (3, 12) and (15, 12) back to the top
+    face along the given path commands (a curve for a fillet, a line for a chamfer)."""
+    w = 'stroke="' + DARK + '" stroke-width="0.8"'
+    return (f'<path d="M4.35 7.65l4.05 -4.05h12l-4.05 4.05z" fill="{LIT}" {w} />'
+            f'<path d="M15 21V12{right}L20.4 3.6V15.6z" fill="{DARK}" {w} />'
+            f'<path d="M3 12h12v9h-12z" fill="{MID}" {w} />'
+            f'<path d="M3 12{left}H16.35{reverse(right)}z" fill="{LIT}" {w} />')
+
+
+def reverse(cmd):
+    """The edge path from the top face back down to (15, 12)."""
+    return 'Q15 9 15 12' if cmd.startswith('Q') else 'L15 12'
+
+
 def offset_ticks(x0, y0, x1, y1, off, length=4.0, count=2, spacing=1.5):
     """Short marks parallel to a line, beside its middle (the canvas's parallel mark)."""
     mx, my = (x0 + x1) / 2, (y0 + y1) / 2
@@ -230,6 +245,9 @@ ICONS = {
                '<path d="M8 16l-5.5 5.5" stroke="#33b24a" stroke-width="1.8" />'
                + pt(8, 16, 3)),
     'insert-part': cube(3, 11, 10) + chrome('M19 2v7 M15.5 5.5h7', 1.8),
+    # A block with its front top edge rounded or bevelled.
+    'fillet': edged_block('Q3 9 4.35 7.65', 'Q15 9 16.35 7.65'),
+    'chamfer': edged_block('L4.35 7.65', 'L16.35 7.65'),
 }
 
 if __name__ == '__main__':

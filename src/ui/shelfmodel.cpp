@@ -42,6 +42,8 @@ static const struct {
     { "Groups",    Command::GROUP_LATHE,    "lathe" },
     { "Groups",    Command::GROUP_HELIX,    "helix" },
     { "Groups",    Command::GROUP_REVOLVE,  "revolve" },
+    { "Groups",    Command::GROUP_FILLET,   "fillet" },
+    { "Groups",    Command::GROUP_CHAMFER,  "chamfer" },
     { "Groups",    Command::GROUP_ROT,      "circular-pattern" },
     { "Groups",    Command::GROUP_TRANS,    "linear-pattern" },
     { "Groups",    Command::GROUP_WRKPL,    "new-sketch" },

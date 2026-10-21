@@ -154,7 +154,7 @@ bindings. All bindings can be remapped and are stored in a keymap file
 | `H` `V` `I` `B`/`T` `Shift+L` `Q` `Shift+S` `M` `Shift+J` `U` | Horizontal, vertical, on point/curve, parallel/tangent, perpendicular, equal, symmetric, midpoint, lock, other angle |
 | `X` | Toggle construction (`Delete`/`Backspace` delete) |
 | `G` | Grab: drag under the solver; `X`/`Y`/`Z` locks an axis; type a value |
-| `E` / `Shift+R` / `Alt+R` / `Alt+E` | Extrude / revolve / lathe / helix; `Shift+W` sketch in a new workplane |
+| `E` / `Shift+R` / `Alt+R` / `Alt+E` | Extrude / revolve / lathe / helix; `Shift+W` sketch in a new workplane; `Shift+F` fillet the selected edges (as Onshape) |
 | `Y` / `Shift+Y` / `Shift+I` | Hide / show all / isolate **groups** (SolveSpace has no per-entity hide) |
 | `Ctrl+A` / `Alt+A`, `Esc` | Select all / none |
 | `` ` `` pie, numpad `1` `3` `7`, `Shift+1`..`7` | View pie; front/right/top (`Ctrl` = opposite side); Onshape's Shift+digits (front, back, left, right, top, bottom, isometric) for keyboards without a numpad; `W` looks at the sketch; `.` frames selection |
@@ -293,6 +293,23 @@ SolveSpace NG): NG seeds Open CASCADE, stock and the core tests use SolveSpace's
 `test/kernel/parity` regenerates every model under `test/` with both kernels and compares
 volume, area, bounding box and watertightness (all 102 solid groups of 287 models match).
 Files saved with OCCT store the solid as triangles, as mesh groups do, not NURBS surfaces.
+
+**Built in M3b (2026-10-21, branch `ng/m3b-features`):** fillet and chamfer groups
+(`Group::Type::FILLET`/`CHAMFER`, New Group ▸ Fillet Edges / Chamfer Edges, `Shift+F`). A
+group holds its edges as the entities solid groups make (an extrusion's copies of its sketch
+and its side lines; saved as `Group.edges`) and its radius or distance (`valA`, edited in
+Properties). The OCCT kernel rounds every B-rep edge of the previous solid lying on those
+entities' curves (`BRepFilletAPI`), so an edge split by a boolean rounds whole; a failure or a
+missing edge is a Problems entry (`Group::featureProblem`). Derived entities: along each
+straight edge between two planar faces, a fillet makes its two tangent lines and its axis, a
+chamfer its two edge lines (`REMAP_FILLET_*`, `REMAP_CHAMFER_*`). The solid gives only which
+faces meet at the edge (`KernelEdgeFaces`, cached per edge); the lines' positions come from
+those faces' entities, so they follow a drag at once, and they always exist (on the edge when
+no solid is known, e.g. with SolveSpace's kernel), so constraints on them are never pruned.
+When an edge's faces change on the fresh solid, `GenerateAll` solves the later groups once
+more. An edge rounded away is hidden while its fillet is shown. Not yet: edges no entity
+describes (two bodies' intersection), derived entities for curved edges, a Problems note for
+a straight edge on a curved face.
 
 **Later:** variable-radius fillets, STEP import as a reference body (snappable, warned),
 XCAF colours and names, exact hidden-line drawing export (`HLRBRep`).

@@ -301,11 +301,13 @@ add_resources(
     icons/ng/angle.svg
     icons/ng/arc.svg
     icons/ng/circle.svg
+    icons/ng/chamfer.svg
     icons/ng/circular-pattern.svg
     icons/ng/construction.svg
     icons/ng/dimension.svg
     icons/ng/equal.svg
     icons/ng/extrude.svg
+    icons/ng/fillet.svg
     icons/ng/helix.svg
     icons/ng/horizontal.svg
     icons/ng/image.svg

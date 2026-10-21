@@ -172,6 +172,7 @@ set(ngui_SOURCES
     ngui/sessions/test.cpp
     ngui/shelf/test.cpp
     ngui/regen/test.cpp
+    ngui/fillet/test.cpp
     ngui/capture/test.cpp)
 
 if(ENABLE_GUI AND ENABLE_NG_GUI)
