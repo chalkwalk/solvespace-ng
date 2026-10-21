@@ -84,29 +84,30 @@ void Group::GenerateLoops() {
     }
 }
 
-void SShell::RemapFaces(Group *g, int remap) {
+void SShell::RemapFaces(FaceNamer *namer, int remap) {
     for(SSurface &ss : surface){
         hEntity face = { ss.face };
         if(face == Entity::NO_ENTITY) continue;
 
-        face = g->Remap(face, remap);
+        face = namer->Name(face, remap);
         ss.face = face.v;
     }
 }
 
-void SMesh::RemapFaces(Group *g, int remap) {
+void SMesh::RemapFaces(FaceNamer *namer, int remap) {
     STriangle *tr;
     for(tr = l.First(); tr; tr = l.NextAfter(tr)) {
         hEntity face = { tr->meta.face };
         if(face == Entity::NO_ENTITY) continue;
 
-        face = g->Remap(face, remap);
+        face = namer->Name(face, remap);
         tr->meta.face = face.v;
     }
 }
 
 template<class T>
-void Group::GenerateForStepAndRepeat(T *steps, T *outs, Group::CombineAs forWhat) {
+void Group::GenerateForStepAndRepeat(T *steps, T *outs, Group::CombineAs forWhat,
+                                      FaceNamer *namer) {
 
     int n = (int)valA, a0 = 0;
     if(subtype == Subtype::ONE_SIDED && skipFirst) {
@@ -144,7 +145,7 @@ void Group::GenerateForStepAndRepeat(T *steps, T *outs, Group::CombineAs forWhat
     for(a = a0; a < n; a++) {
         // We need to rewrite any plane face entities to the transformed ones.
         int remap = (a == (n - 1)) ? REMAP_LAST : a;
-        transd[a].RemapFaces(this, remap);
+        transd[a].RemapFaces(namer, remap);
     }
 
     std::vector<T> *soFar = &transd;
@@ -210,6 +211,7 @@ void Group::GenerateForBoolean(T *prevs, T *thiss, T *outs, Group::CombineAs how
 }
 
 void Group::GenerateShellAndMesh() {
+    GroupFaceNamer namer(this);
     bool prevBooleanFailed = booleanFailed;
     booleanFailed = false;
 
@@ -237,12 +239,13 @@ void Group::GenerateShellAndMesh() {
 
         if(!srcg->suppress) {
             if(!IsForcedToMesh()) {
-                GenerateForStepAndRepeat<SShell>(&(srcg->thisShell), &thisShell, srcg->meshCombine);
+                GenerateForStepAndRepeat<SShell>(&(srcg->thisShell), &thisShell, srcg->meshCombine,
+                                                 &namer);
             } else {
                 SMesh prevm = {};
                 prevm.MakeFromCopyOf(&srcg->thisMesh);
                 srcg->thisShell.TriangulateInto(&prevm);
-                GenerateForStepAndRepeat<SMesh> (&prevm, &thisMesh, srcg->meshCombine);
+                GenerateForStepAndRepeat<SMesh> (&prevm, &thisMesh, srcg->meshCombine, &namer);
             }
         }
     } else if(type == Type::EXTRUDE && haveSrc) {
@@ -280,11 +283,11 @@ void Group::GenerateShellAndMesh() {
                 if(i == is || i == (is + 1)) {
                     // These are the top and bottom of the shell.
                     if(fabs((onOrig.Plus(ttop)).Dot(n) - d) < LENGTH_EPS) {
-                        face = Remap(Entity::NO_ENTITY, REMAP_TOP);
+                        face = namer.Name(Entity::NO_ENTITY, REMAP_TOP);
                         ss->face = face.v;
                     }
                     if(fabs((onOrig.Plus(tbot)).Dot(n) - d) < LENGTH_EPS) {
-                        face = Remap(Entity::NO_ENTITY, REMAP_BOTTOM);
+                        face = namer.Name(Entity::NO_ENTITY, REMAP_BOTTOM);
                         ss->face = face.v;
                     }
                     continue;
@@ -307,7 +310,7 @@ void Group::GenerateShellAndMesh() {
                        (a.Equals(ss->ctrl[0][1]) && b.Equals(ss->ctrl[1][1])) ||
                        (b.Equals(ss->ctrl[0][1]) && a.Equals(ss->ctrl[1][1])))
                     {
-                        face = Remap(e.h, REMAP_LINE_TO_FACE);
+                        face = namer.Name(e.h, REMAP_LINE_TO_FACE);
                         ss->face = face.v;
                         break;
                     }
@@ -324,7 +327,7 @@ void Group::GenerateShellAndMesh() {
         SBezierLoopSetSet *sblss = &(src->bezierLoops);
         SBezierLoopSet *sbls;
         for(sbls = sblss->l.First(); sbls; sbls = sblss->l.NextAfter(sbls)) {
-            thisShell.MakeFromRevolutionOf(sbls, pt, axis, color, this);
+            thisShell.MakeFromRevolutionOf(sbls, pt, axis, color, &namer);
         }
     } else if(type == Type::REVOLVE && haveSrc) {
         Group *src    = SK.GetGroup(opA);
@@ -343,10 +346,10 @@ void Group::GenerateShellAndMesh() {
         SBezierLoopSet *sbls;
         for(sbls = sblss->l.First(); sbls; sbls = sblss->l.NextAfter(sbls)) {
             if(fabs(anglef - angles) < 2 * PI) {
-                thisShell.MakeFromHelicalRevolutionOf(sbls, pt, axis, color, this,
+                thisShell.MakeFromHelicalRevolutionOf(sbls, pt, axis, color, &namer,
                                                       angles, anglef, dists, distf);
             } else {
-                thisShell.MakeFromRevolutionOf(sbls, pt, axis, color, this);
+                thisShell.MakeFromRevolutionOf(sbls, pt, axis, color, &namer);
             }
         }
     } else if(type == Type::HELIX && haveSrc) {
@@ -368,7 +371,7 @@ void Group::GenerateShellAndMesh() {
         SBezierLoopSetSet *sblss = &(src->bezierLoops);
         SBezierLoopSet *sbls;
         for(sbls = sblss->l.First(); sbls; sbls = sblss->l.NextAfter(sbls)) {
-            thisShell.MakeFromHelicalRevolutionOf(sbls, pt, axis, color, this,
+            thisShell.MakeFromHelicalRevolutionOf(sbls, pt, axis, color, &namer,
                                                   angles, anglef, dists, distf);
         }
     } else if(type == Type::LINKED) {
@@ -385,10 +388,10 @@ void Group::GenerateShellAndMesh() {
             SK.GetParam(h.param(6))->val };
 
         thisMesh.MakeFromTransformationOf(&impMesh, offset, q, scale);
-        thisMesh.RemapFaces(this, 0);
+        thisMesh.RemapFaces(&namer, 0);
 
         thisShell.MakeFromTransformationOf(&impShell, offset, q, scale);
-        thisShell.RemapFaces(this, 0);
+        thisShell.RemapFaces(&namer, 0);
     }
 
     if(srcg->meshCombine != CombineAs::ASSEMBLE) {

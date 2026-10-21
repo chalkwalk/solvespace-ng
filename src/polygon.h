@@ -22,6 +22,7 @@ class SPointList;
 class SPolygon;
 class SContour;
 class SMesh;
+class FaceNamer;
 class SSurface;
 class SBsp3;
 class SOutlineList;
@@ -298,7 +299,7 @@ public:
     double CalculateSurfaceArea(const std::vector<uint32_t> &faces) const;
 
     bool IsEmpty() const;
-    void RemapFaces(Group *g, int remap);
+    void RemapFaces(FaceNamer *namer, int remap);
 
     uint32_t FirstIntersectionWith(Point2d mp) const;
 

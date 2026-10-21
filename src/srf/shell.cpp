@@ -159,7 +159,7 @@ bool SShell::CheckNormalAxisRelationship(SBezierLoopSet *sbls, Vector pt, Vector
 
 // sketch must not contain the axis of revolution as a non-construction line for helix
 void SShell::MakeFromHelicalRevolutionOf(SBezierLoopSet *sbls, Vector pt, Vector axis,
-                                         RgbaColor color, Group *group, double angles,
+                                         RgbaColor color, FaceNamer *namer, double angles,
                                          double anglef, double dists, double distf) {
     int i0 = surface.n; // number of pre-existing surfaces
     SBezierLoop *sbl;
@@ -200,7 +200,7 @@ void SShell::MakeFromHelicalRevolutionOf(SBezierLoopSet *sbls, Vector pt, Vector
                              u.RotatedAbout(axis, angles), v.RotatedAbout(axis, angles));
     s0.color = color;
 
-    hEntity face0 = group->Remap(Entity::NO_ENTITY, startMapping);
+    hEntity face0 = namer->Name(Entity::NO_ENTITY, startMapping);
     s0.face = face0.v;
 
     s1 = SSurface::FromPlane(
@@ -208,7 +208,7 @@ void SShell::MakeFromHelicalRevolutionOf(SBezierLoopSet *sbls, Vector pt, Vector
         u.ScaledBy(-1).RotatedAbout(axis, anglef), v.RotatedAbout(axis, anglef));
     s1.color = color;
 
-    hEntity face1 = group->Remap(Entity::NO_ENTITY, endMapping);
+    hEntity face1 = namer->Name(Entity::NO_ENTITY, endMapping);
     s1.face = face1.v;
 
     hSSurface hs0 = surface.AddAndAssignId(&s0);
@@ -238,10 +238,8 @@ void SShell::MakeFromHelicalRevolutionOf(SBezierLoopSet *sbls, Vector pt, Vector
                     if(sb->entity != 0) {
                         hEntity he;
                         he.v          = sb->entity;
-                        hEntity hface = group->Remap(he, Group::REMAP_LINE_TO_FACE);
-                        if(SK.entity.FindByIdNoOops(hface) != NULL) {
-                            ss.face = hface.v;
-                        }
+                        hEntity hface = namer->ExistingFace(he, Group::REMAP_LINE_TO_FACE);
+                        if(hface.v != 0) ss.face = hface.v;
                     }
                     revs[j] = surface.AddAndAssignId(&ss);
                 }
@@ -359,7 +357,7 @@ void SShell::MakeFromHelicalRevolutionOf(SBezierLoopSet *sbls, Vector pt, Vector
 }
 
 void SShell::MakeFromRevolutionOf(SBezierLoopSet *sbls, Vector pt, Vector axis, RgbaColor color,
-                                  Group *group) {
+                                  FaceNamer *namer) {
     int i0 = surface.n; // number of pre-existing surfaces
     SBezierLoop *sbl;
 
@@ -390,10 +388,8 @@ void SShell::MakeFromRevolutionOf(SBezierLoopSet *sbls, Vector pt, Vector axis, 
                     if(sb->entity != 0) {
                         hEntity he;
                         he.v = sb->entity;
-                        hEntity hface = group->Remap(he, Group::REMAP_LINE_TO_FACE);
-                        if(SK.entity.FindByIdNoOops(hface) != NULL) {
-                            ss.face = hface.v;
-                        }
+                        hEntity hface = namer->ExistingFace(he, Group::REMAP_LINE_TO_FACE);
+                        if(hface.v != 0) ss.face = hface.v;
                     }
                     revs[j] = surface.AddAndAssignId(&ss);
                 }

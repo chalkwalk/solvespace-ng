@@ -161,6 +161,8 @@ struct EntityKeyEqual {
 };
 typedef std::unordered_map<EntityKey, EntityId, EntityKeyHash, EntityKeyEqual> EntityMap;
 
+#include "kernel/facenamer.h"
+
 // A set of requests. Every request must have an associated group.
 class Group {
 public:
@@ -315,6 +317,8 @@ public:
         REMAP_LATHE_ARC_CENTER = 1010,
     };
     hEntity Remap(hEntity in, int copyNumber);
+    // A copy of the names this group has given (kernel/facenamer.h), for a worker thread.
+    SnapshotFaceNamer FaceSnapshot() const;
     void MakeExtrusionLines(EntityList *el, hEntity in);
     void MakeLatheCircles(EntityList *el, ParamList *param, hEntity in, Vector pt, Vector axis);
     void MakeLatheSurfacesSelectable(EntityList *el, hEntity in, Vector axis);
@@ -343,7 +347,8 @@ public:
     bool IsMeshGroup();
 
     void GenerateShellAndMesh();
-    template<class T> void GenerateForStepAndRepeat(T *steps, T *outs, Group::CombineAs forWhat);
+    template<class T> void GenerateForStepAndRepeat(T *steps, T *outs, Group::CombineAs forWhat,
+                                                    FaceNamer *namer);
     template<class T> void GenerateForBoolean(T *a, T *b, T *o, Group::CombineAs how);
     void GenerateDisplayItems();
 
@@ -363,6 +368,17 @@ public:
 
 // A user request for some primitive or derived operation; for example a
 // line, or a step and repeat.
+// Names faces through the group itself, adding names as needed (the main thread's namer).
+class GroupFaceNamer final : public FaceNamer {
+public:
+    explicit GroupFaceNamer(Group *group) : group(group) {}
+    hEntity Name(hEntity input, int copy) override;
+    hEntity ExistingFace(hEntity input, int copy) override;
+
+private:
+    Group *group;
+};
+
 class Request {
 public:
     // Some predefined requests, that are present in every sketch.

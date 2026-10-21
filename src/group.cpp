@@ -875,6 +875,23 @@ hEntity Group::Remap(hEntity in, int copyNumber) {
     return h.entity(it->second.v);
 }
 
+SnapshotFaceNamer Group::FaceSnapshot() const {
+    std::unordered_set<uint32_t> existing;
+    for(const Entity &e : SK.entity) {
+        if(e.group == h) existing.insert(e.h.v);
+    }
+    return SnapshotFaceNamer(h, remap, std::move(existing));
+}
+
+hEntity GroupFaceNamer::Name(hEntity input, int copy) {
+    return group->Remap(input, copy);
+}
+
+hEntity GroupFaceNamer::ExistingFace(hEntity input, int copy) {
+    hEntity face = group->Remap(input, copy);
+    return SK.entity.FindByIdNoOops(face) ? face : Entity::NO_ENTITY;
+}
+
 void Group::MakeExtrusionLines(EntityList *el, hEntity in) {
     Entity *ep = SK.GetEntity(in);
 

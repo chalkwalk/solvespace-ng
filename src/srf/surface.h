@@ -62,6 +62,7 @@ public:
 // surfaces.
 
 class SShell;
+class FaceNamer;
 
 class hSSurface {
 public:
@@ -395,9 +396,9 @@ public:
                              RgbaColor color);
     bool CheckNormalAxisRelationship(SBezierLoopSet *sbls, Vector pt, Vector axis, double da, double dx);
     void MakeFromRevolutionOf(SBezierLoopSet *sbls, Vector pt, Vector axis,
-                              RgbaColor color, Group *group);
+                              RgbaColor color, FaceNamer *namer);
     void MakeFromHelicalRevolutionOf(SBezierLoopSet *sbls, Vector pt, Vector axis, RgbaColor color,
-                                     Group *group, double angles, double anglef, double dists, double distf);
+                                     FaceNamer *namer, double angles, double anglef, double dists, double distf);
     void MakeFirstOrderRevolvedSurfaces(Vector pt, Vector axis, int i0);
     void MakeFromUnionOf(SShell *a, SShell *b);
     void MakeFromDifferenceOf(SShell *a, SShell *b);
@@ -442,7 +443,7 @@ public:
     void MakeEdgesInto(SEdgeList *sel);
     void MakeSectionEdgesInto(Vector n, double d, SEdgeList *sel, SBezierList *sbl);
     bool IsEmpty() const;
-    void RemapFaces(Group *g, int remap);
+    void RemapFaces(FaceNamer *namer, int remap);
     void Clear();
 };
 
