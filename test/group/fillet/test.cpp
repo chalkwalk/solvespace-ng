@@ -301,6 +301,32 @@ TEST_CASE(a_point_on_a_tangent_line_follows_a_face_turning_upstream) {
     CHECK_EQ_EPS(p.DistanceToLine({ 0, 0, 30 }, { 10, -5, 0 }), 2);
 }
 
+TEST_CASE(a_point_on_a_fillet_axis_follows_a_drag_before_the_solid_does) {
+    // While dragging, solids are made on the worker; the lines follow every frame anyway.
+    CHECK_LOAD("box.slvs");
+    SS.kernelKind = KernelKind::OCCT;
+    hEntity edge = Edge(5, Group::REMAP_TOP);
+    Group  *g    = MakeFeature(Command::GROUP_FILLET, { edge });
+    Resize(g, "2");
+    hEntity pt  = PointOn(g->Remap(edge, Group::REMAP_FILLET_AXIS));
+    hGroup  box = Extrusion()->h;
+    SS.backgroundRegenEnabled = true;
+    SS.GW.pending.operation   = GraphicsWindow::Pending::DRAGGING_POINTS;
+    int applied               = SS.regenChainsApplied;
+    for(double half = 16; half <= 20; half++) {
+        SK.GetParam(SK.GetGroup(box)->h.param(2))->val = half;
+        SS.MarkGroupDirty(box);
+        SS.GenerateAll(SolveSpaceUI::Generate::DIRTY);
+        CHECK_EQ_EPS(SK.GetEntity(pt)->PointGetNum().z, 2 * half - 2);
+        SS.PollRegeneration();
+    }
+    SS.GW.pending.operation = GraphicsWindow::Pending::NONE;
+    SS.FlushRegeneration();
+    CHECK_TRUE(SS.regenChainsApplied > applied); // made on the worker
+    CHECK_EQ_EPS(SK.GetEntity(pt)->PointGetNum().z, 38);
+    CHECK_TRUE(fabs(8000 - Volume(SK.GetGroup(g->h)) - (1 - PI / 4) * 4 * 10) < 1);
+}
+
 TEST_CASE(a_constraint_on_a_tangent_line_survives_undo_and_reload) {
     CHECK_LOAD("box.slvs");
     SS.kernelKind = KernelKind::OCCT;
