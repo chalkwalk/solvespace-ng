@@ -39,13 +39,43 @@ enum class KernelCombine { UNION, DIFFERENCE, INTERSECTION, ASSEMBLE };
 
 enum class KernelFeature {
     EXTRUDE, LATHE, REVOLVE, HELIX, PATTERN, LINK, BOOLEAN,
-    FILLET, CHAMFER, SHELL, DRAFT, LOFT, SWEEP,
+    FILLET, CHAMFER, SHELL, DRAFT, HOLE, LOFT, SWEEP,
+};
+
+// A hole's shape (AGENTS.md section 6): plain, counterbored or countersunk; through all (depth
+// 0) or to a depth; optionally a modelled ISO metric thread (nominal diameter and pitch), whose
+// bore is then the minor diameter. Lengths in mm, the angle in degrees. Zero is "unset" so
+// groups that aren't holes save nothing.
+enum class HoleKind : uint32_t { SIMPLE = 0, COUNTERBORE = 1, COUNTERSINK = 2 };
+struct HoleSpec {
+    HoleKind kind         = HoleKind::SIMPLE;
+    double   diameter     = 0;
+    double   depth        = 0;
+    double   headDiameter = 0;
+    double   headDepth    = 0;
+    double   headAngle    = 0;
+    double   thread       = 0;
+    double   pitch        = 0;
+    int      flip         = 0; // 1: along +normal (an int: zero isn't saved)
+
+    // The bore's diameter: the thread's minor diameter when threaded.
+    double Bore() const { return thread > 0 ? thread - 1.0825 * pitch : diameter; }
+    // How deep the counterbore's floor or the countersink's narrow end is.
+    double SeatDepth() const {
+        switch(kind) {
+            case HoleKind::COUNTERBORE: return headDepth;
+            case HoleKind::COUNTERSINK:
+                return std::max(0.0, (headDiameter - Bore()) / 2 / tan(headAngle * PI / 360));
+            case HoleKind::SIMPLE: break;
+        }
+        return 0;
+    }
 };
 
 struct KernelJob {
     enum class Op {
         NONE, EXTRUDE, LATHE, REVOLVE, HELIX, STEP_TRANSLATE, STEP_ROTATE, LINKED, FILLET, CHAMFER,
-        SHELL, DRAFT
+        SHELL, DRAFT, HOLE
     };
     Op        op    = Op::NONE;
     RgbaColor color = {};
@@ -96,6 +126,14 @@ struct KernelJob {
         Vector   point = {}, pull = {};
     };
     std::vector<DraftFace> draftFaces;
+    // HOLE: each hole's centre on the face and direction into the solid (unit), and the name
+    // of its seat face; the shape is hole.
+    struct HoleAt {
+        Vector   point = {}, dir = {};
+        uint32_t seat  = 0;
+    };
+    std::vector<HoleAt> holes;
+    HoleSpec            hole;
 
     // Combining with the previous groups' running body.
     bool          forcedToMesh = false; // combine as triangle meshes

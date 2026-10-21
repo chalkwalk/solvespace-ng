@@ -20,6 +20,7 @@
 #include <BRepAlgoAPI_Fuse.hxx>
 #include <BRepBuilderAPI_MakeEdge.hxx>
 #include <BRepBuilderAPI_MakeFace.hxx>
+#include <BRepBuilderAPI_MakePolygon.hxx>
 #include <BRepBuilderAPI_MakeVertex.hxx>
 #include <BRepBuilderAPI_MakeWire.hxx>
 #include <BRepBuilderAPI_Transform.hxx>
@@ -34,9 +35,13 @@
 #include <BRepOffsetAPI_MakePipeShell.hxx>
 #include <BRepOffsetAPI_MakeOffsetShape.hxx>
 #include <BRepOffsetAPI_MakeThickSolid.hxx>
+#include <BRepPrimAPI_MakeCone.hxx>
+#include <BRepPrimAPI_MakeCylinder.hxx>
 #include <BRepPrimAPI_MakePrism.hxx>
 #include <BRepPrimAPI_MakeRevol.hxx>
+#include <BRepBndLib.hxx>
 #include <BRepTools.hxx>
+#include <Bnd_Box.hxx>
 #include <BRep_Builder.hxx>
 #include <BRep_Tool.hxx>
 #include <GCE2d_MakeSegment.hxx>
@@ -770,6 +775,135 @@ std::shared_ptr<KernelShape> Draft(const KernelJob &job, FaceNamer *, std::strin
     return out;
 }
 
+// An ISO metric internal thread's groove (where the screw's thread goes): a 60 degree profile
+// from just inside the bore out to the major diameter, swept along a helix of the pitch about
+// the axis from start along dir for length; null if OCCT fails.
+TopoDS_Shape ThreadGroove(gp_Pnt start, gp_Dir dir, double minor, double major, double pitch,
+                          double length) {
+    gp_Ax3 frame(start, dir);
+    gp_Dir out   = frame.XDirection();
+    double rIn   = minor / 2 - 0.1 * pitch, rMaj = major / 2;
+    auto   width = [&](double r) { return pitch / 8 + 2 * (rMaj - r) * tan(PI / 6); };
+    auto   at    = [&](double r, double z) {
+        return start.Translated(gp_Vec(out) * r + gp_Vec(dir) * z);
+    };
+    BRepBuilderAPI_MakePolygon polygon(at(rIn, -width(rIn) / 2), at(rMaj, -pitch / 16),
+                                       at(rMaj, pitch / 16), at(rIn, width(rIn) / 2),
+                                       /*close=*/true);
+    if(!polygon.IsDone()) return {};
+
+    double turns = length / pitch;
+    Handle(Geom_CylindricalSurface) cylinder = new Geom_CylindricalSurface(frame, rIn);
+    Handle(Geom2d_TrimmedCurve) line =
+        GCE2d_MakeSegment(gp_Pnt2d(0, 0), gp_Pnt2d(2 * PI * turns, length));
+    TopoDS_Edge spineEdge = BRepBuilderAPI_MakeEdge(line, cylinder);
+    BRepLib::BuildCurves3d(spineEdge);
+    TopoDS_Wire                 spine = BRepBuilderAPI_MakeWire(spineEdge);
+    BRepOffsetAPI_MakePipeShell pipe(spine);
+    pipe.SetMode(dir);
+    pipe.Add(polygon.Wire(), /*withContact=*/false, /*withCorrection=*/false);
+    pipe.Build();
+    if(!pipe.IsDone() || !pipe.MakeSolid()) return {};
+    TopoDS_Shape groove = pipe.Shape();
+    Orient(&groove);
+    return groove;
+}
+
+// The previous body with the job's holes cut; each counterbore's floor named with its seat.
+std::shared_ptr<KernelShape> Holes(const KernelJob &job, std::string *problem) {
+    const KernelShape &prev = *job.prevShape;
+    const HoleSpec    &spec = job.hole;
+    Bnd_Box            box;
+    BRepBndLib::Add(prev.shape, box);
+    double xmin, ymin, zmin, xmax, ymax, zmax;
+    box.Get(xmin, ymin, zmin, xmax, ymax, zmax);
+
+    double               bore = spec.Bore(), seat = spec.SeatDepth();
+    TopTools_ListOfShape tools;
+    try {
+        for(const KernelJob::HoleAt &h : job.holes) {
+            // How far the solid reaches along the hole: a through hole's length.
+            double reach = 0;
+            for(double x : { xmin, xmax }) for(double y : { ymin, ymax }) for(double z : { zmin, zmax }) {
+                reach = std::max(reach, Vector::From(x, y, z).Minus(h.point).Dot(h.dir));
+            }
+            double length = spec.depth > 0 ? spec.depth : reach + bore;
+            // Each tool starts on the face (OCCT handles the coplanar caps).
+            gp_Ax2 axis(Pnt(h.point), Dir(h.dir));
+            tools.Append(BRepPrimAPI_MakeCylinder(axis, bore / 2, length).Shape());
+            if(spec.kind == HoleKind::COUNTERBORE) {
+                tools.Append(
+                    BRepPrimAPI_MakeCylinder(axis, spec.headDiameter / 2, spec.headDepth)
+                        .Shape());
+            } else if(spec.kind == HoleKind::COUNTERSINK && seat > 0) {
+                tools.Append(
+                    BRepPrimAPI_MakeCone(axis, spec.headDiameter / 2, bore / 2, seat).Shape());
+            }
+            if(spec.thread > 0) {
+                // The thread starts below the head (where the bore starts) and stops half a
+                // pitch short of a blind hole's floor.
+                double threadLength = (spec.depth > 0 ? spec.depth - spec.pitch / 2 : reach) - seat;
+                TopoDS_Shape groove = threadLength <= 0 ? TopoDS_Shape() : ThreadGroove(
+                    Pnt(h.point.Plus(h.dir.ScaledBy(seat - (seat > 0 ? 0 : spec.pitch)))),
+                    Dir(h.dir), bore, spec.thread, spec.pitch,
+                    threadLength + (seat > 0 ? 0 : spec.pitch));
+                if(groove.IsNull()) {
+                    *problem = "the thread could not be made";
+                    return nullptr;
+                }
+                tools.Append(groove);
+            }
+        }
+    } catch(const Standard_Failure &) {
+        *problem = "the holes could not be made";
+        return nullptr;
+    }
+    if(tools.IsEmpty()) return nullptr;
+
+    BRepAlgoAPI_Cut      cut;
+    TopTools_ListOfShape args;
+    args.Append(prev.shape);
+    cut.SetArguments(args);
+    cut.SetTools(tools);
+    cut.SetNonDestructive(true);
+    // Threads make big booleans: OCCT's own threads, and oriented boxes, more than halve them.
+    cut.SetRunParallel(true);
+    cut.SetUseOBB(true);
+    cut.Build();
+    if(!cut.IsDone() || cut.HasErrors() || !IsGoodSolid(cut.Shape())) {
+        *problem = "the holes could not be cut";
+        return nullptr;
+    }
+    cut.SimplifyResult();
+    if(Volume(cut.Shape()) >= Volume(prev.shape) * (1 - 1e-12)) {
+        *problem = "the holes miss the solid";
+        return nullptr;
+    }
+    auto out   = std::make_shared<KernelShape>();
+    out->shape = cut.Shape();
+    CarryNames(cut, { &prev.faces }, &out->faces);
+    // A counterbore's floor: an unnamed plane facing out of the hole at the seat's depth.
+    if(spec.kind == HoleKind::COUNTERBORE) {
+        for(const KernelJob::HoleAt &h : job.holes) {
+            gp_Pnt floor = Pnt(h.point.Plus(h.dir.ScaledBy(seat)));
+            for(TopExp_Explorer ex(out->shape, TopAbs_FACE); ex.More(); ex.Next()) {
+                const FaceInfo *info = out->faces.Seek(ex.Current());
+                gp_Dir          normal;
+                if((info && info->face != 0) || !OutwardNormal(TopoDS::Face(ex.Current()), &normal)) {
+                    continue;
+                }
+                BRepAdaptor_Surface surface(TopoDS::Face(ex.Current()));
+                if(!normal.IsParallel(Dir(h.dir), 1e-9) ||
+                   surface.Plane().Distance(floor) > 1e-6) {
+                    continue;
+                }
+                out->faces.Bind(ex.Current(), FaceInfo{ h.seat, info ? info->color : RgbaColor{} });
+            }
+        }
+    }
+    return out;
+}
+
 class OcctKernel final : public IKernel {
 public:
     void Run(const KernelJob &job, FaceNamer &namer, KernelResult *result) override {
@@ -791,7 +925,8 @@ public:
 
         std::shared_ptr<const KernelShape> running;
         if(job.op == KernelJob::Op::FILLET || job.op == KernelJob::Op::CHAMFER ||
-           job.op == KernelJob::Op::SHELL || job.op == KernelJob::Op::DRAFT) {
+           job.op == KernelJob::Op::SHELL || job.op == KernelJob::Op::DRAFT ||
+           job.op == KernelJob::Op::HOLE) {
             // These reshape the previous solid.
             running = job.prevShape;
             if(!job.suppress && !IsEmpty(job.prevShape)) {
@@ -799,6 +934,7 @@ public:
                 switch(job.op) {
                     case KernelJob::Op::SHELL: reshaped = Shell(job, &namer, &result->problem); break;
                     case KernelJob::Op::DRAFT: reshaped = Draft(job, &namer, &result->problem); break;
+                    case KernelJob::Op::HOLE:  reshaped = Holes(job, &result->problem); break;
                     default:                   reshaped = RoundEdges(job, &result->problem); break;
                 }
                 if(reshaped) running = reshaped;
@@ -814,7 +950,8 @@ public:
             case KernelJob::Op::FILLET:
             case KernelJob::Op::CHAMFER:
             case KernelJob::Op::SHELL:
-            case KernelJob::Op::DRAFT: break;
+            case KernelJob::Op::DRAFT:
+            case KernelJob::Op::HOLE: break;
             case KernelJob::Op::EXTRUDE: made = Extrude(job, &namer); break;
             case KernelJob::Op::LATHE:   made = Revolve(job, &namer, /*full=*/true); break;
             case KernelJob::Op::REVOLVE:
@@ -874,7 +1011,8 @@ public:
             case KernelFeature::FILLET:
             case KernelFeature::CHAMFER:
             case KernelFeature::SHELL:
-            case KernelFeature::DRAFT: return true;
+            case KernelFeature::DRAFT:
+            case KernelFeature::HOLE: return true;
             case KernelFeature::LOFT:
             case KernelFeature::SWEEP: return false;
         }

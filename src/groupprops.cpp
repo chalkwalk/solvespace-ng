@@ -129,6 +129,32 @@ bool SolveSpaceUI::SetFeatureSize(hGroup hg, const std::string &expr) {
     return true;
 }
 
+bool SolveSpaceUI::SetHoleSpec(hGroup hg, const HoleSpec &spec) {
+    const char *bad = nullptr;
+    if(spec.thread > 0 && (spec.pitch <= 0 || spec.Bore() <= 0)) {
+        bad = _("A thread needs a pitch smaller than its diameter.");
+    } else if(spec.thread <= 0 && spec.diameter <= LENGTH_EPS) {
+        bad = _("The hole's diameter must be greater than zero.");
+    } else if(spec.depth < 0) {
+        bad = _("The hole's depth must be zero (through all) or more.");
+    } else if(spec.kind != HoleKind::SIMPLE && spec.headDiameter <= spec.Bore()) {
+        bad = _("The head's diameter must be greater than the hole's.");
+    } else if(spec.kind == HoleKind::COUNTERBORE && spec.headDepth <= LENGTH_EPS) {
+        bad = _("The counterbore's depth must be greater than zero.");
+    } else if(spec.kind == HoleKind::COUNTERSINK &&
+              (spec.headAngle <= 0 || spec.headAngle >= 180)) {
+        bad = _("The countersink's angle must be between 0 and 180 degrees.");
+    }
+    if(bad) {
+        Error("%s", bad);
+        return false;
+    }
+    UndoRemember();
+    SK.GetGroup(hg)->hole = spec;
+    MarkGroupDirty(hg);
+    return true;
+}
+
 void SolveSpaceUI::ToggleHelixPitchFixed(hGroup hg) {
     Group *g = SK.GetGroup(hg);
     if(g->valB == 0.0) {

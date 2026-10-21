@@ -31,6 +31,7 @@ static const char *IconFor(Group::Type t) {
         case Group::Type::CHAMFER:           return "chamfer";
         case Group::Type::SHELL:             return "shell";
         case Group::Type::DRAFT:             return "draft";
+        case Group::Type::HOLE:              return "hole";
     }
     return "isometric";
 }

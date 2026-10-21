@@ -94,6 +94,7 @@ static const CommandNameEntry CommandNames[] = {
     { Command::GROUP_CHAMFER,     "group-chamfer"      },
     { Command::GROUP_SHELL,       "group-shell"        },
     { Command::GROUP_DRAFT,       "group-draft"        },
+    { Command::GROUP_HOLE,        "group-hole"         },
     // Constrain
     { Command::DISTANCE_DIA,      "constrain-distance" },
     { Command::REF_DISTANCE,      "constrain-reference-distance" },

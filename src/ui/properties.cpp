@@ -55,6 +55,7 @@ static const char *TypeLine(const Group *g) {
         case Group::Type::CHAMFER:           return "bevel edges";
         case Group::Type::SHELL:             return "hollow the solid";
         case Group::Type::DRAFT:             return "taper faces";
+        case Group::Type::HOLE:              return "drill holes";
     }
     return "";
 }

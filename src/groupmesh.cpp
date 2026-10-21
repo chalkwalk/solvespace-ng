@@ -205,6 +205,15 @@ KernelJob Group::BuildKernelJob() {
             job.edgeCurves.emplace_back(sbl.l.begin(), sbl.l.end());
             sbl.Clear();
         }
+    } else if(type == Type::HOLE) {
+        job.op   = KernelJob::Op::HOLE;
+        job.hole = hole;
+        for(hEntity he : points) {
+            Entity *p = SK.entity.FindByIdNoOops(he);
+            if(p == nullptr) continue;
+            job.holes.push_back({ p->PointGetNum(), HoleDirection(p),
+                                  Remap(he, REMAP_HOLE_SEAT).v });
+        }
     } else if(type == Type::DRAFT) {
         job.op   = KernelJob::Op::DRAFT;
         job.size = valA * PI / 180;
@@ -285,7 +294,7 @@ void Group::GenerateDisplayItems() {
     if(displayDirty) {
         Group *pg = RunningMeshGroup();
         bool reshapes = type == Type::FILLET || type == Type::CHAMFER || type == Type::SHELL ||
-                        type == Type::DRAFT;
+                        type == Type::DRAFT || type == Type::HOLE;
         if(pg && thisMesh.IsEmpty() && thisShell.IsEmpty() && !reshapes) {
             // We don't contribute any new solid model in this group, so our
             // display items are identical to the previous group's; which means
@@ -384,6 +393,7 @@ bool Group::IsMeshGroup() {
         case Group::Type::CHAMFER:
         case Group::Type::SHELL:
         case Group::Type::DRAFT:
+        case Group::Type::HOLE:
             return true;
 
         default:

@@ -193,7 +193,8 @@ public:
         FILLET                        = 5400,
         CHAMFER                       = 5401,
         SHELL                         = 5402,
-        DRAFT                         = 5403
+        DRAFT                         = 5403,
+        HOLE                          = 5404
     };
     Group::Type type;
 
@@ -284,6 +285,14 @@ public:
     // For each face entity of the previous solid (by handle), +1 if its entity's normal
     // points out of the solid, -1 if in; found on the previous group's solid. Not saved.
     std::map<uint32_t, double> faceOut;
+    // HOLE: the hole centres, points in a workplane (each hole goes along -normal of its
+    // point's workplane, +normal when flipped), and the hole's shape.
+    using HoleKind = SolveSpace::HoleKind;
+    using HoleSpec = SolveSpace::HoleSpec;
+    std::vector<hEntity> points;
+    HoleSpec             hole;
+    // A hole's direction into the solid from a centre point (unit).
+    Vector HoleDirection(const Entity *point) const;
 
     SShell          thisShell;
     SShell          runningShell;
@@ -357,6 +366,12 @@ public:
         // face, its point Remap(face, n + 10).
         REMAP_SHELL_INNER      = 1050,
         REMAP_DRAFT_FACE       = 1051,
+        // A hole's entities, Remap(point, n): its centre on the face and at the bottom, its
+        // axis, and its seat face (whose point is Remap(point, REMAP_HOLE_SEAT + 10)).
+        REMAP_HOLE_TOP         = 1080,
+        REMAP_HOLE_BOTTOM      = 1081,
+        REMAP_HOLE_AXIS        = 1082,
+        REMAP_HOLE_SEAT        = 1083,
     };
     // Whether an entity is a face of a solid that a shell or draft can take.
     static bool IsSolidFace(const Entity *e);
@@ -373,6 +388,7 @@ public:
     void UpdateFaceOut();
     void MakeShellFaces(EntityList *el);
     void MakeDraftFaces(EntityList *el);
+    void MakeHoleEntities(EntityList *el);
     void MakeLatheCircles(EntityList *el, ParamList *param, hEntity in, Vector pt, Vector axis);
     void MakeLatheSurfacesSelectable(EntityList *el, hEntity in, Vector axis);
     void MakeRevolveEndFaces(EntityList *el, hEntity pt, int ai, int af);

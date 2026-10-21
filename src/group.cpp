@@ -469,6 +469,34 @@ void Group::MenuGroup(Command id, Platform::Path linkFile) {
             break;
         }
 
+        case Command::GROUP_HOLE: {
+            for(const GraphicsWindow::Selection &s : SS.GW.selection) {
+                Entity *e = s.entity.v ? SK.entity.FindByIdNoOops(s.entity) : nullptr;
+                if(e == nullptr || !e->IsPoint() || e->workplane == Entity::FREE_IN_3D) {
+                    g.points.clear();
+                    break;
+                }
+                g.points.push_back(e->h);
+            }
+            if(g.points.empty()) {
+                Error(_("Bad selection for a new hole group. Select the hole centres: points "
+                        "in a workplane, such as a sketch on a face. The holes go into the "
+                        "face, against the workplane's normal."));
+                return;
+            }
+            if(!Kernel().Supports(KernelFeature::HOLE)) {
+                Error(_("Holes need the Open CASCADE kernel (Preferences, SolveSpace NG)."));
+                return;
+            }
+            g.hole.diameter     = 5;
+            g.hole.headDiameter = 10;
+            g.hole.headDepth    = 3;
+            g.hole.headAngle    = 90;
+            g.type              = Type::HOLE;
+            g.name              = C_("group-name", "hole");
+            break;
+        }
+
         default: ssassert(false, "Unexpected menu ID");
     }
 
@@ -922,6 +950,10 @@ void Group::Generate(EntityList *entity, ParamList *param)
             MakeDraftFaces(entity);
             return;
 
+        case Type::HOLE:
+            MakeHoleEntities(entity);
+            return;
+
         case Type::LINKED:
             // The translation vector
             AddParam(param, h.param(0), gp.x);
@@ -1185,6 +1217,53 @@ void Group::MakeDraftFaces(EntityList *el) {
         if(it != faceOut.end()) normal = normal.ScaledBy(it->second);
         Vector drafted = normal.ScaledBy(cos(angle)).Plus(pull.ScaledBy(sin(angle)));
         AddFeatureFace(el, he, REMAP_DRAFT_FACE, f->FaceGetPointNum(), drafted);
+    }
+}
+
+Vector Group::HoleDirection(const Entity *point) const {
+    Vector n = Vector::From(0, 0, 1);
+    if(point->workplane != Entity::FREE_IN_3D) {
+        n = SK.GetEntity(point->workplane)->Normal()->NormalN();
+    }
+    return n.WithMagnitude(hole.flip ? 1 : -1);
+}
+
+// A hole's derived entities (AGENTS.md section 6), for each centre: the centre on the face and
+// at the bottom (a through hole's bottom where the previous solid ends), the axis between
+// them, and the seat face, the counterbore's floor or where the countersink meets the bore (at
+// the top for a plain hole).
+void Group::MakeHoleEntities(EntityList *el) {
+    Group *prevg = RunningMeshGroup();
+    for(hEntity he : points) {
+        Entity *pt = SK.entity.FindByIdNoOops(he);
+        if(pt == nullptr) continue;
+        Vector p = pt->PointGetNum(), d = HoleDirection(pt);
+        double depth = hole.depth;
+        if(depth <= 0) {
+            depth = hole.Bore();
+            if(prevg != nullptr) {
+                for(const STriangle &t : prevg->runningMesh.l) {
+                    for(const Vector &v : t.vertices) depth = std::max(depth, v.Minus(p).Dot(d));
+                }
+            }
+        }
+        Entity en   = {};
+        en.group    = h;
+        en.type     = Entity::Type::POINT_N_COPY;
+        en.h        = Remap(he, REMAP_HOLE_TOP);
+        en.numPoint = p;
+        el->Add(&en);
+        en.h        = Remap(he, REMAP_HOLE_BOTTOM);
+        en.numPoint = p.Plus(d.ScaledBy(depth));
+        el->Add(&en);
+        en.type     = Entity::Type::LINE_SEGMENT;
+        en.numPoint = {};
+        en.point[0] = Remap(he, REMAP_HOLE_TOP);
+        en.point[1] = Remap(he, REMAP_HOLE_BOTTOM);
+        en.h        = Remap(he, REMAP_HOLE_AXIS);
+        el->Add(&en);
+        AddFeatureFace(el, he, REMAP_HOLE_SEAT, p.Plus(d.ScaledBy(hole.SeatDepth())),
+                       d.ScaledBy(-1));
     }
 }
 

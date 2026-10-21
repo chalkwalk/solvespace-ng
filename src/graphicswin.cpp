@@ -124,6 +124,7 @@ const MenuEntry Menu[] = {
 { 1, N_("&Chamfer Edges"),              Command::GROUP_CHAMFER,    0,       KN, mGrp   },
 { 1, N_("S&hell"),                      Command::GROUP_SHELL,      0,       KN, mGrp   },
 { 1, N_("&Draft Faces"),                Command::GROUP_DRAFT,      0,       KN, mGrp   },
+{ 1, N_("H&ole"),                       Command::GROUP_HOLE,       0,       KN, mGrp   },
 { 1, NULL,                              Command::NONE,             0,       KN, NULL   },
 { 1, N_("Link / Assemble..."),          Command::GROUP_LINK,       S|'i',   KN, mGrp   },
 { 1, N_("Link Recent"),                 Command::GROUP_RECENT,     0,       KN, mGrp   },
