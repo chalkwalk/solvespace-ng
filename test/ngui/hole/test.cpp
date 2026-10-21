@@ -27,7 +27,7 @@ TEST_CASE(ng_drills_a_counterbored_hole_at_a_picked_point) {
     hEntity point = ThePoint();
     ClickAt(At({ 5, 10, 30 }));
     CHECK_TRUE(SS.GW.IsSelected(point));
-    Driver::Key("Shift+H");
+    CHECK_TRUE(Driver::ClickMenu({ "New Group", "Hole" }));
     CHECK_TRUE(Active()->type == Group::Type::HOLE);
     CHECK_TRUE(EditField("hole-diameter", "4"));
     CHECK_TRUE(fabs(Volume() - (6000 - PI * 4 * 30)) < 1e-6);

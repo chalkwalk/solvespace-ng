@@ -78,7 +78,6 @@ group-revolve:          Shift+R
 group-lathe:            Alt+R
 group-helix:            Alt+E
 group-fillet:           Shift+F
-group-hole:             Shift+H
 group-sketch-workplane: Shift+W
 group-link:             Ctrl+I
 
