@@ -217,6 +217,16 @@ KernelJob Group::BuildKernelJob() {
             job.startName = Remap(profiles.front(), REMAP_LOFT_START).v;
             job.endName   = Remap(profiles.back(), REMAP_LOFT_END).v;
         }
+    } else if(type == Type::SWEEP) {
+        job.op = KernelJob::Op::SWEEP;
+        Profile              p;
+        std::vector<hEntity> curves(profiles.begin() + (profiles.empty() ? 0 : 1), profiles.end());
+        if(!profiles.empty() && ProfileOf(profiles[0], &p) && PathOf(curves, p.centre, &job.path)) {
+            job.sections.push_back(p.loop);
+            job.sectionHoles = p.holes;
+            job.startName    = Remap(profiles[0], REMAP_SWEEP_START).v;
+            job.endName      = Remap(profiles[0], REMAP_SWEEP_END).v;
+        }
     } else if(type == Type::HOLE) {
         job.op   = KernelJob::Op::HOLE;
         job.hole = hole;

@@ -524,6 +524,39 @@ void Group::MenuGroup(Command id, Platform::Path linkFile) {
             break;
         }
 
+        case Command::GROUP_SWEEP: {
+            std::vector<hEntity> picked;
+            for(const GraphicsWindow::Selection &s : SS.GW.selection) {
+                if(s.entity.v) picked.push_back(s.entity);
+            }
+            Profile              profile;
+            std::vector<SBezier> path;
+            bool good = picked.size() >= 2 && picked.size() == (size_t)SS.GW.selection.n &&
+                        ProfileOf(picked[0], &profile);
+            std::vector<hEntity> curves(picked.begin() + (picked.empty() ? 0 : 1), picked.end());
+            for(hEntity he : curves) {
+                Entity *e = SK.entity.FindByIdNoOops(he);
+                good = good && e && e->group != SK.GetEntity(picked[0])->group &&
+                       (e->type == Entity::Type::LINE_SEGMENT ||
+                        e->type == Entity::Type::ARC_OF_CIRCLE ||
+                        e->type == Entity::Type::CUBIC);
+            }
+            if(!good || !PathOf(curves, profile.centre, &path)) {
+                Error(_("Bad selection for a new sweep group. Select a curve of the profile (a "
+                        "closed shape in a sketch) first, then the path's curves, connected "
+                        "end to end, in another sketch."));
+                return;
+            }
+            if(!Kernel().Supports(KernelFeature::SWEEP)) {
+                Error(_("Sweeps need the Open CASCADE kernel (Preferences, SolveSpace NG)."));
+                return;
+            }
+            g.profiles = picked;
+            g.type     = Type::SWEEP;
+            g.name     = C_("group-name", "sweep");
+            break;
+        }
+
         default: ssassert(false, "Unexpected menu ID");
     }
 
@@ -986,6 +1019,7 @@ void Group::Generate(EntityList *entity, ParamList *param)
             return;
 
         case Type::SWEEP:
+            MakeSweepFaces(entity);
             return;
 
         case Type::LINKED:
@@ -1355,6 +1389,68 @@ bool Group::ProfileOf(hEntity curve, Profile *out) {
     }
     own.Clear();
     return false;
+}
+
+bool Group::PathOf(const std::vector<hEntity> &curves, Vector near, std::vector<SBezier> *out) {
+    std::vector<SBezier> pieces;
+    for(hEntity he : curves) {
+        Entity *e = SK.entity.FindByIdNoOops(he);
+        if(e == nullptr) return false;
+        SBezierList sbl = {};
+        e->GenerateBezierCurves(&sbl);
+        pieces.insert(pieces.end(), sbl.l.begin(), sbl.l.end());
+        sbl.Clear();
+    }
+    if(pieces.empty()) return false;
+    // Start at the piece end nearest near, then keep taking the piece that continues.
+    size_t first = 0;
+    bool   flip  = false;
+    double best  = VERY_POSITIVE;
+    for(size_t i = 0; i < pieces.size(); i++) {
+        for(bool f : { false, true }) {
+            double d = (f ? pieces[i].Finish() : pieces[i].Start()).Minus(near).Magnitude();
+            if(d < best) best = d, first = i, flip = f;
+        }
+    }
+    out->clear();
+    std::vector<bool> used(pieces.size(), false);
+    SBezier sb = pieces[first];
+    if(flip) sb.Reverse();
+    used[first] = true;
+    out->push_back(sb);
+    for(size_t n = 1; n < pieces.size(); n++) {
+        Vector at   = out->back().Finish();
+        bool   found = false;
+        for(size_t i = 0; i < pieces.size() && !found; i++) {
+            if(used[i]) continue;
+            SBezier next = pieces[i];
+            if(next.Finish().Equals(at)) next.Reverse();
+            if(!next.Start().Equals(at)) continue;
+            used[i] = found = true;
+            out->push_back(next);
+        }
+        if(!found) return false;
+    }
+    return true;
+}
+
+// A sweep's derived entities: its end faces, where the path starts (facing back along it) and
+// ends (facing along it).
+void Group::MakeSweepFaces(EntityList *el) {
+    if(profiles.empty()) return;
+    Profile              profile;
+    std::vector<SBezier> path;
+    std::vector<hEntity> curves(profiles.begin() + 1, profiles.end());
+    Vector start = {}, end = {}, back = Vector::From(0, 0, -1), along = Vector::From(0, 0, 1);
+    if(ProfileOf(profiles[0], &profile) && PathOf(curves, profile.centre, &path)) {
+        const SBezier &a = path.front(), &b = path.back();
+        start = a.Start();
+        end   = b.Finish();
+        back  = a.ctrl[0].Minus(a.ctrl[1]);
+        along = b.ctrl[b.deg].Minus(b.ctrl[b.deg - 1]);
+    }
+    AddFeatureFace(el, profiles[0], REMAP_SWEEP_START, start, back.WithMagnitude(1));
+    AddFeatureFace(el, profiles[0], REMAP_SWEEP_END, end, along.WithMagnitude(1));
 }
 
 // A loft's derived entities: its end faces, in the first and last profiles' planes, facing out.

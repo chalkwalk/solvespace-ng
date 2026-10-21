@@ -304,6 +304,9 @@ public:
         bool                 holes  = false; // the loop has holes inside, left out
     };
     static bool ProfileOf(hEntity curve, Profile *out);
+    // A sweep's path: the curves' pieces chained end to end, from the end nearest near;
+    // false if they don't make one chain.
+    static bool PathOf(const std::vector<hEntity> &curves, Vector near, std::vector<SBezier> *out);
     // A hole's direction into the solid from a centre point (unit).
     Vector HoleDirection(const Entity *point) const;
 
@@ -408,6 +411,7 @@ public:
     void MakeDraftFaces(EntityList *el);
     void MakeHoleEntities(EntityList *el);
     void MakeLoftFaces(EntityList *el);
+    void MakeSweepFaces(EntityList *el);
     void MakeLatheCircles(EntityList *el, ParamList *param, hEntity in, Vector pt, Vector axis);
     void MakeLatheSurfacesSelectable(EntityList *el, hEntity in, Vector axis);
     void MakeRevolveEndFaces(EntityList *el, hEntity pt, int ai, int af);

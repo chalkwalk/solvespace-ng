@@ -953,9 +953,52 @@ std::shared_ptr<KernelShape> Loft(const KernelJob &job, std::string *problem) {
     return ks;
 }
 
-std::shared_ptr<KernelShape> Sweep(const KernelJob &, std::string *problem) {
-    *problem = "sweeps are not built yet";
-    return nullptr;
+// A profile swept along the job's path (pieces in order, end to end).
+std::shared_ptr<KernelShape> Sweep(const KernelJob &job, std::string *problem) {
+    if(job.sections.empty() || job.path.empty()) {
+        *problem = "the sweep has no profile or no path";
+        return nullptr;
+    }
+    auto ks = std::make_shared<KernelShape>();
+    try {
+        BRepBuilderAPI_MakeWire spine;
+        for(const SBezier &sb : job.path) {
+            if(sb.deg == 1) {
+                spine.Add(BRepBuilderAPI_MakeEdge(Pnt(sb.ctrl[0]), Pnt(sb.ctrl[1])).Edge());
+                continue;
+            }
+            TColgp_Array1OfPnt   poles(1, sb.deg + 1);
+            TColStd_Array1OfReal weights(1, sb.deg + 1);
+            for(int j = 0; j <= sb.deg; j++) {
+                poles.SetValue(j + 1, Pnt(sb.ctrl[j]));
+                weights.SetValue(j + 1, sb.weight[j]);
+            }
+            Handle(Geom_BezierCurve) curve = new Geom_BezierCurve(poles, weights);
+            spine.Add(BRepBuilderAPI_MakeEdge(curve).Edge());
+        }
+        if(!spine.IsDone()) {
+            *problem = "the sweep's path is not connected";
+            return nullptr;
+        }
+        BRepOffsetAPI_MakePipeShell pipe(spine.Wire());
+        pipe.SetMode(/*isFrenet=*/false); // corrected Frenet
+        // A sharp corner in the path is mitred.
+        pipe.SetTransitionMode(BRepBuilderAPI_RightCorner);
+        pipe.Add(SectionWire(job.sections[0]), /*withContact=*/false, /*withCorrection=*/false);
+        pipe.Build();
+        if(!pipe.IsDone() || !pipe.MakeSolid() || !IsGoodSolid(pipe.Shape())) {
+            *problem = "the sweep failed";
+            return nullptr;
+        }
+        ks->shape = pipe.Shape();
+        Orient(&ks->shape);
+        NameCaps(job, ks->shape, pipe.FirstShape(), pipe.LastShape(), ks.get());
+    } catch(const Standard_Failure &) {
+        *problem = "the sweep failed";
+        return nullptr;
+    }
+    if(job.sectionHoles) *problem = "holes inside the profile are not swept";
+    return ks;
 }
 
 class OcctKernel final : public IKernel {
