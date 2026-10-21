@@ -191,7 +191,9 @@ public:
         TRANSLATE                     = 5201,
         LINKED                        = 5300,
         FILLET                        = 5400,
-        CHAMFER                       = 5401
+        CHAMFER                       = 5401,
+        SHELL                         = 5402,
+        DRAFT                         = 5403
     };
     Group::Type type;
 
@@ -276,6 +278,12 @@ public:
         Vector   into[2] = {};  // as found, for a face without an entity
     };
     std::vector<EdgeFaces> edgeFaces;
+    // SHELL: the faces left open; DRAFT: the faces tapered (face entities of the solid).
+    // valA is the wall thickness (mm) or the draft angle (degrees).
+    std::vector<hEntity> faces;
+    // For each face entity of the previous solid (by handle), +1 if its entity's normal
+    // points out of the solid, -1 if in; found on the previous group's solid. Not saved.
+    std::map<uint32_t, double> faceOut;
 
     SShell          thisShell;
     SShell          runningShell;
@@ -345,7 +353,13 @@ public:
         REMAP_FILLET_AXIS      = 1022,
         REMAP_CHAMFER_EDGE_1   = 1023,
         REMAP_CHAMFER_EDGE_2   = 1024,
+        // A shell's inner face for each face, a draft's drafted face; Remap(face, n) is the
+        // face, its point Remap(face, n + 10).
+        REMAP_SHELL_INNER      = 1050,
+        REMAP_DRAFT_FACE       = 1051,
     };
+    // Whether an entity is a face of a solid that a shell or draft can take.
+    static bool IsSolidFace(const Entity *e);
     // Whether an entity is an edge of a solid a fillet or chamfer can take: a curve that a
     // solid group made.
     static bool IsEdgeEntity(const Entity *e);
@@ -355,6 +369,9 @@ public:
     void MakeExtrusionLines(EntityList *el, hEntity in);
     void MakeFeatureLines(EntityList *el);
     void AddFeatureLine(EntityList *el, hEntity edge, int which, Vector a, Vector b);
+    void AddFeatureFace(EntityList *el, hEntity face, int which, Vector point, Vector normal);
+    void UpdateFaceOut();
+    void MakeShellFaces(EntityList *el);
     void MakeLatheCircles(EntityList *el, ParamList *param, hEntity in, Vector pt, Vector axis);
     void MakeLatheSurfacesSelectable(EntityList *el, hEntity in, Vector axis);
     void MakeRevolveEndFaces(EntityList *el, hEntity pt, int ai, int af);

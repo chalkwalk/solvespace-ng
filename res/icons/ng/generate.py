@@ -248,6 +248,18 @@ ICONS = {
     # A block with its front top edge rounded or bevelled.
     'fillet': edged_block('Q3 9 4.35 7.65', 'Q15 9 16.35 7.65'),
     'chamfer': edged_block('L4.35 7.65', 'L16.35 7.65'),
+    # An open box seen from above the front: the inside shaded, the walls' tops lit.
+    'shell': (f'<path d="M3 9l5.4-5.4h12.6l-5.4 5.4z" fill="{DARK}" stroke="{DARK}" stroke-width="0.8" />'
+              f'<path d="M5.2 8.2l3.9-3.9h9.6l-3.9 3.9z" fill="{MID}" opacity="0.7" />'
+              f'<path d="M15.6 9l5.4-5.4v12l-5.4 5.4z" fill="{DARK}" stroke="{DARK}" stroke-width="0.8" />'
+              f'<path d="M3 9h12.6v12h-12.6z" fill="{MID}" stroke="{DARK}" stroke-width="0.8" />'
+              f'<path d="M3 9l5.4-5.4h12.6l-5.4 5.4z M5.2 8.2l3.9-3.9h9.6l-3.9 3.9z" fill="none" '
+              f'stroke="{LIT}" stroke-width="1" />'),
+    # A block whose front narrows upwards, the pull arrow beside it.
+    'draft': (f'<path d="M5 9l4.5-4.5h7l-4.5 4.5z" fill="{LIT}" stroke="{DARK}" stroke-width="0.8" />'
+              f'<path d="M12 9l4.5-4.5 2.5 12-4.5 4.5z" fill="{DARK}" stroke="{DARK}" stroke-width="0.8" />'
+              f'<path d="M5 9h7l2.5 12h-12z" fill="{MID}" stroke="{DARK}" stroke-width="0.8" />'
+              + chrome('M21.5 21V3.5 ' + arrowhead(21.5, 3, 0, -1, 2.2), 1.3)),
 }
 
 if __name__ == '__main__':

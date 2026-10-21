@@ -305,6 +305,7 @@ add_resources(
     icons/ng/circular-pattern.svg
     icons/ng/construction.svg
     icons/ng/dimension.svg
+    icons/ng/draft.svg
     icons/ng/equal.svg
     icons/ng/extrude.svg
     icons/ng/fillet.svg
@@ -328,6 +329,7 @@ add_resources(
     icons/ng/reference.svg
     icons/ng/revolve.svg
     icons/ng/same-orientation.svg
+    icons/ng/shell.svg
     icons/ng/sketch-3d.svg
     icons/ng/spline.svg
     icons/ng/split.svg

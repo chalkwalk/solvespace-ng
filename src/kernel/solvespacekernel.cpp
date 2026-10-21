@@ -233,8 +233,10 @@ public:
 
             case KernelJob::Op::FILLET:
             case KernelJob::Op::CHAMFER:
+            case KernelJob::Op::SHELL:
+            case KernelJob::Op::DRAFT:
                 // The previous solid passes through.
-                result->problem = "fillets and chamfers need the Open CASCADE kernel "
+                result->problem = "fillets, chamfers, shells and drafts need the Open CASCADE kernel "
                                   "(Preferences, SolveSpace NG) and a solid that is not a "
                                   "triangle mesh";
                 break;
@@ -271,6 +273,7 @@ public:
             case KernelFeature::FILLET:
             case KernelFeature::CHAMFER:
             case KernelFeature::SHELL:
+            case KernelFeature::DRAFT:
             case KernelFeature::LOFT:
             case KernelFeature::SWEEP: return false;
         }
@@ -340,6 +343,10 @@ KernelEdgeFacesResult KernelEdgeFaces(const std::shared_ptr<const KernelShape> &
 
 bool KernelMassProperties(const std::shared_ptr<const KernelShape> &, MassProps *) {
     return false;
+}
+
+std::vector<KernelFaceNormal> KernelFaceNormals(const std::shared_ptr<const KernelShape> &) {
+    return {};
 }
 #endif
 

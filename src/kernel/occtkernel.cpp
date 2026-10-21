@@ -10,6 +10,7 @@
 #include "solvespace.h"
 
 #include <mutex>
+#include <set>
 
 #include <BRepAdaptor_Curve.hxx>
 #include <BRepAlgoAPI_BooleanOperation.hxx>
@@ -23,12 +24,16 @@
 #include <BRepBuilderAPI_MakeWire.hxx>
 #include <BRepBuilderAPI_Transform.hxx>
 #include <BRepGProp.hxx>
+#include <BRepCheck_Analyzer.hxx>
 #include <BRepFilletAPI_MakeChamfer.hxx>
 #include <BRepFilletAPI_MakeFillet.hxx>
 #include <BRepLib.hxx>
 #include <BRepLib_ToolTriangulatedShape.hxx>
 #include <BRepMesh_IncrementalMesh.hxx>
+#include <BRepOffsetAPI_DraftAngle.hxx>
 #include <BRepOffsetAPI_MakePipeShell.hxx>
+#include <BRepOffsetAPI_MakeOffsetShape.hxx>
+#include <BRepOffsetAPI_MakeThickSolid.hxx>
 #include <BRepPrimAPI_MakePrism.hxx>
 #include <BRepPrimAPI_MakeRevol.hxx>
 #include <BRepTools.hxx>
@@ -587,6 +592,134 @@ std::shared_ptr<KernelShape> RoundEdges(const KernelJob &job, std::string *probl
     return out;
 }
 
+// A planar face's outward normal.
+bool OutwardNormal(const TopoDS_Face &face, gp_Dir *out) {
+    BRepAdaptor_Surface surface(face, /*restriction=*/false);
+    if(surface.GetType() != GeomAbs_Plane) return false;
+    *out = surface.Plane().Axis().Direction();
+    if(face.Orientation() == TopAbs_REVERSED) out->Reverse();
+    return true;
+}
+
+double Volume(const TopoDS_Shape &shape) {
+    GProp_GProps props;
+    BRepGProp::VolumeProperties(shape, props);
+    return props.Mass();
+}
+
+// Whether a result is a usable solid: valid, and with some volume.
+bool IsGoodSolid(const TopoDS_Shape &shape) {
+    return !shape.IsNull() && BRepCheck_Analyzer(shape).IsValid() && Volume(shape) > 0;
+}
+
+// Whether a shell of from is: a good solid that removed some of it (a thickness beyond the
+// solid can turn the offset inside out and give the whole solid back).
+bool IsGoodShell(const TopoDS_Shape &shell, const TopoDS_Shape &from) {
+    return IsGoodSolid(shell) && Volume(shell) < Volume(from) * (1 - 1e-9);
+}
+
+// A shell with no face open: the previous body less itself offset inwards, a sealed void.
+std::shared_ptr<KernelShape> ClosedShell(const KernelJob &job, FaceNamer *namer,
+                                         std::string *problem) {
+    const KernelShape            &prev = *job.prevShape;
+    BRepOffsetAPI_MakeOffsetShape offset;
+    TopoDS_Shape                  inner;
+    try {
+        offset.PerformByJoin(prev.shape, -job.size, 1e-4);
+        if(offset.IsDone()) inner = offset.Shape();
+    } catch(const Standard_Failure &) {
+    }
+    auto           out = std::make_shared<KernelShape>();
+    BRepAlgoAPI_Cut cut;
+    bool            done = false;
+    if(!inner.IsNull() && IsGoodSolid(inner)) {
+        TopTools_ListOfShape args, tools;
+        args.Append(prev.shape);
+        tools.Append(inner);
+        cut.SetArguments(args);
+        cut.SetTools(tools);
+        cut.SetRunParallel(false);
+        cut.Build();
+        done = cut.IsDone() && !cut.HasErrors() && IsGoodShell(cut.Shape(), prev.shape);
+    }
+    if(!done) {
+        *problem = "the shell failed; the thickness may be too big for the solid";
+        return nullptr;
+    }
+    out->shape = cut.Shape();
+    CarryNames(cut, { &prev.faces }, &out->faces);
+    // The void's faces are the offset of the outer ones.
+    for(FaceMap::Iterator it(prev.faces); it.More(); it.Next()) {
+        if(it.Value().face == 0) continue;
+        hEntity name = namer->ExistingFace(hEntity{ it.Value().face }, Group::REMAP_SHELL_INNER);
+        if(name.v == 0) continue;
+        for(const TopoDS_Shape &made : offset.Generated(it.Key())) {
+            const TopTools_ListOfShape &cutMade = cut.Modified(made);
+            if(cutMade.IsEmpty()) {
+                out->faces.Bind(made, FaceInfo{ name.v, it.Value().color });
+            } else {
+                for(const TopoDS_Shape &m : cutMade) {
+                    out->faces.Bind(m, FaceInfo{ name.v, it.Value().color });
+                }
+            }
+        }
+    }
+    return out;
+}
+
+// The previous body hollowed to the job's thickness, without the job's faces; each inner
+// face named after its outer face's inner face entity, if there is one.
+std::shared_ptr<KernelShape> Shell(const KernelJob &job, FaceNamer *namer, std::string *problem) {
+    const KernelShape   &prev = *job.prevShape;
+    TopTools_ListOfShape open;
+    std::set<uint32_t>   found;
+    for(FaceMap::Iterator it(prev.faces); it.More(); it.Next()) {
+        uint32_t name = it.Value().face;
+        if(std::find(job.faceNames.begin(), job.faceNames.end(), name) == job.faceNames.end()) {
+            continue;
+        }
+        open.Append(it.Key());
+        found.insert(name);
+    }
+    if(open.IsEmpty()) return ClosedShell(job, namer, problem);
+    BRepOffsetAPI_MakeThickSolid make;
+    bool                         done = false;
+    try {
+        make.MakeThickSolidByJoin(prev.shape, open, -job.size, 1e-4);
+        make.Build();
+        done = make.IsDone() && IsGoodShell(make.Shape(), prev.shape);
+    } catch(const Standard_Failure &) {
+    }
+    if(!done) {
+        *problem = "the shell failed; the thickness may be too big for the solid";
+        return nullptr;
+    }
+    if(found.size() < job.faceNames.size()) {
+        *problem = ssprintf("%d of the %d faces were not found on the solid",
+                            (int)(job.faceNames.size() - found.size()),
+                            (int)job.faceNames.size());
+    }
+    auto out   = std::make_shared<KernelShape>();
+    out->shape = make.Shape();
+    CarryNames(make, { &prev.faces }, &out->faces);
+    // The inner faces are made from the outer ones; open faces leave none.
+    for(FaceMap::Iterator it(prev.faces); it.More(); it.Next()) {
+        if(it.Value().face == 0 || found.count(it.Value().face)) continue;
+        hEntity inner = namer->ExistingFace(hEntity{ it.Value().face }, Group::REMAP_SHELL_INNER);
+        if(inner.v == 0) continue;
+        for(const TopoDS_Shape &made : make.Generated(it.Key())) {
+            if(made.ShapeType() != TopAbs_FACE) continue;
+            out->faces.Bind(made, FaceInfo{ inner.v, it.Value().color });
+        }
+    }
+    return out;
+}
+
+std::shared_ptr<KernelShape> Draft(const KernelJob &, FaceNamer *, std::string *problem) {
+    *problem = "drafts are not built yet";
+    return nullptr;
+}
+
 class OcctKernel final : public IKernel {
 public:
     void Run(const KernelJob &job, FaceNamer &namer, KernelResult *result) override {
@@ -607,10 +740,18 @@ public:
         }
 
         std::shared_ptr<const KernelShape> running;
-        if(job.op == KernelJob::Op::FILLET || job.op == KernelJob::Op::CHAMFER) {
+        if(job.op == KernelJob::Op::FILLET || job.op == KernelJob::Op::CHAMFER ||
+           job.op == KernelJob::Op::SHELL || job.op == KernelJob::Op::DRAFT) {
+            // These reshape the previous solid.
             running = job.prevShape;
             if(!job.suppress && !IsEmpty(job.prevShape)) {
-                if(auto rounded = RoundEdges(job, &result->problem)) running = rounded;
+                std::shared_ptr<KernelShape> reshaped;
+                switch(job.op) {
+                    case KernelJob::Op::SHELL: reshaped = Shell(job, &namer, &result->problem); break;
+                    case KernelJob::Op::DRAFT: reshaped = Draft(job, &namer, &result->problem); break;
+                    default:                   reshaped = RoundEdges(job, &result->problem); break;
+                }
+                if(reshaped) running = reshaped;
             }
             Finish(job, running, result);
             return;
@@ -621,7 +762,9 @@ public:
             case KernelJob::Op::NONE:
             case KernelJob::Op::LINKED:
             case KernelJob::Op::FILLET:
-            case KernelJob::Op::CHAMFER: break;
+            case KernelJob::Op::CHAMFER:
+            case KernelJob::Op::SHELL:
+            case KernelJob::Op::DRAFT: break;
             case KernelJob::Op::EXTRUDE: made = Extrude(job, &namer); break;
             case KernelJob::Op::LATHE:   made = Revolve(job, &namer, /*full=*/true); break;
             case KernelJob::Op::REVOLVE:
@@ -679,8 +822,9 @@ public:
             case KernelFeature::LINK:
             case KernelFeature::BOOLEAN:
             case KernelFeature::FILLET:
-            case KernelFeature::CHAMFER: return true;
+            case KernelFeature::CHAMFER:
             case KernelFeature::SHELL:
+            case KernelFeature::DRAFT: return true;
             case KernelFeature::LOFT:
             case KernelFeature::SWEEP: return false;
         }
@@ -770,6 +914,22 @@ bool KernelMassProperties(const std::shared_ptr<const KernelShape> &ks, MassProp
     out->centre = Vec(volume.CentreOfMass().XYZ());
     out->exact  = true;
     return out->volume > 0;
+}
+
+
+std::vector<KernelFaceNormal> KernelFaceNormals(const std::shared_ptr<const KernelShape> &ks) {
+    std::vector<KernelFaceNormal> normals;
+    if(IsEmpty(ks)) return normals;
+    // The faces as the solid has them: the map's keys may carry another orientation.
+    for(TopExp_Explorer ex(ks->shape, TopAbs_FACE); ex.More(); ex.Next()) {
+        const FaceInfo *info = ks->faces.Seek(ex.Current());
+        gp_Dir          out;
+        if(info == nullptr || info->face == 0 || !OutwardNormal(TopoDS::Face(ex.Current()), &out)) {
+            continue;
+        }
+        normals.push_back({ info->face, Vec(out.XYZ()) });
+    }
+    return normals;
 }
 
 }

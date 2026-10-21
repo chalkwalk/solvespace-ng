@@ -120,6 +120,7 @@ const SolveSpaceUI::SaveTable SolveSpaceUI::SAVED[] = {
     { 'g',  "Group.scale",              'f',    &(SS.sv.g.scale)              },
     { 'g',  "Group.remap",              'M',    &(SS.sv.g.remap)              },
     { 'g',  "Group.edges",              'E',    &(SS.sv.g.edges)              },
+    { 'g',  "Group.faces",              'E',    &(SS.sv.g.faces)              },
     { 'g',  "Group.impFile",            'i',    NULL                          },
     { 'g',  "Group.impFileRel",         'P',    &(SS.sv.g.linkFile)           },
 

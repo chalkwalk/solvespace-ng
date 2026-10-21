@@ -39,12 +39,13 @@ enum class KernelCombine { UNION, DIFFERENCE, INTERSECTION, ASSEMBLE };
 
 enum class KernelFeature {
     EXTRUDE, LATHE, REVOLVE, HELIX, PATTERN, LINK, BOOLEAN,
-    FILLET, CHAMFER, SHELL, LOFT, SWEEP,
+    FILLET, CHAMFER, SHELL, DRAFT, LOFT, SWEEP,
 };
 
 struct KernelJob {
     enum class Op {
-        NONE, EXTRUDE, LATHE, REVOLVE, HELIX, STEP_TRANSLATE, STEP_ROTATE, LINKED, FILLET, CHAMFER
+        NONE, EXTRUDE, LATHE, REVOLVE, HELIX, STEP_TRANSLATE, STEP_ROTATE, LINKED, FILLET, CHAMFER,
+        SHELL, DRAFT
     };
     Op        op    = Op::NONE;
     RgbaColor color = {};
@@ -86,6 +87,8 @@ struct KernelJob {
     // distance.
     std::vector<std::vector<SBezier>> edgeCurves;
     double size = 0;
+    // SHELL: the faces left open (face entity handles); the wall thickness is size.
+    std::vector<uint32_t> faceNames;
 
     // Combining with the previous groups' running body.
     bool          forcedToMesh = false; // combine as triangle meshes
@@ -141,6 +144,13 @@ enum class KernelEdgeFacesResult { NOT_FOUND, NOT_PLANAR, FOUND };
 // planar.
 KernelEdgeFacesResult KernelEdgeFaces(const std::shared_ptr<const KernelShape> &shape, Vector a,
                                       Vector b, KernelEdgeFace out[2]);
+
+// A named planar face of a B-rep: its name (a face entity's handle) and outward normal.
+struct KernelFaceNormal {
+    uint32_t face = 0;
+    Vector   out  = {};
+};
+std::vector<KernelFaceNormal> KernelFaceNormals(const std::shared_ptr<const KernelShape> &shape);
 
 // A solid's volume (mm^3), surface area (mm^2) and centre of mass; exact when from a B-rep.
 struct MassProps {

@@ -1,68 +1,11 @@
 // Fillet and chamfer groups (AGENTS.md section 6, M3b): made from edges of the solid, which are
 // the entities a solid group makes (an extrusion's copies of its sketch, its side lines).
-// box.slvs is a 10 x 20 rectangle (requests 5..8, from the origin along +X first; request 4 is a
-// construction line) extruded 30 along +Z.
+// box.slvs: see ../features.h.
 #include "solvespace.h"
-#include <set>
 
 #include "harness.h"
 
-namespace {
-
-Group *Extrusion() {
-    for(hGroup hg : SK.groupOrder) {
-        Group *g = SK.GetGroup(hg);
-        if(g->type == Group::Type::EXTRUDE) return g;
-    }
-    return nullptr;
-}
-
-// The extrusion's copy of a sketch line: REMAP_TOP or REMAP_BOTTOM.
-hEntity Edge(uint32_t request, int remap) {
-    return Extrusion()->Remap(hRequest{ request }.entity(0), remap);
-}
-
-void Select(std::vector<hEntity> entities) {
-    SS.GW.ClearSelection();
-    for(hEntity he : entities) {
-        GraphicsWindow::Selection sel = {};
-        sel.entity = he;
-        SS.GW.selection.Add(&sel);
-    }
-}
-
-double Volume(Group *g) {
-    SMesh m = {};
-    m.MakeFromCopyOf(&g->runningMesh);
-    g->runningShell.TriangulateInto(&m);
-    double v = m.CalculateVolume();
-    m.Clear();
-    return v;
-}
-
-std::set<uint32_t> FaceNames(Group *g) {
-    std::set<uint32_t> names;
-    for(const STriangle &t : g->runningMesh.l) {
-        if(t.meta.face != 0) names.insert(t.meta.face);
-    }
-    return names;
-}
-
-void Resize(Group *g, const char *size) {
-    SS.SetFeatureSize(g->h, size);
-    SS.GenerateAll(SolveSpaceUI::Generate::ALL);
-}
-
-Group *MakeFeature(Command cmd, std::vector<hEntity> edges) {
-    Select(edges);
-    int before = SK.groupOrder.n;
-    Group::MenuGroup(cmd);
-    SS.GenerateAll(SolveSpaceUI::Generate::ALL);
-    if(SK.groupOrder.n == before) return nullptr;
-    return SK.GetGroup(SS.GW.activeGroup);
-}
-
-}
+#include "../features.h"
 
 TEST_CASE(fillet_needs_an_edge_of_the_solid) {
     CHECK_LOAD("box.slvs");

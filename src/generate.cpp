@@ -80,9 +80,10 @@ bool SolveSpaceUI::PruneGroups(hGroup hg) {
     Group *g = SK.GetGroup(hg);
     // A fillet or chamfer loses the edges that are gone, and goes with the last of them.
     auto gone = [&](hEntity he) { return !EntityExists(he) || !GroupsInOrder(he.group(), hg); };
-    bool hadEdges = !g->edges.empty();
+    bool hadEdges = !g->edges.empty() || (g->type == Group::Type::DRAFT && !g->faces.empty());
     g->edges.erase(std::remove_if(g->edges.begin(), g->edges.end(), gone), g->edges.end());
-    if(GroupsInOrder(g->opA, hg) && (!hadEdges || !g->edges.empty()) &&
+    g->faces.erase(std::remove_if(g->faces.begin(), g->faces.end(), gone), g->faces.end());
+    if(GroupsInOrder(g->opA, hg) && (!hadEdges || !g->edges.empty() || !g->faces.empty()) &&
        EntityExists(g->predef.origin) &&
        EntityExists(g->predef.entityB) &&
        EntityExists(g->predef.entityC))

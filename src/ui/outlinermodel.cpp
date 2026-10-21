@@ -29,6 +29,8 @@ static const char *IconFor(Group::Type t) {
         case Group::Type::LINKED:            return "insert-part";
         case Group::Type::FILLET:            return "fillet";
         case Group::Type::CHAMFER:           return "chamfer";
+        case Group::Type::SHELL:             return "shell";
+        case Group::Type::DRAFT:             return "draft";
     }
     return "isometric";
 }

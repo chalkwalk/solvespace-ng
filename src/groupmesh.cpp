@@ -205,6 +205,10 @@ KernelJob Group::BuildKernelJob() {
             job.edgeCurves.emplace_back(sbl.l.begin(), sbl.l.end());
             sbl.Clear();
         }
+    } else if(type == Type::SHELL) {
+        job.op   = KernelJob::Op::SHELL;
+        job.size = valA;
+        for(hEntity he : faces) job.faceNames.push_back(he.v);
     } else if(type == Type::LINKED) {
         job.op       = KernelJob::Op::LINKED;
         job.impShell = &impShell;
@@ -269,7 +273,8 @@ void Group::GenerateDisplayItems() {
     // if its inputs have changed.
     if(displayDirty) {
         Group *pg = RunningMeshGroup();
-        bool reshapes = type == Type::FILLET || type == Type::CHAMFER;
+        bool reshapes = type == Type::FILLET || type == Type::CHAMFER || type == Type::SHELL ||
+                        type == Type::DRAFT;
         if(pg && thisMesh.IsEmpty() && thisShell.IsEmpty() && !reshapes) {
             // We don't contribute any new solid model in this group, so our
             // display items are identical to the previous group's; which means
@@ -366,6 +371,8 @@ bool Group::IsMeshGroup() {
         case Group::Type::TRANSLATE:
         case Group::Type::FILLET:
         case Group::Type::CHAMFER:
+        case Group::Type::SHELL:
+        case Group::Type::DRAFT:
             return true;
 
         default:

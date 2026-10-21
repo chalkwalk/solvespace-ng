@@ -93,6 +93,12 @@ bool Group::IsEdgeEntity(const Entity *e) {
     }
 }
 
+bool Group::IsSolidFace(const Entity *e) {
+    if(!e->IsFace()) return false;
+    Group *g = SK.group.FindByIdNoOops(e->group);
+    return g != nullptr && g->IsMeshGroup();
+}
+
 // The length of an edge, from its curves.
 static double EdgeLength(Entity *e) {
     SBezierList sbl = {};
@@ -395,6 +401,45 @@ void Group::MenuGroup(Command id, Platform::Path linkFile) {
             g.type = fillet ? Type::FILLET : Type::CHAMFER;
             g.valA = shortest / 10;
             g.name = fillet ? C_("group-name", "fillet") : C_("group-name", "chamfer");
+            break;
+        }
+
+        case Command::GROUP_SHELL: {
+            for(const GraphicsWindow::Selection &s : SS.GW.selection) {
+                Entity *e = s.entity.v ? SK.entity.FindByIdNoOops(s.entity) : nullptr;
+                if(e == nullptr || !IsSolidFace(e)) {
+                    Error(_("Bad selection for a new shell group. Select the faces of the "
+                            "solid to leave open, or nothing for a closed shell."));
+                    return;
+                }
+                g.faces.push_back(e->h);
+            }
+            if(!Kernel().Supports(KernelFeature::SHELL)) {
+                Error(_("Shells need the Open CASCADE kernel (Preferences, SolveSpace NG)."));
+                return;
+            }
+            // A tenth of the solid's smallest extent.
+            Group *running = SK.GetRunningMeshGroupFor(SS.GW.activeGroup);
+            if(running == nullptr) {
+                Error(_("There is no solid to make a shell of."));
+                return;
+            }
+            SMesh m = {};
+            m.MakeFromCopyOf(&running->runningMesh);
+            running->runningShell.TriangulateInto(&m);
+            Vector lo = Vector::From(VERY_POSITIVE, VERY_POSITIVE, VERY_POSITIVE);
+            Vector hi = lo.ScaledBy(-1);
+            for(const STriangle &t : m.l) {
+                for(const Vector &v : t.vertices) {
+                    lo = Vector::From(std::min(lo.x, v.x), std::min(lo.y, v.y), std::min(lo.z, v.z));
+                    hi = Vector::From(std::max(hi.x, v.x), std::max(hi.y, v.y), std::max(hi.z, v.z));
+                }
+            }
+            m.Clear();
+            Vector size = hi.Minus(lo);
+            g.valA = std::max(LENGTH_EPS, std::min({ size.x, size.y, size.z }) / 10);
+            g.type = Type::SHELL;
+            g.name = C_("group-name", "shell");
             break;
         }
 
@@ -843,6 +888,13 @@ void Group::Generate(EntityList *entity, ParamList *param)
             MakeFeatureLines(entity);
             return;
 
+        case Type::SHELL:
+            MakeShellFaces(entity);
+            return;
+
+        case Type::DRAFT:
+            return;
+
         case Type::LINKED:
             // The translation vector
             AddParam(param, h.param(0), gp.x);
@@ -1025,6 +1077,63 @@ void Group::AddFeatureLine(EntityList *el, hEntity edge, int which, Vector a, Ve
     en.point[1] = Remap(edge, which + 20);
     en.h        = Remap(edge, which);
     el->Add(&en);
+}
+
+void Group::AddFeatureFace(EntityList *el, hEntity face, int which, Vector point, Vector normal) {
+    Entity en   = {};
+    en.group    = h;
+    en.type     = Entity::Type::POINT_N_COPY;
+    en.h        = Remap(face, which + 10);
+    en.numPoint = point;
+    el->Add(&en);
+
+    en.type      = Entity::Type::FACE_NORMAL_PT;
+    en.numPoint  = {};
+    en.numNormal = Quaternion::From(0, normal.x, normal.y, normal.z);
+    en.point[0]  = Remap(face, which + 10);
+    en.h         = Remap(face, which);
+    el->Add(&en);
+}
+
+// Which way each face entity of the previous solid faces, from that solid when it is there
+// (topology only: the planes come from the entities); a change solves the later groups again.
+void Group::UpdateFaceOut() {
+    Group *prevg = RunningMeshGroup();
+    if(prevg == nullptr) return;
+    for(const KernelFaceNormal &fn : KernelFaceNormals(prevg->runningShape)) {
+        Entity *f = SK.entity.FindByIdNoOops(hEntity{ fn.face });
+        if(f == nullptr || !f->IsFace()) continue;
+        double out = f->FaceGetNormalNum().Dot(fn.out) >= 0 ? 1 : -1;
+        auto   it  = faceOut.find(fn.face);
+        if(it == faceOut.end() || it->second != out) {
+            if(SS.derivedTopologyChanged.v == 0) SS.derivedTopologyChanged = h;
+            faceOut[fn.face] = out;
+        }
+    }
+}
+
+// A shell's derived entities (AGENTS.md section 6): for every face entity of the groups before
+// it, the inner face, offset by the thickness into the solid. They always exist; with the
+// solid's faces not yet known they lie on the outer faces.
+void Group::MakeShellFaces(EntityList *el) {
+    UpdateFaceOut();
+    std::vector<hEntity> outer;
+    for(const Entity &e : SK.entity) {
+        if(!IsSolidFace(&e)) continue;
+        if(!SS.GroupsInOrder(e.group, h)) continue;
+        outer.push_back(e.h);
+    }
+    for(hEntity he : outer) {
+        Entity *f      = SK.GetEntity(he);
+        Vector  normal = f->FaceGetNormalNum();
+        if(normal.Magnitude() < LENGTH_EPS) normal = Vector::From(0, 0, 1); // degenerate
+        normal = normal.WithMagnitude(1);
+        Vector  point  = f->FaceGetPointNum();
+        auto    it     = faceOut.find(he.v);
+        double  out    = it == faceOut.end() ? 0 : it->second;
+        AddFeatureFace(el, he, REMAP_SHELL_INNER, point.Minus(normal.ScaledBy(out * valA)),
+                       normal);
+    }
 }
 
 // A face entity's normal now, or zero if there is none.
