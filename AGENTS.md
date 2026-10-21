@@ -463,6 +463,8 @@ macOS and Emscripten builds.
   - `pr/line-chain-ending`: right-click (and a second click on the last point) kept the line
     segment following the cursor; a stale horizontal/vertical suggestion after a quick move
     (from `9bdd5553`; sits on `pr/headless-null-guards`).
+  - `pr/volume-mesh-group`: Analyze ▸ Volume left a mesh group's own triangles out of the
+    current group's volume (from `ca419d95`).
 - Tests: `RUN_COMMAND("<command-name>")` in `test/` runs a menu command headlessly (names in
   `src/commandnames.cpp`). Headless code paths have null windows/menu items: guard them.
   Not headless-safe yet (null FileDialog/Window under `guinone.cpp`): `open`, `save`, `save-as`,
