@@ -881,11 +881,11 @@ std::shared_ptr<KernelShape> Holes(const KernelJob &job, std::string *problem) {
             tools.Append(BRepPrimAPI_MakeCylinder(axis, bore / 2, length).Shape());
             if(spec.kind == HoleKind::COUNTERBORE) {
                 tools.Append(
-                    BRepPrimAPI_MakeCylinder(axis, spec.headDiameter / 2, spec.headDepth)
+                    BRepPrimAPI_MakeCylinder(axis, spec.Head() / 2, spec.headDepth)
                         .Shape());
             } else if(spec.kind == HoleKind::COUNTERSINK && seat > 0) {
                 tools.Append(
-                    BRepPrimAPI_MakeCone(axis, spec.headDiameter / 2, bore / 2, seat).Shape());
+                    BRepPrimAPI_MakeCone(axis, spec.Head() / 2, bore / 2, seat).Shape());
             }
             if(spec.thread > 0) {
                 // The thread starts below the head (where the bore starts) and stops half a
@@ -893,7 +893,7 @@ std::shared_ptr<KernelShape> Holes(const KernelJob &job, std::string *problem) {
                 double threadLength = (spec.depth > 0 ? spec.depth - spec.pitch / 2 : reach) - seat;
                 TopoDS_Shape groove = threadLength <= 0 ? TopoDS_Shape() : ThreadGroove(
                     Pnt(h.point.Plus(h.dir.ScaledBy(seat - (seat > 0 ? 0 : spec.pitch)))),
-                    Dir(h.dir), bore, spec.thread, spec.pitch,
+                    Dir(h.dir), bore, spec.Major(), spec.pitch,
                     threadLength + (seat > 0 ? 0 : spec.pitch));
                 if(groove.IsNull()) {
                     *problem = "the thread could not be made";

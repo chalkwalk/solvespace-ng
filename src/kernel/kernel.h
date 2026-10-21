@@ -57,15 +57,20 @@ struct HoleSpec {
     double   thread       = 0;
     double   pitch        = 0;
     int      flip         = 0; // 1: along +normal (an int: zero isn't saved)
+    double   clearance    = 0; // added to every diameter, for printing (review 5)
 
-    // The bore's diameter: the thread's minor diameter when threaded.
-    double Bore() const { return thread > 0 ? thread - 1.0825 * pitch : diameter; }
+    // The bore's diameter: the thread's minor diameter when threaded; with the clearance.
+    double Bore() const {
+        return (thread > 0 ? thread - 1.0825 * pitch : diameter) + clearance;
+    }
+    double Head() const { return headDiameter + clearance; }
+    double Major() const { return thread + clearance; } // a thread's major diameter
     // How deep the counterbore's floor or the countersink's narrow end is.
     double SeatDepth() const {
         switch(kind) {
             case HoleKind::COUNTERBORE: return headDepth;
             case HoleKind::COUNTERSINK:
-                return std::max(0.0, (headDiameter - Bore()) / 2 / tan(headAngle * PI / 360));
+                return std::max(0.0, (Head() - Bore()) / 2 / tan(headAngle * PI / 360));
             case HoleKind::SIMPLE: break;
         }
         return 0;

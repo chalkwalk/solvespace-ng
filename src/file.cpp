@@ -133,6 +133,7 @@ const SolveSpaceUI::SaveTable SolveSpaceUI::SAVED[] = {
     { 'g',  "Group.hole.thread",        'f',    &(SS.sv.g.hole.thread)        },
     { 'g',  "Group.hole.pitch",         'f',    &(SS.sv.g.hole.pitch)         },
     { 'g',  "Group.hole.flip",          'd',    &(SS.sv.g.hole.flip)          },
+    { 'g',  "Group.hole.clearance",     'f',    &(SS.sv.g.hole.clearance)     },
     { 'g',  "Group.impFile",            'i',    NULL                          },
     { 'g',  "Group.impFileRel",         'P',    &(SS.sv.g.linkFile)           },
 

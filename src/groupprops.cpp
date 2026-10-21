@@ -168,9 +168,11 @@ bool SolveSpaceUI::SetHoleSpec(hGroup hg, const HoleSpec &spec) {
         bad = _("A thread needs a pitch smaller than its diameter.");
     } else if(spec.thread <= 0 && spec.diameter <= LENGTH_EPS) {
         bad = _("The hole's diameter must be greater than zero.");
+    } else if(spec.clearance < 0 || spec.Bore() <= 0) {
+        bad = _("The print clearance must be zero or more.");
     } else if(spec.depth < 0) {
         bad = _("The hole's depth must be zero (through all) or more.");
-    } else if(spec.kind != HoleKind::SIMPLE && spec.headDiameter <= spec.Bore()) {
+    } else if(spec.kind != HoleKind::SIMPLE && spec.Head() <= spec.Bore()) {
         bad = _("The head's diameter must be greater than the hole's.");
     } else if(spec.kind == HoleKind::COUNTERBORE && spec.headDepth <= LENGTH_EPS) {
         bad = _("The counterbore's depth must be greater than zero.");
@@ -247,6 +249,7 @@ bool SolveSpaceUI::SetHoleField(hGroup hg, HoleField field, const std::string &t
         case HoleField::HEAD_DIAMETER: spec.headDiameter = value * MmPerUnit(); break;
         case HoleField::HEAD_DEPTH:    spec.headDepth    = value * MmPerUnit(); break;
         case HoleField::HEAD_ANGLE:    spec.headAngle    = value; break;
+        case HoleField::CLEARANCE:     spec.clearance    = value * MmPerUnit(); break;
         case HoleField::THREAD:        break;
     }
     return SetHoleSpec(hg, spec);

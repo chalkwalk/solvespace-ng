@@ -207,6 +207,8 @@ static void DrawGroup(Group *g, std::function<void()> *run) {
             field("countersink angle (degrees)", "##hole-head-angle",
                   ssprintf("%g", spec.headAngle), F::HEAD_ANGLE);
         }
+        field("print clearance (added to every diameter)", "##hole-clearance",
+              SS.MmToString(spec.clearance), F::CLEARANCE);
         bool flip = spec.flip != 0;
         if(ImGui::Checkbox("drill the other way", &flip)) {
             *run = [hg, spec] {

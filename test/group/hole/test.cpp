@@ -239,4 +239,16 @@ TEST_CASE(hole_fields_take_what_is_typed) {
     CHECK_EQ_EPS(SK.GetGroup(hg)->hole.depth, 0);
     CHECK_FALSE(SS.SetHoleField(hg, F::DIAMETER, "-1"));
 }
+// Review 5: a print clearance widens the bore, the head and the thread.
+TEST_CASE(a_print_clearance_widens_the_hole) {
+    CHECK_LOAD("box.slvs");
+    SS.kernelKind = KernelKind::OCCT;
+    Group *g = HoleAt({ { 5, 10, 30 } });
+    CHECK_TRUE(SS.SetHoleField(g->h, SolveSpaceUI::HoleField::DIAMETER, "4"));
+    CHECK_TRUE(SS.SetHoleField(g->h, SolveSpaceUI::HoleField::CLEARANCE, "0.2"));
+    SS.GenerateAll(SolveSpaceUI::Generate::ALL);
+    CHECK_EQ_EPS(g->hole.clearance, 0.2);
+    CHECK_TRUE(fabs(ExactVolume() - (6000 - PI * 2.1 * 2.1 * 30)) < 1e-6);
+    CHECK_FALSE(SS.SetHoleField(g->h, SolveSpaceUI::HoleField::CLEARANCE, "-5"));
+}
 #endif
