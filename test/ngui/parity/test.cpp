@@ -94,6 +94,11 @@ TEST_CASE(every_menu_command_is_in_the_menu_bar_and_palette) {
     CHECK_TRUE(labels.size() > 50);
     for(Command c : GraphicsWindow::MenuCommands()) {
         std::string label = SolveSpace::Ui::CommandLabel(c); // NG's name for it (ui/menulayout.h)
+        if(SolveSpace::Ui::RemovedFromMenus(c)) {
+            // Retired with the old frontends (the classic property browser, M1c task 10).
+            CHECK_TRUE(labels.count(label) == 0);
+            continue;
+        }
         if(!labels.count(label)) fprintf(stderr, "not in the menu bar: '%s'\n", label.c_str());
         CHECK_TRUE(labels.count(label) == 1);
     }

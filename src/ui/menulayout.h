@@ -21,6 +21,10 @@ namespace Ui {
 void ApplyMenuLayout(Platform::MenuBarSdl &bar,
                      std::function<bool(const std::string &action)> actionChecked);
 
+// Commands NG drops from its menus (and so from the palette): the classic property browser,
+// whose screens all have panels (M1c task 10, docs/m1-parity.md).
+bool RemovedFromMenus(Command c);
+
 // What NG calls a command (its menu label: "Line", "Link Part..."), for the shelf, pies and
 // panels; the core's label for a command the layout doesn't rename.
 std::string CommandLabel(Command c);

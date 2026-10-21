@@ -88,6 +88,5 @@ zoom-out:               -
 zoom-to-fit:            Home
 perspective:            Num5
 show-grid:              Shift+G
-show-property-browser:  Shift+N
 show-toolbar:           Ctrl+Shift+T
 full-screen:            F11

@@ -60,7 +60,6 @@ static Uint32         gWakeEvent   = 0; // a solid finished on the kernel's work
 static bool           gQuit        = false;
 static bool           gNeedsFrame  = true;
 static std::weak_ptr<WindowImplSdl>              gMainWindow;
-static std::vector<std::weak_ptr<WindowImplSdl>> gToolWindows;
 static bool           gShowMenuBar = true;
 static Ui::KeyRouter  gKeyRouter;
 // UI callbacks into the core run after the frame, never while ImGui is building one: the core
@@ -70,7 +69,6 @@ static DeferredQueue  gDeferred;
 static int            gModalDepth     = 0;
 static bool           gCloseRequested = false;
 
-static void DrawToolWindows();
 static void DrawMainMenuBar();
 static bool RouteKeyDown(const SDL_Event &e);
 static void RenderFrame();
@@ -382,9 +380,10 @@ WindowRef CreateWindow(Window::Kind kind, WindowRef parentWindow) {
         InitSdlWindowAndImGui();
         gMainWindow = window;
     } else {
+        // The core's property browser (SS.TW). NG shows its screens as panels and never draws
+        // this window (the floating browser was retired with the old frontends, M1c task 10).
         window->width  = 420;
         window->height = 640;
-        gToolWindows.push_back(window);
     }
     return window;
 }
@@ -1026,19 +1025,6 @@ static void EnsureFramebuffer(WindowImplSdl *w, int pw, int ph) {
     w->fboHeight = ph;
 }
 
-static void RenderToolWindowsOffscreen() {
-    for(auto &weak : gToolWindows) {
-        auto w = weak.lock();
-        if(!w || !w->visible || !w->onRender) continue;
-        double ratio = w->GetDevicePixelRatio();
-        int pw = std::max(1, (int)(w->width * ratio)), ph = std::max(1, (int)(w->height * ratio));
-        EnsureFramebuffer(w.get(), pw, ph);
-        glBindFramebuffer(GL_FRAMEBUFFER, w->fbo);
-        w->onRender();
-        glBindFramebuffer(GL_FRAMEBUFFER, 0);
-    }
-}
-
 //-----------------------------------------------------------------------------
 // Development and test driver. SOLVESPACE_NG_SCRIPT="action ui.command-palette; keys line;
 // key Return; wait 5; shot a.png; quit" runs steps between frames, injecting real SDL events.
@@ -1301,7 +1287,6 @@ static void RenderFrame() {
 
     WindowImplSdl *main = MainWindow();
     DrawMainMenuBar();
-    DrawToolWindows();
     DrawActivePopup();
     if(main && main->menuBar) {
         auto bar = std::static_pointer_cast<MenuBarSdl>(main->menuBar);
@@ -1316,8 +1301,6 @@ static void RenderFrame() {
         }
     }
     ImGui::Render();
-    // ImGui only samples tool-window textures when the draw data is rendered below.
-    RenderToolWindowsOffscreen();
 
     int pw, ph;
     SDL_GetWindowSizeInPixels(gSdlWindow, &pw, &ph);
@@ -1384,9 +1367,6 @@ void ClearGui() {
         SS.GW.canvas.reset();
         SS.TW.canvas.reset();
         if(WindowImplSdl *main = MainWindow()) ReleaseFramebuffer(main);
-        for(auto &weak : gToolWindows) {
-            if(auto w = weak.lock()) ReleaseFramebuffer(w.get());
-        }
         ShutdownImGui();
         SDL_GL_DestroyContext(gGlContext);
         SDL_DestroyWindow(gSdlWindow);
@@ -1460,130 +1440,12 @@ static void DrawActivePopup() {
     }
 }
 
-static void DrawToolWindows() {
-    for(auto it = gToolWindows.begin(); it != gToolWindows.end();) {
-        auto w = it->lock();
-        if(!w) {
-            it = gToolWindows.erase(it);
-            continue;
-        }
-        ++it;
-        if(!w->visible) continue;
-
-        ImGui::SetNextWindowSize(ImVec2(440, 680), ImGuiCond_FirstUseEver);
-        ImGui::SetNextWindowPos(ImVec2(ImGui::GetIO().DisplaySize.x - 460, 40),
-                                ImGuiCond_FirstUseEver);
-        bool open = true;
-        std::string name = (w->title.empty() ? std::string("Property Browser") : w->title) +
-                           "###toolwindow";
-        ImGui::Begin(name.c_str(), &open,
-                     ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse);
-        ImVec2 avail = ImGui::GetContentRegionAvail();
-        float  sbW   = w->scrollbarVisible ? 14.0f : 0.0f;
-        w->width  = std::max(1.0f, avail.x - sbW);
-        w->height = std::max(1.0f, avail.y);
-
-        // Create/resize the target now, so the texture recorded below is the one rendered into
-        // this frame (otherwise the first frame would record texture 0).
-        double ratio = w->GetDevicePixelRatio();
-        EnsureFramebuffer(w.get(), std::max(1, (int)(w->width * ratio)),
-                          std::max(1, (int)(w->height * ratio)));
-
-        ImVec2 origin = ImGui::GetCursorScreenPos();
-        ImVec2 size((float)w->width, (float)w->height);
-        // Flip vertically: GL's texture origin is bottom-left.
-        ImGui::GetWindowDrawList()->AddImage((ImTextureID)(intptr_t)w->fboColor, origin,
-                                             ImVec2(origin.x + size.x, origin.y + size.y),
-                                             ImVec2(0, 1), ImVec2(1, 0));
-        // An interactive item over the image, so drags go to the core instead of moving the
-        // panel, and a press that leaves the image still delivers its release.
-        ImGui::InvisibleButton("toolwindow-canvas", size, // findable by UI tests
-                               ImGuiButtonFlags_MouseButtonLeft | ImGuiButtonFlags_MouseButtonRight |
-                               ImGuiButtonFlags_MouseButtonMiddle);
-        bool hovered = ImGui::IsItemHovered();
-        bool active  = ImGui::IsItemActive();
-
-        // Synthesize Platform mouse events, delivered after the frame.
-        ImGuiIO &io = ImGui::GetIO();
-        double   lx = io.MousePos.x - origin.x, ly = io.MousePos.y - origin.y;
-        auto send = [&](MouseEvent::Type type, MouseEvent::Button button) {
-            MouseEvent me = MakeMouseEvent(type, lx, ly);
-            me.button     = button;
-            auto onMouse  = w->onMouseEvent;
-            gDeferred.Post([onMouse, me] { if(onMouse) onMouse(me); });
-        };
-        static const MouseEvent::Button buttons[3] = {
-            MouseEvent::Button::LEFT, MouseEvent::Button::RIGHT, MouseEvent::Button::MIDDLE };
-        if(hovered || active) {
-            if(io.MouseDelta.x != 0 || io.MouseDelta.y != 0) {
-                send(MouseEvent::Type::MOTION, io.MouseDown[0] ? MouseEvent::Button::LEFT
-                                                               : MouseEvent::Button::NONE);
-            }
-        }
-        for(int b = 0; b < 3; b++) {
-            if(hovered && ImGui::IsMouseClicked(b)) {
-                send(ImGui::IsMouseDoubleClicked(b) ? MouseEvent::Type::DBL_PRESS
-                                                    : MouseEvent::Type::PRESS, buttons[b]);
-                w->buttonsDown |= 1 << b;
-            }
-            if((w->buttonsDown & (1 << b)) && ImGui::IsMouseReleased(b)) {
-                send(MouseEvent::Type::RELEASE, buttons[b]);
-                w->buttonsDown &= ~(1 << b);
-            }
-        }
-        if(hovered) {
-            if(io.MouseWheel != 0 && w->scrollbarVisible) {
-                w->SetScrollbarPosition(w->scrollPos - io.MouseWheel * 3);
-                auto onScroll = w->onScrollbarAdjusted;
-                gDeferred.Post([onScroll, pos = w->scrollPos] { if(onScroll) onScroll(pos); });
-            }
-            ImGui::SetMouseCursor(w->cursor == Window::Cursor::HAND ? ImGuiMouseCursor_Hand
-                                                                    : ImGuiMouseCursor_Arrow);
-            w->wasHovered = true;
-        } else if(w->wasHovered && !active) {
-            // Mouse left the image: let the core clear its hover highlight once.
-            send(MouseEvent::Type::LEAVE, MouseEvent::Button::NONE);
-            w->wasHovered = false;
-        }
-
-        if(w->scrollbarVisible) {
-            ImGui::SameLine(0, 0);
-            float maxStart = (float)std::max(w->scrollMin, w->scrollMax - w->scrollPage);
-            float inverted = maxStart - (float)w->scrollPos; // slider bottom = scrolled down
-            if(ImGui::VSliderFloat("##scroll", ImVec2(sbW, (float)w->height), &inverted,
-                                   (float)w->scrollMin, maxStart, "")) {
-                w->SetScrollbarPosition(maxStart - inverted);
-                auto onScroll = w->onScrollbarAdjusted;
-                gDeferred.Post([onScroll, pos = w->scrollPos] { if(onScroll) onScroll(pos); });
-            }
-        }
-
-        DrawEditorOverlay(w.get(), origin);
-        DrawTooltip(w.get(), origin);
-        ImGui::End();
-
-        if(!open) {
-            std::weak_ptr<WindowImplSdl> weak = w;
-            gDeferred.Post([weak] {
-                if(auto tw = weak.lock()) {
-                    if(tw->onClose) tw->onClose(); else tw->visible = false;
-                }
-            });
-        }
-    }
-}
-
 // True if a text field is or is about to be focused. ImGui only reports WantTextInput a frame
 // after a field takes focus, and keys typed right after opening one arrive before that frame.
 static bool TextEntryActive() {
     if(ImGui::GetIO().WantTextInput || Ui::CapturesText()) return true;
     if(WindowImplSdl *main = MainWindow()) {
         if(main->editorVisible) return true;
-    }
-    for(auto &weak : gToolWindows) {
-        if(auto w = weak.lock()) {
-            if(w->editorVisible) return true;
-        }
     }
     return false;
 }

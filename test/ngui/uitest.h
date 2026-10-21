@@ -29,14 +29,6 @@ void ClickAt(Point2d p);
 void ShiftClickAt(Point2d p);
 void DoubleClickAt(Point2d p);
 
-// The old property browser starts hidden in NG; this shows it (View > Show Property Browser).
-void ShowBrowser();
-// The property browser: its text, row by row (non-ASCII shown as '?'), and clicking a piece of
-// text in it, e.g. a link. False if the text is not shown or is scrolled out of view.
-std::vector<std::string> BrowserRows();
-bool                     BrowserShows(const std::string &text);
-bool                     ClickBrowserText(const std::string &text, int occurrence = 0);
-
 // Panels: scrolls the panel with the mouse wheel until the item is drawn (items below the fold
 // are not), and closes a panel with its title bar's close button.
 bool RevealIn(const std::string &panelTitle, const std::string &labelOrId);

@@ -41,10 +41,6 @@ void DoubleClickAt(Point2d p) {
     Driver::DoubleClick(p.x, p.y);
 }
 
-void ShowBrowser() {
-    if(!SS.GW.showTextWindow) Driver::ClickMenu({ "View", "Classic Property Browser" });
-}
-
 bool RevealIn(const std::string &panelTitle, const std::string &labelOrId) {
     // Down to the bottom, then back up to the top.
     for(int i = 0; i < 80; i++) {
@@ -74,48 +70,6 @@ bool EditField(const std::string &labelOrId, const std::string &text) {
     Driver::Type(text);
     Driver::Key("Return");
     return true;
-}
-
-std::vector<std::string> BrowserRows() {
-    std::vector<std::string> rows;
-    for(int r = 0; r < SS.TW.rows; r++) {
-        std::string row;
-        for(int c = 0; c < TextWindow::MAX_COLS; c++) {
-            uint32_t ch = SS.TW.text[r][c];
-            row += ch == 0 ? ' ' : ch < 0x80 ? (char)ch : '?';
-        }
-        while(!row.empty() && row.back() == ' ') row.pop_back();
-        rows.push_back(row);
-    }
-    return rows;
-}
-
-bool BrowserShows(const std::string &text) {
-    for(const std::string &row : BrowserRows()) {
-        if(row.find(text) != std::string::npos) return true;
-    }
-    return false;
-}
-
-bool ClickBrowserText(const std::string &text, int occurrence) {
-    std::optional<Driver::Item> canvas = Driver::FindItem("toolwindow-canvas");
-    if(!canvas) return false;
-    std::vector<std::string> rows = BrowserRows();
-    for(int r = 0; r < (int)rows.size(); r++) {
-        for(size_t c = rows[r].find(text); c != std::string::npos;
-            c = rows[r].find(text, c + 1)) {
-            if(occurrence-- > 0) continue;
-            // As TextWindow::MouseEvent maps a position to a row and column.
-            const int hh = TextWindow::LINE_HEIGHT / 2;
-            double x = (int)TextWindow::LEFT_MARGIN +
-                       (c + text.size() / 2.0) * (int)TextWindow::CHAR_WIDTH_;
-            double y = (SS.TW.top[r] + 1 - SS.TW.scrollPos) * hh;
-            if(y < 0 || y > canvas->y1 - canvas->y0) return false;
-            Driver::Click(canvas->x0 + x, canvas->y0 + y);
-            return true;
-        }
-    }
-    return false;
 }
 
 hRequest DrawLine(Point2d a, Point2d b) {

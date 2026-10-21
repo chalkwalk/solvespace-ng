@@ -82,7 +82,7 @@ TEST_CASE(toolbar_icon_click_starts_its_tool) {
     CHECK_TRUE(SS.GW.pending.command == Command::RECTANGLE);
 }
 
-TEST_CASE(n_toggles_properties_and_shift_n_the_old_browser) {
+TEST_CASE(n_toggles_properties_and_the_old_browser_is_gone) {
     CHECK_LOAD("line.slvs");
     CHECK_TRUE(Driver::FindItem("Properties").has_value());
     Driver::Key("N");
@@ -90,8 +90,9 @@ TEST_CASE(n_toggles_properties_and_shift_n_the_old_browser) {
     Driver::Key("N");
     CHECK_TRUE(Driver::FindItem("Properties").has_value());
     CHECK_FALSE(Driver::FindItem("Property Browser").has_value());
-    Driver::Key("Shift+N");
-    CHECK_TRUE(Driver::FindItem("Property Browser").has_value());
+    Driver::Key("Shift+N"); // was the old browser (retired, M1c task 10)
+    CHECK_FALSE(Driver::FindItem("Property Browser").has_value());
+    CHECK_FALSE(SS.GW.showTextWindow);
 }
 
 

@@ -158,3 +158,16 @@ TEST_CASE(context_menu_without_a_selection_gets_no_actions) {
     SolveSpace::Ui::ApplyContextMenuLayout(menu, /*itemsSelected=*/false);
     CHECK_TRUE(menu.entries.size() == 1);
 }
+
+TEST_CASE(the_classic_property_browser_is_gone_from_the_menus) {
+    // M1c task 10: its screens all have panels (docs/m1-parity.md).
+    MenuBarSdl bar;
+    auto view = bar.AddSubMenu("&View");
+    Add(view, "Zoom &In", Command::ZOOM_IN);
+    Add(view, "Show Property Bro&wser", Command::SHOW_TEXT_WND);
+    SolveSpace::Ui::ApplyMenuLayout(bar, {});
+    CHECK_TRUE(SolveSpace::Ui::RemovedFromMenus(Command::SHOW_TEXT_WND));
+    for(const FlatMenuItem &f : FlattenMenuBar(bar)) {
+        CHECK_FALSE(f.item->commandId == (uint32_t)Command::SHOW_TEXT_WND);
+    }
+}

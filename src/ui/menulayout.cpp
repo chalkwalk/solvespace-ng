@@ -103,8 +103,7 @@ const std::vector<Top> &Layout() {
             A("ui.unhide-all", "Show All Groups"), Sep(),
             C(Command::VIEW_PROJECTION, "View Settings..."),
             A("ui.toggle-theme", "Light Theme", true),
-            C(Command::FULL_SCREEN, "Full Screen"),
-            C(Command::SHOW_TEXT_WND, "Classic Property Browser") } },
+            C(Command::FULL_SCREEN, "Full Screen") } },
         { "New Group", {
             C(Command::GROUP_3D, "Sketch in 3D"),
             C(Command::GROUP_WRKPL, "Sketch in New Workplane"), Sep(),
@@ -315,10 +314,18 @@ std::string ShortcutText(const MenuItemSdl &item, const keymap::Keymap &keymap) 
     return "";
 }
 
+bool RemovedFromMenus(Command c) {
+    return c == Command::SHOW_TEXT_WND;
+}
+
 void ApplyMenuLayout(MenuBarSdl &bar,
                      std::function<bool(const std::string &action)> actionChecked) {
     Found found;
     for(auto &m : bar.menus) Collect(*m.second, &found);
+    // Dropped: counted as placed, so they aren't left over either.
+    for(auto &[id, item] : found.items) {
+        if(RemovedFromMenus((Command)id)) found.placed.insert(item.get());
+    }
     std::vector<std::pair<std::string, std::shared_ptr<MenuSdl>>> menus;
     for(const Top &top : Layout()) {
         auto menu = std::make_shared<MenuSdl>();

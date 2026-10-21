@@ -5,6 +5,7 @@
 #include "commandnames.h"
 #include "platform/sdl/keychord.h"
 #include "ui/keypresets.h"
+#include "ui/menulayout.h"
 
 namespace SolveSpace {
 namespace Ui {
@@ -13,6 +14,7 @@ keymap::Keymap ClassicPreset() {
     keymap::Keymap km;
     std::string err;
     for(Command cmd : GraphicsWindow::MenuCommands()) {
+        if(RemovedFromMenus(cmd)) continue; // (Tab showed the old property browser)
         auto chord = Platform::ChordFromAccelerator(SS.GW.AcceleratorForCommand(cmd));
         if(!chord) continue;
         if(!km.Bind(CommandName(cmd), *chord, &err)) dbp("classic keymap: %s", err.c_str());

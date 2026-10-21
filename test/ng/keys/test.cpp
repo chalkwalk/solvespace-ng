@@ -2,6 +2,7 @@
 #include <SDL3/SDL_keycode.h>
 #include "platform/sdl/keychord.h"
 #include "ui/keypresets.h"
+#include "ui/menulayout.h"
 #include "commandnames.h"
 
 #include "harness.h"
@@ -48,7 +49,7 @@ TEST_CASE(classic_preset_covers_every_accelerator) {
     for(Command cmd : GraphicsWindow::MenuCommands()) {
         Platform::KeyboardEvent accel = SS.GW.AcceleratorForCommand(cmd);
         bool hasAccel = accel.key == Platform::KeyboardEvent::Key::FUNCTION || accel.chr != 0;
-        if(!hasAccel) continue;
+        if(!hasAccel || SolveSpace::Ui::RemovedFromMenus(cmd)) continue;
         // Every accelerator chord reaches some command. Upstream's menu table binds
         // Ctrl+Shift+S to both save-as and stop-tracing; like GraphicsWindow::KeyboardEvent,
         // the first menu entry wins.
@@ -62,6 +63,12 @@ TEST_CASE(classic_preset_covers_every_accelerator) {
     CHECK_TRUE(*classic.Lookup(*keymap::ParseChord("Backspace")) == "unselect-all");
     CHECK_TRUE(*classic.Lookup(*keymap::ParseChord("F3")) == "nearest-iso");
     CHECK_TRUE(*classic.Lookup(*keymap::ParseChord("Ctrl+K")) == "ui.command-palette");
+}
+
+TEST_CASE(classic_preset_binds_nothing_ng_removed) {
+    // Tab showed the old property browser; NG has no browser now (M1c task 10).
+    keymap::Keymap classic = SolveSpace::Ui::ClassicPreset();
+    CHECK_TRUE(classic.ChordsFor("show-property-browser").empty());
 }
 
 TEST_CASE(modern_preset_is_valid) {
@@ -114,7 +121,7 @@ TEST_CASE(modern_preset_has_the_review_4_keys) {
         CHECK_TRUE(cmd && *cmd == e[1]);
     }
     // Gone: A no longer selects all, H no longer hides, X no longer deletes.
-    for(const char *gone : { "Shift+C", "Shift+B", "Shift+H", "Alt+H" }) {
+    for(const char *gone : { "Shift+C", "Shift+B", "Shift+H", "Alt+H", "Shift+N" }) {
         CHECK_TRUE(modern->Lookup(*keymap::ParseChord(gone)) == nullptr);
     }
 }

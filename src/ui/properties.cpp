@@ -24,12 +24,6 @@ void ShowGroupInProperties(hGroup hg) {
     PropertiesPanel().SetShown(true);
 }
 
-void ShowInPropertyBrowser(void (*screen)(int link, uint32_t v), uint32_t v) {
-    if(!SS.GW.showTextWindow) GraphicsWindow::MenuView(Command::SHOW_TEXT_WND);
-    screen(0, v);
-    SS.ScheduleShowTW();
-}
-
 hGroup PropertiesGroup() {
     if(gShownGroup.v && SK.group.FindByIdNoOops(gShownGroup)) return gShownGroup;
     return SS.GW.activeGroup;

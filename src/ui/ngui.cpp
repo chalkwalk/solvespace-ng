@@ -212,8 +212,8 @@ std::function<void()> DrawNgUi(Platform::MenuBarSdl *menuBar, const keymap::Keym
         if(auto chosen = DrawShortcuts(*menuBar, keymap)) run = chosen;
     }
     if(gHideBrowser) {
-        // The Properties panel replaces the property browser, which starts hidden; View >
-        // Show Property Browser brings it back.
+        // The Properties panel and the other panels replace the core's property browser, which
+        // NG never shows (M1c task 10).
         gHideBrowser = false;
         run = [] {
             SS.GW.showTextWindow = false;
