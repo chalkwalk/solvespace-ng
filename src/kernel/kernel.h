@@ -142,6 +142,15 @@ enum class KernelEdgeFacesResult { NOT_FOUND, NOT_PLANAR, FOUND };
 KernelEdgeFacesResult KernelEdgeFaces(const std::shared_ptr<const KernelShape> &shape, Vector a,
                                       Vector b, KernelEdgeFace out[2]);
 
+// A solid's volume (mm^3), surface area (mm^2) and centre of mass; exact when from a B-rep.
+struct MassProps {
+    double volume = 0, area = 0;
+    Vector centre = {};
+    bool   exact  = false;
+};
+// The B-rep's mass properties, exactly; false if there is no B-rep.
+bool KernelMassProperties(const std::shared_ptr<const KernelShape> &shape, MassProps *out);
+
 // Combines the job's previous body and result->thisBody as triangle meshes into
 // result->running.mesh: the path for meshes and groups forced to a mesh.
 void CombineAsMeshes(const KernelJob &job, KernelResult *result);

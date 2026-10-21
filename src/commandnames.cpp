@@ -119,6 +119,7 @@ static const CommandNameEntry CommandNames[] = {
     { Command::INTERFERENCE,      "show-interference"  },
     { Command::NAKED_EDGES,       "show-naked-edges"   },
     { Command::SHOW_DOF,          "show-dof"           },
+    { Command::MASS_PROPERTIES,   "mass-properties"    },
     { Command::CENTER_OF_MASS,    "show-center-of-mass" },
     { Command::TRACE_PT,          "trace-point"        },
     { Command::STOP_TRACING,      "stop-tracing"       },

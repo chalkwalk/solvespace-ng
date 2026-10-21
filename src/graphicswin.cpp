@@ -178,6 +178,7 @@ const MenuEntry Menu[] = {
 { 1, N_("Show &Interfering Parts"),     Command::INTERFERENCE,     C|S|'i', KN, mAna   },
 { 1, N_("Show &Naked Edges"),           Command::NAKED_EDGES,      C|S|'n', KN, mAna   },
 { 1, N_("Show &Center of Mass"),        Command::CENTER_OF_MASS,   C|S|'c', KN, mAna   },
+{ 1, N_("&Mass Properties"),            Command::MASS_PROPERTIES,  0,       KN, mAna   },
 { 1, NULL,                              Command::NONE,             0,       KN, NULL   },
 { 1, N_("Show &Underconstrained Points"), Command::SHOW_DOF,       C|S|'f', KN, mAna   },
 { 1, NULL,                              Command::NONE,             0,       KN, NULL   },

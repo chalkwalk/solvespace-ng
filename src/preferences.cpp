@@ -51,6 +51,7 @@ std::string SolveSpaceUI::SettingText(Setting setting, int index) {
             return ssprintf("%.2f, %.2f, %.2f", d.x, d.y, d.z);
         }
         case Setting::LIGHT_AMBIENT:    return ssprintf("%.2f", ambientIntensity);
+        case Setting::DENSITY:          return ssprintf("%.3g", density);
         case Setting::CAMERA_TANGENT:   return ssprintf("%.3f", cameraTangent * 1000);
         case Setting::EXPLODE_DISTANCE: return MmToString(explodeDistance, true);
         case Setting::BACKGROUND_COLOR: {
@@ -179,6 +180,13 @@ bool SolveSpaceUI::SetSetting(Setting setting, const std::string &s, int index) 
         case Setting::LIGHT_INTENSITY:
             lightIntensity[index] = min(1.0, max(0.0, atof(s.c_str())));
             GW.Invalidate();
+            return true;
+        case Setting::DENSITY:
+            if(atof(s.c_str()) <= 0) {
+                Error(_("The density must be greater than zero."));
+                return false;
+            }
+            density = atof(s.c_str());
             return true;
         case Setting::LIGHT_AMBIENT:
             ambientIntensity = min(1.0, max(0.0, atof(s.c_str())));

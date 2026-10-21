@@ -471,8 +471,13 @@ void SolveSpaceUI::ForceReferences() {
 }
 
 void SolveSpaceUI::UpdateCenterOfMass() {
-    SMesh *m = &(SK.GetGroup(SS.GW.activeGroup)->displayMesh);
-    SS.centerOfMass.position = m->GetCenterOfMass();
+    MassProps mp;
+    if(KernelMassProperties(SK.GetGroup(SS.GW.activeGroup)->runningShape, &mp)) {
+        SS.centerOfMass.position = mp.centre; // exact
+    } else {
+        SMesh *m = &(SK.GetGroup(SS.GW.activeGroup)->displayMesh);
+        SS.centerOfMass.position = m->GetCenterOfMass();
+    }
     SS.centerOfMass.dirty = false;
 }
 

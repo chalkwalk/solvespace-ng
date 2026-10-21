@@ -337,6 +337,10 @@ KernelEdgeFacesResult KernelEdgeFaces(const std::shared_ptr<const KernelShape> &
                                       KernelEdgeFace[2]) {
     return KernelEdgeFacesResult::NOT_FOUND;
 }
+
+bool KernelMassProperties(const std::shared_ptr<const KernelShape> &, MassProps *) {
+    return false;
+}
 #endif
 
 IKernel &Kernel() {

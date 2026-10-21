@@ -123,6 +123,7 @@ void SolveSpaceUI::Init() {
     showToolbar = settings->ThawBool("ShowToolbar", true);
     constraintStateColors = settings->ThawBool("ConstraintStateColors", false);
     // The geometry kernel (0 SolveSpace's, 1 Open CASCADE where built)
+    density    = settings->ThawFloat("Density", 1.24);
     kernelKind = settings->ThawInt("Kernel", 0) == 1 && KernelAvailable(KernelKind::OCCT)
                      ? KernelKind::OCCT
                      : KernelKind::SOLVESPACE;
@@ -314,6 +315,7 @@ void SolveSpaceUI::Exit() {
     settings->FreezeBool("ShowToolbar", showToolbar);
     settings->FreezeBool("ConstraintStateColors", constraintStateColors);
     settings->FreezeInt("Kernel", (int)kernelKind);
+    settings->FreezeFloat("Density", density);
     // Autosave timer
     settings->FreezeInt("AutosaveInterval", autosaveInterval);
 
@@ -948,6 +950,10 @@ void SolveSpaceUI::MenuAnalyze(Command id) {
             break;
         }
 
+        case Command::MASS_PROPERTIES:
+            Message("%s", SS.MassPropertiesText().c_str());
+            break;
+
         case Command::VOLUME: {
             Group *g = SK.GetGroup(SS.GW.activeGroup);
             double totalVol = g->displayMesh.CalculateVolume();
@@ -1255,6 +1261,42 @@ Group *Sketch::GetRunningMeshGroupFor(hGroup h) {
         g = g->PreviousGroup();
     }
     return NULL;
+}
+
+
+bool SolveSpaceUI::MassProperties(MassProps *out) {
+    Group *g = SK.GetGroup(SS.GW.activeGroup);
+    *out     = {};
+    if(KernelMassProperties(g->runningShape, out)) return true;
+    SMesh m = {};
+    m.MakeFromCopyOf(&g->runningMesh);
+    g->runningShell.TriangulateInto(&m);
+    out->volume = m.CalculateVolume();
+    for(const STriangle &t : m.l) {
+        out->area += t.b.Minus(t.a).Cross(t.c.Minus(t.a)).Magnitude() / 2;
+    }
+    if(out->volume > 0) out->centre = m.GetCenterOfMass();
+    m.Clear();
+    return out->volume > 0;
+}
+
+std::string SolveSpaceUI::MassPropertiesText() {
+    MassProps mp;
+    if(!MassProperties(&mp)) return _("There is no solid in the active group.");
+    double      grams = mp.volume / 1000 * density;
+    std::string mass  = grams >= 1000 ? ssprintf("%.3f kg", grams / 1000)
+                                      : ssprintf("%.2f g", grams);
+    std::string text  = ssprintf(
+        _("Volume:  %s\nSurface area:  %s\nMass:  %s (density %.3g g/cm³)\n"
+          "Center of mass:  (%s, %s, %s)"),
+        MmToStringSI(mp.volume, /*dim=*/3).c_str(), MmToStringSI(mp.area, /*dim=*/2).c_str(),
+        mass.c_str(), density, MmToString(mp.centre.x).c_str(), MmToString(mp.centre.y).c_str(),
+        MmToString(mp.centre.z).c_str());
+    if(!mp.exact) {
+        text += _("\n\nCurved surfaces have been approximated as triangles.\n"
+                  "This introduces error, typically of around 1%.");
+    }
+    return text;
 }
 
 } // namespace SolveSpace

@@ -22,6 +22,7 @@
 #include <BRepBuilderAPI_MakeVertex.hxx>
 #include <BRepBuilderAPI_MakeWire.hxx>
 #include <BRepBuilderAPI_Transform.hxx>
+#include <BRepGProp.hxx>
 #include <BRepFilletAPI_MakeChamfer.hxx>
 #include <BRepFilletAPI_MakeFillet.hxx>
 #include <BRepLib.hxx>
@@ -36,6 +37,7 @@
 #include <GCE2d_MakeSegment.hxx>
 #include <Interface_Static.hxx>
 #include <STEPControl_Writer.hxx>
+#include <GProp_GProps.hxx>
 #include <Geom_BezierCurve.hxx>
 #include <Geom_CylindricalSurface.hxx>
 #include <NCollection_DataMap.hxx>
@@ -755,6 +757,19 @@ KernelEdgeFacesResult KernelEdgeFaces(const std::shared_ptr<const KernelShape> &
         return KernelEdgeFacesResult::FOUND;
     }
     return KernelEdgeFacesResult::NOT_FOUND;
+}
+
+
+bool KernelMassProperties(const std::shared_ptr<const KernelShape> &ks, MassProps *out) {
+    if(IsEmpty(ks)) return false;
+    GProp_GProps volume, surface;
+    BRepGProp::VolumeProperties(ks->shape, volume);
+    BRepGProp::SurfaceProperties(ks->shape, surface);
+    out->volume = volume.Mass();
+    out->area   = surface.Mass();
+    out->centre = Vec(volume.CentreOfMass().XYZ());
+    out->exact  = true;
+    return out->volume > 0;
 }
 
 }

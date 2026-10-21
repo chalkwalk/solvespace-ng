@@ -141,6 +141,7 @@ static void Ng(std::function<void()> *run) {
             *run = [] { SS.SetKernel(KernelKind::SOLVESPACE); };
         }
     }
+    Field("density for mass properties (g/cm³)", "##density", Setting::DENSITY, run);
 }
 
 std::function<void()> DrawPreferences() {

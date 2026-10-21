@@ -444,7 +444,7 @@ enum class Setting {
     AUTOSAVE_INTERVAL, FIND_CONSTRAINT_TIMEOUT, ANIMATION_SPEED,
     LIGHT_INTENSITY, LIGHT_DIRECTION,              // index: which light
     LIGHT_AMBIENT, CAMERA_TANGENT, EXPLODE_DISTANCE,
-    BACKGROUND_COLOR,
+    BACKGROUND_COLOR, DENSITY,
 };
 enum class SettingToggle {
     USE_SI_PREFIXES, ARC_DIM_DEFAULT_DIAMETER, SHOW_FULL_FILE_PATH, FIX_EXPORT_COLORS,
@@ -705,6 +705,11 @@ public:
     bool backgroundRegenEnabled = false; // NG turns it on; stock SolveSpace never uses it
     // The geometry kernel solids are made with (kernel/kernel.h); NG may choose OCCT.
     KernelKind kernelKind = KernelKind::SOLVESPACE;
+    double     density    = 1.24; // g/cm^3, for mass properties (PLA)
+    // The active group's solid's mass properties: exact from the B-rep, else from its mesh;
+    // false if there is no solid.
+    bool        MassProperties(MassProps *out);
+    std::string MassPropertiesText();
     bool BackgroundRegenAllowed();
     void SubmitBackgroundRegen(const std::vector<hGroup> &groups);
     // Applies a finished background regeneration if it is still the newest; true if anything

@@ -189,6 +189,7 @@ enum class Command : uint32_t {
     NAKED_EDGES,
     SHOW_DOF,
     CENTER_OF_MASS,
+    MASS_PROPERTIES,
     TRACE_PT,
     STOP_TRACING,
     STEP_DIM,

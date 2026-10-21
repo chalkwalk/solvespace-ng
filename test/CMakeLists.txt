@@ -16,6 +16,7 @@ endif()
 set(testsuite_SOURCES
     harness.cpp
     analysis/contour_area/test.cpp
+    analysis/massprops/test.cpp
     core/expr/test.cpp
     core/commandnames/test.cpp
     core/commands/test.cpp
