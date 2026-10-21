@@ -56,6 +56,8 @@ static const char *TypeLine(const Group *g) {
         case Group::Type::SHELL:             return "hollow the solid";
         case Group::Type::DRAFT:             return "taper faces";
         case Group::Type::HOLE:              return "drill holes";
+        case Group::Type::LOFT:              return "loft through profiles";
+        case Group::Type::SWEEP:             return "sweep a profile along a path";
     }
     return "";
 }
@@ -211,8 +213,26 @@ static void DrawGroup(Group *g, std::function<void()> *run) {
         }
     }
 
+    if(type == Type::LOFT || type == Type::SWEEP) {
+        int n = (int)g->profiles.size();
+        if(type == Type::LOFT) {
+            ImGui::TextDisabled("%d profiles", n);
+        } else {
+            ImGui::TextDisabled("a profile along %d path curve%s", n - 1, n == 2 ? "" : "s");
+        }
+        if(!g->featureProblem.empty()) {
+            std::string problem = g->featureProblem + ".";
+            problem[0]          = (char)toupper(problem[0]);
+            ImGui::PushStyleColor(ImGuiCol_Text,
+                                  ImGui::GetStyleColorVec4(ImGuiCol_PlotLinesHovered));
+            ImGui::TextWrapped("%s", problem.c_str());
+            ImGui::PopStyleColor();
+        }
+    }
+
     if(type == Type::EXTRUDE || type == Type::LATHE || type == Type::REVOLVE ||
-       type == Type::LINKED || type == Type::HELIX) {
+       type == Type::LINKED || type == Type::HELIX || type == Type::LOFT ||
+       type == Type::SWEEP) {
         using C = Group::CombineAs;
         ImGui::Spacing();
         ImGui::TextDisabled("solid model as");

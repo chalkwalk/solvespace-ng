@@ -205,6 +205,18 @@ KernelJob Group::BuildKernelJob() {
             job.edgeCurves.emplace_back(sbl.l.begin(), sbl.l.end());
             sbl.Clear();
         }
+    } else if(type == Type::LOFT) {
+        job.op = KernelJob::Op::LOFT;
+        for(hEntity he : profiles) {
+            Profile p;
+            if(!ProfileOf(he, &p)) continue;
+            job.sections.push_back(p.loop);
+            job.sectionHoles = job.sectionHoles || p.holes;
+        }
+        if(!profiles.empty()) {
+            job.startName = Remap(profiles.front(), REMAP_LOFT_START).v;
+            job.endName   = Remap(profiles.back(), REMAP_LOFT_END).v;
+        }
     } else if(type == Type::HOLE) {
         job.op   = KernelJob::Op::HOLE;
         job.hole = hole;
@@ -394,6 +406,8 @@ bool Group::IsMeshGroup() {
         case Group::Type::SHELL:
         case Group::Type::DRAFT:
         case Group::Type::HOLE:
+        case Group::Type::LOFT:
+        case Group::Type::SWEEP:
             return true;
 
         default:

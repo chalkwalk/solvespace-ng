@@ -35,6 +35,7 @@
 #include <BRepOffsetAPI_MakePipeShell.hxx>
 #include <BRepOffsetAPI_MakeOffsetShape.hxx>
 #include <BRepOffsetAPI_MakeThickSolid.hxx>
+#include <BRepOffsetAPI_ThruSections.hxx>
 #include <BRepPrimAPI_MakeCone.hxx>
 #include <BRepPrimAPI_MakeCylinder.hxx>
 #include <BRepPrimAPI_MakePrism.hxx>
@@ -904,6 +905,59 @@ std::shared_ptr<KernelShape> Holes(const KernelJob &job, std::string *problem) {
     return out;
 }
 
+// A section's loop as a wire.
+TopoDS_Wire SectionWire(const std::vector<SBezier> &curves) {
+    SBezierLoop loop = {};
+    for(const SBezier &sb : curves) {
+        SBezier copy = sb;
+        loop.l.Add(&copy);
+    }
+    NCollection_DataMap<TopoDS_Shape, uint32_t, TopTools_ShapeMapHasher> ents;
+    TopoDS_Wire wire = MakeWire(loop, &ents);
+    loop.l.Clear();
+    return wire;
+}
+
+// Names a made solid's end caps: the faces at its first and last sections.
+void NameCaps(const KernelJob &job, const TopoDS_Shape &solid, const TopoDS_Shape &first,
+              const TopoDS_Shape &last, KernelShape *ks) {
+    for(const auto &[section, name] : { std::make_pair(first, job.startName),
+                                        std::make_pair(last, job.endName) }) {
+        if(section.IsNull() || name == 0) continue;
+        TopoDS_Shape cap = CapOf(solid, section);
+        if(!cap.IsNull()) ks->faces.Bind(cap, FaceInfo{ name, job.color });
+    }
+}
+
+std::shared_ptr<KernelShape> Loft(const KernelJob &job, std::string *problem) {
+    if(job.sections.size() < 2) return nullptr;
+    auto ks = std::make_shared<KernelShape>();
+    try {
+        BRepOffsetAPI_ThruSections loft(/*isSolid=*/true, /*ruled=*/false);
+        for(const std::vector<SBezier> &section : job.sections) {
+            loft.AddWire(SectionWire(section));
+        }
+        loft.Build();
+        if(!loft.IsDone() || !IsGoodSolid(loft.Shape())) {
+            *problem = "the loft failed";
+            return nullptr;
+        }
+        ks->shape = loft.Shape();
+        Orient(&ks->shape);
+        NameCaps(job, ks->shape, loft.FirstShape(), loft.LastShape(), ks.get());
+    } catch(const Standard_Failure &) {
+        *problem = "the loft failed";
+        return nullptr;
+    }
+    if(job.sectionHoles) *problem = "holes inside the profiles are not lofted";
+    return ks;
+}
+
+std::shared_ptr<KernelShape> Sweep(const KernelJob &, std::string *problem) {
+    *problem = "sweeps are not built yet";
+    return nullptr;
+}
+
 class OcctKernel final : public IKernel {
 public:
     void Run(const KernelJob &job, FaceNamer &namer, KernelResult *result) override {
@@ -952,6 +1006,8 @@ public:
             case KernelJob::Op::SHELL:
             case KernelJob::Op::DRAFT:
             case KernelJob::Op::HOLE: break;
+            case KernelJob::Op::LOFT:  made = Loft(job, &result->problem); break;
+            case KernelJob::Op::SWEEP: made = Sweep(job, &result->problem); break;
             case KernelJob::Op::EXTRUDE: made = Extrude(job, &namer); break;
             case KernelJob::Op::LATHE:   made = Revolve(job, &namer, /*full=*/true); break;
             case KernelJob::Op::REVOLVE:
@@ -1012,9 +1068,9 @@ public:
             case KernelFeature::CHAMFER:
             case KernelFeature::SHELL:
             case KernelFeature::DRAFT:
-            case KernelFeature::HOLE: return true;
+            case KernelFeature::HOLE:
             case KernelFeature::LOFT:
-            case KernelFeature::SWEEP: return false;
+            case KernelFeature::SWEEP: return true;
         }
         return false;
     }

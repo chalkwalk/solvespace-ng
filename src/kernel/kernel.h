@@ -75,7 +75,7 @@ struct HoleSpec {
 struct KernelJob {
     enum class Op {
         NONE, EXTRUDE, LATHE, REVOLVE, HELIX, STEP_TRANSLATE, STEP_ROTATE, LINKED, FILLET, CHAMFER,
-        SHELL, DRAFT, HOLE
+        SHELL, DRAFT, HOLE, LOFT, SWEEP
     };
     Op        op    = Op::NONE;
     RgbaColor color = {};
@@ -134,6 +134,13 @@ struct KernelJob {
     };
     std::vector<HoleAt> holes;
     HoleSpec            hole;
+    // LOFT: the sections' outer loops, in order; SWEEP: the profile's (one). sectionHoles: a
+    // profile had holes, which are left out. The end caps are named startName and endName.
+    std::vector<std::vector<SBezier>> sections;
+    bool                              sectionHoles = false;
+    uint32_t                          startName = 0, endName = 0;
+    // SWEEP: the path's curves, connected end to end in any order.
+    std::vector<SBezier> path;
 
     // Combining with the previous groups' running body.
     bool          forcedToMesh = false; // combine as triangle meshes

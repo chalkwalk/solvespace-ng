@@ -194,7 +194,9 @@ public:
         CHAMFER                       = 5401,
         SHELL                         = 5402,
         DRAFT                         = 5403,
-        HOLE                          = 5404
+        HOLE                          = 5404,
+        LOFT                          = 5405,
+        SWEEP                         = 5406
     };
     Group::Type type;
 
@@ -291,6 +293,17 @@ public:
     using HoleSpec = SolveSpace::HoleSpec;
     std::vector<hEntity> points;
     HoleSpec             hole;
+    // LOFT: a curve of each profile sketch, in order (the profile is the closed loop it is
+    // in); SWEEP: a curve of the profile sketch, then the path's curves.
+    std::vector<hEntity> profiles;
+    // A profile: the outer closed loop (in its sketch) of the loop set holding curve, its
+    // plane's normal and a point in it; false if the curve is in no closed loop.
+    struct Profile {
+        std::vector<SBezier> loop;
+        Vector               normal = {}, centre = {};
+        bool                 holes  = false; // the loop has holes inside, left out
+    };
+    static bool ProfileOf(hEntity curve, Profile *out);
     // A hole's direction into the solid from a centre point (unit).
     Vector HoleDirection(const Entity *point) const;
 
@@ -372,6 +385,11 @@ public:
         REMAP_HOLE_BOTTOM      = 1081,
         REMAP_HOLE_AXIS        = 1082,
         REMAP_HOLE_SEAT        = 1083,
+        // A loft's or sweep's end faces, Remap(profile curve, n), their points n + 10.
+        REMAP_LOFT_START       = 1100,
+        REMAP_LOFT_END         = 1101,
+        REMAP_SWEEP_START      = 1102,
+        REMAP_SWEEP_END        = 1103,
     };
     // Whether an entity is a face of a solid that a shell or draft can take.
     static bool IsSolidFace(const Entity *e);
@@ -389,6 +407,7 @@ public:
     void MakeShellFaces(EntityList *el);
     void MakeDraftFaces(EntityList *el);
     void MakeHoleEntities(EntityList *el);
+    void MakeLoftFaces(EntityList *el);
     void MakeLatheCircles(EntityList *el, ParamList *param, hEntity in, Vector pt, Vector axis);
     void MakeLatheSurfacesSelectable(EntityList *el, hEntity in, Vector axis);
     void MakeRevolveEndFaces(EntityList *el, hEntity pt, int ai, int af);

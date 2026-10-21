@@ -497,6 +497,33 @@ void Group::MenuGroup(Command id, Platform::Path linkFile) {
             break;
         }
 
+        case Command::GROUP_LOFT: {
+            std::vector<hGroup> sketches;
+            for(const GraphicsWindow::Selection &s : SS.GW.selection) {
+                Profile p;
+                Entity *e = s.entity.v ? SK.entity.FindByIdNoOops(s.entity) : nullptr;
+                if(e == nullptr || !ProfileOf(e->h, &p) ||
+                   std::find(sketches.begin(), sketches.end(), e->group) != sketches.end()) {
+                    g.profiles.clear();
+                    break;
+                }
+                sketches.push_back(e->group);
+                g.profiles.push_back(e->h);
+            }
+            if(g.profiles.size() < 2) {
+                Error(_("Bad selection for a new loft group. Select a curve of each profile, "
+                        "in order: two or more closed shapes, each in its own sketch."));
+                return;
+            }
+            if(!Kernel().Supports(KernelFeature::LOFT)) {
+                Error(_("Lofts need the Open CASCADE kernel (Preferences, SolveSpace NG)."));
+                return;
+            }
+            g.type = Type::LOFT;
+            g.name = C_("group-name", "loft");
+            break;
+        }
+
         default: ssassert(false, "Unexpected menu ID");
     }
 
@@ -954,6 +981,13 @@ void Group::Generate(EntityList *entity, ParamList *param)
             MakeHoleEntities(entity);
             return;
 
+        case Type::LOFT:
+            MakeLoftFaces(entity);
+            return;
+
+        case Type::SWEEP:
+            return;
+
         case Type::LINKED:
             // The translation vector
             AddParam(param, h.param(0), gp.x);
@@ -1265,6 +1299,80 @@ void Group::MakeHoleEntities(EntityList *el) {
         AddFeatureFace(el, he, REMAP_HOLE_SEAT, p.Plus(d.ScaledBy(hole.SeatDepth())),
                        d.ScaledBy(-1));
     }
+}
+
+// The area a loop encloses, seen along normal (its outline, sampled).
+static double LoopArea(const SBezierLoop &loop, Vector normal) {
+    Vector u = normal.Normal(0), v = normal.Normal(1);
+    std::vector<Vector> pts;
+    for(const SBezier &sb : loop.l) {
+        for(int i = 0; i < 8; i++) pts.push_back(sb.PointAt(i / 8.0));
+    }
+    double area = 0;
+    for(size_t i = 0; i < pts.size(); i++) {
+        const Vector &a = pts[i], &b = pts[(i + 1) % pts.size()];
+        area += a.Dot(u) * b.Dot(v) - b.Dot(u) * a.Dot(v);
+    }
+    return fabs(area) / 2;
+}
+
+bool Group::ProfileOf(hEntity curve, Profile *out) {
+    Entity *e = SK.entity.FindByIdNoOops(curve);
+    Group  *g = e ? SK.group.FindByIdNoOops(e->group) : nullptr;
+    if(g == nullptr || (g->type != Type::DRAWING_3D && g->type != Type::DRAWING_WORKPLANE)) {
+        return false;
+    }
+    // The curve's own pieces, to find it in a loop by where they run (a circle's pieces don't
+    // carry their entity).
+    SBezierList own = {};
+    e->GenerateBezierCurves(&own);
+    auto isPiece = [&](const SBezier &sb) {
+        if(sb.entity == curve.v) return true;
+        for(const SBezier &o : own.l) {
+            if(o.Start().Equals(sb.Start()) && o.Finish().Equals(sb.Finish())) return true;
+            if(o.Start().Equals(sb.Finish()) && o.Finish().Equals(sb.Start())) return true;
+        }
+        return false;
+    };
+    for(const SBezierLoopSet &sbls : g->bezierLoops.l) {
+        bool holds = false;
+        for(const SBezierLoop &loop : sbls.l) {
+            for(const SBezier &sb : loop.l) holds = holds || isPiece(sb);
+        }
+        if(!holds) continue;
+        const SBezierLoop *outer = nullptr;
+        for(const SBezierLoop &loop : sbls.l) {
+            if(!outer || LoopArea(loop, sbls.normal) > LoopArea(*outer, sbls.normal)) outer = &loop;
+        }
+        out->loop.assign(outer->l.begin(), outer->l.end());
+        out->normal = sbls.normal.WithMagnitude(1);
+        out->holes  = sbls.l.n > 1;
+        Vector sum  = {};
+        for(const SBezier &sb : out->loop) sum = sum.Plus(sb.Start());
+        out->centre = sum.ScaledBy(1.0 / out->loop.size());
+        own.Clear();
+        return !out->loop.empty();
+    }
+    own.Clear();
+    return false;
+}
+
+// A loft's derived entities: its end faces, in the first and last profiles' planes, facing out.
+void Group::MakeLoftFaces(EntityList *el) {
+    if(profiles.size() < 2) return;
+    Profile first, second, last, beforeLast;
+    bool    known = ProfileOf(profiles[0], &first) && ProfileOf(profiles[1], &second) &&
+                 ProfileOf(profiles.back(), &last) &&
+                 ProfileOf(profiles[profiles.size() - 2], &beforeLast);
+    Vector start = Vector::From(0, 0, -1), end = Vector::From(0, 0, 1);
+    if(known) {
+        start = first.normal;
+        if(start.Dot(second.centre.Minus(first.centre)) > 0) start = start.ScaledBy(-1);
+        end = last.normal;
+        if(end.Dot(last.centre.Minus(beforeLast.centre)) < 0) end = end.ScaledBy(-1);
+    }
+    AddFeatureFace(el, profiles.front(), REMAP_LOFT_START, known ? first.centre : Vector{}, start);
+    AddFeatureFace(el, profiles.back(), REMAP_LOFT_END, known ? last.centre : Vector{}, end);
 }
 
 // A face entity's normal now, or zero if there is none.

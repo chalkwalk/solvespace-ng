@@ -90,6 +90,7 @@ set(testsuite_SOURCES
     group/shell/test.cpp
     group/draft/test.cpp
     group/hole/test.cpp
+    group/loft/test.cpp
     group/boolean_knife_edge/test.cpp
     group/boolean_tangent_crossing/test.cpp
     group/boolean_tangent_edge/test.cpp

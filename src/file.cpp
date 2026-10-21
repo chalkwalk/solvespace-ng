@@ -122,6 +122,7 @@ const SolveSpaceUI::SaveTable SolveSpaceUI::SAVED[] = {
     { 'g',  "Group.edges",              'E',    &(SS.sv.g.edges)              },
     { 'g',  "Group.faces",              'E',    &(SS.sv.g.faces)              },
     { 'g',  "Group.points",             'E',    &(SS.sv.g.points)             },
+    { 'g',  "Group.profiles",           'E',    &(SS.sv.g.profiles)           },
     { 'g',  "Group.hole.kind",          'd',    &(SS.sv.g.hole.kind)          },
     { 'g',  "Group.hole.diameter",      'f',    &(SS.sv.g.hole.diameter)      },
     { 'g',  "Group.hole.depth",         'f',    &(SS.sv.g.hole.depth)         },

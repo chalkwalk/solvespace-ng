@@ -236,8 +236,10 @@ public:
             case KernelJob::Op::SHELL:
             case KernelJob::Op::DRAFT:
             case KernelJob::Op::HOLE:
+            case KernelJob::Op::LOFT:
+            case KernelJob::Op::SWEEP:
                 // The previous solid passes through.
-                result->problem = "fillets, chamfers, shells, drafts and holes need the Open CASCADE kernel "
+                result->problem = "fillets, chamfers, shells, drafts, holes, lofts and sweeps need the Open CASCADE kernel "
                                   "(Preferences, SolveSpace NG) and a solid that is not a "
                                   "triangle mesh";
                 break;

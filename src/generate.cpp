@@ -88,7 +88,11 @@ bool SolveSpaceUI::PruneGroups(hGroup hg) {
     g->faces.erase(std::remove_if(g->faces.begin(), g->faces.end(), gone), g->faces.end());
     hadEdges = hadEdges || !g->points.empty();
     g->points.erase(std::remove_if(g->points.begin(), g->points.end(), gone), g->points.end());
-    if(GroupsInOrder(g->opA, hg) && (!hadEdges || !g->edges.empty() || !g->faces.empty() || !g->points.empty()) &&
+    hadEdges = hadEdges || !g->profiles.empty();
+    g->profiles.erase(std::remove_if(g->profiles.begin(), g->profiles.end(), gone),
+                      g->profiles.end());
+    if(GroupsInOrder(g->opA, hg) && (!hadEdges || !g->edges.empty() || !g->faces.empty() || !g->points.empty() ||
+                                  !g->profiles.empty()) &&
        EntityExists(g->predef.origin) &&
        EntityExists(g->predef.entityB) &&
        EntityExists(g->predef.entityC))
