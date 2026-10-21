@@ -274,3 +274,101 @@ TEST_CASE(ghost_solid) {
     Shot("ghost-2-pending", Box{});
     g->regenPending = false;
 }
+
+// M3's features (fillet, chamfer, shell, draft, hole) on box.slvs, a 10 x 20 x 30 box, and
+// holebox.slvs, the same with a point sketched on its top at (5, 10, 30).
+static hEntity BoxRemap(uint32_t request, int remap) {
+    for(hGroup hg : SK.groupOrder) {
+        Group *g = SK.GetGroup(hg);
+        if(g->type == Group::Type::EXTRUDE) {
+            return g->Remap(request ? hRequest{ request }.entity(0) : Entity::NO_ENTITY, remap);
+        }
+    }
+    return {};
+}
+
+static void FrontIso() {
+    Driver::Key("Shift+1");
+    Driver::Key("Shift+7");
+    Driver::Key("Home");
+}
+
+// The viewport, with the mouse moved off the model so nothing is hovered.
+static Box Viewport() {
+    Driver::Move(20, 300);
+    Box b;
+    b.Add(0, 30, 900, Driver::WindowSize().y - 40);
+    return b;
+}
+
+TEST_CASE(m3_features) {
+    if(!Begin()) return;
+    CHECK_LOAD("box.slvs");
+    Driver::ClickMenu({ "View", "Tool Shelf" });
+    Shot("m3-1-shelf", Panel("Tools"));
+    Menu("New Group", "m3-2-new-group-menu");
+    Driver::ClickMenu({ "View", "Tool Shelf" });
+
+    // A fillet on the top front edge, radius 3: the solid, its tangent lines and axis.
+    FrontIso();
+    ClickAt(At({ 5, 0, 30 }));
+    Driver::Key("Shift+F");
+    EditField("feature-size", "3");
+    Driver::Key("Escape");
+    Shot("m3-3-fillet-viewport", Viewport());
+    Shot("m3-4-fillet-properties", Panel("Properties"));
+    EditField("feature-size", "50");
+    Shot("m3-5-fillet-problem", Panel("Problems"));
+}
+
+TEST_CASE(m3_shell_draft) {
+    if(!Begin()) return;
+    CHECK_LOAD("box.slvs");
+    Driver::Key("Shift+7");
+    ClickAt(At({ 5, 10, 30 }));
+    Driver::ClickMenu({ "New Group", "Shell" });
+    EditField("feature-size", "1");
+    Driver::Key("Escape");
+    FrontIso();
+    Shot("m3-6-shell-viewport", Viewport());
+    Shot("m3-7-shell-properties", Panel("Properties"));
+}
+
+TEST_CASE(m3_draft) {
+    if(!Begin()) return;
+    CHECK_LOAD("box.slvs");
+    SS.GW.ClearSelection();
+    for(uint32_t r : { 5, 6, 7, 8 }) {
+        GraphicsWindow::Selection sel = {};
+        sel.entity = BoxRemap(r, Group::REMAP_LINE_TO_FACE);
+        SS.GW.selection.Add(&sel);
+    }
+    Driver::ClickMenu({ "New Group", "Draft Faces" });
+    EditField("feature-size", "8");
+    Driver::Key("Escape");
+    FrontIso();
+    Shot("m3-8-draft-viewport", Viewport());
+    Shot("m3-9-draft-properties", Panel("Properties"));
+}
+
+TEST_CASE(m3_hole) {
+    if(!Begin()) return;
+    CHECK_LOAD("holebox.slvs");
+    ClickAt(At({ 5, 10, 30 }));
+    Driver::ClickMenu({ "New Group", "Hole" });
+    Driver::ClickItem("counterbore");
+    EditField("hole-thread", "M4");
+    EditField("hole-head-diameter", "8");
+    Driver::Key("Escape");
+    FrontIso();
+    Shot("m3-10-hole-viewport", Viewport());
+    Shot("m3-11-hole-properties", Panel("Properties"));
+}
+
+TEST_CASE(m3_density) {
+    if(!Begin()) return;
+    CHECK_LOAD("box.slvs");
+    Driver::Key("Ctrl+,");
+    RevealIn("Preferences", "density");
+    Shot("m3-12-preferences-kernel-density", Panel("Preferences"));
+}

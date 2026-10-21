@@ -1,0 +1,72 @@
+{
+ "title": "SolveSpace NG review 5: M3 features",
+ "brief": "Fillet, chamfer, shell, draft, hole and mass properties: new since your last round, each shown dark (left) and light (right). For every row give a verdict (keep, tweak or rethink); where the question has a PROPOSAL, answer yes or no in the proposal column; notes are optional. That is a complete answer.",
+ "blind": false,
+ "columns": [
+  "verdict [keep/tweak/rethink]",
+  "proposal [yes/no]",
+  "note"
+ ],
+ "sheets": [
+  {
+   "image": "/tmp/claude-1002/-home-programming-solvespace/c582823e-99bd-43cc-9f69-ae7cbc9a8c39/scratchpad/sheets/m3-1-shelf.png",
+   "label": "shelf",
+   "question": "Tool shelf: five new tools at the end of the solid groups (fillet, chamfer, shell, draft, hole), with new icons. PROPOSAL: give them their own 'Features' block on the shelf, apart from the sketch-to-solid groups (extrude, revolve...)."
+  },
+  {
+   "image": "/tmp/claude-1002/-home-programming-solvespace/c582823e-99bd-43cc-9f69-ae7cbc9a8c39/scratchpad/sheets/m3-2-new-group-menu.png",
+   "label": "new group menu",
+   "question": "New Group menu: Fillet Edges, Chamfer Edges, Shell, Draft Faces, Hole. Fillet is Shift+F (Onshape's); Hole has no key, because Shift+H was freed in review 4. PROPOSAL: bind Hole to Shift+H anyway (Fusion uses H, which is Horizontal here)."
+  },
+  {
+   "image": "/tmp/claude-1002/-home-programming-solvespace/c582823e-99bd-43cc-9f69-ae7cbc9a8c39/scratchpad/sheets/m3-3-fillet-viewport.png",
+   "label": "fillet",
+   "question": "A 3 mm fillet on the box's top front edge. The two lines bounding the round are its tangent lines, which later sketches can constrain to; the axis line is inside the solid. The sharp edge is hidden while the fillet is shown. PROPOSAL: draw these derived lines quieter (thin and dashed, like construction lines), since they are references, not edges."
+  },
+  {
+   "image": "/tmp/claude-1002/-home-programming-solvespace/c582823e-99bd-43cc-9f69-ae7cbc9a8c39/scratchpad/sheets/m3-4-fillet-properties.png",
+   "label": "fillet properties",
+   "question": "Fillet in Properties: radius (accepts expressions) and the edge count. PROPOSAL: list the edges, each clickable to select it, with a remove button."
+  },
+  {
+   "image": "/tmp/claude-1002/-home-programming-solvespace/c582823e-99bd-43cc-9f69-ae7cbc9a8c39/scratchpad/sheets/m3-5-fillet-problem.png",
+   "label": "fillet problem",
+   "question": "Problems after setting the radius to 50 (too big): the solid stays as it was and the panel opens. Is the wording clear?"
+  },
+  {
+   "image": "/tmp/claude-1002/-home-programming-solvespace/c582823e-99bd-43cc-9f69-ae7cbc9a8c39/scratchpad/sheets/m3-6-shell-viewport.png",
+   "label": "shell",
+   "question": "A 1 mm shell with the top face left open (picked by clicking the face)."
+  },
+  {
+   "image": "/tmp/claude-1002/-home-programming-solvespace/c582823e-99bd-43cc-9f69-ae7cbc9a8c39/scratchpad/sheets/m3-7-shell-properties.png",
+   "label": "shell properties",
+   "question": "Shell in Properties: wall thickness and how many faces are open (no face open makes a sealed hollow). PROPOSAL: a direction choice (inside / outside / both sides), as in Fusion; today it is always inside."
+  },
+  {
+   "image": "/tmp/claude-1002/-home-programming-solvespace/c582823e-99bd-43cc-9f69-ae7cbc9a8c39/scratchpad/sheets/m3-8-draft-viewport.png",
+   "label": "draft",
+   "question": "An 8 degree draft on all four sides: they lean in going up from the sketch plane."
+  },
+  {
+   "image": "/tmp/claude-1002/-home-programming-solvespace/c582823e-99bd-43cc-9f69-ae7cbc9a8c39/scratchpad/sheets/m3-9-draft-properties.png",
+   "label": "draft properties",
+   "question": "Draft in Properties: angle in degrees, positive narrows along the extrusion, negative widens."
+  },
+  {
+   "image": "/tmp/claude-1002/-home-programming-solvespace/c582823e-99bd-43cc-9f69-ae7cbc9a8c39/scratchpad/sheets/m3-10-hole-viewport.png",
+   "label": "hole",
+   "question": "A counterbored M4 hole, through all, with a modelled thread, at a point sketched on the top face."
+  },
+  {
+   "image": "/tmp/claude-1002/-home-programming-solvespace/c582823e-99bd-43cc-9f69-ae7cbc9a8c39/scratchpad/sheets/m3-11-hole-properties.png",
+   "label": "hole properties",
+   "question": "Hole in Properties: kind, thread typed as M4 / M4x0.5 / none (it sets the bore), depth (blank = through all), head size, and a flip. PROPOSAL: a print clearance field that widens holes and threads by a set amount, until the fit table arrives in M5."
+  },
+  {
+   "image": "/tmp/claude-1002/-home-programming-solvespace/c582823e-99bd-43cc-9f69-ae7cbc9a8c39/scratchpad/sheets/m3-12-preferences-kernel-density.png",
+   "label": "density",
+   "question": "Preferences: the density used by Inspect > Mass Properties (default 1.24 g/cm3, PLA), under the kernel choice. PROPOSAL: a material list (PLA, PETG, ABS, ASA, nylon, or a custom value) instead of a bare number."
+  }
+ ]
+}

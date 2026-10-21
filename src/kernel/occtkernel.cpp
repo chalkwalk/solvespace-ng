@@ -897,7 +897,7 @@ std::shared_ptr<KernelShape> Holes(const KernelJob &job, std::string *problem) {
                    surface.Plane().Distance(floor) > 1e-6) {
                     continue;
                 }
-                out->faces.Bind(ex.Current(), FaceInfo{ h.seat, info ? info->color : RgbaColor{} });
+                out->faces.Bind(ex.Current(), FaceInfo{ h.seat, job.color });
             }
         }
     }

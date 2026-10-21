@@ -167,6 +167,13 @@ TEST_CASE(a_counterbore_seat_is_named) {
     spec.headDepth       = 3;
     Spec(g, spec);
     CHECK_TRUE(FaceNames(g).count(g->Remap(g->points[0], Group::REMAP_HOLE_SEAT).v) == 1);
+    // In the solid's colour, as the rest of the hole.
+    for(const STriangle &t : g->runningMesh.l) {
+        if(t.meta.face == g->Remap(g->points[0], Group::REMAP_HOLE_SEAT).v) {
+            CHECK_TRUE(t.meta.color.Equals(g->color));
+            break;
+        }
+    }
 }
 
 TEST_CASE(two_points_make_two_holes) {
