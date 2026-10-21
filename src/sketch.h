@@ -977,6 +977,7 @@ public:
         DIM_SOLID      = 13,
         HIDDEN_EDGE    = 14,
         OUTLINE        = 15,
+        REFERENCE      = 16, // the lines and points features derive (M3, review 5)
 
         FIRST_CUSTOM   = 0x100
     };

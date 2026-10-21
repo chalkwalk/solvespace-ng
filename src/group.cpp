@@ -1193,6 +1193,7 @@ void Group::MakeExtrusionLines(EntityList *el, hEntity in) {
 void Group::AddFeatureLine(EntityList *el, hEntity edge, int which, Vector a, Vector b) {
     Entity en = {};
     en.group  = h;
+    en.style  = hStyle{ Style::REFERENCE };
     en.type   = Entity::Type::POINT_N_COPY;
     en.h      = Remap(edge, which + 10);
     en.numPoint = a;
@@ -1212,6 +1213,7 @@ void Group::AddFeatureLine(EntityList *el, hEntity edge, int which, Vector a, Ve
 void Group::AddFeatureFace(EntityList *el, hEntity face, int which, Vector point, Vector normal) {
     Entity en   = {};
     en.group    = h;
+    en.style    = hStyle{ Style::REFERENCE };
     en.type     = Entity::Type::POINT_N_COPY;
     en.h        = Remap(face, which + 10);
     en.numPoint = point;
@@ -1320,6 +1322,7 @@ void Group::MakeHoleEntities(EntityList *el) {
         }
         Entity en   = {};
         en.group    = h;
+        en.style    = hStyle{ Style::REFERENCE };
         en.type     = Entity::Type::POINT_N_COPY;
         en.h        = Remap(he, REMAP_HOLE_TOP);
         en.numPoint = p;

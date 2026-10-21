@@ -25,6 +25,7 @@ const Style::Default Style::Defaults[] = {
     { { DIM_SOLID },    "DimSolid",     RGBf(0.1, 0.1, 0.1), 1.0, 0, true,  StipplePattern::CONTINUOUS },
     { { HIDDEN_EDGE },  "HiddenEdge",   RGBf(0.8, 0.8, 0.8), 1.0, 1, true,  StipplePattern::DASH },
     { { OUTLINE },      "Outline",      RGBf(0.8, 0.8, 0.8), 3.0, 5, true,  StipplePattern::CONTINUOUS },
+    { { REFERENCE },    "Reference",    RGBf(0.1, 0.7, 0.1), 1.0, 0, true,  StipplePattern::SHORT_DASH },
     { { 0 },            NULL,           RGBf(0.0, 0.0, 0.0), 0.0, 0, true,  StipplePattern::CONTINUOUS }
 };
 

@@ -313,3 +313,19 @@ TEST_CASE(a_rounded_edge_is_hidden_while_the_fillet_is_shown) {
 }
 
 #endif
+
+#if defined(HAVE_OCCT)
+// Review 5: derived lines are references, drawn quieter than edges: thin and dashed.
+TEST_CASE(derived_lines_are_drawn_as_references) {
+    CHECK_LOAD("box.slvs");
+    SS.kernelKind = KernelKind::OCCT;
+    hEntity edge = Edge(5, Group::REMAP_TOP);
+    Group  *g    = MakeFeature(Command::GROUP_FILLET, { edge });
+    hEntity line = g->Remap(edge, Group::REMAP_FILLET_TANGENT_1);
+    hStyle  hs   = Style::ForEntity(line);
+    CHECK_TRUE(hs.v == Style::REFERENCE);
+    Style *ref = Style::Get(hs), *edgeStyle = Style::Get(hStyle{ Style::ACTIVE_GRP });
+    CHECK_TRUE(ref->stippleType != StipplePattern::CONTINUOUS);
+    CHECK_TRUE(ref->width < edgeStyle->width);
+}
+#endif
