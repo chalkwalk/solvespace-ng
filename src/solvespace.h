@@ -700,6 +700,8 @@ public:
 
     // Regenerating solids on a worker thread while dragging (src/regen.cpp, AGENTS.md 6).
     bool backgroundRegenEnabled = false; // NG turns it on; stock SolveSpace never uses it
+    // The geometry kernel solids are made with (kernel/kernel.h); NG may choose OCCT.
+    KernelKind kernelKind = KernelKind::SOLVESPACE;
     bool BackgroundRegenAllowed();
     void SubmitBackgroundRegen(const std::vector<hGroup> &groups);
     // Applies a finished background regeneration if it is still the newest; true if anything

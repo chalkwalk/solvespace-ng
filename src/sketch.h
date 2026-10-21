@@ -266,6 +266,11 @@ public:
     SMesh           thisMesh;
     SMesh           runningMesh;
 
+    // The OCCT kernel's B-reps (kernel/kernel.h); its meshes above are their tessellations.
+    std::shared_ptr<const KernelShape> thisShape;
+    std::shared_ptr<const KernelShape> runningShape;
+    bool            runningTessellated = false;
+
     bool            displayDirty;
     SMesh           displayMesh;
     SOutlineList    displayOutlines;

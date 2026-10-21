@@ -429,6 +429,7 @@ int main(int argc, char **argv) {
         SS.showToolbar = false;
         SS.checkClosedContour = false;
         SS.backgroundRegenEnabled = false;
+        SS.kernelKind = KernelKind::SOLVESPACE;
 #endif
 
         Test::Helper helper = {};

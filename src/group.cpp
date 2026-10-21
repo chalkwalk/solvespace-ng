@@ -28,6 +28,9 @@ void Group::Clear() {
     runningMesh.Clear();
     thisShell.Clear();
     runningShell.Clear();
+    thisShape.reset();
+    runningShape.reset();
+    runningTessellated = false;
     displayMesh.Clear();
     displayOutlines.Clear();
     impMesh.Clear();

@@ -167,6 +167,11 @@ if(ENABLE_GUI OR ENABLE_CLI)
         ${CMAKE_CURRENT_BINARY_DIR})
     target_link_libraries(solvespace-core PRIVATE slvs-solver)
     target_link_libraries(solvespace-core PUBLIC slvs_deps)
+    if(ENABLE_OCCT)
+        target_link_libraries(solvespace-core PUBLIC occt)
+        target_sources(solvespace-core PRIVATE kernel/occtkernel.cpp)
+        target_compile_definitions(solvespace-core PUBLIC HAVE_OCCT)
+    endif()
 
     # solvespace translations
 

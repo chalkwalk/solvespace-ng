@@ -95,6 +95,12 @@ set(testsuite_SOURCES
     group/translate_nd/test.cpp
 )
 
+if(ENABLE_OCCT)
+    list(APPEND testsuite_SOURCES
+        kernel/occt/test.cpp
+        kernel/parity/test.cpp)
+endif()
+
 add_executable(solvespace-testsuite
     ${testsuite_SOURCES}
     $<TARGET_PROPERTY:resources,EXTRA_SOURCES>)

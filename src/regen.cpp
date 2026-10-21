@@ -35,6 +35,7 @@ struct RegenItem {
 
 struct RegenChain {
     uint64_t                                generation = 0;
+    KernelKind                              kernel     = KernelKind::SOLVESPACE;
     double                                  chordTol   = 0;
     int                                     maxSegments = 0;
     std::vector<std::unique_ptr<RegenItem>> items;
@@ -51,6 +52,7 @@ struct RegenChain {
             if(item->prevIndex >= 0) {
                 job.prevShell = &items[item->prevIndex]->result.running.shell;
                 job.prevMesh  = &items[item->prevIndex]->result.running.mesh;
+                job.prevShape = items[item->prevIndex]->result.running.shape;
             } else {
                 job.prevShell = &item->prevShell;
                 job.prevMesh  = &item->prevMesh;
@@ -59,6 +61,7 @@ struct RegenChain {
                 if(item->sourceIndex >= 0) {
                     job.sourceShell = &items[item->sourceIndex]->result.thisBody.shell;
                     job.sourceMesh  = &items[item->sourceIndex]->result.thisBody.mesh;
+                    job.sourceShape = items[item->sourceIndex]->result.thisBody.shape;
                 } else {
                     job.sourceShell = &item->sourceShell;
                     job.sourceMesh  = &item->sourceMesh;
@@ -68,7 +71,7 @@ struct RegenChain {
                 job.impShell = &item->impShell;
                 job.impMesh  = &item->impMesh;
             }
-            Kernel().Run(job, item->namer, &item->result);
+            Kernel(kernel).Run(job, item->namer, &item->result);
             if(item->namer.missed) {
                 missed = true;
                 break;
@@ -127,6 +130,7 @@ bool SolveSpaceUI::BackgroundRegenAllowed() {
 void SolveSpaceUI::SubmitBackgroundRegen(const std::vector<hGroup> &groups) {
     auto chain         = std::make_shared<RegenChain>();
     chain->generation  = ++gGeneration;
+    chain->kernel      = kernelKind;
     chain->chordTol    = ChordTolMm();
     chain->maxSegments = GetMaxSegments();
     for(hGroup hg : groups) {

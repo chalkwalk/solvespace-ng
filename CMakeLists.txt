@@ -453,6 +453,19 @@ if(ENABLE_NG_GUI)
     set(BUILD_SHARED_LIBS ${NG_SAVED_BUILD_SHARED_LIBS})
 endif()
 
+# Open CASCADE, for the OCCT kernel (desktop only; the web build keeps SolveSpace's own kernel)
+
+if(EMSCRIPTEN)
+    set(ENABLE_OCCT_DEFAULT OFF)
+else()
+    set(ENABLE_OCCT_DEFAULT ON)
+endif()
+set(ENABLE_OCCT ${ENABLE_OCCT_DEFAULT} CACHE BOOL
+    "Whether to build the Open CASCADE kernel (extlib/occt)")
+if(ENABLE_OCCT)
+    include(OcctVendored)
+endif()
+
 # code coverage
 
 if(ENABLE_COVERAGE)

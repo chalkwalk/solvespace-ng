@@ -35,3 +35,7 @@
 [submodule "extlib/lunasvg"]
 	path = extlib/lunasvg
 	url = https://github.com/sammycage/lunasvg.git
+[submodule "extlib/occt"]
+	path = extlib/occt
+	url = https://github.com/Open-Cascade-SAS/OCCT.git
+	shallow = true

@@ -145,6 +145,7 @@ KernelJob Group::BuildKernelJob() {
         job.sourceSuppressed = srcg->suppress;
         job.sourceShell      = &srcg->thisShell;
         job.sourceMesh       = &srcg->thisMesh;
+        job.sourceShape      = srcg->thisShape;
         job.stepTrans        = Vector::From(h.param(0), h.param(1), h.param(2));
         if(type == Type::ROTATE) {
             job.stepTheta = SK.GetParam(h.param(3))->val;
@@ -209,6 +210,7 @@ KernelJob Group::BuildKernelJob() {
     Group *prevg      = srcg->RunningMeshGroup();
     job.prevShell     = &prevg->runningShell;
     job.prevMesh      = &prevg->runningMesh;
+    job.prevShape     = prevg->runningShape;
     return job;
 }
 
@@ -227,6 +229,9 @@ void Group::ApplyKernelResult(KernelResult *result) {
     result->thisBody.mesh  = {};
     result->running.shell  = {};
     result->running.mesh   = {};
+    thisShape          = std::move(result->thisBody.shape);
+    runningShape       = std::move(result->running.shape);
+    runningTessellated = result->running.tessellated;
 
     // If the Boolean failed, then we should note that in the text screen
     // for this group.
@@ -277,10 +282,12 @@ void Group::GenerateDisplayItems() {
             STriangle *t;
             for(t = runningMesh.l.First(); t; t = runningMesh.l.NextAfter(t)) {
                 STriangle trn = *t;
-                Vector n = trn.Normal();
-                trn.an = n;
-                trn.bn = n;
-                trn.cn = n;
+                if(!runningTessellated) {
+                    Vector n = trn.Normal();
+                    trn.an = n;
+                    trn.bn = n;
+                    trn.cn = n;
+                }
                 displayMesh.AddTriangle(&trn);
             }
 
@@ -288,7 +295,7 @@ void Group::GenerateDisplayItems() {
 
             if(SS.GW.showEdges || SS.GW.showOutlines) {
                 SOutlineList rawOutlines = {};
-                if(!runningMesh.l.IsEmpty()) {
+                if(!runningMesh.l.IsEmpty() && !runningTessellated) {
                     // Triangle mesh only; no shell or emphasized edges.
                     runningMesh.MakeOutlinesInto(&rawOutlines, EdgeKind::EMPHASIZED);
                 } else {

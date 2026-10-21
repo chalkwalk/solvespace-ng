@@ -633,6 +633,14 @@ void StepFileWriter::ExportSurfacesTo(const Platform::Path &filename) {
     Group *g = SK.GetGroup(SS.GW.activeGroup);
     SShell *shell = &(g->runningShell);
 
+    if(g->runningShape) {
+        // The OCCT kernel's B-rep, written by OCCT.
+        if(!KernelExportStep(g->runningShape, filename, 1.0 / SS.exportScale)) {
+            Error("Couldn't write to '%s'", filename.raw.c_str());
+        }
+        return;
+    }
+
     if(shell->surface.IsEmpty()) {
         Error("The model does not contain any surfaces to export.%s",
               !g->runningMesh.l.IsEmpty()

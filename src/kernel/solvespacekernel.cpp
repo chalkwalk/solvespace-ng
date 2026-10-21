@@ -170,7 +170,7 @@ class SolveSpaceKernel final : public IKernel {
 public:
     void Run(const KernelJob &job, FaceNamer &namer, KernelResult *result) override {
         SShell &thisShell = result->thisBody.shell, &runningShell = result->running.shell;
-        SMesh  &thisMesh  = result->thisBody.mesh, &runningMesh = result->running.mesh;
+        SMesh  &thisMesh  = result->thisBody.mesh;
         result->Clear();
         SBezierLoopSetSet *sblss = job.loops;
         SBezierLoopSet    *sbls;
@@ -247,36 +247,7 @@ public:
             }
             result->running.booleanFailed = runningShell.booleanFailed;
         } else {
-            SMesh prevm, thism;
-            prevm = {};
-            thism = {};
-
-            prevm.MakeFromCopyOf(job.prevMesh);
-            job.prevShell->TriangulateInto(&prevm);
-
-            thism.MakeFromCopyOf(&thisMesh);
-            thisShell.TriangulateInto(&thism);
-
-            SMesh outm = {};
-            Combine<SMesh>(job, &prevm, &thism, &outm);
-
-            // Remove degenerate triangles; if we don't, they'll get split in SnapToMesh
-            // in every generated group, resulting in polynomial increase in triangle count,
-            // and corresponding slowdown.
-            outm.RemoveDegenerateTriangles();
-
-            if(job.sourceCombine != KernelCombine::ASSEMBLE) {
-                // And make sure that the output mesh is vertex-to-vertex.
-                SKdNode *root = SKdNode::From(&outm);
-                root->SnapToMesh(&outm);
-                root->MakeMeshInto(&runningMesh);
-            } else {
-                runningMesh.MakeFromCopyOf(&outm);
-            }
-
-            outm.Clear();
-            thism.Clear();
-            prevm.Clear();
+            CombineAsMeshes(job, result);
         }
     }
 
@@ -301,9 +272,62 @@ public:
 
 }
 
-IKernel &Kernel() {
+void CombineAsMeshes(const KernelJob &job, KernelResult *result) {
+    SMesh prevm, thism;
+    prevm = {};
+    thism = {};
+
+    prevm.MakeFromCopyOf(job.prevMesh);
+    job.prevShell->TriangulateInto(&prevm);
+
+    thism.MakeFromCopyOf(&result->thisBody.mesh);
+    result->thisBody.shell.TriangulateInto(&thism);
+
+    SMesh outm = {};
+    Combine<SMesh>(job, &prevm, &thism, &outm);
+
+    // Remove degenerate triangles; if we don't, they'll get split in SnapToMesh
+    // in every generated group, resulting in polynomial increase in triangle count,
+    // and corresponding slowdown.
+    outm.RemoveDegenerateTriangles();
+
+    SMesh &runningMesh = result->running.mesh;
+    if(job.sourceCombine != KernelCombine::ASSEMBLE) {
+        // And make sure that the output mesh is vertex-to-vertex.
+        SKdNode *root = SKdNode::From(&outm);
+        root->SnapToMesh(&outm);
+        root->MakeMeshInto(&runningMesh);
+    } else {
+        runningMesh.MakeFromCopyOf(&outm);
+    }
+
+    outm.Clear();
+    thism.Clear();
+    prevm.Clear();
+}
+
+IKernel &SolveSpaceKernelInstance() {
     static SolveSpaceKernel kernel;
     return kernel;
+}
+
+#if !defined(HAVE_OCCT)
+IKernel &Kernel(KernelKind) {
+    return SolveSpaceKernelInstance();
+}
+
+bool KernelAvailable(KernelKind kind) {
+    return kind == KernelKind::SOLVESPACE;
+}
+
+bool KernelExportStep(const std::shared_ptr<const KernelShape> &, const Platform::Path &,
+                      double) {
+    return false;
+}
+#endif
+
+IKernel &Kernel() {
+    return Kernel(SS.kernelKind);
 }
 
 }
