@@ -10,7 +10,9 @@
 namespace SolveSpace {
 namespace Ui {
 
-enum class PanelEdge { LEFT, RIGHT, BOTTOM_RIGHT, CENTER, TOP };
+// RIGHT_TOP and RIGHT_BELOW stack two panels on the right (the Outliner over Properties, as
+// Blender and SketchUp; owner review 4, layout c).
+enum class PanelEdge { LEFT, RIGHT, RIGHT_TOP, RIGHT_BELOW, BOTTOM_RIGHT, CENTER, TOP };
 
 class Panel {
 public:

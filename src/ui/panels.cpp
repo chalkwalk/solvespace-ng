@@ -14,14 +14,25 @@ Panel::Panel(std::string name, std::string title, PanelEdge edge, float width,
     : name(std::move(name)), title(std::move(title)), edge(edge), width(width),
       shownByDefault(shownByDefault), shown(shownByDefault), remembersShown(remembersShown) {}
 
+// Where the panels were left is saved per layout, so a new default layout isn't overridden by
+// positions remembered from the old one.
+static const std::string LayoutTag = "c";
+
+static std::string Key(const std::string &name, const char *what) {
+    return "NG_Panel_" + name + "_" + LayoutTag + what;
+}
+
+// The height of the top panel of the right-hand stack.
+static const float StackTopHeight = 220;
+
 void Panel::Load() {
     auto settings = Platform::GetSettings();
     shown  = remembersShown ? settings->ThawBool("NG_Panel_" + name + "_Shown", shownByDefault)
                             : shownByDefault;
-    savedX = (float)settings->ThawFloat("NG_Panel_" + name + "_X", -1);
-    savedY = (float)settings->ThawFloat("NG_Panel_" + name + "_Y", -1);
-    savedW = (float)settings->ThawFloat("NG_Panel_" + name + "_W", -1);
-    savedH = (float)settings->ThawFloat("NG_Panel_" + name + "_H", -1);
+    savedX = (float)settings->ThawFloat(Key(name, "X"), -1);
+    savedY = (float)settings->ThawFloat(Key(name, "Y"), -1);
+    savedW = (float)settings->ThawFloat(Key(name, "W"), -1);
+    savedH = (float)settings->ThawFloat(Key(name, "H"), -1);
 }
 
 void Panel::SetShown(bool s) {
@@ -41,13 +52,22 @@ bool Panel::Begin() {
         float top = ImGui::GetFrameHeight() + 16;
         float x   = edge == PanelEdge::LEFT ? 12.0f : io.DisplaySize.x - width - 12;
         float h   = std::max(200.0f, std::min(520.0f, io.DisplaySize.y - top - 60));
-        if(edge == PanelEdge::CENTER || edge == PanelEdge::TOP) {
+        if(edge == PanelEdge::RIGHT_TOP) {
+            h = StackTopHeight;
+        } else if(edge == PanelEdge::RIGHT_BELOW) {
+            // Below the stack's top panel when that is shown, down to the status bar.
+            if(OutlinerPanel().Shown()) top += StackTopHeight + 10;
+            h = std::max(200.0f, io.DisplaySize.y - top - 52);
+        } else if(edge == PanelEdge::CENTER || edge == PanelEdge::TOP) {
             // Over the middle of the viewport, clear of the side panels.
             x = (io.DisplaySize.x - std::min(width, io.DisplaySize.x - 24)) / 2;
         } else if(edge == PanelEdge::BOTTOM_RIGHT) {
-            // Under the right-hand panel, above the status bar.
+            // At the bottom, left of the right-hand stack (not over Properties), above the
+            // status bar.
             h   = 220;
             top = std::max(top, io.DisplaySize.y - h - 52);
+            if(OutlinerPanel().Shown() || PropertiesPanel().Shown()) x -= 320 + 12;
+            x = std::max(12.0f, x);
         }
         ImGui::SetNextWindowPos(ImVec2(x, top), ImGuiCond_FirstUseEver);
         if(!autoSize) ImGui::SetNextWindowSize(ImVec2(width, h), ImGuiCond_FirstUseEver);
@@ -88,10 +108,10 @@ void Panel::End() {
     if(p.x != savedX || p.y != savedY || s.x != savedW || s.y != savedH) {
         savedX = p.x; savedY = p.y; savedW = s.x; savedH = s.y;
         auto settings = Platform::GetSettings();
-        settings->FreezeFloat("NG_Panel_" + name + "_X", savedX);
-        settings->FreezeFloat("NG_Panel_" + name + "_Y", savedY);
-        settings->FreezeFloat("NG_Panel_" + name + "_W", savedW);
-        settings->FreezeFloat("NG_Panel_" + name + "_H", savedH);
+        settings->FreezeFloat(Key(name, "X"), savedX);
+        settings->FreezeFloat(Key(name, "Y"), savedY);
+        settings->FreezeFloat(Key(name, "W"), savedW);
+        settings->FreezeFloat(Key(name, "H"), savedH);
     }
     ImGui::End();
 }
@@ -99,7 +119,7 @@ void Panel::End() {
 Panel &ShelfPanel() {
     // Shown or not is SS.showToolbar (View > Show Toolbar), which the core saves.
     static Panel panel = [] {
-        Panel p("Shelf", "Tools", PanelEdge::TOP, 560, /*shownByDefault=*/false,
+        Panel p("Shelf", "Tools", PanelEdge::LEFT, 100, /*shownByDefault=*/false,
                 /*remembersShown=*/false);
         p.autoSize = true;
         return p;
@@ -114,12 +134,13 @@ Panel &ShortcutsPanel() {
 }
 
 Panel &PropertiesPanel() {
-    static Panel panel("Properties", "Properties", PanelEdge::RIGHT, 340, /*shownByDefault=*/true);
+    static Panel panel("Properties", "Properties", PanelEdge::RIGHT_BELOW, 320,
+                       /*shownByDefault=*/true);
     return panel;
 }
 
 Panel &ProblemsPanel() {
-    static Panel panel("Problems", "Problems", PanelEdge::BOTTOM_RIGHT, 340,
+    static Panel panel("Problems", "Problems", PanelEdge::BOTTOM_RIGHT, 320,
                        /*shownByDefault=*/false);
     return panel;
 }
@@ -159,7 +180,7 @@ Panel &TangentArcPanel() {
 }
 
 Panel &OutlinerPanel() {
-    static Panel panel("Outliner", "Outliner", PanelEdge::LEFT, 260, /*shownByDefault=*/true);
+    static Panel panel("Outliner", "Outliner", PanelEdge::RIGHT_TOP, 320, /*shownByDefault=*/true);
     return panel;
 }
 

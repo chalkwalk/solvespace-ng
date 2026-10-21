@@ -151,19 +151,16 @@ TEST_CASE(clicks_beside_the_cube_reach_the_canvas) {
     CHECK_TRUE(SS.GW.selection.n == 0);
 }
 
-TEST_CASE(view_cube_moves_right_of_a_tall_outliner) {
+TEST_CASE(view_cube_moves_right_of_the_tool_column) {
     CHECK_LOAD("line.slvs");
     Driver::Resize(720, 480); // the app's minimum height stops it at 636
     Point2d ws = Driver::WindowSize();
-    // With both side panels there is no free spot: it stays in its corner, on screen.
-    std::optional<Driver::Item> cube = Driver::FindItem("viewcube");
-    CHECK_TRUE(cube && cube->x1 <= ws.x);
-    // Without Properties it moves right of the Outliner, which reaches down beside it.
-    CHECK_TRUE(ClosePanel("Properties"));
-    std::optional<Driver::Item> outliner = Driver::FindItem("Outliner");
-    cube = Driver::FindItem("viewcube");
-    CHECK_TRUE(outliner && cube);
-    if(outliner && cube) CHECK_TRUE(cube->x0 >= outliner->x1 && cube->x1 <= ws.x);
+    // The tool column reaches down beside the cube's corner: the cube moves right of it.
+    CHECK_TRUE(Driver::ClickMenu({ "View", "Tool Shelf" }));
+    std::optional<Driver::Item> tools = Driver::FindItem("Tools");
+    std::optional<Driver::Item> cube  = Driver::FindItem("viewcube");
+    CHECK_TRUE(tools && cube);
+    if(tools && cube) CHECK_TRUE(cube->x0 >= tools->x1 && cube->x1 <= ws.x);
 }
 
 TEST_CASE(shift_digits_snap_to_views_without_a_numpad) {

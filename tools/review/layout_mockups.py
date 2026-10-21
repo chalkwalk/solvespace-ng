@@ -2,6 +2,7 @@
 """Layout mock-ups for an owner review: cut the panels and shelf buttons out of a capture of
 the main window (test/ngui/capture: window-1-overview-<theme>.png, Outliner + Tools +
 Properties shown) and paste them into other arrangements. Mock-ups only: the app is unchanged.
+The coordinates below are those of the layout before review 4 (Outliner left, shelf on top).
 
     python3 tools/review/layout_mockups.py CAPTURE_DIR OUT_DIR
 """

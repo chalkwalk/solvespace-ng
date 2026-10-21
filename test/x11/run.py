@@ -220,7 +220,7 @@ def undo_and_redo_from_the_keyboard(app):
 
 def typing_a_group_name_runs_no_commands(app):
     # The Properties panel's name field; every letter of "plate" is also a tool key.
-    app.click(1090, 110)
+    app.click(1090, 340)  # Properties sits below the Outliner on the right (layout c)
     app.key("ctrl+a")
     app.type("plate")
     app.key("Return")

@@ -102,17 +102,22 @@ Rules:
 ## 5. UI/UX — Decision
 
 **Layout.** The viewport fills the window and everything else floats over it.
-- **Outliner** (left, collapses to icons): Skeleton → Parts → Groups/Features → Sketches. Shows
-  cross-part dependencies.
-- **Properties** (right, follows the selection): editable fields for the selected group, entity,
+- **Placement** (decided by the owner in review 4, 2026-10-17, layout c, as Blender, SketchUp
+  and Plasticity): the Outliner over Properties on the right, the tool shelf as a column on the
+  left, Problems at the bottom beside the stack. Panels remember where they were left, per
+  layout.
+- **Outliner** (top right, collapses to icons): Skeleton → Parts → Groups/Features → Sketches.
+  Shows cross-part dependencies.
+- **Properties** (right, below the Outliner, follows the selection): editable fields for the selected group, entity,
   constraint or joint. Fields accept expressions. Replaces every text-window screen.
 - **Problems**: redundant or conflicting constraints, failed solves, unstable edge references,
   each with one click to highlight the culprits.
 - **Status/HUD bar** (bottom): active tool, the keys available right now (like Blender's status
   bar), DOF count, solver and regeneration state.
 - **Command palette** and **pie menus** float over the viewport. The tool shelf is optional and
-  hidden by default. (Built 2026-10-17: View ▸ Show Toolbar shows a "Tools" panel of Lucide-style
-  icon buttons for every old-toolbar tool; NG never draws the custom toolbar.)
+  hidden by default. (Built 2026-10-17: View ▸ Tool Shelf shows a "Tools" column of icon buttons
+  for every old-toolbar tool, two wide, three in a short window; NG never draws the custom
+  toolbar.)
 - **View cube** (added 2026-10-17, as in Fusion 360, Onshape, Shapr3D and FreeCAD, which all
   show axes with their cube): bottom left of the viewport, where SolveSpace has always drawn its
   X/Y/Z axes, which now start at the cube's -X -Y -Z corner and run along its edges, as in

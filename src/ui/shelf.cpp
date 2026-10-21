@@ -32,44 +32,33 @@ std::function<void()> DrawShelf(const keymap::Keymap &keymap) {
         float       scale = std::max(1.0f, io.DisplayFramebufferScale.x);
         const float icon  = 22;
         IconPalette palette = CurrentIconPalette();
-        // Rows wrap at this width, so a narrow window still shows every button.
-        float maxWidth = std::min(560.0f, io.DisplaySize.x - 24) - st.WindowPadding.x * 2;
-        float rowWidth = 0;
         int   fallbacks = 0;
         const float spacing = 6;
         ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(spacing, spacing));
         std::vector<ShelfSection> sections = BuildShelf(keymap);
-        auto buttonWidth = [&](const ShelfItem &item, ImTextureID tex) {
-            return tex ? icon + st.FramePadding.x * 2
-                       : ImGui::CalcTextSize(item.label.c_str()).x + st.FramePadding.x * 2;
-        };
-        for(size_t si = 0; si < sections.size(); si++) {
-            // A section that doesn't fit whole on this row starts the next one.
-            float sectionWidth = 0;
-            for(const ShelfItem &item : sections[si].items) {
-                if(sectionWidth > 0) sectionWidth += spacing;
-                sectionWidth += buttonWidth(item, Platform::IconTexture(
-                                                      item.icon, (int)(icon * scale + 0.5f), palette));
+        // A column on the left (owner review 4, layout c), two buttons wide, each section
+        // starting a row of its own; a third column when the window is too short for two.
+        float rowHeight = icon + st.FramePadding.y * 2 + spacing;
+        float room = io.DisplaySize.y - (ImGui::GetFrameHeight() + 16) - 52 -
+                     ImGui::GetFrameHeight() - st.WindowPadding.y * 2;
+        int columns = 2;
+        for(;; columns++) {
+            int rows = 0;
+            for(const ShelfSection &sec : sections) {
+                rows += ((int)sec.items.size() + columns - 1) / columns;
             }
-            bool newRow = rowWidth > 0 && rowWidth + spacing + 12 + sectionWidth > maxWidth;
+            float height = rows * rowHeight + (sections.size() - 1) * spacing;
+            if(height <= room || columns >= 6) break;
+        }
+        for(size_t si = 0; si < sections.size(); si++) {
+            if(si > 0) ImGui::Dummy(ImVec2(0, 0)); // a little more space between sections
             for(size_t ii = 0; ii < sections[si].items.size(); ii++) {
                 const ShelfItem &item = sections[si].items[ii];
                 std::string      id    = std::string("##shelf-") + CommandName(item.command);
                 std::string      label = item.label + id;
                 ImTextureID tex =
                     Platform::IconTexture(item.icon, (int)(icon * scale + 0.5f), palette);
-                float width = buttonWidth(item, tex);
-                // A wider gap between sections.
-                float gap = spacing + (ii == 0 && si > 0 ? 12 : 0);
-                if(ii == 0 && newRow) {
-                    rowWidth = 0;
-                } else if(rowWidth > 0 && rowWidth + gap + width <= maxWidth) {
-                    ImGui::SameLine(0, gap);
-                    rowWidth += gap;
-                } else {
-                    rowWidth = 0;
-                }
-                rowWidth += width;
+                if(ii % columns != 0) ImGui::SameLine(0, spacing);
                 bool clicked;
                 if(tex) {
                     clicked = ImGui::ImageButton(id.c_str(), tex, ImVec2(icon, icon), ImVec2(0, 0),

@@ -100,3 +100,12 @@ TEST_CASE(a_culprit_is_listed_by_its_readable_name) {
     CHECK_TRUE(Driver::ClickItem(Ui::ConstraintLabel(*SK.GetConstraint(hc))));
     CHECK_TRUE(SS.GW.selection.n == 1 && SS.GW.selection[0].constraint == hc);
 }
+
+TEST_CASE(problems_open_beside_properties_not_over_it) {
+    CHECK_LOAD("line.slvs");
+    OverConstrainedLine();
+    std::optional<Driver::Item> problems = Driver::FindItem("Problems");
+    std::optional<Driver::Item> props    = Driver::FindItem("Properties");
+    CHECK_TRUE(problems && props);
+    if(problems && props) CHECK_TRUE(problems->x1 <= props->x0);
+}

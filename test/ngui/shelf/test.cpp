@@ -51,10 +51,49 @@ TEST_CASE(a_shelf_button_starts_its_tool) {
 TEST_CASE(each_shelf_section_starts_its_own_row) {
     CHECK_LOAD("line.slvs");
     CHECK_TRUE(ShowShelf());
-    auto y = [](const char *label) { return Driver::FindItem(label)->y0; };
-    CHECK_TRUE(y("Line") < y("Distance / Diameter"));
-    CHECK_TRUE(y("Distance / Diameter") == y("Toggle Reference"));
-    CHECK_TRUE(y("Toggle Reference") < y("Extrude"));
+    auto item = [](const char *label) { return *Driver::FindItem(label); };
+    // A column two (or, in a short window, three) buttons wide; a section starts at the left
+    // of a new row.
+    CHECK_TRUE(item("Line").y0 == item("Rectangle").y0);
+    CHECK_TRUE(item("Rectangle").x0 > item("Line").x0);
+    CHECK_TRUE(item("Distance / Diameter").y0 > item("Split at Intersections").y0);
+    CHECK_TRUE(item("Distance / Diameter").x0 == item("Line").x0);
+    CHECK_TRUE(item("Extrude").y0 > item("Toggle Reference").y0);
+}
+
+TEST_CASE(the_shelf_is_a_column_on_the_left) {
+    // (L1, owner review 4: layout c) Tools on the left, as Blender, SketchUp and Plasticity.
+    CHECK_LOAD("line.slvs");
+    CHECK_TRUE(ShowShelf());
+    std::optional<Driver::Item> tools = Driver::FindItem("Tools");
+    CHECK_TRUE(tools.has_value());
+    if(!tools) return;
+    CHECK_TRUE(tools->x0 < 20);
+    CHECK_TRUE(tools->y1 - tools->y0 > 2 * (tools->x1 - tools->x0));
+    for(const Driver::Item &i : Driver::Items()) {
+        if(i.id.rfind("shelf-", 0) == 0) CHECK_TRUE(i.fullyVisible);
+    }
+}
+
+TEST_CASE(the_shelf_fits_the_smallest_window) {
+    CHECK_LOAD("line.slvs");
+    CHECK_TRUE(ShowShelf());
+    Driver::Resize(640, 480); // the app's minimum size stops it at 720 x 636
+    CHECK_TRUE(ShelfButtons() == 34);
+    for(const Driver::Item &i : Driver::Items()) {
+        if(i.id.rfind("shelf-", 0) == 0) CHECK_TRUE(i.fullyVisible && i.y1 < 636 - 30);
+    }
+}
+
+TEST_CASE(outliner_and_properties_stack_on_the_right) {
+    CHECK_LOAD("line.slvs");
+    Point2d ws = Driver::WindowSize();
+    std::optional<Driver::Item> o = Driver::FindItem("Outliner"), p = Driver::FindItem("Properties");
+    CHECK_TRUE(o && p);
+    if(!o || !p) return;
+    CHECK_TRUE(o->x0 > ws.x / 2 && o->x1 <= ws.x);
+    CHECK_TRUE(p->x0 == o->x0 && p->x1 == o->x1);
+    CHECK_TRUE(p->y0 > o->y1);
 }
 
 TEST_CASE(a_constraint_button_with_nothing_selected_explains) {
