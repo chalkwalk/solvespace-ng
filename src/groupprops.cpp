@@ -129,6 +129,39 @@ bool SolveSpaceUI::SetFeatureSize(hGroup hg, const std::string &expr) {
     return true;
 }
 
+bool SolveSpaceUI::RemoveGroupRef(hGroup hg, hEntity he) {
+    auto lists = [](Group *g) {
+        return std::vector<std::vector<hEntity> *>{ &g->edges, &g->faces, &g->points,
+                                                    &g->profiles };
+    };
+    Group *g = SK.GetGroup(hg);
+    for(size_t i = 0; i < 4; i++) {
+        std::vector<hEntity> *refs = lists(g)[i];
+        auto it = std::find(refs->begin(), refs->end(), he);
+        if(it == refs->end()) continue;
+        size_t least = 1;
+        if(g->type == Group::Type::SHELL) least = 0;
+        if(g->type == Group::Type::LOFT || g->type == Group::Type::SWEEP) least = 2;
+        if(g->type == Group::Type::SWEEP && it == refs->begin()) least = refs->size(); // profile
+        if(refs->size() <= least) {
+            Error(_("This feature needs it; delete the group instead."));
+            return false;
+        }
+        UndoRemember();
+        refs = lists(SK.GetGroup(hg))[i];
+        refs->erase(std::find(refs->begin(), refs->end(), he));
+        MarkGroupDirty(hg);
+        return true;
+    }
+    return false;
+}
+
+void SolveSpaceUI::SetShellSide(hGroup hg, ShellSide side) {
+    UndoRemember();
+    SK.GetGroup(hg)->shellSide = side;
+    MarkGroupDirty(hg);
+}
+
 bool SolveSpaceUI::SetHoleSpec(hGroup hg, const HoleSpec &spec) {
     const char *bad = nullptr;
     if(spec.thread > 0 && (spec.pitch <= 0 || spec.Bore() <= 0)) {

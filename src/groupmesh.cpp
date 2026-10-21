@@ -248,8 +248,9 @@ KernelJob Group::BuildKernelJob() {
                                        pull.WithMagnitude(1) });
         }
     } else if(type == Type::SHELL) {
-        job.op   = KernelJob::Op::SHELL;
-        job.size = valA;
+        job.op        = KernelJob::Op::SHELL;
+        job.size      = valA;
+        job.shellSide = shellSide;
         for(hEntity he : faces) job.faceNames.push_back(he.v);
     } else if(type == Type::LINKED) {
         job.op       = KernelJob::Op::LINKED;

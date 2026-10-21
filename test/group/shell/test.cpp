@@ -98,4 +98,56 @@ TEST_CASE(a_point_on_an_inner_face_follows_a_change_upstream) {
     MoveFront(-5);
     CHECK_EQ_EPS(SK.GetEntity(pt)->PointGetNum().y, -4);
 }
+// Review 5: the wall can go inside (the default), outside, or both sides of the faces.
+TEST_CASE(a_shell_outside_wraps_the_solid) {
+    CHECK_LOAD("box.slvs");
+    SS.kernelKind = KernelKind::OCCT;
+    Group *g = MakeFeature(Command::GROUP_SHELL, { Cap(Group::REMAP_TOP) });
+    Resize(g, "1");
+    SS.SetShellSide(g->h, Group::ShellSide::OUTSIDE);
+    SS.GenerateAll(SolveSpaceUI::Generate::ALL);
+    CHECK_TRUE(g->featureProblem.empty());
+    CHECK_TRUE(fabs(Volume(g) - (12 * 22 * 31 - 6000)) < 0.01);
+    CHECK_TRUE(PlaneIs(g->Remap(SideFace(5), Group::REMAP_SHELL_OUTER), { 0, -1, 0 }, { 0, 1, 0 }));
+    CHECK_TRUE(PlaneIs(Inner(g, SideFace(5)), { 0, 0, 0 }, { 0, 1, 0 }));
+    CHECK_TRUE(FaceNames(g).count(g->Remap(SideFace(5), Group::REMAP_SHELL_OUTER).v) == 1);
+}
+
+TEST_CASE(a_shell_on_both_sides_straddles_the_faces) {
+    CHECK_LOAD("box.slvs");
+    SS.kernelKind = KernelKind::OCCT;
+    Group *g = MakeFeature(Command::GROUP_SHELL, { Cap(Group::REMAP_TOP) });
+    Resize(g, "1");
+    SS.SetShellSide(g->h, Group::ShellSide::BOTH);
+    SS.GenerateAll(SolveSpaceUI::Generate::ALL);
+    CHECK_TRUE(g->featureProblem.empty());
+    // Half a wall out (the rim stays at z = 30), half in.
+    CHECK_TRUE(fabs(Volume(g) - (11 * 21 * 30.5 - 9 * 19 * 29.5)) < 0.01);
+    CHECK_TRUE(PlaneIs(g->Remap(SideFace(5), Group::REMAP_SHELL_OUTER), { 0, -0.5, 0 }, { 0, 1, 0 }));
+    CHECK_TRUE(PlaneIs(Inner(g, SideFace(5)), { 0, 0.5, 0 }, { 0, 1, 0 }));
+}
+
+TEST_CASE(a_closed_shell_outside_keeps_the_solid_as_its_void) {
+    CHECK_LOAD("box.slvs");
+    SS.kernelKind = KernelKind::OCCT;
+    Group *g = MakeFeature(Command::GROUP_SHELL, {});
+    Resize(g, "1");
+    SS.SetShellSide(g->h, Group::ShellSide::OUTSIDE);
+    SS.GenerateAll(SolveSpaceUI::Generate::ALL);
+    CHECK_TRUE(fabs(Volume(g) - (12 * 22 * 32 - 6000)) < 0.01);
+}
+
+TEST_CASE(the_shell_side_survives_save_and_reload) {
+    CHECK_LOAD("box.slvs");
+    SS.kernelKind = KernelKind::OCCT;
+    Group *g = MakeFeature(Command::GROUP_SHELL, {});
+    SS.SetShellSide(g->h, Group::ShellSide::BOTH);
+    hGroup hg = g->h;
+    Platform::Path path = helper->GetAssetPath(__FILE__, "both.slvs", "out");
+    CHECK_TRUE(SS.SaveToFile(path));
+    CHECK_TRUE(SS.LoadFromFile(path));
+    SS.AfterNewFile();
+    CHECK_TRUE(SK.GetGroup(hg)->shellSide == Group::ShellSide::BOTH);
+    remove(path.raw.c_str());
+}
 #endif

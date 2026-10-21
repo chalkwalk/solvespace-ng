@@ -329,3 +329,30 @@ TEST_CASE(derived_lines_are_drawn_as_references) {
     CHECK_TRUE(ref->width < edgeStyle->width);
 }
 #endif
+
+#if defined(HAVE_OCCT)
+// Review 5: Properties lists a feature's edges, faces or points; each can be removed, as long
+// as the feature keeps what it needs.
+TEST_CASE(a_feature_reference_can_be_removed_but_not_the_last) {
+    CHECK_LOAD("box.slvs");
+    SS.kernelKind = KernelKind::OCCT;
+    hEntity a = Edge(5, Group::REMAP_TOP), b = Edge(7, Group::REMAP_TOP);
+    Group  *g = MakeFeature(Command::GROUP_FILLET, { a, b });
+    hGroup  hg = g->h;
+    CHECK_TRUE(SS.RemoveGroupRef(hg, a));
+    CHECK_TRUE(SK.GetGroup(hg)->edges.size() == 1 && SK.GetGroup(hg)->edges[0] == b);
+    CHECK_FALSE(SS.RemoveGroupRef(hg, b));
+    CHECK_TRUE(SK.GetGroup(hg)->edges.size() == 1);
+    SS.UndoUndo();
+    CHECK_TRUE(SK.GetGroup(hg)->edges.size() == 2);
+}
+
+TEST_CASE(a_shell_can_lose_its_last_open_face) {
+    CHECK_LOAD("box.slvs");
+    SS.kernelKind = KernelKind::OCCT;
+    hEntity top = Extrusion()->Remap(Entity::NO_ENTITY, Group::REMAP_TOP);
+    Group  *g   = MakeFeature(Command::GROUP_SHELL, { top });
+    CHECK_TRUE(SS.RemoveGroupRef(g->h, top));
+    CHECK_TRUE(SK.GetGroup(g->h)->faces.empty());
+}
+#endif

@@ -1244,8 +1244,21 @@ void Group::UpdateFaceOut() {
     }
 }
 
+double Group::ShellInner() const {
+    switch(shellSide) {
+        case ShellSide::INSIDE:  return -valA;
+        case ShellSide::OUTSIDE: return 0;
+        case ShellSide::BOTH:    return -valA / 2;
+    }
+    return -valA;
+}
+
+double Group::ShellOuter() const {
+    return ShellInner() + valA;
+}
+
 // A shell's derived entities (AGENTS.md section 6): for every face entity of the groups before
-// it, the inner face, offset by the thickness into the solid. They always exist; with the
+// it, the wall's inner and outer faces, offset from it by ShellInner() and ShellOuter(). They always exist; with the
 // solid's faces not yet known they lie on the outer faces.
 void Group::MakeShellFaces(EntityList *el) {
     UpdateFaceOut();
@@ -1263,7 +1276,9 @@ void Group::MakeShellFaces(EntityList *el) {
         Vector  point  = f->FaceGetPointNum();
         auto    it     = faceOut.find(he.v);
         double  out    = it == faceOut.end() ? 0 : it->second;
-        AddFeatureFace(el, he, REMAP_SHELL_INNER, point.Minus(normal.ScaledBy(out * valA)),
+        AddFeatureFace(el, he, REMAP_SHELL_INNER, point.Plus(normal.ScaledBy(out * ShellInner())),
+                       normal);
+        AddFeatureFace(el, he, REMAP_SHELL_OUTER, point.Plus(normal.ScaledBy(out * ShellOuter())),
                        normal);
     }
 }

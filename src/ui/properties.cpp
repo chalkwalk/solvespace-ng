@@ -62,6 +62,51 @@ static const char *TypeLine(const Group *g) {
     return "";
 }
 
+// What a feature refers to, as a row: the kind of entity and its group.
+static std::string RefLabel(hEntity he) {
+    Entity *e = SK.entity.FindByIdNoOops(he);
+    if(e == nullptr) return "(gone)";
+    const char *kind = "curve";
+    if(e->IsFace()) {
+        kind = "face";
+    } else if(e->IsPoint()) {
+        kind = "point";
+    } else if(e->type == Entity::Type::LINE_SEGMENT) {
+        kind = "line";
+    } else if(e->type == Entity::Type::ARC_OF_CIRCLE) {
+        kind = "arc";
+    } else if(e->type == Entity::Type::CIRCLE) {
+        kind = "circle";
+    }
+    Group *g = SK.group.FindByIdNoOops(e->group);
+    return ssprintf("%s in %s", kind, g ? g->name.c_str() : "?");
+}
+
+// A feature's edges, faces, centres or profiles (review 5): a click selects one, x removes it.
+static void RefList(const char *title, hGroup hg, const std::vector<hEntity> &refs,
+                    std::function<void()> *run) {
+    ImGui::TextDisabled("%s", title);
+    float remove = ImGui::GetFrameHeight();
+    for(hEntity he : refs) {
+        std::string id = ssprintf("%08x", he.v);
+        std::string label = RefLabel(he) + "##ref-" + id;
+        if(ImGui::Selectable(label.c_str(), SS.GW.IsSelected(he), 0,
+                             ImVec2(ImGui::GetContentRegionAvail().x - remove - 4, 0))) {
+            *run = [he] {
+                SS.GW.ClearSelection();
+                GraphicsWindow::Selection sel = {};
+                sel.entity = he;
+                SS.GW.selection.Add(&sel);
+                SS.GW.Invalidate();
+            };
+        }
+        ImGui::SameLine();
+        if(ImGui::SmallButton(("x##remove-" + id).c_str())) {
+            *run = [hg, he] { SS.RemoveGroupRef(hg, he); };
+        }
+    }
+}
+
 static void DrawGroup(Group *g, std::function<void()> *run) {
     hGroup hg   = g->h;
     using Type  = Group::Type;
@@ -170,7 +215,7 @@ static void DrawGroup(Group *g, std::function<void()> *run) {
                 SS.SetHoleSpec(hg, s);
             };
         }
-        ImGui::TextDisabled("%d hole%s", (int)g->points.size(), g->points.size() == 1 ? "" : "s");
+        RefList("hole centres", hg, g->points, run);
         if(!g->featureProblem.empty()) {
             std::string problem = g->featureProblem + ".";
             problem[0]          = (char)toupper(problem[0]);
@@ -191,34 +236,32 @@ static void DrawGroup(Group *g, std::function<void()> *run) {
         std::string size = type == Type::DRAFT ? ssprintf("%.2f", g->valA) : SS.MmToString(g->valA);
         ValueField("##feature-size", size, run,
                    [hg](std::string s) { SS.SetFeatureSize(hg, s); });
-        if(type == Type::FILLET || type == Type::CHAMFER) {
-            ImGui::TextDisabled("%d edge%s", (int)g->edges.size(),
-                                g->edges.size() == 1 ? "" : "s");
-        } else if(type == Type::SHELL && g->faces.empty()) {
-            ImGui::TextDisabled("closed (no face open)");
-        } else if(type == Type::SHELL) {
-            ImGui::TextDisabled("%d face%s open", (int)g->faces.size(),
-                                g->faces.size() == 1 ? "" : "s");
-        } else {
-            ImGui::TextDisabled("%d face%s", (int)g->faces.size(),
-                                g->faces.size() == 1 ? "" : "s");
+        if(type == Type::SHELL) {
+            using S   = Group::ShellSide;
+            auto side = [&](const char *label, S s) {
+                Radio(label, g->shellSide == s, [hg, s] { SS.SetShellSide(hg, s); }, run);
+            };
+            side("inside", S::INSIDE);
+            ImGui::SameLine();
+            side("outside", S::OUTSIDE);
+            ImGui::SameLine();
+            side("both sides", S::BOTH);
         }
-        if(!g->featureProblem.empty()) {
-            std::string problem = g->featureProblem + ".";
-            problem[0]          = (char)toupper(problem[0]);
-            ImGui::PushStyleColor(ImGuiCol_Text,
-                                  ImGui::GetStyleColorVec4(ImGuiCol_PlotLinesHovered));
-            ImGui::TextWrapped("%s", problem.c_str());
-            ImGui::PopStyleColor();
+        if(type == Type::FILLET || type == Type::CHAMFER) {
+            RefList("edges", hg, g->edges, run);
+        } else if(type == Type::SHELL) {
+            RefList(g->faces.empty() ? "no face open (a sealed hollow)" : "faces left open", hg,
+                    g->faces, run);
+        } else {
+            RefList("faces", hg, g->faces, run);
         }
     }
 
     if(type == Type::LOFT || type == Type::SWEEP) {
-        int n = (int)g->profiles.size();
         if(type == Type::LOFT) {
-            ImGui::TextDisabled("%d profiles", n);
+            RefList("profiles, in order", hg, g->profiles, run);
         } else {
-            ImGui::TextDisabled("a profile along %d path curve%s", n - 1, n == 2 ? "" : "s");
+            RefList("profile, then the path", hg, g->profiles, run);
         }
         if(!g->featureProblem.empty()) {
             std::string problem = g->featureProblem + ".";

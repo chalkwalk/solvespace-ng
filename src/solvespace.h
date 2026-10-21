@@ -506,6 +506,10 @@ public:
     bool SetHelixPitch(hGroup hg, const std::string &expr); // in display units
     bool SetFeatureSize(hGroup hg, const std::string &expr); // fillet radius, chamfer distance
     bool SetHoleSpec(hGroup hg, const HoleSpec &spec);      // checked; one undo step
+    void SetShellSide(hGroup hg, ShellSide side);
+    // Takes an edge, face, centre or profile out of a feature group; false (with a message) if
+    // the feature would be left without what it needs. One undo step.
+    bool RemoveGroupRef(hGroup hg, hEntity he);
     enum class HoleField { DIAMETER, DEPTH, HEAD_DIAMETER, HEAD_DEPTH, HEAD_ANGLE, THREAD };
     // One field as typed: lengths in the document's units (depth blank or 0: through all), the
     // angle in degrees, the thread as "M4" (ISO coarse pitch), "M4x0.5", or "none".

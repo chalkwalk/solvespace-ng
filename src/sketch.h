@@ -287,6 +287,12 @@ public:
     // For each face entity of the previous solid (by handle), +1 if its entity's normal
     // points out of the solid, -1 if in; found on the previous group's solid. Not saved.
     std::map<uint32_t, double> faceOut;
+    // SHELL: which side of the faces the wall goes.
+    using ShellSide = SolveSpace::ShellSide;
+    ShellSide shellSide = ShellSide::INSIDE;
+    // How far the shell's inner and outer walls are from each face, outwards.
+    double ShellInner() const;
+    double ShellOuter() const;
     // HOLE: the hole centres, points in a workplane (each hole goes along -normal of its
     // point's workplane, +normal when flipped), and the hole's shape.
     using HoleKind = SolveSpace::HoleKind;
@@ -383,6 +389,7 @@ public:
         // face, its point Remap(face, n + 10).
         REMAP_SHELL_INNER      = 1050,
         REMAP_DRAFT_FACE       = 1051,
+        REMAP_SHELL_OUTER      = 1052,
         // A hole's entities, Remap(point, n): its centre on the face and at the bottom, its
         // axis, and its seat face (whose point is Remap(point, REMAP_HOLE_SEAT + 10)).
         REMAP_HOLE_TOP         = 1080,

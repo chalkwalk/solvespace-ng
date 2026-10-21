@@ -121,6 +121,7 @@ const SolveSpaceUI::SaveTable SolveSpaceUI::SAVED[] = {
     { 'g',  "Group.remap",              'M',    &(SS.sv.g.remap)              },
     { 'g',  "Group.edges",              'E',    &(SS.sv.g.edges)              },
     { 'g',  "Group.faces",              'E',    &(SS.sv.g.faces)              },
+    { 'g',  "Group.shellSide",          'd',    &(SS.sv.g.shellSide)          },
     { 'g',  "Group.points",             'E',    &(SS.sv.g.points)             },
     { 'g',  "Group.profiles",           'E',    &(SS.sv.g.profiles)           },
     { 'g',  "Group.hole.kind",          'd',    &(SS.sv.g.hole.kind)          },

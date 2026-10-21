@@ -62,3 +62,23 @@ TEST_CASE(ng_opens_problems_on_a_failed_fillet) {
     CHECK_FALSE(Active()->featureProblem.empty());
     CHECK_TRUE(Driver::FindItem("Problems").has_value()); // opens on a new problem
 }
+
+// Review 5: the fillet's edges are listed in Properties; a click selects one, x removes it.
+TEST_CASE(ng_lists_a_fillets_edges_to_select_or_remove) {
+    CHECK_LOAD("box.slvs");
+    hEntity a = Active()->Remap(hRequest{ 5 }.entity(0), Group::REMAP_TOP);
+    hEntity b = Active()->Remap(hRequest{ 7 }.entity(0), Group::REMAP_TOP);
+    SS.GW.ClearSelection();
+    for(hEntity he : { a, b }) {
+        GraphicsWindow::Selection sel = {};
+        sel.entity = he;
+        SS.GW.selection.Add(&sel);
+    }
+    Driver::Key("Shift+F");
+    hGroup fillet = SS.GW.activeGroup;
+    CHECK_TRUE(Active()->edges.size() == 2);
+    CHECK_TRUE(Driver::ClickItem(ssprintf("remove-%08x", a.v)));
+    CHECK_TRUE(SK.GetGroup(fillet)->edges.size() == 1 && SK.GetGroup(fillet)->edges[0] == b);
+    CHECK_TRUE(Driver::ClickItem(ssprintf("ref-%08x", b.v)));
+    CHECK_TRUE(SS.GW.IsSelected(b));
+}

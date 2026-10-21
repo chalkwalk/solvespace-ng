@@ -72,6 +72,9 @@ struct HoleSpec {
     }
 };
 
+// Which side of the faces a shell's wall goes (the faces' outward side is outside).
+enum class ShellSide : uint32_t { INSIDE = 0, OUTSIDE = 1, BOTH = 2 };
+
 struct KernelJob {
     enum class Op {
         NONE, EXTRUDE, LATHE, REVOLVE, HELIX, STEP_TRANSLATE, STEP_ROTATE, LINKED, FILLET, CHAMFER,
@@ -119,6 +122,7 @@ struct KernelJob {
     double size = 0;
     // SHELL: the faces left open (face entity handles); the wall thickness is size.
     std::vector<uint32_t> faceNames;
+    ShellSide             shellSide = ShellSide::INSIDE;
     // DRAFT: each face (a face entity's handle) tapered by size (radians) about the plane
     // through point normal to pull, along pull; the drafted face is named name.
     struct DraftFace {
