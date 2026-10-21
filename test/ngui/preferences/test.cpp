@@ -101,3 +101,15 @@ TEST_CASE(constraint_state_colours_are_on_and_can_be_turned_off) {
     CHECK_TRUE(Driver::ClickItem("colour constraints by state"));
     CHECK_FALSE(SS.constraintStateColors);
 }
+
+TEST_CASE(ng_makes_solids_with_occt_and_preferences_choose_the_kernel) {
+    CHECK_LOAD("line.slvs");
+    CHECK_TRUE(SS.kernelKind == KernelKind::OCCT);
+    Driver::Key("Ctrl+,");
+    CHECK_TRUE(RevealIn("Preferences", "SolveSpace kernel"));
+    CHECK_TRUE(Driver::ClickItem("SolveSpace kernel"));
+    CHECK_TRUE(SS.kernelKind == KernelKind::SOLVESPACE);
+    CHECK_TRUE(Platform::GetSettings()->ThawInt("Kernel", -1) == 0);
+    CHECK_TRUE(Driver::ClickItem("Open CASCADE kernel"));
+    CHECK_TRUE(SS.kernelKind == KernelKind::OCCT);
+}

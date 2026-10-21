@@ -4,6 +4,7 @@
 #include <BRepGProp.hxx>
 #include <BRepPrimAPI_MakeBox.hxx>
 #include <GProp_GProps.hxx>
+#include <STEPControl_Reader.hxx>
 #include <set>
 
 #include "harness.h"
@@ -152,4 +153,41 @@ TEST_CASE(helix_matches_solvespaces) {
     CHECK_TRUE(Near(occt.volume, ss.volume, 0.01));
     CHECK_TRUE(occt.naked == 0);
     CHECK_TRUE(occt.faces == ss.faces);
+}
+
+TEST_CASE(choosing_a_kernel_regenerates_every_group_with_it) {
+    CHECK_LOAD("../solvespace/extrudes.slvs");
+    Group *g = SK.GetGroup(SK.groupOrder[SK.groupOrder.n - 1]);
+    CHECK_TRUE(g->runningShape == nullptr);
+    SS.SetKernel(KernelKind::OCCT);
+    CHECK_TRUE(SS.kernelKind == KernelKind::OCCT);
+    CHECK_TRUE(g->runningShape != nullptr);
+    CHECK_TRUE(g->runningShell.IsEmpty());
+    SS.SetKernel(KernelKind::SOLVESPACE);
+    CHECK_TRUE(g->runningShape == nullptr);
+    CHECK_FALSE(g->runningShell.IsEmpty());
+}
+
+TEST_CASE(step_export_writes_the_occt_b_rep) {
+    CHECK_LOAD("../solvespace/extrudes.slvs");
+    SS.SetKernel(KernelKind::OCCT);
+    Group *g = SK.GetGroup(SK.groupOrder[SK.groupOrder.n - 1]);
+    SS.GW.activeGroup = g->h;
+    SMesh mesh = {};
+    mesh.MakeFromCopyOf(&g->runningMesh);
+    double meshVolume = mesh.CalculateVolume();
+    mesh.Clear();
+
+    Platform::Path path = helper->GetAssetPath(__FILE__, "extrudes.step", "out");
+    SS.exportScale      = 1;
+    StepFileWriter sfw  = {};
+    sfw.ExportSurfacesTo(path);
+
+    STEPControl_Reader reader;
+    CHECK_TRUE(reader.ReadFile(path.raw.c_str()) == IFSelect_RetDone);
+    CHECK_TRUE(reader.TransferRoots() > 0);
+    GProp_GProps props;
+    BRepGProp::VolumeProperties(reader.OneShape(), props);
+    CHECK_TRUE(Near(props.Mass(), meshVolume, 0.01));
+    remove(path.raw.c_str());
 }

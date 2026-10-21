@@ -145,3 +145,25 @@ TEST_CASE(many_frames_of_dragging_end_in_the_newest_solid) {
     CHECK_FALSE(SS.RegenerationPending());
     CHECK_EQ_STR(Describe(LastGroup()), want);
 }
+
+#if defined(HAVE_OCCT)
+TEST_CASE(occt_solids_made_on_the_worker_match_a_full_regeneration) {
+    // The worker and the main thread share B-reps (a synchronous pass may run while the
+    // worker still has a stale chain); run under ThreadSanitizer as well.
+    CHECK_LOAD("extrudes.slvs");
+    SS.SetKernel(KernelKind::OCCT);
+    SS.GW.activeGroup = LastGroup()->h;
+    std::string want = Describe(LastGroup());
+    SS.backgroundRegenEnabled = true;
+    for(int frame = 0; frame < 30; frame++) {
+        DragFrame();
+        if(frame % 7 == 3) SS.GenerateAll(SolveSpaceUI::Generate::ALL); // an undo, say
+        SS.PollRegeneration();
+    }
+    EndDrag();
+    SS.FlushRegeneration();
+    CHECK_FALSE(SS.RegenerationPending());
+    CHECK_TRUE(LastGroup()->runningShape != nullptr);
+    CHECK_EQ_STR(Describe(LastGroup()), want);
+}
+#endif

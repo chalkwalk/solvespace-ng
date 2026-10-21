@@ -122,6 +122,10 @@ void SolveSpaceUI::Init() {
     // Show toolbar in the graphics window
     showToolbar = settings->ThawBool("ShowToolbar", true);
     constraintStateColors = settings->ThawBool("ConstraintStateColors", false);
+    // The geometry kernel (0 SolveSpace's, 1 Open CASCADE where built)
+    kernelKind = settings->ThawInt("Kernel", 0) == 1 && KernelAvailable(KernelKind::OCCT)
+                     ? KernelKind::OCCT
+                     : KernelKind::SOLVESPACE;
     // Recent files menus
     for(size_t i = 0; i < MAX_RECENT; i++) {
         std::string rawPath = settings->ThawString("RecentFile_" + std::to_string(i), "");
@@ -309,6 +313,7 @@ void SolveSpaceUI::Exit() {
     // Show toolbar in the graphics window
     settings->FreezeBool("ShowToolbar", showToolbar);
     settings->FreezeBool("ConstraintStateColors", constraintStateColors);
+    settings->FreezeInt("Kernel", (int)kernelKind);
     // Autosave timer
     settings->FreezeInt("AutosaveInterval", autosaveInterval);
 
@@ -952,6 +957,7 @@ void SolveSpaceUI::MenuAnalyze(Command id) {
                 SS.MmToStringSI(totalVol, /*dim=*/3).c_str());
 
             SMesh curMesh = {};
+            curMesh.MakeFromCopyOf(&g->thisMesh); // the OCCT kernel's, or a mesh group's
             g->thisShell.TriangulateInto(&curMesh);
             double curVol = curMesh.CalculateVolume();
             if(curVol > 0.0) {

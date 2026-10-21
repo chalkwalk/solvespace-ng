@@ -102,6 +102,11 @@ build the GUI (SolveSpace NG: SDL3 and Dear ImGui, both vendored as submodules),
 need OpenGL and EGL, and optionally the Space Navigator client library. The GTK, Qt, Win32
 and Cocoa interfaces were retired in this fork.
 
+Solids are made with Open CASCADE (`extlib/occt`, a shallow submodule of about 350 MB),
+built once per build directory, always as Release: the first build takes about ten minutes
+more and about 1 GB. `-DOCCT_PREFIX=<other build>/occt/install` reuses another build
+directory's OCCT; `-DENABLE_OCCT=OFF` builds with SolveSpace's own kernel only.
+
 On a Debian derivative (e.g. Ubuntu) these can be installed with:
 
 ```sh

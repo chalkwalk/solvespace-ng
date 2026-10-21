@@ -233,6 +233,17 @@ bool SolveSpaceUI::SettingOn(SettingToggle toggle) {
     return false;
 }
 
+void SolveSpaceUI::SetKernel(KernelKind kind) {
+    if(kind == kernelKind || !KernelAvailable(kind)) return;
+    FlushRegeneration();
+    kernelKind = kind;
+    Platform::GetSettings()->FreezeInt("Kernel", (int)kind);
+    for(Group &g : SK.group) g.clean = false;
+    GenerateAll(Generate::ALL);
+    GW.Invalidate(/*clearPersistent=*/true);
+    ScheduleShowTW();
+}
+
 void SolveSpaceUI::ToggleSetting(SettingToggle toggle) {
     switch(toggle) {
         case SettingToggle::USE_SI_PREFIXES:

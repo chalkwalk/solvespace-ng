@@ -95,11 +95,6 @@ set(testsuite_SOURCES
     group/translate_nd/test.cpp
 )
 
-if(ENABLE_OCCT)
-    list(APPEND testsuite_SOURCES
-        kernel/occt/test.cpp
-        kernel/parity/test.cpp)
-endif()
 
 add_executable(solvespace-testsuite
     ${testsuite_SOURCES}
@@ -109,6 +104,14 @@ target_link_libraries(solvespace-testsuite
     solvespace-headless
     ${COVERAGE_LIBRARY})
 target_link_libraries(solvespace-testsuite keymap palette pie)
+if(ENABLE_OCCT)
+    # solvespace-headless links the core privately: OCCT's headers and HAVE_OCCT come here.
+    target_sources(solvespace-testsuite PRIVATE
+        kernel/occt/test.cpp
+        kernel/parity/test.cpp)
+    target_link_libraries(solvespace-testsuite occt)
+    target_compile_definitions(solvespace-testsuite PRIVATE HAVE_OCCT)
+endif()
 if(ENABLE_NG_GUI)
     target_sources(solvespace-testsuite PRIVATE
         ng/settingsfile/test.cpp

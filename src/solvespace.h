@@ -515,6 +515,8 @@ public:
     bool        SetSetting(Setting setting, const std::string &text, int index = 0);
     bool        SettingOn(SettingToggle toggle);
     void        ToggleSetting(SettingToggle toggle);
+    // Makes every solid again with the given kernel, and keeps it as the setting.
+    void        SetKernel(KernelKind kind);
     std::string ConstraintEditText(hConstraint hc);
     bool        SetConstraintValue(hConstraint hc, const std::string &text);
     void        SetTtfText(hRequest hr, const std::string &text);

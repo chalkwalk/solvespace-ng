@@ -129,6 +129,10 @@ SettingsRef GetSettings() {
            gSettings->ThawBool("ConstraintStateColors", false)) {
             gSettings->FreezeBool("ConstraintStateColors", true);
         }
+        // NG makes solids with Open CASCADE where it is built (AGENTS.md section 6).
+        if(gSettings->ThawInt("Kernel", -1) == -1) {
+            gSettings->FreezeInt("Kernel", KernelAvailable(KernelKind::OCCT) ? 1 : 0);
+        }
     }
     return gSettings;
 }

@@ -278,6 +278,22 @@ main thread, so files stay byte-identical. Save, export, undo and the end of a d
 the worker (`FlushRegeneration`). Tests: `test/kernel/` (also clean under ThreadSanitizer:
 configure a build with `-DCMAKE_CXX_FLAGS=-fsanitize=thread`), `test/ngui/regen/`.
 
+**Built in M3a (2026-10-21, branch `ng/m3-occt`):** Open CASCADE V7_9_3 is a shallow
+submodule (`extlib/occt`), built once per build directory as a Release static external
+project with only the toolkits used (`cmake/OcctVendored.cmake`; `ENABLE_OCCT`, off for the
+web; `OCCT_PREFIX` reuses another build's install, e.g. for the ThreadSanitizer build).
+`OcctKernel` (`src/kernel/occtkernel.cpp`) makes extrude, lathe, revolve, helix, step and
+repeat and the four combines as B-reps (`KernelShape`, kept in each `Body` and group beside
+the shell and mesh) and hands the rest of SolveSpace their tessellation: true normals and
+each triangle's face name. Faces get the same names as SolveSpace's kernel gives them (same
+`FaceNamer` calls, same order), carried through booleans and copies by OCCT's history.
+Links, meshes and groups forced to a mesh take SolveSpace's mesh path. STEP export writes the
+B-rep. The kernel is a setting (`SS.kernelKind`, `Kernel` in settings.txt, Preferences ▸
+SolveSpace NG): NG seeds Open CASCADE, stock and the core tests use SolveSpace's.
+`test/kernel/parity` regenerates every model under `test/` with both kernels and compares
+volume, area, bounding box and watertightness (all 102 solid groups of 287 models match).
+Files saved with OCCT store the solid as triangles, as mesh groups do, not NURBS surfaces.
+
 **Later:** variable-radius fillets, STEP import as a reference body (snappable, warned),
 XCAF colours and names, exact hidden-line drawing export (`HLRBRep`).
 
@@ -366,7 +382,7 @@ only from `github-master` (worktrees for the `pr/` branches), never from NG bran
 
 **Build SolveSpace NG (SDL3 + Dear ImGui frontend)**
 ```sh
-git submodule update --init extlib/SDL extlib/imgui extlib/lunasvg   # SDL3 is vendored (or install libsdl3-dev)
+git submodule update --init extlib/SDL extlib/imgui extlib/lunasvg extlib/occt   # SDL3 is vendored (or install libsdl3-dev)
 mkdir -p build-ng && cd build-ng
 cmake .. -DCMAKE_BUILD_TYPE=Debug     # ENABLE_NG_GUI is on by default
 make -j$(nproc) solvespace-ng solvespace-testsuite && make test_solvespace   # includes test/ng/*
