@@ -137,6 +137,7 @@ if(ENABLE_GUI OR ENABLE_CLI)
         graphicswin.cpp
         group.cpp
         groupmesh.cpp
+        kernel/solvespacekernel.cpp
         importdxf.cpp
         importidf.cpp
         importmesh.cpp

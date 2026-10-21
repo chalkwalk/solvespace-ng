@@ -162,6 +162,7 @@ struct EntityKeyEqual {
 typedef std::unordered_map<EntityKey, EntityId, EntityKeyHash, EntityKeyEqual> EntityMap;
 
 #include "kernel/facenamer.h"
+#include "kernel/kernel.h"
 
 // A set of requests. Every request must have an associated group.
 class Group {
@@ -347,9 +348,9 @@ public:
     bool IsMeshGroup();
 
     void GenerateShellAndMesh();
-    template<class T> void GenerateForStepAndRepeat(T *steps, T *outs, Group::CombineAs forWhat,
-                                                    FaceNamer *namer);
-    template<class T> void GenerateForBoolean(T *a, T *b, T *o, Group::CombineAs how);
+    // The kernel job for this group's solid (kernel/kernel.h), and taking its result.
+    KernelJob BuildKernelJob();
+    void ApplyKernelResult(KernelResult *result);
     void GenerateDisplayItems();
 
     enum class DrawMeshAs { DEFAULT, HOVERED, SELECTED };

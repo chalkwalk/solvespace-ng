@@ -105,122 +105,23 @@ void SMesh::RemapFaces(FaceNamer *namer, int remap) {
     }
 }
 
-template<class T>
-void Group::GenerateForStepAndRepeat(T *steps, T *outs, Group::CombineAs forWhat,
-                                      FaceNamer *namer) {
-
-    int n = (int)valA, a0 = 0;
-    if(subtype == Subtype::ONE_SIDED && skipFirst) {
-        a0++; n++;
-    }
-
-    int a;
-    // create all the transformed copies
-    std::vector <T> transd(n);
-    std::vector <T> workA(n);
-    workA[0] = {};
-    // first generate a shell/mesh with each transformed copy
-#pragma omp parallel for
-    for(a = a0; a < n; a++) {
-        transd[a] = {};
-        workA[a] = {};
-        int ap = a*2 - (subtype == Subtype::ONE_SIDED ? 0 : (n-1));
-
-        if(type == Type::TRANSLATE) {
-            Vector trans = Vector::From(h.param(0), h.param(1), h.param(2));
-            trans = trans.ScaledBy(ap);
-            transd[a].MakeFromTransformationOf(steps,
-                trans, Quaternion::IDENTITY, 1.0);
-        } else {
-            Vector trans = Vector::From(h.param(0), h.param(1), h.param(2));
-            double theta = ap * SK.GetParam(h.param(3))->val;
-            double c = cos(theta), s = sin(theta);
-            Vector axis = Vector::From(h.param(4), h.param(5), h.param(6));
-            Quaternion q = Quaternion::From(c, s*axis.x, s*axis.y, s*axis.z);
-            // Rotation is centered at t; so A(x - t) + t = Ax + (t - At)
-            transd[a].MakeFromTransformationOf(steps,
-                trans.Minus(q.Rotate(trans)), q, 1.0);
-        }
-    }
-    for(a = a0; a < n; a++) {
-        // We need to rewrite any plane face entities to the transformed ones.
-        int remap = (a == (n - 1)) ? REMAP_LAST : a;
-        transd[a].RemapFaces(namer, remap);
-    }
-
-    std::vector<T> *soFar = &transd;
-    std::vector<T> *scratch = &workA;
-    // do the boolean operations on pairs of equal size
-    while(n > 1) {
-        for(a = 0; a < n; a+=2) {
-            scratch->at(a/2).Clear();
-            // combine a pair of shells
-            if((a==0) && (a0==1)) { // if the first was skipped just copy the 2nd
-                scratch->at(a/2).MakeFromCopyOf(&(soFar->at(a+1)));
-                (soFar->at(a+1)).Clear();
-                a0 = 0;
-            } else if (a == n-1) { // for an odd number just copy the last one
-                scratch->at(a/2).MakeFromCopyOf(&(soFar->at(a)));
-                (soFar->at(a)).Clear();
-            } else if(forWhat == CombineAs::ASSEMBLE) {
-                scratch->at(a/2).MakeFromAssemblyOf(&(soFar->at(a)), &(soFar->at(a+1)));
-                (soFar->at(a)).Clear();
-                (soFar->at(a+1)).Clear();
-            } else {
-                scratch->at(a/2).MakeFromUnionOf(&(soFar->at(a)), &(soFar->at(a+1)));
-                (soFar->at(a)).Clear();
-                (soFar->at(a+1)).Clear();
-            }
-        }
-        swap(scratch, soFar);
-        n = (n+1)/2;
-    }
-    outs->Clear();
-    *outs = soFar->at(0);
-}
-
-template<class T>
-void Group::GenerateForBoolean(T *prevs, T *thiss, T *outs, Group::CombineAs how) {
-    // If this group contributes no new mesh, then our running mesh is the
-    // same as last time, no combining required. Likewise if we have a mesh
-    // but it's suppressed.
-    if(thiss->IsEmpty() || suppress) {
-        outs->MakeFromCopyOf(prevs);
-        return;
-    }
-
-    // So our group's shell appears in thisShell. Combine this with the
-    // previous group's shell, using the requested operation.
+static KernelCombine KernelCombineFor(Group::CombineAs how) {
     switch(how) {
-        case CombineAs::UNION:
-            outs->MakeFromUnionOf(prevs, thiss);
-            break;
-
-        case CombineAs::DIFFERENCE:
-            outs->MakeFromDifferenceOf(prevs, thiss);
-            break;
-
-        case CombineAs::INTERSECTION:
-            outs->MakeFromIntersectionOf(prevs, thiss);
-            break;
-
-        case CombineAs::ASSEMBLE:
-            outs->MakeFromAssemblyOf(prevs, thiss);
-            break;
+        case Group::CombineAs::UNION:        return KernelCombine::UNION;
+        case Group::CombineAs::DIFFERENCE:   return KernelCombine::DIFFERENCE;
+        case Group::CombineAs::INTERSECTION: return KernelCombine::INTERSECTION;
+        case Group::CombineAs::ASSEMBLE:     return KernelCombine::ASSEMBLE;
     }
+    return KernelCombine::UNION;
 }
 
-void Group::GenerateShellAndMesh() {
-    GroupFaceNamer namer(this);
-    bool prevBooleanFailed = booleanFailed;
-    booleanFailed = false;
+KernelJob Group::BuildKernelJob() {
+    KernelJob job;
+    job.color        = color;
+    job.forcedToMesh = IsForcedToMesh();
+    job.suppress     = suppress;
 
     Group *srcg = this;
-
-    thisShell.Clear();
-    thisMesh.Clear();
-    runningShell.Clear();
-    runningMesh.Clear();
 
     // Don't attempt a lathe or extrusion unless the source section is good:
     // planar and not self-intersecting.
@@ -236,223 +137,112 @@ void Group::GenerateShellAndMesh() {
         // A step and repeat gets merged against the group's previous group,
         // not our own previous group.
         srcg = SK.GetGroup(opA);
-
-        if(!srcg->suppress) {
-            if(!IsForcedToMesh()) {
-                GenerateForStepAndRepeat<SShell>(&(srcg->thisShell), &thisShell, srcg->meshCombine,
-                                                 &namer);
-            } else {
-                SMesh prevm = {};
-                prevm.MakeFromCopyOf(&srcg->thisMesh);
-                srcg->thisShell.TriangulateInto(&prevm);
-                GenerateForStepAndRepeat<SMesh> (&prevm, &thisMesh, srcg->meshCombine, &namer);
-            }
+        job.op               = type == Type::TRANSLATE ? KernelJob::Op::STEP_TRANSLATE
+                                                       : KernelJob::Op::STEP_ROTATE;
+        job.steps            = (int)valA;
+        job.oneSided         = subtype == Subtype::ONE_SIDED;
+        job.skipFirst        = skipFirst;
+        job.sourceSuppressed = srcg->suppress;
+        job.sourceShell      = &srcg->thisShell;
+        job.sourceMesh       = &srcg->thisMesh;
+        job.stepTrans        = Vector::From(h.param(0), h.param(1), h.param(2));
+        if(type == Type::ROTATE) {
+            job.stepTheta = SK.GetParam(h.param(3))->val;
+            job.stepAxis  = Vector::From(h.param(4), h.param(5), h.param(6));
         }
     } else if(type == Type::EXTRUDE && haveSrc) {
         Group *src = SK.GetGroup(opA);
         Vector translate = Vector::From(h.param(0), h.param(1), h.param(2));
-
-        Vector tbot, ttop;
+        job.op    = KernelJob::Op::EXTRUDE;
+        job.loops = &src->bezierLoops;
         if(subtype == Subtype::ONE_SIDED || subtype == Subtype::ONE_SKEWED) {
-            tbot = {}; ttop = translate.ScaledBy(2);
+            job.tbot = {}; job.ttop = translate.ScaledBy(2);
         } else {
-            tbot = translate.ScaledBy(-1); ttop = translate.ScaledBy(1);
+            job.tbot = translate.ScaledBy(-1); job.ttop = translate.ScaledBy(1);
         }
-
-        SBezierLoopSetSet *sblss = &(src->bezierLoops);
-        SBezierLoopSet *sbls;
-        for(sbls = sblss->l.First(); sbls; sbls = sblss->l.NextAfter(sbls)) {
-            int is = thisShell.surface.n;
-            // Extrude this outer contour (plus its inner contours, if present)
-            thisShell.MakeFromExtrusionOf(sbls, tbot, ttop, color);
-
-            // And for any plane faces, annotate the model with the entity for
-            // that face, so that the user can select them with the mouse.
-            Vector onOrig = sbls->point;
-            int i;
-            // Not using range-for here because we're starting at a different place and using
-            // indices for meaning.
-            for(i = is; i < thisShell.surface.n; i++) {
-                SSurface *ss = &(thisShell.surface[i]);
-                hEntity face = Entity::NO_ENTITY;
-
-                Vector p = ss->PointAt(0, 0),
-                       n = ss->NormalAt(0, 0).WithMagnitude(1);
-                double d = n.Dot(p);
-
-                if(i == is || i == (is + 1)) {
-                    // These are the top and bottom of the shell.
-                    if(fabs((onOrig.Plus(ttop)).Dot(n) - d) < LENGTH_EPS) {
-                        face = namer.Name(Entity::NO_ENTITY, REMAP_TOP);
-                        ss->face = face.v;
-                    }
-                    if(fabs((onOrig.Plus(tbot)).Dot(n) - d) < LENGTH_EPS) {
-                        face = namer.Name(Entity::NO_ENTITY, REMAP_BOTTOM);
-                        ss->face = face.v;
-                    }
-                    continue;
-                }
-
-                // So these are the sides
-                if(ss->degm != 1 || ss->degn != 1) continue;
-
-                for(Entity &e : SK.entity) {
-                    if(e.group != opA) continue;
-                    if(e.type != Entity::Type::LINE_SEGMENT) continue;
-
-                    Vector a = SK.GetEntity(e.point[0])->PointGetNum(),
-                           b = SK.GetEntity(e.point[1])->PointGetNum();
-                    a = a.Plus(ttop);
-                    b = b.Plus(ttop);
-                    // Could get taken backwards, so check all cases.
-                    if((a.Equals(ss->ctrl[0][0]) && b.Equals(ss->ctrl[1][0])) ||
-                       (b.Equals(ss->ctrl[0][0]) && a.Equals(ss->ctrl[1][0])) ||
-                       (a.Equals(ss->ctrl[0][1]) && b.Equals(ss->ctrl[1][1])) ||
-                       (b.Equals(ss->ctrl[0][1]) && a.Equals(ss->ctrl[1][1])))
-                    {
-                        face = namer.Name(e.h, REMAP_LINE_TO_FACE);
-                        ss->face = face.v;
-                        break;
-                    }
-                }
+        // The sides are named after the source sketch's line segments.
+        for(Entity &e : SK.entity) {
+            if(e.group != opA) continue;
+            if(e.type != Entity::Type::LINE_SEGMENT) continue;
+            job.sideLines.push_back({ e.h, SK.GetEntity(e.point[0])->PointGetNum(),
+                                      SK.GetEntity(e.point[1])->PointGetNum() });
+        }
+    } else if((type == Type::LATHE || type == Type::REVOLVE || type == Type::HELIX) &&
+              haveSrc) {
+        Group *src     = SK.GetGroup(opA);
+        job.loops      = &src->bezierLoops;
+        job.axisPoint  = SK.GetEntity(predef.origin)->PointGetNum();
+        job.axis       = SK.GetEntity(predef.entityB)->VectorGetNum().WithMagnitude(1);
+        if(type == Type::LATHE) {
+            job.op = KernelJob::Op::LATHE;
+        } else if(type == Type::REVOLVE) {
+            job.op = KernelJob::Op::REVOLVE;
+            job.anglef = SK.GetParam(h.param(3))->val * 4; // why the 4 is needed?
+            if(subtype != Subtype::ONE_SIDED) {
+                job.anglef *= 0.5;
+                job.angles = -job.anglef;
             }
-        }
-    } else if(type == Type::LATHE && haveSrc) {
-        Group *src = SK.GetGroup(opA);
-
-        Vector pt   = SK.GetEntity(predef.origin)->PointGetNum(),
-               axis = SK.GetEntity(predef.entityB)->VectorGetNum();
-        axis = axis.WithMagnitude(1);
-
-        SBezierLoopSetSet *sblss = &(src->bezierLoops);
-        SBezierLoopSet *sbls;
-        for(sbls = sblss->l.First(); sbls; sbls = sblss->l.NextAfter(sbls)) {
-            thisShell.MakeFromRevolutionOf(sbls, pt, axis, color, &namer);
-        }
-    } else if(type == Type::REVOLVE && haveSrc) {
-        Group *src    = SK.GetGroup(opA);
-        double anglef = SK.GetParam(h.param(3))->val * 4; // why the 4 is needed?
-        double dists = 0, distf = 0;
-        double angles = 0.0;
-        if(subtype != Subtype::ONE_SIDED) {
-            anglef *= 0.5;
-            angles = -anglef;
-        }
-        Vector pt   = SK.GetEntity(predef.origin)->PointGetNum(),
-               axis = SK.GetEntity(predef.entityB)->VectorGetNum();
-        axis        = axis.WithMagnitude(1);
-
-        SBezierLoopSetSet *sblss = &(src->bezierLoops);
-        SBezierLoopSet *sbls;
-        for(sbls = sblss->l.First(); sbls; sbls = sblss->l.NextAfter(sbls)) {
-            if(fabs(anglef - angles) < 2 * PI) {
-                thisShell.MakeFromHelicalRevolutionOf(sbls, pt, axis, color, &namer,
-                                                      angles, anglef, dists, distf);
-            } else {
-                thisShell.MakeFromRevolutionOf(sbls, pt, axis, color, &namer);
+        } else {
+            job.op = KernelJob::Op::HELIX;
+            job.anglef = SK.GetParam(h.param(3))->val * 4; // why the 4 is needed?
+            job.distf  = SK.GetParam(h.param(7))->val * 2; // dist is applied twice
+            if(subtype != Subtype::ONE_SIDED) {
+                job.anglef *= 0.5;
+                job.angles = -job.anglef;
+                job.distf *= 0.5;
+                job.dists = -job.distf;
             }
-        }
-    } else if(type == Type::HELIX && haveSrc) {
-        Group *src    = SK.GetGroup(opA);
-        double anglef = SK.GetParam(h.param(3))->val * 4; // why the 4 is needed?
-        double dists = 0, distf = 0;
-        double angles = 0.0;
-        distf = SK.GetParam(h.param(7))->val * 2; // dist is applied twice
-        if(subtype != Subtype::ONE_SIDED) {
-            anglef *= 0.5;
-            angles = -anglef;
-            distf *= 0.5;
-            dists = -distf;
-        }
-        Vector pt   = SK.GetEntity(predef.origin)->PointGetNum(),
-               axis = SK.GetEntity(predef.entityB)->VectorGetNum();
-        axis        = axis.WithMagnitude(1);
-
-        SBezierLoopSetSet *sblss = &(src->bezierLoops);
-        SBezierLoopSet *sbls;
-        for(sbls = sblss->l.First(); sbls; sbls = sblss->l.NextAfter(sbls)) {
-            thisShell.MakeFromHelicalRevolutionOf(sbls, pt, axis, color, &namer,
-                                                  angles, anglef, dists, distf);
         }
     } else if(type == Type::LINKED) {
-        // The imported shell or mesh are copied over, with the appropriate
-        // transformation applied. We also must remap the face entities.
-        Vector offset = {
-            SK.GetParam(h.param(0))->val,
-            SK.GetParam(h.param(1))->val,
-            SK.GetParam(h.param(2))->val };
-        Quaternion q = {
-            SK.GetParam(h.param(3))->val,
-            SK.GetParam(h.param(4))->val,
-            SK.GetParam(h.param(5))->val,
-            SK.GetParam(h.param(6))->val };
-
-        thisMesh.MakeFromTransformationOf(&impMesh, offset, q, scale);
-        thisMesh.RemapFaces(&namer, 0);
-
-        thisShell.MakeFromTransformationOf(&impShell, offset, q, scale);
-        thisShell.RemapFaces(&namer, 0);
+        job.op       = KernelJob::Op::LINKED;
+        job.impShell = &impShell;
+        job.impMesh  = &impMesh;
+        job.offset   = { SK.GetParam(h.param(0))->val, SK.GetParam(h.param(1))->val,
+                         SK.GetParam(h.param(2))->val };
+        job.q        = { SK.GetParam(h.param(3))->val, SK.GetParam(h.param(4))->val,
+                         SK.GetParam(h.param(5))->val, SK.GetParam(h.param(6))->val };
+        job.scale    = scale;
     }
 
-    if(srcg->meshCombine != CombineAs::ASSEMBLE) {
-        thisShell.MergeCoincidentSurfaces();
+    job.combine       = KernelCombineFor(srcg->meshCombine);
+    job.sourceCombine = job.combine;
+    Group *prevg      = srcg->RunningMeshGroup();
+    job.prevShell     = &prevg->runningShell;
+    job.prevMesh      = &prevg->runningMesh;
+    return job;
+}
+
+void Group::ApplyKernelResult(KernelResult *result) {
+    bool prevBooleanFailed = booleanFailed;
+    thisShell.Clear();
+    thisMesh.Clear();
+    runningShell.Clear();
+    runningMesh.Clear();
+    // The lists move over; the result is left empty.
+    thisShell    = result->thisBody.shell;
+    thisMesh     = result->thisBody.mesh;
+    runningShell = result->running.shell;
+    runningMesh  = result->running.mesh;
+    result->thisBody.shell = {};
+    result->thisBody.mesh  = {};
+    result->running.shell  = {};
+    result->running.mesh   = {};
+
+    // If the Boolean failed, then we should note that in the text screen
+    // for this group.
+    booleanFailed = result->running.booleanFailed;
+    if(booleanFailed != prevBooleanFailed) {
+        SS.ScheduleShowTW();
     }
-
-    // So now we've got the mesh or shell for this group. Combine it with
-    // the previous group's mesh or shell with the requested Boolean, and
-    // we're done.
-
-    Group *prevg = srcg->RunningMeshGroup();
-
-    if(!IsForcedToMesh()) {
-        SShell *prevs = &(prevg->runningShell);
-        GenerateForBoolean<SShell>(prevs, &thisShell, &runningShell,
-            srcg->meshCombine);
-
-        if(srcg->meshCombine != CombineAs::ASSEMBLE) {
-            runningShell.MergeCoincidentSurfaces();
-        }
-
-        // If the Boolean failed, then we should note that in the text screen
-        // for this group.
-        booleanFailed = runningShell.booleanFailed;
-        if(booleanFailed != prevBooleanFailed) {
-            SS.ScheduleShowTW();
-        }
-    } else {
-        SMesh prevm, thism;
-        prevm = {};
-        thism = {};
-
-        prevm.MakeFromCopyOf(&(prevg->runningMesh));
-        prevg->runningShell.TriangulateInto(&prevm);
-
-        thism.MakeFromCopyOf(&thisMesh);
-        thisShell.TriangulateInto(&thism);
-
-        SMesh outm = {};
-        GenerateForBoolean<SMesh>(&prevm, &thism, &outm, srcg->meshCombine);
-
-        // Remove degenerate triangles; if we don't, they'll get split in SnapToMesh
-        // in every generated group, resulting in polynomial increase in triangle count,
-        // and corresponding slowdown.
-        outm.RemoveDegenerateTriangles();
-
-        if(srcg->meshCombine != CombineAs::ASSEMBLE) {
-            // And make sure that the output mesh is vertex-to-vertex.
-            SKdNode *root = SKdNode::From(&outm);
-            root->SnapToMesh(&outm);
-            root->MakeMeshInto(&runningMesh);
-        } else {
-            runningMesh.MakeFromCopyOf(&outm);
-        }
-
-        outm.Clear();
-        thism.Clear();
-        prevm.Clear();
-    }
-
     displayDirty = true;
+}
+
+void Group::GenerateShellAndMesh() {
+    KernelJob      job = BuildKernelJob();
+    GroupFaceNamer namer(this);
+    KernelResult   result;
+    Kernel().Run(job, namer, &result);
+    ApplyKernelResult(&result);
 }
 
 void Group::GenerateDisplayItems() {
