@@ -11,6 +11,7 @@
 
 #include <mutex>
 
+#include <BRepAdaptor_Curve.hxx>
 #include <BRepAlgoAPI_BooleanOperation.hxx>
 #include <BRepAlgoAPI_Common.hxx>
 #include <BRepAlgoAPI_Cut.hxx>
@@ -20,6 +21,8 @@
 #include <BRepBuilderAPI_MakeVertex.hxx>
 #include <BRepBuilderAPI_MakeWire.hxx>
 #include <BRepBuilderAPI_Transform.hxx>
+#include <BRepFilletAPI_MakeChamfer.hxx>
+#include <BRepFilletAPI_MakeFillet.hxx>
 #include <BRepLib.hxx>
 #include <BRepLib_ToolTriangulatedShape.hxx>
 #include <BRepMesh_IncrementalMesh.hxx>
@@ -40,7 +43,9 @@
 #include <TColgp_Array1OfPnt.hxx>
 #include <TopExp.hxx>
 #include <TopExp_Explorer.hxx>
+#include <Standard_Failure.hxx>
 #include <TopTools_IndexedMapOfShape.hxx>
+#include <TopTools_MapOfShape.hxx>
 #include <TopTools_ShapeMapHasher.hxx>
 #include <TopoDS.hxx>
 #include <TopoDS_Compound.hxx>
@@ -508,6 +513,76 @@ std::shared_ptr<KernelShape> StepAndRepeat(const KernelJob &job, FaceNamer *name
     return copies.empty() ? std::make_shared<KernelShape>() : copies[0];
 }
 
+// Whether a B-rep edge lies on an edge entity's curves: its ends and its middle do.
+bool OnCurves(const TopoDS_Edge &edge, const std::vector<SBezier> &curves) {
+    BRepAdaptor_Curve c(edge);
+    double f = c.FirstParameter(), l = c.LastParameter();
+    for(double t : { f, (f + l) / 2, l }) {
+        Vector p    = Vec(c.Value(t).XYZ());
+        bool   near = false;
+        for(const SBezier &sb : curves) {
+            double u;
+            sb.ClosestPointTo(p, &u, /*mustConverge=*/false);
+            if(sb.PointAt(u).Equals(p, 1e-4)) {
+                near = true;
+                break;
+            }
+        }
+        if(!near) return false;
+    }
+    return true;
+}
+
+// The previous body with the job's edges rounded or bevelled, or null if nothing was;
+// *problem says what went wrong.
+std::shared_ptr<KernelShape> RoundEdges(const KernelJob &job, std::string *problem) {
+    const KernelShape        &prev   = *job.prevShape;
+    bool                      fillet = job.op == KernelJob::Op::FILLET;
+    BRepFilletAPI_MakeFillet  makeFillet(prev.shape);
+    BRepFilletAPI_MakeChamfer makeChamfer(prev.shape);
+    BRepBuilderAPI_MakeShape &op = fillet ? (BRepBuilderAPI_MakeShape &)makeFillet
+                                          : (BRepBuilderAPI_MakeShape &)makeChamfer;
+
+    TopTools_IndexedMapOfShape edges;
+    TopExp::MapShapes(prev.shape, TopAbs_EDGE, edges);
+    TopTools_MapOfShape added;
+    int                 missing = 0;
+    for(const std::vector<SBezier> &curves : job.edgeCurves) {
+        bool found = false;
+        for(int i = 1; i <= edges.Extent(); i++) {
+            const TopoDS_Edge &edge = TopoDS::Edge(edges(i));
+            if(BRep_Tool::Degenerated(edge) || !OnCurves(edge, curves)) continue;
+            found = true;
+            if(!added.Add(edge)) continue;
+            if(fillet) {
+                makeFillet.Add(job.size, edge);
+            } else {
+                makeChamfer.Add(job.size, edge);
+            }
+        }
+        if(!found) missing++;
+    }
+    if(missing > 0) {
+        *problem = ssprintf("%d of the %d edges were not found on the solid", missing,
+                            (int)job.edgeCurves.size());
+    }
+    if(added.IsEmpty()) return nullptr;
+
+    try {
+        op.Build();
+    } catch(const Standard_Failure &) {
+    }
+    if(!op.IsDone() || op.Shape().IsNull()) {
+        *problem = fillet ? "the fillet failed; the radius may be too big for the edges"
+                          : "the chamfer failed; the distance may be too big for the edges";
+        return nullptr;
+    }
+    auto out   = std::make_shared<KernelShape>();
+    out->shape = op.Shape();
+    CarryNames(op, { &prev.faces }, &out->faces);
+    return out;
+}
+
 class OcctKernel final : public IKernel {
 public:
     void Run(const KernelJob &job, FaceNamer &namer, KernelResult *result) override {
@@ -527,10 +602,22 @@ public:
             return;
         }
 
+        std::shared_ptr<const KernelShape> running;
+        if(job.op == KernelJob::Op::FILLET || job.op == KernelJob::Op::CHAMFER) {
+            running = job.prevShape;
+            if(!job.suppress && !IsEmpty(job.prevShape)) {
+                if(auto rounded = RoundEdges(job, &result->problem)) running = rounded;
+            }
+            Finish(job, running, result);
+            return;
+        }
+
         std::shared_ptr<KernelShape> made;
         switch(job.op) {
             case KernelJob::Op::NONE:
-            case KernelJob::Op::LINKED: break;
+            case KernelJob::Op::LINKED:
+            case KernelJob::Op::FILLET:
+            case KernelJob::Op::CHAMFER: break;
             case KernelJob::Op::EXTRUDE: made = Extrude(job, &namer); break;
             case KernelJob::Op::LATHE:   made = Revolve(job, &namer, /*full=*/true); break;
             case KernelJob::Op::REVOLVE:
@@ -548,7 +635,6 @@ public:
             Tessellate(*made, job.color, &result->thisBody.mesh);
         }
 
-        std::shared_ptr<const KernelShape> running;
         if(IsEmpty(result->thisBody.shape) || job.suppress) {
             running = job.prevShape;
         } else if(IsEmpty(job.prevShape)) {
@@ -564,13 +650,19 @@ public:
                 result->running.booleanFailed = true;
             }
         }
+        Finish(job, running, result);
+    }
+
+    // The running body is running: the previous one's mesh, or running's tessellation.
+    static void Finish(const KernelJob &job, std::shared_ptr<const KernelShape> running,
+                       KernelResult *result) {
         if(running == job.prevShape) {
             result->running.mesh.MakeFromCopyOf(job.prevMesh);
         } else if(!IsEmpty(running)) {
             Tessellate(*running, job.color, &result->running.mesh);
         }
-        result->running.shape       = running;
         result->running.tessellated = !IsEmpty(running);
+        result->running.shape       = std::move(running);
     }
 
     bool Supports(KernelFeature feature) const override {

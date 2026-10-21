@@ -166,4 +166,32 @@ TEST_CASE(occt_solids_made_on_the_worker_match_a_full_regeneration) {
     CHECK_TRUE(LastGroup()->runningShape != nullptr);
     CHECK_EQ_STR(Describe(LastGroup()), want);
 }
+
+TEST_CASE(fillets_made_on_the_worker_match_a_full_regeneration) {
+    CHECK_LOAD("../../group/fillet/box.slvs");
+    SS.SetKernel(KernelKind::OCCT);
+    Group *box = LastGroup();
+    SS.GW.ClearSelection();
+    for(uint32_t request : { 5, 7 }) {
+        GraphicsWindow::Selection sel = {};
+        sel.entity = box->Remap(hRequest{ request }.entity(0), Group::REMAP_TOP);
+        SS.GW.selection.Add(&sel);
+    }
+    Group::MenuGroup(Command::GROUP_FILLET);
+    SS.SetFeatureSize(SS.GW.activeGroup, "3");
+    SS.GenerateAll(SolveSpaceUI::Generate::ALL);
+    std::string want = Describe(LastGroup());
+    CHECK_TRUE(LastGroup()->type == Group::Type::FILLET);
+    SS.backgroundRegenEnabled = true;
+    for(int frame = 0; frame < 30; frame++) {
+        DragFrame();
+        if(frame % 7 == 3) SS.GenerateAll(SolveSpaceUI::Generate::ALL);
+        SS.PollRegeneration();
+    }
+    EndDrag();
+    SS.FlushRegeneration();
+    CHECK_FALSE(SS.RegenerationPending());
+    CHECK_TRUE(LastGroup()->featureProblem.empty());
+    CHECK_EQ_STR(Describe(LastGroup()), want);
+}
 #endif

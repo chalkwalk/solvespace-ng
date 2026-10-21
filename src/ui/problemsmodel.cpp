@@ -84,6 +84,14 @@ std::vector<Problem> BuildProblems() {
             p.canForceToMesh = !g->forceToMesh;
             out.push_back(p);
         }
+        if(!g->featureProblem.empty()) {
+            Problem p;
+            p.group     = hg;
+            p.groupName = g->name;
+            p.kind      = Problem::Kind::FEATURE;
+            p.title     = g->featureProblem;
+            out.push_back(p);
+        }
         if(hg == SS.GW.activeGroup) break;
     }
     return out;

@@ -81,3 +81,26 @@ TEST_CASE(a_problem_names_its_group_by_name_only) {
     CHECK_TRUE(problems.size() == 1);
     if(problems.size() == 1) CHECK_EQ_STR(problems[0].groupName, SK.GetGroup(SS.GW.activeGroup)->name);
 }
+
+#if defined(HAVE_OCCT)
+TEST_CASE(a_fillet_that_fails_is_a_problem) {
+    CHECK_LOAD("../../group/fillet/box.slvs");
+    SS.kernelKind = KernelKind::OCCT;
+    SS.checkClosedContour = false;
+    hGroup extrude = SK.groupOrder[SK.groupOrder.n - 1];
+    SS.GW.ClearSelection();
+    GraphicsWindow::Selection sel = {};
+    sel.entity = SK.GetGroup(extrude)->Remap(hRequest{ 5 }.entity(0), Group::REMAP_TOP);
+    SS.GW.selection.Add(&sel);
+    Group::MenuGroup(Command::GROUP_FILLET);
+    SS.SetFeatureSize(SS.GW.activeGroup, "50");
+    SS.GenerateAll(SolveSpaceUI::Generate::ALL);
+    std::vector<Problem> problems = BuildProblems();
+    CHECK_TRUE(problems.size() == 1);
+    if(problems.size() == 1) {
+        CHECK_TRUE(problems[0].kind == Problem::Kind::FEATURE);
+        CHECK_TRUE(problems[0].group == SS.GW.activeGroup);
+        CHECK_TRUE(problems[0].title.find("fillet failed") != std::string::npos);
+    }
+}
+#endif

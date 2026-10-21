@@ -3,6 +3,7 @@
 // box.slvs is a 10 x 20 rectangle (requests 5..8, from the origin along +X first; request 4 is a
 // construction line) extruded 30 along +Z.
 #include "solvespace.h"
+#include <set>
 
 #include "harness.h"
 
@@ -28,6 +29,28 @@ void Select(std::vector<hEntity> entities) {
         sel.entity = he;
         SS.GW.selection.Add(&sel);
     }
+}
+
+double Volume(Group *g) {
+    SMesh m = {};
+    m.MakeFromCopyOf(&g->runningMesh);
+    g->runningShell.TriangulateInto(&m);
+    double v = m.CalculateVolume();
+    m.Clear();
+    return v;
+}
+
+std::set<uint32_t> FaceNames(Group *g) {
+    std::set<uint32_t> names;
+    for(const STriangle &t : g->runningMesh.l) {
+        if(t.meta.face != 0) names.insert(t.meta.face);
+    }
+    return names;
+}
+
+void Resize(Group *g, const char *size) {
+    SS.SetFeatureSize(g->h, size);
+    SS.GenerateAll(SolveSpaceUI::Generate::ALL);
 }
 
 Group *MakeFeature(Command cmd, std::vector<hEntity> edges) {
@@ -104,4 +127,66 @@ TEST_CASE(deleting_the_extrusion_deletes_the_fillet) {
     SS.GW.DeleteGroup(Extrusion()->h);
     CHECK_TRUE(SK.group.FindByIdNoOops(hg) == nullptr);
 }
+// The box less the corner a radius r rounds off along a 10 long edge: (1 - pi/4) r^2 10.
+TEST_CASE(fillet_rounds_a_box_edge) {
+    CHECK_LOAD("box.slvs");
+    SS.kernelKind = KernelKind::OCCT;
+    Group *box = Extrusion();
+    SS.GenerateAll(SolveSpaceUI::Generate::ALL);
+    std::set<uint32_t> named = FaceNames(box);
+    CHECK_EQ_EPS(Volume(box), 6000);
+    Group *g = MakeFeature(Command::GROUP_FILLET, { Edge(5, Group::REMAP_TOP) });
+    Resize(g, "5");
+    double removed = 6000 - Volume(g);
+    CHECK_TRUE(fabs(removed - (1 - PI / 4) * 25 * 10) < 1);
+    CHECK_TRUE(g->featureProblem.empty());
+    // The faces named before keep their names; the rounded face is new.
+    CHECK_TRUE(FaceNames(g) == named);
+    // The extrusion's own solid is as it was.
+    CHECK_EQ_EPS(Volume(box), 6000);
+}
+
+TEST_CASE(chamfer_bevels_a_box_edge) {
+    CHECK_LOAD("box.slvs");
+    SS.kernelKind = KernelKind::OCCT;
+    Group *g = MakeFeature(Command::GROUP_CHAMFER, { Edge(5, Group::REMAP_TOP) });
+    Resize(g, "5");
+    CHECK_TRUE(fabs(6000 - Volume(g) - 5 * 5 / 2.0 * 10) < 0.01);
+    CHECK_TRUE(g->featureProblem.empty());
+}
+
+TEST_CASE(a_fillet_too_big_leaves_the_solid_and_says_so) {
+    CHECK_LOAD("box.slvs");
+    SS.kernelKind = KernelKind::OCCT;
+    Group *g = MakeFeature(Command::GROUP_FILLET, { Edge(5, Group::REMAP_TOP) });
+    Resize(g, "50");
+    CHECK_EQ_EPS(Volume(g), 6000);
+    CHECK_FALSE(g->featureProblem.empty());
+}
+
+TEST_CASE(an_edge_rounded_away_is_reported_and_the_rest_round) {
+    CHECK_LOAD("box.slvs");
+    SS.kernelKind = KernelKind::OCCT;
+    Group *first = MakeFeature(Command::GROUP_CHAMFER, { Edge(5, Group::REMAP_TOP) });
+    Resize(first, "5");
+    hGroup hfirst = first->h;
+    Group *g = MakeFeature(Command::GROUP_CHAMFER,
+                           { Edge(5, Group::REMAP_TOP), Edge(7, Group::REMAP_TOP) });
+    Resize(g, "5");
+    CHECK_TRUE(fabs(6000 - Volume(g) - 2 * 125) < 0.01);
+    CHECK_TRUE(g->featureProblem.find("not found") != std::string::npos);
+    CHECK_TRUE(SK.GetGroup(hfirst)->featureProblem.empty());
+}
+
+TEST_CASE(a_fillet_with_the_solvespace_kernel_keeps_the_solid_and_says_so) {
+    CHECK_LOAD("box.slvs");
+    SS.kernelKind = KernelKind::OCCT;
+    Group *g = MakeFeature(Command::GROUP_FILLET, { Edge(5, Group::REMAP_TOP) });
+    hGroup hg = g->h;
+    SS.SetKernel(KernelKind::SOLVESPACE);
+    g = SK.GetGroup(hg);
+    CHECK_EQ_EPS(Volume(g), 6000);
+    CHECK_TRUE(g->featureProblem.find("Open CASCADE") != std::string::npos);
+}
+
 #endif

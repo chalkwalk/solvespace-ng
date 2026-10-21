@@ -230,6 +230,14 @@ public:
                 thisShell.MakeFromTransformationOf(job.impShell, job.offset, job.q, job.scale);
                 thisShell.RemapFaces(&namer, 0);
                 break;
+
+            case KernelJob::Op::FILLET:
+            case KernelJob::Op::CHAMFER:
+                // The previous solid passes through.
+                result->problem = "fillets and chamfers need the Open CASCADE kernel "
+                                  "(Preferences, SolveSpace NG) and a solid that is not a "
+                                  "triangle mesh";
+                break;
         }
 
         if(job.sourceCombine != KernelCombine::ASSEMBLE) {

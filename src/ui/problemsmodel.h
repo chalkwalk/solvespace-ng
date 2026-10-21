@@ -13,7 +13,7 @@ namespace SolveSpace {
 namespace Ui {
 
 struct Problem {
-    enum class Kind { UNSOLVABLE, UNSATISFIED, REDUNDANT, TOO_MANY_UNKNOWNS, CONTOUR, BOOLEAN };
+    enum class Kind { UNSOLVABLE, UNSATISFIED, REDUNDANT, TOO_MANY_UNKNOWNS, CONTOUR, BOOLEAN, FEATURE };
 
     hGroup                   group;
     std::string              groupName;

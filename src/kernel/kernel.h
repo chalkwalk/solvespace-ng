@@ -43,7 +43,9 @@ enum class KernelFeature {
 };
 
 struct KernelJob {
-    enum class Op { NONE, EXTRUDE, LATHE, REVOLVE, HELIX, STEP_TRANSLATE, STEP_ROTATE, LINKED };
+    enum class Op {
+        NONE, EXTRUDE, LATHE, REVOLVE, HELIX, STEP_TRANSLATE, STEP_ROTATE, LINKED, FILLET, CHAMFER
+    };
     Op        op    = Op::NONE;
     RgbaColor color = {};
 
@@ -79,6 +81,12 @@ struct KernelJob {
     Quaternion q        = {};
     double     scale    = 1;
 
+    // FILLET, CHAMFER: the previous body with these edges rounded or bevelled: each the
+    // curves of an edge entity, matching the B-rep edges that lie on them; the radius or
+    // distance.
+    std::vector<std::vector<SBezier>> edgeCurves;
+    double size = 0;
+
     // Combining with the previous groups' running body.
     bool          forcedToMesh = false; // combine as triangle meshes
     bool          suppress     = false; // contributes nothing
@@ -91,10 +99,12 @@ struct KernelJob {
 struct KernelResult {
     Body thisBody; // the group's own solid
     Body running;  // the previous groups' solid combined with it
+    std::string problem; // why the solid is not as asked (a fillet that failed), or empty
 
     void Clear() {
         thisBody.Clear();
         running.Clear();
+        problem.clear();
     }
 };
 

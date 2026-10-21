@@ -194,6 +194,17 @@ KernelJob Group::BuildKernelJob() {
                 job.dists = -job.distf;
             }
         }
+    } else if(type == Type::FILLET || type == Type::CHAMFER) {
+        job.op   = type == Type::FILLET ? KernelJob::Op::FILLET : KernelJob::Op::CHAMFER;
+        job.size = valA;
+        for(hEntity he : edges) {
+            Entity *e = SK.entity.FindByIdNoOops(he);
+            if(e == nullptr) continue;
+            SBezierList sbl = {};
+            e->GenerateBezierCurves(&sbl);
+            job.edgeCurves.emplace_back(sbl.l.begin(), sbl.l.end());
+            sbl.Clear();
+        }
     } else if(type == Type::LINKED) {
         job.op       = KernelJob::Op::LINKED;
         job.impShell = &impShell;
@@ -236,7 +247,9 @@ void Group::ApplyKernelResult(KernelResult *result) {
     // If the Boolean failed, then we should note that in the text screen
     // for this group.
     booleanFailed = result->running.booleanFailed;
-    if(booleanFailed != prevBooleanFailed) {
+    bool problemChanged = featureProblem != result->problem;
+    featureProblem      = std::move(result->problem);
+    if(booleanFailed != prevBooleanFailed || problemChanged) {
         SS.ScheduleShowTW();
     }
     displayDirty = true;
@@ -256,7 +269,8 @@ void Group::GenerateDisplayItems() {
     // if its inputs have changed.
     if(displayDirty) {
         Group *pg = RunningMeshGroup();
-        if(pg && thisMesh.IsEmpty() && thisShell.IsEmpty()) {
+        bool reshapes = type == Type::FILLET || type == Type::CHAMFER;
+        if(pg && thisMesh.IsEmpty() && thisShell.IsEmpty() && !reshapes) {
             // We don't contribute any new solid model in this group, so our
             // display items are identical to the previous group's; which means
             // that we can just display those, and stop ourselves from
