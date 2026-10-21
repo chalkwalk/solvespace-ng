@@ -255,6 +255,7 @@ KernelJob Group::BuildKernelJob() {
         job.op       = KernelJob::Op::LINKED;
         job.impShell = &impShell;
         job.impMesh  = &impMesh;
+        job.impShape = impShape;
         job.offset   = { SK.GetParam(h.param(0))->val, SK.GetParam(h.param(1))->val,
                          SK.GetParam(h.param(2))->val };
         job.q        = { SK.GetParam(h.param(3))->val, SK.GetParam(h.param(4))->val,

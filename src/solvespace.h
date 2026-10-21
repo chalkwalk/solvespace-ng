@@ -715,6 +715,10 @@ public:
     // The active group's solid's mass properties: exact from the B-rep, else from its mesh;
     // false if there is no solid.
     bool        MassProperties(MassProps *out);
+    // A STEP file's B-rep and its tessellation, for a linked group; false if it can't be read
+    // (or there is no Open CASCADE).
+    bool LinkStep(const Platform::Path &filename, std::shared_ptr<const KernelShape> *shape,
+                  SMesh *mesh);
     std::string MassPropertiesText();
     bool BackgroundRegenAllowed();
     void SubmitBackgroundRegen(const std::vector<hGroup> &groups);

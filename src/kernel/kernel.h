@@ -213,6 +213,12 @@ struct MassProps {
 // The B-rep's mass properties, exactly; false if there is no B-rep.
 bool KernelMassProperties(const std::shared_ptr<const KernelShape> &shape, MassProps *out);
 
+// A STEP file's solid, or null if it can't be read.
+std::shared_ptr<const KernelShape> KernelImportStep(const Platform::Path &filename);
+// A B-rep's tessellation (as the kernel gives a body's), each triangle in color.
+void KernelTessellate(const std::shared_ptr<const KernelShape> &shape, RgbaColor color,
+                      SMesh *mesh);
+
 // Combines the job's previous body and result->thisBody as triangle meshes into
 // result->running.mesh: the path for meshes and groups forced to a mesh.
 void CombineAsMeshes(const KernelJob &job, KernelResult *result);

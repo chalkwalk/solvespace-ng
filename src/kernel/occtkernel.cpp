@@ -47,6 +47,7 @@
 #include <BRep_Tool.hxx>
 #include <GCE2d_MakeSegment.hxx>
 #include <Interface_Static.hxx>
+#include <STEPControl_Reader.hxx>
 #include <STEPControl_Writer.hxx>
 #include <GProp_GProps.hxx>
 #include <Geom_BezierCurve.hxx>
@@ -1001,6 +1002,20 @@ std::shared_ptr<KernelShape> Sweep(const KernelJob &job, std::string *problem) {
     return ks;
 }
 
+// A linked B-rep (a STEP file) scaled, rotated and moved as the link says, as SolveSpace
+// places a linked mesh.
+std::shared_ptr<KernelShape> PlaceLinked(const KernelJob &job) {
+    gp_Trsf scale, rotate, move;
+    scale.SetScale(gp_Pnt(0, 0, 0), job.scale);
+    rotate.SetRotation(gp_Quaternion(job.q.vx, job.q.vy, job.q.vz, job.q.w));
+    move.SetTranslation(Vec(job.offset));
+    auto out   = std::make_shared<KernelShape>();
+    out->shape = BRepBuilderAPI_Transform(job.impShape->shape, move * rotate * scale,
+                                          /*copy=*/true)
+                     .Shape();
+    return out;
+}
+
 class OcctKernel final : public IKernel {
 public:
     void Run(const KernelJob &job, FaceNamer &namer, KernelResult *result) override {
@@ -1010,7 +1025,8 @@ public:
                       job.op == KernelJob::Op::STEP_ROTATE;
         bool sourceHasBody = isStep && !job.sourceSuppressed &&
                              (!job.sourceMesh->IsEmpty() || !job.sourceShell->IsEmpty());
-        if(job.forcedToMesh || job.op == KernelJob::Op::LINKED ||
+        bool linkedMesh = job.op == KernelJob::Op::LINKED && (IsEmpty(job.impShape) || job.scale <= 0);
+        if(job.forcedToMesh || linkedMesh ||
            (prevHasBody && IsEmpty(job.prevShape)) ||
            (sourceHasBody && IsEmpty(job.sourceShape))) {
             // No B-rep to work with: SolveSpace's kernel, combining as meshes.
@@ -1042,8 +1058,8 @@ public:
 
         std::shared_ptr<KernelShape> made;
         switch(job.op) {
+            case KernelJob::Op::LINKED: made = PlaceLinked(job); break;
             case KernelJob::Op::NONE:
-            case KernelJob::Op::LINKED:
             case KernelJob::Op::FILLET:
             case KernelJob::Op::CHAMFER:
             case KernelJob::Op::SHELL:
@@ -1217,6 +1233,25 @@ std::vector<KernelFaceNormal> KernelFaceNormals(const std::shared_ptr<const Kern
         normals.push_back({ info->face, Vec(out.XYZ()) });
     }
     return normals;
+}
+
+
+std::shared_ptr<const KernelShape> KernelImportStep(const Platform::Path &filename) {
+    STEPControl_Reader reader;
+    try {
+        if(reader.ReadFile(filename.raw.c_str()) != IFSelect_RetDone) return nullptr;
+        if(reader.TransferRoots() == 0) return nullptr;
+        auto ks   = std::make_shared<KernelShape>();
+        ks->shape = reader.OneShape();
+        if(ks->shape.IsNull()) return nullptr;
+        return ks;
+    } catch(const Standard_Failure &) {
+        return nullptr;
+    }
+}
+
+void KernelTessellate(const std::shared_ptr<const KernelShape> &ks, RgbaColor color, SMesh *mesh) {
+    if(!IsEmpty(ks)) Tessellate(*ks, color, mesh);
 }
 
 }

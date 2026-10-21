@@ -35,6 +35,7 @@ void Group::Clear() {
     displayOutlines.Clear();
     impMesh.Clear();
     impShell.Clear();
+    impShape.reset();
     impEntity.Clear();
     // remap is the only one that doesn't get recreated when we regen
     remap.clear();
@@ -648,6 +649,8 @@ bool Group::IsForcedToMesh() const {
 
 bool Group::IsTriangleMeshAssembly() const {
     if (type != Type::LINKED) return false;
+    // A linked STEP file is a B-rep to the OCCT kernel, a mesh to SolveSpace's.
+    if(impShape && SS.kernelKind == KernelKind::OCCT) return false;
     if (!impMesh.IsEmpty() && impShell.IsEmpty()) return true;
     return false;
 }

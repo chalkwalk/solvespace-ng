@@ -340,6 +340,7 @@ public:
     Platform::Path linkFile;
     SMesh       impMesh;
     SShell      impShell;
+    std::shared_ptr<const KernelShape> impShape; // a linked STEP file's B-rep (not saved)
     EntityList  impEntity;
 
     std::string     name;

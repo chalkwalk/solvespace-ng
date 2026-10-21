@@ -352,6 +352,12 @@ bool KernelMassProperties(const std::shared_ptr<const KernelShape> &, MassProps 
 std::vector<KernelFaceNormal> KernelFaceNormals(const std::shared_ptr<const KernelShape> &) {
     return {};
 }
+
+std::shared_ptr<const KernelShape> KernelImportStep(const Platform::Path &) {
+    return nullptr;
+}
+
+void KernelTessellate(const std::shared_ptr<const KernelShape> &, RgbaColor, SMesh *) {}
 #endif
 
 IKernel &Kernel() {

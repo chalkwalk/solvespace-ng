@@ -749,6 +749,17 @@ void SolveSpaceUI::UpgradeLegacyData() {
     oldParam.Clear();
 }
 
+bool SolveSpaceUI::LinkStep(const Platform::Path &filename,
+                            std::shared_ptr<const KernelShape> *shape, SMesh *mesh) {
+    shape->reset();
+    mesh->Clear();
+    std::shared_ptr<const KernelShape> read = KernelImportStep(filename);
+    if(!read) return false;
+    KernelTessellate(read, RGBi(150, 150, 150), mesh);
+    *shape = std::move(read);
+    return true;
+}
+
 bool SolveSpaceUI::LoadEntitiesFromFile(const Platform::Path &filename, EntityList *le,
                                         SMesh *m, SShell *sh)
 {
@@ -956,7 +967,12 @@ bool SolveSpaceUI::ReloadAllLinked(const Platform::Path &saveFile, bool canCance
         }
 
 try_again:
-        if(LoadEntitiesFromFile(g.linkFile, &g.impEntity, &g.impMesh, &g.impShell)) {
+        std::string ext = g.linkFile.Extension();
+        std::transform(ext.begin(), ext.end(), ext.begin(), ::tolower);
+        bool loaded = (ext == "step" || ext == "stp")
+                          ? LinkStep(g.linkFile, &g.impShape, &g.impMesh)
+                          : LoadEntitiesFromFile(g.linkFile, &g.impEntity, &g.impMesh, &g.impShell);
+        if(loaded) {
             // We loaded the data, good. Now import its dependencies as well.
             for(Entity &e : g.impEntity) {
                 if(e.type != Entity::Type::IMAGE) continue;
@@ -964,7 +980,7 @@ try_again:
                     return false;
                 }
             }
-            if(g.IsTriangleMeshAssembly())
+            if(g.IsTriangleMeshAssembly() && !g.impShape)
                 g.forceToMesh = true;
         } else if(linkMap.count(g.linkFile) == 0) {
             dbp("Missing file for group: %s", g.name.c_str());

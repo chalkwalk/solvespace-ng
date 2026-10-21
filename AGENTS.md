@@ -344,6 +344,13 @@ mitred corners). Derived entities: the end faces (`REMAP_LOFT_START/END`,
 `REMAP_SWEEP_START/END`), facing out, naming the end caps. Holes inside profiles are left out
 (with a note).
 
+**Built in M3f (2026-10-21, branch `ng/m3f-step-import`):** STEP import: New Group ▸ Link
+Part takes `.step`/`.stp` files (`SolveSpaceUI::LinkStep`). The B-rep (`Group::impShape`, read
+again on load, not saved) is placed by the link's position, rotation and scale and combined as
+a B-rep by the OCCT kernel; its tessellation (`impMesh`) is what SolveSpace's kernel and
+builds without OCCT use. Imported faces are unnamed: they can be picked and measured, not yet
+sketched on.
+
 **Later:** variable-radius fillets, STEP import as a reference body (snappable, warned),
 XCAF colours and names, exact hidden-line drawing export (`HLRBRep`).
 
