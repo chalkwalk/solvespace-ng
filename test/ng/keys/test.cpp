@@ -120,8 +120,11 @@ TEST_CASE(modern_preset_has_the_review_4_keys) {
         }
         CHECK_TRUE(cmd && *cmd == e[1]);
     }
-    // Gone: A no longer selects all, H no longer hides, X no longer deletes.
-    for(const char *gone : { "Shift+C", "Shift+B", "Shift+H", "Alt+H", "Shift+N" }) {
+    // Gone: A no longer selects all, H no longer hides, X no longer deletes. (Shift+H came back
+    // as Hole in review 5.)
+    CHECK_TRUE(modern->Lookup(*keymap::ParseChord("Shift+H")) &&
+               *modern->Lookup(*keymap::ParseChord("Shift+H")) == "group-hole");
+    for(const char *gone : { "Shift+C", "Shift+B", "Alt+H", "Shift+N" }) {
         CHECK_TRUE(modern->Lookup(*keymap::ParseChord(gone)) == nullptr);
     }
 }
