@@ -102,6 +102,20 @@ bool SolveSpaceUI::SetHelixPitch(hGroup hg, const std::string &expr) {
     return true;
 }
 
+bool SolveSpaceUI::SetFeatureSize(hGroup hg, const std::string &expr) {
+    Expr *e = Expr::From(expr, /*popUpError=*/true);
+    if(!e) return false;
+    double mm = e->Eval() * MmPerUnit();
+    if(mm <= LENGTH_EPS) {
+        Error(_("The radius or distance must be greater than zero."));
+        return false;
+    }
+    UndoRemember();
+    SK.GetGroup(hg)->valA = mm;
+    MarkGroupDirty(hg);
+    return true;
+}
+
 void SolveSpaceUI::ToggleHelixPitchFixed(hGroup hg) {
     Group *g = SK.GetGroup(hg);
     if(g->valB == 0.0) {

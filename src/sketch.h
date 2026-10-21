@@ -189,7 +189,9 @@ public:
         HELIX                         = 5103,
         ROTATE                        = 5200,
         TRANSLATE                     = 5201,
-        LINKED                        = 5300
+        LINKED                        = 5300,
+        FILLET                        = 5400,
+        CHAMFER                       = 5401
     };
     Group::Type type;
 
@@ -259,6 +261,11 @@ public:
     }               polyError;
 
     bool            booleanFailed;
+    std::string     featureProblem; // why a fillet or chamfer is not as asked, or empty
+
+    // FILLET, CHAMFER: the edges, entities made by solid groups; valA is the radius or the
+    // distance, in mm.
+    std::vector<hEntity> edges;
 
     SShell          thisShell;
     SShell          runningShell;
@@ -322,6 +329,9 @@ public:
         REMAP_PT_TO_NORMAL = 1009,
         REMAP_LATHE_ARC_CENTER = 1010,
     };
+    // Whether an entity is an edge of a solid a fillet or chamfer can take: a curve that a
+    // solid group made.
+    static bool IsEdgeEntity(const Entity *e);
     hEntity Remap(hEntity in, int copyNumber);
     // A copy of the names this group has given (kernel/facenamer.h), for a worker thread.
     SnapshotFaceNamer FaceSnapshot() const;

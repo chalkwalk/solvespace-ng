@@ -119,6 +119,7 @@ const SolveSpaceUI::SaveTable SolveSpaceUI::SAVED[] = {
     { 'g',  "Group.allDimsReference",   'b',    &(SS.sv.g.allDimsReference)   },
     { 'g',  "Group.scale",              'f',    &(SS.sv.g.scale)              },
     { 'g',  "Group.remap",              'M',    &(SS.sv.g.remap)              },
+    { 'g',  "Group.edges",              'E',    &(SS.sv.g.edges)              },
     { 'g',  "Group.impFile",            'i',    NULL                          },
     { 'g',  "Group.impFileRel",         'P',    &(SS.sv.g.linkFile)           },
 
@@ -213,6 +214,7 @@ const SolveSpaceUI::SaveTable SolveSpaceUI::SAVED[] = {
 
 struct SAVEDptr {
     EntityMap      &M() { return *((EntityMap *)this); }
+    std::vector<hEntity> &E() { return *((std::vector<hEntity> *)this); }
     std::string    &S() { return *((std::string *)this); }
     Platform::Path &P() { return *((Platform::Path *)this); }
     bool      &b() { return *((bool *)this); }
@@ -236,6 +238,7 @@ void SolveSpaceUI::SaveUsingTable(const Platform::Path &filename, int type) {
         if(fmt == 'f' && EXACT(p->f() == 0.0))    continue;
         if(fmt == 'x' && p->x() == 0)             continue;
         if(fmt == 'i')                            continue;
+        if(fmt == 'E' && p->E().empty())          continue;
 
         fprintf(fh, "%s=", SAVED[i].desc);
         switch(fmt) {
@@ -268,6 +271,15 @@ void SolveSpaceUI::SaveUsingTable(const Platform::Path &filename, int type) {
                             it.second.v, it.first.input.v, it.first.copyNumber);
                 }
                 fprintf(fh, "}");
+                break;
+            }
+
+            case 'E': {
+                const char *sep = "";
+                for(hEntity he : p->E()) {
+                    fprintf(fh, "%s%08x", sep, he.v);
+                    sep = " ";
+                }
                 break;
             }
 
@@ -457,6 +469,17 @@ void SolveSpaceUI::LoadUsingTable(const Platform::Path &filename, char *key, cha
                         } else {
                             break;
                         }
+                    }
+                    break;
+                }
+
+                case 'E': {
+                    p->E().clear();
+                    char *end;
+                    for(char *at = val;; at = end) {
+                        unsigned long v = strtoul(at, &end, 16);
+                        if(end == at) break;
+                        p->E().push_back(hEntity{ (uint32_t)v });
                     }
                     break;
                 }

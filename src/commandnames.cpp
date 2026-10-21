@@ -90,6 +90,8 @@ static const CommandNameEntry CommandNames[] = {
     { Command::GROUP_ROT,         "group-step-rotate"  },
     { Command::GROUP_TRANS,       "group-step-translate" },
     { Command::GROUP_LINK,        "group-link"         },
+    { Command::GROUP_FILLET,      "group-fillet"       },
+    { Command::GROUP_CHAMFER,     "group-chamfer"      },
     // Constrain
     { Command::DISTANCE_DIA,      "constrain-distance" },
     { Command::REF_DISTANCE,      "constrain-reference-distance" },

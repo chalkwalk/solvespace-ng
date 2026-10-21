@@ -581,9 +581,9 @@ public:
             case KernelFeature::HELIX:
             case KernelFeature::PATTERN:
             case KernelFeature::LINK:
-            case KernelFeature::BOOLEAN: return true;
+            case KernelFeature::BOOLEAN:
             case KernelFeature::FILLET:
-            case KernelFeature::CHAMFER:
+            case KernelFeature::CHAMFER: return true;
             case KernelFeature::SHELL:
             case KernelFeature::LOFT:
             case KernelFeature::SWEEP: return false;

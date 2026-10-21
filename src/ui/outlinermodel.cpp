@@ -27,6 +27,8 @@ static const char *IconFor(Group::Type t) {
         case Group::Type::ROTATE:            return "circular-pattern";
         case Group::Type::TRANSLATE:         return "linear-pattern";
         case Group::Type::LINKED:            return "insert-part";
+        case Group::Type::FILLET:            return "extrude";
+        case Group::Type::CHAMFER:           return "extrude";
     }
     return "isometric";
 }

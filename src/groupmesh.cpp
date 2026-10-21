@@ -350,6 +350,8 @@ bool Group::IsMeshGroup() {
         case Group::Type::HELIX:
         case Group::Type::ROTATE:
         case Group::Type::TRANSLATE:
+        case Group::Type::FILLET:
+        case Group::Type::CHAMFER:
             return true;
 
         default:

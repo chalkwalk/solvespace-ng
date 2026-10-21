@@ -70,6 +70,46 @@ void Group::ExtrusionForceVectorTo(const Vector &v) {
     SK.GetParam(h.param(2))->val = v.z;
 }
 
+bool Group::IsEdgeEntity(const Entity *e) {
+    if(e->construction) return false;
+    switch(e->type) {
+        case Entity::Type::LINE_SEGMENT:
+        case Entity::Type::ARC_OF_CIRCLE:
+        case Entity::Type::CIRCLE:
+        case Entity::Type::CUBIC:
+        case Entity::Type::CUBIC_PERIODIC: break;
+        default: return false;
+    }
+    Group *g = SK.group.FindByIdNoOops(e->group);
+    if(g == nullptr) return false;
+    switch(g->type) {
+        case Type::EXTRUDE:
+        case Type::LATHE:
+        case Type::REVOLVE:
+        case Type::HELIX:
+        case Type::TRANSLATE:
+        case Type::ROTATE: return true;
+        default: return false;
+    }
+}
+
+// The length of an edge, from its curves.
+static double EdgeLength(Entity *e) {
+    SBezierList sbl = {};
+    e->GenerateBezierCurves(&sbl);
+    double length = 0;
+    for(const SBezier &sb : sbl.l) {
+        Vector prev = sb.Start();
+        for(int i = 1; i <= 16; i++) {
+            Vector p = sb.PointAt(i / 16.0);
+            length += p.Minus(prev).Magnitude();
+            prev = p;
+        }
+    }
+    sbl.Clear();
+    return length;
+}
+
 void Group::MenuGroup(Command id)  {
     MenuGroup(id, Platform::Path());
 }
@@ -325,6 +365,36 @@ void Group::MenuGroup(Command id, Platform::Path linkFile) {
                     g.name[i] = '-';
                 }
             }
+            break;
+        }
+
+        case Command::GROUP_FILLET:
+        case Command::GROUP_CHAMFER: {
+            bool   fillet   = id == Command::GROUP_FILLET;
+            double shortest = VERY_POSITIVE;
+            for(const GraphicsWindow::Selection &s : SS.GW.selection) {
+                Entity *e = s.entity.v ? SK.entity.FindByIdNoOops(s.entity) : nullptr;
+                if(e == nullptr || !IsEdgeEntity(e)) {
+                    g.edges.clear();
+                    break;
+                }
+                g.edges.push_back(e->h);
+                shortest = std::min(shortest, EdgeLength(e));
+            }
+            if(g.edges.empty()) {
+                Error(_("Bad selection for a new %s group. Select one or more edges of "
+                        "the solid: the lines and curves an extrusion, lathe, revolve, "
+                        "helix or pattern makes."), fillet ? _("fillet") : _("chamfer"));
+                return;
+            }
+            if(!Kernel().Supports(fillet ? KernelFeature::FILLET : KernelFeature::CHAMFER)) {
+                Error(_("Fillets and chamfers need the Open CASCADE kernel (Preferences, "
+                        "SolveSpace NG)."));
+                return;
+            }
+            g.type = fillet ? Type::FILLET : Type::CHAMFER;
+            g.valA = shortest / 10;
+            g.name = fillet ? C_("group-name", "fillet") : C_("group-name", "chamfer");
             break;
         }
 
@@ -768,6 +838,10 @@ void Group::Generate(EntityList *entity, ParamList *param)
             }
             return;
         }
+        case Type::FILLET:
+        case Type::CHAMFER:
+            return;
+
         case Type::LINKED:
             // The translation vector
             AddParam(param, h.param(0), gp.x);

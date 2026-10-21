@@ -51,6 +51,8 @@ static const char *TypeLine(const Group *g) {
         case Group::Type::ROTATE:            return "rotate original sketch";
         case Group::Type::TRANSLATE:         return "translate original sketch";
         case Group::Type::LINKED:            return "link geometry from file";
+        case Group::Type::FILLET:            return "round edges";
+        case Group::Type::CHAMFER:           return "bevel edges";
     }
     return "";
 }

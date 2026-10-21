@@ -504,6 +504,7 @@ public:
     bool SetGroupRepeat(hGroup hg, const std::string &expr);
     bool SetGroupScale(hGroup hg, const std::string &expr);
     bool SetHelixPitch(hGroup hg, const std::string &expr); // in display units
+    bool SetFeatureSize(hGroup hg, const std::string &expr); // fillet radius, chamfer distance
     void ToggleHelixPitchFixed(hGroup hg);
     void SetGroupColor(hGroup hg, RgbaColor rgb, bool rememberUndo); // keeps the opacity
     bool SetGroupOpacity(hGroup hg, const std::string &expr);
