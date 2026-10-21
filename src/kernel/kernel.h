@@ -89,6 +89,13 @@ struct KernelJob {
     double size = 0;
     // SHELL: the faces left open (face entity handles); the wall thickness is size.
     std::vector<uint32_t> faceNames;
+    // DRAFT: each face (a face entity's handle) tapered by size (radians) about the plane
+    // through point normal to pull, along pull; the drafted face is named name.
+    struct DraftFace {
+        uint32_t face = 0, name = 0;
+        Vector   point = {}, pull = {};
+    };
+    std::vector<DraftFace> draftFaces;
 
     // Combining with the previous groups' running body.
     bool          forcedToMesh = false; // combine as triangle meshes

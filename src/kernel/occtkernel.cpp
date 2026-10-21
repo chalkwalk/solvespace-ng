@@ -715,9 +715,59 @@ std::shared_ptr<KernelShape> Shell(const KernelJob &job, FaceNamer *namer, std::
     return out;
 }
 
-std::shared_ptr<KernelShape> Draft(const KernelJob &, FaceNamer *, std::string *problem) {
-    *problem = "drafts are not built yet";
-    return nullptr;
+// The previous body with the job's faces tapered; each drafted face is named as the job says.
+std::shared_ptr<KernelShape> Draft(const KernelJob &job, FaceNamer *, std::string *problem) {
+    const KernelShape       &prev = *job.prevShape;
+    BRepOffsetAPI_DraftAngle draft(prev.shape);
+    std::vector<std::pair<TopoDS_Shape, uint32_t>> drafted;
+    int                                            missing = 0;
+    try {
+        for(const KernelJob::DraftFace &df : job.draftFaces) {
+            bool found = false;
+            for(TopExp_Explorer ex(prev.shape, TopAbs_FACE); ex.More(); ex.Next()) {
+                const FaceInfo *info = prev.faces.Seek(ex.Current());
+                if(info == nullptr || info->face != df.face) continue;
+                found = true;
+                draft.Add(TopoDS::Face(ex.Current()), Dir(df.pull), job.size,
+                          gp_Pln(Pnt(df.point), Dir(df.pull)));
+                if(!draft.AddDone()) {
+                    *problem = "the draft failed on a face it cannot taper";
+                    return nullptr;
+                }
+                drafted.push_back({ ex.Current(), df.name });
+            }
+            if(!found) missing++;
+        }
+        if(drafted.empty()) {
+            *problem = "none of the faces were found on the solid";
+            return nullptr;
+        }
+        draft.Build();
+    } catch(const Standard_Failure &) {
+    }
+    if(!draft.IsDone() || !IsGoodSolid(draft.Shape())) {
+        *problem = "the draft failed; the angle may be too big for the solid";
+        return nullptr;
+    }
+    if(missing > 0) {
+        *problem = ssprintf("%d of the %d faces were not found on the solid", missing,
+                            (int)job.draftFaces.size());
+    }
+    auto out   = std::make_shared<KernelShape>();
+    out->shape = draft.Shape();
+    // A modification's history is its ModifiedShape; a drafted face takes its new name.
+    for(FaceMap::Iterator it(prev.faces); it.More(); it.Next()) {
+        TopoDS_Shape made = draft.ModifiedShape(it.Key());
+        if(!made.IsNull()) out->faces.Bind(made, it.Value());
+    }
+    for(const auto &[face, name] : drafted) {
+        TopoDS_Shape made = draft.ModifiedShape(face);
+        if(made.IsNull()) continue;
+        RgbaColor color = prev.faces.Seek(face) ? prev.faces.Find(face).color : RgbaColor{};
+        out->faces.UnBind(made);
+        out->faces.Bind(made, FaceInfo{ name, color });
+    }
+    return out;
 }
 
 class OcctKernel final : public IKernel {

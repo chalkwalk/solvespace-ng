@@ -372,6 +372,7 @@ public:
     void AddFeatureFace(EntityList *el, hEntity face, int which, Vector point, Vector normal);
     void UpdateFaceOut();
     void MakeShellFaces(EntityList *el);
+    void MakeDraftFaces(EntityList *el);
     void MakeLatheCircles(EntityList *el, ParamList *param, hEntity in, Vector pt, Vector axis);
     void MakeLatheSurfacesSelectable(EntityList *el, hEntity in, Vector axis);
     void MakeRevolveEndFaces(EntityList *el, hEntity pt, int ai, int af);

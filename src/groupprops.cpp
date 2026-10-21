@@ -105,13 +105,26 @@ bool SolveSpaceUI::SetHelixPitch(hGroup hg, const std::string &expr) {
 bool SolveSpaceUI::SetFeatureSize(hGroup hg, const std::string &expr) {
     Expr *e = Expr::From(expr, /*popUpError=*/true);
     if(!e) return false;
+    Group *g = SK.GetGroup(hg);
+    if(g->type == Group::Type::DRAFT) {
+        // An angle in degrees: positive narrows along the pull, negative widens.
+        double deg = e->Eval();
+        if(fabs(deg) < 1e-6 || fabs(deg) >= 89) {
+            Error(_("The draft angle must be between -89 and 89 degrees, and not zero."));
+            return false;
+        }
+        UndoRemember();
+        g->valA = deg;
+        MarkGroupDirty(hg);
+        return true;
+    }
     double mm = e->Eval() * MmPerUnit();
     if(mm <= LENGTH_EPS) {
         Error(_("The radius or distance must be greater than zero."));
         return false;
     }
     UndoRemember();
-    SK.GetGroup(hg)->valA = mm;
+    g->valA = mm;
     MarkGroupDirty(hg);
     return true;
 }

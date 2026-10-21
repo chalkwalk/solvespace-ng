@@ -205,6 +205,17 @@ KernelJob Group::BuildKernelJob() {
             job.edgeCurves.emplace_back(sbl.l.begin(), sbl.l.end());
             sbl.Clear();
         }
+    } else if(type == Type::DRAFT) {
+        job.op   = KernelJob::Op::DRAFT;
+        job.size = valA * PI / 180;
+        for(hEntity he : faces) {
+            Entity *f = SK.entity.FindByIdNoOops(he);
+            if(f == nullptr) continue;
+            Group *eg = SK.GetGroup(f->group);
+            Vector pull = Vector::From(eg->h.param(0), eg->h.param(1), eg->h.param(2));
+            job.draftFaces.push_back({ he.v, Remap(he, REMAP_DRAFT_FACE).v, f->FaceGetPointNum(),
+                                       pull.WithMagnitude(1) });
+        }
     } else if(type == Type::SHELL) {
         job.op   = KernelJob::Op::SHELL;
         job.size = valA;

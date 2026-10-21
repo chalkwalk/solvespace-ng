@@ -443,6 +443,32 @@ void Group::MenuGroup(Command id, Platform::Path linkFile) {
             break;
         }
 
+        case Command::GROUP_DRAFT: {
+            for(const GraphicsWindow::Selection &s : SS.GW.selection) {
+                Entity *e = s.entity.v ? SK.entity.FindByIdNoOops(s.entity) : nullptr;
+                Group  *eg = e ? SK.group.FindByIdNoOops(e->group) : nullptr;
+                if(e == nullptr || e->type != Entity::Type::FACE_XPROD || eg == nullptr ||
+                   eg->type != Type::EXTRUDE) {
+                    g.faces.clear();
+                    break;
+                }
+                g.faces.push_back(e->h);
+            }
+            if(g.faces.empty()) {
+                Error(_("Bad selection for a new draft group. Select side faces of an "
+                        "extrusion; they taper about its sketch plane, along its direction."));
+                return;
+            }
+            if(!Kernel().Supports(KernelFeature::DRAFT)) {
+                Error(_("Drafts need the Open CASCADE kernel (Preferences, SolveSpace NG)."));
+                return;
+            }
+            g.valA = 2;
+            g.type = Type::DRAFT;
+            g.name = C_("group-name", "draft");
+            break;
+        }
+
         default: ssassert(false, "Unexpected menu ID");
     }
 
@@ -893,6 +919,7 @@ void Group::Generate(EntityList *entity, ParamList *param)
             return;
 
         case Type::DRAFT:
+            MakeDraftFaces(entity);
             return;
 
         case Type::LINKED:
@@ -1133,6 +1160,31 @@ void Group::MakeShellFaces(EntityList *el) {
         double  out    = it == faceOut.end() ? 0 : it->second;
         AddFeatureFace(el, he, REMAP_SHELL_INNER, point.Minus(normal.ScaledBy(out * valA)),
                        normal);
+    }
+}
+
+// The direction an extrusion's side face is drafted along (the extrusion's), unit.
+static Vector DraftPull(const Entity *face) {
+    Group *eg = SK.GetGroup(face->group);
+    return Vector::From(eg->h.param(0), eg->h.param(1), eg->h.param(2)).WithMagnitude(1);
+}
+
+// A draft's derived entities (AGENTS.md section 6): each drafted face, through its base line
+// (the sketch line, in the neutral sketch plane) with its outward normal turned towards the
+// pull by the angle, so the face leans in. Before the solid is known, the normal turns from
+// the entity's.
+void Group::MakeDraftFaces(EntityList *el) {
+    UpdateFaceOut();
+    double angle = valA * PI / 180;
+    for(hEntity he : faces) {
+        Entity *f = SK.entity.FindByIdNoOops(he);
+        if(f == nullptr) continue;
+        Vector pull   = DraftPull(f);
+        Vector normal = f->FaceGetNormalNum().WithMagnitude(1);
+        auto   it     = faceOut.find(he.v);
+        if(it != faceOut.end()) normal = normal.ScaledBy(it->second);
+        Vector drafted = normal.ScaledBy(cos(angle)).Plus(pull.ScaledBy(sin(angle)));
+        AddFeatureFace(el, he, REMAP_DRAFT_FACE, f->FaceGetPointNum(), drafted);
     }
 }
 
