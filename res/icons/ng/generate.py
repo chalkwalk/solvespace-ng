@@ -260,6 +260,16 @@ ICONS = {
              + f'<ellipse cx="11.2" cy="8.5" rx="3.6" ry="1.6" fill="{DARK}" stroke="{DARK}" stroke-width="0.6" />'
              + f'<ellipse cx="11.2" cy="9.1" rx="1.8" ry="0.8" fill="#000000" opacity="0.6" />'
              + chrome('M11.2 1v4.5 ' + arrowhead(11.2, 5.8, 0, 1, 2), 1.3)),
+    # A square profile below, a small round one above, and the smooth solid between them.
+    'loft': (f'<path d="M4 19.5l4-3h12l-4 3z M9 6.5a3.5 1.3 0 1 0 7 0a3.5 1.3 0 1 0 -7 0" fill="none" />'
+             f'<path d="M4 19.5C6 13 9 10 9 6.5h7c0 3.5 2 6.5 4 10l-4 3z" fill="{MID}" stroke="{DARK}" stroke-width="0.8" />'
+             f'<path d="M16 6.5c0 3.5 2 6.5 4 10l-4 3C14 14 16 10 16 6.5z" fill="{DARK}" />'
+             f'<ellipse cx="12.5" cy="6.5" rx="3.5" ry="1.3" fill="{LIT}" stroke="{DARK}" stroke-width="0.8" />'
+             + line('M4 19.5l4-3h12l-4 3z', 1.2)),
+    # A round profile swept along a curved path: a bent tube, the path dashed through it.
+    'sweep': (f'<path d="M3.5 20.5C3.5 11 9 5.5 18.5 5.5v5C12 10.5 8.5 14 8.5 20.5z" fill="{MID}" stroke="{DARK}" stroke-width="0.8" />'
+              f'<ellipse cx="18.5" cy="8" rx="1.3" ry="2.5" fill="{LIT}" stroke="{DARK}" stroke-width="0.8" />'
+              + chrome('M6 20.5C6 12.5 10.5 8 18.5 8', 1.1, '1.6 1.4')),
     # A block whose front narrows upwards, the pull arrow beside it.
     'draft': (f'<path d="M5 9l4.5-4.5h7l-4.5 4.5z" fill="{LIT}" stroke="{DARK}" stroke-width="0.8" />'
               f'<path d="M12 9l4.5-4.5 2.5 12-4.5 4.5z" fill="{DARK}" stroke="{DARK}" stroke-width="0.8" />'

@@ -318,6 +318,7 @@ add_resources(
     icons/ng/lathe.svg
     icons/ng/line.svg
     icons/ng/linear-pattern.svg
+    icons/ng/loft.svg
     icons/ng/new-sketch.svg
     icons/ng/normal-to.svg
     icons/ng/origin.svg
@@ -333,6 +334,7 @@ add_resources(
     icons/ng/shell.svg
     icons/ng/sketch-3d.svg
     icons/ng/spline.svg
+    icons/ng/sweep.svg
     icons/ng/split.svg
     icons/ng/symmetric.svg
     icons/ng/tangent-arc.svg

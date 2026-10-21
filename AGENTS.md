@@ -334,6 +334,16 @@ entities per centre: `REMAP_HOLE_TOP`, `_BOTTOM`, `_AXIS`, `_SEAT` (the seat fac
 counterbore's floor). Hole booleans run OCCT in parallel with oriented boxes: a thread's
 helical cut is the slowest feature (about 0.4 s per 12 mm M4 thread).
 
+**Built in M3e (2026-10-21, branch `ng/m3e-loft-sweep`):** loft and sweep groups (`LOFT`,
+`SWEEP`; New Group ▸ Loft / Sweep), solid makers combined like an extrusion. Inputs are
+`Group.profiles`: for a loft, one picked curve per profile sketch, in order, each profile
+being the closed outer loop holding it; for a sweep, a curve of the profile sketch, then the
+path's curves (chained end to end from the end nearest the profile, picked in any order).
+`BRepOffsetAPI_ThruSections` (smooth) and `BRepOffsetAPI_MakePipeShell` (corrected Frenet,
+mitred corners). Derived entities: the end faces (`REMAP_LOFT_START/END`,
+`REMAP_SWEEP_START/END`), facing out, naming the end caps. Holes inside profiles are left out
+(with a note).
+
 **Later:** variable-radius fillets, STEP import as a reference body (snappable, warned),
 XCAF colours and names, exact hidden-line drawing export (`HLRBRep`).
 

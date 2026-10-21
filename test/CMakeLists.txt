@@ -181,6 +181,7 @@ set(ngui_SOURCES
     ngui/fillet/test.cpp
     ngui/features/test.cpp
     ngui/hole/test.cpp
+    ngui/loft/test.cpp
     ngui/capture/test.cpp)
 
 if(ENABLE_GUI AND ENABLE_NG_GUI)
