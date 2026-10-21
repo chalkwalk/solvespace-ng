@@ -119,11 +119,28 @@ static void DrawGroup(Group *g, std::function<void()> *run) {
         if(ImGui::Checkbox("fixed pitch", &f)) *run = [hg] { SS.ToggleHelixPitchFixed(hg); };
     }
 
-    if(type == Type::FILLET || type == Type::CHAMFER) {
-        ImGui::TextUnformatted(type == Type::FILLET ? "radius" : "distance");
-        ValueField("##feature-size", SS.MmToString(g->valA), run,
+    if(type == Type::FILLET || type == Type::CHAMFER || type == Type::SHELL ||
+       type == Type::DRAFT) {
+        const char *label = type == Type::FILLET    ? "radius"
+                            : type == Type::CHAMFER ? "distance"
+                            : type == Type::SHELL   ? "wall thickness"
+                                                    : "angle (degrees)";
+        ImGui::TextUnformatted(label);
+        std::string size = type == Type::DRAFT ? ssprintf("%.2f", g->valA) : SS.MmToString(g->valA);
+        ValueField("##feature-size", size, run,
                    [hg](std::string s) { SS.SetFeatureSize(hg, s); });
-        ImGui::TextDisabled("%d edge%s", (int)g->edges.size(), g->edges.size() == 1 ? "" : "s");
+        if(type == Type::FILLET || type == Type::CHAMFER) {
+            ImGui::TextDisabled("%d edge%s", (int)g->edges.size(),
+                                g->edges.size() == 1 ? "" : "s");
+        } else if(type == Type::SHELL && g->faces.empty()) {
+            ImGui::TextDisabled("closed (no face open)");
+        } else if(type == Type::SHELL) {
+            ImGui::TextDisabled("%d face%s open", (int)g->faces.size(),
+                                g->faces.size() == 1 ? "" : "s");
+        } else {
+            ImGui::TextDisabled("%d face%s", (int)g->faces.size(),
+                                g->faces.size() == 1 ? "" : "s");
+        }
         if(!g->featureProblem.empty()) {
             std::string problem = g->featureProblem + ".";
             problem[0]          = (char)toupper(problem[0]);

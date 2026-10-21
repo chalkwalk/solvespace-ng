@@ -311,6 +311,19 @@ more. An edge rounded away is hidden while its fillet is shown. Not yet: edges n
 describes (two bodies' intersection), derived entities for curved edges, a Problems note for
 a straight edge on a curved face.
 
+**Built in M3c (2026-10-21, branch `ng/m3c-features`):** Inspect ▸ Mass Properties (volume,
+surface area, mass at a density set in Preferences, centre of mass; exact from the B-rep via
+`KernelMassProperties`, else from the mesh). Shell groups (`SHELL`: faces left open, saved as
+`Group.faces`, and a wall thickness; `BRepOffsetAPI_MakeThickSolid`, or with no face open the
+solid less its inward offset) declare an inner face `Remap(face, REMAP_SHELL_INNER)` for every
+face entity before them. Draft groups (`DRAFT`: side faces of extrusions, an angle in degrees,
+positive narrowing along the extrusion, about its sketch plane; `BRepOffsetAPI_DraftAngle`)
+declare each drafted face `Remap(face, REMAP_DRAFT_FACE)` through its base line with its
+normal turned by the angle. Which way each face entity faces the solid's outside is cached
+from the solid (`KernelFaceNormals`, topology only); planes come from the entities. Draft is
+a group after the extrusion rather than an extrusion option, so the extrusion's own entities
+(which its constraints solve) keep their meaning; its top edges stay untapered.
+
 **Later:** variable-radius fillets, STEP import as a reference body (snappable, warned),
 XCAF colours and names, exact hidden-line drawing export (`HLRBRep`).
 
