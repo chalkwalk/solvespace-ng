@@ -123,6 +123,7 @@ if(ENABLE_NG_GUI)
         ng/icons/test.cpp
         ng/shelf/test.cpp
         ng/viewcube/test.cpp
+        ng/glyphs/test.cpp
         ng/menulayout/test.cpp)
     target_link_libraries(solvespace-testsuite solvespace-ng-support)
 endif()

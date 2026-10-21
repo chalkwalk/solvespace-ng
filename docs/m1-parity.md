@@ -33,9 +33,10 @@ accelerator.
 ## Left before the old frontends can go (M1c task 10, owner's go-ahead)
 
 - [ ] The owner's hands-on check of M1a–M1c (the UI tests can't judge feel).
-- [x] The left toolbar (`src/toolbar.cpp`) is replaced by the tool shelf (View ▸ Show Toolbar,
-      hidden by default; 2026-10-17). Owner to review its look: `docs/owner-review/`.
+- [x] The left toolbar (`src/toolbar.cpp`) is replaced by the tool shelf (View ▸ Tool Shelf, a
+      column on the left, hidden by default; 2026-10-17, layout c 2026-10-21). Owner to review its look: `docs/owner-review/`.
 - [x] Lucide icons via lunasvg (the shelf's).
-- [ ] Constraint glyph restyle (crisp, coloured by state; roadmap item).
+- [x] Constraint glyphs coloured by state (2026-10-21; shapes kept: the shelf icons mirror
+      them). Owner to look at it hands-on.
 - [ ] Then delete `guigtk.cpp`, `guiwin.cpp`, `guimac.mm`, `guiqt.*`, their CMake branches and
       the floating property-browser panel.

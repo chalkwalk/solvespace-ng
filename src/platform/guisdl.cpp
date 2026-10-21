@@ -125,6 +125,11 @@ SettingsRef GetSettings() {
         if(gSettings->ThawBool("ShowToolbar", true) != gSettings->ThawBool("ShowToolbar", false)) {
             gSettings->FreezeBool("ShowToolbar", false);
         }
+        // NG colours constraint glyphs by solve state unless turned off in Preferences.
+        if(gSettings->ThawBool("ConstraintStateColors", true) !=
+           gSettings->ThawBool("ConstraintStateColors", false)) {
+            gSettings->FreezeBool("ConstraintStateColors", true);
+        }
     }
     return gSettings;
 }

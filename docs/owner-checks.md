@@ -89,6 +89,21 @@ From `docs/review/2026-10-17/answers.md`; the next review round shows them again
       keys; "Group Properties" / "Style Properties" replace the Info items.
 - [ ] Problems: the group by its name; culprits as "Vertical (c003)" with their icon.
 
+### Keys and layout from review 4 (2026-10-21, `e549b980`, `1cd86823`)
+- [ ] Modern keys: `L R C A S P` draw, `H V I B/T Q M` constrain, `X` toggles construction,
+      `Y`/`Shift+Y`/`Shift+I` hide/show/isolate groups, `Ctrl+A` selects all, `Shift+1..7`
+      views, `W` looks at the sketch, `Alt+R` lathe, `Alt+E` helix. The menus show these keys.
+- [ ] In a text field (a group name, the palette), `Ctrl+A` selects the text, not the drawing.
+- [ ] Outliner over Properties on the right; View ▸ Tool Shelf is a column on the left (three
+      wide in a short window); Problems opens at the bottom beside them, not over Properties.
+      Panels you moved before start from the new places once.
+
+### Constraint glyphs by state (2026-10-21)
+Screenshots: `docs/owner-review/glyphs.png` (under, fully constrained, failed; dark and light).
+- [ ] An under-constrained sketch's glyphs are the usual magenta; once fully constrained they
+      go quieter; a failed solve's culprits turn light red on the red canvas.
+- [ ] Preferences ▸ SolveSpace NG ▸ "colour constraints by state" turns it off.
+
 ## Decisions waiting for the owner
 - Merge order: `ng/m1a-shell` > `ng/m1b-interaction` > `ng/m1-ui-harness` > `ng/m1c-panels` >
   `ng/m1c-feedback` > `master`.

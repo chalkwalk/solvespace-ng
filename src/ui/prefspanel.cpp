@@ -128,6 +128,8 @@ static void Ng(std::function<void()> *run) {
         }
         if(std::string(p) == "modern") ImGui::SameLine();
     }
+    // Under-constrained as the Constraints style, fully constrained quieter, culprits red.
+    Toggle("colour constraints by state", SettingToggle::CONSTRAINT_STATE_COLORS, run);
 }
 
 std::function<void()> DrawPreferences() {

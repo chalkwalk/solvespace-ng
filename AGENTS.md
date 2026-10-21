@@ -188,8 +188,12 @@ like this, prefer the modern, industry-standard behaviour.
 - Dark (default) and light themes, built from design tokens.
 - Inter for the UI and JetBrains Mono for numbers.
 - Lucide-based icons rendered with lunasvg.
-- Constraint glyphs redrawn to be crisp and coloured by state: fully constrained, under-
-  constrained, conflicting.
+- Constraint glyphs coloured by state (built 2026-10-21, `Constraint::StateColor`):
+  under-constrained in the Constraints style's colour, fully constrained halfway to the
+  background (as SOLIDWORKS and Fusion turn fully defined sketches neutral), culprits of a failed
+  solve in the Errors red lightened against the failed solve's dark red canvas. On by default in
+  NG (Preferences ▸ SolveSpace NG), off in stock SolveSpace so its render tests and old
+  frontends look as before. The glyph shapes stay SolveSpace's: the shelf icons mirror them.
 - Optional matcap shading, clean edge lines, a grid on the active sketch plane.
 - Design the theme tokens first in M1, and review them on screenshots before building panels.
   ImGui must not look like a developer tool.

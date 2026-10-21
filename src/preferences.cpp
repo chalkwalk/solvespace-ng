@@ -228,6 +228,7 @@ bool SolveSpaceUI::SettingOn(SettingToggle toggle) {
         case SettingToggle::EXPORT_SHADED_TRIANGLES:    return exportShadedTriangles;
         case SettingToggle::EXPORT_PWL_CURVES:          return exportPwlCurves;
         case SettingToggle::EXPORT_CANVAS_SIZE_AUTO:    return exportCanvasSizeAuto;
+        case SettingToggle::CONSTRAINT_STATE_COLORS:    return constraintStateColors;
     }
     return false;
 }
@@ -290,6 +291,10 @@ void SolveSpaceUI::ToggleSetting(SettingToggle toggle) {
         case SettingToggle::EXPORT_CANVAS_SIZE_AUTO:
             exportCanvasSizeAuto = !exportCanvasSizeAuto;
             GW.Invalidate();
+            break;
+        case SettingToggle::CONSTRAINT_STATE_COLORS:
+            constraintStateColors = !constraintStateColors;
+            GW.Invalidate(/*clearPersistent=*/true);
             break;
     }
 }

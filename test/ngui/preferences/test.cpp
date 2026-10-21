@@ -91,3 +91,13 @@ TEST_CASE(the_ng_section_comes_first) {
     std::optional<Driver::Item> light = Driver::FindItem("light theme");
     CHECK_TRUE(light && light->fullyVisible);
 }
+
+TEST_CASE(constraint_state_colours_are_on_and_can_be_turned_off) {
+    CHECK_LOAD("line.slvs");
+    CHECK_TRUE(SS.constraintStateColors); // NG's default
+    Driver::Key("Ctrl+,");
+    std::optional<Driver::Item> box = Driver::FindItem("colour constraints by state");
+    CHECK_TRUE(box && box->checked);
+    CHECK_TRUE(Driver::ClickItem("colour constraints by state"));
+    CHECK_FALSE(SS.constraintStateColors);
+}

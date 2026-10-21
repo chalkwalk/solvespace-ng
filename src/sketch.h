@@ -762,6 +762,11 @@ public:
     bool IsVisible() const;
     bool IsStylable() const;
     hStyle GetStyle() const;
+    // How its group's solve left it: a culprit of a failed solve, in a fully constrained
+    // group, or neither. Its glyph is drawn in that state's colour (StateColor).
+    enum class SolveStateKind { UNDER, FULL, CONFLICTING };
+    SolveStateKind SolveState() const;
+    RgbaColor StateColor() const;
     bool HasLabel() const;
     std::string Label() const;
 

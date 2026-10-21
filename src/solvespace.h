@@ -451,7 +451,7 @@ enum class SettingToggle {
     EXPORT_BACKGROUND_COLOR, DRAW_BACK_FACES, TURNTABLE_NAV, CAMERA_NAV,
     IMMEDIATELY_EDIT_DIMENSION, SHOW_CONTOUR_AREAS, CHECK_CLOSED_CONTOUR,
     AUTOMATIC_LINE_CONSTRAINTS, EXPORT_SHADED_TRIANGLES, EXPORT_PWL_CURVES,
-    EXPORT_CANVAS_SIZE_AUTO,
+    EXPORT_CANVAS_SIZE_AUTO, CONSTRAINT_STATE_COLORS,
 };
 
 class SolveSpaceUI {
@@ -548,6 +548,9 @@ public:
     bool     drawBackFaces;
     bool     showContourAreas;
     bool     checkClosedContour;
+    // Constraint glyphs in their solve state's colour (Constraint::StateColor). Off in stock
+    // SolveSpace; NG turns it on by default.
+    bool     constraintStateColors;
     bool     cameraNav;
     bool     turntableNav;
     bool     immediatelyEditDimension;

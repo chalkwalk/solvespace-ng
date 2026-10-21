@@ -121,6 +121,7 @@ void SolveSpaceUI::Init() {
     gCode.plungeFeed    = settings->ThawFloat("GCode_PlungeFeed", 10.0);
     // Show toolbar in the graphics window
     showToolbar = settings->ThawBool("ShowToolbar", true);
+    constraintStateColors = settings->ThawBool("ConstraintStateColors", false);
     // Recent files menus
     for(size_t i = 0; i < MAX_RECENT; i++) {
         std::string rawPath = settings->ThawString("RecentFile_" + std::to_string(i), "");
@@ -307,6 +308,7 @@ void SolveSpaceUI::Exit() {
     settings->FreezeFloat("GCode_PlungeFeed", gCode.plungeFeed);
     // Show toolbar in the graphics window
     settings->FreezeBool("ShowToolbar", showToolbar);
+    settings->FreezeBool("ConstraintStateColors", constraintStateColors);
     // Autosave timer
     settings->FreezeInt("AutosaveInterval", autosaveInterval);
 

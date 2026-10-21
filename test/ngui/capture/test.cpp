@@ -220,3 +220,38 @@ TEST_CASE(context_menu) {
     Driver::Click(m.x, m.y, Driver::Button::RIGHT);
 }
 
+
+TEST_CASE(glyph_states) {
+    // Constraint glyphs by solve state: under-constrained, fully constrained, conflicting.
+    if(!Begin()) return;
+    CHECK_LOAD("line.slvs");
+    ClosePanel("Outliner");
+    ClosePanel("Properties");
+    hRequest line = *LastRequest(Request::Type::LINE_SEGMENT); // the fixture's only line
+    Constraint::Constrain(Constraint::Type::HORIZONTAL, Entity::NO_ENTITY, Entity::NO_ENTITY,
+                          line.entity(0));
+    Constraint::ConstrainCoincident(line.entity(1), Request::HREQUEST_REFERENCE_XY.entity(1));
+    SS.GenerateAll(SolveSpaceUI::Generate::ALL);
+    Driver::Settle();
+    Box b;
+    Point2d a = At(SK.GetEntity(line.entity(1))->PointGetNum());
+    b.Add(a.x - 120, a.y - 140, a.x + 320, a.y + 90);
+    Shot("glyphs-1-under", b, 0);
+    Constraint c = {};
+    c.type      = Constraint::Type::PT_PT_DISTANCE;
+    c.group     = SS.GW.activeGroup;
+    c.workplane = SS.GW.ActiveWorkplane();
+    c.ptA       = line.entity(1);
+    c.ptB       = line.entity(2);
+    c.valA      = 40;
+    c.disp.offset = Vector::From(0, 8, 0);
+    Constraint::AddConstraint(&c, /*rememberForUndo=*/false);
+    SS.GenerateAll(SolveSpaceUI::Generate::ALL);
+    Driver::Settle();
+    Shot("glyphs-2-full", b, 0);
+    Constraint::Constrain(Constraint::Type::VERTICAL, Entity::NO_ENTITY, Entity::NO_ENTITY,
+                          line.entity(0));
+    SS.GenerateAll(SolveSpaceUI::Generate::ALL);
+    Driver::Settle();
+    Shot("glyphs-3-conflicting", b, 0);
+}

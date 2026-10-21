@@ -531,7 +531,7 @@ void Constraint::DoLayout(DrawAs how, Canvas *canvas,
 
     RgbaColor color = {};
     switch(how) {
-        case DrawAs::DEFAULT:  color = Style::Color(GetStyle()); break;
+        case DrawAs::DEFAULT:  color = StateColor(); break;
         case DrawAs::HOVERED:  color = Style::Color(Style::HOVERED);    break;
         case DrawAs::SELECTED: color = Style::Color(Style::SELECTED);   break;
     }
@@ -1353,6 +1353,41 @@ bool Constraint::IsStylable() const {
 hStyle Constraint::GetStyle() const {
     if(disp.style.v != 0) return disp.style;
     return { Style::CONSTRAINT };
+}
+
+Constraint::SolveStateKind Constraint::SolveState() const {
+    Group *g = SK.group.FindByIdNoOops(group);
+    if(!g) return SolveStateKind::UNDER;
+    if(!g->IsSolvedOkay()) {
+        for(hConstraint hc : g->solved.remove) {
+            if(hc == h) return SolveStateKind::CONFLICTING;
+        }
+        return SolveStateKind::UNDER;
+    }
+    if(!g->suppressDofCalculation && g->solved.dof == 0) return SolveStateKind::FULL;
+    return SolveStateKind::UNDER;
+}
+
+RgbaColor Constraint::StateColor() const {
+    RgbaColor own = Style::Color(GetStyle());
+    if(!SS.constraintStateColors || disp.style.v != 0) return own; // (a styled comment)
+    switch(SolveState()) {
+        case SolveStateKind::CONFLICTING: {
+            // The Errors colour, lightened: a failed solve already turns the canvas dark red.
+            RgbaColor e = Style::Color(Style::DRAW_ERROR);
+            return RgbaColor::From((e.red + 255) / 2, (e.green + 255) / 2, (e.blue + 255) / 2,
+                                   e.alpha);
+        }
+        case SolveStateKind::FULL: {
+            // Nothing left to do: halfway to the background, as SOLIDWORKS and Fusion turn
+            // fully defined sketches neutral.
+            RgbaColor bg = SS.backgroundColor;
+            return RgbaColor::From((own.red + bg.red) / 2, (own.green + bg.green) / 2,
+                                   (own.blue + bg.blue) / 2, own.alpha);
+        }
+        case SolveStateKind::UNDER: break;
+    }
+    return own;
 }
 
 bool Constraint::HasLabel() const {
