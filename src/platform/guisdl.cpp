@@ -1584,9 +1584,11 @@ static bool RouteKeyDown(const SDL_Event &ev) {
     // ImGui moves through it and Esc closes it; only Ctrl chords and F-keys run commands.
     bool menuOpen = ImGui::IsPopupOpen("", ImGuiPopupFlags_AnyPopupId |
                                                ImGuiPopupFlags_AnyPopupLevel);
-    bool captured = TextEntryActive() || menuOpen;
-    Ui::RouteResult r = ev.key.repeat ? gKeyRouter.RouteRepeat(*chord, captured)
-                                      : gKeyRouter.Route(*chord, captured);
+    bool text     = TextEntryActive();
+    bool captured = text || menuOpen;
+    bool inMenu   = menuOpen && !text;
+    Ui::RouteResult r = ev.key.repeat ? gKeyRouter.RouteRepeat(*chord, captured, inMenu)
+                                      : gKeyRouter.Route(*chord, captured, inMenu);
     return r != Ui::RouteResult::UNBOUND;
 }
 

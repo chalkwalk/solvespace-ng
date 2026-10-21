@@ -137,7 +137,7 @@ TEST_CASE(typed_circle_diameter) {
 TEST_CASE(typed_rectangle_size) {
     CHECK_LOAD("line.slvs");
     int dims = CountConstraints(Constraint::Type::PT_PT_DISTANCE);
-    Driver::Key("B");
+    Driver::Key("R");
     ClickAt(Point2d::From(450, 550));
     Driver::Move(560, 480);
     Driver::Type("30");
@@ -395,4 +395,17 @@ TEST_CASE(pie_items_show_their_icons) {
     }
     CHECK_TRUE(Ui::Pie().IconsDrawn() == (int)Ui::Pie().Items().size());
     Driver::Key("Escape");
+}
+
+TEST_CASE(h_and_v_constrain_the_selected_lines) {
+    // (K2) H and V are horizontal and vertical, as in Onshape, FreeCAD and Classic.
+    CHECK_LOAD("line.slvs");
+    hRequest a = DrawLine(Point2d::From(450, 520), Point2d::From(560, 530));
+    hRequest b = DrawLine(Point2d::From(450, 600), Point2d::From(460, 700));
+    ClickAt(AtMiddle(a));
+    Driver::Key("H");
+    CHECK_TRUE(CountConstraints(Constraint::Type::HORIZONTAL) == 1);
+    ClickAt(AtMiddle(b));
+    Driver::Key("V");
+    CHECK_TRUE(CountConstraints(Constraint::Type::VERTICAL) == 1);
 }

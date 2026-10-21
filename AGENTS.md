@@ -128,25 +128,34 @@ Rules:
 creates a real constraint. Example: drawing a line, type `25`, `Tab`, `30`, `Enter` and you get a
 length constraint and an angle constraint.
 
-**Keymap — "Modern" (Blender-style) preset.** A draft, to be tuned during M1. A
-**"SolveSpace Classic"** preset reproduces today's bindings. All bindings can be remapped and are
-stored in a keymap file.
+**Keymap — "Modern" preset.** Blender's core (palette, pies, grab, sketch focus, numpad
+views) with the sketch, constraint and group letters of the industry CAD apps, Onshape's where
+they differ (decided by the owner in review 4, 2026-10-17, replacing the Blender-only draft:
+"as many unqualified controls as possible, overlapping with industry standard";
+`docs/research/keymap-and-layout.md`). A **"SolveSpace Classic"** preset reproduces today's
+bindings. All bindings can be remapped and are stored in a keymap file
+(`res/keymaps/modern.keymap` is the preset).
 
 | Key | Action |
 |---|---|
 | `Space` / `F3` | Command palette (searches every command, shows its binding) |
 | `Tab` | Sketch focus: activate the group of the selection and look onto its workplane; `Tab` again returns (while drawing, `Tab` cycles the typed-value fields) |
 | `Shift+A` | Add pie: line, rectangle, circle, arc, spline, point, text, workplane |
-| `L` `B` `C` `Shift+C` | Direct: line, box/rectangle, circle, arc (`A` is select-all) |
-| `D` | Smart dimension (distance, diameter or angle, inferred from the selection) |
+| `L` `R` `C` `A` `S` `P` | Line, rectangle, circle, arc, spline, point; `Alt+C` tangent arc, `Shift+T` text |
+| `D` | Smart dimension (distance, diameter or angle, inferred from the selection); `Shift+D` reference |
 | `F` | Constrain pie: only the constraints valid for the selection |
+| `H` `V` `I` `B`/`T` `Shift+L` `Q` `Shift+S` `M` `Shift+J` `U` | Horizontal, vertical, on point/curve, parallel/tangent, perpendicular, equal, symmetric, midpoint, lock, other angle |
+| `X` | Toggle construction (`Delete`/`Backspace` delete) |
 | `G` | Grab: drag under the solver; `X`/`Y`/`Z` locks an axis; type a value |
-| `E` / `Shift+R` / `Ctrl+B` | Extrude / revolve / boolean mode |
-| `H` / `Alt+H` / `Shift+H` | Hide / show all / isolate **groups** (SolveSpace has no per-entity hide) |
-| `A` / `Alt+A` | Select all / none |
-| `` ` `` pie, numpad `1` `3` `7` | View pie; front/right/top (`Ctrl` = opposite side); `.` frames selection |
+| `E` / `Shift+R` / `Alt+R` / `Alt+E` | Extrude / revolve / lathe / helix; `Shift+W` sketch in a new workplane |
+| `Y` / `Shift+Y` / `Shift+I` | Hide / show all / isolate **groups** (SolveSpace has no per-entity hide) |
+| `Ctrl+A` / `Alt+A`, `Esc` | Select all / none |
+| `` ` `` pie, numpad `1` `3` `7`, `Shift+1`..`7` | View pie; front/right/top (`Ctrl` = opposite side); Onshape's Shift+digits (front, back, left, right, top, bottom, isometric) for keyboards without a numpad; `W` looks at the sketch; `.` frames selection |
 | MMB / `Shift`+MMB / wheel | Orbit / pan / zoom (the mouse scheme is configurable) |
 | `Ctrl+Z` / `Ctrl+Shift+Z` | Undo / redo |
+
+In a text field, `Ctrl+A`, the clipboard and undo chords edit the text; they reach the keymap
+only when no field has the keyboard.
 
 With nothing selected, commands act on the item under the cursor.
 

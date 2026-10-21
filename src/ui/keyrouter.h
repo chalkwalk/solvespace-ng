@@ -26,12 +26,15 @@ public:
     void SetKeymap(keymap::Keymap km);
     const keymap::Keymap &Keymap() const;
     // With textInputActive, only Ctrl chords and F-keys are routed; everything else (including
-    // Esc, which the focused field handles, and Alt, which may be AltGr text) is SUPPRESSED.
-    RouteResult Route(const keymap::Chord &chord, bool textInputActive);
+    // Esc, which the focused field handles, and Alt, which may be AltGr text) is SUPPRESSED,
+    // and so are the Ctrl chords a text field edits with (Ctrl+A, clipboard, undo) unless
+    // inMenu says the keys belong to an open menu rather than a field.
+    RouteResult Route(const keymap::Chord &chord, bool textInputActive, bool inMenu = false);
     // A key held down (auto-repeat). Ctrl/Alt chords route as usual; other keys go only to the
     // modal tool (Backspace or digits in a typed field), never to the keymap, so holding a key
     // doesn't start the same tool over and over.
-    RouteResult RouteRepeat(const keymap::Chord &chord, bool textInputActive);
+    RouteResult RouteRepeat(const keymap::Chord &chord, bool textInputActive,
+                            bool inMenu = false);
 
 private:
     keymap::Keymap map;

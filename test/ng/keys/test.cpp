@@ -72,9 +72,51 @@ TEST_CASE(modern_preset_is_valid) {
         bool known = name.rfind("ui.", 0) == 0 || CommandFromName(name) != Command::NONE;
         CHECK_TRUE(known);
     }
-    CHECK_TRUE(*modern->Lookup(*keymap::ParseChord("A")) == "select-all");
-    CHECK_TRUE(*modern->Lookup(*keymap::ParseChord("Shift+C")) == "arc");
     CHECK_TRUE(*modern->Lookup(*keymap::ParseChord("Space")) == "ui.command-palette");
+}
+
+TEST_CASE(modern_preset_has_the_review_4_keys) {
+    // Owner review 4 (2026-10-17, docs/review/2026-10-17/answers.md): K1-K6, all option a.
+    std::string err;
+    auto modern = SolveSpace::Ui::ModernPreset(&err);
+    CHECK_TRUE(modern.has_value());
+    if(!modern) return;
+    const char *expected[][2] = {
+        // K1 sketch tools
+        { "L", "line-segment" }, { "R", "rectangle" }, { "C", "circle" }, { "A", "arc" },
+        { "Alt+C", "tangent-arc" }, { "P", "datum-point" }, { "S", "cubic-spline" },
+        { "Shift+T", "ttf-text" }, { "Ctrl+A", "select-all" },
+        // K2 horizontal / vertical; hiding on Onshape's keys
+        { "H", "constrain-horizontal" }, { "V", "constrain-vertical" }, { "Y", "ui.hide" },
+        { "Shift+Y", "ui.unhide-all" }, { "Shift+I", "ui.isolate" },
+        // K3 the other constraints
+        { "I", "constrain-on-entity" }, { "B", "constrain-parallel" },
+        { "T", "constrain-parallel" }, { "Shift+L", "constrain-perpendicular" },
+        { "Q", "constrain-equal" }, { "Shift+S", "constrain-symmetric" },
+        { "M", "constrain-midpoint" }, { "Shift+J", "constrain-where-dragged" },
+        { "U", "other-supplementary-angle" }, { "D", "ui.smart-dimension" },
+        // K4 construction and delete
+        { "X", "toggle-construction" }, { "Delete", "delete" }, { "Backspace", "delete" },
+        // K5 groups
+        { "E", "group-extrude" }, { "Shift+R", "group-revolve" }, { "Alt+R", "group-lathe" },
+        { "Alt+E", "group-helix" }, { "Shift+W", "group-sketch-workplane" },
+        // K6 views
+        { "Shift+1", "ui.view-front" }, { "Shift+2", "ui.view-back" },
+        { "Shift+3", "ui.view-left" }, { "Shift+4", "ui.view-right" },
+        { "Shift+5", "ui.view-top" }, { "Shift+6", "ui.view-bottom" },
+        { "Shift+7", "nearest-iso" }, { "W", "align-to-workplane" }, { "Num1", "ui.view-front" },
+    };
+    for(auto &e : expected) {
+        const std::string *cmd = modern->Lookup(*keymap::ParseChord(e[0]));
+        if(!cmd || *cmd != e[1]) {
+            dbp("%s: expected %s, got %s", e[0], e[1], cmd ? cmd->c_str() : "<none>");
+        }
+        CHECK_TRUE(cmd && *cmd == e[1]);
+    }
+    // Gone: A no longer selects all, H no longer hides, X no longer deletes.
+    for(const char *gone : { "Shift+C", "Shift+B", "Shift+H", "Alt+H" }) {
+        CHECK_TRUE(modern->Lookup(*keymap::ParseChord(gone)) == nullptr);
+    }
 }
 
 TEST_CASE(altgr_on_linux_and_windows_is_text_not_a_chord) {

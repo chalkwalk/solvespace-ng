@@ -1,4 +1,6 @@
-# SolveSpace NG "Modern" keymap (Blender-style). DRAFT: tuned during M1.
+# SolveSpace NG "Modern" keymap: Blender's core (palette, pies, grab, sketch focus, numpad
+# views) with the sketch, constraint and group keys of the industry CAD apps, Onshape's where
+# they differ (owner review 4, 2026-10-17; docs/research/keymap-and-layout.md).
 # Format: <command>: <chord>[, <chord>...]
 # Command names are the stable ids from src/commandnames.cpp; "ui." names are UI actions
 # (listed in src/ui/uiactions.cpp). While drawing or grabbing, digits, '.', '-', the numpad,
@@ -12,16 +14,16 @@ ui.toggle-problems:     Shift+P
 ui.pie-add:             Shift+A
 ui.pie-view:            `
 ui.pie-constrain:       F
-ui.view-front:          Num1
-ui.view-back:           Ctrl+Num1
-ui.view-right:          Num3
-ui.view-left:           Ctrl+Num3
-ui.view-top:            Num7
-ui.view-bottom:         Ctrl+Num7
+ui.view-front:          Num1, Shift+1
+ui.view-back:           Ctrl+Num1, Shift+2
+ui.view-left:           Ctrl+Num3, Shift+3
+ui.view-right:          Num3, Shift+4
+ui.view-top:            Num7, Shift+5
+ui.view-bottom:         Ctrl+Num7, Shift+6
 ui.view-frame-selected: ., Num.
-ui.hide:                H
-ui.unhide-all:          Alt+H
-ui.isolate:             Shift+H
+ui.hide:                Y
+ui.unhide-all:          Shift+Y
+ui.isolate:             Shift+I
 ui.toggle-sketch:       Tab
 ui.smart-dimension:     D
 ui.grab:                G
@@ -37,33 +39,50 @@ cut:                    Ctrl+X
 copy:                   Ctrl+C
 paste:                  Ctrl+V
 paste-transformed:      Ctrl+Shift+V
-delete:                 Delete, X
-select-all:             A
+delete:                 Delete, Backspace
+select-all:             Ctrl+A
 unselect-all:           Alt+A, Esc
 select-edge-chain:      Ctrl+L
 configuration:          Ctrl+,
 regenerate-all:         F5
 
+# Sketch (K1, K4)
 datum-point:            P
 line-segment:           L
-construction-line-segment: Shift+L
-rectangle:              B
+rectangle:              R
 circle:                 C
-arc:                    Shift+C
+arc:                    A
 tangent-arc:            Alt+C
-cubic-spline:           Shift+B
+cubic-spline:           S
 ttf-text:               Shift+T
-toggle-construction:    T
-split-curves:           I
+toggle-construction:    X
+split-curves:           Shift+X
 
+# Constrain (K2, K3); D is the smart dimension above
 constrain-reference-distance: Shift+D
 constrain-angle:        Alt+D
+constrain-horizontal:   H
+constrain-vertical:     V
+constrain-on-entity:    I
+constrain-parallel:     B, T
+constrain-perpendicular: Shift+L
+constrain-equal:        Q
+constrain-symmetric:    Shift+S
+constrain-midpoint:     M
+constrain-where-dragged: Shift+J
+other-supplementary-angle: U
 
+# Groups (K5)
 group-extrude:          E
 group-revolve:          Shift+R
+group-lathe:            Alt+R
+group-helix:            Alt+E
 group-sketch-workplane: Shift+W
 group-link:             Ctrl+I
 
+# View (K6)
+nearest-iso:            Shift+7
+align-to-workplane:     W
 zoom-in:                Plus, =
 zoom-out:               -
 zoom-to-fit:            Home

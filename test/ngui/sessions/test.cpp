@@ -84,7 +84,7 @@ TEST_CASE(a_plate_with_a_hole_drawn_named_and_extruded) {
     int requests = SK.request.n;
 
     // A 40 x 30 rectangle and a 8 mm hole, sized by typing.
-    Driver::Key("B");
+    Driver::Key("R");
     ClickAt(Point2d::From(420, 600));
     Driver::Move(560, 500);
     Driver::Type("40");

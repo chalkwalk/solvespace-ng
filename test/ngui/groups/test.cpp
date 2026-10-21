@@ -13,7 +13,7 @@ static Group *Named(const char *name) {
 
 // A closed rectangle in the sketch, extruded; returns the sketch group.
 static hGroup RectangleThenExtrude() {
-    Driver::Key("B");
+    Driver::Key("R");
     ClickAt(Point2d::From(450, 450));
     ClickAt(Point2d::From(560, 540));
     hGroup sketch = SS.GW.activeGroup;
@@ -63,29 +63,29 @@ TEST_CASE(tab_focuses_the_hovered_sketch_and_tab_returns) {
     CHECK_TRUE(SS.GW.activeGroup == added);
 }
 
-TEST_CASE(h_hides_hovered_group_and_alt_h_shows_all) {
+TEST_CASE(y_hides_hovered_group_and_shift_y_shows_all) {
     CHECK_LOAD("line.slvs");
     hRequest line = DrawLine(Point2d::From(450, 520), Point2d::From(560, 520));
     Point2d m = AtMiddle(line);
     Driver::Move(m.x, m.y);
-    Driver::Key("H");
+    Driver::Key("Y");
     CHECK_FALSE(Named("sketch-in-plane")->visible);
-    Driver::Key("Alt+H");
+    Driver::Key("Shift+Y");
     CHECK_TRUE(Named("sketch-in-plane")->visible);
 }
 
-TEST_CASE(shift_h_isolates_the_hovered_group) {
+TEST_CASE(shift_i_isolates_the_hovered_group) {
     CHECK_LOAD("line.slvs");
     hRequest line = FixtureLineThenNewGroup();
     hGroup sketch = SK.GetRequest(line)->group;
     Point2d m = AtMiddle(line);
     Driver::Move(m.x, m.y);
-    Driver::Key("Shift+H");
+    Driver::Key("Shift+I");
     for(Group &g : SK.group) {
         bool references = g.h == Group::HGROUP_REFERENCES;
         CHECK_TRUE(g.visible == (g.h == sketch || references));
     }
-    Driver::Key("Alt+H");
+    Driver::Key("Shift+Y");
     for(Group &g : SK.group) CHECK_TRUE(g.visible);
 }
 

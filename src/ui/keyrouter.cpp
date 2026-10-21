@@ -17,20 +17,34 @@ const keymap::Keymap &KeyRouter::Keymap() const {
     return map;
 }
 
-static bool AllowedDuringTextInput(const keymap::Chord &c) {
-    if(c.ctrl) return true;
+// The chords a text field edits with (select all, clipboard, undo); they stay with the field.
+static bool EditsText(const keymap::Chord &c) {
+    if(!c.ctrl || c.alt) return false;
+    static const char *const keys[] = { "a", "c", "v", "x", "z", "y", "Left", "Right",
+                                        "Backspace", "Delete", "Home", "End" };
+    for(const char *k : keys) {
+        if(c.key == k) return true;
+    }
+    return false;
+}
+
+static bool AllowedDuringTextInput(const keymap::Chord &c, bool inMenu) {
+    if(c.ctrl) return inMenu || !EditsText(c);
     return c.key.size() >= 2 && c.key[0] == 'F' && isdigit((unsigned char)c.key[1]);
 }
 
-RouteResult KeyRouter::RouteRepeat(const keymap::Chord &chord, bool textInputActive) {
-    if(chord.ctrl || chord.alt) return Route(chord, textInputActive);
+RouteResult KeyRouter::RouteRepeat(const keymap::Chord &chord, bool textInputActive,
+                                   bool inMenu) {
+    if(chord.ctrl || chord.alt) return Route(chord, textInputActive, inMenu);
     auto &hook = modalRepeat ? modalRepeat : modal;
     if(!textInputActive && hook && hook(chord)) return RouteResult::MODAL;
     return RouteResult::SUPPRESSED;
 }
 
-RouteResult KeyRouter::Route(const keymap::Chord &chord, bool textInputActive) {
-    if(textInputActive && !AllowedDuringTextInput(chord)) return RouteResult::SUPPRESSED;
+RouteResult KeyRouter::Route(const keymap::Chord &chord, bool textInputActive, bool inMenu) {
+    if(textInputActive && !AllowedDuringTextInput(chord, inMenu)) {
+        return RouteResult::SUPPRESSED;
+    }
     if(!textInputActive && modal && modal(chord)) return RouteResult::MODAL;
     const std::string *name = map.Lookup(chord);
     if(!name) return RouteResult::UNBOUND;

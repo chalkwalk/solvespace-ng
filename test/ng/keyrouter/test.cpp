@@ -50,14 +50,14 @@ TEST_CASE(bad_user_keymap_falls_back_to_preset) {
     std::string err;
     keymap::Keymap km = LoadUserKeymap("modern", "save: Ctrl+S\nbroken\n", &err);
     CHECK_TRUE(err.find("line 2") != std::string::npos);
-    CHECK_TRUE(*km.Lookup(C("Shift+C")) == "arc"); // the modern preset, not the user file
+    CHECK_TRUE(*km.Lookup(C("A")) == "arc"); // the modern preset, not the user file
     err.clear();
     km = LoadUserKeymap("classic", "", &err);
     CHECK_TRUE(err.empty());
     CHECK_TRUE(*km.Lookup(C("S")) == "line-segment");
     km = LoadUserKeymap("modern", "undo: F9\n", &err);
     CHECK_TRUE(*km.Lookup(C("F9")) == "undo");
-    CHECK_TRUE(km.Lookup(C("Shift+C")) == nullptr); // a valid user file replaces the preset
+    CHECK_TRUE(km.Lookup(C("A")) == nullptr); // a valid user file replaces the preset
 }
 
 TEST_CASE(user_keymap_with_unknown_command_falls_back) {
@@ -65,7 +65,7 @@ TEST_CASE(user_keymap_with_unknown_command_falls_back) {
     keymap::Keymap km = LoadUserKeymap("modern", "undo: F9\nline-segmnet: L\n", &err);
     CHECK_TRUE(err.find("line 2") != std::string::npos);
     CHECK_TRUE(err.find("line-segmnet") != std::string::npos);
-    CHECK_TRUE(*km.Lookup(C("Shift+C")) == "arc");
+    CHECK_TRUE(*km.Lookup(C("A")) == "arc");
 }
 
 TEST_CASE(user_keymap_without_bindings_uses_preset) {
@@ -128,4 +128,30 @@ TEST_CASE(a_separate_modal_hook_can_take_held_keys) {
     CHECK_TRUE(r.Route(C("Shift+A"), false) == RouteResult::MODAL);
     CHECK_TRUE(r.RouteRepeat(C("Shift+A"), false) == RouteResult::MODAL);
     CHECK_TRUE(fresh == 1 && held == 1);
+}
+
+TEST_CASE(text_input_keeps_its_editing_chords) {
+    // Ctrl+A in a field selects its text, not the drawing; likewise copy, paste, undo.
+    std::string err;
+    KeyRouter r;
+    r.SetKeymap(*keymap::Keymap::Parse("select-all: Ctrl+A\ncopy: Ctrl+C\npaste: Ctrl+V\n"
+                                       "cut: Ctrl+X\nundo: Ctrl+Z\nredo: Ctrl+Shift+Z, Ctrl+Y\n"
+                                       "save: Ctrl+S\n", &err));
+    int fired = 0;
+    r.onCommand = [&](Command) { fired++; };
+    for(const char *c : { "Ctrl+A", "Ctrl+C", "Ctrl+V", "Ctrl+X", "Ctrl+Z", "Ctrl+Shift+Z",
+                          "Ctrl+Y" }) {
+        CHECK_TRUE(r.Route(C(c), true) == RouteResult::SUPPRESSED);
+    }
+    CHECK_TRUE(fired == 0);
+    CHECK_TRUE(r.Route(C("Ctrl+S"), true) == RouteResult::COMMAND); // not a text edit
+    CHECK_TRUE(r.Route(C("Ctrl+A"), false) == RouteResult::COMMAND);
+}
+
+TEST_CASE(an_open_menu_still_passes_ctrl_z) {
+    std::string err;
+    KeyRouter r;
+    r.SetKeymap(*keymap::Keymap::Parse("undo: Ctrl+Z\nline-segment: L\n", &err));
+    CHECK_TRUE(r.Route(C("Ctrl+Z"), true, /*inMenu=*/true) == RouteResult::COMMAND);
+    CHECK_TRUE(r.Route(C("L"), true, /*inMenu=*/true) == RouteResult::SUPPRESSED);
 }

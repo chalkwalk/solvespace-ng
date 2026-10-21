@@ -15,7 +15,7 @@ static bool Click(const std::string &labelOrId) {
 
 // A rectangle extruded: the extrusion is the active group.
 static void Extrude() {
-    Driver::Key("B");
+    Driver::Key("R");
     ClickAt(Point2d::From(450, 450));
     ClickAt(Point2d::From(560, 540));
     Driver::Key("E");

@@ -165,3 +165,16 @@ TEST_CASE(view_cube_moves_right_of_a_tall_outliner) {
     CHECK_TRUE(outliner && cube);
     if(outliner && cube) CHECK_TRUE(cube->x0 >= outliner->x1 && cube->x1 <= ws.x);
 }
+
+TEST_CASE(shift_digits_snap_to_views_without_a_numpad) {
+    // (K6) Onshape's Shift+1..7, for keyboards without a numpad.
+    CHECK_LOAD("line.slvs");
+    Driver::Key("Shift+1");
+    CHECK_TRUE(ViewIs(ViewPreset::FRONT));
+    Driver::Key("Shift+4");
+    CHECK_TRUE(ViewIs(ViewPreset::RIGHT));
+    Driver::Key("Shift+5");
+    CHECK_TRUE(ViewIs(ViewPreset::TOP));
+    Driver::Key("Shift+6");
+    CHECK_TRUE(ViewIs(ViewPreset::BOTTOM));
+}

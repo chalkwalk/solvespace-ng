@@ -41,3 +41,20 @@ pie icons · P13 context menu names and NG actions · P14 Problems names with ic
 
 Items 2-4: research in `docs/research/keymap-and-layout.md`; round
 `~/solvespace-ng-blind/2026-10-17-keys-layout` (spec `keys-layout.json`) asks K1-K6, L1 and V1.
+
+## Review 4 (keys and layout): answers
+
+L1 **c** (tool column left, Outliner over Properties on the right). K1-K6 **a** (all as proposed:
+`res/keymaps/modern.keymap`, AGENTS.md section 5). V1 **a** (the View menu is good).
+
+The owner's questions, answered:
+- *Tangent arc is Shift+A elsewhere, why Alt+C?* Shift+A is Blender's Add pie, which stays;
+  Alt+C keeps it beside C (circle). Onshape's Shift+A also only switches line/tangent arc while
+  drawing a line.
+- *S for spline isn't standardised: is it used elsewhere?* No: only Shapr3D binds spline (I),
+  and I is Onshape's coincident. S was free (Blender's scale has no SolveSpace counterpart).
+- *T vs Shift+T?* T is parallel/tangent (Onshape's tangent; B also works); text, rarely used,
+  is Shift+T. If a trim tool arrives, T is Fusion's/Plasticity's/Shapr3D's trim: decide then.
+- *Why Alt+A as well as X?* Alt+A isn't construction: it is unselect-all (Blender's), beside
+  Esc. X alone toggles construction.
+Unasked: Split at Intersections lost I (now coincident) and moved to Shift+X.

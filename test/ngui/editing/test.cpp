@@ -4,10 +4,10 @@
 
 using namespace SolveSpace::UiTest;
 
-TEST_CASE(a_selects_all_and_alt_a_clears) {
+TEST_CASE(ctrl_a_selects_all_and_alt_a_clears) {
     CHECK_LOAD("line.slvs");
     DrawLine(Point2d::From(450, 520), Point2d::From(560, 520));
-    Driver::Key("A");
+    Driver::Key("Ctrl+A");
     CHECK_TRUE(SS.GW.selection.n > 0);
     Driver::Key("Alt+A");
     CHECK_TRUE(SS.GW.selection.n == 0);
@@ -34,7 +34,7 @@ TEST_CASE(marquee_drag_selects_what_it_encloses) {
     CHECK_TRUE(SS.GW.selection.n == 3);
 }
 
-TEST_CASE(delete_and_x_delete_the_selection) {
+TEST_CASE(delete_and_backspace_delete_the_selection) {
     CHECK_LOAD("line.slvs");
     hRequest a = DrawLine(Point2d::From(450, 520), Point2d::From(560, 520));
     hRequest b = DrawLine(Point2d::From(450, 600), Point2d::From(560, 600));
@@ -42,7 +42,7 @@ TEST_CASE(delete_and_x_delete_the_selection) {
     Driver::Key("Delete");
     CHECK_TRUE(SK.request.FindByIdNoOops(a) == nullptr);
     ClickAt(AtMiddle(b));
-    Driver::Key("X");
+    Driver::Key("Backspace");
     CHECK_TRUE(SK.request.FindByIdNoOops(b) == nullptr);
 }
 
@@ -67,11 +67,11 @@ TEST_CASE(dragging_a_point_moves_it) {
     CHECK_TRUE(Near(AtPoint(a.entity(2)), p.Plus(Point2d::From(30, 40))));
 }
 
-TEST_CASE(t_toggles_construction) {
+TEST_CASE(x_toggles_construction) {
     CHECK_LOAD("line.slvs");
     hRequest a = DrawLine(Point2d::From(450, 520), Point2d::From(560, 520));
     ClickAt(AtMiddle(a));
-    Driver::Key("T");
+    Driver::Key("X");
     CHECK_TRUE(SK.GetRequest(a)->construction);
 }
 
