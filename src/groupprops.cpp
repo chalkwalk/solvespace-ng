@@ -155,6 +155,70 @@ bool SolveSpaceUI::SetHoleSpec(hGroup hg, const HoleSpec &spec) {
     return true;
 }
 
+// ISO 261 metric coarse pitches.
+static double CoarsePitch(double nominal) {
+    static const double table[][2] = {
+        { 1, 0.25 },  { 1.2, 0.25 }, { 1.6, 0.35 }, { 2, 0.4 },  { 2.5, 0.45 }, { 3, 0.5 },
+        { 3.5, 0.6 }, { 4, 0.7 },    { 5, 0.8 },    { 6, 1 },    { 8, 1.25 },   { 10, 1.5 },
+        { 12, 1.75 }, { 14, 2 },     { 16, 2 },     { 18, 2.5 }, { 20, 2.5 },   { 22, 2.5 },
+        { 24, 3 },    { 27, 3 },     { 30, 3.5 },   { 33, 3.5 }, { 36, 4 },
+    };
+    for(const auto &row : table) {
+        if(fabs(row[0] - nominal) < 1e-9) return row[1];
+    }
+    return 0;
+}
+
+std::string SolveSpaceUI::HoleThreadText(const HoleSpec &spec) {
+    if(spec.thread <= 0) return "none";
+    std::string text = "M" + ssprintf("%g", spec.thread);
+    if(fabs(CoarsePitch(spec.thread) - spec.pitch) > 1e-9) text += ssprintf("x%g", spec.pitch);
+    return text;
+}
+
+bool SolveSpaceUI::SetHoleField(hGroup hg, HoleField field, const std::string &text) {
+    HoleSpec spec = SK.GetGroup(hg)->hole;
+    if(field == HoleField::THREAD) {
+        std::string t = text;
+        t.erase(std::remove(t.begin(), t.end(), ' '), t.end());
+        if(t.empty() || t == "none" || t == "0") {
+            spec.thread = spec.pitch = 0;
+        } else {
+            double nominal = 0, pitch = 0;
+            if(toupper(t[0]) == 'M') t = t.substr(1);
+            int n = sscanf(t.c_str(), "%lf%*[xX]%lf", &nominal, &pitch);
+            if(n < 1 || nominal <= 0) {
+                Error(_("Write the thread as M4, M4x0.5, or none."));
+                return false;
+            }
+            if(n < 2) pitch = CoarsePitch(nominal);
+            if(pitch <= 0) {
+                Error(_("M%g has no standard coarse pitch; write it as M%gx<pitch>."), nominal,
+                      nominal);
+                return false;
+            }
+            spec.thread = nominal;
+            spec.pitch  = pitch;
+        }
+        return SetHoleSpec(hg, spec);
+    }
+    double value = 0;
+    if(!(field == HoleField::DEPTH && (text.empty() || text == "through"))) {
+        Expr *e = Expr::From(text, /*popUpError=*/true);
+        if(!e) return false;
+        value = e->Eval();
+    }
+    switch(field) {
+        case HoleField::DIAMETER:      spec.diameter     = value * MmPerUnit(); break;
+        case HoleField::DEPTH:         spec.depth        = value * MmPerUnit(); break;
+        case HoleField::HEAD_DIAMETER: spec.headDiameter = value * MmPerUnit(); break;
+        case HoleField::HEAD_DEPTH:    spec.headDepth    = value * MmPerUnit(); break;
+        case HoleField::HEAD_ANGLE:    spec.headAngle    = value; break;
+        case HoleField::THREAD:        break;
+    }
+    return SetHoleSpec(hg, spec);
+}
+
 void SolveSpaceUI::ToggleHelixPitchFixed(hGroup hg) {
     Group *g = SK.GetGroup(hg);
     if(g->valB == 0.0) {

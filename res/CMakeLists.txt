@@ -310,6 +310,7 @@ add_resources(
     icons/ng/extrude.svg
     icons/ng/fillet.svg
     icons/ng/helix.svg
+    icons/ng/hole.svg
     icons/ng/horizontal.svg
     icons/ng/image.svg
     icons/ng/insert-part.svg

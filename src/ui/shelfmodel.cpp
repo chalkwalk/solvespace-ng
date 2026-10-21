@@ -46,6 +46,7 @@ static const struct {
     { "Groups",    Command::GROUP_CHAMFER,  "chamfer" },
     { "Groups",    Command::GROUP_SHELL,    "shell" },
     { "Groups",    Command::GROUP_DRAFT,    "draft" },
+    { "Groups",    Command::GROUP_HOLE,     "hole" },
     { "Groups",    Command::GROUP_ROT,      "circular-pattern" },
     { "Groups",    Command::GROUP_TRANS,    "linear-pattern" },
     { "Groups",    Command::GROUP_WRKPL,    "new-sketch" },

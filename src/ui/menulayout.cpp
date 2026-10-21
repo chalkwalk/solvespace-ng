@@ -111,6 +111,7 @@ const std::vector<Top> &Layout() {
             C(Command::GROUP_LATHE, "Lathe"), C(Command::GROUP_HELIX, "Helix"), Sep(),
             C(Command::GROUP_FILLET, "Fillet Edges"), C(Command::GROUP_CHAMFER, "Chamfer Edges"),
             C(Command::GROUP_SHELL, "Shell"), C(Command::GROUP_DRAFT, "Draft Faces"),
+            C(Command::GROUP_HOLE, "Hole"),
             Sep(),
             C(Command::GROUP_TRANS, "Linear Pattern"),
             C(Command::GROUP_ROT, "Circular Pattern"), Sep(),

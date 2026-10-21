@@ -120,6 +120,65 @@ static void DrawGroup(Group *g, std::function<void()> *run) {
         if(ImGui::Checkbox("fixed pitch", &f)) *run = [hg] { SS.ToggleHelixPitchFixed(hg); };
     }
 
+    if(type == Type::HOLE) {
+        using F             = SolveSpaceUI::HoleField;
+        const HoleSpec spec = g->hole;
+        auto kind = [&](const char *label, HoleKind k) {
+            Radio(label, spec.kind == k,
+                  [hg, spec, k] {
+                      HoleSpec s = spec;
+                      s.kind     = k;
+                      SS.SetHoleSpec(hg, s);
+                  },
+                  run);
+        };
+        kind("plain", HoleKind::SIMPLE);
+        ImGui::SameLine();
+        kind("counterbore", HoleKind::COUNTERBORE);
+        ImGui::SameLine();
+        kind("countersink", HoleKind::COUNTERSINK);
+        auto field = [&](const char *label, const char *id, std::string now, F f) {
+            ImGui::TextUnformatted(label);
+            ValueField(id, now, run, [hg, f](std::string s) { SS.SetHoleField(hg, f, s); });
+        };
+        field("thread (M4, M4x0.5 or none)", "##hole-thread", SS.HoleThreadText(spec),
+              F::THREAD);
+        if(spec.thread <= 0) {
+            field("diameter", "##hole-diameter", SS.MmToString(spec.diameter), F::DIAMETER);
+        }
+        field("depth (blank: through all)", "##hole-depth",
+              spec.depth > 0 ? SS.MmToString(spec.depth) : "", F::DEPTH);
+        if(spec.kind != HoleKind::SIMPLE) {
+            field(spec.kind == HoleKind::COUNTERBORE ? "counterbore diameter"
+                                                     : "countersink diameter",
+                  "##hole-head-diameter", SS.MmToString(spec.headDiameter), F::HEAD_DIAMETER);
+        }
+        if(spec.kind == HoleKind::COUNTERBORE) {
+            field("counterbore depth", "##hole-head-depth", SS.MmToString(spec.headDepth),
+                  F::HEAD_DEPTH);
+        } else if(spec.kind == HoleKind::COUNTERSINK) {
+            field("countersink angle (degrees)", "##hole-head-angle",
+                  ssprintf("%g", spec.headAngle), F::HEAD_ANGLE);
+        }
+        bool flip = spec.flip != 0;
+        if(ImGui::Checkbox("drill the other way", &flip)) {
+            *run = [hg, spec] {
+                HoleSpec s = spec;
+                s.flip     = s.flip ? 0 : 1;
+                SS.SetHoleSpec(hg, s);
+            };
+        }
+        ImGui::TextDisabled("%d hole%s", (int)g->points.size(), g->points.size() == 1 ? "" : "s");
+        if(!g->featureProblem.empty()) {
+            std::string problem = g->featureProblem + ".";
+            problem[0]          = (char)toupper(problem[0]);
+            ImGui::PushStyleColor(ImGuiCol_Text,
+                                  ImGui::GetStyleColorVec4(ImGuiCol_PlotLinesHovered));
+            ImGui::TextWrapped("%s", problem.c_str());
+            ImGui::PopStyleColor();
+        }
+    }
+
     if(type == Type::FILLET || type == Type::CHAMFER || type == Type::SHELL ||
        type == Type::DRAFT) {
         const char *label = type == Type::FILLET    ? "radius"

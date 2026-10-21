@@ -255,6 +255,11 @@ ICONS = {
               f'<path d="M3 9h12.6v12h-12.6z" fill="{MID}" stroke="{DARK}" stroke-width="0.8" />'
               f'<path d="M3 9l5.4-5.4h12.6l-5.4 5.4z M5.2 8.2l3.9-3.9h9.6l-3.9 3.9z" fill="none" '
               f'stroke="{LIT}" stroke-width="1" />'),
+    # A block with a counterbored hole in its top.
+    'hole': (cube(3, 11, 11)
+             + f'<ellipse cx="11.2" cy="8.5" rx="3.6" ry="1.6" fill="{DARK}" stroke="{DARK}" stroke-width="0.6" />'
+             + f'<ellipse cx="11.2" cy="9.1" rx="1.8" ry="0.8" fill="#000000" opacity="0.6" />'
+             + chrome('M11.2 1v4.5 ' + arrowhead(11.2, 5.8, 0, 1, 2), 1.3)),
     # A block whose front narrows upwards, the pull arrow beside it.
     'draft': (f'<path d="M5 9l4.5-4.5h7l-4.5 4.5z" fill="{LIT}" stroke="{DARK}" stroke-width="0.8" />'
               f'<path d="M12 9l4.5-4.5 2.5 12-4.5 4.5z" fill="{DARK}" stroke="{DARK}" stroke-width="0.8" />'

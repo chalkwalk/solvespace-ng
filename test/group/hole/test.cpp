@@ -212,4 +212,24 @@ TEST_CASE(an_m4_thread_is_modelled) {
     CHECK_TRUE(removed > PI * minor * minor / 4 * 10 + 1);
     CHECK_TRUE(removed < PI * 4 * 10);
 }
+TEST_CASE(hole_fields_take_what_is_typed) {
+    CHECK_LOAD("box.slvs");
+    SS.kernelKind = KernelKind::OCCT;
+    Group *g  = HoleAt({ { 5, 10, 30 } });
+    hGroup hg = g->h;
+    using F   = SolveSpaceUI::HoleField;
+    CHECK_TRUE(SS.SetHoleField(hg, F::THREAD, "M3"));
+    CHECK_EQ_EPS(SK.GetGroup(hg)->hole.pitch, 0.5);
+    CHECK_EQ_STR(SS.HoleThreadText(SK.GetGroup(hg)->hole), "M3");
+    CHECK_TRUE(SS.SetHoleField(hg, F::THREAD, "m4 x 0.5"));
+    CHECK_EQ_STR(SS.HoleThreadText(SK.GetGroup(hg)->hole), "M4x0.5");
+    CHECK_FALSE(SS.SetHoleField(hg, F::THREAD, "M7")); // no coarse pitch
+    CHECK_TRUE(SS.SetHoleField(hg, F::THREAD, "none"));
+    CHECK_EQ_STR(SS.HoleThreadText(SK.GetGroup(hg)->hole), "none");
+    CHECK_TRUE(SS.SetHoleField(hg, F::DEPTH, "12"));
+    CHECK_EQ_EPS(SK.GetGroup(hg)->hole.depth, 12);
+    CHECK_TRUE(SS.SetHoleField(hg, F::DEPTH, ""));
+    CHECK_EQ_EPS(SK.GetGroup(hg)->hole.depth, 0);
+    CHECK_FALSE(SS.SetHoleField(hg, F::DIAMETER, "-1"));
+}
 #endif

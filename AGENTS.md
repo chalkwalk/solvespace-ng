@@ -154,7 +154,7 @@ bindings. All bindings can be remapped and are stored in a keymap file
 | `H` `V` `I` `B`/`T` `Shift+L` `Q` `Shift+S` `M` `Shift+J` `U` | Horizontal, vertical, on point/curve, parallel/tangent, perpendicular, equal, symmetric, midpoint, lock, other angle |
 | `X` | Toggle construction (`Delete`/`Backspace` delete) |
 | `G` | Grab: drag under the solver; `X`/`Y`/`Z` locks an axis; type a value |
-| `E` / `Shift+R` / `Alt+R` / `Alt+E` | Extrude / revolve / lathe / helix; `Shift+W` sketch in a new workplane; `Shift+F` fillet the selected edges (as Onshape) |
+| `E` / `Shift+R` / `Alt+R` / `Alt+E` | Extrude / revolve / lathe / helix; `Shift+W` sketch in a new workplane; `Shift+F` fillet the selected edges (as Onshape); `Shift+H` hole at the selected points |
 | `Y` / `Shift+Y` / `Shift+I` | Hide / show all / isolate **groups** (SolveSpace has no per-entity hide) |
 | `Ctrl+A` / `Alt+A`, `Esc` | Select all / none |
 | `` ` `` pie, numpad `1` `3` `7`, `Shift+1`..`7` | View pie; front/right/top (`Ctrl` = opposite side); Onshape's Shift+digits (front, back, left, right, top, bottom, isometric) for keyboards without a numpad; `W` looks at the sketch; `.` frames selection |
@@ -323,6 +323,16 @@ normal turned by the angle. Which way each face entity faces the solid's outside
 from the solid (`KernelFaceNormals`, topology only); planes come from the entities. Draft is
 a group after the extrusion rather than an extrusion option, so the extrusion's own entities
 (which its constraints solve) keep their meaning; its top edges stay untapered.
+
+**Built in M3d (2026-10-21, branch `ng/m3d-holes`):** hole groups (`HOLE`, New Group ▸ Hole,
+`Shift+H`): centres are points in a workplane (`Group.points`), and each hole goes against
+the workplane's normal (into the face sketched on), or flipped. `HoleSpec` (`Group.hole.*`):
+plain, counterbore or countersink; through all (depth 0) or a depth; an optional modelled ISO
+metric internal thread ("M4", coarse pitch from ISO 261, or "M4x0.5"), whose bore is the
+minor diameter and whose 60° groove is swept along a helix from below the head. Derived
+entities per centre: `REMAP_HOLE_TOP`, `_BOTTOM`, `_AXIS`, `_SEAT` (the seat face names a
+counterbore's floor). Hole booleans run OCCT in parallel with oriented boxes: a thread's
+helical cut is the slowest feature (about 0.4 s per 12 mm M4 thread).
 
 **Later:** variable-radius fillets, STEP import as a reference body (snappable, warned),
 XCAF colours and names, exact hidden-line drawing export (`HLRBRep`).

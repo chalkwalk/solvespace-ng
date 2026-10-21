@@ -18,7 +18,7 @@ static int ShelfButtons() {
 
 static bool ShowShelf() {
     // Every button is there as soon as the app is idle (an auto-sized window takes two frames).
-    return Driver::ClickMenu({ "View", "Tool Shelf" }) && ShelfShown() && ShelfButtons() == 38;
+    return Driver::ClickMenu({ "View", "Tool Shelf" }) && ShelfShown() && ShelfButtons() == 39;
 }
 
 TEST_CASE(shelf_starts_hidden_and_the_old_toolbar_is_gone) {
@@ -79,7 +79,7 @@ TEST_CASE(the_shelf_fits_the_smallest_window) {
     CHECK_LOAD("line.slvs");
     CHECK_TRUE(ShowShelf());
     Driver::Resize(640, 480); // the app's minimum size stops it at 720 x 636
-    CHECK_TRUE(ShelfButtons() == 38);
+    CHECK_TRUE(ShelfButtons() == 39);
     for(const Driver::Item &i : Driver::Items()) {
         if(i.id.rfind("shelf-", 0) == 0) CHECK_TRUE(i.fullyVisible && i.y1 < 636 - 30);
     }
@@ -109,7 +109,7 @@ TEST_CASE(shelf_stays_whole_when_the_window_shrinks) {
     Driver::Resize(640, 480); // the app's minimum size stops it a little larger
     Point2d ws = Driver::WindowSize();
     // It moves back on screen: every button can still be clicked.
-    CHECK_TRUE(ShelfButtons() == 38);
+    CHECK_TRUE(ShelfButtons() == 39);
     for(const Driver::Item &i : Driver::Items()) {
         if(i.id.rfind("shelf-", 0) == 0) CHECK_TRUE(i.fullyVisible && i.x1 <= ws.x);
     }
