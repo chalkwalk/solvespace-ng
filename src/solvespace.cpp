@@ -495,7 +495,22 @@ double SolveSpaceUI::ExprToMm(Expr *e) {
 double SolveSpaceUI::StringToMm(const std::string &str) {
     return std::stod(str) * MmPerUnit();
 }
+static thread_local double     tChordTol    = 0;
+static thread_local int        tMaxSegments = 0;
+static thread_local SEdgeList *tNakedEdges  = nullptr;
+
+void SolveSpaceUI::SetThreadKernelOverrides(double chordTol, int maxSegments, SEdgeList *naked) {
+    tChordTol    = chordTol;
+    tMaxSegments = maxSegments;
+    tNakedEdges  = naked;
+}
+
+SEdgeList &SolveSpaceUI::NakedEdgesSink() {
+    return tNakedEdges ? *tNakedEdges : nakedEdges;
+}
+
 double SolveSpaceUI::ChordTolMm() {
+    if(tChordTol > 0) return tChordTol;
     if(exportMode) return ExportChordTolMm();
     return chordTolCalculated;
 }
@@ -503,6 +518,7 @@ double SolveSpaceUI::ExportChordTolMm() {
     return exportChordTol / exportScale;
 }
 int SolveSpaceUI::GetMaxSegments() {
+    if(tMaxSegments > 0) return tMaxSegments;
     if(exportMode) return exportMaxSegments;
     return maxSegments;
 }

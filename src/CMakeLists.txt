@@ -134,10 +134,12 @@ if(ENABLE_GUI OR ENABLE_CLI)
         exportvector.cpp
         file.cpp
         generate.cpp
+        regen.cpp
         graphicswin.cpp
         group.cpp
         groupmesh.cpp
         kernel/solvespacekernel.cpp
+        kernel/worker.cpp
         importdxf.cpp
         importidf.cpp
         importmesh.cpp

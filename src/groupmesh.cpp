@@ -366,6 +366,10 @@ void Group::DrawMesh(DrawMeshAs how, Canvas *canvas) {
                && SS.GW.dimSolidModel) {
                 fillFront.color = Style::Color(Style::DIM_SOLID);
             }
+            if(regenPending) {
+                // A ghost of the old solid while the new one is made on the worker (regen.cpp).
+                fillFront.color = Style::Color(Style::DIM_SOLID).WithAlpha(90);
+            }
             Canvas::hFill hcfFront = canvas->GetFill(fillFront);
 
             // The back faces are drawn in red; should never seem them, since we

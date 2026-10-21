@@ -37,6 +37,8 @@ set(testsuite_SOURCES
     kernel/facenamer/test.cpp
     kernel/solvespace/test.cpp
     kernel/revolved/test.cpp
+    kernel/worker/test.cpp
+    kernel/background/test.cpp
     constraint/points_coincident/test.cpp
     constraint/pt_pt_distance/test.cpp
     constraint/pt_plane_distance/test.cpp
@@ -160,6 +162,7 @@ set(ngui_SOURCES
     ngui/parity/test.cpp
     ngui/sessions/test.cpp
     ngui/shelf/test.cpp
+    ngui/regen/test.cpp
     ngui/capture/test.cpp)
 
 if(ENABLE_GUI AND ENABLE_NG_GUI)

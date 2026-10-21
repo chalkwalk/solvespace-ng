@@ -101,7 +101,7 @@ void SSurface::AddExactIntersectionCurve(SBezier *sb, SSurface *srfB,
         for(v = split.pts.First(); v; v = split.pts.NextAfter(v)) {
             if(prev) {
                 Vector e = (prev->p).Minus(v->p).WithMagnitude(0);
-                SS.nakedEdges.AddEdge((prev->p).Plus(e), (v->p).Minus(e));
+                SS.NakedEdgesSink().AddEdge((prev->p).Plus(e), (v->p).Minus(e));
             }
             prev = v;
         }

@@ -796,7 +796,7 @@ bool SShell::ClassifyEdge(Class *indir, Class *outdir,
         if(cnt > 5) {
             dbp("can't find a ray that doesn't hit on edge!");
             dbp("on edge = %d, edge_inters = %d", onEdge, edge_inters);
-            SS.nakedEdges.AddEdge(ea, eb);
+            SS.NakedEdgesSink().AddEdge(ea, eb);
             break;
         }
     }

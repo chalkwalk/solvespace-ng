@@ -10,6 +10,7 @@
 namespace SolveSpace {
 
 void SolveSpaceUI::UndoRemember() {
+    FlushRegeneration();
     unsaved = true;
     PushFromCurrentOnto(&undo);
     UndoClearStack(&redo);

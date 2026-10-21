@@ -56,6 +56,7 @@ static void ReleaseFramebuffer(WindowImplSdl *w);
 static SDL_Window    *gSdlWindow   = nullptr;
 static SDL_GLContext  gGlContext   = nullptr;
 static Uint32         gTimerEvent  = 0;
+static Uint32         gWakeEvent   = 0; // a solid finished on the kernel's worker (regen.cpp)
 static bool           gQuit        = false;
 static bool           gNeedsFrame  = true;
 static std::weak_ptr<WindowImplSdl>              gMainWindow;
@@ -631,6 +632,14 @@ std::vector<std::string> InitGui(int argc, char **argv) {
         FatalError(std::string("SDL_Init failed: ") + SDL_GetError());
     }
     gTimerEvent = SDL_RegisterEvents(1);
+    gWakeEvent  = SDL_RegisterEvents(1);
+    // Solids are made on a worker thread while dragging; its finish wakes the event loop.
+    SS.backgroundRegenEnabled = true;
+    SS.onRegenFinished        = [] {
+        SDL_Event ev = {};
+        ev.type      = gWakeEvent;
+        SDL_PushEvent(&ev); // (thread-safe)
+    };
 
     int count = 0;
     SDL_Locale **locales = SDL_GetPreferredLocales(&count);
@@ -866,6 +875,7 @@ static void ForwardToMainWindow(const SDL_Event &ev) {
 
 static void HandleEvent(const SDL_Event &ev) {
     gNeedsFrame = true;
+    if(ev.type == gWakeEvent) return; // RunGui applies the solid before the frame
     if(ev.type == gTimerEvent) {
         HandleTimerEvent(ev);
         return;
@@ -1351,6 +1361,7 @@ static void RenderFrame() {
 void RunGui() {
     while(!gQuit) {
         PumpEventsOnce(/*wait=*/true);
+        if(SS.PollRegeneration()) gNeedsFrame = true;
         if(gNeedsFrame) RenderFrame();
         if(gCloseRequested && gModalDepth == 0) {
             gCloseRequested = false;
@@ -1661,10 +1672,14 @@ void Settle(unsigned horizonMs) {
     const char *busy  = "";
     for(int frames = 0;;) {
         PumpEventsOnce(/*wait=*/false);
+        if(SS.PollRegeneration()) gNeedsFrame = true;
         if(frames < 3 || gNeedsFrame || !gDeferred.Empty()) {
             busy = gNeedsFrame ? "a frame was requested" : "deferred work";
             RenderFrame();
             frames++;
+        } else if(SS.RegenerationPending()) {
+            busy = "a solid is being made on the worker";
+            SDL_Delay(1);
         } else if(!SDL_HasEvents(SDL_EVENT_FIRST, SDL_EVENT_LAST)) {
             uint64_t due = Timers().EarliestDue(), now = SDL_GetTicks();
             if(due > now + horizonMs) break;

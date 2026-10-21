@@ -280,6 +280,7 @@ void SolveSpaceUI::SaveUsingTable(const Platform::Path &filename, int type) {
 }
 
 bool SolveSpaceUI::SaveToFile(const Platform::Path &filename) {
+    FlushRegeneration(); // the solids as they are now, not mid-drag
     // Make sure all the entities are regenerated up to date, since they will be exported.
     SS.ScheduleShowTW();
     SS.GenerateAll(SolveSpaceUI::Generate::ALL);

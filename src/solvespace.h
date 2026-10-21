@@ -691,6 +691,25 @@ public:
         hEntity     point;
     } traced;
     SEdgeList nakedEdges;
+    // Where the shell code reports naked edges: nakedEdges, or on a kernel worker thread its
+    // own list (SetThreadKernelOverrides).
+    SEdgeList &NakedEdgesSink();
+    // For the calling thread only (a kernel worker): the chord tolerance and segment limit
+    // captured with its job, and a list for the naked edges it finds. chordTol <= 0 clears.
+    static void SetThreadKernelOverrides(double chordTol, int maxSegments, SEdgeList *naked);
+
+    // Regenerating solids on a worker thread while dragging (src/regen.cpp, AGENTS.md 6).
+    bool backgroundRegenEnabled = false; // NG turns it on; stock SolveSpace never uses it
+    bool BackgroundRegenAllowed();
+    void SubmitBackgroundRegen(const std::vector<hGroup> &groups);
+    // Applies a finished background regeneration if it is still the newest; true if anything
+    // changed. Waits for it (FlushRegeneration) once dragging has stopped.
+    bool PollRegeneration();
+    void FlushRegeneration();
+    bool RegenerationPending();
+    void DropBackgroundRegen(); // a synchronous regeneration supersedes it
+    std::function<void()> onRegenFinished; // called on the worker thread; wakes the UI
+    int  regenChainsApplied = 0, regenMisses = 0; // for the tests
     struct {
         bool        draw;
         Vector      ptA;

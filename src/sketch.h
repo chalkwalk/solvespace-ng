@@ -351,6 +351,7 @@ public:
     // The kernel job for this group's solid (kernel/kernel.h), and taking its result.
     KernelJob BuildKernelJob();
     void ApplyKernelResult(KernelResult *result);
+    bool regenPending = false; // its solid is being made on the worker (drawn as a ghost)
     void GenerateDisplayItems();
 
     enum class DrawMeshAs { DEFAULT, HOVERED, SELECTED };

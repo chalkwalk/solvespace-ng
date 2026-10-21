@@ -255,3 +255,22 @@ TEST_CASE(glyph_states) {
     Driver::Settle();
     Shot("glyphs-3-conflicting", b, 0);
 }
+
+TEST_CASE(ghost_solid) {
+    // A solid drawn while its new shape is made on the worker (regen.cpp), beside the normal one.
+    if(!Begin()) return;
+    CHECK_LOAD("extrudes.slvs");
+    ClosePanel("Outliner");
+    ClosePanel("Properties");
+    Group *g = SK.GetGroup(SK.groupOrder[SK.groupOrder.n - 1]);
+    SS.GW.activeGroup = g->h;
+    SS.GenerateAll(SolveSpaceUI::Generate::ALL);
+    Driver::Key("Shift+7");
+    Driver::Key("Home");
+    Shot("ghost-1-solid", Box{});
+    g->regenPending = true;
+    SS.GW.Invalidate(/*clearPersistent=*/true);
+    Driver::Settle();
+    Shot("ghost-2-pending", Box{});
+    g->regenPending = false;
+}

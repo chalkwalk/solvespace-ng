@@ -238,6 +238,10 @@ void SolveSpaceUI::GenerateAll(Generate type, bool andFindFree, bool genForBBox)
     SK.entity.Clear();
     SK.entity.ReserveMore(oldEntityCount);
 
+    // While dragging, solids are made on the kernel's worker thread (regen.cpp).
+    bool background  = !genForBBox && BackgroundRegenAllowed();
+    bool regenerated = false;
+    std::vector<hGroup> backgroundGroups;
     // Not using range-for because we're using the index inside the loop.
     for(i = 0; i < SK.groupOrder.n; i++) {
         hGroup hg = SK.groupOrder[i];
@@ -296,9 +300,14 @@ void SolveSpaceUI::GenerateAll(Generate type, bool andFindFree, bool genForBBox)
                 if(genForBBox) {
                     SolveGroupAndReport(hg, andFindFree);
                     g->GenerateLoops();
+                } else if(background) {
+                    // Made on the kernel's worker; applied when done (regen.cpp).
+                    backgroundGroups.push_back(hg);
                 } else {
                     g->GenerateShellAndMesh();
+                    g->regenPending = false;
                     g->clean = true;
+                    regenerated = true;
                 }
             } else {
                 // The group falls outside the range, so just assume that
@@ -313,6 +322,10 @@ void SolveSpaceUI::GenerateAll(Generate type, bool andFindFree, bool genForBBox)
             }
         }
     }
+
+    // A solid made here supersedes one still being made on the worker.
+    if(regenerated) DropBackgroundRegen();
+    if(!backgroundGroups.empty()) SubmitBackgroundRegen(backgroundGroups);
 
     // And update any reference dimensions with their new values
     for(auto &con : SK.constraint) {

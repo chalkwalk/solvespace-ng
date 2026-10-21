@@ -264,6 +264,18 @@ constrained. The Problems list says so.
 with a tessellation cache per group. While dragging, only the sketch solve runs per frame. The
 stale mesh shows as a ghost until the new one arrives.
 
+**Built in M2 (2026-10-21, branch `ng/m2-kernel`):** `src/kernel/` holds `IKernel`
+(`kernel.h`), `SolveSpaceKernel` (`solvespacekernel.cpp`: the shell and mesh code moved from
+`groupmesh.cpp`, unchanged), `FaceNamer` (`facenamer.h`) and the worker thread (`worker.h`). A
+group captures its solid's inputs in a `KernelJob` (`Group::BuildKernelJob`), so the kernel
+never reads the sketch. While dragging (NG only), `GenerateAll` hands the groups to the worker
+as one chain (`src/regen.cpp`); the newest finished chain is applied between frames, older
+ones are dropped, and the solids are drawn dimmed until then. Faces are named from a snapshot
+of each group's remap table; a name the snapshot lacks sends that regeneration back to the
+main thread, so files stay byte-identical. Save, export, undo and the end of a drag wait for
+the worker (`FlushRegeneration`). Tests: `test/kernel/` (also clean under ThreadSanitizer:
+configure a build with `-DCMAKE_CXX_FLAGS=-fsanitize=thread`), `test/ngui/regen/`.
+
 **Later:** variable-radius fillets, STEP import as a reference body (snappable, warned),
 XCAF colours and names, exact hidden-line drawing export (`HLRBRep`).
 

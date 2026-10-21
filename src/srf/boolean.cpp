@@ -8,7 +8,7 @@
 
 namespace SolveSpace {
 
-static int I;
+static thread_local int I; // (a debugging counter; kernel jobs run on a worker thread too)
 
 void SShell::MakeFromUnionOf(SShell *a, SShell *b) {
     MakeFromBoolean(a, b, SSurface::CombineAs::UNION);
@@ -362,9 +362,9 @@ static void DEBUGEDGELIST(SEdgeList *sel, SSurface *surf) {
         arrow = arrow.WithMagnitude(0.01);
         arrow = arrow.Plus(mid);
 
-        SS.nakedEdges.AddEdge(surf->PointAt(se->a.x, se->a.y),
+        SS.NakedEdgesSink().AddEdge(surf->PointAt(se->a.x, se->a.y),
                               surf->PointAt(se->b.x, se->b.y));
-        SS.nakedEdges.AddEdge(surf->PointAt(mid.x, mid.y),
+        SS.NakedEdgesSink().AddEdge(surf->PointAt(mid.x, mid.y),
                               surf->PointAt(arrow.x, arrow.y));
     }
 }

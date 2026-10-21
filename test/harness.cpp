@@ -428,6 +428,7 @@ int main(int argc, char **argv) {
         SS.Init();
         SS.showToolbar = false;
         SS.checkClosedContour = false;
+        SS.backgroundRegenEnabled = false;
 #endif
 
         Test::Helper helper = {};

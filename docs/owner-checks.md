@@ -104,6 +104,11 @@ Screenshots: `docs/owner-review/glyphs.png` (under, fully constrained, failed; d
       go quieter; a failed solve's culprits turn light red on the red canvas.
 - [ ] Preferences ▸ SolveSpace NG ▸ "colour constraints by state" turns it off.
 
+### M2: solids made in the background while dragging (2026-10-21, branch `ng/m2-kernel`)
+- [ ] Drag a point of an extrusion (or grab it with `G`) in a heavier model: the sketch
+      follows the mouse at once; the solid follows a moment later, drawn dimmed meanwhile.
+- [ ] Let go: the solid is exact; saving and exporting right after give the final shape.
+
 ## Decisions waiting for the owner
 - Merge order: `ng/m1a-shell` > `ng/m1b-interaction` > `ng/m1-ui-harness` > `ng/m1c-panels` >
   `ng/m1c-feedback` > `master`.

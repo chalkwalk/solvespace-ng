@@ -12,6 +12,7 @@
 namespace SolveSpace {
 
 void SolveSpaceUI::ExportSectionTo(const Platform::Path &filename) {
+    FlushRegeneration();
     Vector gn = (SS.GW.projRight).Cross(SS.GW.projUp);
     gn = gn.WithMagnitude(1);
 
@@ -187,6 +188,7 @@ public:
 };
 
 void SolveSpaceUI::ExportViewOrWireframeTo(const Platform::Path &filename, bool exportWireframe) {
+    FlushRegeneration();
     SEdgeList edges = {};
     SBezierList beziers = {};
 
@@ -809,6 +811,7 @@ void VectorFileWriter::BezierAsNonrationalCubic(SBezier *sb, int depth) {
 // Export a triangle mesh, in the requested format.
 //-----------------------------------------------------------------------------
 void SolveSpaceUI::ExportMeshTo(const Platform::Path &filename) {
+    FlushRegeneration();
     SS.exportMode = true;
     GenerateAll(Generate::ALL);
 
@@ -1264,6 +1267,7 @@ void SolveSpaceUI::ExportMeshAsVrmlTo(FILE *f, const Platform::Path &filename, S
 // rendering the view in the usual way and then copying the pixels.
 //-----------------------------------------------------------------------------
 void SolveSpaceUI::ExportAsPngTo(const Platform::Path &filename) {
+    FlushRegeneration();
     screenshotFile = filename;
     // The rest of the work is done in the next redraw.
     GW.Invalidate();
