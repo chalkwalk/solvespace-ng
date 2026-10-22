@@ -95,8 +95,10 @@ TEST_CASE(ng_edits_and_frees_a_fillets_radius_on_the_canvas) {
         if(c.group == fillet && c.type == Constraint::Type::FEATURE_SIZE) size = c.h;
     }
     CHECK_TRUE(size.v != 0);
-    // (Double-clicking the label opens no editor yet for this dimension: an open issue.)
-    CHECK_TRUE(EditField("feature-size", "3"));
+    DoubleClickAt(AtLabel(size));
+    CHECK_TRUE(SS.GW.window->IsEditorVisible());
+    Driver::Type("3");
+    Driver::Key("Return");
     CHECK_EQ_EPS(SK.GetConstraint(size)->valA, 3.0);
     CHECK_EQ_EPS(SK.GetParam(SK.GetGroup(fillet)->h.param(0))->val, 3);
 

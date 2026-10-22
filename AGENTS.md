@@ -365,6 +365,16 @@ point for the origin (`WORKPLANE_BY_FACE`, stock's long-stubbed subtype). The wo
 the face's plane every regeneration; its normal points to the viewer as the face was picked
 (`predef.negateV`), its axes keep the view's (`predef.q`, re-projected).
 
+**Feature sizes as solver parameters (M3h, 2026-10-21, after review 5):** a fillet's radius, a
+chamfer's distance, a shell's thickness and a draft's angle (as its tangent) are their
+group's parameter `h.param(0)`, like an extrusion's depth. A new feature starts with a
+`FEATURE_SIZE` dimension holding it (drawn off the solid at its first moving derived point;
+edited on the canvas or in Properties). Derived points that the size moves are
+`POINT_ALONG_PARAM` (base + direction × parameter), so with the dimension made reference or
+deleted, constraints on derived entities or drags set the size; a draft's derived top edge
+(`REMAP_DRAFT_TOP`) sets its angle. Kernel jobs build the solved size. Hole sizes are still
+plain values. Feature groups saved before M3h load without the dimension (one free DOF).
+
 **Later:** variable-radius fillets, STEP import as a reference body (snappable, warned),
 XCAF colours and names, exact hidden-line drawing export (`HLRBRep`).
 

@@ -1430,6 +1430,7 @@ bool Constraint::HasLabel() const {
         case Type::ARC_LINE_DIFFERENCE:
         case Type::DIAMETER:
         case Type::ANGLE:
+        case Type::FEATURE_SIZE:
             return true;
 
         default:
