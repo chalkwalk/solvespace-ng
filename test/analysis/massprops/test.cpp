@@ -42,3 +42,14 @@ TEST_CASE(mass_properties_of_a_box_from_the_b_rep) {
     CHECK_TRUE(IsTheBox(mp, 1e-9));
 }
 #endif
+
+// Review 5: common printing materials by name; mass properties name the one in use.
+TEST_CASE(materials_are_named_by_their_density) {
+    CHECK_TRUE(!SolveSpaceUI::Materials().empty());
+    CHECK_EQ_STR(SolveSpaceUI::Materials()[0].name, "PLA");
+    CHECK_LOAD("../../group/fillet/box.slvs");
+    CHECK_TRUE(SS.SetSetting(Setting::DENSITY, "1.27"));
+    CHECK_TRUE(SS.MassPropertiesText().find("PETG") != std::string::npos);
+    CHECK_TRUE(SS.SetSetting(Setting::DENSITY, "2.7")); // aluminium: not a printing material
+    CHECK_TRUE(SS.MassPropertiesText().find("PETG") == std::string::npos);
+}

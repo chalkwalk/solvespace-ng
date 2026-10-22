@@ -113,3 +113,12 @@ TEST_CASE(ng_makes_solids_with_occt_and_preferences_choose_the_kernel) {
     CHECK_TRUE(Driver::ClickItem("Open CASCADE kernel"));
     CHECK_TRUE(SS.kernelKind == KernelKind::OCCT);
 }
+
+TEST_CASE(ng_picks_a_material_for_mass_properties) {
+    CHECK_LOAD("line.slvs");
+    Driver::Key("Ctrl+,");
+    CHECK_TRUE(RevealIn("Preferences", "PETG"));
+    CHECK_TRUE(Driver::ClickItem("PETG"));
+    CHECK_EQ_EPS(SS.density, 1.27);
+    CHECK_TRUE(Platform::GetSettings()->ThawFloat("Density", 0) == 1.27);
+}

@@ -718,6 +718,13 @@ public:
     // The geometry kernel solids are made with (kernel/kernel.h); NG may choose OCCT.
     KernelKind kernelKind = KernelKind::SOLVESPACE;
     double     density    = 1.24; // g/cm^3, for mass properties (PLA)
+    struct Material {
+        const char *name;
+        double      density; // g/cm^3
+    };
+    // Common printing materials (review 5), PLA first; and the one with a density, if any.
+    static const std::vector<Material> &Materials();
+    static const Material *MaterialFor(double density);
     // The active group's solid's mass properties: exact from the B-rep, else from its mesh;
     // false if there is no solid.
     bool        MassProperties(MassProps *out);

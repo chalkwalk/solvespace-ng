@@ -187,6 +187,7 @@ bool SolveSpaceUI::SetSetting(Setting setting, const std::string &s, int index) 
                 return false;
             }
             density = atof(s.c_str());
+            Platform::GetSettings()->FreezeFloat("Density", density);
             return true;
         case Setting::LIGHT_AMBIENT:
             ambientIntensity = min(1.0, max(0.0, atof(s.c_str())));

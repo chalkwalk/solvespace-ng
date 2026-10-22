@@ -1264,6 +1264,22 @@ Group *Sketch::GetRunningMeshGroupFor(hGroup h) {
 }
 
 
+const std::vector<SolveSpaceUI::Material> &SolveSpaceUI::Materials() {
+    // Typical filament densities.
+    static const std::vector<Material> materials = {
+        { "PLA", 1.24 }, { "PETG", 1.27 }, { "ABS", 1.04 }, { "ASA", 1.07 },
+        { "TPU", 1.21 }, { "Nylon (PA6)", 1.14 }, { "Polycarbonate", 1.20 },
+    };
+    return materials;
+}
+
+const SolveSpaceUI::Material *SolveSpaceUI::MaterialFor(double density) {
+    for(const Material &m : Materials()) {
+        if(fabs(m.density - density) < 1e-9) return &m;
+    }
+    return nullptr;
+}
+
 bool SolveSpaceUI::MassProperties(MassProps *out) {
     Group *g = SK.GetGroup(SS.GW.activeGroup);
     *out     = {};
@@ -1286,11 +1302,14 @@ std::string SolveSpaceUI::MassPropertiesText() {
     double      grams = mp.volume / 1000 * density;
     std::string mass  = grams >= 1000 ? ssprintf("%.3f kg", grams / 1000)
                                       : ssprintf("%.2f g", grams);
+    const Material *material = MaterialFor(density);
+    std::string     what     = material ? ssprintf("%s, %.3g g/cm³", material->name, density)
+                                        : ssprintf("density %.3g g/cm³", density);
     std::string text  = ssprintf(
-        _("Volume:  %s\nSurface area:  %s\nMass:  %s (density %.3g g/cm³)\n"
+        _("Volume:  %s\nSurface area:  %s\nMass:  %s (%s)\n"
           "Center of mass:  (%s, %s, %s)"),
         MmToStringSI(mp.volume, /*dim=*/3).c_str(), MmToStringSI(mp.area, /*dim=*/2).c_str(),
-        mass.c_str(), density, MmToString(mp.centre.x).c_str(), MmToString(mp.centre.y).c_str(),
+        mass.c_str(), what.c_str(), MmToString(mp.centre.x).c_str(), MmToString(mp.centre.y).c_str(),
         MmToString(mp.centre.z).c_str());
     if(!mp.exact) {
         text += _("\n\nCurved surfaces have been approximated as triangles.\n"

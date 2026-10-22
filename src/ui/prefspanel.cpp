@@ -141,7 +141,19 @@ static void Ng(std::function<void()> *run) {
             *run = [] { SS.SetKernel(KernelKind::SOLVESPACE); };
         }
     }
-    Field("density for mass properties (g/cm³)", "##density", Setting::DENSITY, run);
+    // The material mass properties weigh: a common filament, or any density.
+    ImGui::TextDisabled("material for mass properties");
+    for(const SolveSpaceUI::Material &m : SolveSpaceUI::Materials()) {
+        bool on = SolveSpaceUI::MaterialFor(SS.density) == &m;
+        if(ImGui::RadioButton(m.name, on) && !on) {
+            double d = m.density;
+            *run     = [d] { SS.SetSetting(Setting::DENSITY, ssprintf("%g", d)); };
+        }
+        if(&m != &SolveSpaceUI::Materials().back() && &m != &SolveSpaceUI::Materials()[3]) {
+            ImGui::SameLine();
+        }
+    }
+    Field("density (g/cm³)", "##density", Setting::DENSITY, run);
 }
 
 std::function<void()> DrawPreferences() {
