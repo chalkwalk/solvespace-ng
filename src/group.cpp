@@ -1601,6 +1601,15 @@ bool Group::AddFeatureSizeDimension() {
     c.ptA        = anchor;
     c.valA       = valA;
     c.other      = type == Type::DRAFT; // the angle, held through its tangent
+    // The label off the solid, away from where the size moves the point, so it can be picked.
+    Entity *a = SK.GetEntity(anchor);
+    Vector  away = Vector::From(0, 0, 1);
+    if(a->type == Entity::Type::POINT_ALONG_PARAM) {
+        away = Vector::From(a->numNormal.vx, a->numNormal.vy, a->numNormal.vz).ScaledBy(-1);
+    }
+    if(away.Magnitude() > LENGTH_EPS) {
+        c.disp.offset = away.WithMagnitude(std::max(5.0, 3 * fabs(FeatureSize())));
+    }
     Constraint::AddConstraint(&c, /*rememberForUndo=*/false);
     return true;
 }

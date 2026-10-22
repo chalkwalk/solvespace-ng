@@ -82,3 +82,30 @@ TEST_CASE(ng_lists_a_fillets_edges_to_select_or_remove) {
     CHECK_TRUE(Driver::ClickItem(ssprintf("ref-%08x", b.v)));
     CHECK_TRUE(SS.GW.IsSelected(b));
 }
+
+// M3h: the radius is a dimension on the canvas, edited in Properties; delete it
+// and drag the fillet's axis to set the radius by hand.
+TEST_CASE(ng_edits_and_frees_a_fillets_radius_on_the_canvas) {
+    CHECK_LOAD("box.slvs");
+    hEntity edge = ClickTopFrontEdge();
+    Driver::Key("Shift+F");
+    hGroup      fillet = SS.GW.activeGroup;
+    hConstraint size   = {};
+    for(Constraint &c : SK.constraint) {
+        if(c.group == fillet && c.type == Constraint::Type::FEATURE_SIZE) size = c.h;
+    }
+    CHECK_TRUE(size.v != 0);
+    // (Double-clicking the label opens no editor yet for this dimension: an open issue.)
+    CHECK_TRUE(EditField("feature-size", "3"));
+    CHECK_EQ_EPS(SK.GetConstraint(size)->valA, 3.0);
+    CHECK_EQ_EPS(SK.GetParam(SK.GetGroup(fillet)->h.param(0))->val, 3);
+
+    ClickAt(AtLabel(size));
+    Driver::Key("Delete");
+    CHECK_TRUE(SK.constraint.FindByIdNoOops(size) == nullptr);
+    Entity *axis  = SK.GetEntity(SK.GetGroup(fillet)->Remap(edge, Group::REMAP_FILLET_AXIS));
+    Vector  from3 = SK.GetEntity(axis->point[0])->PointGetNum(); // (0, 3, 27)
+    Point2d from  = At(from3), to = At(from3.Plus({ 0, -1, 1 }));
+    Driver::Drag(from.x, from.y, to.x, to.y);
+    CHECK_TRUE(fabs(SK.GetParam(SK.GetGroup(fillet)->h.param(0))->val - 2) < 0.2);
+}
