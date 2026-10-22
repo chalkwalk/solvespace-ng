@@ -246,8 +246,14 @@ ICONS = {
                + pt(8, 16, 3)),
     'insert-part': cube(3, 11, 10) + chrome('M19 2v7 M15.5 5.5h7', 1.8),
     # A block with its front top edge rounded or bevelled.
-    'fillet': edged_block('Q3 9 4.35 7.65', 'Q15 9 16.35 7.65'),
-    'chamfer': edged_block('L4.35 7.65', 'L16.35 7.65'),
+    # The block's front, its top right corner rounded (a radius mark from the centre) or cut
+    # off straight at 45 degrees: the corner is the subject, so the two tell apart at a glance.
+    'fillet': (f'<path d="M3 21V4h8a9 9 0 0 1 9 9v8z" fill="{MID}" stroke="{DARK}" stroke-width="0.8" />'
+               + mark('M11 4a9 9 0 0 1 9 9', 2.2)
+               + mark('M11 13 16.6 7.4', 1.2) + pt(11, 13, 2.2)),
+    'chamfer': (f'<path d="M3 21V4h9l8 8v9z" fill="{MID}" stroke="{DARK}" stroke-width="0.8" />'
+                + mark('M12 4 20 12', 2.2)
+                + mark('M10.6 2.6l2.8 2.8 M18.6 10.6l2.8 2.8', 1.2)),
     # An open box seen from above the front: the inside shaded, the walls' tops lit.
     'shell': (f'<path d="M3 9l5.4-5.4h12.6l-5.4 5.4z" fill="{DARK}" stroke="{DARK}" stroke-width="0.8" />'
               f'<path d="M5.2 8.2l3.9-3.9h9.6l-3.9 3.9z" fill="{MID}" opacity="0.7" />'
@@ -256,10 +262,14 @@ ICONS = {
               f'<path d="M3 9l5.4-5.4h12.6l-5.4 5.4z M5.2 8.2l3.9-3.9h9.6l-3.9 3.9z" fill="none" '
               f'stroke="{LIT}" stroke-width="1" />'),
     # A block with a counterbored hole in its top.
-    'hole': (cube(3, 11, 11)
-             + f'<ellipse cx="11.2" cy="8.5" rx="3.6" ry="1.6" fill="{DARK}" stroke="{DARK}" stroke-width="0.6" />'
-             + f'<ellipse cx="11.2" cy="9.1" rx="1.8" ry="0.8" fill="#000000" opacity="0.6" />'
-             + chrome('M11.2 1v4.5 ' + arrowhead(11.2, 5.8, 0, 1, 2), 1.3)),
+    # A block with a counterbored hole in its top, and the bolt that goes in it above.
+    'hole': (cube(3, 12, 10)
+             + f'<ellipse cx="10.25" cy="9.75" rx="3.3" ry="1.5" fill="{DARK}" stroke="{DARK}" stroke-width="0.6" />'
+             + f'<ellipse cx="10.25" cy="10.2" rx="1.6" ry="0.7" fill="#000000" opacity="0.6" />'
+             + f'<path d="M17.5 1.5h5v3h-5z" fill="{LIT}" stroke="{DARK}" stroke-width="0.7" />'
+             + f'<path d="M19 4.5h2v6.5h-2z" fill="{MID}" stroke="{DARK}" stroke-width="0.6" />'
+             + chrome('M18.6 6.3l2.8 -0.8 M18.6 8.1l2.8 -0.8 M18.6 9.9l2.8 -0.8', 0.6)
+             + chrome('M20 12.5l-4.5 -1.5 ' + arrowhead(13.6, 10.4, -1, -0.33, 1.6), 1.1)),
     # A square profile below, a small round one above, and the smooth solid between them.
     'loft': (f'<path d="M4 19.5l4-3h12l-4 3z M9 6.5a3.5 1.3 0 1 0 7 0a3.5 1.3 0 1 0 -7 0" fill="none" />'
              f'<path d="M4 19.5C6 13 9 10 9 6.5h7c0 3.5 2 6.5 4 10l-4 3z" fill="{MID}" stroke="{DARK}" stroke-width="0.8" />'

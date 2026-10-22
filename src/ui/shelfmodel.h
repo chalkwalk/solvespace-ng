@@ -21,7 +21,7 @@ struct ShelfItem {
 };
 
 struct ShelfSection {
-    std::string            title; // "Sketch", "Constrain", "Groups", "View"
+    std::string            title; // "Sketch", "Constrain", "Groups", "Features", "View"
     std::vector<ShelfItem> items;
 };
 

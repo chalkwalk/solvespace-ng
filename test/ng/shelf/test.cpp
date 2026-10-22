@@ -56,3 +56,22 @@ TEST_CASE(shelf_items_show_their_keys) {
         if(i.command == Command::GROUP_LINK) CHECK_EQ_STR(i.keys, "Ctrl+I");
     }
 }
+
+TEST_CASE(features_have_their_own_shelf_block) {
+    // Review 5: the features that change a solid, apart from the groups that make one.
+    std::string err;
+    std::vector<ShelfSection> sections = BuildShelf(*ModernPreset(&err));
+    const ShelfSection *features = nullptr;
+    for(const ShelfSection &s : sections) {
+        if(s.title == "Features") features = &s;
+    }
+    CHECK_TRUE(features != nullptr);
+    if(features == nullptr) return;
+    std::vector<Command> want = { Command::GROUP_FILLET, Command::GROUP_CHAMFER,
+                                  Command::GROUP_SHELL, Command::GROUP_DRAFT,
+                                  Command::GROUP_HOLE };
+    CHECK_TRUE(features->items.size() == want.size());
+    for(size_t i = 0; i < want.size() && i < features->items.size(); i++) {
+        CHECK_TRUE(features->items[i].command == want[i]);
+    }
+}
