@@ -471,7 +471,8 @@ bool Constraint::IsVisible() const {
         case ConstraintBase::Type::PT_PT_DISTANCE:
         case ConstraintBase::Type::PT_FACE_DISTANCE:
         case ConstraintBase::Type::PT_LINE_DISTANCE:
-        case ConstraintBase::Type::PT_PLANE_DISTANCE: isDim = true; break;
+        case ConstraintBase::Type::PT_PLANE_DISTANCE:
+        case ConstraintBase::Type::FEATURE_SIZE: isDim = true; break;
         default:;
         }
 

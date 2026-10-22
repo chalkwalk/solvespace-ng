@@ -497,3 +497,21 @@ TEST_CASE(the_radius_dimension_survives_save_and_reload) {
     remove(path.raw.c_str());
 }
 #endif
+
+#if defined(HAVE_OCCT)
+// Review 6: a feature's size shows while its group is active (as Fusion shows a feature's
+// dimensions while editing it), in the dimensions-only mode too, and not after.
+TEST_CASE(a_size_dimension_shows_only_while_its_feature_is_active) {
+    CHECK_LOAD("box.slvs");
+    SS.kernelKind = KernelKind::OCCT;
+    hGroup      hg = MakeFeature(Command::GROUP_FILLET, { Edge(5, Group::REMAP_TOP) })->h;
+    hConstraint hc = SizeOf(hg)->h;
+    CHECK_TRUE(SK.GetConstraint(hc)->IsVisible());
+    SS.GW.showConstraints = GraphicsWindow::ShowConstraintMode::SCM_SHOW_DIM;
+    CHECK_TRUE(SK.GetConstraint(hc)->IsVisible());
+    SS.GW.showConstraints = GraphicsWindow::ShowConstraintMode::SCM_SHOW_ALL;
+    Group::MenuGroup(Command::GROUP_3D);
+    SS.GenerateAll(SolveSpaceUI::Generate::ALL);
+    CHECK_FALSE(SK.GetConstraint(hc)->IsVisible());
+}
+#endif
