@@ -107,7 +107,7 @@ const std::vector<Top> &Layout() {
             A("ui.toggle-theme", "Light Theme", true),
             C(Command::FULL_SCREEN, "Full Screen") } },
         { "New Group", {
-            C(Command::PART_NEW, "New Part"),
+            C(Command::PART_NEW, "New Part"), C(Command::GROUP_SPLIT, "Split Part"),
             Sub("Joints", {
                 C(Command::JOINT_REVOLUTE, "Revolute Joint"),
                 C(Command::JOINT_SLIDER, "Slider Joint"),

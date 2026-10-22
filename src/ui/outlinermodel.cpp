@@ -35,6 +35,7 @@ static const char *IconFor(Group::Type t) {
         case Group::Type::LOFT:              return "loft";
         case Group::Type::SWEEP:             return "sweep";
         case Group::Type::FIT:               return "insert-part";
+        case Group::Type::SPLIT:             return "split";
     }
     return "isometric";
 }

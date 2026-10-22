@@ -54,6 +54,8 @@
 #include <STEPControl_Reader.hxx>
 #include <STEPControl_Writer.hxx>
 #include <GProp_GProps.hxx>
+#include <GProp_PrincipalProps.hxx>
+#include <BRepClass_FaceClassifier.hxx>
 #include <Geom_BezierCurve.hxx>
 #include <Geom_CylindricalSurface.hxx>
 #include <NCollection_DataMap.hxx>
@@ -1012,6 +1014,111 @@ TopoDS_Shape ThreadGroove(gp_Pnt start, gp_Dir dir, double minor, double major, 
 }
 
 // The previous body with the job's holes cut; each counterbore's floor named with its seat.
+// Where dowels go across a cut (M5b): on each region of solid's section by the plane, two on
+// the region's long axis, else one at its centre, each clear of the region's edges and of the
+// other by clear.
+std::vector<Vector> DowelPoints(const TopoDS_Shape &solid, const gp_Pln &pln, double reach,
+                                double clear) {
+    std::vector<Vector> points;
+    TopoDS_Face         big = BRepBuilderAPI_MakeFace(pln, -reach, reach, -reach, reach);
+    BRepAlgoAPI_Common  section(solid, big);
+    if(!section.IsDone()) return points;
+    gp_Dir n = pln.Axis().Direction();
+    for(TopExp_Explorer ex(section.Shape(), TopAbs_FACE); ex.More(); ex.Next()) {
+        const TopoDS_Face &face = TopoDS::Face(ex.Current());
+        GProp_GProps       props;
+        BRepGProp::SurfaceProperties(face, props);
+        gp_Pnt               c  = props.CentreOfMass();
+        GProp_PrincipalProps pp = props.PrincipalProperties();
+        double               m[3];
+        pp.Moments(m[0], m[1], m[2]);
+        gp_Vec axes[3] = { pp.FirstAxisOfInertia(), pp.SecondAxisOfInertia(),
+                           pp.ThirdAxisOfInertia() };
+        // The long axis: in the plane, with the smaller moment.
+        int long_ = -1;
+        for(int i = 0; i < 3; i++) {
+            if(fabs(gp_Vec(n).Dot(axes[i].Normalized())) > 0.5) continue;
+            if(long_ < 0 || m[i] < m[long_]) long_ = i;
+        }
+        if(long_ < 0) continue;
+        gp_Vec a = axes[long_].Normalized();
+        // How far a point is inside the region from its edges (negative: outside).
+        TopoDS_Compound edges;
+        BRep_Builder    builder;
+        builder.MakeCompound(edges);
+        for(TopExp_Explorer ee(face, TopAbs_EDGE); ee.More(); ee.Next()) {
+            builder.Add(edges, ee.Current());
+        }
+        auto inside = [&](const gp_Pnt &q) {
+            BRepClass_FaceClassifier in(face, q, 1e-7);
+            if(in.State() != TopAbs_IN) return -1.0;
+            BRepExtrema_DistShapeShape dist(BRepBuilderAPI_MakeVertex(q).Vertex(), edges);
+            return dist.IsDone() ? dist.Value() : -1.0;
+        };
+        // The region's half-length along the axis, each way from the centre.
+        double step = std::max(clear / 16, 1e-3), l[2] = { 0, 0 };
+        for(int s = 0; s < 2; s++) {
+            gp_Vec dir = s == 0 ? a : a.Reversed();
+            while(l[s] < reach && inside(c.Translated(dir * (l[s] + step))) >= 0) l[s] += step;
+        }
+        double along = std::min(l[0], l[1]) - clear;
+        gp_Pnt p0 = c.Translated(a * along), p1 = c.Translated(a * -along);
+        if(along >= clear && inside(p0) >= clear - 1e-6 && inside(p1) >= clear - 1e-6) {
+            points.push_back(Vec(p0.XYZ()));
+            points.push_back(Vec(p1.XYZ()));
+        } else if(inside(c) >= clear - 1e-6) {
+            points.push_back(Vec(c.XYZ()));
+        }
+    }
+    return points;
+}
+
+// A split's half (M5b): the previous solid on the side splitNormal points to, with pockets for
+// dowels across the cut.
+std::shared_ptr<KernelShape> SplitHalf(const KernelJob &job, std::string *problem) {
+    const KernelShape &prev = *job.prevShape;
+    if(job.splitNormal.Magnitude() < LENGTH_EPS) {
+        *problem = "the split's plane is gone";
+        return nullptr;
+    }
+    Bnd_Box box;
+    BRepBndLib::Add(prev.shape, box);
+    double xmin, ymin, zmin, xmax, ymax, zmax;
+    box.Get(xmin, ymin, zmin, xmax, ymax, zmax);
+    Vector lo = Vector::From(xmin, ymin, zmin), hi = Vector::From(xmax, ymax, zmax);
+    double reach = lo.Plus(hi).ScaledBy(0.5).Minus(job.splitPoint).Magnitude() +
+                   hi.Minus(lo).Magnitude() + 1;
+    gp_Pln      pln(Pnt(job.splitPoint), Dir(job.splitNormal));
+    TopoDS_Face big = BRepBuilderAPI_MakeFace(pln, -reach, reach, -reach, reach);
+    KernelShape half;
+    half.shape = BRepPrimAPI_MakePrism(big, Vec(job.splitNormal.ScaledBy(2 * reach))).Shape();
+    auto out   = std::make_shared<KernelShape>();
+    if(!Boolean(KernelCombine::INTERSECTION, prev, half, out.get())) {
+        *problem = "the solid couldn't be split";
+        return nullptr;
+    }
+    if(job.dowelDiameter <= 0) return out;
+    double c = job.dowelClearance, d = job.dowelDiameter;
+    std::vector<Vector> at = DowelPoints(prev.shape, pln, reach, d + std::max(c, 0.0));
+    if(at.empty()) {
+        *problem = "the cut is too small for a dowel this size";
+        return out;
+    }
+    std::vector<TopoDS_Shape> pockets;
+    for(const Vector &q : at) {
+        gp_Ax2 axis(Pnt(q.Minus(job.splitNormal.ScaledBy(0.1))), Dir(job.splitNormal));
+        pockets.push_back(BRepPrimAPI_MakeCylinder(axis, d / 2 + c, job.dowelDepth + 0.1).Shape());
+    }
+    KernelShape tools;
+    tools.shape = MakeCompound(pockets);
+    auto cut    = std::make_shared<KernelShape>();
+    if(!Boolean(KernelCombine::DIFFERENCE, *out, tools, cut.get())) {
+        *problem = "the dowel pockets couldn't be cut";
+        return out;
+    }
+    return cut;
+}
+
 std::shared_ptr<KernelShape> Holes(const KernelJob &job, std::string *problem) {
     const KernelShape &prev = *job.prevShape;
     const HoleSpec    &spec = job.hole;
@@ -1290,7 +1397,7 @@ public:
         std::shared_ptr<const KernelShape> running;
         if(job.op == KernelJob::Op::FILLET || job.op == KernelJob::Op::CHAMFER ||
            job.op == KernelJob::Op::SHELL || job.op == KernelJob::Op::DRAFT ||
-           job.op == KernelJob::Op::HOLE) {
+           job.op == KernelJob::Op::HOLE || job.op == KernelJob::Op::SPLIT) {
             // These reshape the previous solid.
             running = job.prevShape;
             if(!job.suppress && !IsEmpty(job.prevShape)) {
@@ -1299,6 +1406,7 @@ public:
                     case KernelJob::Op::SHELL: reshaped = Shell(job, &namer, &result->problem); break;
                     case KernelJob::Op::DRAFT: reshaped = Draft(job, &namer, &result->problem); break;
                     case KernelJob::Op::HOLE:  reshaped = Holes(job, &result->problem); break;
+                    case KernelJob::Op::SPLIT: reshaped = SplitHalf(job, &result->problem); break;
                     default:                   reshaped = RoundEdges(job, &result->problem); break;
                 }
                 if(reshaped) running = reshaped;

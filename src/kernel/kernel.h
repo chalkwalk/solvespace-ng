@@ -158,6 +158,13 @@ struct KernelJob {
     std::vector<SBezier> path;
     double               cornerRadius = 0;
 
+    // SPLIT: the previous solid's half on the side splitNormal (unit) points to from
+    // splitPoint; with dowelDiameter > 0, dowel pockets across the cut on its long axis (two,
+    // else one, kept clear of its edges), each dowelDepth deep and wider by dowelClearance
+    // all round.
+    Vector splitPoint = {}, splitNormal = {};
+    double dowelDiameter = 0, dowelDepth = 0, dowelClearance = 0;
+
     // Combining with the previous groups' running body.
     bool          forcedToMesh = false; // combine as triangle meshes
     bool          suppress     = false; // contributes nothing

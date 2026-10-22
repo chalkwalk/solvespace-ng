@@ -77,7 +77,9 @@ void GraphicsWindow::DeleteGroup(hGroup hg) {
     SS.UndoRemember();
     // A fit joint's groups go together.
     Group *g       = SK.GetGroup(hg);
-    hGroup partner = g->type == Group::Type::FIT ? g->fit.partner : hGroup{};
+    hGroup partner = g->type == Group::Type::FIT || g->type == Group::Type::SPLIT
+                         ? g->fit.partner
+                         : hGroup{};
     while(activeGroup == hg || activeGroup == partner) {
         activeGroup = SK.GetGroup(activeGroup)->PreviousGroup()->h;
     }

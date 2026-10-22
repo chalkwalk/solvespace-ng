@@ -100,6 +100,7 @@ set(testsuite_SOURCES
     group/hinge/test.cpp
     group/gears/test.cpp
     group/fits/test.cpp
+    group/split/test.cpp
     group/loft/test.cpp
     group/sweep/test.cpp
     group/stepimport/test.cpp

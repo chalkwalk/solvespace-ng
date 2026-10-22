@@ -309,6 +309,7 @@ public:
         LOFT                          = 5405,
         SWEEP                         = 5406,
         FIT                           = 5407,
+        SPLIT                         = 5408,
     };
     Group::Type type;
 
@@ -434,6 +435,12 @@ public:
         double depth   = 0;
         hGroup partner = {}; // the pair's other group
     } fit;
+    // SPLIT (M5b): one of a split's pair of groups: the part keeps the half of opB's solid
+    // behind the plane (predef.entityB, a workplane or a flat face; its normal reversed when
+    // fit.flip), and a new part (fit.female) the half in front. With fit.dowel, Ø valA
+    // dowels fit.depth long go across the cut, fit.kind's clearance in each half's pockets.
+    // The plane's point and normal (unit, flipped as asked); false if its entity is gone.
+    bool SplitPlane(Vector *p, Vector *n) const;
     // FIT: the direction the joint goes in (unit; from the male into the female), and the
     // extrusion along it from the profile's plane (s0 to s1) before the offset by offset.
     void FitExtrusion(Vector *dir, double *s0, double *s1, double *offset) const;

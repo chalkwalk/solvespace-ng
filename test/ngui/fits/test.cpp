@@ -88,4 +88,33 @@ TEST_CASE(ng_fits_a_peg_into_a_lid) {
     CHECK_TRUE(Driver::ClickItem("fit-add"));
     CHECK_TRUE(SS.FitTable().size() == 4);
 }
+
+// Split Part (M5b): the box cut across its middle by a workplane, from the menu; the dowels
+// turned off in Properties.
+TEST_CASE(ng_splits_a_part_in_two) {
+    CHECK_LOAD("box.slvs");
+    SS.GW.projRight = Vector::From(1, 0, 0);
+    SS.GW.projUp    = Vector::From(0, 1, 0);
+    SS.GW.ClearSelection();
+    Group::MenuGroup(Command::GROUP_3D);
+    SS.GenerateAll(SolveSpaceUI::Generate::ALL);
+    hRequest hr = SS.GW.AddRequest(Request::Type::DATUM_POINT, /*rememberForUndo=*/false);
+    SS.GenerateAll(SolveSpaceUI::Generate::ALL);
+    SK.GetEntity(hr.entity(0))->PointForceTo({ 0, 0, 15 });
+    SS.GenerateAll(SolveSpaceUI::Generate::ALL);
+    Select({ hr.entity(0) });
+    Group::MenuGroup(Command::GROUP_WRKPL);
+    SS.GenerateAll(SolveSpaceUI::Generate::ALL);
+    Select({ SS.GW.activeGroup.entity(0) });
+    CHECK_TRUE(Driver::ClickMenu({ "New Group", "Split Part" }));
+    Group *cut = SK.GetGroup(SS.GW.activeGroup);
+    CHECK_TRUE(cut->type == Group::Type::SPLIT && SK.part.n == 2);
+    hPart  above  = cut->PartOf();
+    double pocket = PI * 1.9 * 1.9 * 5;
+    CHECK_TRUE(fabs(PartVolume(above) - (3000 - 2 * pocket)) < 1e-3);
+    CHECK_TRUE(RevealIn("Properties", "split-dowels"));
+    CHECK_TRUE(Driver::ClickItem("split-dowels"));
+    CHECK_TRUE(fabs(PartVolume(above) - 3000) < 1e-3);
+    CHECK_TRUE(fabs(PartVolume(Part::FIRST) - 3000) < 1e-3);
+}
 #endif

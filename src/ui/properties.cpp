@@ -131,6 +131,63 @@ static void DrawFitJoint(Group *g, std::function<void()> *run) {
     }
 }
 
+// A split's group: which half it keeps, and the dowels across the cut (set on both halves).
+static void DrawSplit(Group *g, std::function<void()> *run) {
+    hGroup         hg    = g->h;
+    Group::FitSpec spec  = g->fit;
+    double         dia   = g->valA;
+    Group         *other = SK.group.FindByIdNoOops(spec.partner);
+    ImGui::Spacing();
+    ImGui::TextDisabled("%s; the other half is %s", spec.female ? "the half in front" : "the half behind",
+                        other ? SS.PartName(other->PartOf()).c_str() : "?");
+    auto set = [hg, dia, run](Group::FitSpec s, double d) {
+        *run = [hg, s, d] { SS.SetSplit(hg, s, d); };
+    };
+    bool flip = spec.flip != 0;
+    if(ImGui::Checkbox("swap the halves##split-flip", &flip)) {
+        Group::FitSpec s = spec;
+        s.flip           = flip;
+        set(s, dia);
+    }
+    bool dowels = spec.dowel != 0;
+    if(ImGui::Checkbox("dowels across the cut##split-dowels", &dowels)) {
+        Group::FitSpec s = spec;
+        s.dowel          = dowels;
+        set(s, dia);
+    }
+    if(spec.dowel) {
+        auto mm = [hg, spec, dia](bool length) {
+            return [hg, spec, dia, length](std::string text) {
+                Expr *e = Expr::From(text, /*popUpError=*/true);
+                if(e == nullptr) return;
+                Group::FitSpec s = spec;
+                double         d = dia;
+                (length ? s.depth : d) = SS.ExprToMm(e);
+                SS.SetSplit(hg, s, d);
+            };
+        };
+        ImGui::TextUnformatted("diameter");
+        ValueField("##split-diameter", SS.MmToString(dia), run, mm(false), SS.UnitName());
+        ImGui::TextUnformatted("length");
+        ValueField("##split-length", SS.MmToString(spec.depth), run, mm(true), SS.UnitName());
+        ImGui::TextUnformatted("fit");
+        for(const Fit &f : SS.FitTable()) {
+            std::string label = ssprintf("%s (%s)##split-kind-%s", f.name.c_str(),
+                                         SS.MmToString(f.clearance).c_str(), f.name.c_str());
+            if(ImGui::RadioButton(label.c_str(), spec.kind == f.h) && spec.kind != f.h) {
+                Group::FitSpec s = spec;
+                s.kind           = f.h;
+                set(s, dia);
+            }
+        }
+    }
+    if(!g->featureProblem.empty()) {
+        ImGui::PushStyleColor(ImGuiCol_Text, ImGui::GetStyleColorVec4(ImGuiCol_PlotLinesHovered));
+        ImGui::TextWrapped("%s.", g->featureProblem.c_str());
+        ImGui::PopStyleColor();
+    }
+}
+
 static const char *TypeLine(const Group *g) {
     switch(g->type) {
         case Group::Type::DRAWING_3D:        return "sketch in 3d";
@@ -150,6 +207,7 @@ static const char *TypeLine(const Group *g) {
         case Group::Type::LOFT:              return "loft through profiles";
         case Group::Type::SWEEP:             return "sweep a profile along a path";
         case Group::Type::FIT:               return "fit joint";
+        case Group::Type::SPLIT:             return "split the part";
     }
     return "";
 }
@@ -421,6 +479,7 @@ static void DrawGroup(Group *g, std::function<void()> *run) {
     }
 
     if(type == Type::FIT) DrawFitJoint(g, run);
+    if(type == Type::SPLIT) DrawSplit(g, run);
 
     if(type == Type::EXTRUDE || type == Type::LATHE || type == Type::REVOLVE ||
        type == Type::LINKED || type == Type::HELIX || type == Type::LOFT ||

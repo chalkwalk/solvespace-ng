@@ -119,6 +119,7 @@ const MenuEntry Menu[] = {
 { 1, N_("&Ball Joint"),                 Command::JOINT_BALL,       0,       KN, mAna   },
 { 1, N_("&Gear Coupling"),              Command::JOINT_GEAR,       0,       KN, mAna   },
 { 1, N_("&Fit Joint"),                  Command::GROUP_FIT,        0,       KN, mGrp   },
+{ 1, N_("Spli&t Part"),                 Command::GROUP_SPLIT,      0,       KN, mGrp   },
 { 1, NULL,                              Command::NONE,             0,       KN, NULL   },
 { 1, N_("Sketch In &3d"),               Command::GROUP_3D,         S|'3',   KN, mGrp   },
 { 1, N_("Sketch In New &Workplane"),    Command::GROUP_WRKPL,      S|'w',   KN, mGrp   },

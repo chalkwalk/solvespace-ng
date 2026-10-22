@@ -792,6 +792,12 @@ public:
     // fit, style, direction and depth, set on both groups.
     void   MakeFitJoint();
     void   SetFitJoint(hGroup hg, Group::FitSpec spec);
+    // Splits the active group's part by the selected workplane or flat face (src/split.cpp):
+    // the part keeps the half behind it, a new part gets the half in front, with dowels at
+    // the cut. Its dowels (spec.dowel, fit.kind, fit.depth: the length) and their diameter,
+    // and which way the plane faces (spec.flip), set on both groups.
+    void   MakeSplit();
+    void   SetSplit(hGroup hg, Group::FitSpec spec, double diameter);
     void   DesignPose();
     bool   RenameJoint(hJoint hj, const std::string &name);
     void   DeleteJoint(hJoint hj);
