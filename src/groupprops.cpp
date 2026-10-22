@@ -193,6 +193,19 @@ bool SolveSpaceUI::SetSweepCorners(hGroup hg, const std::string &expr) {
     return true;
 }
 
+void SolveSpaceUI::HoldFeatureSize(hGroup hg, bool hold) {
+    UndoRemember();
+    if(hold) {
+        SK.GetGroup(hg)->AddFeatureSizeDimension();
+    } else {
+        for(Constraint &c : SK.constraint) {
+            if(c.group == hg && c.type == Constraint::Type::FEATURE_SIZE) c.tag = 1;
+        }
+        SK.constraint.RemoveTagged();
+    }
+    MarkGroupDirty(hg);
+}
+
 void SolveSpaceUI::SetShellSide(hGroup hg, ShellSide side) {
     UndoRemember();
     SK.GetGroup(hg)->shellSide = side;

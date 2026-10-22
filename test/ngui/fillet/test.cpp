@@ -83,14 +83,22 @@ TEST_CASE(ng_lists_a_fillets_edges_to_select_or_remove) {
     CHECK_TRUE(SS.GW.IsSelected(b));
 }
 
-// M3h: the radius is a dimension on the canvas, edited in Properties; delete it
-// and drag the fillet's axis to set the radius by hand.
-TEST_CASE(ng_edits_and_frees_a_fillets_radius_on_the_canvas) {
+// The radius is free: drag the fillet's axis to set it. Held, it is a dimension on the canvas,
+// double-clicked to type a new one (the owner's feedback after M4a).
+TEST_CASE(ng_drags_holds_and_edits_a_fillets_radius) {
     CHECK_LOAD("box.slvs");
     hEntity edge = ClickTopFrontEdge();
     Driver::Key("Shift+F");
-    hGroup      fillet = SS.GW.activeGroup;
-    hConstraint size   = {};
+    hGroup  fillet = SS.GW.activeGroup;
+    auto    radius = [&] { return SK.GetParam(SK.GetGroup(fillet)->h.param(0))->val; };
+    Entity *axis   = SK.GetEntity(SK.GetGroup(fillet)->Remap(edge, Group::REMAP_FILLET_AXIS));
+    Vector  at     = SK.GetEntity(axis->point[0])->PointGetNum(); // (0, 1, 29)
+    Point2d from = At(at), to = At(at.Plus({ 0, 1, -1 }));
+    Driver::Drag(from.x, from.y, to.x, to.y);
+    CHECK_TRUE(fabs(radius() - 2) < 0.2);
+
+    CHECK_TRUE(Driver::ClickItem("hold this size (a dimension)"));
+    hConstraint size = {};
     for(Constraint &c : SK.constraint) {
         if(c.group == fillet && c.type == Constraint::Type::FEATURE_SIZE) size = c.h;
     }
@@ -100,14 +108,7 @@ TEST_CASE(ng_edits_and_frees_a_fillets_radius_on_the_canvas) {
     Driver::Type("3");
     Driver::Key("Return");
     CHECK_EQ_EPS(SK.GetConstraint(size)->valA, 3.0);
-    CHECK_EQ_EPS(SK.GetParam(SK.GetGroup(fillet)->h.param(0))->val, 3);
-
-    ClickAt(AtLabel(size));
-    Driver::Key("Delete");
+    CHECK_EQ_EPS(radius(), 3);
+    CHECK_TRUE(Driver::ClickItem("hold this size (a dimension)"));
     CHECK_TRUE(SK.constraint.FindByIdNoOops(size) == nullptr);
-    Entity *axis  = SK.GetEntity(SK.GetGroup(fillet)->Remap(edge, Group::REMAP_FILLET_AXIS));
-    Vector  from3 = SK.GetEntity(axis->point[0])->PointGetNum(); // (0, 3, 27)
-    Point2d from  = At(from3), to = At(from3.Plus({ 0, -1, 1 }));
-    Driver::Drag(from.x, from.y, to.x, to.y);
-    CHECK_TRUE(fabs(SK.GetParam(SK.GetGroup(fillet)->h.param(0))->val - 2) < 0.2);
 }

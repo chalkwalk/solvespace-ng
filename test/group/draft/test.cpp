@@ -77,33 +77,54 @@ TEST_CASE(a_point_on_a_drafted_face_follows_a_change_upstream) {
 #endif
 
 #if defined(HAVE_OCCT)
-// M3h: the angle is a solver parameter (its tangent), held by the dimension the draft starts
-// with; the drafted face's top edge is derived, so pulling it sets the angle when free.
-TEST_CASE(a_draft_starts_with_an_angle_dimension_and_its_top_edge_sets_it_when_free) {
+// The angle is a solver parameter (its tangent), free, so pulling the drafted face's top edge
+// sets it (owner's feedback after M4a); Equal between two drafts makes their angles match.
+TEST_CASE(a_drafts_top_edge_sets_its_angle) {
     CHECK_LOAD("box.slvs");
     SS.kernelKind = KernelKind::OCCT;
-    hGroup      hg   = MakeFeature(Command::GROUP_DRAFT, { SideFace(5) })->h;
-    Constraint *size = nullptr;
-    for(Constraint &c : SK.constraint) {
-        if(c.group == hg && c.type == Constraint::Type::FEATURE_SIZE) size = &c;
-    }
-    CHECK_TRUE(size != nullptr && size->other);
-    CHECK_TRUE(size->Label().find("°") != std::string::npos);
-    CHECK_TRUE(SK.GetGroup(hg)->solved.dof == 0);
-    // The top edge: the front's bottom line raised 30, in by 30 tan(2°).
+    hGroup hg = MakeFeature(Command::GROUP_DRAFT, { SideFace(5) })->h;
+    CHECK_TRUE(SK.GetGroup(hg)->solved.dof == 1);
+    // The top edge: the front's bottom line raised 30, in by 30 tan(2 degrees).
     Entity *top = SK.GetEntity(SK.GetGroup(hg)->Remap(SideFace(5), Group::REMAP_DRAFT_TOP));
     Vector  a   = SK.GetEntity(top->point[0])->PointGetNum();
     CHECK_EQ_EPS(a.z, 30);
     CHECK_EQ_EPS(a.y, 30 * tan(2 * PI / 180));
-    size->reference = true;
-    SS.MarkGroupDirty(hg);
-    SS.GenerateAll(SolveSpaceUI::Generate::ALL);
-    top = SK.GetEntity(SK.GetGroup(hg)->Remap(SideFace(5), Group::REMAP_DRAFT_TOP));
     SK.GetEntity(top->point[0])->PointForceTo({ a.x, 3, 30 });
     SS.GenerateAll(SolveSpaceUI::Generate::ALL);
     CHECK_EQ_EPS(SK.GetParam(SK.GetGroup(hg)->h.param(0))->val, 0.1);
     MassProps mp;
     CHECK_TRUE(SS.MassProperties(&mp));
     CHECK_TRUE(fabs(mp.volume - (6000 - 0.5 * 30 * 3 * 10)) < 1e-6);
+    // Held, it shows in degrees.
+    SS.HoldFeatureSize(hg, true);
+    SS.GenerateAll(SolveSpaceUI::Generate::ALL);
+    for(Constraint &c : SK.constraint) {
+        if(c.group == hg && c.type == Constraint::Type::FEATURE_SIZE) {
+            CHECK_TRUE(c.other);
+            CHECK_TRUE(c.Label().find("°") != std::string::npos);
+            CHECK_EQ_EPS(c.valA, atan(0.1) * 180 / PI);
+        }
+    }
+}
+
+TEST_CASE(two_drafts_share_an_angle_when_made_equal) {
+    CHECK_LOAD("box.slvs");
+    SS.kernelKind = KernelKind::OCCT;
+    hGroup front = MakeFeature(Command::GROUP_DRAFT, { SideFace(5) })->h;
+    SS.SetFeatureSize(front, "6");
+    SS.GenerateAll(SolveSpaceUI::Generate::ALL);
+    hGroup back = MakeFeature(Command::GROUP_DRAFT, { SideFace(7) })->h;
+    SS.SetFeatureSize(back, "3");
+    SS.GenerateAll(SolveSpaceUI::Generate::ALL);
+    // Pick a handle of each, and Equal.
+    Select({ SK.GetGroup(front)->Remap(SideFace(5), Group::REMAP_DRAFT_TOP),
+             SK.GetGroup(back)->Remap(SideFace(7), Group::REMAP_DRAFT_TOP) });
+    Constraint::MenuConstrain(Command::EQUAL);
+    SS.GenerateAll(SolveSpaceUI::Generate::ALL);
+    double a = SK.GetParam(SK.GetGroup(front)->h.param(0))->val;
+    double b = SK.GetParam(SK.GetGroup(back)->h.param(0))->val;
+    CHECK_EQ_EPS(a, tan(6 * PI / 180));
+    CHECK_EQ_EPS(b, a);
+    CHECK_TRUE(SK.GetGroup(back)->solved.dof == 0);
 }
 #endif

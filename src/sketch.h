@@ -855,6 +855,8 @@ public:
         ARC_LINE_DIFFERENCE    = 213,
         // A fillet's, chamfer's, shell's or draft's size, holding its group's parameter (M3h)
         FEATURE_SIZE           = 300,
+        // Two features' sizes equal: entityA's group's and entityB's (owner's feedback, M4a)
+        FEATURE_EQUAL          = 301,
         COMMENT                = 1000
     };
 
@@ -969,6 +971,7 @@ public:
 
     static hConstraint AddConstraint(Constraint *c, bool rememberForUndo = true);
     static void MenuConstrain(Command id);
+    static Group *FeatureSizeGroup(hEntity he);
     // True if MenuConstrain(id) would act on the current SS.GW.gs; call GroupSelection()
     // first. Geometry checks inside the tangent helpers are not mirrored, so a tangent may
     // still report a bad selection when chosen.

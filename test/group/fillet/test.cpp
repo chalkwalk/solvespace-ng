@@ -360,17 +360,8 @@ TEST_CASE(a_shell_can_lose_its_last_open_face) {
 
 #if defined(HAVE_OCCT)
 // M3h: the radius is a solver parameter. The derived points follow it, so constraints on them,
-// or dragging them, set it. (These delete the size dimension the group starts with, if any.)
+// or dragging them, set it.
 namespace {
-
-void FreeTheSize(hGroup hg) {
-    for(Constraint &c : SK.constraint) {
-        if(c.group == hg && c.type == Constraint::Type::FEATURE_SIZE) c.tag = 1;
-    }
-    SK.constraint.RemoveTagged();
-    SS.MarkGroupDirty(hg);
-    SS.GenerateAll(SolveSpaceUI::Generate::ALL);
-}
 
 double Radius(hGroup hg) {
     return SK.GetParam(SK.GetGroup(hg)->h.param(0))->val;
@@ -383,7 +374,6 @@ TEST_CASE(a_constraint_on_a_tangent_point_sets_the_radius) {
     SS.kernelKind = KernelKind::OCCT;
     hEntity edge = Edge(5, Group::REMAP_TOP); // (0, 0, 30) to (10, 0, 30)
     hGroup  hg   = MakeFeature(Command::GROUP_FILLET, { edge })->h;
-    FreeTheSize(hg);
     // The tangent line on the top lies r in from the edge: pin its start 4 from the corner.
     hEntity line = SK.GetGroup(hg)->Remap(edge, Group::REMAP_FILLET_TANGENT_1);
     Entity *l    = SK.GetEntity(line);
@@ -410,7 +400,6 @@ TEST_CASE(dragging_a_tangent_point_sets_the_radius) {
     SS.kernelKind = KernelKind::OCCT;
     hEntity edge = Edge(5, Group::REMAP_TOP);
     hGroup  hg   = MakeFeature(Command::GROUP_FILLET, { edge })->h;
-    FreeTheSize(hg);
     Entity *axis = SK.GetEntity(SK.GetGroup(hg)->Remap(edge, Group::REMAP_FILLET_AXIS));
     // The axis lies r in along both faces: dragged to (5, 3, 27), the radius is 3.
     SK.GetEntity(axis->point[0])->PointForceTo({ 0, 3, 27 });
@@ -420,8 +409,9 @@ TEST_CASE(dragging_a_tangent_point_sets_the_radius) {
 #endif
 
 #if defined(HAVE_OCCT)
-// M3h: a feature starts with its size dimension (FEATURE_SIZE), which holds the parameter; it
-// is edited, made reference or deleted like any dimension.
+// A feature's size is free, so its handles drag and constraints set it (owner's feedback after
+// M4a). "Hold" adds a FEATURE_SIZE dimension to fix it, edited, made reference or removed like
+// any dimension.
 namespace {
 
 Constraint *SizeOf(hGroup hg) {
@@ -433,15 +423,31 @@ Constraint *SizeOf(hGroup hg) {
 
 }
 
-TEST_CASE(a_fillet_starts_with_its_radius_dimension) {
+TEST_CASE(a_fillet_starts_with_its_radius_free) {
     CHECK_LOAD("box.slvs");
     SS.kernelKind = KernelKind::OCCT;
     hGroup hg = MakeFeature(Command::GROUP_FILLET, { Edge(5, Group::REMAP_TOP) })->h;
+    CHECK_TRUE(SizeOf(hg) == nullptr);
+    CHECK_TRUE(SK.GetGroup(hg)->solved.dof == 1);
+    // Properties sets the free size.
+    CHECK_TRUE(SS.SetFeatureSize(hg, "2.5"));
+    SS.GenerateAll(SolveSpaceUI::Generate::ALL);
+    CHECK_EQ_EPS(Radius(hg), 2.5);
+}
+
+TEST_CASE(holding_a_fillets_radius_adds_its_dimension) {
+    CHECK_LOAD("box.slvs");
+    SS.kernelKind = KernelKind::OCCT;
+    hGroup hg = MakeFeature(Command::GROUP_FILLET, { Edge(5, Group::REMAP_TOP) })->h;
+    SS.SetFeatureSize(hg, "2");
+    SS.GenerateAll(SolveSpaceUI::Generate::ALL);
+    SS.HoldFeatureSize(hg, true);
+    SS.GenerateAll(SolveSpaceUI::Generate::ALL);
     Constraint *c = SizeOf(hg);
     CHECK_TRUE(c != nullptr);
-    CHECK_EQ_EPS(c->valA, 1);
-    CHECK_TRUE(SK.GetGroup(hg)->solved.dof == 0);
+    CHECK_EQ_EPS(c->valA, 2);
     CHECK_TRUE(c->Label().find("R") == 0);
+    CHECK_TRUE(SK.GetGroup(hg)->solved.dof == 0);
     // Editing it, or the size in Properties, sets the radius.
     CHECK_TRUE(SS.SetConstraintValue(c->h, "3"));
     SS.GenerateAll(SolveSpaceUI::Generate::ALL);
@@ -452,13 +458,20 @@ TEST_CASE(a_fillet_starts_with_its_radius_dimension) {
     CHECK_EQ_EPS(Radius(hg), 2.5);
     SS.UndoUndo();
     CHECK_EQ_EPS(SizeOf(hg)->valA, 3);
+    // Let go again.
+    SS.HoldFeatureSize(hg, false);
+    SS.GenerateAll(SolveSpaceUI::Generate::ALL);
+    CHECK_TRUE(SizeOf(hg) == nullptr);
+    CHECK_EQ_EPS(Radius(hg), 3);
 }
 
-TEST_CASE(a_radius_dimension_holds_against_a_drag) {
+TEST_CASE(a_held_radius_holds_against_a_drag) {
     CHECK_LOAD("box.slvs");
     SS.kernelKind = KernelKind::OCCT;
     hEntity edge = Edge(5, Group::REMAP_TOP);
     hGroup  hg   = MakeFeature(Command::GROUP_FILLET, { edge })->h;
+    SS.HoldFeatureSize(hg, true);
+    SS.GenerateAll(SolveSpaceUI::Generate::ALL);
     Entity *axis = SK.GetEntity(SK.GetGroup(hg)->Remap(edge, Group::REMAP_FILLET_AXIS));
     SK.GetEntity(axis->point[0])->PointForceTo({ 0, 3, 27 });
     SS.GenerateAll(SolveSpaceUI::Generate::ALL);
@@ -470,6 +483,7 @@ TEST_CASE(a_reference_radius_shows_the_radius_others_set) {
     SS.kernelKind = KernelKind::OCCT;
     hEntity edge = Edge(5, Group::REMAP_TOP);
     hGroup  hg   = MakeFeature(Command::GROUP_FILLET, { edge })->h;
+    SS.HoldFeatureSize(hg, true);
     SizeOf(hg)->reference = true;
     SS.MarkGroupDirty(hg);
     SS.GenerateAll(SolveSpaceUI::Generate::ALL);
@@ -481,30 +495,29 @@ TEST_CASE(a_reference_radius_shows_the_radius_others_set) {
     CHECK_EQ_EPS(SizeOf(hg)->valA, 2);
 }
 
-TEST_CASE(the_radius_dimension_survives_save_and_reload) {
+TEST_CASE(a_size_survives_save_and_reload) {
     CHECK_LOAD("box.slvs");
     SS.kernelKind = KernelKind::OCCT;
     hGroup hg = MakeFeature(Command::GROUP_CHAMFER, { Edge(5, Group::REMAP_TOP) })->h;
     SS.SetFeatureSize(hg, "2");
+    SS.GenerateAll(SolveSpaceUI::Generate::ALL);
     Platform::Path path = helper->GetAssetPath(__FILE__, "sized.slvs", "out");
     CHECK_TRUE(SS.SaveToFile(path));
     CHECK_TRUE(SS.LoadFromFile(path));
     SS.AfterNewFile();
     SS.kernelKind = KernelKind::OCCT;
     SS.GenerateAll(SolveSpaceUI::Generate::ALL);
-    CHECK_TRUE(SizeOf(hg) != nullptr);
     CHECK_EQ_EPS(Radius(hg), 2);
     remove(path.raw.c_str());
 }
-#endif
 
-#if defined(HAVE_OCCT)
-// Review 6: a feature's size shows while its group is active (as Fusion shows a feature's
-// dimensions while editing it), in the dimensions-only mode too, and not after.
+// Review 6: a held size shows while its group is active, in the dimensions-only mode too.
 TEST_CASE(a_size_dimension_shows_only_while_its_feature_is_active) {
     CHECK_LOAD("box.slvs");
     SS.kernelKind = KernelKind::OCCT;
-    hGroup      hg = MakeFeature(Command::GROUP_FILLET, { Edge(5, Group::REMAP_TOP) })->h;
+    hGroup hg = MakeFeature(Command::GROUP_FILLET, { Edge(5, Group::REMAP_TOP) })->h;
+    SS.HoldFeatureSize(hg, true);
+    SS.GenerateAll(SolveSpaceUI::Generate::ALL);
     hConstraint hc = SizeOf(hg)->h;
     CHECK_TRUE(SK.GetConstraint(hc)->IsVisible());
     SS.GW.showConstraints = GraphicsWindow::ShowConstraintMode::SCM_SHOW_DIM;

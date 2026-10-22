@@ -511,6 +511,8 @@ public:
     bool SetFeatureSize(hGroup hg, const std::string &expr); // fillet radius, chamfer distance
     bool SetHoleSpec(hGroup hg, const HoleSpec &spec);      // checked; one undo step
     void SetShellSide(hGroup hg, ShellSide side);
+    // A feature's size held by a FEATURE_SIZE dimension, or let free. One undo step.
+    void HoldFeatureSize(hGroup hg, bool hold);
     // A sweep's corner radius (valB), 0 or blank for mitred corners. One undo step.
     bool SetSweepCorners(hGroup hg, const std::string &expr);
     // Takes an edge, face, centre or profile out of a feature group; false (with a message) if

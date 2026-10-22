@@ -246,6 +246,15 @@ static void DrawGroup(Group *g, std::function<void()> *run) {
                                                : SS.MmToString(g->FeatureSize());
         ValueField("##feature-size", size, run,
                    [hg](std::string s) { SS.SetFeatureSize(hg, s); });
+        // Free, the size follows its handles and constraints; held, a dimension fixes it.
+        bool held = false;
+        for(const Constraint &c : SK.constraint) {
+            held = held || (c.group == hg && c.type == Constraint::Type::FEATURE_SIZE);
+        }
+        bool hold = held;
+        if(ImGui::Checkbox("hold this size (a dimension)", &hold)) {
+            *run = [hg, hold] { SS.HoldFeatureSize(hg, hold); };
+        }
         if(type == Type::SHELL) {
             using S   = Group::ShellSide;
             auto side = [&](const char *label, S s) {

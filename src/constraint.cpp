@@ -253,6 +253,21 @@ bool Constraint::ConstrainCurveCurveTangent(Constraint *c, Entity *eA, Entity *e
     return true;
 }
 
+// The fillet, chamfer, shell or draft whose size param moves an entity it derived, or null.
+Group *Constraint::FeatureSizeGroup(hEntity he) {
+    Entity *e = SK.entity.FindByIdNoOops(he);
+    if(e == nullptr || he.isFromRequest()) return nullptr;
+    Group *g = SK.group.FindByIdNoOops(e->group);
+    if(g == nullptr) return nullptr;
+    switch(g->type) {
+        case Group::Type::FILLET:
+        case Group::Type::CHAMFER:
+        case Group::Type::SHELL:
+        case Group::Type::DRAFT: return g;
+        default: return nullptr;
+    }
+}
+
 void Constraint::MenuConstrain(Command id) {
     std::vector<Constraint> newcons;
 
@@ -379,6 +394,28 @@ void Constraint::MenuConstrain(Command id) {
             break;
 
         case Command::EQUAL:
+            if(gs.n == 2) {
+                // Two features' handles (any of their derived points, lines or faces): their
+                // sizes equal, solved in the later feature.
+                std::vector<hEntity> picked;
+                for(const GraphicsWindow::Selection &s : SS.GW.selection) {
+                    if(s.entity.v) picked.push_back(s.entity);
+                }
+                hEntity a = picked.size() == 2 ? picked[0] : Entity::NO_ENTITY;
+                hEntity b = picked.size() == 2 ? picked[1] : Entity::NO_ENTITY;
+                Group  *ga = FeatureSizeGroup(a), *gb = FeatureSizeGroup(b);
+                if(ga && gb && ga != gb && ga->type == gb->type) {
+                    c.type    = Type::FEATURE_EQUAL;
+                    c.entityA = a;
+                    c.entityB = b;
+                    c.group   = ga->order > gb->order ? ga->h : gb->h;
+                    c.workplane = Entity::FREE_IN_3D;
+                    newcons.push_back(c);
+                    SS.UndoRemember();
+                    AddConstraint(&newcons.back(), /*rememberForUndo=*/false);
+                    break;
+                }
+            }
             if(gs.lineSegments >= 2 && gs.lineSegments == gs.n) {
                 c.type = Type::EQUAL_LENGTH_LINES;
                 c.entityA = gs.entity[0];

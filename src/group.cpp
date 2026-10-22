@@ -645,8 +645,6 @@ void Group::MenuGroup(Command id, Platform::Path linkFile) {
         gg->activeWorkplane = gg->h.entity(0);
     }
     gg->Activate();
-    // A feature starts with its size held by a dimension, as an extrusion's depth is (M3h).
-    if(gg->AddFeatureSizeDimension()) SS.GenerateAll();
     TextWindow::ScreenSelectGroup(0, gg->h.v);
     SS.GW.AnimateOntoWorkplane();
 }
@@ -1623,8 +1621,8 @@ bool Group::AddFeatureSizeDimension() {
     c.group      = h;
     c.workplane  = Entity::FREE_IN_3D;
     c.ptA        = anchor;
-    c.valA       = valA;
     c.other      = type == Type::DRAFT; // the angle, held through its tangent
+    c.valA       = c.other ? atan(FeatureSize()) * 180 / PI : FeatureSize();
     // The label off the solid, away from where the size moves the point, so it can be picked.
     Entity *a = SK.GetEntity(anchor);
     Vector  away = Vector::From(0, 0, 1);

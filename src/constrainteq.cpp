@@ -79,6 +79,7 @@ bool ConstraintBase::IsProjectible() const {
         case Type::ARC_LINE_TANGENT:
         case Type::EQUAL_RADIUS:
         case Type::FEATURE_SIZE:
+        case Type::FEATURE_EQUAL:
             return false;
     }
     ssassert(false, "Impossible");
@@ -567,6 +568,11 @@ void ConstraintBase::GenerateEquations(IdList<Equation,hEquation> *l,
             return;
         }
         
+        case Type::FEATURE_EQUAL:
+            AddEq(l, Expr::From(entityA.group().param(0))->Minus(
+                         Expr::From(entityB.group().param(0))), 0);
+            return;
+
         case Type::FEATURE_SIZE: {
             // The group's size parameter; a draft's (other) is the tangent of its angle.
             Expr *size = Expr::From(group.param(0));

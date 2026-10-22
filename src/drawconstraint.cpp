@@ -18,6 +18,8 @@ std::string Constraint::Label() const {
         result = ssprintf("%.3f:1", valA);
     } else if(type == Type::COMMENT) {
         result = comment;
+    } else if(type == Type::FEATURE_EQUAL) {
+        result = "=";
     } else if(type == Type::FEATURE_SIZE) {
         Group *g = SK.group.FindByIdNoOops(group);
         if(other) {
@@ -1299,6 +1301,27 @@ s:
                 }
             }
             return;
+
+        case Type::FEATURE_EQUAL: {
+            // "=" at each of the two features' handles.
+            for(hEntity he : { entityA, entityB }) {
+                Entity *e = SK.GetEntity(he);
+                Vector  at;
+                if(e->IsPoint()) {
+                    at = e->PointGetDrawNum();
+                } else if(e->IsFace()) {
+                    at = e->FaceGetPointNum();
+                } else {
+                    at = SK.GetEntity(e->point[0])->PointGetDrawNum()
+                             .Plus(SK.GetEntity(e->point[1])->PointGetDrawNum())
+                             .ScaledBy(0.5);
+                }
+                at = at.Plus(gu.ScaledBy(12 / camera.scale));
+                if(refs) refs->push_back(at);
+                DoLabel(canvas, hcs, at, labelPos, gr, gu);
+            }
+            return;
+        }
 
         case Type::FEATURE_SIZE: {
             // At the feature's derived point (ptA), the label where it was dragged, with a
