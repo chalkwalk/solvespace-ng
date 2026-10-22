@@ -176,6 +176,7 @@ enum class Command : uint32_t {
     JOINT_BALL,
     JOINT_GEAR,
     GROUP_FIT,
+    GROUP_EXTRUDE_CUT,
     GROUP_SPLIT,
     DESIGN_POSE,
     // Constrain

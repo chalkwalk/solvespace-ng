@@ -82,36 +82,47 @@ TEST_CASE(modern_preset_is_valid) {
     CHECK_TRUE(*modern->Lookup(*keymap::ParseChord("Space")) == "ui.command-palette");
 }
 
-TEST_CASE(modern_preset_has_the_review_4_keys) {
-    // Owner review 4 (2026-10-17, docs/review/2026-10-17/answers.md): K1-K6, all option a.
+TEST_CASE(modern_preset_has_the_keymap_pass_keys) {
+    // Owner review 4 (2026-10-17, K1-K6, all option a), then the keymap pass after M3-M5
+    // (2026-10-22, docs/research/keymap-pass.md, P1-P6 all option a): bare = the command,
+    // Shift = its counterpart, Alt = its variant, Ctrl = the document; pies for big families.
     std::string err;
     auto modern = SolveSpace::Ui::ModernPreset(&err);
     CHECK_TRUE(modern.has_value());
     if(!modern) return;
     const char *expected[][2] = {
-        // K1 sketch tools
+        // Sketch tools
         { "L", "line-segment" }, { "R", "rectangle" }, { "C", "circle" }, { "A", "arc" },
-        { "Alt+C", "tangent-arc" }, { "P", "datum-point" }, { "S", "cubic-spline" },
-        { "Shift+T", "ttf-text" }, { "Ctrl+A", "select-all" },
-        // K2 horizontal / vertical; hiding on Onshape's keys
-        { "H", "constrain-horizontal" }, { "V", "constrain-vertical" }, { "Y", "ui.hide" },
-        { "Shift+Y", "ui.unhide-all" }, { "Shift+I", "ui.isolate" },
-        // K3 the other constraints
+        { "Alt+A", "tangent-arc" }, { "P", "datum-point" }, { "S", "cubic-spline" },
+        { "Ctrl+A", "select-all" }, { "Esc", "unselect-all" },
+        // Constraints; the constrain pie on K
+        { "H", "constrain-horizontal" }, { "V", "constrain-vertical" },
         { "I", "constrain-on-entity" }, { "B", "constrain-parallel" },
-        { "T", "constrain-parallel" }, { "Shift+L", "constrain-perpendicular" },
-        { "Q", "constrain-equal" }, { "Shift+S", "constrain-symmetric" },
-        { "M", "constrain-midpoint" }, { "Shift+J", "constrain-where-dragged" },
-        { "U", "other-supplementary-angle" }, { "D", "ui.smart-dimension" },
-        // K4 construction and delete
-        { "X", "toggle-construction" }, { "Delete", "delete" }, { "Backspace", "delete" },
-        // K5 groups
-        { "E", "group-extrude" }, { "Shift+R", "group-revolve" }, { "Alt+R", "group-lathe" },
-        { "Alt+E", "group-helix" }, { "Shift+W", "group-sketch-workplane" },
-        // K6 views
+        { "T", "constrain-parallel" }, { "Alt+B", "constrain-perpendicular" },
+        { "Q", "constrain-equal" }, { "M", "constrain-midpoint" },
+        { "Alt+M", "constrain-symmetric" }, { "U", "other-supplementary-angle" },
+        { "D", "ui.smart-dimension" }, { "Shift+D", "constrain-reference-distance" },
+        { "Alt+D", "constrain-angle" }, { "K", "ui.pie-constrain" },
+        // Construction and delete
+        { "X", "toggle-construction" }, { "Shift+X", "split-curves" },
+        { "Delete", "delete" }, { "Backspace", "delete" },
+        // Hiding: Y, its counterpart and its variant
+        { "Y", "ui.hide" }, { "Shift+Y", "ui.unhide-all" }, { "Alt+Y", "ui.isolate" },
+        // Solids and features
+        { "E", "group-extrude" }, { "Shift+E", "group-extrude-cut" },
+        { "Alt+E", "group-revolve" }, { "F", "group-fillet" }, { "Alt+F", "group-chamfer" },
+        { "Shift+H", "group-hole" }, { "W", "align-to-workplane" },
+        { "Alt+W", "group-sketch-workplane" },
+        // Parts and joints
+        { "J", "ui.pie-joint" }, { "Shift+J", "design-pose" }, { "Ctrl+Shift+N", "part-new" },
+        // Panels
+        { "N", "ui.toggle-properties" }, { "O", "ui.toggle-outliner" },
+        { "F8", "ui.toggle-problems" },
+        // Views
         { "Shift+1", "ui.view-front" }, { "Shift+2", "ui.view-back" },
         { "Shift+3", "ui.view-left" }, { "Shift+4", "ui.view-right" },
         { "Shift+5", "ui.view-top" }, { "Shift+6", "ui.view-bottom" },
-        { "Shift+7", "nearest-iso" }, { "W", "align-to-workplane" }, { "Num1", "ui.view-front" },
+        { "Shift+7", "nearest-iso" }, { "Num1", "ui.view-front" }, { "Shift+A", "ui.pie-add" },
     };
     for(auto &e : expected) {
         const std::string *cmd = modern->Lookup(*keymap::ParseChord(e[0]));
@@ -120,11 +131,12 @@ TEST_CASE(modern_preset_has_the_review_4_keys) {
         }
         CHECK_TRUE(cmd && *cmd == e[1]);
     }
-    // Gone: A no longer selects all, H no longer hides, X no longer deletes. (Shift+H came back
-    // as Hole in review 5.)
-    CHECK_TRUE(modern->Lookup(*keymap::ParseChord("Shift+H")) &&
-               *modern->Lookup(*keymap::ParseChord("Shift+H")) == "group-hole");
-    for(const char *gone : { "Shift+C", "Shift+B", "Alt+H", "Shift+N" }) {
+    // Free now: the Shift chords that only named another command on the letter, the old Alt
+    // ones, and the bare keys of the moved pies.
+    for(const char *gone : { "Shift+F", "Shift+L", "Shift+S", "Shift+R", "Shift+I", "Shift+W",
+                             "Shift+T", "Shift+P", "Shift+G", "Shift+C", "Shift+B", "Alt+C",
+                             "Alt+R", "Alt+H", "Shift+N", "Z" }) {
+        if(modern->Lookup(*keymap::ParseChord(gone))) dbp("%s is still bound", gone);
         CHECK_TRUE(modern->Lookup(*keymap::ParseChord(gone)) == nullptr);
     }
 }

@@ -34,6 +34,7 @@ const std::vector<UiActionInfo> &UiActionList() {
         { "ui.pie-view",            "View \xE2\x80\xBA Views\xE2\x80\xA6 (pie)" },
         { "ui.show-shortcuts",      "Help \xE2\x80\xBA Keyboard Shortcuts" },
         { "ui.fit-table",           "Inspect \xE2\x80\xBA Fit Table" },
+        { "ui.pie-joint",           "New Group \xE2\x80\xBA Joints\xE2\x80\xA6 (pie)" },
     };
     return list;
 }

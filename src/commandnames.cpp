@@ -107,6 +107,7 @@ static const CommandNameEntry CommandNames[] = {
     { Command::JOINT_BALL,        "joint-ball"         },
     { Command::JOINT_GEAR,        "joint-gear"         },
     { Command::GROUP_FIT,         "group-fit"          },
+    { Command::GROUP_EXTRUDE_CUT, "group-extrude-cut"  },
     { Command::GROUP_SPLIT,       "group-split"        },
     { Command::DESIGN_POSE,       "design-pose"        },
     // Constrain

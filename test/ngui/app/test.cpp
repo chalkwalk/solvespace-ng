@@ -77,9 +77,9 @@ TEST_CASE(classic_preset_uses_solvespace_keys) {
 
 TEST_CASE(user_keymap_file_rebinds) {
     CHECK_LOAD("line.slvs");
-    WriteText(Driver::ConfigDir().Join("keymap.txt"), "line-segment: K\n");
+    WriteText(Driver::ConfigDir().Join("keymap.txt"), "line-segment: Z\n");
     Driver::ReloadKeymap();
-    Driver::Key("K");
+    Driver::Key("Z");
     CHECK_TRUE(SS.GW.pending.command == Command::LINE_SEGMENT);
 }
 

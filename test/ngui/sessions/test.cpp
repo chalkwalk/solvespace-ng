@@ -152,7 +152,7 @@ TEST_CASE(constraining_into_a_problem_and_out_again) {
     for(const char *c : { "Horizontal", "Vertical" }) {
         Point2d m = AtMiddle(line);
         Driver::Move(m.x, m.y);
-        Driver::Key("F");
+        Driver::Key("K");
         CHECK_TRUE(PickPie(c));
     }
     CHECK_FALSE(SS.ActiveGroupsOkay());

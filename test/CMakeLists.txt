@@ -198,6 +198,7 @@ set(ngui_SOURCES
     ngui/parts/test.cpp
     ngui/joints/test.cpp
     ngui/fits/test.cpp
+    ngui/keymappass/test.cpp
     ngui/capture/test.cpp)
 
 if(ENABLE_GUI AND ENABLE_NG_GUI)

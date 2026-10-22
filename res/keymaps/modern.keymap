@@ -1,6 +1,10 @@
 # SolveSpace NG "Modern" keymap: Blender's core (palette, pies, grab, sketch focus, numpad
 # views) with the sketch, constraint and group keys of the industry CAD apps, Onshape's where
-# they differ (owner review 4, 2026-10-17; docs/research/keymap-and-layout.md).
+# they differ (owner review 4, 2026-10-17; docs/research/keymap-and-layout.md). Since the keymap
+# pass after M3-M5 (2026-10-22, docs/research/keymap-pass.md) the qualifiers follow a grammar:
+# the bare key is the command, Shift its counterpart (inverse, reverse, reference), Alt its
+# variant (same family, another shape), Ctrl the document and the app; big families get pies.
+# Kept against it: Shift+A, Shift+digits, Ctrl+numpad views, Shift+H hole, Shift+X split.
 # Format: <command>: <chord>[, <chord>...]
 # Command names are the stable ids from src/commandnames.cpp; "ui." names are UI actions
 # (listed in src/ui/uiactions.cpp). While drawing or grabbing, digits, '.', '-', the numpad,
@@ -10,10 +14,11 @@ ui.command-palette:     Space, F3
 ui.toggle-menu-bar:     F10
 ui.toggle-outliner:     O
 ui.toggle-properties:   N
-ui.toggle-problems:     Shift+P
+ui.toggle-problems:     F8
 ui.pie-add:             Shift+A
 ui.pie-view:            `
-ui.pie-constrain:       F
+ui.pie-constrain:       K
+ui.pie-joint:            J
 ui.view-front:          Num1, Shift+1
 ui.view-back:           Ctrl+Num1, Shift+2
 ui.view-left:           Ctrl+Num3, Shift+3
@@ -23,7 +28,7 @@ ui.view-bottom:         Ctrl+Num7, Shift+6
 ui.view-frame-selected: ., Num.
 ui.hide:                Y
 ui.unhide-all:          Shift+Y
-ui.isolate:             Shift+I
+ui.isolate:             Alt+Y
 ui.toggle-sketch:       Tab
 ui.smart-dimension:     D
 ui.grab:                G
@@ -41,7 +46,7 @@ paste:                  Ctrl+V
 paste-transformed:      Ctrl+Shift+V
 delete:                 Delete, Backspace
 select-all:             Ctrl+A
-unselect-all:           Alt+A, Esc
+unselect-all:           Esc
 select-edge-chain:      Ctrl+L
 configuration:          Ctrl+,
 regenerate-all:         F5
@@ -52,9 +57,8 @@ line-segment:           L
 rectangle:              R
 circle:                 C
 arc:                    A
-tangent-arc:            Alt+C
+tangent-arc:            Alt+A
 cubic-spline:           S
-ttf-text:               Shift+T
 toggle-construction:    X
 split-curves:           Shift+X
 
@@ -65,22 +69,23 @@ constrain-horizontal:   H
 constrain-vertical:     V
 constrain-on-entity:    I
 constrain-parallel:     B, T
-constrain-perpendicular: Shift+L
+constrain-perpendicular: Alt+B
 constrain-equal:        Q
-constrain-symmetric:    Shift+S
+constrain-symmetric:    Alt+M
 constrain-midpoint:     M
-constrain-where-dragged: Shift+J
 other-supplementary-angle: U
 
 # Groups (K5)
 group-extrude:          E
-group-revolve:          Shift+R
-group-lathe:            Alt+R
-group-helix:            Alt+E
-group-fillet:           Shift+F
+group-extrude-cut:      Shift+E
+group-revolve:          Alt+E
+group-fillet:           F
+group-chamfer:          Alt+F
 group-hole:             Shift+H
-group-sketch-workplane: Shift+W
+group-sketch-workplane: Alt+W
 group-link:             Ctrl+I
+part-new:               Ctrl+Shift+N
+design-pose:            Shift+J
 
 # View (K6)
 nearest-iso:            Shift+7
@@ -89,6 +94,5 @@ zoom-in:                Plus, =
 zoom-out:               -
 zoom-to-fit:            Home
 perspective:            Num5
-show-grid:              Shift+G
 show-toolbar:           Ctrl+Shift+T
 full-screen:            F11

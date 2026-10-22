@@ -162,8 +162,20 @@ void InitNgUi() {
             { "Top", "ui.view-top" }, { "Right", "ui.view-right" },
             { "Isometric", "nearest-iso" }, { "Front", "ui.view-front" },
             { "Bottom", "ui.view-bottom" }, { "Left", "ui.view-left" },
-            { "Frame Selected", "ui.view-frame-selected" }, { "Back", "ui.view-back" } },
+            { "Frame Selected", "ui.view-frame-selected" }, { "Back", "ui.view-back" },
+            { "Grid", "show-grid" } },
                    "ui.pie-view");
+    });
+    Actions().Bind("ui.pie-joint", [] {
+        auto item = [](const char *label, Command c) {
+            return PieItem{ label, CommandName(c), true, CommandIcon(c) };
+        };
+        Pie().Open("Joint", {
+            item("Revolute", Command::JOINT_REVOLUTE), item("Slider", Command::JOINT_SLIDER),
+            item("Cylindrical", Command::JOINT_CYLINDRICAL), item("Planar", Command::JOINT_PLANAR),
+            item("Ball", Command::JOINT_BALL), item("Gear", Command::JOINT_GEAR),
+            item("Fit", Command::GROUP_FIT), item("Design Pose", Command::DESIGN_POSE) },
+                   "ui.pie-joint");
     });
 }
 

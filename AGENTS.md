@@ -148,16 +148,17 @@ bindings. All bindings can be remapped and are stored in a keymap file
 | `Space` / `F3` | Command palette (searches every command, shows its binding) |
 | `Tab` | Sketch focus: activate the group of the selection and look onto its workplane; `Tab` again returns (while drawing, `Tab` cycles the typed-value fields) |
 | `Shift+A` | Add pie: line, rectangle, circle, arc, spline, point, text, workplane |
-| `L` `R` `C` `A` `S` `P` | Line, rectangle, circle, arc, spline, point; `Alt+C` tangent arc, `Shift+T` text |
-| `D` | Smart dimension (distance, diameter or angle, inferred from the selection); `Shift+D` reference |
-| `F` | Constrain pie: only the constraints valid for the selection |
-| `H` `V` `I` `B`/`T` `Shift+L` `Q` `Shift+S` `M` `Shift+J` `U` | Horizontal, vertical, on point/curve, parallel/tangent, perpendicular, equal, symmetric, midpoint, lock, other angle |
-| `X` | Toggle construction (`Delete`/`Backspace` delete) |
-| `G` | Grab: drag under the solver; `X`/`Y`/`Z` locks an axis; type a value |
-| `E` / `Shift+R` / `Alt+R` / `Alt+E` | Extrude / revolve / lathe / helix; `Shift+W` sketch in a new workplane; `Shift+F` fillet the selected edges (as Onshape); `Shift+H` hole at the selected points (review 5) |
-| `Y` / `Shift+Y` / `Shift+I` | Hide / show all / isolate **groups** (SolveSpace has no per-entity hide) |
-| `Ctrl+A` / `Alt+A`, `Esc` | Select all / none |
-| `` ` `` pie, numpad `1` `3` `7`, `Shift+1`..`7` | View pie; front/right/top (`Ctrl` = opposite side); Onshape's Shift+digits (front, back, left, right, top, bottom, isometric) for keyboards without a numpad; `W` looks at the sketch; `.` frames selection |
+| `L` `R` `C` `A` `S` `P` | Line, rectangle, circle, arc, spline, point; `Alt+A` tangent arc |
+| `D` | Smart dimension (distance, diameter or angle, inferred from the selection); `Shift+D` reference; `Alt+D` angle |
+| `K` | Constrain pie: only the constraints valid for the selection (lock where dragged is here) |
+| `H` `V` `I` `B`/`T` `Alt+B` `Q` `M` `Alt+M` `U` | Horizontal, vertical, on point/curve, parallel/tangent, perpendicular, equal, midpoint, symmetric, other angle |
+| `X` | Toggle construction (`Delete`/`Backspace` delete); `Shift+X` split curves |
+| `G` | Grab: drag under the solver; `X`/`Y`/`Z` locks an axis (picks a joint's motion); type a value |
+| `E` / `Shift+E` / `Alt+E` | Extrude / extrude as a cut / revolve; `F` / `Alt+F` fillet / chamfer the selected edges; `Shift+H` hole at the selected points; `Alt+W` sketch in a new workplane |
+| `J` / `Shift+J` | Joint pie (revolute, slider, cylindrical, planar, ball, gear, fit, design pose) / back to the design pose; `Ctrl+Shift+N` new part |
+| `Y` / `Shift+Y` / `Alt+Y` | Hide / show all / isolate **groups** (SolveSpace has no per-entity hide) |
+| `Ctrl+A` / `Esc` | Select all / none |
+| `` ` `` pie, numpad `1` `3` `7`, `Shift+1`..`7` | View pie (with the grid); front/right/top (`Ctrl` = opposite side); Onshape's Shift+digits (front, back, left, right, top, bottom, isometric) for keyboards without a numpad; `W` looks at the sketch; `.` frames selection |
 | MMB / `Shift`+MMB / wheel | Orbit / pan / zoom (the mouse scheme is configurable) |
 | `Ctrl+Z` / `Ctrl+Shift+Z` | Undo / redo |
 
@@ -178,13 +179,24 @@ shell's or draft's size is a free parameter.
 - **Matching:** Equal between handles of two features of a kind ties their sizes
   (`FEATURE_EQUAL`).
 
-**Keymap pass after the features land** (decided by the owner in review 5, 2026-10-21): once
-most M3–M5 features exist, rethink every binding by relative frequency of use and industry
-standards. Frequently used commands get unqualified keys, unless a qualified chord is very
-widely used across the industry. Explore a grammar for qualifiers: the unqualified key `N` is
-the command, and `Alt+N`, `Shift+N`, `Ctrl+N` are its relatives along a named dimension each
-(e.g. Shift = the reverse or the reference form, Alt = the variant), so the keys can be
-discovered. Articulate those dimensions before rebinding.
+**Keymap pass after the features land** (asked for by the owner in review 5, 2026-10-21;
+decided 2026-10-22, all of `docs/research/keymap-pass.md` approved): every binding is ranked
+by frequency (four tiers: bare letters for the two most frequent, a family's Shift/Alt or a
+pie for the third, the palette for the rarest), and the qualifiers follow a grammar so the keys
+can be discovered:
+- **bare:** the most used command of the letter's family;
+- **Shift:** its counterpart (inverse, reverse or reference: `Shift+D` reference dimension,
+  `Shift+Y` show all, `Shift+E` extrude as a cut, `Shift+J` design pose);
+- **Alt:** its variant (same family, another shape: `Alt+A` tangent arc, `Alt+B`
+  perpendicular, `Alt+D` angle, `Alt+E` revolve, `Alt+F` chamfer, `Alt+M` symmetric, `Alt+W`
+  new workplane, `Alt+Y` isolate);
+- **Ctrl:** the document and the app (`Ctrl+Shift+N` new part);
+- **pies** for families too big for three keys (`Shift+A` add, `` ` `` views, `K` constrain,
+  `J` joints).
+
+Kept against the grammar: `Shift+A`, `Shift+1`..`7`, `Ctrl`+numpad views, `Shift+H` hole,
+`Shift+X` split curves, redo. Lathe, helix, text, grid and lock where dragged left their keys
+(palette or pies); Problems moved to `F8`. New commands follow the grammar.
 
 In a text field, `Ctrl+A`, the clipboard and undo chords edit the text; they reach the keymap
 only when no field has the keyboard.
@@ -210,6 +222,7 @@ ends the chain at that point. Backspace with nothing typed removes the last plac
 like this, prefer the modern, industry-standard behaviour.
 `D` replaced `constrain-distance` and `.`/`Num.` replaced
 `center-view` in the Modern preset (both remain in the menus and the palette).
+Panels since the keymap pass: `O` Outliner, `N` Properties, `F8` Problems.
 
 **Visual style.**
 - Dark (default) and light themes, built from design tokens.

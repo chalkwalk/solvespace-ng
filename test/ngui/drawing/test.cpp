@@ -64,7 +64,7 @@ TEST_CASE(pie_key_again_closes_it_but_holding_it_does_not) {
     CHECK_FALSE(Ui::Pie().IsOpen());
     Driver::Key("`");
     CHECK_TRUE(Ui::Pie().IsOpen() && Ui::Pie().Title() == "View");
-    Driver::Key("F"); // another pie's key is swallowed, not a toggle
+    Driver::Key("K"); // another pie's key is swallowed, not a toggle
     CHECK_TRUE(Ui::Pie().IsOpen() && Ui::Pie().Title() == "View");
     Driver::Key("`");
     CHECK_FALSE(Ui::Pie().IsOpen());
