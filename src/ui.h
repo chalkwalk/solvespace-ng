@@ -90,6 +90,7 @@ enum class Command : uint32_t {
     SAVE_AS,
     EXPORT_IMAGE,
     EXPORT_MESH,
+    EXPORT_PARTS,
     EXPORT_SURFACES,
     EXPORT_VIEW,
     EXPORT_SECTION,

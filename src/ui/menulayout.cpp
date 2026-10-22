@@ -62,6 +62,7 @@ const std::vector<Top> &Layout() {
                 C(Command::EXPORT_SECTION, "2D Section..."),
                 C(Command::EXPORT_WIREFRAME, "3D Wireframe..."),
                 C(Command::EXPORT_MESH, "Triangle Mesh..."),
+                C(Command::EXPORT_PARTS, "Parts, One File Each..."),
                 C(Command::EXPORT_SURFACES, "Surfaces...") }),
             Sep(), C(Command::EXIT, "Quit") } },
         { "Edit", {

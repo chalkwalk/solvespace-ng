@@ -22,6 +22,7 @@ static const CommandNameEntry CommandNames[] = {
     { Command::SAVE_AS,           "save-as"            },
     { Command::EXPORT_IMAGE,      "export-image"       },
     { Command::EXPORT_MESH,       "export-mesh"        },
+    { Command::EXPORT_PARTS,      "export-parts"       },
     { Command::EXPORT_SURFACES,   "export-surfaces"    },
     { Command::EXPORT_VIEW,       "export-view"        },
     { Command::EXPORT_SECTION,    "export-section"     },

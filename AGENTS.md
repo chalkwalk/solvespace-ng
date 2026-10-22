@@ -424,6 +424,27 @@ XCAF colours and names, exact hidden-line drawing export (`HLRBRep`).
 - **Compatibility:** existing `LINKED` groups load as Parts whose source is an external file (for
   reusable standard parts). An old single-body document opens as one Part.
 
+**Built in M4a (2026-10-22, branch `ng/m4a-parts`):**
+- **A part is a tag on groups.** `Group::part` is saved as `Group.part.v`, where 0 is the
+  first part, so old files are unchanged. `SK.part` holds the named `AddPart` records,
+  written once a file has a second part. The global group order stays as the dependency
+  order.
+- **Each part has its own solid,** carried from the previous group of the same part
+  (`RunningMeshGroup`). Cross-part references need nothing new: any group uses any earlier
+  entity, so a lid sketched on an enclosure's rim follows it.
+- **New Group ▸ New Part** (`part-new`) starts the next part with a sketch, on the picked
+  face if there is one. New groups join the active group's part.
+- **Display and panels:**
+  - The viewport shows every part's solid as of the active group, and their faces can be
+    picked.
+  - The Outliner heads each run of a part's groups with its name.
+  - Properties renames the part.
+- **Export:** File ▸ Export Parts (`export-parts`, `SolveSpaceUI::ExportParts`) writes
+  `<stem>-<part>.stl` or `.step` per part. This meets M4's "done when"
+  (`test/group/partsexport`: an enclosure and lid, two closed files).
+- **Still to come (M4b):** placement constraints and the design pose, 3MF, the BOM,
+  `LINKED` compatibility, and a skeleton section in the Outliner.
+
 ## 8. Milestones and testing
 
 Each milestone leaves a working, daily-usable app. Work in milestone order. Don't start

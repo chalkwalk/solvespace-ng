@@ -742,6 +742,9 @@ public:
     bool   RenamePart(hPart hp, const std::string &name);
     std::string PartName(hPart hp);
     Group *PartSolid(hPart hp);
+    // Each part's solid to its own file, <stem>-<part name>.<ext> beside filename: STL, or STEP
+    // (the OCCT B-rep). The files written, in part order.
+    std::vector<Platform::Path> ExportParts(const Platform::Path &filename);
     // A STEP file's B-rep and its tessellation, for a linked group; false if it can't be read
     // (or there is no Open CASCADE).
     bool LinkStep(const Platform::Path &filename, std::shared_ptr<const KernelShape> *shape,

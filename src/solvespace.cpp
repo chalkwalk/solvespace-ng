@@ -813,6 +813,21 @@ void SolveSpaceUI::MenuFile(Command id) {
             break;
         }
 
+        case Command::EXPORT_PARTS: {
+            Platform::FileDialogRef dialog = Platform::CreateSaveFileDialog(SS.GW.window);
+            dialog->AddFilters({ { CN_("file-type", "STL mesh, one per part"), { "stl" } },
+                                 { CN_("file-type", "STEP file, one per part"), { "step", "stp" } } });
+            dialog->ThawChoices(settings, "ExportParts");
+            dialog->SuggestFilename(SS.saveFile);
+            if(!dialog->RunModal()) break;
+            dialog->FreezeChoices(settings, "ExportParts");
+            std::vector<Platform::Path> written = SS.ExportParts(dialog->GetFilename());
+            std::string list;
+            for(const Platform::Path &p : written) list += "\n    " + p.FileName();
+            if(!written.empty()) Message(_("Exported %d parts:%s"), (int)written.size(), list.c_str());
+            break;
+        }
+
         case Command::EXPORT_MESH: {
             Platform::FileDialogRef dialog = Platform::CreateSaveFileDialog(SS.GW.window);
             dialog->AddFilters(Platform::MeshFileFilters);
@@ -1360,6 +1375,51 @@ Group *SolveSpaceUI::PartSolid(hPart hp) {
         if(!g->runningMesh.IsEmpty() || !g->runningShell.IsEmpty()) last = g;
     }
     return last;
+}
+
+std::vector<Platform::Path> SolveSpaceUI::ExportParts(const Platform::Path &filename) {
+    FlushRegeneration();
+    std::vector<Platform::Path> written;
+    std::string ext = filename.Extension();
+    std::transform(ext.begin(), ext.end(), ext.begin(), ::tolower);
+    if(ext != "stl" && ext != "step" && ext != "stp") {
+        Error(_("Parts export as STL or STEP; choose a .stl or .step file name."));
+        return written;
+    }
+    std::vector<hPart> parts = { Part::FIRST };
+    for(const Part &p : SK.part) {
+        if(p.h != Part::FIRST) parts.push_back(p.h);
+    }
+    for(hPart hp : parts) {
+        Group *g = PartSolid(hp);
+        if(g == nullptr) continue;
+        std::string name = PartName(hp);
+        for(char &c : name) {
+            if(!isalnum((unsigned char)c) && (unsigned char)c < 0x80) c = '-';
+        }
+        Platform::Path path =
+            filename.Parent().Join(filename.FileStem() + "-" + name + "." + ext);
+        if(ext == "stl") {
+            SMesh m = {};
+            m.MakeFromCopyOf(&g->runningMesh);
+            g->runningShell.TriangulateInto(&m);
+            FILE *f = OpenFile(path, "wb");
+            if(!f) {
+                m.Clear();
+                Error("Couldn't write to '%s'", path.raw.c_str());
+                continue;
+            }
+            ExportMeshAsStlTo(f, &m);
+            fclose(f);
+            m.Clear();
+        } else if(!KernelExportStep(g->runningShape, path, 1.0 / exportScale)) {
+            Error(_("STEP needs the Open CASCADE kernel; part '%s' was not written."),
+                  PartName(hp).c_str());
+            continue;
+        }
+        written.push_back(path);
+    }
+    return written;
 }
 
 } // namespace SolveSpace
