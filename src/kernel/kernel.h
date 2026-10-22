@@ -228,6 +228,17 @@ std::shared_ptr<const KernelShape> KernelImportStep(const Platform::Path &filena
 void KernelTessellate(const std::shared_ptr<const KernelShape> &shape, RgbaColor color,
                       SMesh *mesh);
 
+// A quad mesh of a B-rep for Blender (occtquadmesh.cpp, a spike): quad grids on four-sided
+// faces, n-gons on the rest, creases on sharp edges, written as USD text; edges cut no longer
+// than target. False with no B-rep (or no OCCT).
+struct QuadMeshStats {
+    int    quads = 0, triangles = 0, ngons = 0, vertices = 0, creases = 0;
+    int    openEdges = 0; // polygon edges not shared by exactly two polygons
+    double volume    = 0;
+};
+bool KernelExportQuadUsd(const std::shared_ptr<const KernelShape> &shape,
+                         const Platform::Path &filename, double target, QuadMeshStats *stats);
+
 // Combines the job's previous body and result->thisBody as triangle meshes into
 // result->running.mesh: the path for meshes and groups forced to a mesh.
 void CombineAsMeshes(const KernelJob &job, KernelResult *result);

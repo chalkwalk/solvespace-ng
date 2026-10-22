@@ -117,6 +117,7 @@ if(ENABLE_OCCT)
     # solvespace-headless links the core privately: OCCT's headers and HAVE_OCCT come here.
     target_sources(solvespace-testsuite PRIVATE
         kernel/occt/test.cpp
+        kernel/quadmesh/test.cpp
         kernel/parity/test.cpp)
     target_link_libraries(solvespace-testsuite occt)
     target_compile_definitions(solvespace-testsuite PRIVATE HAVE_OCCT)

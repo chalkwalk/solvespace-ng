@@ -375,6 +375,12 @@ deleted, constraints on derived entities or drags set the size; a draft's derive
 (`REMAP_DRAFT_TOP`) sets its angle. Kernel jobs build the solved size. Hole sizes are still
 plain values. Feature groups saved before M3h load without the dimension (one free DOF).
 
+**Quad mesh export, a spike (2026-10-21, owner's question in review 5):** Export Mesh to a
+`.usda` file writes the B-rep as quads for Blender, with creases for Catmull-Clark
+(`src/kernel/occtquadmesh.cpp`; findings in `docs/research/quad-mesh-spike.md`): quad grids
+on four-sided faces, rings on flat one-hole faces, n-gons on the rest, shared edge points.
+Curved faces with more than four sides are the open problem.
+
 **Later:** variable-radius fillets, STEP import as a reference body (snappable, warned),
 XCAF colours and names, exact hidden-line drawing export (`HLRBRep`).
 

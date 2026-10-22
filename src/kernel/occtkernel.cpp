@@ -8,6 +8,7 @@
 // SolveSpace's mesh path.
 //-----------------------------------------------------------------------------
 #include "solvespace.h"
+#include "kernel/occtshape.h"
 
 #include <mutex>
 #include <set>
@@ -69,21 +70,6 @@
 #include <gp_Quaternion.hxx>
 
 namespace SolveSpace {
-namespace {
-
-struct FaceInfo {
-    uint32_t  face  = 0; // the face entity's handle, or 0
-    RgbaColor color = {};
-};
-
-using FaceMap = NCollection_DataMap<TopoDS_Shape, FaceInfo, TopTools_ShapeMapHasher>;
-
-}
-
-struct KernelShape {
-    TopoDS_Shape shape;
-    FaceMap      faces;
-};
 
 namespace {
 

@@ -103,6 +103,7 @@ std::vector<FileFilter> MeshFileFilters = {
     { CN_("file-type", "Three.js-compatible mesh, with viewer"), { "html" } },
     { CN_("file-type", "Three.js-compatible mesh, mesh only"), { "js" } },
     { CN_("file-type", "VRML text file"), { "wrl" } },
+    { CN_("file-type", "Quad mesh for Blender, with creases (USD)"), { "usda" } },
 };
 
 std::vector<FileFilter> SurfaceFileFilters = {

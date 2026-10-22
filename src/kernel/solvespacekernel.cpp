@@ -358,6 +358,11 @@ std::shared_ptr<const KernelShape> KernelImportStep(const Platform::Path &) {
 }
 
 void KernelTessellate(const std::shared_ptr<const KernelShape> &, RgbaColor, SMesh *) {}
+
+bool KernelExportQuadUsd(const std::shared_ptr<const KernelShape> &, const Platform::Path &,
+                         double, QuadMeshStats *) {
+    return false;
+}
 #endif
 
 IKernel &Kernel() {

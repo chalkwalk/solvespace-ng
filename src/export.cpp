@@ -824,6 +824,22 @@ void SolveSpaceUI::ExportMeshTo(const Platform::Path &filename) {
         return;
     }
 
+    if(filename.HasExtension("usda")) {
+        // Quads for Blender, from the B-rep, edges about a thirtieth of the model's size.
+        Vector lo = Vector::From(VERY_POSITIVE, VERY_POSITIVE, VERY_POSITIVE), hi = lo.ScaledBy(-1);
+        for(const STriangle &t : m->l) {
+            for(const Vector &v : t.vertices) {
+                lo = Vector::From(std::min(lo.x, v.x), std::min(lo.y, v.y), std::min(lo.z, v.z));
+                hi = Vector::From(std::max(hi.x, v.x), std::max(hi.y, v.y), std::max(hi.z, v.z));
+            }
+        }
+        QuadMeshStats st;
+        if(!KernelExportQuadUsd(g->runningShape, filename, hi.Minus(lo).Magnitude() / 30, &st)) {
+            Error(_("A quad mesh needs the Open CASCADE kernel and a solid it made."));
+        }
+        return;
+    }
+
     FILE *f = OpenFile(filename, "wb");
     if(!f) {
         Error("Couldn't write to '%s'", filename.raw.c_str());
