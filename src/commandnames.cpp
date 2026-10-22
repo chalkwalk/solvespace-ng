@@ -106,6 +106,7 @@ static const CommandNameEntry CommandNames[] = {
     { Command::JOINT_PLANAR,      "joint-planar"       },
     { Command::JOINT_BALL,        "joint-ball"         },
     { Command::JOINT_GEAR,        "joint-gear"         },
+    { Command::GROUP_FIT,         "group-fit"          },
     { Command::DESIGN_POSE,       "design-pose"        },
     // Constrain
     { Command::DISTANCE_DIA,      "constrain-distance" },

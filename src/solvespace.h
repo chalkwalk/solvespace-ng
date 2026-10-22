@@ -405,6 +405,7 @@ public:
     IdList<Style,hStyle>            style;
     IdList<Part,hPart>              part; // empty while there is only the first part
     IdList<Joint,hJoint>            joint;
+    IdList<Fit,hFit>                fit; // empty: the default fits
 
     // These are generated from the above.
     IdList<ENTITY,hEntity>          entity;
@@ -474,11 +475,13 @@ public:
         IdList<Style,hStyle>            style;
         IdList<Part,hPart>              part;
         IdList<Joint,hJoint>            joint;
+        IdList<Fit,hFit>                fit;
         hGroup                          activeGroup;
 
         void Clear() {
             part.Clear();
             joint.Clear();
+            fit.Clear();
             group.Clear();
             groupOrder.Clear();
             request.Clear();
@@ -672,6 +675,7 @@ public:
         Style        s;
         Part         k;
         Joint        j;
+        Fit          f;
     } sv;
     static void MenuFile(Command id);
     void Autosave();
@@ -774,6 +778,20 @@ public:
     void   SetJointValue(hJoint hj, double value, bool remember = true, int dof = 0);
     void   SetJointLimits(hJoint hj, bool limited, double lo, double hi, int dof = 0);
     void   SetJointRatio(hJoint hj, double ratio); // a gear coupling's
+    // The fit table (M5b, src/fit.cpp): the document's fits, else the defaults (press -0.1,
+    // slide 0.2, loose 0.4 mm); a fit by handle, or null. Editing it makes the defaults the
+    // document's own first. A fit used by a fit joint, or the last one, can't be deleted.
+    std::vector<Fit> FitTable();
+    const Fit *FindFit(hFit hf);
+    hFit   AddFit();
+    bool   RenameFit(hFit hf, const std::string &name);
+    void   SetFitClearance(hFit hf, double mm);
+    bool   DeleteFit(hFit hf);
+    // A fit joint (M5b): from the active sketch (the shared profile, closed, in a workplane)
+    // between the parts of the two picked items, the male's first: a FIT group in each. Its
+    // fit, style, direction and depth, set on both groups.
+    void   MakeFitJoint();
+    void   SetFitJoint(hGroup hg, Group::FitSpec spec);
     void   DesignPose();
     bool   RenameJoint(hJoint hj, const std::string &name);
     void   DeleteJoint(hJoint hj);

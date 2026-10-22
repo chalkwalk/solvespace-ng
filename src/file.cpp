@@ -34,6 +34,7 @@ void SolveSpaceUI::ClearExisting() {
     SK.style.Clear();
     SK.part.Clear();
     SK.joint.Clear();
+    SK.fit.Clear();
 
     SK.entity.Clear();
     SK.param.Clear();
@@ -138,6 +139,12 @@ const SolveSpaceUI::SaveTable SolveSpaceUI::SAVED[] = {
     { 'g',  "Group.hole.pitch",         'f',    &(SS.sv.g.hole.pitch)         },
     { 'g',  "Group.hole.flip",          'd',    &(SS.sv.g.hole.flip)          },
     { 'g',  "Group.hole.clearance",     'f',    &(SS.sv.g.hole.clearance)     },
+    { 'g',  "Group.fit.kind.v",         'x',    &(SS.sv.g.fit.kind.v)         },
+    { 'g',  "Group.fit.female",         'd',    &(SS.sv.g.fit.female)         },
+    { 'g',  "Group.fit.dowel",          'd',    &(SS.sv.g.fit.dowel)          },
+    { 'g',  "Group.fit.flip",           'd',    &(SS.sv.g.fit.flip)           },
+    { 'g',  "Group.fit.depth",          'f',    &(SS.sv.g.fit.depth)          },
+    { 'g',  "Group.fit.partner.v",      'x',    &(SS.sv.g.fit.partner.v)      },
     { 'g',  "Group.impFile",            'i',    NULL                          },
     { 'g',  "Group.impFileRel",         'P',    &(SS.sv.g.linkFile)           },
 
@@ -253,6 +260,10 @@ const SolveSpaceUI::SaveTable SolveSpaceUI::SAVED[] = {
     { 'j',  "Joint.driver.v",           'x',    &(SS.sv.j.driver.v)           },
     { 'j',  "Joint.driven.v",           'x',    &(SS.sv.j.driven.v)           },
     { 'j',  "Joint.ratio",              'f',    &(SS.sv.j.ratio)              },
+
+    { 'f',  "Fit.h.v",                  'x',    &(SS.sv.f.h.v)                },
+    { 'f',  "Fit.name",                 'S',    &(SS.sv.f.name)               },
+    { 'f',  "Fit.clearance",            'f',    &(SS.sv.f.clearance)          },
 
     { 0, NULL, 0, NULL }
 };
@@ -375,6 +386,11 @@ bool SolveSpaceUI::SaveToFile(const Platform::Path &filename) {
         sv.j = j;
         SaveUsingTable(filename, 'j');
         fprintf(fh, "AddJoint\n\n");
+    }
+    for(auto &f : SK.fit) {
+        sv.f = f;
+        SaveUsingTable(filename, 'f');
+        fprintf(fh, "AddFit\n\n");
     }
     for(auto &g : SK.group) {
         sv.g = g;
@@ -601,6 +617,9 @@ bool SolveSpaceUI::LoadFromFile(const Platform::Path &filename, bool canCancel) 
         } else if(strcmp(line, "AddJoint")==0) {
             SK.joint.Add(&(sv.j));
             sv.j = {};
+        } else if(strcmp(line, "AddFit")==0) {
+            SK.fit.Add(&(sv.f));
+            sv.f = {};
         } else if(strcmp(line, "AddParam")==0) {
             // params are regenerated, but we want to preload the values
             // for initial guesses
@@ -857,6 +876,8 @@ bool SolveSpaceUI::LoadEntitiesFromSlvs(const Platform::Path &filename, EntityLi
             sv.k = {};
         } else if(strcmp(line, "AddJoint")==0) {
             sv.j = {};
+        } else if(strcmp(line, "AddFit")==0) {
+            sv.f = {};
         } else if(strcmp(line, "AddGroup")==0) {
             // These get allocated whether we want them or not.
             sv.g.remap.clear();

@@ -1229,6 +1229,7 @@ void SolveSpaceUI::Clear() {
 void Sketch::Clear() {
     part.Clear();
     joint.Clear();
+    fit.Clear();
     group.Clear();
     groupOrder.Clear();
     constraint.Clear();

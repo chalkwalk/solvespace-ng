@@ -39,7 +39,7 @@ enum class KernelCombine { UNION, DIFFERENCE, INTERSECTION, ASSEMBLE };
 
 enum class KernelFeature {
     EXTRUDE, LATHE, REVOLVE, HELIX, PATTERN, LINK, BOOLEAN,
-    FILLET, CHAMFER, SHELL, DRAFT, HOLE, LOFT, SWEEP,
+    FILLET, CHAMFER, SHELL, DRAFT, HOLE, LOFT, SWEEP, FIT, SPLIT,
 };
 
 // A hole's shape (AGENTS.md section 6): plain, counterbored or countersunk; through all (depth
@@ -83,12 +83,14 @@ enum class ShellSide : uint32_t { INSIDE = 0, OUTSIDE = 1, BOTH = 2 };
 struct KernelJob {
     enum class Op {
         NONE, EXTRUDE, LATHE, REVOLVE, HELIX, STEP_TRANSLATE, STEP_ROTATE, LINKED, FILLET, CHAMFER,
-        SHELL, DRAFT, HOLE, LOFT, SWEEP
+        SHELL, DRAFT, HOLE, LOFT, SWEEP, FIT, SPLIT
     };
     Op        op    = Op::NONE;
     RgbaColor color = {};
 
-    // EXTRUDE, LATHE, REVOLVE, HELIX: the source sketch's closed loops.
+    // EXTRUDE, LATHE, REVOLVE, HELIX, FIT: the source sketch's closed loops. FIT (a fit
+    // joint's peg or pocket): they are extruded from tbot to ttop, then offset by size (out,
+    // arcs rounding the convex edges, or in).
     SBezierLoopSetSet *loops = nullptr;
     // EXTRUDE: the offsets of the bottom and top caps, and the source sketch's line segments
     // (in sketch order), whose extruded sides are named after them.

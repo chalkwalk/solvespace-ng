@@ -75,11 +75,17 @@ void GraphicsWindow::ToggleGroupVisible(hGroup hg) {
 
 void GraphicsWindow::DeleteGroup(hGroup hg) {
     SS.UndoRemember();
-    if(hg == activeGroup) activeGroup = SK.GetGroup(activeGroup)->PreviousGroup()->h;
+    // A fit joint's groups go together.
+    Group *g       = SK.GetGroup(hg);
+    hGroup partner = g->type == Group::Type::FIT ? g->fit.partner : hGroup{};
+    while(activeGroup == hg || activeGroup == partner) {
+        activeGroup = SK.GetGroup(activeGroup)->PreviousGroup()->h;
+    }
     // The property browser may be showing the group.
     SS.TW.ClearSuper();
     // A major change: solve everything again.
     SK.group.RemoveById(hg);
+    if(SK.group.FindByIdNoOops(partner)) SK.group.RemoveById(partner);
     SS.GenerateAll(SolveSpaceUI::Generate::ALL);
     // Also recreates the default group if it was removed.
     ClearSuper();

@@ -175,6 +175,7 @@ enum class Command : uint32_t {
     JOINT_PLANAR,
     JOINT_BALL,
     JOINT_GEAR,
+    GROUP_FIT,
     DESIGN_POSE,
     // Constrain
     DISTANCE_DIA,

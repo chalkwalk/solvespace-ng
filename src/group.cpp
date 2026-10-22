@@ -150,6 +150,10 @@ void Group::MenuGroup(Command id, Platform::Path linkFile) {
     auto const &gs = SS.GW.gs;
 
     switch(id) {
+        case Command::GROUP_FIT:
+            SS.MakeFitJoint(); // a pair of groups
+            return;
+
         case Command::GROUP_3D:
             g.type = Type::DRAWING_3D;
             g.name = C_("group-name", "sketch-in-3d");
@@ -1098,6 +1102,9 @@ void Group::Generate(EntityList *entity, ParamList *param)
 
         case Type::LOFT:
             MakeLoftFaces(entity);
+            return;
+
+        case Type::FIT:
             return;
 
         case Type::SWEEP:

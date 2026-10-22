@@ -15,22 +15,33 @@ namespace Ui {
 
 static hGroup gShownGroup = {};
 static hJoint gShownJoint = {};
+static bool   gShownFits  = false;
 static std::map<uint32_t, std::string> gSweepText; // each joint's last clearance sweep
 
 void ResetProperties() {
     gShownGroup = {};
     gShownJoint = {};
+    gShownFits  = false;
     gSweepText.clear();
 }
 
 void ShowGroupInProperties(hGroup hg) {
     gShownGroup = hg;
     gShownJoint = {};
+    gShownFits  = false;
     PropertiesPanel().SetShown(true);
 }
 
 void ShowJointInProperties(hJoint hj) {
     gShownJoint = hj;
+    gShownFits  = false;
+    PropertiesPanel().SetShown(true);
+}
+
+void ShowFitTableInProperties() {
+    SS.GW.ClearSelection();
+    gShownFits  = true;
+    gShownJoint = {};
     PropertiesPanel().SetShown(true);
 }
 
@@ -60,6 +71,66 @@ static void Radio(const char *label, bool on, std::function<void()> action,
     if(ImGui::RadioButton(label, on) && !on) *run = action;
 }
 
+// A fit joint's group: which side it is, its fit from the table, its style, depth and
+// direction (each set on both groups of the pair).
+static void DrawFitJoint(Group *g, std::function<void()> *run) {
+    hGroup         hg   = g->h;
+    Group::FitSpec spec = g->fit;
+    Group         *other = SK.group.FindByIdNoOops(spec.partner);
+    std::string    them  = other ? SS.PartName(other->PartOf()) : "?";
+    ImGui::Spacing();
+    if(spec.dowel) {
+        ImGui::TextDisabled("a dowel's pocket; the other is in %s", them.c_str());
+    } else if(spec.female) {
+        ImGui::TextDisabled("the pocket; the peg is on %s", them.c_str());
+    } else {
+        ImGui::TextDisabled("the peg; the pocket is in %s", them.c_str());
+    }
+    auto set = [hg, run](Group::FitSpec s) { *run = [hg, s] { SS.SetFitJoint(hg, s); }; };
+    ImGui::TextUnformatted("fit");
+    for(const Fit &f : SS.FitTable()) {
+        std::string label = ssprintf("%s (%s)##fit-kind-%s", f.name.c_str(),
+                                     SS.MmToString(f.clearance).c_str(), f.name.c_str());
+        if(ImGui::RadioButton(label.c_str(), spec.kind == f.h) && spec.kind != f.h) {
+            Group::FitSpec s = spec;
+            s.kind           = f.h;
+            set(s);
+        }
+    }
+    if(ImGui::Button("fit table##fit-table")) *run = [] { ShowFitTableInProperties(); };
+    ImGui::TextUnformatted("style");
+    if(ImGui::RadioButton("peg and pocket##fit-peg", !spec.dowel) && spec.dowel) {
+        Group::FitSpec s = spec;
+        s.dowel          = 0;
+        set(s);
+    }
+    if(ImGui::RadioButton("dowel (a pocket in each)##fit-dowel", spec.dowel != 0) &&
+       !spec.dowel) {
+        Group::FitSpec s = spec;
+        s.dowel          = 1;
+        set(s);
+    }
+    ImGui::TextUnformatted(spec.dowel ? "dowel length" : "depth");
+    ValueField("##fit-depth", SS.MmToString(spec.depth), run, [hg, spec](std::string text) {
+        if(Expr *e = Expr::From(text, /*popUpError=*/true)) {
+            Group::FitSpec s = spec;
+            s.depth          = SS.ExprToMm(e);
+            SS.SetFitJoint(hg, s);
+        }
+    }, SS.UnitName());
+    bool flip = spec.flip != 0;
+    if(ImGui::Checkbox("other way##fit-flip", &flip)) {
+        Group::FitSpec s = spec;
+        s.flip           = flip;
+        set(s);
+    }
+    if(!g->featureProblem.empty()) {
+        ImGui::PushStyleColor(ImGuiCol_Text, ImGui::GetStyleColorVec4(ImGuiCol_PlotLinesHovered));
+        ImGui::TextWrapped("%s.", g->featureProblem.c_str());
+        ImGui::PopStyleColor();
+    }
+}
+
 static const char *TypeLine(const Group *g) {
     switch(g->type) {
         case Group::Type::DRAWING_3D:        return "sketch in 3d";
@@ -78,6 +149,7 @@ static const char *TypeLine(const Group *g) {
         case Group::Type::HOLE:              return "drill holes";
         case Group::Type::LOFT:              return "loft through profiles";
         case Group::Type::SWEEP:             return "sweep a profile along a path";
+        case Group::Type::FIT:               return "fit joint";
     }
     return "";
 }
@@ -347,6 +419,8 @@ static void DrawGroup(Group *g, std::function<void()> *run) {
             ImGui::PopStyleColor();
         }
     }
+
+    if(type == Type::FIT) DrawFitJoint(g, run);
 
     if(type == Type::EXTRUDE || type == Type::LATHE || type == Type::REVOLVE ||
        type == Type::LINKED || type == Type::HELIX || type == Type::LOFT ||
@@ -632,6 +706,32 @@ static void DrawJoint(Joint *j, std::function<void()> *run) {
     if(ImGui::Button("delete##joint-delete")) *run = [hj] { SS.DeleteJoint(hj); };
 }
 
+// The fit table: each fit's name and clearance, editable; add and delete.
+static void DrawFitTable(std::function<void()> *run) {
+    ImGui::TextDisabled("Fit table");
+    ImGui::TextWrapped("Clearances for fit joints, tuned to your printer: each side's gap "
+                       "(negative presses).");
+    for(const Fit &f : SS.FitTable()) {
+        hFit        hf = f.h;
+        std::string id = std::to_string(hf.v);
+        ImGui::Spacing();
+        ValueField(("##fit-name-" + id).c_str(), f.name, run,
+                   [hf](std::string s) { SS.RenameFit(hf, s); });
+        ValueField(("##fit-clearance-" + id).c_str(), SS.MmToString(f.clearance), run,
+                   [hf](std::string s) {
+                       if(Expr *e = Expr::From(s, /*popUpError=*/true)) {
+                           SS.SetFitClearance(hf, SS.ExprToMm(e));
+                       }
+                   },
+                   SS.UnitName());
+        if(ImGui::Button(("delete##fit-delete-" + id).c_str())) {
+            *run = [hf] { SS.DeleteFit(hf); };
+        }
+    }
+    ImGui::Spacing();
+    if(ImGui::Button("add a fit##fit-add")) *run = [] { SS.AddFit(); };
+}
+
 std::function<void()> DrawProperties() {
     std::function<void()> run;
     if(!PropertiesPanel().Begin()) return run;
@@ -640,6 +740,8 @@ std::function<void()> DrawProperties() {
         DrawSelection(selection, &run);
     } else if(Joint *j = SK.joint.FindByIdNoOops(PropertiesJoint())) {
         DrawJoint(j, &run);
+    } else if(gShownFits) {
+        DrawFitTable(&run);
     } else if(Group *g = SK.group.FindByIdNoOops(PropertiesGroup())) {
         DrawGroup(g, &run);
     }

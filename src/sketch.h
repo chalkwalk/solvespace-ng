@@ -254,6 +254,27 @@ public:
     void        Clear() {}
 };
 
+// The fit table (AGENTS.md section 7, M5b): a named clearance, tuned per printer, that fit
+// joints take their gap from (mm; negative for an interference, a press fit). A document
+// that hasn't changed it uses the defaults (SolveSpaceUI::FitTable).
+class hFit {
+public:
+    uint32_t v;
+};
+
+template<>
+struct IsHandleOracle<hFit> : std::true_type {};
+
+class Fit {
+public:
+    int         tag;
+    hFit        h;
+    std::string name;
+    double      clearance;
+
+    void Clear() {}
+};
+
 // A set of requests. Every request must have an associated group.
 class Group {
 public:
@@ -286,7 +307,8 @@ public:
         DRAFT                         = 5403,
         HOLE                          = 5404,
         LOFT                          = 5405,
-        SWEEP                         = 5406
+        SWEEP                         = 5406,
+        FIT                           = 5407,
     };
     Group::Type type;
 
@@ -398,6 +420,23 @@ public:
     using HoleSpec = SolveSpace::HoleSpec;
     std::vector<hEntity> points;
     HoleSpec             hole;
+    // FIT (M5b): one of a fit joint's pair of groups, one in each part, both made from one
+    // closed profile (opA's sketch, in a workplane). The male's adds the profile extruded by
+    // the depth (a peg); the female's cuts it offset by the fit's clearance, and deeper by
+    // it (a pocket). A dowel joint cuts a pocket in both, half the depth each side of the
+    // profile, for a separate pin. The extrusion goes along the workplane's normal, or
+    // against it when flipped. Saved as Group.fit.*.
+    struct FitSpec {
+        hFit   kind    = {}; // from the fit table
+        int    female  = 0;
+        int    dowel   = 0;
+        int    flip    = 0;
+        double depth   = 0;
+        hGroup partner = {}; // the pair's other group
+    } fit;
+    // FIT: the direction the joint goes in (unit; from the male into the female), and the
+    // extrusion along it from the profile's plane (s0 to s1) before the offset by offset.
+    void FitExtrusion(Vector *dir, double *s0, double *s1, double *offset) const;
     // LOFT: a curve of each profile sketch, in order (the profile is the closed loop it is
     // in); SWEEP: a curve of the profile sketch, then the path's curves.
     std::vector<hEntity> profiles;

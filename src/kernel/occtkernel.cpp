@@ -450,6 +450,41 @@ std::shared_ptr<KernelShape> Extrude(const KernelJob &job, FaceNamer *namer) {
     return ks;
 }
 
+bool IsGoodSolid(const TopoDS_Shape &shape);
+
+// A fit joint's peg or pocket (M5b): the profile extruded, then offset by the clearance.
+std::shared_ptr<KernelShape> FitShape(const KernelJob &job, std::string *problem) {
+    auto                      ks = std::make_shared<KernelShape>();
+    std::vector<TopoDS_Shape> solids;
+    for(SBezierLoopSet &sbls : job.loops->l) {
+        NCollection_DataMap<TopoDS_Shape, uint32_t, TopTools_ShapeMapHasher> ents;
+        TopoDS_Face face = MakeFace(sbls, &ents);
+        gp_Trsf     toBottom;
+        toBottom.SetTranslation(Vec(job.tbot));
+        BRepBuilderAPI_Transform moved(face, toBottom, /*copy=*/true);
+        TopoDS_Shape solid =
+            BRepPrimAPI_MakePrism(moved.Shape(), Vec(job.ttop.Minus(job.tbot))).Shape();
+        if(fabs(job.size) > LENGTH_EPS) {
+            BRepOffsetAPI_MakeOffsetShape offset;
+            try {
+                offset.PerformByJoin(solid, job.size, 1e-5, BRepOffset_Skin,
+                                     /*intersection=*/false, /*selfInter=*/false, GeomAbs_Arc);
+            } catch(const Standard_Failure &) {
+            }
+            if(!offset.IsDone() || !IsGoodSolid(offset.Shape())) {
+                *problem = "the fit's clearance couldn't be added to the profile";
+                continue;
+            }
+            solid = offset.Shape();
+        }
+        solids.push_back(solid);
+    }
+    if(solids.empty()) return nullptr;
+    ks->shape = MakeCompound(solids);
+    Orient(&ks->shape);
+    return ks;
+}
+
 std::shared_ptr<KernelShape> Revolve(const KernelJob &job, FaceNamer *namer, bool full) {
     auto                      ks = std::make_shared<KernelShape>();
     std::vector<TopoDS_Shape> solids;
@@ -1280,10 +1315,12 @@ public:
             case KernelJob::Op::CHAMFER:
             case KernelJob::Op::SHELL:
             case KernelJob::Op::DRAFT:
-            case KernelJob::Op::HOLE: break;
+            case KernelJob::Op::HOLE:
+            case KernelJob::Op::SPLIT: break;
             case KernelJob::Op::LOFT:  made = Loft(job, &result->problem); break;
             case KernelJob::Op::SWEEP: made = Sweep(job, &result->problem); break;
             case KernelJob::Op::EXTRUDE: made = Extrude(job, &namer); break;
+            case KernelJob::Op::FIT:     made = FitShape(job, &result->problem); break;
             case KernelJob::Op::LATHE:   made = Revolve(job, &namer, /*full=*/true); break;
             case KernelJob::Op::REVOLVE:
                 made = Revolve(job, &namer, /*full=*/fabs(job.anglef - job.angles) >= 2 * PI);
@@ -1340,7 +1377,9 @@ public:
             case KernelFeature::DRAFT:
             case KernelFeature::HOLE:
             case KernelFeature::LOFT:
-            case KernelFeature::SWEEP: return true;
+            case KernelFeature::SWEEP:
+            case KernelFeature::FIT:
+            case KernelFeature::SPLIT: return true;
         }
         return false;
     }

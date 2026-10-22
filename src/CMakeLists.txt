@@ -113,6 +113,7 @@ if(ENABLE_GUI OR ENABLE_CLI)
         export.cpp
         export3mf.cpp
         joint.cpp
+        fit.cpp
         exportstep.cpp
         exportvector.cpp
         file.cpp

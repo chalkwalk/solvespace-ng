@@ -230,6 +230,14 @@ KernelJob Group::BuildKernelJob() {
             job.endName      = Remap(profiles[0], REMAP_SWEEP_END).v;
             job.cornerRadius = valB;
         }
+    } else if(type == Type::FIT) {
+        Vector dir;
+        double s0, s1;
+        job.op    = KernelJob::Op::FIT;
+        job.loops = &SK.GetGroup(opA)->bezierLoops;
+        FitExtrusion(&dir, &s0, &s1, &job.size);
+        job.tbot = dir.ScaledBy(s0);
+        job.ttop = dir.ScaledBy(s1);
     } else if(type == Type::HOLE) {
         job.op   = KernelJob::Op::HOLE;
         job.hole = hole;
@@ -508,6 +516,7 @@ bool Group::IsMeshGroup() {
         case Group::Type::HOLE:
         case Group::Type::LOFT:
         case Group::Type::SWEEP:
+        case Group::Type::FIT:
             return true;
 
         default:
