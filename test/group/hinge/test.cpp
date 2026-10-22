@@ -89,7 +89,7 @@ TEST_CASE(a_pin_turns_in_its_hole_with_the_clearance_drawn) {
     // Turned, it still clears by as much; the sweep leaves the joint where it was.
     SS.SetJointValue(hj, 47);
     CHECK_TRUE(fabs(SS.SweepClearance(hj, 12).gap - 0.2) < 1e-3);
-    CHECK_EQ_EPS(SK.GetJoint(hj)->value, 47);
+    CHECK_EQ_EPS(SK.GetJoint(hj)->value[0], 47);
 }
 
 TEST_CASE(a_swinging_block_reports_where_it_hits) {

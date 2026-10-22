@@ -98,6 +98,7 @@ set(testsuite_SOURCES
     group/parts3mf/test.cpp
     group/joints/test.cpp
     group/hinge/test.cpp
+    group/gears/test.cpp
     group/loft/test.cpp
     group/sweep/test.cpp
     group/stepimport/test.cpp

@@ -765,20 +765,21 @@ public:
     void   SetPartMaterial(hPart hp, double density);
     // Gives a group (an older file's link) a new part of its own, named after the group.
     hPart  MoveToNewPart(hGroup hg);
-    // Motion joints (M5a, src/joint.cpp): a joint between the two selected entities' parts
-    // (null, with a message, if they can't make one); a part's pose in the motion pose; a
-    // joint's value, clamped to its limits (remember: an undo step); its limits; every joint
-    // back to the design pose.
+    // Motion joints (M5a and M5b, src/joint.cpp): a joint between the two selected entities'
+    // parts (null, with a message, if they can't make one); a part's pose in the motion pose;
+    // one of a joint's values (dof: which motion), clamped to its limits (remember: an undo
+    // step); its limits; every joint back to the design pose.
     hJoint MakeJoint(Joint::Type type);
     Pose   PartPose(hPart hp);
-    void   SetJointValue(hJoint hj, double value, bool remember = true);
-    void   SetJointLimits(hJoint hj, bool limited, double lo, double hi);
+    void   SetJointValue(hJoint hj, double value, bool remember = true, int dof = 0);
+    void   SetJointLimits(hJoint hj, bool limited, double lo, double hi, int dof = 0);
+    void   SetJointRatio(hJoint hj, double ratio); // a gear coupling's
     void   DesignPose();
     bool   RenameJoint(hJoint hj, const std::string &name);
     void   DeleteJoint(hJoint hj);
-    // A typed joint value (an expression; degrees, or the length unit for a slider).
-    bool   ParseJointValue(hJoint hj, const std::string &text, double *value);
-    std::string JointValueString(hJoint hj, double value);
+    // A typed joint value (an expression; degrees for a turn, else the length unit).
+    bool   ParseJointValue(hJoint hj, const std::string &text, double *value, int dof = 0);
+    std::string JointValueString(hJoint hj, double value, int dof = 0);
     void   PruneJoints(); // those whose entities or parts are gone
     // Turns or slides a joint across its range (its limits, else a full turn) and measures
     // how close the parts it moves come to the others (B-reps, Open CASCADE): the smallest
@@ -789,7 +790,7 @@ public:
         std::vector<std::pair<double, double>> collisions;
         std::string text; // the report, or why there is none
     };
-    ClearanceSweep SweepClearance(hJoint hj, int samples = 72);
+    ClearanceSweep SweepClearance(hJoint hj, int samples = 72, int dof = 0);
     double PartDensity(hPart hp);
     // The parts list (bill of materials): each part with a solid, in part order.
     struct PartRow {

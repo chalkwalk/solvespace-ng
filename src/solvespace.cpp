@@ -989,6 +989,10 @@ void SolveSpaceUI::MenuAnalyze(Command id) {
 
         case Command::JOINT_REVOLUTE: SS.MakeJoint(Joint::Type::REVOLUTE); break;
         case Command::JOINT_SLIDER:   SS.MakeJoint(Joint::Type::SLIDER);   break;
+        case Command::JOINT_CYLINDRICAL: SS.MakeJoint(Joint::Type::CYLINDRICAL); break;
+        case Command::JOINT_PLANAR:   SS.MakeJoint(Joint::Type::PLANAR);   break;
+        case Command::JOINT_BALL:     SS.MakeJoint(Joint::Type::BALL);     break;
+        case Command::JOINT_GEAR:     SS.MakeJoint(Joint::Type::GEAR);     break;
         case Command::DESIGN_POSE:    SS.DesignPose();                     break;
 
         case Command::VOLUME: {

@@ -68,24 +68,24 @@ TEST_CASE(ng_hinges_a_lid_and_turns_it) {
     hRequest hinge;
     hGroup   lid = Lid(&hinge);
     Select({ SK.GetGroup(box)->Remap(hRequest{ 5 }.entity(0), Group::REMAP_TOP), hinge.entity(0) });
-    CHECK_TRUE(Driver::ClickMenu({ "New Group", "Revolute Joint" }));
+    CHECK_TRUE(Driver::ClickMenu({ "New Group", "Joints", "Revolute Joint" }));
     CHECK_TRUE(SK.joint.n == 1);
     hJoint hj = SK.joint.begin()->h;
     // The Outliner lists it; a click shows it in Properties, where an angle can be typed.
     OutlinerToEnd();
     CHECK_TRUE(Driver::ClickItem("joint:" + std::to_string(hj.v)));
     CHECK_TRUE(EditField("joint-value", "45"));
-    CHECK_EQ_EPS(SK.GetJoint(hj)->value, 45);
+    CHECK_EQ_EPS(SK.GetJoint(hj)->value[0], 45);
     // The scrub slider turns it; one drag is one undo step.
     std::optional<Driver::Item> scrub = Driver::FindItem("joint-scrub");
     CHECK_TRUE(scrub.has_value());
     double y = (scrub->y0 + scrub->y1) / 2;
     Driver::Drag(scrub->x0 + (scrub->x1 - scrub->x0) * 0.5, y,
                  scrub->x0 + (scrub->x1 - scrub->x0) * 0.75, y);
-    double scrubbed = SK.GetJoint(hj)->value;
+    double scrubbed = SK.GetJoint(hj)->value[0];
     CHECK_TRUE(scrubbed > 45);
     SS.UndoUndo();
-    CHECK_EQ_EPS(SK.GetJoint(hj)->value, 45);
+    CHECK_EQ_EPS(SK.GetJoint(hj)->value[0], 45);
     // G on the lid turns it: looking along the hinge, the mouse goes round it.
     Driver::Key("Escape");
     SS.GW.projRight = Vector::From(0, 1, 0);
@@ -99,7 +99,7 @@ TEST_CASE(ng_hinges_a_lid_and_turns_it) {
     Driver::Key("G");
     CHECK_TRUE(SS.GW.pending.operation == GraphicsWindow::Pending::GRABBING && SS.GW.grab.joint == hj);
     Driver::Move(At({ 5, 0, 34 }).x, At({ 5, 0, 34 }).y);
-    double turned = SK.GetJoint(hj)->value;
+    double turned = SK.GetJoint(hj)->value[0];
     CHECK_TRUE(turned > 60);
     Driver::Key("Return");
     CHECK_TRUE(SS.GW.pending.operation == GraphicsWindow::Pending::NONE);
@@ -111,5 +111,38 @@ TEST_CASE(ng_hinges_a_lid_and_turns_it) {
     CHECK_TRUE(Ui::JointSweepText(hj).find("touch or overlap") != std::string::npos);
     // Back to the design pose.
     CHECK_TRUE(Driver::ClickMenu({ "Inspect", "Design Pose" }));
-    CHECK_EQ_EPS(SK.GetJoint(hj)->value, 0);
+    CHECK_EQ_EPS(SK.GetJoint(hj)->value[0], 0);
+}
+
+// A joint of several motions (M5b): Properties has a row for each, and G with Z picks the turn.
+TEST_CASE(ng_moves_a_planar_joint_by_each_motion) {
+    CHECK_LOAD("box.slvs");
+    hGroup   box = SS.GW.activeGroup;
+    hRequest hinge;
+    hGroup   lid = Lid(&hinge);
+    Select({ SK.GetGroup(box)->Remap(Entity::NO_ENTITY, Group::REMAP_TOP),
+             SK.GetGroup(lid)->Remap(Entity::NO_ENTITY, Group::REMAP_BOTTOM) });
+    CHECK_TRUE(Driver::ClickMenu({ "New Group", "Joints", "Planar Joint" }));
+    CHECK_TRUE(SK.joint.n == 1);
+    hJoint hj = SK.joint.begin()->h;
+    OutlinerToEnd();
+    CHECK_TRUE(Driver::ClickItem("joint:" + std::to_string(hj.v)));
+    CHECK_TRUE(RevealIn("Properties", "joint-value1"));
+    CHECK_TRUE(EditField("joint-value1", "2"));
+    CHECK_EQ_EPS(SK.GetJoint(hj)->value[1], 2);
+    CHECK_TRUE(RevealIn("Properties", "joint-value2"));
+    CHECK_TRUE(EditField("joint-value2", "30"));
+    CHECK_EQ_EPS(SK.GetJoint(hj)->value[2], 30);
+    // G on the lid, Z for the turn, a typed angle.
+    Driver::Key("Escape");
+    hPart   lidPart = SK.GetGroup(lid)->PartOf();
+    Point2d onLid   = At(SS.PartPose(lidPart).Apply({ 5, 3, 32 }));
+    Driver::Move(onLid.x, onLid.y);
+    Driver::Key("G");
+    CHECK_TRUE(SS.GW.pending.operation == GraphicsWindow::Pending::GRABBING && SS.GW.grab.joint == hj);
+    Driver::Key("Z");
+    Driver::Type("15");
+    Driver::Key("Return");
+    CHECK_EQ_EPS(SK.GetJoint(hj)->value[2], 45);
+    CHECK_EQ_EPS(SK.GetJoint(hj)->value[1], 2);
 }

@@ -540,62 +540,89 @@ static void DrawSelection(const SelectionModel &m, std::function<void()> *run) {
     }
 }
 
-// A motion joint: its name, what it joins, its value (typed or scrubbed), its limits, and a
+// A motion joint: its name, what it joins, each motion's value (typed or scrubbed), limits and
 // clearance sweep.
 static void DrawJoint(Joint *j, std::function<void()> *run) {
-    hJoint hj       = j->h;
-    bool   revolute = j->type == Joint::Type::REVOLUTE;
+    hJoint hj = j->h;
     ImGui::TextDisabled("Joint");
     ValueField("##joint-name", j->name, run, [hj](std::string s) { SS.RenameJoint(hj, s); });
-    ImGui::TextDisabled("%s: %s turns %s", revolute ? "revolute" : "slider",
-                        SS.PartName(j->parent).c_str(), SS.PartName(j->child).c_str());
-    if(!revolute) {
-        ImGui::SameLine(0, 0);
-        ImGui::TextDisabled(" (slides)");
+    static const char *const kinds[] = { "", "revolute", "slider", "cylindrical",
+                                         "planar", "ball", "gear coupling" };
+    if(j->type == Joint::Type::GEAR) {
+        Joint *a = SK.joint.FindByIdNoOops(j->driver), *b = SK.joint.FindByIdNoOops(j->driven);
+        ImGui::TextDisabled("%s: %s drives %s", kinds[(int)j->type], a ? a->name.c_str() : "?",
+                            b ? b->name.c_str() : "?");
+        ImGui::Spacing();
+        ImGui::TextUnformatted("ratio");
+        ValueField("##joint-ratio", ssprintf("%.6g", j->ratio), run, [hj](std::string s) {
+            if(Expr *e = Expr::From(s, /*popUpError=*/true)) SS.SetJointRatio(hj, e->Eval());
+        });
+    } else {
+        ImGui::TextDisabled("%s: %s holds %s", kinds[(int)j->type],
+                            SS.PartName(j->parent).c_str(), SS.PartName(j->child).c_str());
     }
-    ImGui::Spacing();
-    const char *unit = revolute ? "°" : SS.UnitName();
-    auto parsed = [hj](std::function<void(double)> use) {
-        return [hj, use](std::string s) {
-            double v;
-            if(SS.ParseJointValue(hj, s, &v)) use(v);
-        };
+    static const char *const names[][Joint::MAX_MOTIONS] = {
+        {},
+        { "angle" },
+        { "distance" },
+        { "angle", "distance" },
+        { "along u", "along v", "angle" },
+        { "about x", "about y", "about z" },
+        {},
     };
-    ImGui::TextUnformatted(revolute ? "angle" : "distance");
-    ValueField("##joint-value", SS.JointValueString(hj, j->value), run,
-               parsed([hj](double v) { SS.SetJointValue(hj, v); }), unit);
-    // Scrubbing: one undo step per drag of the slider.
-    float lo = (float)(j->limited ? j->lo : (revolute ? -180 : -50));
-    float hi = (float)(j->limited ? j->hi : (revolute ? 180 : 50));
-    float v  = (float)j->value;
-    static bool scrubbed = false; // this drag of the slider has made its undo step
-    ImGui::SetNextItemWidth(-1);
-    bool changed = ImGui::SliderFloat("##joint-scrub", &v, lo, hi, revolute ? "%.1f°" : "%.2f");
-    if(ImGui::IsItemActivated()) scrubbed = false;
-    if(changed) {
-        bool   first = !scrubbed;
-        double value = v;
-        scrubbed     = true;
-        *run         = [hj, value, first] { SS.SetJointValue(hj, value, first); };
-    }
-    bool   limited = j->limited;
-    double jlo = j->lo, jhi = j->hi;
-    if(ImGui::Checkbox("limits##joint-limited", &limited)) {
-        // Turned on: from the design pose to a quarter turn, or 10 along.
-        double a = j->limited ? jlo : 0, b = j->limited ? jhi : (revolute ? 90 : 10);
-        *run = [hj, limited, a, b] { SS.SetJointLimits(hj, limited, a, b); };
-    }
-    if(j->limited) {
-        ImGui::TextUnformatted("from");
-        ValueField("##joint-lo", SS.JointValueString(hj, jlo), run,
-                   parsed([hj, jhi](double x) { SS.SetJointLimits(hj, true, x, jhi); }), unit);
-        ImGui::TextUnformatted("to");
-        ValueField("##joint-hi", SS.JointValueString(hj, jhi), run,
-                   parsed([hj, jlo](double x) { SS.SetJointLimits(hj, true, jlo, x); }), unit);
-    }
-    ImGui::Spacing();
-    if(ImGui::Button("sweep clearance##joint-sweep")) {
-        *run = [hj] { gSweepText[hj.v] = SS.SweepClearance(hj).text; };
+    for(int dof = 0; dof < j->Motions(); dof++) {
+        bool        angle = j->IsAngle(dof);
+        const char *unit  = angle ? "°" : SS.UnitName();
+        std::string id    = dof == 0 ? "" : std::to_string(dof);
+        auto parsed = [hj, dof](std::function<void(double)> use) {
+            return [hj, dof, use](std::string s) {
+                double v;
+                if(SS.ParseJointValue(hj, s, &v, dof)) use(v);
+            };
+        };
+        ImGui::Spacing();
+        ImGui::TextUnformatted(names[(int)j->type][dof]);
+        ValueField(("##joint-value" + id).c_str(), SS.JointValueString(hj, j->value[dof], dof), run,
+                   parsed([hj, dof](double v) { SS.SetJointValue(hj, v, true, dof); }), unit);
+        // Scrubbing: one undo step per drag of the slider.
+        float lo = (float)(j->limited[dof] ? j->lo[dof] : (angle ? -180 : -50));
+        float hi = (float)(j->limited[dof] ? j->hi[dof] : (angle ? 180 : 50));
+        float v  = (float)j->value[dof];
+        static bool scrubbed = false; // this drag of a slider has made its undo step
+        ImGui::SetNextItemWidth(-1);
+        bool changed = ImGui::SliderFloat(("##joint-scrub" + id).c_str(), &v, lo, hi,
+                                          angle ? "%.1f°" : "%.2f");
+        if(ImGui::IsItemActivated()) scrubbed = false;
+        if(changed) {
+            bool   first = !scrubbed;
+            double value = v;
+            scrubbed     = true;
+            *run = [hj, value, first, dof] { SS.SetJointValue(hj, value, first, dof); };
+        }
+        bool   limited = j->limited[dof];
+        double jlo = j->lo[dof], jhi = j->hi[dof];
+        if(ImGui::Checkbox(("limits##joint-limited" + id).c_str(), &limited)) {
+            // Turned on: from the design pose to a quarter turn, or 10 along.
+            double a = j->limited[dof] ? jlo : 0, b = j->limited[dof] ? jhi : (angle ? 90 : 10);
+            *run = [hj, limited, a, b, dof] { SS.SetJointLimits(hj, limited, a, b, dof); };
+        }
+        if(j->limited[dof]) {
+            ImGui::TextUnformatted("from");
+            ValueField(("##joint-lo" + id).c_str(), SS.JointValueString(hj, jlo, dof), run,
+                       parsed([hj, jhi, dof](double x) {
+                           SS.SetJointLimits(hj, true, x, jhi, dof);
+                       }),
+                       unit);
+            ImGui::TextUnformatted("to");
+            ValueField(("##joint-hi" + id).c_str(), SS.JointValueString(hj, jhi, dof), run,
+                       parsed([hj, jlo, dof](double x) {
+                           SS.SetJointLimits(hj, true, jlo, x, dof);
+                       }),
+                       unit);
+        }
+        if(ImGui::Button(("sweep clearance##joint-sweep" + id).c_str())) {
+            *run = [hj, dof] { gSweepText[hj.v] = SS.SweepClearance(hj, 72, dof).text; };
+        }
     }
     auto it = gSweepText.find(hj.v);
     if(it != gSweepText.end()) ImGui::TextWrapped("%s", it->second.c_str());

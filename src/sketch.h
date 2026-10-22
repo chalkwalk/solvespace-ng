@@ -219,25 +219,38 @@ struct Pose {
 class Joint {
 public:
     enum class Type : uint32_t {
-        REVOLUTE = 1, // value in degrees
-        SLIDER   = 2, // value in mm
+        REVOLUTE    = 1, // value[0] in degrees
+        SLIDER      = 2, // value[0] in mm
+        CYLINDRICAL = 3, // value[0] degrees about the axis, value[1] mm along it (M5b)
+        PLANAR      = 4, // value[0], value[1] mm along the plane's u and v, value[2] degrees
+        BALL        = 5, // value[0..2] degrees about x, then y, then z, through the centre
+        GEAR        = 6, // couples motion 0 of two joints: driven = ratio × driver
     };
+    static const int MAX_MOTIONS = 3;
 
     int         tag;
     hJoint      h;
     Type        type;
     std::string name;
-    hPart       parent, child;
-    hEntity     axisA, axisB; // the axis on the parent, and on the child (equal in design pose)
-    double      value;
-    bool        limited;
-    double      lo, hi;
+    hPart       parent, child; // none for a gear coupling
+    // The axis on the parent, and on the child (equal in the design pose); a ball's centres;
+    // a gear coupling's pitch circles (or what was picked).
+    hEntity     axisA, axisB;
+    double      value[MAX_MOTIONS];
+    bool        limited[MAX_MOTIONS];
+    double      lo[MAX_MOTIONS], hi[MAX_MOTIONS];
+    hJoint      driver, driven; // a gear coupling's joints
+    double      ratio;
 
     // The axis an entity gives: a line segment's, a circle's or arc's (centre and normal),
     // or a face's normal through its point; false for anything else.
     static bool AxisOf(hEntity he, Vector *p, Vector *d);
-    double      Clamp(double v) const;
-    Pose        Motion() const; // the child's motion relative to the parent at value
+    // A point's position, or a circle's or arc's centre.
+    static bool CentreOf(hEntity he, Vector *p);
+    int         Motions() const; // how many values it has
+    bool        IsAngle(int dof) const;
+    double      Clamp(double v, int dof = 0) const;
+    Pose        Motion() const; // the child's motion relative to the parent at its values
     void        Clear() {}
 };
 

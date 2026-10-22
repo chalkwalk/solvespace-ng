@@ -47,6 +47,18 @@ bool Near(Vector a, Vector b) {
     return a.Equals(b, 1e-9);
 }
 
+// The lid made solid, 2 thick (up from the box's top).
+hGroup ExtrudeLid() {
+    Group::MenuGroup(Command::GROUP_EXTRUDE);
+    SS.GenerateAll(SolveSpaceUI::Generate::ALL);
+    Group *e = SK.GetGroup(SS.GW.activeGroup);
+    SK.GetParam(e->h.param(0))->val = 0;
+    SK.GetParam(e->h.param(1))->val = 0;
+    SK.GetParam(e->h.param(2))->val = 1;
+    SS.GenerateAll(SolveSpaceUI::Generate::ALL);
+    return e->h;
+}
+
 }
 
 TEST_CASE(a_revolute_joint_turns_the_child_about_the_shared_axis) {
@@ -89,9 +101,9 @@ TEST_CASE(a_slider_joint_moves_the_child_along_parallel_axes_within_its_limits) 
     SS.SetJointValue(hj, 5);
     CHECK_TRUE(Near(SS.PartPose(lid.part).Apply({ 0, 0, 30 }), { 5, 0, 30 }));
     SS.SetJointLimits(hj, true, 0, 3);
-    CHECK_EQ_EPS(SK.GetJoint(hj)->value, 3);
+    CHECK_EQ_EPS(SK.GetJoint(hj)->value[0], 3);
     SS.SetJointValue(hj, -2);
-    CHECK_EQ_EPS(SK.GetJoint(hj)->value, 0);
+    CHECK_EQ_EPS(SK.GetJoint(hj)->value[0], 0);
     // A part has one parent joint.
     Select({ BoxFrontTop(), lid.side[0].entity(0) });
     CHECK_TRUE(SS.MakeJoint(Joint::Type::REVOLUTE).v == 0);
@@ -125,15 +137,15 @@ TEST_CASE(joints_survive_save_reload_and_undo) {
     SS.SetJointValue(hj, 45);
     SS.SetJointValue(hj, 60);
     SS.UndoUndo();
-    CHECK_EQ_EPS(SK.GetJoint(hj)->value, 45);
+    CHECK_EQ_EPS(SK.GetJoint(hj)->value[0], 45);
     Platform::Path path = helper->GetAssetPath(__FILE__, "joints.slvs", "out");
     CHECK_TRUE(SS.SaveToFile(path));
     CHECK_TRUE(SS.LoadFromFile(path));
     SS.AfterNewFile();
     Joint *j = SK.GetJoint(hj);
-    CHECK_TRUE(j->type == Joint::Type::REVOLUTE && j->child == lid.part && j->limited);
-    CHECK_EQ_EPS(j->value, 45);
-    CHECK_EQ_EPS(j->hi, 120);
+    CHECK_TRUE(j->type == Joint::Type::REVOLUTE && j->child == lid.part && j->limited[0]);
+    CHECK_EQ_EPS(j->value[0], 45);
+    CHECK_EQ_EPS(j->hi[0], 120);
     CHECK_TRUE(Near(SS.PartPose(lid.part).Apply({ 10, 6, 30 }),
                     Vector::From(10, 6 * cos(PI / 4), 30 + 6 * sin(PI / 4))));
     remove(path.raw.c_str());
@@ -204,15 +216,146 @@ TEST_CASE(grab_turns_a_hinged_part_with_the_mouse) {
     CHECK_TRUE(SS.GW.StartGrab(SS.GW.ProjectPoint({ 5, 6, 30 })));
     SS.GW.GrabMouseMoved(SS.GW.ProjectPoint({ 5, 6 * cos(PI / 4), 30 + 6 * sin(PI / 4) }));
     SS.GW.GrabMouseMoved(SS.GW.ProjectPoint({ 5, 0, 36 }));
-    CHECK_TRUE(fabs(SK.GetJoint(hj)->value - 90) < 1e-6);
+    CHECK_TRUE(fabs(SK.GetJoint(hj)->value[0] - 90) < 1e-6);
     SS.GW.GrabCancel();
-    CHECK_EQ_EPS(SK.GetJoint(hj)->value, 0);
+    CHECK_EQ_EPS(SK.GetJoint(hj)->value[0], 0);
     // A typed angle; confirmed, it is one undo step.
     Select({ SK.GetGroup(lidSolid)->Remap(Entity::NO_ENTITY, Group::REMAP_TOP) });
     CHECK_TRUE(SS.GW.StartGrab(SS.GW.ProjectPoint({ 5, 6, 30 })));
     SS.GW.GrabSetTyped(30);
     SS.GW.GrabConfirm();
-    CHECK_EQ_EPS(SK.GetJoint(hj)->value, 30);
+    CHECK_EQ_EPS(SK.GetJoint(hj)->value[0], 30);
     SS.UndoUndo();
-    CHECK_EQ_EPS(SK.GetJoint(hj)->value, 0);
+    CHECK_EQ_EPS(SK.GetJoint(hj)->value[0], 0);
+}
+
+// Multi-motion joints (M5b): a cylindrical joint turns and slides about one line.
+TEST_CASE(a_cylindrical_joint_turns_and_slides_about_its_axis) {
+    CHECK_LOAD("box.slvs");
+    Lid lid = LidOnTop();
+    Select({ BoxFrontTop(), lid.side[2].entity(0) }); // parallel, not one line
+    CHECK_TRUE(SS.MakeJoint(Joint::Type::CYLINDRICAL).v == 0);
+    Select({ BoxFrontTop(), lid.side[0].entity(0) });
+    hJoint hj = SS.MakeJoint(Joint::Type::CYLINDRICAL);
+    CHECK_TRUE(hj.v != 0);
+    CHECK_TRUE(SK.GetJoint(hj)->Motions() == 2);
+    SS.SetJointValue(hj, 90, true, 0);
+    SS.SetJointValue(hj, 5, true, 1);
+    CHECK_TRUE(Near(SS.PartPose(lid.part).Apply({ 10, 6, 30 }), { 15, 0, 36 }));
+    // Each motion has its own limits.
+    SS.SetJointLimits(hj, true, 0, 3, 1);
+    CHECK_EQ_EPS(SK.GetJoint(hj)->value[1], 3);
+    CHECK_EQ_EPS(SK.GetJoint(hj)->value[0], 90);
+    SS.SetJointValue(hj, 400, true, 0);
+    CHECK_EQ_EPS(SK.GetJoint(hj)->value[0], 400);
+    SS.SetJointValue(hj, 90, true, 0);
+    Platform::Path path = helper->GetAssetPath(__FILE__, "cylindrical.slvs", "out");
+    CHECK_TRUE(SS.SaveToFile(path));
+    CHECK_TRUE(SS.LoadFromFile(path));
+    SS.AfterNewFile();
+    Joint *j = SK.GetJoint(hj);
+    CHECK_TRUE(j->type == Joint::Type::CYLINDRICAL && !j->limited[0] && j->limited[1]);
+    CHECK_EQ_EPS(j->value[0], 90);
+    CHECK_EQ_EPS(j->value[1], 3);
+    CHECK_EQ_EPS(j->hi[1], 3);
+    remove(path.raw.c_str());
+}
+
+// A planar joint slides the child in a shared plane and turns it about the plane's normal.
+TEST_CASE(a_planar_joint_slides_and_turns_in_its_plane) {
+    CHECK_LOAD("box.slvs");
+    Lid    lid      = LidOnTop();
+    hGroup lidSolid = ExtrudeLid();
+    hEntity under   = SK.GetGroup(lidSolid)->Remap(Entity::NO_ENTITY, Group::REMAP_BOTTOM);
+    Select({ Cap(Group::REMAP_TOP), lid.side[0].entity(0) }); // a line in the plane: no
+    CHECK_TRUE(SS.MakeJoint(Joint::Type::PLANAR).v == 0);
+    Select({ Cap(Group::REMAP_TOP), under });
+    hJoint hj = SS.MakeJoint(Joint::Type::PLANAR);
+    CHECK_TRUE(hj.v != 0);
+    CHECK_TRUE(SK.GetJoint(hj)->Motions() == 3);
+    Vector p, n;
+    CHECK_TRUE(Joint::AxisOf(SK.GetJoint(hj)->axisA, &p, &n));
+    Vector u = n.Normal(0), v = n.Normal(1);
+    SS.SetJointValue(hj, 3, true, 0);
+    SS.SetJointValue(hj, 4, true, 1);
+    Vector moved = SS.PartPose(lid.part).Apply({ 10, 6, 30 });
+    CHECK_TRUE(Near(moved, Vector::From(10, 6, 30).Plus(u.ScaledBy(3)).Plus(v.ScaledBy(4))));
+    SS.SetJointValue(hj, 90, true, 2);
+    Pose pose = SS.PartPose(lid.part);
+    // Turned a quarter about the normal: the lid's edge along X now runs along Y; it stays in
+    // the plane.
+    Vector edge = pose.Apply({ 10, 0, 30 }).Minus(pose.Apply({ 0, 0, 30 }));
+    CHECK_TRUE(Near(edge, n.Cross(Vector::From(10, 0, 0))));
+    CHECK_EQ_EPS(pose.Apply({ 3, 3, 30 }).z, 30);
+}
+
+// A ball joint turns the child about x, then y, then z through a shared centre.
+TEST_CASE(a_ball_joint_turns_about_its_centre) {
+    CHECK_LOAD("box.slvs");
+    Lid     lid    = LidOnTop();
+    hEntity corner = SK.GetEntity(BoxFrontTop())->point[0]; // (0,0,30)
+    Select({ corner, lid.side[2].entity(1) });               // (10,6,30): apart
+    CHECK_TRUE(SS.MakeJoint(Joint::Type::BALL).v == 0);
+    Select({ corner, lid.side[0].entity(1) });
+    hJoint hj = SS.MakeJoint(Joint::Type::BALL);
+    CHECK_TRUE(hj.v != 0);
+    SS.SetJointValue(hj, 90, true, 0);
+    CHECK_TRUE(Near(SS.PartPose(lid.part).Apply({ 10, 6, 30 }), { 10, 0, 36 }));
+    SS.SetJointValue(hj, 90, true, 2);
+    CHECK_TRUE(Near(SS.PartPose(lid.part).Apply({ 10, 6, 30 }), { 0, 10, 36 }));
+}
+
+// G with a joint of several motions: X, Y and Z pick one, else the joint's natural drag.
+TEST_CASE(grab_picks_a_motion_of_a_multi_motion_joint) {
+    CHECK_LOAD("box.slvs");
+    SS.showToolbar  = false;
+    Lid    lid      = LidOnTop();
+    hGroup lidSolid = ExtrudeLid();
+    hEntity under   = SK.GetGroup(lidSolid)->Remap(Entity::NO_ENTITY, Group::REMAP_BOTTOM);
+    hEntity top     = SK.GetGroup(lidSolid)->Remap(Entity::NO_ENTITY, Group::REMAP_TOP);
+    Select({ Cap(Group::REMAP_TOP), under });
+    hJoint hj = SS.MakeJoint(Joint::Type::PLANAR);
+    // Looking down on the plane: the lid follows the mouse in it.
+    SS.GW.projRight = Vector::From(1, 0, 0);
+    SS.GW.projUp    = Vector::From(0, 1, 0);
+    SS.GW.offset    = Vector::From(0, 0, 0);
+    Select({ top });
+    CHECK_TRUE(SS.GW.StartGrab(SS.GW.ProjectPoint({ 5, 3, 32 })));
+    SS.GW.GrabMouseMoved(SS.GW.ProjectPoint({ 8, 7, 32 }));
+    Vector moved = SS.PartPose(lid.part).Apply({ 5, 3, 30 });
+    CHECK_TRUE(moved.Equals({ 8, 7, 30 }, 1e-6));
+    // Z picks the turn; a typed angle sets it, and the slide goes back.
+    SS.GW.GrabSetAxis(2);
+    SS.GW.GrabSetTyped(30);
+    CHECK_EQ_EPS(SK.GetJoint(hj)->value[2], 30);
+    CHECK_EQ_EPS(SK.GetJoint(hj)->value[0], 0);
+    SS.GW.GrabConfirm();
+    SS.UndoUndo();
+    CHECK_EQ_EPS(SK.GetJoint(hj)->value[2], 0);
+}
+
+// G on a ball-jointed part turns it like a trackball: the mouse pushes its near side.
+TEST_CASE(grab_turns_a_ball_jointed_part_like_a_trackball) {
+    CHECK_LOAD("box.slvs");
+    SS.showToolbar  = false;
+    Lid    lid      = LidOnTop();
+    hGroup lidSolid = ExtrudeLid();
+    hEntity top     = SK.GetGroup(lidSolid)->Remap(Entity::NO_ENTITY, Group::REMAP_TOP);
+    Select({ SK.GetEntity(BoxFrontTop())->point[0], lid.side[0].entity(1) });
+    hJoint hj = SS.MakeJoint(Joint::Type::BALL);
+    CHECK_TRUE(hj.v != 0);
+    // Looking down -Z; the mouse moves along +X on screen: a turn about +Y.
+    SS.GW.projRight = Vector::From(1, 0, 0);
+    SS.GW.projUp    = Vector::From(0, 1, 0);
+    SS.GW.offset    = Vector::From(0, 0, 0);
+    SS.GW.scale     = 5;
+    Select({ top });
+    Point2d from = SS.GW.ProjectPoint({ 5, 3, 32 });
+    CHECK_TRUE(SS.GW.StartGrab(from));
+    SS.GW.GrabMouseMoved({ from.x + 60, from.y });
+    Joint *j = SK.GetJoint(hj);
+    CHECK_TRUE(fabs(j->value[0]) < 1e-6 && fabs(j->value[2]) < 1e-6);
+    CHECK_TRUE(fabs(j->value[1] - 30) < 1e-6);
+    SS.GW.GrabCancel();
+    CHECK_EQ_EPS(SK.GetJoint(hj)->value[1], 0);
 }
