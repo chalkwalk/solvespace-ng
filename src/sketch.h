@@ -290,7 +290,8 @@ public:
     // SHELL: which side of the faces the wall goes.
     using ShellSide = SolveSpace::ShellSide;
     ShellSide shellSide = ShellSide::INSIDE;
-    // How far the shell's inner and outer walls are from each face, outwards.
+    // How far the shell's inner and outer walls are from each face, outwards, per unit of
+    // the thickness.
     double ShellInner() const;
     double ShellOuter() const;
     // HOLE: the hole centres, points in a workplane (each hole goes along -normal of its
@@ -390,6 +391,7 @@ public:
         REMAP_SHELL_INNER      = 1050,
         REMAP_DRAFT_FACE       = 1051,
         REMAP_SHELL_OUTER      = 1052,
+        REMAP_DRAFT_TOP        = 1053, // a drafted face's top edge (a line)
         // A hole's entities, Remap(point, n): its centre on the face and at the bottom, its
         // axis, and its seat face (whose point is Remap(point, REMAP_HOLE_SEAT + 10)).
         REMAP_HOLE_TOP         = 1080,
@@ -420,7 +422,8 @@ public:
     hEntity FeatureAnchor();
     // Gives a fillet, chamfer, shell or draft its FEATURE_SIZE dimension; false for others.
     bool AddFeatureSizeDimension();
-    void AddFeatureFace(EntityList *el, hEntity face, int which, Vector point, Vector normal);
+    void AddFeatureFace(EntityList *el, hEntity face, int which, Vector point, Vector normal,
+                        Vector along = {});
     void UpdateFaceOut();
     void MakeShellFaces(EntityList *el);
     void MakeDraftFaces(EntityList *el);

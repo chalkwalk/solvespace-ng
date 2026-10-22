@@ -235,7 +235,9 @@ static void DrawGroup(Group *g, std::function<void()> *run) {
                             : type == Type::SHELL   ? "wall thickness"
                                                     : "angle (degrees)";
         ImGui::TextUnformatted(label);
-        std::string size = type == Type::DRAFT ? ssprintf("%.2f", g->valA) : SS.MmToString(g->valA);
+        // The solved size: what its dimension holds, or what constraints and drags set.
+        std::string size = type == Type::DRAFT ? ssprintf("%.2f", atan(g->FeatureSize()) * 180 / PI)
+                                               : SS.MmToString(g->FeatureSize());
         ValueField("##feature-size", size, run,
                    [hg](std::string s) { SS.SetFeatureSize(hg, s); });
         if(type == Type::SHELL) {

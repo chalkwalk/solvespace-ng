@@ -1043,10 +1043,12 @@ void Group::Generate(EntityList *entity, ParamList *param)
             return;
 
         case Type::SHELL:
+            AddParam(param, h.param(0), valA);
             MakeShellFaces(entity);
             return;
 
         case Type::DRAFT:
+            AddParam(param, h.param(0), tan(valA * PI / 180));
             MakeDraftFaces(entity);
             return;
 
@@ -1253,14 +1255,22 @@ void Group::AddFeatureLine(EntityList *el, hEntity edge, int which, Vector a, Ve
     el->Add(&en);
 }
 
-void Group::AddFeatureFace(EntityList *el, hEntity face, int which, Vector point, Vector normal) {
+void Group::AddFeatureFace(EntityList *el, hEntity face, int which, Vector point, Vector normal,
+                           Vector along) {
     Entity en   = {};
     en.group    = h;
     en.style    = hStyle{ Style::REFERENCE };
     en.type     = Entity::Type::POINT_N_COPY;
     en.h        = Remap(face, which + 10);
     en.numPoint = point;
+    if(along.Magnitude() > LENGTH_EPS) {
+        // Moved by the feature's size, along `along` per unit of it.
+        en.type      = Entity::Type::POINT_ALONG_PARAM;
+        en.param[0]  = h.param(0);
+        en.numNormal = Quaternion::From(0, along.x, along.y, along.z);
+    }
     el->Add(&en);
+    en.param[0] = {};
 
     en.type      = Entity::Type::FACE_NORMAL_PT;
     en.numPoint  = {};
@@ -1289,19 +1299,20 @@ void Group::UpdateFaceOut() {
 
 double Group::ShellInner() const {
     switch(shellSide) {
-        case ShellSide::INSIDE:  return -valA;
+        case ShellSide::INSIDE:  return -1;
         case ShellSide::OUTSIDE: return 0;
-        case ShellSide::BOTH:    return -valA / 2;
+        case ShellSide::BOTH:    return -0.5;
     }
-    return -valA;
+    return -1;
 }
 
 double Group::ShellOuter() const {
-    return ShellInner() + valA;
+    return ShellInner() + 1;
 }
 
 // A shell's derived entities (AGENTS.md section 6): for every face entity of the groups before
-// it, the wall's inner and outer faces, offset from it by ShellInner() and ShellOuter(). They always exist; with the
+// it, the wall's inner and outer faces, offset from it by ShellInner() and ShellOuter() times
+// the thickness (the group's parameter). They always exist; with the
 // solid's faces not yet known they lie on the outer faces.
 void Group::MakeShellFaces(EntityList *el) {
     UpdateFaceOut();
@@ -1319,10 +1330,10 @@ void Group::MakeShellFaces(EntityList *el) {
         Vector  point  = f->FaceGetPointNum();
         auto    it     = faceOut.find(he.v);
         double  out    = it == faceOut.end() ? 0 : it->second;
-        AddFeatureFace(el, he, REMAP_SHELL_INNER, point.Plus(normal.ScaledBy(out * ShellInner())),
-                       normal);
-        AddFeatureFace(el, he, REMAP_SHELL_OUTER, point.Plus(normal.ScaledBy(out * ShellOuter())),
-                       normal);
+        AddFeatureFace(el, he, REMAP_SHELL_INNER, point, normal,
+                       normal.ScaledBy(out * ShellInner()));
+        AddFeatureFace(el, he, REMAP_SHELL_OUTER, point, normal,
+                       normal.ScaledBy(out * ShellOuter()));
     }
 }
 
@@ -1338,7 +1349,7 @@ static Vector DraftPull(const Entity *face) {
 // the entity's.
 void Group::MakeDraftFaces(EntityList *el) {
     UpdateFaceOut();
-    double angle = valA * PI / 180;
+    double angle = atan(FeatureSize()); // the parameter is the angle's tangent
     for(hEntity he : faces) {
         Entity *f = SK.entity.FindByIdNoOops(he);
         if(f == nullptr) continue;
@@ -1347,7 +1358,18 @@ void Group::MakeDraftFaces(EntityList *el) {
         auto   it     = faceOut.find(he.v);
         if(it != faceOut.end()) normal = normal.ScaledBy(it->second);
         Vector drafted = normal.ScaledBy(cos(angle)).Plus(pull.ScaledBy(sin(angle)));
-        AddFeatureFace(el, he, REMAP_DRAFT_FACE, f->FaceGetPointNum(), drafted);
+        AddFeatureFace(el, he, REMAP_DRAFT_FACE, f->FaceGetPointNum(), drafted, {});
+        // The drafted face's top edge: its base line (the sketch line, which the side face
+        // was made from) raised to the extrusion's top, in by the height times tan(angle).
+        Group *eg     = SK.GetGroup(f->group);
+        Vector extent = Vector::From(eg->h.param(0), eg->h.param(1), eg->h.param(2));
+        bool   one    = eg->subtype == Subtype::ONE_SIDED || eg->subtype == Subtype::ONE_SKEWED;
+        Vector up     = extent.ScaledBy(one ? 2 : 1);
+        Vector a      = f->numPoint;
+        Vector b      = a.Plus(Vector::From(f->numNormal.vx, f->numNormal.vy, f->numNormal.vz));
+        double height = up.Dot(pull);
+        AddFeatureLine(el, he, REMAP_DRAFT_TOP, a.Plus(up), b.Plus(up),
+                       normal.ScaledBy(-height));
     }
 }
 
@@ -1545,6 +1567,15 @@ hEntity Group::FeatureAnchor() {
         case Type::CHAMFER:
             if(!edges.empty()) derived = Remap(edges[0], REMAP_CHAMFER_EDGE_1 + 10);
             break;
+        case Type::DRAFT:
+            if(!faces.empty()) derived = Remap(faces[0], REMAP_DRAFT_TOP + 10);
+            break;
+        case Type::SHELL:
+            // The first face's moving wall face.
+            for(const Entity &e : SK.entity) {
+                if(e.group == h && e.type == Entity::Type::POINT_ALONG_PARAM) return e.h;
+            }
+            break;
         default: break;
     }
     if(derived.v && exists(derived)) return derived;
@@ -1557,7 +1588,10 @@ hEntity Group::FeatureAnchor() {
 }
 
 bool Group::AddFeatureSizeDimension() {
-    if(type != Type::FILLET && type != Type::CHAMFER) return false;
+    if(type != Type::FILLET && type != Type::CHAMFER && type != Type::SHELL &&
+       type != Type::DRAFT) {
+        return false;
+    }
     hEntity anchor = FeatureAnchor();
     if(!anchor.v) return false;
     Constraint c = {};

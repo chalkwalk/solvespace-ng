@@ -114,7 +114,14 @@ bool SolveSpaceUI::SetFeatureSize(hGroup hg, const std::string &expr) {
             return false;
         }
         UndoRemember();
+        g       = SK.GetGroup(hg);
         g->valA = deg;
+        for(Constraint &c : SK.constraint) {
+            if(c.group == hg && c.type == Constraint::Type::FEATURE_SIZE && !c.reference) {
+                c.valA = deg;
+            }
+        }
+        if(Param *p = SK.param.FindByIdNoOops(g->h.param(0))) p->val = tan(deg * PI / 180);
         MarkGroupDirty(hg);
         return true;
     }

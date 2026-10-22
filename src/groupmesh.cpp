@@ -238,7 +238,7 @@ KernelJob Group::BuildKernelJob() {
         }
     } else if(type == Type::DRAFT) {
         job.op   = KernelJob::Op::DRAFT;
-        job.size = valA * PI / 180;
+        job.size = atan(FeatureSize());
         for(hEntity he : faces) {
             Entity *f = SK.entity.FindByIdNoOops(he);
             if(f == nullptr) continue;
@@ -249,7 +249,7 @@ KernelJob Group::BuildKernelJob() {
         }
     } else if(type == Type::SHELL) {
         job.op        = KernelJob::Op::SHELL;
-        job.size      = valA;
+        job.size      = FeatureSize();
         job.shellSide = shellSide;
         for(hEntity he : faces) job.faceNames.push_back(he.v);
     } else if(type == Type::LINKED) {

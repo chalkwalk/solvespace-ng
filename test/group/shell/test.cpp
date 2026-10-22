@@ -151,3 +151,29 @@ TEST_CASE(the_shell_side_survives_save_and_reload) {
     remove(path.raw.c_str());
 }
 #endif
+
+#if defined(HAVE_OCCT)
+// M3h: the thickness is a solver parameter, held by the dimension the shell starts with.
+TEST_CASE(a_shell_starts_with_a_thickness_dimension_and_its_inner_faces_set_it_when_free) {
+    CHECK_LOAD("box.slvs");
+    SS.kernelKind = KernelKind::OCCT;
+    hGroup hg = MakeFeature(Command::GROUP_SHELL, { Cap(Group::REMAP_TOP) })->h;
+    Constraint *size = nullptr;
+    for(Constraint &c : SK.constraint) {
+        if(c.group == hg && c.type == Constraint::Type::FEATURE_SIZE) size = &c;
+    }
+    CHECK_TRUE(size != nullptr);
+    CHECK_TRUE(SK.GetGroup(hg)->solved.dof == 0);
+    size->reference = true;
+    SS.MarkGroupDirty(hg);
+    SS.GenerateAll(SolveSpaceUI::Generate::ALL);
+    // The front's inner face dragged to y = 2: walls 2 thick.
+    Entity *inner = SK.GetEntity(SK.GetGroup(hg)->Remap(SideFace(5), Group::REMAP_SHELL_INNER));
+    SK.GetEntity(inner->point[0])->PointForceTo({ 0, 2, 0 });
+    SS.GenerateAll(SolveSpaceUI::Generate::ALL);
+    CHECK_EQ_EPS(SK.GetParam(SK.GetGroup(hg)->h.param(0))->val, 2);
+    MassProps mp;
+    CHECK_TRUE(SS.MassProperties(&mp));
+    CHECK_TRUE(fabs(mp.volume - (6000 - 6 * 16 * 28)) < 1e-6);
+}
+#endif
