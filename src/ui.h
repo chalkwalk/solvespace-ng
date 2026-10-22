@@ -171,6 +171,12 @@ enum class Command : uint32_t {
     PART_NEW,
     JOINT_REVOLUTE,
     JOINT_SLIDER,
+    JOINT_CYLINDRICAL,
+    JOINT_PLANAR,
+    JOINT_BALL,
+    JOINT_GEAR,
+    GROUP_FIT,
+    GROUP_SPLIT,
     DESIGN_POSE,
     // Constrain
     DISTANCE_DIA,
@@ -728,14 +734,20 @@ public:
         bool                                    wasUnsaved; // restored by a cancel
         bool                                    byHover;    // nothing was selected
         int                                     undoCnt, undoWrite; // the grab's own entry
-        // Grabbing a face of a part a joint moves turns or slides the joint (M5a): its value
-        // at the start, and the angle the mouse has gone round its axis.
+        // Grabbing a face of a part a joint moves drives the joint (M5a, M5b): its values at
+        // the start, the motion X/Y/Z picked (-1: the joint's own), the angle the mouse has
+        // gone round the axis, and the free movement when the motion was picked.
         hJoint                                  joint;
-        double                                  jointStart, jointTurned;
+        double                                  jointStart[Joint::MAX_MOTIONS], jointTurned;
+        int                                     jointDof;
         Vector                                  jointRadial; // the mouse from the axis, last
+        Vector                                  jointFrom;
     } grab;
-    // The joint's axis as shown (moved with its parent part), and the mouse's point on the
-    // plane across it.
+    // The motion a joint grab drives: the one X, Y or Z picked, else the joint's own (a turn
+    // or a slide, 0), or -1 for a planar joint's two slides or a ball's trackball.
+    int    GrabJointDof();
+    // That motion's axis, or direction of slide, as shown (moved with the parent part), and
+    // the mouse's point on the plane across it.
     bool   GrabJointAxis(Vector *p, Vector *d);
     Vector GrabJointRadial(Point2d mouse);
     bool   StartGrab(Point2d mouse); // selection, else hover; false (no undo entry) if nothing

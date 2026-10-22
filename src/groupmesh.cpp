@@ -230,6 +230,27 @@ KernelJob Group::BuildKernelJob() {
             job.endName      = Remap(profiles[0], REMAP_SWEEP_END).v;
             job.cornerRadius = valB;
         }
+    } else if(type == Type::FIT) {
+        Vector dir;
+        double s0, s1;
+        job.op    = KernelJob::Op::FIT;
+        job.loops = &SK.GetGroup(opA)->bezierLoops;
+        FitExtrusion(&dir, &s0, &s1, &job.size);
+        job.tbot = dir.ScaledBy(s0);
+        job.ttop = dir.ScaledBy(s1);
+    } else if(type == Type::SPLIT) {
+        Vector p, n;
+        job.op = KernelJob::Op::SPLIT;
+        if(SplitPlane(&p, &n)) {
+            job.splitPoint  = p;
+            job.splitNormal = fit.female ? n : n.ScaledBy(-1);
+        }
+        if(fit.dowel) {
+            const Fit *f       = SS.FindFit(fit.kind);
+            job.dowelDiameter  = valA;
+            job.dowelClearance = f ? f->clearance : 0;
+            job.dowelDepth     = fit.depth / 2 + std::max(job.dowelClearance, 0.0);
+        }
     } else if(type == Type::HOLE) {
         job.op   = KernelJob::Op::HOLE;
         job.hole = hole;
@@ -487,6 +508,9 @@ Group *Group::PreviousGroupInPart() const {
 Group *Group::RunningMeshGroup() const {
     if(type == Type::TRANSLATE || type == Type::ROTATE) {
         return SK.GetGroup(opA)->RunningMeshGroup();
+    } else if(type == Type::SPLIT) {
+        // Both halves are cut from the solid split.
+        return SK.GetGroup(opB);
     } else {
         // Each part has its own solid (M4a).
         return PreviousGroupInPart();
@@ -508,6 +532,8 @@ bool Group::IsMeshGroup() {
         case Group::Type::HOLE:
         case Group::Type::LOFT:
         case Group::Type::SWEEP:
+        case Group::Type::FIT:
+        case Group::Type::SPLIT:
             return true;
 
         default:

@@ -219,26 +219,60 @@ struct Pose {
 class Joint {
 public:
     enum class Type : uint32_t {
-        REVOLUTE = 1, // value in degrees
-        SLIDER   = 2, // value in mm
+        REVOLUTE    = 1, // value[0] in degrees
+        SLIDER      = 2, // value[0] in mm
+        CYLINDRICAL = 3, // value[0] degrees about the axis, value[1] mm along it (M5b)
+        PLANAR      = 4, // value[0], value[1] mm along the plane's u and v, value[2] degrees
+        BALL        = 5, // value[0..2] degrees about x, then y, then z, through the centre
+        GEAR        = 6, // couples motion 0 of two joints: driven = ratio × driver
     };
+    static const int MAX_MOTIONS = 3;
 
     int         tag;
     hJoint      h;
     Type        type;
     std::string name;
-    hPart       parent, child;
-    hEntity     axisA, axisB; // the axis on the parent, and on the child (equal in design pose)
-    double      value;
-    bool        limited;
-    double      lo, hi;
+    hPart       parent, child; // none for a gear coupling
+    // The axis on the parent, and on the child (equal in the design pose); a ball's centres;
+    // a gear coupling's pitch circles (or what was picked).
+    hEntity     axisA, axisB;
+    double      value[MAX_MOTIONS];
+    bool        limited[MAX_MOTIONS];
+    double      lo[MAX_MOTIONS], hi[MAX_MOTIONS];
+    hJoint      driver, driven; // a gear coupling's joints
+    double      ratio;
 
     // The axis an entity gives: a line segment's, a circle's or arc's (centre and normal),
     // or a face's normal through its point; false for anything else.
     static bool AxisOf(hEntity he, Vector *p, Vector *d);
-    double      Clamp(double v) const;
-    Pose        Motion() const; // the child's motion relative to the parent at value
+    // A point's position, or a circle's or arc's centre.
+    static bool CentreOf(hEntity he, Vector *p);
+    int         Motions() const; // how many values it has
+    bool        IsAngle(int dof) const;
+    double      Clamp(double v, int dof = 0) const;
+    Pose        Motion() const; // the child's motion relative to the parent at its values
     void        Clear() {}
+};
+
+// The fit table (AGENTS.md section 7, M5b): a named clearance, tuned per printer, that fit
+// joints take their gap from (mm; negative for an interference, a press fit). A document
+// that hasn't changed it uses the defaults (SolveSpaceUI::FitTable).
+class hFit {
+public:
+    uint32_t v;
+};
+
+template<>
+struct IsHandleOracle<hFit> : std::true_type {};
+
+class Fit {
+public:
+    int         tag;
+    hFit        h;
+    std::string name;
+    double      clearance;
+
+    void Clear() {}
 };
 
 // A set of requests. Every request must have an associated group.
@@ -273,7 +307,9 @@ public:
         DRAFT                         = 5403,
         HOLE                          = 5404,
         LOFT                          = 5405,
-        SWEEP                         = 5406
+        SWEEP                         = 5406,
+        FIT                           = 5407,
+        SPLIT                         = 5408,
     };
     Group::Type type;
 
@@ -385,6 +421,29 @@ public:
     using HoleSpec = SolveSpace::HoleSpec;
     std::vector<hEntity> points;
     HoleSpec             hole;
+    // FIT (M5b): one of a fit joint's pair of groups, one in each part, both made from one
+    // closed profile (opA's sketch, in a workplane). The male's adds the profile extruded by
+    // the depth (a peg); the female's cuts it offset by the fit's clearance, and deeper by
+    // it (a pocket). A dowel joint cuts a pocket in both, half the depth each side of the
+    // profile, for a separate pin. The extrusion goes along the workplane's normal, or
+    // against it when flipped. Saved as Group.fit.*.
+    struct FitSpec {
+        hFit   kind    = {}; // from the fit table
+        int    female  = 0;
+        int    dowel   = 0;
+        int    flip    = 0;
+        double depth   = 0;
+        hGroup partner = {}; // the pair's other group
+    } fit;
+    // SPLIT (M5b): one of a split's pair of groups: the part keeps the half of opB's solid
+    // behind the plane (predef.entityB, a workplane or a flat face; its normal reversed when
+    // fit.flip), and a new part (fit.female) the half in front. With fit.dowel, Ø valA
+    // dowels fit.depth long go across the cut, fit.kind's clearance in each half's pockets.
+    // The plane's point and normal (unit, flipped as asked); false if its entity is gone.
+    bool SplitPlane(Vector *p, Vector *n) const;
+    // FIT: the direction the joint goes in (unit; from the male into the female), and the
+    // extrusion along it from the profile's plane (s0 to s1) before the offset by offset.
+    void FitExtrusion(Vector *dir, double *s0, double *s1, double *offset) const;
     // LOFT: a curve of each profile sketch, in order (the profile is the closed loop it is
     // in); SWEEP: a curve of the profile sketch, then the path's curves.
     std::vector<hEntity> profiles;

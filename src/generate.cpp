@@ -93,7 +93,10 @@ bool SolveSpaceUI::PruneGroups(hGroup hg) {
     hadEdges = hadEdges || !g->profiles.empty();
     g->profiles.erase(std::remove_if(g->profiles.begin(), g->profiles.end(), gone),
                       g->profiles.end());
-    if(GroupsInOrder(g->opA, hg) && (!hadEdges || !g->edges.empty() || !g->faces.empty() || !g->points.empty() ||
+    // A fit joint's groups go together.
+    bool partnerGone = (g->type == Group::Type::FIT || g->type == Group::Type::SPLIT) &&
+                       !SK.group.FindByIdNoOops(g->fit.partner);
+    if(!partnerGone && GroupsInOrder(g->opA, hg) && (!hadEdges || !g->edges.empty() || !g->faces.empty() || !g->points.empty() ||
                                   !g->profiles.empty()) &&
        EntityExists(g->predef.origin) &&
        EntityExists(g->predef.entityB) &&

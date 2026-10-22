@@ -511,8 +511,49 @@ XCAF colours and names, exact hidden-line drawing export (`HLRBRep`).
   refines the minimum by golden section, and reports e.g. "Minimum gap 0.20 mm at 47.0°" or
   where the parts touch or overlap. This meets M5's "done when" (`test/group/hinge`: a Ø5 pin
   in a Ø5.4 hole clears by 0.2 at every angle).
-- **Still to come (M5b):** the fit table, fit joints, split with automatic joints, and
-  cylindrical, planar, ball and gear joints.
+
+**Built in M5b (2026-10-22, branch `ng/m5b-fits`):**
+- **More joints:** a joint keeps up to three motions (`Joint::value[3]`, each with its own
+  limits; motion 0 keeps M5a's keys, motions 1 and 2 save as `Joint.value1`...). The
+  commands are in New Group ▸ Joints:
+  - **Cylindrical:** turn and slide about one line.
+  - **Planar:** slide along u and v in a shared plane, turn about its normal.
+  - **Ball:** turn about x, then y, then z through a shared centre (points, circles or arcs).
+  - **Properties** has a row per motion (`joint-value`, `joint-value1`, ...): value, scrub,
+    limits, sweep.
+  - **`G`:** X, Y and Z pick a motion. Unpicked, a planar joint follows the mouse in its
+    plane and a ball turns like a trackball.
+- **Gear and rack couplings** (`joint-gear`, `Joint::Type::GEAR`) tie motion 0 of two joints:
+  driven = ratio × driver.
+  - The ratio comes from the picked pitch circles: −rA/rB for two gears, r·π/180 mm per
+    degree for a rack. Properties edits it.
+  - Either joint drives the other, limits clamp them together, and a clearance sweep moves
+    both.
+- **The fit table** (`SK.fit`, `AddFit` records, `src/fit.cpp`): named clearances per side,
+  press −0.1, slide 0.2 and loose 0.4 mm by default.
+  - A document saves its table only once it has been edited.
+  - Inspect ▸ Fit Table (`ui.fit-table`) edits it in Properties.
+- **Fit joints** (New Group ▸ Joints ▸ Fit Joint, `group-fit`) are made from the active
+  sketch: a closed profile in a workplane where the parts meet. Pick the male part, then the
+  female. This makes a pair of `FIT` groups (`Group.fit.*`), one in each part, which edit
+  and delete together.
+  - The male gets the profile extruded as a peg.
+  - The female gets a pocket: the peg offset by the fit's clearance (OCCT, arc joins, so its
+    convex edges are rounded and every gap is the clearance) and deeper by it.
+  - The dowel style cuts a pocket in both parts, half the pin's length each side.
+  - Pin-hole, dovetail, slide and snap fits are the same joint with the profile drawn to
+    suit.
+- **Split Part** (`group-split`, `src/split.cpp`) cuts the active group's part by a picked
+  workplane or flat face. The part keeps the half behind it and a new part gets the half in
+  front (a pair of `SPLIT` groups that cut `opB`'s solid).
+  - **Dowels** go across the cut by default (Ø4, 10 long, press fit), placed on each cut
+    region: two on its long axis, else one at its centre, clear of its edges by the diameter.
+  - **Too small:** a region too small for a dowel is a Problems note.
+- **Rulings (2026-10-22):**
+  - A split's automatic joints are dowels; a dovetail at a split waits for a way to choose
+    its profile.
+  - A ball's motions are angles about the parent's x, y and z.
+  - Gears couple only motion 0, the angle of a cylindrical joint.
 
 ## 8. Milestones and testing
 

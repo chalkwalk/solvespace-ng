@@ -136,6 +136,7 @@ void InitNgUi() {
     Actions().Bind("ui.toggle-properties", [] { PropertiesPanel().Toggle(); });
     Actions().Bind("ui.toggle-problems", [] { ProblemsPanel().Toggle(); });
     Actions().Bind("ui.show-shortcuts", [] { ShortcutsPanel().Toggle(); });
+    Actions().Bind("ui.fit-table", [] { ShowFitTableInProperties(); });
     Actions().Bind("ui.pie-add", [] {
         Pie().Open("Add", {
             { "Line", "line-segment", true, "line" },

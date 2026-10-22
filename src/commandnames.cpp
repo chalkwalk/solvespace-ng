@@ -102,6 +102,12 @@ static const CommandNameEntry CommandNames[] = {
     { Command::PART_NEW,          "part-new"           },
     { Command::JOINT_REVOLUTE,    "joint-revolute"     },
     { Command::JOINT_SLIDER,      "joint-slider"       },
+    { Command::JOINT_CYLINDRICAL, "joint-cylindrical"  },
+    { Command::JOINT_PLANAR,      "joint-planar"       },
+    { Command::JOINT_BALL,        "joint-ball"         },
+    { Command::JOINT_GEAR,        "joint-gear"         },
+    { Command::GROUP_FIT,         "group-fit"          },
+    { Command::GROUP_SPLIT,       "group-split"        },
     { Command::DESIGN_POSE,       "design-pose"        },
     // Constrain
     { Command::DISTANCE_DIA,      "constrain-distance" },

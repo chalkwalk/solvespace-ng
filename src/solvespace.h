@@ -405,6 +405,7 @@ public:
     IdList<Style,hStyle>            style;
     IdList<Part,hPart>              part; // empty while there is only the first part
     IdList<Joint,hJoint>            joint;
+    IdList<Fit,hFit>                fit; // empty: the default fits
 
     // These are generated from the above.
     IdList<ENTITY,hEntity>          entity;
@@ -474,11 +475,13 @@ public:
         IdList<Style,hStyle>            style;
         IdList<Part,hPart>              part;
         IdList<Joint,hJoint>            joint;
+        IdList<Fit,hFit>                fit;
         hGroup                          activeGroup;
 
         void Clear() {
             part.Clear();
             joint.Clear();
+            fit.Clear();
             group.Clear();
             groupOrder.Clear();
             request.Clear();
@@ -672,6 +675,7 @@ public:
         Style        s;
         Part         k;
         Joint        j;
+        Fit          f;
     } sv;
     static void MenuFile(Command id);
     void Autosave();
@@ -765,20 +769,41 @@ public:
     void   SetPartMaterial(hPart hp, double density);
     // Gives a group (an older file's link) a new part of its own, named after the group.
     hPart  MoveToNewPart(hGroup hg);
-    // Motion joints (M5a, src/joint.cpp): a joint between the two selected entities' parts
-    // (null, with a message, if they can't make one); a part's pose in the motion pose; a
-    // joint's value, clamped to its limits (remember: an undo step); its limits; every joint
-    // back to the design pose.
+    // Motion joints (M5a and M5b, src/joint.cpp): a joint between the two selected entities'
+    // parts (null, with a message, if they can't make one); a part's pose in the motion pose;
+    // one of a joint's values (dof: which motion), clamped to its limits (remember: an undo
+    // step); its limits; every joint back to the design pose.
     hJoint MakeJoint(Joint::Type type);
     Pose   PartPose(hPart hp);
-    void   SetJointValue(hJoint hj, double value, bool remember = true);
-    void   SetJointLimits(hJoint hj, bool limited, double lo, double hi);
+    void   SetJointValue(hJoint hj, double value, bool remember = true, int dof = 0);
+    void   SetJointLimits(hJoint hj, bool limited, double lo, double hi, int dof = 0);
+    void   SetJointRatio(hJoint hj, double ratio); // a gear coupling's
+    // The fit table (M5b, src/fit.cpp): the document's fits, else the defaults (press -0.1,
+    // slide 0.2, loose 0.4 mm); a fit by handle, or null. Editing it makes the defaults the
+    // document's own first. A fit used by a fit joint, or the last one, can't be deleted.
+    std::vector<Fit> FitTable();
+    const Fit *FindFit(hFit hf);
+    hFit   AddFit();
+    bool   RenameFit(hFit hf, const std::string &name);
+    void   SetFitClearance(hFit hf, double mm);
+    bool   DeleteFit(hFit hf);
+    // A fit joint (M5b): from the active sketch (the shared profile, closed, in a workplane)
+    // between the parts of the two picked items, the male's first: a FIT group in each. Its
+    // fit, style, direction and depth, set on both groups.
+    void   MakeFitJoint();
+    void   SetFitJoint(hGroup hg, Group::FitSpec spec);
+    // Splits the active group's part by the selected workplane or flat face (src/split.cpp):
+    // the part keeps the half behind it, a new part gets the half in front, with dowels at
+    // the cut. Its dowels (spec.dowel, fit.kind, fit.depth: the length) and their diameter,
+    // and which way the plane faces (spec.flip), set on both groups.
+    void   MakeSplit();
+    void   SetSplit(hGroup hg, Group::FitSpec spec, double diameter);
     void   DesignPose();
     bool   RenameJoint(hJoint hj, const std::string &name);
     void   DeleteJoint(hJoint hj);
-    // A typed joint value (an expression; degrees, or the length unit for a slider).
-    bool   ParseJointValue(hJoint hj, const std::string &text, double *value);
-    std::string JointValueString(hJoint hj, double value);
+    // A typed joint value (an expression; degrees for a turn, else the length unit).
+    bool   ParseJointValue(hJoint hj, const std::string &text, double *value, int dof = 0);
+    std::string JointValueString(hJoint hj, double value, int dof = 0);
     void   PruneJoints(); // those whose entities or parts are gone
     // Turns or slides a joint across its range (its limits, else a full turn) and measures
     // how close the parts it moves come to the others (B-reps, Open CASCADE): the smallest
@@ -789,7 +814,7 @@ public:
         std::vector<std::pair<double, double>> collisions;
         std::string text; // the report, or why there is none
     };
-    ClearanceSweep SweepClearance(hJoint hj, int samples = 72);
+    ClearanceSweep SweepClearance(hJoint hj, int samples = 72, int dof = 0);
     double PartDensity(hPart hp);
     // The parts list (bill of materials): each part with a solid, in part order.
     struct PartRow {

@@ -89,6 +89,8 @@ void SolveSpaceUI::PushFromCurrentOnto(UndoStack *uk) {
     for(auto &src : SK.part) { ut->part.Add(&src); }
     ut->joint.ReserveMore(SK.joint.n);
     for(auto &src : SK.joint) { ut->joint.Add(&src); }
+    ut->fit.ReserveMore(SK.fit.n);
+    for(auto &src : SK.fit) { ut->fit.Add(&src); }
     ut->request.ReserveMore(SK.request.n);
     for(auto &src : SK.request) { ut->request.Add(&src); }
     ut->constraint.ReserveMore(SK.constraint.n);
@@ -122,6 +124,7 @@ void SolveSpaceUI::PopOntoCurrentFrom(UndoStack *uk) {
     SK.groupOrder.Clear();
     SK.part.Clear();
     SK.joint.Clear();
+    SK.fit.Clear();
     SK.request.Clear();
     SK.constraint.Clear();
     SK.param.Clear();
@@ -131,6 +134,7 @@ void SolveSpaceUI::PopOntoCurrentFrom(UndoStack *uk) {
     ut->group.MoveSelfInto(&(SK.group));
     ut->part.MoveSelfInto(&(SK.part));
     ut->joint.MoveSelfInto(&(SK.joint));
+    ut->fit.MoveSelfInto(&(SK.fit));
     for(auto &gh : ut->groupOrder) { SK.groupOrder.Add(&gh); }
     ut->request.MoveSelfInto(&(SK.request));
     ut->constraint.MoveSelfInto(&(SK.constraint));

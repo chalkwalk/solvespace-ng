@@ -15,22 +15,33 @@ namespace Ui {
 
 static hGroup gShownGroup = {};
 static hJoint gShownJoint = {};
+static bool   gShownFits  = false;
 static std::map<uint32_t, std::string> gSweepText; // each joint's last clearance sweep
 
 void ResetProperties() {
     gShownGroup = {};
     gShownJoint = {};
+    gShownFits  = false;
     gSweepText.clear();
 }
 
 void ShowGroupInProperties(hGroup hg) {
     gShownGroup = hg;
     gShownJoint = {};
+    gShownFits  = false;
     PropertiesPanel().SetShown(true);
 }
 
 void ShowJointInProperties(hJoint hj) {
     gShownJoint = hj;
+    gShownFits  = false;
+    PropertiesPanel().SetShown(true);
+}
+
+void ShowFitTableInProperties() {
+    SS.GW.ClearSelection();
+    gShownFits  = true;
+    gShownJoint = {};
     PropertiesPanel().SetShown(true);
 }
 
@@ -60,6 +71,123 @@ static void Radio(const char *label, bool on, std::function<void()> action,
     if(ImGui::RadioButton(label, on) && !on) *run = action;
 }
 
+// A fit joint's group: which side it is, its fit from the table, its style, depth and
+// direction (each set on both groups of the pair).
+static void DrawFitJoint(Group *g, std::function<void()> *run) {
+    hGroup         hg   = g->h;
+    Group::FitSpec spec = g->fit;
+    Group         *other = SK.group.FindByIdNoOops(spec.partner);
+    std::string    them  = other ? SS.PartName(other->PartOf()) : "?";
+    ImGui::Spacing();
+    if(spec.dowel) {
+        ImGui::TextDisabled("a dowel's pocket; the other is in %s", them.c_str());
+    } else if(spec.female) {
+        ImGui::TextDisabled("the pocket; the peg is on %s", them.c_str());
+    } else {
+        ImGui::TextDisabled("the peg; the pocket is in %s", them.c_str());
+    }
+    auto set = [hg, run](Group::FitSpec s) { *run = [hg, s] { SS.SetFitJoint(hg, s); }; };
+    ImGui::TextUnformatted("fit");
+    for(const Fit &f : SS.FitTable()) {
+        std::string label = ssprintf("%s (%s)##fit-kind-%s", f.name.c_str(),
+                                     SS.MmToString(f.clearance).c_str(), f.name.c_str());
+        if(ImGui::RadioButton(label.c_str(), spec.kind == f.h) && spec.kind != f.h) {
+            Group::FitSpec s = spec;
+            s.kind           = f.h;
+            set(s);
+        }
+    }
+    if(ImGui::Button("fit table##fit-table")) *run = [] { ShowFitTableInProperties(); };
+    ImGui::TextUnformatted("style");
+    if(ImGui::RadioButton("peg and pocket##fit-peg", !spec.dowel) && spec.dowel) {
+        Group::FitSpec s = spec;
+        s.dowel          = 0;
+        set(s);
+    }
+    if(ImGui::RadioButton("dowel (a pocket in each)##fit-dowel", spec.dowel != 0) &&
+       !spec.dowel) {
+        Group::FitSpec s = spec;
+        s.dowel          = 1;
+        set(s);
+    }
+    ImGui::TextUnformatted(spec.dowel ? "dowel length" : "depth");
+    ValueField("##fit-depth", SS.MmToString(spec.depth), run, [hg, spec](std::string text) {
+        if(Expr *e = Expr::From(text, /*popUpError=*/true)) {
+            Group::FitSpec s = spec;
+            s.depth          = SS.ExprToMm(e);
+            SS.SetFitJoint(hg, s);
+        }
+    }, SS.UnitName());
+    bool flip = spec.flip != 0;
+    if(ImGui::Checkbox("other way##fit-flip", &flip)) {
+        Group::FitSpec s = spec;
+        s.flip           = flip;
+        set(s);
+    }
+    if(!g->featureProblem.empty()) {
+        ImGui::PushStyleColor(ImGuiCol_Text, ImGui::GetStyleColorVec4(ImGuiCol_PlotLinesHovered));
+        ImGui::TextWrapped("%s.", g->featureProblem.c_str());
+        ImGui::PopStyleColor();
+    }
+}
+
+// A split's group: which half it keeps, and the dowels across the cut (set on both halves).
+static void DrawSplit(Group *g, std::function<void()> *run) {
+    hGroup         hg    = g->h;
+    Group::FitSpec spec  = g->fit;
+    double         dia   = g->valA;
+    Group         *other = SK.group.FindByIdNoOops(spec.partner);
+    ImGui::Spacing();
+    ImGui::TextDisabled("%s; the other half is %s", spec.female ? "the half in front" : "the half behind",
+                        other ? SS.PartName(other->PartOf()).c_str() : "?");
+    auto set = [hg, dia, run](Group::FitSpec s, double d) {
+        *run = [hg, s, d] { SS.SetSplit(hg, s, d); };
+    };
+    bool flip = spec.flip != 0;
+    if(ImGui::Checkbox("swap the halves##split-flip", &flip)) {
+        Group::FitSpec s = spec;
+        s.flip           = flip;
+        set(s, dia);
+    }
+    bool dowels = spec.dowel != 0;
+    if(ImGui::Checkbox("dowels across the cut##split-dowels", &dowels)) {
+        Group::FitSpec s = spec;
+        s.dowel          = dowels;
+        set(s, dia);
+    }
+    if(spec.dowel) {
+        auto mm = [hg, spec, dia](bool length) {
+            return [hg, spec, dia, length](std::string text) {
+                Expr *e = Expr::From(text, /*popUpError=*/true);
+                if(e == nullptr) return;
+                Group::FitSpec s = spec;
+                double         d = dia;
+                (length ? s.depth : d) = SS.ExprToMm(e);
+                SS.SetSplit(hg, s, d);
+            };
+        };
+        ImGui::TextUnformatted("diameter");
+        ValueField("##split-diameter", SS.MmToString(dia), run, mm(false), SS.UnitName());
+        ImGui::TextUnformatted("length");
+        ValueField("##split-length", SS.MmToString(spec.depth), run, mm(true), SS.UnitName());
+        ImGui::TextUnformatted("fit");
+        for(const Fit &f : SS.FitTable()) {
+            std::string label = ssprintf("%s (%s)##split-kind-%s", f.name.c_str(),
+                                         SS.MmToString(f.clearance).c_str(), f.name.c_str());
+            if(ImGui::RadioButton(label.c_str(), spec.kind == f.h) && spec.kind != f.h) {
+                Group::FitSpec s = spec;
+                s.kind           = f.h;
+                set(s, dia);
+            }
+        }
+    }
+    if(!g->featureProblem.empty()) {
+        ImGui::PushStyleColor(ImGuiCol_Text, ImGui::GetStyleColorVec4(ImGuiCol_PlotLinesHovered));
+        ImGui::TextWrapped("%s.", g->featureProblem.c_str());
+        ImGui::PopStyleColor();
+    }
+}
+
 static const char *TypeLine(const Group *g) {
     switch(g->type) {
         case Group::Type::DRAWING_3D:        return "sketch in 3d";
@@ -78,6 +206,8 @@ static const char *TypeLine(const Group *g) {
         case Group::Type::HOLE:              return "drill holes";
         case Group::Type::LOFT:              return "loft through profiles";
         case Group::Type::SWEEP:             return "sweep a profile along a path";
+        case Group::Type::FIT:               return "fit joint";
+        case Group::Type::SPLIT:             return "split the part";
     }
     return "";
 }
@@ -348,6 +478,9 @@ static void DrawGroup(Group *g, std::function<void()> *run) {
         }
     }
 
+    if(type == Type::FIT) DrawFitJoint(g, run);
+    if(type == Type::SPLIT) DrawSplit(g, run);
+
     if(type == Type::EXTRUDE || type == Type::LATHE || type == Type::REVOLVE ||
        type == Type::LINKED || type == Type::HELIX || type == Type::LOFT ||
        type == Type::SWEEP) {
@@ -540,62 +673,89 @@ static void DrawSelection(const SelectionModel &m, std::function<void()> *run) {
     }
 }
 
-// A motion joint: its name, what it joins, its value (typed or scrubbed), its limits, and a
+// A motion joint: its name, what it joins, each motion's value (typed or scrubbed), limits and
 // clearance sweep.
 static void DrawJoint(Joint *j, std::function<void()> *run) {
-    hJoint hj       = j->h;
-    bool   revolute = j->type == Joint::Type::REVOLUTE;
+    hJoint hj = j->h;
     ImGui::TextDisabled("Joint");
     ValueField("##joint-name", j->name, run, [hj](std::string s) { SS.RenameJoint(hj, s); });
-    ImGui::TextDisabled("%s: %s turns %s", revolute ? "revolute" : "slider",
-                        SS.PartName(j->parent).c_str(), SS.PartName(j->child).c_str());
-    if(!revolute) {
-        ImGui::SameLine(0, 0);
-        ImGui::TextDisabled(" (slides)");
+    static const char *const kinds[] = { "", "revolute", "slider", "cylindrical",
+                                         "planar", "ball", "gear coupling" };
+    if(j->type == Joint::Type::GEAR) {
+        Joint *a = SK.joint.FindByIdNoOops(j->driver), *b = SK.joint.FindByIdNoOops(j->driven);
+        ImGui::TextDisabled("%s: %s drives %s", kinds[(int)j->type], a ? a->name.c_str() : "?",
+                            b ? b->name.c_str() : "?");
+        ImGui::Spacing();
+        ImGui::TextUnformatted("ratio");
+        ValueField("##joint-ratio", ssprintf("%.6g", j->ratio), run, [hj](std::string s) {
+            if(Expr *e = Expr::From(s, /*popUpError=*/true)) SS.SetJointRatio(hj, e->Eval());
+        });
+    } else {
+        ImGui::TextDisabled("%s: %s holds %s", kinds[(int)j->type],
+                            SS.PartName(j->parent).c_str(), SS.PartName(j->child).c_str());
     }
-    ImGui::Spacing();
-    const char *unit = revolute ? "°" : SS.UnitName();
-    auto parsed = [hj](std::function<void(double)> use) {
-        return [hj, use](std::string s) {
-            double v;
-            if(SS.ParseJointValue(hj, s, &v)) use(v);
-        };
+    static const char *const names[][Joint::MAX_MOTIONS] = {
+        {},
+        { "angle" },
+        { "distance" },
+        { "angle", "distance" },
+        { "along u", "along v", "angle" },
+        { "about x", "about y", "about z" },
+        {},
     };
-    ImGui::TextUnformatted(revolute ? "angle" : "distance");
-    ValueField("##joint-value", SS.JointValueString(hj, j->value), run,
-               parsed([hj](double v) { SS.SetJointValue(hj, v); }), unit);
-    // Scrubbing: one undo step per drag of the slider.
-    float lo = (float)(j->limited ? j->lo : (revolute ? -180 : -50));
-    float hi = (float)(j->limited ? j->hi : (revolute ? 180 : 50));
-    float v  = (float)j->value;
-    static bool scrubbed = false; // this drag of the slider has made its undo step
-    ImGui::SetNextItemWidth(-1);
-    bool changed = ImGui::SliderFloat("##joint-scrub", &v, lo, hi, revolute ? "%.1f°" : "%.2f");
-    if(ImGui::IsItemActivated()) scrubbed = false;
-    if(changed) {
-        bool   first = !scrubbed;
-        double value = v;
-        scrubbed     = true;
-        *run         = [hj, value, first] { SS.SetJointValue(hj, value, first); };
-    }
-    bool   limited = j->limited;
-    double jlo = j->lo, jhi = j->hi;
-    if(ImGui::Checkbox("limits##joint-limited", &limited)) {
-        // Turned on: from the design pose to a quarter turn, or 10 along.
-        double a = j->limited ? jlo : 0, b = j->limited ? jhi : (revolute ? 90 : 10);
-        *run = [hj, limited, a, b] { SS.SetJointLimits(hj, limited, a, b); };
-    }
-    if(j->limited) {
-        ImGui::TextUnformatted("from");
-        ValueField("##joint-lo", SS.JointValueString(hj, jlo), run,
-                   parsed([hj, jhi](double x) { SS.SetJointLimits(hj, true, x, jhi); }), unit);
-        ImGui::TextUnformatted("to");
-        ValueField("##joint-hi", SS.JointValueString(hj, jhi), run,
-                   parsed([hj, jlo](double x) { SS.SetJointLimits(hj, true, jlo, x); }), unit);
-    }
-    ImGui::Spacing();
-    if(ImGui::Button("sweep clearance##joint-sweep")) {
-        *run = [hj] { gSweepText[hj.v] = SS.SweepClearance(hj).text; };
+    for(int dof = 0; dof < j->Motions(); dof++) {
+        bool        angle = j->IsAngle(dof);
+        const char *unit  = angle ? "°" : SS.UnitName();
+        std::string id    = dof == 0 ? "" : std::to_string(dof);
+        auto parsed = [hj, dof](std::function<void(double)> use) {
+            return [hj, dof, use](std::string s) {
+                double v;
+                if(SS.ParseJointValue(hj, s, &v, dof)) use(v);
+            };
+        };
+        ImGui::Spacing();
+        ImGui::TextUnformatted(names[(int)j->type][dof]);
+        ValueField(("##joint-value" + id).c_str(), SS.JointValueString(hj, j->value[dof], dof), run,
+                   parsed([hj, dof](double v) { SS.SetJointValue(hj, v, true, dof); }), unit);
+        // Scrubbing: one undo step per drag of the slider.
+        float lo = (float)(j->limited[dof] ? j->lo[dof] : (angle ? -180 : -50));
+        float hi = (float)(j->limited[dof] ? j->hi[dof] : (angle ? 180 : 50));
+        float v  = (float)j->value[dof];
+        static bool scrubbed = false; // this drag of a slider has made its undo step
+        ImGui::SetNextItemWidth(-1);
+        bool changed = ImGui::SliderFloat(("##joint-scrub" + id).c_str(), &v, lo, hi,
+                                          angle ? "%.1f°" : "%.2f");
+        if(ImGui::IsItemActivated()) scrubbed = false;
+        if(changed) {
+            bool   first = !scrubbed;
+            double value = v;
+            scrubbed     = true;
+            *run = [hj, value, first, dof] { SS.SetJointValue(hj, value, first, dof); };
+        }
+        bool   limited = j->limited[dof];
+        double jlo = j->lo[dof], jhi = j->hi[dof];
+        if(ImGui::Checkbox(("limits##joint-limited" + id).c_str(), &limited)) {
+            // Turned on: from the design pose to a quarter turn, or 10 along.
+            double a = j->limited[dof] ? jlo : 0, b = j->limited[dof] ? jhi : (angle ? 90 : 10);
+            *run = [hj, limited, a, b, dof] { SS.SetJointLimits(hj, limited, a, b, dof); };
+        }
+        if(j->limited[dof]) {
+            ImGui::TextUnformatted("from");
+            ValueField(("##joint-lo" + id).c_str(), SS.JointValueString(hj, jlo, dof), run,
+                       parsed([hj, jhi, dof](double x) {
+                           SS.SetJointLimits(hj, true, x, jhi, dof);
+                       }),
+                       unit);
+            ImGui::TextUnformatted("to");
+            ValueField(("##joint-hi" + id).c_str(), SS.JointValueString(hj, jhi, dof), run,
+                       parsed([hj, jlo, dof](double x) {
+                           SS.SetJointLimits(hj, true, jlo, x, dof);
+                       }),
+                       unit);
+        }
+        if(ImGui::Button(("sweep clearance##joint-sweep" + id).c_str())) {
+            *run = [hj, dof] { gSweepText[hj.v] = SS.SweepClearance(hj, 72, dof).text; };
+        }
     }
     auto it = gSweepText.find(hj.v);
     if(it != gSweepText.end()) ImGui::TextWrapped("%s", it->second.c_str());
@@ -603,6 +763,32 @@ static void DrawJoint(Joint *j, std::function<void()> *run) {
     if(ImGui::Button("design pose##joint-design-pose")) *run = [] { SS.DesignPose(); };
     ImGui::SameLine();
     if(ImGui::Button("delete##joint-delete")) *run = [hj] { SS.DeleteJoint(hj); };
+}
+
+// The fit table: each fit's name and clearance, editable; add and delete.
+static void DrawFitTable(std::function<void()> *run) {
+    ImGui::TextDisabled("Fit table");
+    ImGui::TextWrapped("Clearances for fit joints, tuned to your printer: each side's gap "
+                       "(negative presses).");
+    for(const Fit &f : SS.FitTable()) {
+        hFit        hf = f.h;
+        std::string id = std::to_string(hf.v);
+        ImGui::Spacing();
+        ValueField(("##fit-name-" + id).c_str(), f.name, run,
+                   [hf](std::string s) { SS.RenameFit(hf, s); });
+        ValueField(("##fit-clearance-" + id).c_str(), SS.MmToString(f.clearance), run,
+                   [hf](std::string s) {
+                       if(Expr *e = Expr::From(s, /*popUpError=*/true)) {
+                           SS.SetFitClearance(hf, SS.ExprToMm(e));
+                       }
+                   },
+                   SS.UnitName());
+        if(ImGui::Button(("delete##fit-delete-" + id).c_str())) {
+            *run = [hf] { SS.DeleteFit(hf); };
+        }
+    }
+    ImGui::Spacing();
+    if(ImGui::Button("add a fit##fit-add")) *run = [] { SS.AddFit(); };
 }
 
 std::function<void()> DrawProperties() {
@@ -613,6 +799,8 @@ std::function<void()> DrawProperties() {
         DrawSelection(selection, &run);
     } else if(Joint *j = SK.joint.FindByIdNoOops(PropertiesJoint())) {
         DrawJoint(j, &run);
+    } else if(gShownFits) {
+        DrawFitTable(&run);
     } else if(Group *g = SK.group.FindByIdNoOops(PropertiesGroup())) {
         DrawGroup(g, &run);
     }

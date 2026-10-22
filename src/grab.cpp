@@ -76,20 +76,46 @@ bool GraphicsWindow::StartGrab(Point2d mouse) {
     pending.operation   = Pending::GRABBING;
     pending.description = _("grab: move the mouse; X/Y/Z lock an axis; type a distance");
     if(grab.joint.v) {
-        Joint *j            = SK.GetJoint(grab.joint);
-        grab.jointStart     = j->value;
-        grab.jointTurned    = 0;
-        grab.jointRadial    = GrabJointRadial(mouse);
-        pending.description = j->type == Joint::Type::REVOLUTE
-                                  ? _("grab: turn the joint with the mouse; type an angle")
-                                  : _("grab: slide the joint with the mouse; type a distance");
+        Joint *j = SK.GetJoint(grab.joint);
+        for(int i = 0; i < Joint::MAX_MOTIONS; i++) grab.jointStart[i] = j->value[i];
+        grab.jointDof    = -1;
+        grab.jointTurned = 0;
+        grab.jointFrom   = {};
+        grab.jointRadial = GrabJointRadial(mouse);
+        switch(j->type) {
+            case Joint::Type::REVOLUTE:
+                pending.description = _("grab: turn the joint with the mouse; type an angle");
+                break;
+            case Joint::Type::SLIDER:
+                pending.description = _("grab: slide the joint with the mouse; type a distance");
+                break;
+            default:
+                pending.description =
+                    _("grab: move the joint with the mouse; X/Y/Z pick a motion; type a value");
+                break;
+        }
     }
     return true;
 }
 
+int GraphicsWindow::GrabJointDof() {
+    Joint *j = SK.joint.FindByIdNoOops(grab.joint);
+    if(j == nullptr) return 0;
+    if(grab.jointDof >= 0) return grab.jointDof;
+    return j->type == Joint::Type::PLANAR || j->type == Joint::Type::BALL ? -1 : 0;
+}
+
 bool GraphicsWindow::GrabJointAxis(Vector *p, Vector *d) {
     Joint *j = SK.joint.FindByIdNoOops(grab.joint);
-    if(j == nullptr || !Joint::AxisOf(j->axisA, p, d)) return false;
+    if(j == nullptr) return false;
+    int dof = GrabJointDof();
+    if(j->type == Joint::Type::BALL) {
+        if(!Joint::CentreOf(j->axisA, p)) return false;
+        *d = Vector::From(dof == 0, dof == 1, dof == 2);
+    } else {
+        if(!Joint::AxisOf(j->axisA, p, d)) return false;
+        if(j->type == Joint::Type::PLANAR && (dof == 0 || dof == 1)) *d = d->Normal(dof);
+    }
     Pose parent = SS.PartPose(j->parent);
     *p          = parent.Apply(*p);
     *d          = parent.q.Rotate(*d);
@@ -142,24 +168,58 @@ void GraphicsWindow::GrabMouseMoved(Point2d mouse) {
         Joint *j = SK.joint.FindByIdNoOops(grab.joint);
         Vector p, d;
         if(j == nullptr || !GrabJointAxis(&p, &d)) return;
-        double value = grab.jointStart;
+        int    dof = GrabJointDof();
+        double value[Joint::MAX_MOTIONS];
+        for(int i = 0; i < Joint::MAX_MOTIONS; i++) value[i] = grab.jointStart[i];
+        Vector moved = grab.freeDelta.Minus(grab.jointFrom);
+        Vector n     = projRight.Cross(projUp);
         if(grab.typedMm) {
-            value += *grab.typedMm;
-        } else if(j->type == Joint::Type::REVOLUTE) {
+            value[std::max(dof, 0)] += *grab.typedMm;
+        } else if(dof < 0 && j->type == Joint::Type::PLANAR) {
+            // In the plane, under the mouse (along the view direction onto it).
+            Vector pn;
+            Joint::AxisOf(j->axisA, &p, &pn);
+            Pose parent = SS.PartPose(j->parent);
+            Vector u = parent.q.Rotate(pn.Normal(0)), v = parent.q.Rotate(pn.Normal(1));
+            pn       = parent.q.Rotate(pn);
+            if(fabs(n.Dot(pn)) > 0.05) moved = moved.Minus(n.ScaledBy(moved.Dot(pn) / n.Dot(pn)));
+            value[0] += moved.Dot(u);
+            value[1] += moved.Dot(v);
+        } else if(dof < 0) {
+            // A trackball: the part turns as if the mouse pushed its near side, half a degree
+            // a pixel, after its start pose; then back to angles about x, y and z.
+            Pose       parent = SS.PartPose(j->parent);
+            Vector     axis   = parent.q.Inverse().Rotate(n.Cross(moved));
+            double     angle  = moved.Magnitude() * scale * 0.5 * PI / 180;
+            Quaternion q      = Quaternion::IDENTITY;
+            for(int i = 2; i >= 0; i--) {
+                q = q.Times(Quaternion::From(Vector::From(i == 0, i == 1, i == 2),
+                                             grab.jointStart[i] * PI / 180));
+            }
+            if(axis.Magnitude() > LENGTH_EPS) {
+                q = Quaternion::From(axis.WithMagnitude(1), angle).Times(q);
+            }
+            Vector cx = q.Rotate(Vector::From(1, 0, 0)), cy = q.Rotate(Vector::From(0, 1, 0)),
+                   cz = q.Rotate(Vector::From(0, 0, 1));
+            value[0]  = atan2(cy.z, cz.z) * 180 / PI;
+            value[1]  = asin(std::max(-1.0, std::min(1.0, -cx.z))) * 180 / PI;
+            value[2]  = atan2(cx.y, cx.x) * 180 / PI;
+        } else if(j->IsAngle(dof)) {
             // The angle the mouse has gone round the axis, added up move by move.
             Vector r0 = grab.jointRadial, r1 = GrabJointRadial(mouse);
             if(r0.Magnitude() > LENGTH_EPS && r1.Magnitude() > LENGTH_EPS) {
                 grab.jointTurned += atan2(d.Dot(r0.Cross(r1)), r0.Dot(r1)) * 180 / PI;
                 grab.jointRadial = r1;
             }
-            value += grab.jointTurned;
+            value[dof] += grab.jointTurned;
         } else {
             // Along the axis as it shows on screen, one to one with the mouse.
-            Vector n  = projRight.Cross(projUp);
             Vector dv = d.Minus(n.ScaledBy(d.Dot(n) / n.MagSquared()));
-            if(dv.MagSquared() > 0.05 * 0.05) value += grab.freeDelta.Dot(dv) / dv.MagSquared();
+            if(dv.MagSquared() > 0.05 * 0.05) value[dof] += moved.Dot(dv) / dv.MagSquared();
         }
-        SS.SetJointValue(grab.joint, value, /*remember=*/false);
+        for(int i = 0; i < j->Motions(); i++) {
+            SS.SetJointValue(grab.joint, value[i], /*remember=*/false, i);
+        }
         grab.lastMouse = mouse;
         Invalidate();
         return;
@@ -173,6 +233,16 @@ void GraphicsWindow::GrabMouseMoved(Point2d mouse) {
 }
 
 void GraphicsWindow::GrabSetAxis(int axis) {
+    if(Joint *j = grab.joint.v ? SK.joint.FindByIdNoOops(grab.joint) : nullptr) {
+        // A joint's motion: picked again, back to the joint's own. It starts afresh.
+        if(axis >= j->Motions()) return;
+        grab.jointDof    = grab.jointDof == axis ? -1 : axis;
+        grab.jointTurned = 0;
+        grab.jointFrom   = grab.freeDelta;
+        grab.jointRadial = GrabJointRadial(grab.lastMouse);
+        GrabMouseMoved(grab.lastMouse);
+        return;
+    }
     // Points drawn in a workplane stay in it: locking to its normal would freeze the grab.
     if(axis == 2 && LockedInWorkplane()) return;
     grab.axis = grab.axis == axis ? -1 : axis;
