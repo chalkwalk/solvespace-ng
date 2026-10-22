@@ -41,3 +41,14 @@ TEST_CASE(ng_designs_a_second_part_on_the_first) {
     CHECK_TRUE(EditField("part-name", "lid"));
     CHECK_EQ_STR(SS.PartName(lid), "lid");
 }
+
+TEST_CASE(ng_gives_a_part_a_material_and_lists_the_parts) {
+    CHECK_LOAD("box.slvs");
+    Driver::Key("Escape");
+    CHECK_TRUE(RevealIn("Properties", "part-material-PETG"));
+    CHECK_TRUE(Driver::ClickItem("part-material-PETG"));
+    CHECK_EQ_EPS(SS.PartDensity(Part::FIRST), 1.27);
+    CHECK_TRUE(Driver::ClickMenu({ "Inspect", "Parts List..." }));
+    CHECK_TRUE(!Driver::Dialogs().empty());
+    CHECK_TRUE(Driver::Dialogs().back().message.find("PETG") != std::string::npos);
+}

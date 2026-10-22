@@ -112,3 +112,39 @@ TEST_CASE(undo_takes_back_a_new_part) {
     CHECK_TRUE(SK.part.IsEmpty());
     CHECK_TRUE(SK.GetGroup(SS.GW.activeGroup)->PartOf() == Part::FIRST);
 }
+
+// Linked files are parts (M4b): a link starts a part of its own, named after the file.
+TEST_CASE(a_linked_file_is_a_part_of_its_own) {
+    CHECK_LOAD("box.slvs");
+    Group::MenuGroup(Command::GROUP_LINK, helper->GetAssetPath(__FILE__, "bolt.slvs"));
+    SS.GenerateAll(SolveSpaceUI::Generate::ALL);
+    hPart bolt = SK.GetGroup(SS.GW.activeGroup)->PartOf();
+    CHECK_TRUE(bolt != Part::FIRST);
+    CHECK_EQ_STR(SS.PartName(bolt), "bolt");
+    CHECK_TRUE(fabs(SolidVolume(SS.PartSolid(bolt)) - 6000) < 1e-6);
+    CHECK_TRUE(fabs(SolidVolume(SS.PartSolid(Part::FIRST)) - 6000) < 1e-6);
+    std::vector<SolveSpaceUI::PartRow> rows = SS.PartsList();
+    CHECK_TRUE(rows.size() == 2);
+    CHECK_EQ_STR(rows[1].source, "bolt.slvs");
+    SS.UndoUndo();
+    CHECK_TRUE(SK.part.IsEmpty());
+}
+
+// An older file's link shares its part; "own part" gives it one.
+TEST_CASE(a_link_sharing_a_part_moves_to_its_own) {
+    CHECK_LOAD("box.slvs");
+    Group::MenuGroup(Command::GROUP_LINK, helper->GetAssetPath(__FILE__, "bolt.slvs"));
+    hGroup link = SS.GW.activeGroup;
+    SK.part.Clear(); // as saved before M4b
+    SK.GetGroup(link)->part = {};
+    for(Group &g : SK.group) g.clean = false;
+    SS.GenerateAll(SolveSpaceUI::Generate::ALL);
+    CHECK_TRUE(fabs(SolidVolume(SS.PartSolid(Part::FIRST)) - 12000) < 1e-6);
+    hPart own = SS.MoveToNewPart(link);
+    CHECK_TRUE(own != Part::FIRST && SK.GetGroup(link)->PartOf() == own);
+    CHECK_EQ_STR(SS.PartName(own), "bolt");
+    CHECK_TRUE(fabs(SolidVolume(SS.PartSolid(Part::FIRST)) - 6000) < 1e-6);
+    CHECK_TRUE(fabs(SolidVolume(SS.PartSolid(own)) - 6000) < 1e-6);
+    SS.UndoUndo();
+    CHECK_TRUE(SK.GetGroup(link)->PartOf() == Part::FIRST);
+}

@@ -122,6 +122,7 @@ void SolveSpaceUI::Init() {
     // Show toolbar in the graphics window
     showToolbar = settings->ThawBool("ShowToolbar", true);
     constraintStateColors = settings->ThawBool("ConstraintStateColors", false);
+    exportLayFlat = settings->ThawBool("ExportLayFlat", false);
     // The geometry kernel (0 SolveSpace's, 1 Open CASCADE where built)
     density    = settings->ThawFloat("Density", 1.24);
     kernelKind = settings->ThawInt("Kernel", 0) == 1 && KernelAvailable(KernelKind::OCCT)
@@ -314,6 +315,7 @@ void SolveSpaceUI::Exit() {
     // Show toolbar in the graphics window
     settings->FreezeBool("ShowToolbar", showToolbar);
     settings->FreezeBool("ConstraintStateColors", constraintStateColors);
+    settings->FreezeBool("ExportLayFlat", exportLayFlat);
     settings->FreezeInt("Kernel", (int)kernelKind);
     settings->FreezeFloat("Density", density);
     // Autosave timer
@@ -813,9 +815,21 @@ void SolveSpaceUI::MenuFile(Command id) {
             break;
         }
 
+        case Command::EXPORT_PARTS_LIST: {
+            Platform::FileDialogRef dialog = Platform::CreateSaveFileDialog(SS.GW.window);
+            dialog->AddFilters(Platform::CsvFileFilters);
+            dialog->ThawChoices(settings, "ExportPartsList");
+            dialog->SuggestFilename(SS.saveFile);
+            if(!dialog->RunModal()) break;
+            dialog->FreezeChoices(settings, "ExportPartsList");
+            SS.ExportPartsList(dialog->GetFilename());
+            break;
+        }
+
         case Command::EXPORT_PARTS: {
             Platform::FileDialogRef dialog = Platform::CreateSaveFileDialog(SS.GW.window);
             dialog->AddFilters({ { CN_("file-type", "STL mesh, one per part"), { "stl" } },
+                                 { CN_("file-type", "3MF, an object per part"), { "3mf" } },
                                  { CN_("file-type", "STEP file, one per part"), { "step", "stp" } } });
             dialog->ThawChoices(settings, "ExportParts");
             dialog->SuggestFilename(SS.saveFile);
@@ -967,6 +981,10 @@ void SolveSpaceUI::MenuAnalyze(Command id) {
 
         case Command::MASS_PROPERTIES:
             Message("%s", SS.MassPropertiesText().c_str());
+            break;
+
+        case Command::PARTS_LIST:
+            Message("%s", SS.PartsListText().c_str());
             break;
 
         case Command::VOLUME: {
@@ -1297,8 +1315,11 @@ const SolveSpaceUI::Material *SolveSpaceUI::MaterialFor(double density) {
 }
 
 bool SolveSpaceUI::MassProperties(MassProps *out) {
-    Group *g = SK.GetGroup(SS.GW.activeGroup);
-    *out     = {};
+    return MassProperties(SK.GetGroup(SS.GW.activeGroup), out);
+}
+
+bool SolveSpaceUI::MassProperties(Group *g, MassProps *out) {
+    *out = {};
     if(KernelMassProperties(g->runningShape, out)) return true;
     SMesh m = {};
     m.MakeFromCopyOf(&g->RunningMesh());
@@ -1354,18 +1375,145 @@ std::string SolveSpaceUI::PartName(hPart hp) {
     return p ? p->name : "Part 1";
 }
 
+// The first part has a record only once it is named or given a material.
+static Part *PartRecord(hPart hp) {
+    if(SK.part.FindByIdNoOops(hp) == nullptr) {
+        Part first = {};
+        first.h    = Part::FIRST;
+        first.name = "Part 1";
+        SK.part.Add(&first);
+    }
+    return SK.GetPart(hp);
+}
+
 bool SolveSpaceUI::RenamePart(hPart hp, const std::string &name) {
     if(name.empty()) {
         Error(_("A part's name can't be empty."));
         return false;
     }
     UndoRemember();
-    if(SK.part.FindByIdNoOops(hp) == nullptr) {
-        Part first = {};
-        first.h    = Part::FIRST;
-        SK.part.Add(&first);
+    PartRecord(hp)->name = name;
+    return true;
+}
+
+hPart SolveSpaceUI::MoveToNewPart(hGroup hg) {
+    Group *g = SK.GetGroup(hg);
+    UndoRemember();
+    PartRecord(Part::FIRST);
+    Part next = {};
+    next.name = g->name;
+    SK.part.AddAndAssignId(&next);
+    g->part = next.h;
+    for(Group &gi : SK.group) gi.clean = false;
+    GenerateAll(Generate::ALL);
+    GW.Invalidate();
+    ScheduleShowTW();
+    return next.h;
+}
+
+void SolveSpaceUI::SetPartMaterial(hPart hp, double density) {
+    Part *p = SK.part.FindByIdNoOops(hp);
+    if(density < 0 || (p ? p->density : 0) == density) return;
+    UndoRemember();
+    PartRecord(hp)->density = density;
+    ScheduleShowTW();
+}
+
+double SolveSpaceUI::PartDensity(hPart hp) {
+    Part *p = SK.part.FindByIdNoOops(hp);
+    return (p && p->density > 0) ? p->density : density;
+}
+
+std::vector<hPart> SolveSpaceUI::PartOrder() {
+    std::vector<hPart> parts = { Part::FIRST };
+    for(const Part &p : SK.part) {
+        if(p.h != Part::FIRST) parts.push_back(p.h);
     }
-    SK.GetPart(hp)->name = name;
+    return parts;
+}
+
+std::vector<SolveSpaceUI::PartRow> SolveSpaceUI::PartsList() {
+    FlushRegeneration();
+    std::vector<PartRow> rows;
+    for(hPart hp : PartOrder()) {
+        Group *g = PartSolid(hp);
+        MassProps mp;
+        if(g == nullptr || !MassProperties(g, &mp)) continue;
+        PartRow r  = {};
+        r.part     = hp;
+        r.name     = PartName(hp);
+        r.density  = PartDensity(hp);
+        r.volume   = mp.volume;
+        r.mass     = mp.volume / 1000 * r.density;
+        const Material *m = MaterialFor(r.density);
+        r.material = m ? m->name : ssprintf("%g g/cm³", r.density);
+        // The files the part links in.
+        for(hGroup hg : SK.groupOrder) {
+            Group *lg = SK.GetGroup(hg);
+            if(lg->PartOf() == hp && lg->type == Group::Type::LINKED) {
+                if(!r.source.empty()) r.source += " ";
+                r.source += lg->linkFile.FileName();
+            }
+        }
+        SMesh mesh = {};
+        mesh.MakeFromCopyOf(&g->RunningMesh());
+        g->runningShell.TriangulateInto(&mesh);
+        Vector lo = Vector::From(VERY_POSITIVE, VERY_POSITIVE, VERY_POSITIVE), hi = lo.ScaledBy(-1);
+        for(const STriangle &t : mesh.l) {
+            for(const Vector &v : t.vertices) {
+                lo = Vector::From(std::min(lo.x, v.x), std::min(lo.y, v.y), std::min(lo.z, v.z));
+                hi = Vector::From(std::max(hi.x, v.x), std::max(hi.y, v.y), std::max(hi.z, v.z));
+            }
+        }
+        mesh.Clear();
+        r.size = hi.Minus(lo);
+        rows.push_back(r);
+    }
+    return rows;
+}
+
+std::string SolveSpaceUI::PartsListText() {
+    std::vector<PartRow> rows = PartsList();
+    if(rows.empty()) return _("No part has a solid yet.");
+    std::string text;
+    double      total = 0;
+    for(const PartRow &r : rows) {
+        text += ssprintf(_("%s%s:  %s, %s, %.2f g;  %s x %s x %s\n"), r.name.c_str(),
+                         r.source.empty() ? "" : (" (" + r.source + ")").c_str(),
+                         r.material.c_str(), MmToStringSI(r.volume, /*dim=*/3).c_str(), r.mass,
+                         MmToString(r.size.x).c_str(), MmToString(r.size.y).c_str(),
+                         MmToString(r.size.z).c_str());
+        total += r.mass;
+    }
+    text += ssprintf(_("\n%d parts, %.2f g in all."), (int)rows.size(), total);
+    return text;
+}
+
+// A CSV field, quoted when it holds a comma, a quote or a line break.
+static std::string CsvField(const std::string &s) {
+    if(s.find_first_of(",\"\n") == std::string::npos) return s;
+    std::string q = "\"";
+    for(char c : s) {
+        if(c == '"') q += '"';
+        q += c;
+    }
+    return q + "\"";
+}
+
+bool SolveSpaceUI::ExportPartsList(const Platform::Path &filename) {
+    FILE *f = OpenFile(filename, "wb");
+    if(!f) {
+        Error("Couldn't write to '%s'", filename.raw.c_str());
+        return false;
+    }
+    fprintf(f, "part,source,material,density_g_cm3,volume_mm3,mass_g,size_x_mm,size_y_mm,"
+               "size_z_mm\n");
+    for(const PartRow &r : PartsList()) {
+        fprintf(f, "%s,%s,%s,%g,%.3f,%.3f,%.3f,%.3f,%.3f\n", CsvField(r.name).c_str(),
+                CsvField(r.source).c_str(), CsvField(r.material).c_str(), r.density, r.volume,
+                r.mass, r.size.x, r.size.y, r.size.z);
+    }
+    fclose(f);
     return true;
 }
 
@@ -1379,32 +1527,88 @@ Group *SolveSpaceUI::PartSolid(hPart hp) {
     return last;
 }
 
+// Turns the mesh onto its largest flat face (the triangles of one plane, facing out, holding at
+// least a twentieth of its area), and stands it on z = 0.
+void SolveSpaceUI::LayFlat(SMesh *m) {
+    std::map<std::tuple<long, long, long, long>, std::pair<double, Vector>> planes;
+    double total = 0;
+    for(const STriangle &t : m->l) {
+        Vector n    = t.Normal();
+        double area = n.Magnitude() / 2;
+        if(area < LENGTH_EPS * LENGTH_EPS) continue;
+        n = n.WithMagnitude(1);
+        total += area;
+        auto key = std::make_tuple(lround(n.x * 1e4), lround(n.y * 1e4), lround(n.z * 1e4),
+                                   lround(n.Dot(t.a) * 1e3));
+        planes[key].first += area;
+        planes[key].second = n;
+    }
+    double best = total / 20;
+    Vector down = Vector::From(0, 0, -1), n = down;
+    for(const auto &p : planes) {
+        if(p.second.first > best) {
+            best = p.second.first;
+            n    = p.second.second;
+        }
+    }
+    // The rotation taking n to -z.
+    Quaternion q = Quaternion::IDENTITY;
+    Vector     axis = n.Cross(down);
+    if(axis.Magnitude() > 1e-9) {
+        q = Quaternion::From(axis.WithMagnitude(1), acos(std::max(-1.0, std::min(1.0, n.Dot(down)))));
+    } else if(n.Dot(down) < 0) {
+        q = Quaternion::From(Vector::From(1, 0, 0), PI);
+    }
+    double zmin = VERY_POSITIVE;
+    for(STriangle &t : m->l) {
+        for(int i = 0; i < 3; i++) {
+            t.vertices[i] = q.Rotate(t.vertices[i]);
+            t.normals[i]  = q.Rotate(t.normals[i]);
+            zmin          = std::min(zmin, t.vertices[i].z);
+        }
+    }
+    for(STriangle &t : m->l) {
+        for(Vector &v : t.vertices) v.z -= zmin;
+    }
+}
+
+// <stem>-<part name>.<ext> beside filename, the name made safe for a file name.
+static Platform::Path PartFilePath(const Platform::Path &filename, std::string name,
+                                   const std::string &ext) {
+    for(char &c : name) {
+        if(!isalnum((unsigned char)c) && (unsigned char)c < 0x80) c = '-';
+    }
+    return filename.Parent().Join(filename.FileStem() + "-" + name + "." + ext);
+}
+
 std::vector<Platform::Path> SolveSpaceUI::ExportParts(const Platform::Path &filename) {
     FlushRegeneration();
     std::vector<Platform::Path> written;
     std::string ext = filename.Extension();
     std::transform(ext.begin(), ext.end(), ext.begin(), ::tolower);
-    if(ext != "stl" && ext != "step" && ext != "stp") {
-        Error(_("Parts export as STL or STEP; choose a .stl or .step file name."));
+    if(ext != "stl" && ext != "step" && ext != "stp" && ext != "3mf") {
+        Error(_("Parts export as STL, 3MF or STEP; choose a .stl, .3mf or .step file name."));
         return written;
     }
-    std::vector<hPart> parts = { Part::FIRST };
-    for(const Part &p : SK.part) {
-        if(p.h != Part::FIRST) parts.push_back(p.h);
-    }
-    for(hPart hp : parts) {
+    // 3MF: one file, an object per part (laid flat, side by side along x, 5 mm apart).
+    std::vector<SMesh>       meshes;
+    std::vector<std::string> names;
+    for(hPart hp : PartOrder()) {
         Group *g = PartSolid(hp);
         if(g == nullptr) continue;
         std::string name = PartName(hp);
-        for(char &c : name) {
-            if(!isalnum((unsigned char)c) && (unsigned char)c < 0x80) c = '-';
-        }
-        Platform::Path path =
-            filename.Parent().Join(filename.FileStem() + "-" + name + "." + ext);
-        if(ext == "stl") {
+        if(ext == "stl" || ext == "3mf") {
             SMesh m = {};
             m.MakeFromCopyOf(&g->RunningMesh());
             g->runningShell.TriangulateInto(&m);
+            if(m.IsEmpty()) continue;
+            if(exportLayFlat) LayFlat(&m);
+            if(ext == "3mf") {
+                meshes.push_back(m);
+                names.push_back(name);
+                continue;
+            }
+            Platform::Path path = PartFilePath(filename, name, ext);
             FILE *f = OpenFile(path, "wb");
             if(!f) {
                 m.Clear();
@@ -1414,12 +1618,38 @@ std::vector<Platform::Path> SolveSpaceUI::ExportParts(const Platform::Path &file
             ExportMeshAsStlTo(f, &m);
             fclose(f);
             m.Clear();
-        } else if(!KernelExportStep(g->runningShape, path, 1.0 / exportScale)) {
-            Error(_("STEP needs the Open CASCADE kernel; part '%s' was not written."),
-                  PartName(hp).c_str());
-            continue;
+            written.push_back(path);
+        } else {
+            Platform::Path path = PartFilePath(filename, name, ext);
+            if(!KernelExportStep(g->runningShape, path, 1.0 / exportScale)) {
+                Error(_("STEP needs the Open CASCADE kernel; part '%s' was not written."),
+                      name.c_str());
+                continue;
+            }
+            written.push_back(path);
         }
-        written.push_back(path);
+    }
+    if(ext == "3mf") {
+        if(exportLayFlat) {
+            double x = 0;
+            for(SMesh &m : meshes) {
+                double lo = VERY_POSITIVE, hi = -VERY_POSITIVE;
+                for(const STriangle &t : m.l) {
+                    for(const Vector &v : t.vertices) {
+                        lo = std::min(lo, v.x);
+                        hi = std::max(hi, v.x);
+                    }
+                }
+                for(STriangle &t : m.l) {
+                    for(Vector &v : t.vertices) v.x += x - lo;
+                }
+                x += hi - lo + 5;
+            }
+        }
+        std::vector<ThreeMfObject> objects;
+        for(size_t i = 0; i < meshes.size(); i++) objects.push_back({ names[i], &meshes[i] });
+        if(!objects.empty() && Export3mf(filename, objects)) written.push_back(filename);
+        for(SMesh &m : meshes) m.Clear();
     }
     return written;
 }
