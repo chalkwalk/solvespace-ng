@@ -120,6 +120,12 @@ static void DrawGroup(Group *g, std::function<void()> *run) {
         ValueField("##group-name", g->name, run, [hg](std::string s) { SS.RenameGroup(hg, s); });
     }
     ImGui::TextDisabled("%s", TypeLine(g));
+    if(!SK.part.IsEmpty() && hg != Group::HGROUP_REFERENCES) {
+        hPart hp = g->PartOf();
+        ImGui::TextUnformatted("part");
+        ValueField("##part-name", SS.PartName(hp), run,
+                   [hp](std::string s) { SS.RenamePart(hp, s); });
+    }
     ImGui::Spacing();
 
     if(type == Type::EXTRUDE || type == Type::ROTATE || type == Type::TRANSLATE ||

@@ -500,6 +500,11 @@ void GraphicsWindow::HitTestMakeSelection(Point2d mp) {
             SMesh *m = &(g->displayMesh);
 
             uint32_t v = m->FirstIntersectionWith(mp);
+            // Else a face of another part's solid.
+            for(Group *other : OtherPartSolids()) {
+                if(v) break;
+                v = other->displayMesh.FirstIntersectionWith(mp);
+            }
             if(v) {
                 sel.entity.v = v;
                 Hover hov = {};
@@ -696,9 +701,28 @@ void GraphicsWindow::DrawEntities(Canvas *canvas, bool persistent) {
     }
 }
 
+// The other parts' solids as of the active group: each its latest group before it (M4a).
+std::vector<Group *> GraphicsWindow::OtherPartSolids() {
+    std::vector<Group *> solids;
+    if(SK.part.IsEmpty()) return solids;
+    Group *active = SK.GetGroup(activeGroup);
+    std::map<uint32_t, Group *> latest;
+    for(hGroup hg : SK.groupOrder) {
+        Group *g = SK.GetGroup(hg);
+        if(g->PartOf() != active->PartOf() && hg != Group::HGROUP_REFERENCES &&
+           (!g->runningMesh.IsEmpty() || !g->runningShell.IsEmpty())) {
+            latest[g->PartOf().v] = g;
+        }
+        if(hg == activeGroup) break;
+    }
+    for(auto &l : latest) solids.push_back(l.second);
+    return solids;
+}
+
 void GraphicsWindow::DrawPersistent(Canvas *canvas) {
     // Draw the active group; this does stuff like the mesh and edges.
     SK.GetGroup(activeGroup)->Draw(canvas);
+    for(Group *g : OtherPartSolids()) g->Draw(canvas);
 
     // Now draw the entities that don't change with viewport.
     DrawEntities(canvas, /*persistent=*/true);
@@ -796,12 +820,14 @@ void GraphicsWindow::Draw(Canvas *canvas) {
     // Then redraw whatever the mouse is hovering over, highlighted.
     hover.Draw(/*isHovered=*/true, canvas);
     SK.GetGroup(activeGroup)->DrawMesh(Group::DrawMeshAs::HOVERED, canvas);
+    for(Group *g : OtherPartSolids()) g->DrawMesh(Group::DrawMeshAs::HOVERED, canvas);
 
     // And finally draw the selection, same mechanism.
     for(Selection *s = selection.First(); s; s = selection.NextAfter(s)) {
         s->Draw(/*isHovered=*/false, canvas);
     }
     SK.GetGroup(activeGroup)->DrawMesh(Group::DrawMeshAs::SELECTED, canvas);
+    for(Group *g : OtherPartSolids()) g->DrawMesh(Group::DrawMeshAs::SELECTED, canvas);
 
     Canvas::Stroke strokeDatum = Style::Stroke(Style::DATUM);
     strokeDatum.unit  = Canvas::Unit::PX;

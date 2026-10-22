@@ -109,6 +109,8 @@ const MenuEntry Menu[] = {
 { 1, N_("&Full Screen"),                Command::FULL_SCREEN,      C|F|11,  KC, mView  },
 
 { 0, N_("&New Group"),                  Command::NONE,             0,       KN, mGrp   },
+{ 1, N_("New &Part"),                   Command::PART_NEW,         0,       KN, mGrp   },
+{ 1, NULL,                              Command::NONE,             0,       KN, NULL   },
 { 1, N_("Sketch In &3d"),               Command::GROUP_3D,         S|'3',   KN, mGrp   },
 { 1, N_("Sketch In New &Workplane"),    Command::GROUP_WRKPL,      S|'w',   KN, mGrp   },
 { 1, NULL,                              Command::NONE,             0,       KN, NULL   },

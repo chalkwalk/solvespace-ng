@@ -120,6 +120,10 @@ static double EdgeLength(Entity *e) {
 }
 
 void Group::MenuGroup(Command id)  {
+    if(id == Command::PART_NEW) {
+        SS.NewPart();
+        return;
+    }
     MenuGroup(id, Platform::Path());
 }
 

@@ -25,6 +25,7 @@ struct OutlinerRow {
     bool        afterActive; // not solved while an earlier group is active; shown dimmed
     Status      status;
     int         dof;
+    std::string partHeader;  // the part's name where the part changes (files with parts)
 
     std::string StatusText() const; // degrees of freedom left (0 when fully constrained), "!" or "ERR"
 };

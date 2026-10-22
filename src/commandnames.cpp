@@ -97,6 +97,7 @@ static const CommandNameEntry CommandNames[] = {
     { Command::GROUP_HOLE,        "group-hole"         },
     { Command::GROUP_LOFT,        "group-loft"         },
     { Command::GROUP_SWEEP,       "group-sweep"        },
+    { Command::PART_NEW,          "part-new"           },
     // Constrain
     { Command::DISTANCE_DIA,      "constrain-distance" },
     { Command::REF_DISTANCE,      "constrain-reference-distance" },

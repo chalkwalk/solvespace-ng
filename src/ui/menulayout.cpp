@@ -105,6 +105,7 @@ const std::vector<Top> &Layout() {
             A("ui.toggle-theme", "Light Theme", true),
             C(Command::FULL_SCREEN, "Full Screen") } },
         { "New Group", {
+            C(Command::PART_NEW, "New Part"), Sep(),
             C(Command::GROUP_3D, "Sketch in 3D"),
             C(Command::GROUP_WRKPL, "Sketch in New Workplane"), Sep(),
             C(Command::GROUP_EXTRUDE, "Extrude"), C(Command::GROUP_REVOLVE, "Revolve"),

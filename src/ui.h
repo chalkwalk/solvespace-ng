@@ -166,6 +166,7 @@ enum class Command : uint32_t {
     GROUP_HOLE,
     GROUP_LOFT,
     GROUP_SWEEP,
+    PART_NEW,
     // Constrain
     DISTANCE_DIA,
     REF_DISTANCE,
@@ -665,6 +666,7 @@ public:
     // SolveSpace NG interaction
     void SnapToView(ViewPreset p, bool animate);
     void SnapToDirection(Vector toViewer, bool animate); // the view cube's faces, edges, corners
+    std::vector<Group *> OtherPartSolids();
     void OrbitBy(double dx, double dy);                  // as a middle-drag of (dx, dy) pixels
     // The view, from typed text (the browser's view screen and NG's View panel): the scale in
     // pixels per display unit, the origin as "x, y, z" and a projection vector as "x, y, z".

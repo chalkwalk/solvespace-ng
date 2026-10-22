@@ -40,7 +40,8 @@ static const char *IconFor(Group::Type t) {
 
 std::vector<OutlinerRow> BuildOutliner() {
     std::vector<OutlinerRow> rows;
-    bool afterActive = false;
+    bool  afterActive = false;
+    hPart lastPart    = {};
     for(hGroup hg : SK.groupOrder) {
         Group *g = SK.GetGroup(hg);
         // A sketch whose contour is broken, or a solid made from one.
@@ -68,6 +69,11 @@ std::vector<OutlinerRow> BuildOutliner() {
             r.status = OutlinerRow::Status::DOF;
         } else {
             r.status = OutlinerRow::Status::OK;
+        }
+        // With parts, each run of a part's groups is headed by its name (M4a).
+        if(!SK.part.IsEmpty() && !r.references && g->PartOf() != lastPart) {
+            r.partHeader = SS.PartName(g->PartOf());
+            lastPart     = g->PartOf();
         }
         rows.push_back(r);
         if(r.active) afterActive = true;

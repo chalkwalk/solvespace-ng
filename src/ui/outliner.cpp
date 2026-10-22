@@ -50,6 +50,16 @@ std::function<void()> DrawOutliner() {
     ImGui::TableHeadersRow();
     for(const OutlinerRow &r : BuildOutliner()) {
         hGroup hg = r.group;
+        if(!r.partHeader.empty()) {
+            ImGui::TableNextRow();
+            ImGui::TableSetColumnIndex(3);
+            float iconSize = ImGui::GetFrameHeight() - 2;
+            if(ImTextureID tex = Icon("insert-part", iconSize)) {
+                ImGui::Image(tex, ImVec2(iconSize, iconSize));
+                ImGui::SameLine();
+            }
+            ImGui::TextDisabled("%s", r.partHeader.c_str());
+        }
         ImGui::PushID((int)hg.v);
         if(r.afterActive) {
             ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.55f);
