@@ -33,6 +33,7 @@ void SolveSpaceUI::ClearExisting() {
     SK.groupOrder.Clear();
     SK.style.Clear();
     SK.part.Clear();
+    SK.joint.Clear();
 
     SK.entity.Clear();
     SK.param.Clear();
@@ -230,6 +231,18 @@ const SolveSpaceUI::SaveTable SolveSpaceUI::SAVED[] = {
     { 'k',  "Part.name",                'S',    &(SS.sv.k.name)               },
     { 'k',  "Part.density",             'f',    &(SS.sv.k.density)            },
 
+    { 'j',  "Joint.h.v",                'x',    &(SS.sv.j.h.v)                },
+    { 'j',  "Joint.type",               'd',    &(SS.sv.j.type)               },
+    { 'j',  "Joint.name",               'S',    &(SS.sv.j.name)               },
+    { 'j',  "Joint.parent.v",           'x',    &(SS.sv.j.parent.v)           },
+    { 'j',  "Joint.child.v",            'x',    &(SS.sv.j.child.v)            },
+    { 'j',  "Joint.axisA.v",            'x',    &(SS.sv.j.axisA.v)            },
+    { 'j',  "Joint.axisB.v",            'x',    &(SS.sv.j.axisB.v)            },
+    { 'j',  "Joint.value",              'f',    &(SS.sv.j.value)              },
+    { 'j',  "Joint.limited",            'b',    &(SS.sv.j.limited)            },
+    { 'j',  "Joint.lo",                 'f',    &(SS.sv.j.lo)                 },
+    { 'j',  "Joint.hi",                 'f',    &(SS.sv.j.hi)                 },
+
     { 0, NULL, 0, NULL }
 };
 
@@ -346,6 +359,11 @@ bool SolveSpaceUI::SaveToFile(const Platform::Path &filename) {
         sv.k = k;
         SaveUsingTable(filename, 'k');
         fprintf(fh, "AddPart\n\n");
+    }
+    for(auto &j : SK.joint) {
+        sv.j = j;
+        SaveUsingTable(filename, 'j');
+        fprintf(fh, "AddJoint\n\n");
     }
     for(auto &g : SK.group) {
         sv.g = g;
@@ -569,6 +587,9 @@ bool SolveSpaceUI::LoadFromFile(const Platform::Path &filename, bool canCancel) 
         } else if(strcmp(line, "AddPart")==0) {
             SK.part.Add(&(sv.k));
             sv.k = {};
+        } else if(strcmp(line, "AddJoint")==0) {
+            SK.joint.Add(&(sv.j));
+            sv.j = {};
         } else if(strcmp(line, "AddParam")==0) {
             // params are regenerated, but we want to preload the values
             // for initial guesses
@@ -823,6 +844,8 @@ bool SolveSpaceUI::LoadEntitiesFromSlvs(const Platform::Path &filename, EntityLi
             LoadUsingTable(filename, key, val);
         } else if(strcmp(line, "AddPart")==0) {
             sv.k = {};
+        } else if(strcmp(line, "AddJoint")==0) {
+            sv.j = {};
         } else if(strcmp(line, "AddGroup")==0) {
             // These get allocated whether we want them or not.
             sv.g.remap.clear();

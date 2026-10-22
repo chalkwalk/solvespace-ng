@@ -72,6 +72,10 @@ void SolveSpaceUI::PushFromCurrentOnto(UndoStack *uk) {
         dest.thisTessellated = false;
         dest.displayMesh = {};
         dest.displayOutlines = {};
+        dest.posedMesh = {};
+        dest.posedOutlines = {};
+        dest.posedVersion = -1;
+        dest.posed = false;
 
         dest.remap = src.remap;
 
@@ -83,6 +87,8 @@ void SolveSpaceUI::PushFromCurrentOnto(UndoStack *uk) {
     for(auto &src : SK.groupOrder) { ut->groupOrder.Add(&src); }
     ut->part.ReserveMore(SK.part.n);
     for(auto &src : SK.part) { ut->part.Add(&src); }
+    ut->joint.ReserveMore(SK.joint.n);
+    for(auto &src : SK.joint) { ut->joint.Add(&src); }
     ut->request.ReserveMore(SK.request.n);
     for(auto &src : SK.request) { ut->request.Add(&src); }
     ut->constraint.ReserveMore(SK.constraint.n);
@@ -115,6 +121,7 @@ void SolveSpaceUI::PopOntoCurrentFrom(UndoStack *uk) {
     SK.group.Clear();
     SK.groupOrder.Clear();
     SK.part.Clear();
+    SK.joint.Clear();
     SK.request.Clear();
     SK.constraint.Clear();
     SK.param.Clear();
@@ -123,6 +130,7 @@ void SolveSpaceUI::PopOntoCurrentFrom(UndoStack *uk) {
     // And then do a shallow copy of the state from the undo list
     ut->group.MoveSelfInto(&(SK.group));
     ut->part.MoveSelfInto(&(SK.part));
+    ut->joint.MoveSelfInto(&(SK.joint));
     for(auto &gh : ut->groupOrder) { SK.groupOrder.Add(&gh); }
     ut->request.MoveSelfInto(&(SK.request));
     ut->constraint.MoveSelfInto(&(SK.constraint));

@@ -100,6 +100,9 @@ static const CommandNameEntry CommandNames[] = {
     { Command::GROUP_LOFT,        "group-loft"         },
     { Command::GROUP_SWEEP,       "group-sweep"        },
     { Command::PART_NEW,          "part-new"           },
+    { Command::JOINT_REVOLUTE,    "joint-revolute"     },
+    { Command::JOINT_SLIDER,      "joint-slider"       },
+    { Command::DESIGN_POSE,       "design-pose"        },
     // Constrain
     { Command::DISTANCE_DIA,      "constrain-distance" },
     { Command::REF_DISTANCE,      "constrain-reference-distance" },

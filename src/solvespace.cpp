@@ -987,6 +987,10 @@ void SolveSpaceUI::MenuAnalyze(Command id) {
             Message("%s", SS.PartsListText().c_str());
             break;
 
+        case Command::JOINT_REVOLUTE: SS.MakeJoint(Joint::Type::REVOLUTE); break;
+        case Command::JOINT_SLIDER:   SS.MakeJoint(Joint::Type::SLIDER);   break;
+        case Command::DESIGN_POSE:    SS.DesignPose();                     break;
+
         case Command::VOLUME: {
             Group *g = SK.GetGroup(SS.GW.activeGroup);
             double totalVol = g->displayMesh.CalculateVolume();
@@ -1220,6 +1224,7 @@ void SolveSpaceUI::Clear() {
 
 void Sketch::Clear() {
     part.Clear();
+    joint.Clear();
     group.Clear();
     groupOrder.Clear();
     constraint.Clear();

@@ -112,6 +112,8 @@ const MenuEntry Menu[] = {
 
 { 0, N_("&New Group"),                  Command::NONE,             0,       KN, mGrp   },
 { 1, N_("New &Part"),                   Command::PART_NEW,         0,       KN, mGrp   },
+{ 1, N_("&Revolute Joint"),             Command::JOINT_REVOLUTE,   0,       KN, mAna   },
+{ 1, N_("S&lider Joint"),               Command::JOINT_SLIDER,     0,       KN, mAna   },
 { 1, NULL,                              Command::NONE,             0,       KN, NULL   },
 { 1, N_("Sketch In &3d"),               Command::GROUP_3D,         S|'3',   KN, mGrp   },
 { 1, N_("Sketch In New &Workplane"),    Command::GROUP_WRKPL,      S|'w',   KN, mGrp   },
@@ -189,6 +191,7 @@ const MenuEntry Menu[] = {
 { 1, N_("Show &Center of Mass"),        Command::CENTER_OF_MASS,   C|S|'c', KN, mAna   },
 { 1, N_("&Mass Properties"),            Command::MASS_PROPERTIES,  0,       KN, mAna   },
 { 1, N_("&Parts List"),                 Command::PARTS_LIST,       0,       KN, mAna   },
+{ 1, N_("&Design Pose"),                Command::DESIGN_POSE,      0,       KN, mAna   },
 { 1, NULL,                              Command::NONE,             0,       KN, NULL   },
 { 1, N_("Show &Underconstrained Points"), Command::SHOW_DOF,       C|S|'f', KN, mAna   },
 { 1, NULL,                              Command::NONE,             0,       KN, NULL   },

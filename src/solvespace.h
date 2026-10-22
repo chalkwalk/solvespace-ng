@@ -404,6 +404,7 @@ public:
     IdList<Request,hRequest>        request;
     IdList<Style,hStyle>            style;
     IdList<Part,hPart>              part; // empty while there is only the first part
+    IdList<Joint,hJoint>            joint;
 
     // These are generated from the above.
     IdList<ENTITY,hEntity>          entity;
@@ -416,6 +417,7 @@ public:
     inline Request *GetRequest(hRequest h) { return request.FindById(h); }
     inline Group   *GetGroup  (hGroup   h) { return group.  FindById(h); }
     inline Part    *GetPart   (hPart    h) { return part.   FindById(h); }
+    inline Joint   *GetJoint  (hJoint   h) { return joint.  FindById(h); }
     // Styles are handled a bit differently.
 
     void Clear();
@@ -471,10 +473,12 @@ public:
         ParamList                       param;
         IdList<Style,hStyle>            style;
         IdList<Part,hPart>              part;
+        IdList<Joint,hJoint>            joint;
         hGroup                          activeGroup;
 
         void Clear() {
             part.Clear();
+            joint.Clear();
             group.Clear();
             groupOrder.Clear();
             request.Clear();
@@ -667,6 +671,7 @@ public:
         Constraint   c;
         Style        s;
         Part         k;
+        Joint        j;
     } sv;
     static void MenuFile(Command id);
     void Autosave();
@@ -760,6 +765,31 @@ public:
     void   SetPartMaterial(hPart hp, double density);
     // Gives a group (an older file's link) a new part of its own, named after the group.
     hPart  MoveToNewPart(hGroup hg);
+    // Motion joints (M5a, src/joint.cpp): a joint between the two selected entities' parts
+    // (null, with a message, if they can't make one); a part's pose in the motion pose; a
+    // joint's value, clamped to its limits (remember: an undo step); its limits; every joint
+    // back to the design pose.
+    hJoint MakeJoint(Joint::Type type);
+    Pose   PartPose(hPart hp);
+    void   SetJointValue(hJoint hj, double value, bool remember = true);
+    void   SetJointLimits(hJoint hj, bool limited, double lo, double hi);
+    void   DesignPose();
+    bool   RenameJoint(hJoint hj, const std::string &name);
+    void   DeleteJoint(hJoint hj);
+    // A typed joint value (an expression; degrees, or the length unit for a slider).
+    bool   ParseJointValue(hJoint hj, const std::string &text, double *value);
+    std::string JointValueString(hJoint hj, double value);
+    void   PruneJoints(); // those whose entities or parts are gone
+    // Turns or slides a joint across its range (its limits, else a full turn) and measures
+    // how close the parts it moves come to the others (B-reps, Open CASCADE): the smallest
+    // gap and the joint value there, and the ranges where they touch or overlap.
+    struct ClearanceSweep {
+        bool        ok = false;
+        double      gap = 0, at = 0;
+        std::vector<std::pair<double, double>> collisions;
+        std::string text; // the report, or why there is none
+    };
+    ClearanceSweep SweepClearance(hJoint hj, int samples = 72);
     double PartDensity(hPart hp);
     // The parts list (bill of materials): each part with a solid, in part order.
     struct PartRow {

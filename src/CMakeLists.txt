@@ -112,6 +112,7 @@ if(ENABLE_GUI OR ENABLE_CLI)
         drawentity.cpp
         export.cpp
         export3mf.cpp
+        joint.cpp
         exportstep.cpp
         exportvector.cpp
         file.cpp

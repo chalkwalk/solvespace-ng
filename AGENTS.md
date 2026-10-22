@@ -484,6 +484,36 @@ XCAF colours and names, exact hidden-line drawing export (`HLRBRep`).
   part transform, the assembly constraints that move it and the motion pose come with M5's
   joints, the first thing that moves a part. Links keep their own 6-DOF placement.
 
+**Built in M5a (2026-10-22, branch `ng/m5a-joints`):**
+- **Joints** are records (`SK.joint`, `Joint`, `AddJoint` in files; `src/joint.cpp`):
+  revolute or slider, with a parent part, a child part, an axis entity on each (a line, a
+  circle or arc, or a face), a value (degrees or mm; 0 = the design pose), optional limits
+  and a name.
+- **Making one:** New Group ▸ Revolute Joint / Slider Joint on two selected axes, one on
+  each part. A revolute's axes must be one line in the design pose, a slider's parallel.
+  The earlier part is the parent, and a part has one parent joint, so joints form a tree.
+  Kinematic loops would need the solver, so they come later.
+- **The pose:** `SolveSpaceUI::PartPose` composes the joints from the first part. A posed
+  group draws and picks a moved copy of its display mesh and outlines
+  (`Group::ShownMesh`, `ShownOutlines`), with no kernel work.
+  - Sketch entities, exports, mass properties and the parts list stay in the design pose.
+  - A posed part's entities and constraints are hidden until Inspect ▸ Design Pose
+    (`design-pose`) returns it.
+- **Moving a part:**
+  - **Outliner:** lists the joints; a click shows one in Properties.
+  - **Properties:** the value (typed), a scrub slider (one undo step per drag), the limits,
+    "sweep clearance", "design pose" and "delete".
+  - **`G` on a face of a jointed part** turns or slides its joint with the mouse; a typed
+    value sets the change.
+- **Clearance sweep** (`SweepClearance`): samples the joint across its range (its limits,
+  else a full turn; a slider needs limits). It measures the moving parts against the still
+  ones with OCCT's `BRepExtrema_DistShapeShape` on placed B-reps (`KernelMinDistance`),
+  refines the minimum by golden section, and reports e.g. "Minimum gap 0.20 mm at 47.0°" or
+  where the parts touch or overlap. This meets M5's "done when" (`test/group/hinge`: a Ø5 pin
+  in a Ø5.4 hole clears by 0.2 at every angle).
+- **Still to come (M5b):** the fit table, fit joints, split with automatic joints, and
+  cylindrical, planar, ball and gear joints.
+
 ## 8. Milestones and testing
 
 Each milestone leaves a working, daily-usable app. Work in milestone order. Don't start

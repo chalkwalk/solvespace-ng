@@ -25,6 +25,7 @@
 #include <BRepBuilderAPI_MakeVertex.hxx>
 #include <BRepBuilderAPI_MakeWire.hxx>
 #include <BRepBuilderAPI_Transform.hxx>
+#include <BRepExtrema_DistShapeShape.hxx>
 #include <BRepGProp.hxx>
 #include <BRepCheck_Analyzer.hxx>
 #include <BRepFilletAPI_MakeChamfer.hxx>
@@ -1416,6 +1417,24 @@ KernelEdgeFacesResult KernelEdgeFaces(const std::shared_ptr<const KernelShape> &
     return KernelEdgeFacesResult::NOT_FOUND;
 }
 
+
+static TopoDS_Shape Placed(const TopoDS_Shape &shape, Quaternion q, Vector t) {
+    gp_Trsf trsf;
+    trsf.SetRotation(gp_Quaternion(q.vx, q.vy, q.vz, q.w));
+    trsf.SetTranslationPart(gp_Vec(t.x, t.y, t.z));
+    return shape.Moved(TopLoc_Location(trsf));
+}
+
+bool KernelMinDistance(const std::shared_ptr<const KernelShape> &a, Quaternion qa, Vector ta,
+                       const std::shared_ptr<const KernelShape> &b, Quaternion qb, Vector tb,
+                       double *distance) {
+    if(IsEmpty(a) || IsEmpty(b)) return false;
+    BRepExtrema_DistShapeShape dss(Placed(a->shape, qa, ta), Placed(b->shape, qb, tb));
+    if(!dss.IsDone()) return false;
+    // One solid inside the other has no nearest points between their faces: inside counts.
+    *distance = dss.InnerSolution() ? 0 : dss.Value();
+    return true;
+}
 
 bool KernelMassProperties(const std::shared_ptr<const KernelShape> &ks, MassProps *out) {
     if(IsEmpty(ks)) return false;

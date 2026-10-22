@@ -349,6 +349,11 @@ bool KernelMassProperties(const std::shared_ptr<const KernelShape> &, MassProps 
     return false;
 }
 
+bool KernelMinDistance(const std::shared_ptr<const KernelShape> &, Quaternion, Vector,
+                       const std::shared_ptr<const KernelShape> &, Quaternion, Vector, double *) {
+    return false;
+}
+
 std::vector<KernelFaceNormal> KernelFaceNormals(const std::shared_ptr<const KernelShape> &) {
     return {};
 }

@@ -37,6 +37,9 @@ void Group::Clear() {
     thisTessellated    = false;
     displayMesh.Clear();
     displayOutlines.Clear();
+    posedMesh.Clear();
+    posedOutlines.Clear();
+    posedVersion = -1;
     impMesh.Clear();
     impShell.Clear();
     impShape.reset();

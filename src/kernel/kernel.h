@@ -229,6 +229,11 @@ struct MassProps {
     Vector centre = {};
     bool   exact  = false;
 };
+// The smallest distance between two B-reps, each moved by its rotation and translation
+// (x -> q x + t); 0 where they touch or overlap. False if either has no B-rep.
+bool KernelMinDistance(const std::shared_ptr<const KernelShape> &a, Quaternion qa, Vector ta,
+                       const std::shared_ptr<const KernelShape> &b, Quaternion qb, Vector tb,
+                       double *distance);
 // The B-rep's mass properties, exactly; false if there is no B-rep.
 bool KernelMassProperties(const std::shared_ptr<const KernelShape> &shape, MassProps *out);
 
