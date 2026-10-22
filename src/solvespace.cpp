@@ -1186,6 +1186,7 @@ void SolveSpaceUI::Clear() {
 }
 
 void Sketch::Clear() {
+    part.Clear();
     group.Clear();
     groupOrder.Clear();
     constraint.Clear();
@@ -1258,7 +1259,7 @@ Group *Sketch::GetRunningMeshGroupFor(hGroup h) {
         if(g->IsMeshGroup()) {
             return g;
         }
-        g = g->PreviousGroup();
+        g = g->PreviousGroupInPart();
     }
     return NULL;
 }
@@ -1316,6 +1317,49 @@ std::string SolveSpaceUI::MassPropertiesText() {
                   "This introduces error, typically of around 1%.");
     }
     return text;
+}
+
+hPart SolveSpaceUI::NewPart() {
+    // On a picked face or workplane, a sketch there; else a 3D sketch.
+    GW.GroupSelection();
+    Command cmd = (GW.gs.faces == 1 || GW.gs.workplanes == 1) ? Command::GROUP_WRKPL
+                                                              : Command::GROUP_3D;
+    size_t before = SK.part.n;
+    Group::startNewPart = true;
+    Group::MenuGroup(cmd);
+    Group::startNewPart = false;
+    if(SK.part.n == before) return Part::FIRST; // refused
+    return SK.GetGroup(GW.activeGroup)->PartOf();
+}
+
+std::string SolveSpaceUI::PartName(hPart hp) {
+    Part *p = SK.part.FindByIdNoOops(hp);
+    return p ? p->name : "Part 1";
+}
+
+bool SolveSpaceUI::RenamePart(hPart hp, const std::string &name) {
+    if(name.empty()) {
+        Error(_("A part's name can't be empty."));
+        return false;
+    }
+    UndoRemember();
+    if(SK.part.FindByIdNoOops(hp) == nullptr) {
+        Part first = {};
+        first.h    = Part::FIRST;
+        SK.part.Add(&first);
+    }
+    SK.GetPart(hp)->name = name;
+    return true;
+}
+
+Group *SolveSpaceUI::PartSolid(hPart hp) {
+    Group *last = nullptr;
+    for(hGroup hg : SK.groupOrder) {
+        Group *g = SK.GetGroup(hg);
+        if(g->PartOf() != hp) continue;
+        if(!g->runningMesh.IsEmpty() || !g->runningShell.IsEmpty()) last = g;
+    }
+    return last;
 }
 
 } // namespace SolveSpace

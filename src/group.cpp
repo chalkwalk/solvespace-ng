@@ -14,6 +14,8 @@ const hParam   Param::NO_PARAM = { 0 };
 #define NO_PARAM (Param::NO_PARAM)
 
 const hGroup Group::HGROUP_REFERENCES = { 1 };
+const hPart  Part::FIRST              = { 1 };
+bool         Group::startNewPart      = false;
 
 //-----------------------------------------------------------------------------
 // The group structure includes pointers to other dynamically-allocated
@@ -594,6 +596,24 @@ void Group::MenuGroup(Command id, Platform::Path linkFile) {
 
     SS.GW.ClearSelection();
     SS.UndoRemember();
+
+    // The group joins the active group's part, or starts the next part (SolveSpaceUI::NewPart),
+    // which is made here so that one undo takes both back.
+    if(startNewPart) {
+        startNewPart = false;
+        if(SK.part.IsEmpty()) {
+            Part first = {};
+            first.h    = Part::FIRST;
+            first.name = "Part 1";
+            SK.part.Add(&first);
+        }
+        Part next = {};
+        next.name = ssprintf("Part %d", SK.part.n + 1);
+        SK.part.AddAndAssignId(&next);
+        g.part = next.h;
+    } else if(Group *active = SK.group.FindByIdNoOops(SS.GW.activeGroup)) {
+        g.part = active->part;
+    }
 
     bool afterActive = false;
     for(hGroup hg : SK.groupOrder) {

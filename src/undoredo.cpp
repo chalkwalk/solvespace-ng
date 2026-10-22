@@ -79,6 +79,8 @@ void SolveSpaceUI::PushFromCurrentOnto(UndoStack *uk) {
         ut->group.Add(&dest);
     }
     for(auto &src : SK.groupOrder) { ut->groupOrder.Add(&src); }
+    ut->part.ReserveMore(SK.part.n);
+    for(auto &src : SK.part) { ut->part.Add(&src); }
     ut->request.ReserveMore(SK.request.n);
     for(auto &src : SK.request) { ut->request.Add(&src); }
     ut->constraint.ReserveMore(SK.constraint.n);
@@ -110,6 +112,7 @@ void SolveSpaceUI::PopOntoCurrentFrom(UndoStack *uk) {
     }
     SK.group.Clear();
     SK.groupOrder.Clear();
+    SK.part.Clear();
     SK.request.Clear();
     SK.constraint.Clear();
     SK.param.Clear();
@@ -117,6 +120,7 @@ void SolveSpaceUI::PopOntoCurrentFrom(UndoStack *uk) {
 
     // And then do a shallow copy of the state from the undo list
     ut->group.MoveSelfInto(&(SK.group));
+    ut->part.MoveSelfInto(&(SK.part));
     for(auto &gh : ut->groupOrder) { SK.groupOrder.Add(&gh); }
     ut->request.MoveSelfInto(&(SK.request));
     ut->constraint.MoveSelfInto(&(SK.constraint));

@@ -164,6 +164,27 @@ typedef std::unordered_map<EntityKey, EntityId, EntityKeyHash, EntityKeyEqual> E
 #include "kernel/facenamer.h"
 #include "kernel/kernel.h"
 
+// A part (AGENTS.md section 7): a named body; its groups make its own solid. Groups are tagged
+// with it (Group::part); the first part is implicit, so a file has no Part until a second.
+class hPart {
+public:
+    uint32_t v;
+};
+
+template<>
+struct IsHandleOracle<hPart> : std::true_type {};
+
+class Part {
+public:
+    static const hPart FIRST; // the part a group with no part is in
+
+    int         tag;
+    hPart       h;
+    std::string name;
+
+    void Clear() {}
+};
+
 // A set of requests. Every request must have an associated group.
 class Group {
 public:
@@ -204,6 +225,11 @@ public:
 
     hGroup      opA;
     hGroup      opB;
+    hPart       part; // 0: Part::FIRST
+    hPart PartOf() const { return part.v ? part : Part::FIRST; }
+    static bool startNewPart; // the next MenuGroup starts a new part
+    // The group before this one in its part (its solid continues from that one's), or null.
+    Group *PreviousGroupInPart() const;
     bool        visible;
     bool        suppress;
     bool        relaxConstraints;

@@ -91,6 +91,7 @@ set(testsuite_SOURCES
     group/shell/test.cpp
     group/draft/test.cpp
     group/hole/test.cpp
+    group/parts/test.cpp
     group/loft/test.cpp
     group/sweep/test.cpp
     group/stepimport/test.cpp

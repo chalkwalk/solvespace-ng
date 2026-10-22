@@ -32,6 +32,7 @@ void SolveSpaceUI::ClearExisting() {
     SK.group.Clear();
     SK.groupOrder.Clear();
     SK.style.Clear();
+    SK.part.Clear();
 
     SK.entity.Clear();
     SK.param.Clear();
@@ -94,6 +95,7 @@ const SolveSpaceUI::SaveTable SolveSpaceUI::SAVED[] = {
     { 'g',  "Group.activeWorkplane.v",  'x',    &(SS.sv.g.activeWorkplane.v)  },
     { 'g',  "Group.opA.v",              'x',    &(SS.sv.g.opA.v)              },
     { 'g',  "Group.opB.v",              'x',    &(SS.sv.g.opB.v)              },
+    { 'g',  "Group.part.v",             'x',    &(SS.sv.g.part.v)             },
     { 'g',  "Group.valA",               'f',    &(SS.sv.g.valA)               },
     { 'g',  "Group.valB",               'f',    &(SS.sv.g.valB)               },
     { 'g',  "Group.valC",               'f',    &(SS.sv.g.valC)               },
@@ -223,6 +225,9 @@ const SolveSpaceUI::SaveTable SolveSpaceUI::SAVED[] = {
     { 's',  "Style.stippleType",        'd',    &(SS.sv.s.stippleType)        },
     { 's',  "Style.stippleScale",       'f',    &(SS.sv.s.stippleScale)       },
 
+    { 'k',  "Part.h.v",                 'x',    &(SS.sv.k.h.v)                },
+    { 'k',  "Part.name",                'S',    &(SS.sv.k.name)               },
+
     { 0, NULL, 0, NULL }
 };
 
@@ -335,6 +340,11 @@ bool SolveSpaceUI::SaveToFile(const Platform::Path &filename) {
     fprintf(fh, "%s\n\n\n", VERSION_STRING);
 
     int i, j;
+    for(auto &k : SK.part) {
+        sv.k = k;
+        SaveUsingTable(filename, 'k');
+        fprintf(fh, "AddPart\n\n");
+    }
     for(auto &g : SK.group) {
         sv.g = g;
         SaveUsingTable(filename, 'g');
@@ -554,6 +564,9 @@ bool SolveSpaceUI::LoadFromFile(const Platform::Path &filename, bool canCancel) 
             SK.group.Add(&(sv.g));
             sv.g = {};
             sv.g.scale = 1; // default is 1, not 0; so legacy files need this
+        } else if(strcmp(line, "AddPart")==0) {
+            SK.part.Add(&(sv.k));
+            sv.k = {};
         } else if(strcmp(line, "AddParam")==0) {
             // params are regenerated, but we want to preload the values
             // for initial guesses
@@ -806,6 +819,8 @@ bool SolveSpaceUI::LoadEntitiesFromSlvs(const Platform::Path &filename, EntityLi
             *e = '\0';
             char *key = line, *val = e+1;
             LoadUsingTable(filename, key, val);
+        } else if(strcmp(line, "AddPart")==0) {
+            sv.k = {};
         } else if(strcmp(line, "AddGroup")==0) {
             // These get allocated whether we want them or not.
             sv.g.remap.clear();

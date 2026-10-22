@@ -268,9 +268,12 @@ KernelJob Group::BuildKernelJob() {
     job.combine       = KernelCombineFor(srcg->meshCombine);
     job.sourceCombine = job.combine;
     Group *prevg      = srcg->RunningMeshGroup();
-    job.prevShell     = &prevg->runningShell;
-    job.prevMesh      = &prevg->runningMesh;
-    job.prevShape     = prevg->runningShape;
+    // The first group of a part starts from nothing.
+    static const SShell noShell = {};
+    static const SMesh  noMesh  = {};
+    job.prevShell     = prevg ? &prevg->runningShell : const_cast<SShell *>(&noShell);
+    job.prevMesh      = prevg ? &prevg->runningMesh : const_cast<SMesh *>(&noMesh);
+    job.prevShape     = prevg ? prevg->runningShape : nullptr;
     return job;
 }
 
@@ -398,11 +401,22 @@ Group *Group::PreviousGroup() const {
     return nullptr;
 }
 
+Group *Group::PreviousGroupInPart() const {
+    Group *prev = nullptr;
+    for(auto const &gh : SK.groupOrder) {
+        Group *g = SK.GetGroup(gh);
+        if(g->h == h) return prev;
+        if(g->PartOf() == PartOf()) prev = g;
+    }
+    return nullptr;
+}
+
 Group *Group::RunningMeshGroup() const {
     if(type == Type::TRANSLATE || type == Type::ROTATE) {
         return SK.GetGroup(opA)->RunningMeshGroup();
     } else {
-        return PreviousGroup();
+        // Each part has its own solid (M4a).
+        return PreviousGroupInPart();
     }
 }
 

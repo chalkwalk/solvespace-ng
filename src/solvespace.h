@@ -403,6 +403,7 @@ public:
     IdList<CONSTRAINT,hConstraint>  constraint;
     IdList<Request,hRequest>        request;
     IdList<Style,hStyle>            style;
+    IdList<Part,hPart>              part; // empty while there is only the first part
 
     // These are generated from the above.
     IdList<ENTITY,hEntity>          entity;
@@ -414,6 +415,7 @@ public:
     inline Param   *GetParam  (hParam   h) { return param.  FindById(h); }
     inline Request *GetRequest(hRequest h) { return request.FindById(h); }
     inline Group   *GetGroup  (hGroup   h) { return group.  FindById(h); }
+    inline Part    *GetPart   (hPart    h) { return part.   FindById(h); }
     // Styles are handled a bit differently.
 
     void Clear();
@@ -468,9 +470,11 @@ public:
         IdList<Constraint,hConstraint>  constraint;
         ParamList                       param;
         IdList<Style,hStyle>            style;
+        IdList<Part,hPart>              part;
         hGroup                          activeGroup;
 
         void Clear() {
+            part.Clear();
             group.Clear();
             groupOrder.Clear();
             request.Clear();
@@ -657,6 +661,7 @@ public:
         Param        p;
         Constraint   c;
         Style        s;
+        Part         k;
     } sv;
     static void MenuFile(Command id);
     void Autosave();
@@ -730,6 +735,13 @@ public:
     // The active group's solid's mass properties: exact from the B-rep, else from its mesh;
     // false if there is no solid.
     bool        MassProperties(MassProps *out);
+    // Parts (M4a): a new part, with a sketch group in it (on the selected face or workplane,
+    // else in 3D), active; its name; the group holding a part's solid as of the active group
+    // (its last group with one), or null.
+    hPart  NewPart();
+    bool   RenamePart(hPart hp, const std::string &name);
+    std::string PartName(hPart hp);
+    Group *PartSolid(hPart hp);
     // A STEP file's B-rep and its tessellation, for a linked group; false if it can't be read
     // (or there is no Open CASCADE).
     bool LinkStep(const Platform::Path &filename, std::shared_ptr<const KernelShape> *shape,
