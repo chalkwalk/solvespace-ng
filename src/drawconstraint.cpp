@@ -483,6 +483,8 @@ bool Constraint::IsVisible() const {
         // If the group is hidden, then the constraints are hidden and not
         // able to be selected.
         if(!(g->visible)) return false;
+        // Or its part is moved from the design pose (M5a), as its entities are.
+        if(!SK.joint.IsEmpty() && !SS.PartPose(g->PartOf()).IsIdentity()) return false;
         // And likewise if the group is not the active group; except for comments
         // with an assigned style.
         if(g->h != SS.GW.activeGroup && !(type == Type::COMMENT && disp.style.v)) {

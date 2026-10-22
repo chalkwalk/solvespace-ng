@@ -169,6 +169,9 @@ enum class Command : uint32_t {
     GROUP_LOFT,
     GROUP_SWEEP,
     PART_NEW,
+    JOINT_REVOLUTE,
+    JOINT_SLIDER,
+    DESIGN_POSE,
     // Constrain
     DISTANCE_DIA,
     REF_DISTANCE,
@@ -725,7 +728,16 @@ public:
         bool                                    wasUnsaved; // restored by a cancel
         bool                                    byHover;    // nothing was selected
         int                                     undoCnt, undoWrite; // the grab's own entry
+        // Grabbing a face of a part a joint moves turns or slides the joint (M5a): its value
+        // at the start, and the angle the mouse has gone round its axis.
+        hJoint                                  joint;
+        double                                  jointStart, jointTurned;
+        Vector                                  jointRadial; // the mouse from the axis, last
     } grab;
+    // The joint's axis as shown (moved with its parent part), and the mouse's point on the
+    // plane across it.
+    bool   GrabJointAxis(Vector *p, Vector *d);
+    Vector GrabJointRadial(Point2d mouse);
     bool   StartGrab(Point2d mouse); // selection, else hover; false (no undo entry) if nothing
     void   GrabMouseMoved(Point2d mouse);
     void   RecordGrabView();

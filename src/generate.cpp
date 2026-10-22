@@ -352,6 +352,8 @@ void SolveSpaceUI::GenerateAll(Generate type, bool andFindFree, bool genForBBox)
         }
     }
 
+    PruneJoints();
+
     // Make sure the point that we're tracing exists.
     if(traced.point.v && !SK.entity.FindByIdNoOops(traced.point)) {
         traced.point = Entity::NO_ENTITY;

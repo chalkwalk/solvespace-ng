@@ -96,6 +96,8 @@ set(testsuite_SOURCES
     group/partsexport/test.cpp
     group/partslist/test.cpp
     group/parts3mf/test.cpp
+    group/joints/test.cpp
+    group/hinge/test.cpp
     group/loft/test.cpp
     group/sweep/test.cpp
     group/stepimport/test.cpp
@@ -191,6 +193,7 @@ set(ngui_SOURCES
     ngui/hole/test.cpp
     ngui/loft/test.cpp
     ngui/parts/test.cpp
+    ngui/joints/test.cpp
     ngui/capture/test.cpp)
 
 if(ENABLE_GUI AND ENABLE_NG_GUI)

@@ -14,14 +14,34 @@ namespace SolveSpace {
 namespace Ui {
 
 static hGroup gShownGroup = {};
+static hJoint gShownJoint = {};
+static std::map<uint32_t, std::string> gSweepText; // each joint's last clearance sweep
 
 void ResetProperties() {
     gShownGroup = {};
+    gShownJoint = {};
+    gSweepText.clear();
 }
 
 void ShowGroupInProperties(hGroup hg) {
     gShownGroup = hg;
+    gShownJoint = {};
     PropertiesPanel().SetShown(true);
+}
+
+void ShowJointInProperties(hJoint hj) {
+    gShownJoint = hj;
+    PropertiesPanel().SetShown(true);
+}
+
+std::string JointSweepText(hJoint hj) {
+    auto it = gSweepText.find(hj.v);
+    return it == gSweepText.end() ? "" : it->second;
+}
+
+hJoint PropertiesJoint() {
+    if(gShownJoint.v && SK.joint.FindByIdNoOops(gShownJoint)) return gShownJoint;
+    return {};
 }
 
 hGroup PropertiesGroup() {
@@ -520,12 +540,79 @@ static void DrawSelection(const SelectionModel &m, std::function<void()> *run) {
     }
 }
 
+// A motion joint: its name, what it joins, its value (typed or scrubbed), its limits, and a
+// clearance sweep.
+static void DrawJoint(Joint *j, std::function<void()> *run) {
+    hJoint hj       = j->h;
+    bool   revolute = j->type == Joint::Type::REVOLUTE;
+    ImGui::TextDisabled("Joint");
+    ValueField("##joint-name", j->name, run, [hj](std::string s) { SS.RenameJoint(hj, s); });
+    ImGui::TextDisabled("%s: %s turns %s", revolute ? "revolute" : "slider",
+                        SS.PartName(j->parent).c_str(), SS.PartName(j->child).c_str());
+    if(!revolute) {
+        ImGui::SameLine(0, 0);
+        ImGui::TextDisabled(" (slides)");
+    }
+    ImGui::Spacing();
+    const char *unit = revolute ? "°" : SS.UnitName();
+    auto parsed = [hj](std::function<void(double)> use) {
+        return [hj, use](std::string s) {
+            double v;
+            if(SS.ParseJointValue(hj, s, &v)) use(v);
+        };
+    };
+    ImGui::TextUnformatted(revolute ? "angle" : "distance");
+    ValueField("##joint-value", SS.JointValueString(hj, j->value), run,
+               parsed([hj](double v) { SS.SetJointValue(hj, v); }), unit);
+    // Scrubbing: one undo step per drag of the slider.
+    float lo = (float)(j->limited ? j->lo : (revolute ? -180 : -50));
+    float hi = (float)(j->limited ? j->hi : (revolute ? 180 : 50));
+    float v  = (float)j->value;
+    static bool scrubbed = false; // this drag of the slider has made its undo step
+    ImGui::SetNextItemWidth(-1);
+    bool changed = ImGui::SliderFloat("##joint-scrub", &v, lo, hi, revolute ? "%.1f°" : "%.2f");
+    if(ImGui::IsItemActivated()) scrubbed = false;
+    if(changed) {
+        bool   first = !scrubbed;
+        double value = v;
+        scrubbed     = true;
+        *run         = [hj, value, first] { SS.SetJointValue(hj, value, first); };
+    }
+    bool   limited = j->limited;
+    double jlo = j->lo, jhi = j->hi;
+    if(ImGui::Checkbox("limits##joint-limited", &limited)) {
+        // Turned on: from the design pose to a quarter turn, or 10 along.
+        double a = j->limited ? jlo : 0, b = j->limited ? jhi : (revolute ? 90 : 10);
+        *run = [hj, limited, a, b] { SS.SetJointLimits(hj, limited, a, b); };
+    }
+    if(j->limited) {
+        ImGui::TextUnformatted("from");
+        ValueField("##joint-lo", SS.JointValueString(hj, jlo), run,
+                   parsed([hj, jhi](double x) { SS.SetJointLimits(hj, true, x, jhi); }), unit);
+        ImGui::TextUnformatted("to");
+        ValueField("##joint-hi", SS.JointValueString(hj, jhi), run,
+                   parsed([hj, jlo](double x) { SS.SetJointLimits(hj, true, jlo, x); }), unit);
+    }
+    ImGui::Spacing();
+    if(ImGui::Button("sweep clearance##joint-sweep")) {
+        *run = [hj] { gSweepText[hj.v] = SS.SweepClearance(hj).text; };
+    }
+    auto it = gSweepText.find(hj.v);
+    if(it != gSweepText.end()) ImGui::TextWrapped("%s", it->second.c_str());
+    ImGui::Spacing();
+    if(ImGui::Button("design pose##joint-design-pose")) *run = [] { SS.DesignPose(); };
+    ImGui::SameLine();
+    if(ImGui::Button("delete##joint-delete")) *run = [hj] { SS.DeleteJoint(hj); };
+}
+
 std::function<void()> DrawProperties() {
     std::function<void()> run;
     if(!PropertiesPanel().Begin()) return run;
     SelectionModel selection = BuildSelection();
     if(!selection.empty) {
         DrawSelection(selection, &run);
+    } else if(Joint *j = SK.joint.FindByIdNoOops(PropertiesJoint())) {
+        DrawJoint(j, &run);
     } else if(Group *g = SK.group.FindByIdNoOops(PropertiesGroup())) {
         DrawGroup(g, &run);
     }

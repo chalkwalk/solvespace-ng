@@ -394,7 +394,46 @@ void Group::GenerateDisplayItems() {
             SS.UpdateCenterOfMass();
         }
         displayDirty = false;
+        displayVersion++;
     }
+}
+
+// The display items moved to the part's pose, remade when either changes.
+static void UpdatePosed(Group *g) {
+    Pose pose = SS.PartPose(g->PartOf());
+    g->posed  = !pose.IsIdentity();
+    if(!g->posed) return;
+    if(g->posedVersion == g->displayVersion && pose.Equals(g->posedFor)) return;
+    g->posedMesh.Clear();
+    for(const STriangle &t : g->displayMesh.l) {
+        STriangle tr = t;
+        for(int i = 0; i < 3; i++) {
+            tr.vertices[i] = pose.Apply(t.vertices[i]);
+            tr.normals[i]  = pose.q.Rotate(t.normals[i]);
+        }
+        g->posedMesh.AddTriangle(&tr);
+    }
+    g->posedMesh.PrecomputeTransparency();
+    g->posedOutlines.Clear();
+    g->posedOutlines.MakeFromCopyOf(&g->displayOutlines);
+    for(SOutline &o : g->posedOutlines.l) {
+        o.a  = pose.Apply(o.a);
+        o.b  = pose.Apply(o.b);
+        o.nl = pose.q.Rotate(o.nl);
+        o.nr = pose.q.Rotate(o.nr);
+    }
+    g->posedFor     = pose;
+    g->posedVersion = g->displayVersion;
+}
+
+SMesh &Group::ShownMesh() {
+    UpdatePosed(this);
+    return posed ? posedMesh : displayMesh;
+}
+
+SOutlineList &Group::ShownOutlines() {
+    UpdatePosed(this);
+    return posed ? posedOutlines : displayOutlines;
 }
 
 Group *Group::PreviousGroup() const {
@@ -512,7 +551,7 @@ void Group::DrawMesh(DrawMeshAs how, Canvas *canvas) {
 
             // Draw the shaded solid into the depth buffer for hidden line removal,
             // and if we're actually going to display it, to the color buffer too.
-            canvas->DrawMesh(displayMesh, hcfFront, hcfBack);
+            canvas->DrawMesh(ShownMesh(), hcfFront, hcfBack);
 
             // Draw mesh edges, for debugging.
             if(SS.GW.showMesh) {
@@ -523,7 +562,7 @@ void Group::DrawMesh(DrawMeshAs how, Canvas *canvas) {
                 strokeTriangle.unit   = Canvas::Unit::PX;
                 Canvas::hStroke hcsTriangle = canvas->GetStroke(strokeTriangle);
                 SEdgeList edges = {};
-                for(const STriangle &t : displayMesh.l) {
+                for(const STriangle &t : ShownMesh().l) {
                     edges.AddEdge(t.a, t.b);
                     edges.AddEdge(t.b, t.c);
                     edges.AddEdge(t.c, t.a);
@@ -546,7 +585,7 @@ void Group::DrawMesh(DrawMeshAs how, Canvas *canvas) {
             if(he.v != 0 && SK.GetEntity(he)->IsFace()) {
                 faces.push_back(he.v);
             }
-            canvas->DrawFaces(displayMesh, faces, hcf);
+            canvas->DrawFaces(ShownMesh(), faces, hcf);
             break;
         }
 
@@ -565,7 +604,7 @@ void Group::DrawMesh(DrawMeshAs how, Canvas *canvas) {
             for(auto &fc : gs.face) {
                 faces.push_back(fc.v);
             }
-            canvas->DrawFaces(displayMesh, faces, hcf);
+            canvas->DrawFaces(ShownMesh(), faces, hcf);
             break;
         }
     }
@@ -584,7 +623,7 @@ void Group::Draw(Canvas *canvas) {
         strokeEdge.zIndex = 1;
         Canvas::hStroke hcsEdge = canvas->GetStroke(strokeEdge);
 
-        canvas->DrawOutlines(displayOutlines, hcsEdge,
+        canvas->DrawOutlines(ShownOutlines(), hcsEdge,
                              SS.GW.showOutlines
                              ? Canvas::DrawOutlinesAs::EMPHASIZED_WITHOUT_CONTOUR
                              : Canvas::DrawOutlinesAs::EMPHASIZED_AND_CONTOUR);
@@ -597,7 +636,7 @@ void Group::Draw(Canvas *canvas) {
             strokeHidden.layer  = Canvas::Layer::OCCLUDED;
             Canvas::hStroke hcsHidden = canvas->GetStroke(strokeHidden);
 
-            canvas->DrawOutlines(displayOutlines, hcsHidden,
+            canvas->DrawOutlines(ShownOutlines(), hcsHidden,
                                  Canvas::DrawOutlinesAs::EMPHASIZED_AND_CONTOUR);
         }
     }
@@ -607,7 +646,7 @@ void Group::Draw(Canvas *canvas) {
         strokeOutline.zIndex = 1;
         Canvas::hStroke hcsOutline = canvas->GetStroke(strokeOutline);
 
-        canvas->DrawOutlines(displayOutlines, hcsOutline,
+        canvas->DrawOutlines(ShownOutlines(), hcsOutline,
                              Canvas::DrawOutlinesAs::CONTOUR_ONLY);
     }
 }

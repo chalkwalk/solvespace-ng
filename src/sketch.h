@@ -186,6 +186,61 @@ public:
     void Clear() {}
 };
 
+// A motion joint (AGENTS.md section 7, M5a): turns its child part about (revolute), or slides
+// it along (slider), an axis on its parent, without rebuilding either; value 0 is the design
+// pose. Each part has at most one parent joint, and a parent comes earlier in part order, so
+// the joints form a tree.
+class hJoint {
+public:
+    uint32_t v;
+};
+
+template<>
+struct IsHandleOracle<hJoint> : std::true_type {};
+
+// A rigid motion, x -> q x + t.
+struct Pose {
+    Quaternion q = Quaternion::IDENTITY;
+    Vector     t = {};
+
+    Vector Apply(Vector p) const { return q.Rotate(p).Plus(t); }
+    // This motion after b.
+    Pose After(const Pose &b) const { return { q.Times(b.q), q.Rotate(b.t).Plus(t) }; }
+    bool IsIdentity() const {
+        return fabs(q.w - 1) < 1e-12 && fabs(q.vx) < 1e-12 && fabs(q.vy) < 1e-12 &&
+               fabs(q.vz) < 1e-12 && t.Magnitude() < 1e-12;
+    }
+    bool Equals(const Pose &b) const {
+        return q.w == b.q.w && q.vx == b.q.vx && q.vy == b.q.vy && q.vz == b.q.vz &&
+               t.EqualsExactly(b.t);
+    }
+};
+
+class Joint {
+public:
+    enum class Type : uint32_t {
+        REVOLUTE = 1, // value in degrees
+        SLIDER   = 2, // value in mm
+    };
+
+    int         tag;
+    hJoint      h;
+    Type        type;
+    std::string name;
+    hPart       parent, child;
+    hEntity     axisA, axisB; // the axis on the parent, and on the child (equal in design pose)
+    double      value;
+    bool        limited;
+    double      lo, hi;
+
+    // The axis an entity gives: a line segment's, a circle's or arc's (centre and normal),
+    // or a face's normal through its point; false for anything else.
+    static bool AxisOf(hEntity he, Vector *p, Vector *d);
+    double      Clamp(double v) const;
+    Pose        Motion() const; // the child's motion relative to the parent at value
+    void        Clear() {}
+};
+
 // A set of requests. Every request must have an associated group.
 class Group {
 public:
@@ -368,6 +423,15 @@ public:
     bool            displayDirty;
     SMesh           displayMesh;
     SOutlineList    displayOutlines;
+    // What is drawn and picked: the display items, moved to the part's pose (M5a) when a joint
+    // has moved it from the design pose. Call after GenerateDisplayItems.
+    SMesh          &ShownMesh();
+    SOutlineList   &ShownOutlines();
+    SMesh           posedMesh;
+    SOutlineList    posedOutlines;
+    Pose            posedFor;
+    int             displayVersion = 0, posedVersion = -1;
+    bool            posed = false;
 
     enum class CombineAs : uint32_t {
         UNION           = 0,

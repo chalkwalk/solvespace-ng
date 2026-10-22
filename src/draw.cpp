@@ -497,13 +497,13 @@ void GraphicsWindow::HitTestMakeSelection(Point2d mp) {
         // Faces, from the triangle mesh; these are lowest priority
         if(sel.constraint.v == 0 && sel.entity.v == 0 && showShaded && showFaces) {
             Group *g = SK.GetGroup(activeGroup);
-            SMesh *m = &(g->displayMesh);
+            SMesh *m = &(g->ShownMesh());
 
             uint32_t v = m->FirstIntersectionWith(mp);
             // Else a face of another part's solid.
             for(Group *other : OtherPartSolids()) {
                 if(v) break;
-                v = other->displayMesh.FirstIntersectionWith(mp);
+                v = other->ShownMesh().FirstIntersectionWith(mp);
             }
             if(v) {
                 sel.entity.v = v;

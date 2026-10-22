@@ -147,6 +147,24 @@ std::function<void()> DrawOutliner() {
         if(r.afterActive) ImGui::PopStyleVar();
         ImGui::PopID();
     }
+    // The motion joints (M5a): a click shows one in Properties.
+    for(const Joint &j : SK.joint) {
+        if(&j == &*SK.joint.begin()) {
+            ImGui::TableNextRow();
+            ImGui::TableSetColumnIndex(3);
+            ImGui::TextDisabled("Joints");
+        }
+        hJoint hj = j.h;
+        ImGui::TableNextRow();
+        ImGui::TableSetColumnIndex(3);
+        std::string label = j.name + "##joint:" + std::to_string(hj.v);
+        if(ImGui::Selectable(label.c_str(), PropertiesJoint() == hj)) {
+            run = [hj] {
+                SS.GW.ClearSelection();
+                ShowJointInProperties(hj);
+            };
+        }
+    }
     ImGui::EndTable();
     OutlinerPanel().End();
     return run;

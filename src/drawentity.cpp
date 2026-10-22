@@ -158,6 +158,9 @@ bool Entity::IsVisible() const {
         return true;
     }
     if(!(g->IsVisible())) return false;
+    // A part a joint has moved shows as its solid, moved; its entities stay in the design
+    // pose, so they are hidden until it returns there (M5a).
+    if(!SK.joint.IsEmpty() && !SS.PartPose(g->PartOf()).IsIdentity()) return false;
 
     if(IsPoint() && !SS.GW.showPoints) return false;
     if(IsNormal() && !SS.GW.showNormals) return false;
