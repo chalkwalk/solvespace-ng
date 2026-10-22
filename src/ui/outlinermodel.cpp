@@ -42,6 +42,7 @@ std::vector<OutlinerRow> BuildOutliner() {
     std::vector<OutlinerRow> rows;
     bool  afterActive = false;
     hPart lastPart    = {};
+    bool  skeleton    = true;
     for(hGroup hg : SK.groupOrder) {
         Group *g = SK.GetGroup(hg);
         // A sketch whose contour is broken, or a solid made from one.
@@ -70,10 +71,18 @@ std::vector<OutlinerRow> BuildOutliner() {
         } else {
             r.status = OutlinerRow::Status::OK;
         }
-        // With parts, each run of a part's groups is headed by its name (M4a).
-        if(!SK.part.IsEmpty() && !r.references && g->PartOf() != lastPart) {
-            r.partHeader = SS.PartName(g->PartOf());
-            lastPart     = g->PartOf();
+        // With parts, each run of a part's groups is headed by its name (M4a); the groups
+        // before the first solid, the sketches the parts share, by "Skeleton" (M4b).
+        if(g->IsMeshGroup() || g->type == Group::Type::LINKED || g->PartOf() != Part::FIRST) {
+            skeleton = false;
+        }
+        if(!SK.part.IsEmpty() && !r.references) {
+            if(skeleton) {
+                if(rows.back().references) r.partHeader = "Skeleton";
+            } else if(g->PartOf() != lastPart) {
+                r.partHeader = SS.PartName(g->PartOf());
+                lastPart     = g->PartOf();
+            }
         }
         rows.push_back(r);
         if(r.active) afterActive = true;

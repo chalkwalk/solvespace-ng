@@ -453,7 +453,7 @@ enum class SettingToggle {
     EXPORT_BACKGROUND_COLOR, DRAW_BACK_FACES, TURNTABLE_NAV, CAMERA_NAV,
     IMMEDIATELY_EDIT_DIMENSION, SHOW_CONTOUR_AREAS, CHECK_CLOSED_CONTOUR,
     AUTOMATIC_LINE_CONSTRAINTS, EXPORT_SHADED_TRIANGLES, EXPORT_PWL_CURVES,
-    EXPORT_CANVAS_SIZE_AUTO, CONSTRAINT_STATE_COLORS,
+    EXPORT_CANVAS_SIZE_AUTO, CONSTRAINT_STATE_COLORS, EXPORT_LAY_FLAT,
 };
 
 class SolveSpaceUI {
@@ -575,6 +575,8 @@ public:
     // Constraint glyphs in their solve state's colour (Constraint::StateColor). Off in stock
     // SolveSpace; NG turns it on by default.
     bool     constraintStateColors;
+    // Export Parts turns each part onto its largest flat face, standing on z = 0 (M4b).
+    bool     exportLayFlat;
     bool     cameraNav;
     bool     turntableNav;
     bool     immediatelyEditDimension;
@@ -694,6 +696,13 @@ public:
     void ExportAsPngTo(const Platform::Path &filename);
     void ExportMeshTo(const Platform::Path &filename);
     void ExportMeshAsStlTo(FILE *f, SMesh *sm);
+    // A 3MF file with an object per mesh, named, each triangle in its colour
+    // (src/export3mf.cpp).
+    struct ThreeMfObject {
+        std::string name;
+        SMesh      *mesh;
+    };
+    bool Export3mf(const Platform::Path &filename, const std::vector<ThreeMfObject> &objects);
     void ExportMeshAsObjTo(FILE *fObj, FILE *fMtl, SMesh *sm);
     void ExportMeshAsThreeJsTo(FILE *f, const Platform::Path &filename,
                                SMesh *sm, SOutlineList *sol);
@@ -735,9 +744,10 @@ public:
     // Common printing materials (review 5), PLA first; and the one with a density, if any.
     static const std::vector<Material> &Materials();
     static const Material *MaterialFor(double density);
-    // The active group's solid's mass properties: exact from the B-rep, else from its mesh;
-    // false if there is no solid.
+    // The active group's (or g's) solid's mass properties: exact from the B-rep, else from
+    // its mesh; false if there is no solid.
     bool        MassProperties(MassProps *out);
+    bool        MassProperties(Group *g, MassProps *out);
     // Parts (M4a): a new part, with a sketch group in it (on the selected face or workplane,
     // else in 3D), active; its name; the group holding a part's solid as of the active group
     // (its last group with one), or null.
@@ -745,9 +755,28 @@ public:
     bool   RenamePart(hPart hp, const std::string &name);
     std::string PartName(hPart hp);
     Group *PartSolid(hPart hp);
+    std::vector<hPart> PartOrder(); // the first part, then the others as made
+    // A part's material (M4b): its density, or 0 for the document's.
+    void   SetPartMaterial(hPart hp, double density);
+    // Gives a group (an older file's link) a new part of its own, named after the group.
+    hPart  MoveToNewPart(hGroup hg);
+    double PartDensity(hPart hp);
+    // The parts list (bill of materials): each part with a solid, in part order.
+    struct PartRow {
+        hPart       part;
+        std::string name, source, material; // source: the linked file, if the part is a link
+        double      density, volume, mass;   // g/cm^3, mm^3, g
+        Vector      size;                    // of the bounding box, mm
+    };
+    std::vector<PartRow> PartsList();
+    std::string          PartsListText();
+    bool                 ExportPartsList(const Platform::Path &filename); // CSV
     // Each part's solid to its own file, <stem>-<part name>.<ext> beside filename: STL, or STEP
     // (the OCCT B-rep). The files written, in part order.
+    // A .3mf name writes one file, an object per part. With exportLayFlat, meshes are laid on
+    // their largest flat face (LayFlat), and a 3MF's objects set side by side.
     std::vector<Platform::Path> ExportParts(const Platform::Path &filename);
+    static void LayFlat(SMesh *m);
     // A STEP file's B-rep and its tessellation, for a linked group; false if it can't be read
     // (or there is no Open CASCADE).
     bool LinkStep(const Platform::Path &filename, std::shared_ptr<const KernelShape> *shape,

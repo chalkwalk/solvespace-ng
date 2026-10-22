@@ -408,6 +408,8 @@ void Group::MenuGroup(Command id, Platform::Path linkFile) {
                     g.name[i] = '-';
                 }
             }
+            // A linked file is a part of its own, named after it (M4b).
+            startNewPart = true;
             break;
         }
 
@@ -625,7 +627,7 @@ void Group::MenuGroup(Command id, Platform::Path linkFile) {
             SK.part.Add(&first);
         }
         Part next = {};
-        next.name = ssprintf("Part %d", SK.part.n + 1);
+        next.name = g.type == Type::LINKED ? g.name : ssprintf("Part %d", SK.part.n + 1);
         SK.part.AddAndAssignId(&next);
         g.part = next.h;
     } else if(Group *active = SK.group.FindByIdNoOops(SS.GW.activeGroup)) {

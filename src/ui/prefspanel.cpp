@@ -82,6 +82,7 @@ static void Export(std::function<void()> *run) {
     }
     Toggle("fix white exported lines", SettingToggle::FIX_EXPORT_COLORS, run);
     Toggle("export background color", SettingToggle::EXPORT_BACKGROUND_COLOR, run);
+    Toggle("lay parts flat on export", SettingToggle::EXPORT_LAY_FLAT, run);
 
     ImGui::TextDisabled("canvas size");
     bool autoSize = SS.exportCanvasSizeAuto;

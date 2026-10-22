@@ -464,8 +464,25 @@ XCAF colours and names, exact hidden-line drawing export (`HLRBRep`).
 - **Export:** File ▸ Export Parts (`export-parts`, `SolveSpaceUI::ExportParts`) writes
   `<stem>-<part>.stl` or `.step` per part. This meets M4's "done when"
   (`test/group/partsexport`: an enclosure and lid, two closed files).
-- **Still to come (M4b):** placement constraints and the design pose, 3MF, the BOM,
-  `LINKED` compatibility, and a skeleton section in the Outliner.
+
+**Built in M4b (2026-10-22, branch `ng/m4b-assembly`):**
+- **Material:** a part's density (`Part.density`, 0 = Preferences'), chosen in Properties
+  of any of its solid groups (`SetPartMaterial`).
+- **Parts list:** Inspect ▸ Parts List and File ▸ Export ▸ Parts List (CSV)
+  (`PartsList`, `ExportPartsList`): each part's material, volume, mass, bounding box and
+  linked file.
+- **3MF:** Export Parts to a `.3mf` name writes one file with an object per part, triangles
+  in their colours (`src/export3mf.cpp`: a stored zip, no new dependency).
+- **Lay flat** (Preferences, off): STL and 3MF parts are turned onto their largest flat
+  face, standing on z = 0, and set side by side in a 3MF (`SolveSpaceUI::LayFlat`).
+- **Linked files are parts:** Link Part starts a part named after the file. An older file's
+  link keeps its part, and Properties offers "own part" (`MoveToNewPart`).
+- **Skeleton:** with parts, the Outliner heads the sketches before the first solid
+  "Skeleton".
+- **Placement and the design pose (ruling, 2026-10-22):** in-file parts are authored in
+  place, so the authored layout is the design pose and placements are the identity. The
+  part transform, the assembly constraints that move it and the motion pose come with M5's
+  joints, the first thing that moves a part. Links keep their own 6-DOF placement.
 
 ## 8. Milestones and testing
 

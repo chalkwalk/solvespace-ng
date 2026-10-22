@@ -181,6 +181,7 @@ public:
     int         tag;
     hPart       h;
     std::string name;
+    double      density; // g/cm^3; 0: the document's (SolveSpaceUI::density)
 
     void Clear() {}
 };

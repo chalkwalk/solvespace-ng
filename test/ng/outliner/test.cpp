@@ -64,3 +64,19 @@ TEST_CASE(outliner_reports_a_failed_solve) {
     CHECK_TRUE(sketch->status == OutlinerRow::Status::ERROR);
     CHECK_EQ_STR(sketch->StatusText(), "ERR");
 }
+
+// With parts, the groups before the first solid are the skeleton the parts share (M4b).
+TEST_CASE(outliner_heads_the_shared_sketches_skeleton) {
+    CHECK_LOAD("box.slvs");
+    SS.GW.ClearSelection();
+    hPart second = SS.NewPart();
+    std::vector<OutlinerRow> rows = BuildOutliner();
+    std::vector<std::string> headers;
+    for(const OutlinerRow &r : rows) {
+        if(!r.partHeader.empty()) headers.push_back(r.partHeader + ":" + r.name);
+    }
+    CHECK_TRUE(headers.size() == 3);
+    CHECK_EQ_STR(headers[0], "Skeleton:" + SK.GetGroup(rows[1].group)->name);
+    CHECK_TRUE(headers[1].rfind("Part 1:", 0) == 0);
+    CHECK_TRUE(headers[2].rfind(SS.PartName(second) + ":", 0) == 0);
+}

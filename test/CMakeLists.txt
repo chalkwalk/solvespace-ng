@@ -94,6 +94,8 @@ set(testsuite_SOURCES
     group/parts/test.cpp
     group/scope/test.cpp
     group/partsexport/test.cpp
+    group/partslist/test.cpp
+    group/parts3mf/test.cpp
     group/loft/test.cpp
     group/sweep/test.cpp
     group/stepimport/test.cpp

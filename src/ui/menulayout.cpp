@@ -63,6 +63,7 @@ const std::vector<Top> &Layout() {
                 C(Command::EXPORT_WIREFRAME, "3D Wireframe..."),
                 C(Command::EXPORT_MESH, "Triangle Mesh..."),
                 C(Command::EXPORT_PARTS, "Parts, One File Each..."),
+                C(Command::EXPORT_PARTS_LIST, "Parts List (CSV)..."),
                 C(Command::EXPORT_SURFACES, "Surfaces...") }),
             Sep(), C(Command::EXIT, "Quit") } },
         { "Edit", {
@@ -154,7 +155,8 @@ const std::vector<Top> &Layout() {
             C(Command::INTERFERENCE, "Interfering Parts"),
             C(Command::NAKED_EDGES, "Naked Edges"),
             C(Command::CENTER_OF_MASS, "Center of Mass"),
-            C(Command::MASS_PROPERTIES, "Mass Properties..."), Sep(),
+            C(Command::MASS_PROPERTIES, "Mass Properties..."),
+            C(Command::PARTS_LIST, "Parts List..."), Sep(),
             C(Command::SHOW_DOF, "Underconstrained Points"), Sep(),
             C(Command::TRACE_PT, "Trace Point"), C(Command::STOP_TRACING, "Stop Tracing..."),
             C(Command::STEP_DIM, "Step Dimension...") } },

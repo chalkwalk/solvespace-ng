@@ -126,6 +126,32 @@ static void DrawGroup(Group *g, std::function<void()> *run) {
         ValueField("##part-name", SS.PartName(hp), run,
                    [hp](std::string s) { SS.RenamePart(hp, s); });
     }
+    if(type == Type::LINKED && hg != Group::HGROUP_REFERENCES) {
+        // An older file's link sharing its part with other groups can have its own (M4b).
+        bool shared = false;
+        for(Group &other : SK.group) {
+            if(other.h != hg && other.h != Group::HGROUP_REFERENCES &&
+               other.PartOf() == g->PartOf()) {
+                shared = true;
+            }
+        }
+        if(shared && ImGui::Button("own part")) *run = [hg] { SS.MoveToNewPart(hg); };
+    }
+    if(hg != Group::HGROUP_REFERENCES && g->HasRunningSolid()) {
+        // The part's material (M4b), for its mass in the parts list; default: Preferences'.
+        hPart  hp  = g->PartOf();
+        Part  *p   = SK.part.FindByIdNoOops(hp);
+        double own = p ? p->density : 0;
+        ImGui::TextUnformatted("material");
+        Radio("default##part-material-default", own == 0, [hp] { SS.SetPartMaterial(hp, 0); }, run);
+        int i = 1;
+        for(const SolveSpaceUI::Material &m : SolveSpaceUI::Materials()) {
+            if(i++ % 3 != 0) ImGui::SameLine();
+            double      d     = m.density;
+            std::string label = std::string(m.name) + "##part-material-" + m.name;
+            Radio(label.c_str(), own == d, [hp, d] { SS.SetPartMaterial(hp, d); }, run);
+        }
+    }
     ImGui::Spacing();
 
     if(type == Type::EXTRUDE || type == Type::ROTATE || type == Type::TRANSLATE ||

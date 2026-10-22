@@ -228,6 +228,7 @@ const SolveSpaceUI::SaveTable SolveSpaceUI::SAVED[] = {
 
     { 'k',  "Part.h.v",                 'x',    &(SS.sv.k.h.v)                },
     { 'k',  "Part.name",                'S',    &(SS.sv.k.name)               },
+    { 'k',  "Part.density",             'f',    &(SS.sv.k.density)            },
 
     { 0, NULL, 0, NULL }
 };
