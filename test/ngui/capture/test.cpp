@@ -372,3 +372,116 @@ TEST_CASE(m3_density) {
     RevealIn("Preferences", "density");
     Shot("m3-12-preferences-kernel-density", Panel("Preferences"));
 }
+
+// Review 6 (after review 5's changes): the Features shelf block, size dimensions, reference
+// lists, shell sides, hole clearance, sketching on a face, loft, sweep, materials.
+TEST_CASE(r6_shelf) {
+    if(!Begin()) return;
+    CHECK_LOAD("box.slvs");
+    Driver::ClickMenu({ "View", "Tool Shelf" });
+    Shot("r6-01-shelf", Panel("Tools"));
+}
+
+TEST_CASE(r6_fillet) {
+    if(!Begin()) return;
+    CHECK_LOAD("box.slvs");
+    FrontIso();
+    ClickAt(At({ 5, 0, 30 }));
+    Driver::Key("Shift+F");
+    EditField("feature-size", "3");
+    Driver::Key("Escape");
+    FrontIso();
+    Shot("r6-02-fillet-size-dimension", Viewport());
+    Shot("r6-03-fillet-properties", Panel("Properties"));
+}
+
+TEST_CASE(r6_shell) {
+    if(!Begin()) return;
+    CHECK_LOAD("box.slvs");
+    Driver::Key("Shift+7");
+    ClickAt(At({ 5, 10, 30 }));
+    Driver::ClickMenu({ "New Group", "Shell" });
+    EditField("feature-size", "1.5");
+    Driver::Key("Escape");
+    Shot("r6-04-shell-properties", Panel("Properties"));
+}
+
+TEST_CASE(r6_hole) {
+    if(!Begin()) return;
+    CHECK_LOAD("holebox.slvs");
+    ClickAt(At({ 5, 10, 30 }));
+    Driver::ClickMenu({ "New Group", "Hole" });
+    Driver::ClickItem("counterbore");
+    EditField("hole-thread", "M4");
+    EditField("hole-clearance", "0.2");
+    Driver::Key("Escape");
+    Shot("r6-05-hole-properties", Panel("Properties"));
+}
+
+TEST_CASE(r6_sketch_on_face) {
+    if(!Begin()) return;
+    CHECK_LOAD("box.slvs");
+    Driver::Key("Shift+7");
+    ClickAt(At({ 5, 10, 30 }));
+    Driver::Key("Shift+W");
+    Driver::Key("R");
+    ClickAt(At({ 2, 3, 30 }));
+    ClickAt(At({ 8, 12, 30 }));
+    Driver::Key("Escape");
+    FrontIso();
+    Shot("r6-06-sketch-on-face", Viewport());
+}
+
+TEST_CASE(r6_loft) {
+    if(!Begin()) return;
+    CHECK_LOAD("squares.slvs");
+    FrontIso();
+    ClickAt(At({ 0, -5, 0 }));
+    ShiftClickAt(At({ 0, -2, 20 }));
+    Driver::ClickMenu({ "New Group", "Loft" });
+    FrontIso();
+    Shot("r6-07-loft", Viewport());
+    Shot("r6-08-loft-properties", Panel("Properties"));
+}
+
+TEST_CASE(r6_sweep) {
+    if(!Begin()) return;
+    CHECK_LOAD("xyplane.slvs");
+    for(Request &r : SK.request) {
+        if(r.type == Request::Type::LINE_SEGMENT) r.construction = true;
+    }
+    hRequest c = SS.GW.AddRequest(Request::Type::CIRCLE, /*rememberForUndo=*/false);
+    SS.GenerateAll(SolveSpaceUI::Generate::ALL);
+    SK.GetEntity(c.entity(1))->PointForceTo({ 0, 0, 0 });
+    SK.GetEntity(c.entity(64))->DistanceForceTo(2);
+    SS.GenerateAll(SolveSpaceUI::Generate::ALL);
+    Group::MenuGroup(Command::GROUP_3D);
+    std::vector<Vector> path = { { 0, 0, 0 }, { 0, 0, 20 }, { 0, 15, 20 }, { 0, 15, 35 } };
+    std::vector<hEntity> picked = { c.entity(0) };
+    for(size_t i = 0; i + 1 < path.size(); i++) {
+        hRequest l = SS.GW.AddRequest(Request::Type::LINE_SEGMENT, /*rememberForUndo=*/false);
+        SS.GenerateAll(SolveSpaceUI::Generate::ALL);
+        SK.GetEntity(l.entity(1))->PointForceTo(path[i]);
+        SK.GetEntity(l.entity(2))->PointForceTo(path[i + 1]);
+        picked.push_back(l.entity(0));
+    }
+    SS.GenerateAll(SolveSpaceUI::Generate::ALL);
+    SS.GW.ClearSelection();
+    for(hEntity he : picked) {
+        GraphicsWindow::Selection sel = {};
+        sel.entity = he;
+        SS.GW.selection.Add(&sel);
+    }
+    Driver::ClickMenu({ "New Group", "Sweep" });
+    Driver::Key("Escape");
+    FrontIso();
+    Shot("r6-09-sweep", Viewport());
+}
+
+TEST_CASE(r6_materials) {
+    if(!Begin()) return;
+    CHECK_LOAD("box.slvs");
+    Driver::Key("Ctrl+,");
+    RevealIn("Preferences", "PETG");
+    Shot("r6-10-materials", Panel("Preferences"));
+}
