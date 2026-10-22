@@ -74,13 +74,13 @@ TEST_CASE(y_hides_hovered_group_and_shift_y_shows_all) {
     CHECK_TRUE(Named("sketch-in-plane")->visible);
 }
 
-TEST_CASE(shift_i_isolates_the_hovered_group) {
+TEST_CASE(alt_y_isolates_the_hovered_group) {
     CHECK_LOAD("line.slvs");
     hRequest line = FixtureLineThenNewGroup();
     hGroup sketch = SK.GetRequest(line)->group;
     Point2d m = AtMiddle(line);
     Driver::Move(m.x, m.y);
-    Driver::Key("Shift+I");
+    Driver::Key("Alt+Y");
     for(Group &g : SK.group) {
         bool references = g.h == Group::HGROUP_REFERENCES;
         CHECK_TRUE(g.visible == (g.h == sketch || references));

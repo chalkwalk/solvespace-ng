@@ -5,12 +5,12 @@
 
 using namespace SolveSpace::UiTest;
 
-TEST_CASE(ctrl_a_selects_all_and_alt_a_clears) {
+TEST_CASE(ctrl_a_selects_all_and_esc_clears) {
     CHECK_LOAD("line.slvs");
     DrawLine(Point2d::From(450, 520), Point2d::From(560, 520));
     Driver::Key("Ctrl+A");
     CHECK_TRUE(SS.GW.selection.n > 0);
-    Driver::Key("Alt+A");
+    Driver::Key("Escape");
     CHECK_TRUE(SS.GW.selection.n == 0);
 }
 

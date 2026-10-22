@@ -1,0 +1,41 @@
+{
+ "title": "SolveSpace NG: the keymap pass after M3-M5",
+ "brief": "One round, six questions, each picture once. Answer each row with a letter (and a note if you want it different); a complete answer is a letter on every row. Nothing is rebound yet. The doc is docs/research/keymap-pass.md; the industry comparison is docs/research/keymap-and-layout.md.",
+ "blind": false,
+ "columns": [
+  "decision [a/b/c]",
+  "note"
+ ],
+ "sheets": [
+  {
+   "image": "/tmp/claude-1002/-home-programming-solvespace/c582823e-99bd-43cc-9f69-ae7cbc9a8c39/scratchpad/pass/pass-p1-tiers.png",
+   "label": "P1 tiers",
+   "question": "P1. How often each command is used, and the key each tier gets. a = agree, b = move some (note which, to which tier)."
+  },
+  {
+   "image": "/tmp/claude-1002/-home-programming-solvespace/c582823e-99bd-43cc-9f69-ae7cbc9a8c39/scratchpad/pass/pass-p2-grammar.png",
+   "label": "P2 grammar",
+   "question": "P2. The qualifier grammar: Shift = counterpart (inverse, reverse, reference), Alt = variant (same family, another shape), Ctrl = document/app, pies for big families. a = adopt it (then P3 follows), b = keep today's habit (Shift = another command on that letter, as Onshape; only P4 applies), c = other dimensions (note). My pick: a; it makes the relatives discoverable, as you asked."
+  },
+  {
+   "image": "/tmp/claude-1002/-home-programming-solvespace/c582823e-99bd-43cc-9f69-ae7cbc9a8c39/scratchpad/pass/pass-p3-moves.png",
+   "label": "P3 moves",
+   "question": "P3. What moves if P2 is a. The big one: F becomes fillet (Fusion, Shapr3D) and the constrain pie moves to K; Shift+E becomes a new 'extrude as a cut'. a = all, b = all but some (note which), c = none."
+  },
+  {
+   "image": "/tmp/claude-1002/-home-programming-solvespace/c582823e-99bd-43cc-9f69-ae7cbc9a8c39/scratchpad/pass/pass-p4-new.png",
+   "label": "P4 new keys",
+   "question": "P4. Keys for what M3-M5 added: a joint pie on J, design pose on Shift+J, new part on Ctrl+Shift+N; the rarer features stay in the palette. a = yes, b = some (note), c = none."
+  },
+  {
+   "image": "/tmp/claude-1002/-home-programming-solvespace/c582823e-99bd-43cc-9f69-ae7cbc9a8c39/scratchpad/pass/pass-p5-exceptions.png",
+   "label": "P5 exceptions",
+   "question": "P5. Qualified chords kept against the grammar. a = keep all six, b = hole and split curves go to the palette, c = other (note)."
+  },
+  {
+   "image": "/tmp/claude-1002/-home-programming-solvespace/c582823e-99bd-43cc-9f69-ae7cbc9a8c39/scratchpad/pass/pass-p6-letters.png",
+   "label": "P6 letters",
+   "question": "P6. Every letter after the pass with a everywhere (changes highlighted). a = build it, b = build it with the changes in your notes."
+  }
+ ]
+}

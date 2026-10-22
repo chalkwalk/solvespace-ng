@@ -115,7 +115,7 @@ TEST_CASE(problems) {
     for(const char *c : { "Horizontal", "Vertical" }) {
         Point2d m = AtMiddle(line);
         Driver::Move(m.x, m.y);
-        Driver::Key("F");
+        Driver::Key("K");
         PickPie(c);
     }
     Shot("panel-5-problems", Panel("Problems"));
@@ -194,7 +194,7 @@ TEST_CASE(overlays) {
     ClickAt(AtMiddle(a));
     ShiftClickAt(AtMiddle(b));
     Driver::Move(700, 600);
-    Driver::Key("F");
+    Driver::Key("K");
     Box pb;
     pb.Add(Ui::Pie().CenterX() - 230, Ui::Pie().CenterY() - 170, Ui::Pie().CenterX() + 230,
            Ui::Pie().CenterY() + 170);
@@ -312,7 +312,7 @@ TEST_CASE(m3_features) {
     // A fillet on the top front edge, radius 3: the solid, its tangent lines and axis.
     FrontIso();
     ClickAt(At({ 5, 0, 30 }));
-    Driver::Key("Shift+F");
+    Driver::Key("F");
     EditField("feature-size", "3");
     Driver::Key("Escape");
     Shot("m3-3-fillet-viewport", Viewport());
@@ -387,7 +387,7 @@ TEST_CASE(r6_fillet) {
     CHECK_LOAD("box.slvs");
     FrontIso();
     ClickAt(At({ 5, 0, 30 }));
-    Driver::Key("Shift+F");
+    Driver::Key("F");
     EditField("feature-size", "3");
     Driver::Key("Escape");
     FrontIso();
@@ -423,7 +423,7 @@ TEST_CASE(r6_sketch_on_face) {
     CHECK_LOAD("box.slvs");
     Driver::Key("Shift+7");
     ClickAt(At({ 5, 10, 30 }));
-    Driver::Key("Shift+W");
+    Driver::Key("Alt+W");
     Driver::Key("R");
     ClickAt(At({ 2, 3, 30 }));
     ClickAt(At({ 8, 12, 30 }));

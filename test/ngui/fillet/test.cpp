@@ -32,7 +32,7 @@ TEST_CASE(ng_fillets_a_picked_edge) {
     hGroup  box  = SS.GW.activeGroup;
     hEntity edge = ClickTopFrontEdge();
     CHECK_TRUE(SS.GW.IsSelected(edge));
-    Driver::Key("Shift+F");
+    Driver::Key("F");
     CHECK_TRUE(Active()->type == Group::Type::FILLET);
     CHECK_TRUE(Active()->edges.size() == 1 && Active()->edges[0] == edge);
     CHECK_TRUE(EditField("feature-size", "3"));
@@ -57,7 +57,7 @@ TEST_CASE(ng_chamfers_from_the_menu) {
 TEST_CASE(ng_opens_problems_on_a_failed_fillet) {
     CHECK_LOAD("box.slvs");
     ClickTopFrontEdge();
-    Driver::Key("Shift+F");
+    Driver::Key("F");
     CHECK_TRUE(EditField("feature-size", "50"));
     CHECK_FALSE(Active()->featureProblem.empty());
     CHECK_TRUE(Driver::FindItem("Problems").has_value()); // opens on a new problem
@@ -74,7 +74,7 @@ TEST_CASE(ng_lists_a_fillets_edges_to_select_or_remove) {
         sel.entity = he;
         SS.GW.selection.Add(&sel);
     }
-    Driver::Key("Shift+F");
+    Driver::Key("F");
     hGroup fillet = SS.GW.activeGroup;
     CHECK_TRUE(Active()->edges.size() == 2);
     CHECK_TRUE(Driver::ClickItem(ssprintf("remove-%08x", a.v)));
@@ -88,7 +88,7 @@ TEST_CASE(ng_lists_a_fillets_edges_to_select_or_remove) {
 TEST_CASE(ng_drags_holds_and_edits_a_fillets_radius) {
     CHECK_LOAD("box.slvs");
     hEntity edge = ClickTopFrontEdge();
-    Driver::Key("Shift+F");
+    Driver::Key("F");
     hGroup  fillet = SS.GW.activeGroup;
     auto    radius = [&] { return SK.GetParam(SK.GetGroup(fillet)->h.param(0))->val; };
     Entity *axis   = SK.GetEntity(SK.GetGroup(fillet)->Remap(edge, Group::REMAP_FILLET_AXIS));

@@ -20,7 +20,7 @@ static hRequest OverConstrainedLine() {
     for(const char *c : { "Horizontal", "Vertical" }) {
         Point2d m = AtMiddle(line);
         Driver::Move(m.x, m.y);
-        Driver::Key("F");
+        Driver::Key("K");
         PickPie(c);
     }
     return line;
@@ -29,9 +29,9 @@ static hRequest OverConstrainedLine() {
 TEST_CASE(shift_p_toggles_problems) {
     CHECK_LOAD("line.slvs");
     CHECK_FALSE(ProblemsShown());
-    Driver::Key("Shift+P");
+    Driver::Key("F8");
     CHECK_TRUE(ProblemsShown());
-    Driver::Key("Shift+P");
+    Driver::Key("F8");
     CHECK_FALSE(ProblemsShown());
 }
 
@@ -57,12 +57,12 @@ TEST_CASE(redundant_constraint_can_be_allowed) {
     // Horizontal on the line, and again on its two end points.
     Point2d m = AtMiddle(line);
     Driver::Move(m.x, m.y);
-    Driver::Key("F");
+    Driver::Key("K");
     PickPie("Horizontal");
     ClickAt(AtPoint(line.entity(1)));
     ShiftClickAt(AtPoint(line.entity(2)));
     Driver::Move(700, 650);
-    Driver::Key("F");
+    Driver::Key("K");
     CHECK_TRUE(PickPie("Horizontal"));
     CHECK_TRUE(ProblemsShown());
     CHECK_TRUE(Driver::ClickItem("allow redundant constraints"));
@@ -84,7 +84,7 @@ TEST_CASE(an_open_contour_does_not_pop_problems_up) {
     SS.checkClosedContour = true;
     DrawLine(Point2d::From(560, 520), Point2d::From(700, 520));
     CHECK_FALSE(ProblemsShown());
-    Driver::Key("Shift+P");
+    Driver::Key("F8");
     CHECK_TRUE(Driver::FindItem("sketch-in-plane").has_value()); // the outliner row, at least
 }
 

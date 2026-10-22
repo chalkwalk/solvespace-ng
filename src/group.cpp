@@ -266,6 +266,7 @@ void Group::MenuGroup(Command id, Platform::Path linkFile) {
             break;
 
         case Command::GROUP_EXTRUDE:
+        case Command::GROUP_EXTRUDE_CUT:
             if(!SS.GW.LockedInWorkplane()) {
                 Error(_("Activate a workplane (Sketch -> In Workplane) before "
                         "extruding. The sketch will be extruded normal to the "
@@ -277,6 +278,8 @@ void Group::MenuGroup(Command id, Platform::Path linkFile) {
             g.predef.entityB = SS.GW.ActiveWorkplane();
             g.subtype = Subtype::ONE_SIDED;
             g.name = C_("group-name", "extrude");
+            // Extrude's counterpart: the same, cut from the solid (keymap pass, 2026-10-22).
+            if(id == Command::GROUP_EXTRUDE_CUT) g.meshCombine = CombineAs::DIFFERENCE;
             break;
 
         case Command::GROUP_LATHE:

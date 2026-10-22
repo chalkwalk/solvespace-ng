@@ -101,8 +101,9 @@ TEST_CASE(fillet_rounds_a_box_edge) {
     CHECK_TRUE(g->featureProblem.empty());
     // The faces named before keep their names; the rounded face is new.
     CHECK_TRUE(FaceNames(g) == named);
-    // The extrusion's own solid is as it was.
-    CHECK_EQ_EPS(Volume(box), 6000);
+    // The extrusion's own solid is as it was (found again: adding the fillet may have moved
+    // the groups in memory).
+    CHECK_EQ_EPS(Volume(Extrusion()), 6000);
 }
 
 TEST_CASE(chamfer_bevels_a_box_edge) {
