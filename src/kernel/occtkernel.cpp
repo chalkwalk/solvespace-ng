@@ -1354,4 +1354,29 @@ void KernelTessellate(const std::shared_ptr<const KernelShape> &ks, RgbaColor co
     if(!IsEmpty(ks)) Tessellate(*ks, color, mesh);
 }
 
+
+std::vector<uint32_t> KernelFacesBoundedBy(const std::shared_ptr<const KernelShape> &ks,
+                                           const std::vector<std::vector<SBezier>> &curves) {
+    std::vector<uint32_t> faces;
+    if(IsEmpty(ks) || curves.empty()) return faces;
+    for(TopExp_Explorer ex(ks->shape, TopAbs_FACE); ex.More(); ex.Next()) {
+        const FaceInfo *info = ks->faces.Seek(ex.Current());
+        if(info == nullptr || info->face == 0) continue;
+        bool whole = true, any = false;
+        for(TopExp_Explorer ee(ex.Current(), TopAbs_EDGE); ee.More() && whole; ee.Next()) {
+            const TopoDS_Edge &edge = TopoDS::Edge(ee.Current());
+            if(BRep_Tool::Degenerated(edge)) continue;
+            if(BRep_Tool::IsClosed(edge, TopoDS::Face(ex.Current()))) continue; // a seam
+            bool on = false;
+            for(const std::vector<SBezier> &c : curves) on = on || OnCurves(edge, c);
+            whole = on;
+            any   = true;
+        }
+        if(whole && any && std::find(faces.begin(), faces.end(), info->face) == faces.end()) {
+            faces.push_back(info->face);
+        }
+    }
+    return faces;
+}
+
 }

@@ -353,6 +353,11 @@ std::vector<KernelFaceNormal> KernelFaceNormals(const std::shared_ptr<const Kern
     return {};
 }
 
+std::vector<uint32_t> KernelFacesBoundedBy(const std::shared_ptr<const KernelShape> &,
+                                           const std::vector<std::vector<SBezier>> &) {
+    return {};
+}
+
 std::shared_ptr<const KernelShape> KernelImportStep(const Platform::Path &) {
     return nullptr;
 }

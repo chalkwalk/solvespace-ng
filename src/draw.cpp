@@ -719,6 +719,33 @@ std::vector<Group *> GraphicsWindow::OtherPartSolids() {
     return solids;
 }
 
+bool GraphicsWindow::ImplyFacesFromEdges() {
+    std::vector<std::vector<SBezier>> curves;
+    for(const Selection &s : selection) {
+        Entity *e = s.entity.v ? SK.entity.FindByIdNoOops(s.entity) : nullptr;
+        if(e == nullptr || !Group::IsEdgeEntity(e)) return false;
+        SBezierList sbl = {};
+        e->GenerateBezierCurves(&sbl);
+        curves.emplace_back(sbl.l.begin(), sbl.l.end());
+        sbl.Clear();
+    }
+    if(curves.empty()) return false;
+    Group *g = SK.GetRunningMeshGroupFor(activeGroup);
+    if(g == nullptr) return false;
+    std::vector<hEntity> faces;
+    for(uint32_t f : KernelFacesBoundedBy(g->runningShape, curves)) {
+        if(SK.entity.FindByIdNoOops(hEntity{ f })) faces.push_back(hEntity{ f });
+    }
+    if(faces.empty()) return false;
+    ClearSelection();
+    for(hEntity he : faces) {
+        Selection sel = {};
+        sel.entity    = he;
+        selection.Add(&sel);
+    }
+    return true;
+}
+
 void GraphicsWindow::DrawPersistent(Canvas *canvas) {
     // Draw the active group; this does stuff like the mesh and edges.
     SK.GetGroup(activeGroup)->Draw(canvas);

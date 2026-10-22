@@ -218,6 +218,11 @@ struct KernelFaceNormal {
 };
 std::vector<KernelFaceNormal> KernelFaceNormals(const std::shared_ptr<const KernelShape> &shape);
 
+// The named faces of shape every edge of which lies on one of the given edges' curves: the
+// faces a selection of edges bounds whole (implied selection scope).
+std::vector<uint32_t> KernelFacesBoundedBy(const std::shared_ptr<const KernelShape> &shape,
+                                           const std::vector<std::vector<SBezier>> &edges);
+
 // A solid's volume (mm^3), surface area (mm^2) and centre of mass; exact when from a B-rep.
 struct MassProps {
     double volume = 0, area = 0;

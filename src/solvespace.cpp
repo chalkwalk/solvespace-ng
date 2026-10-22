@@ -1335,7 +1335,9 @@ std::string SolveSpaceUI::MassPropertiesText() {
 }
 
 hPart SolveSpaceUI::NewPart() {
-    // On a picked face or workplane, a sketch there; else a 3D sketch.
+    // On a picked face or workplane (or edges that bound a face), a sketch there; else a 3D
+    // sketch.
+    GW.ImplyFacesFromEdges();
     GW.GroupSelection();
     Command cmd = (GW.gs.faces == 1 || GW.gs.workplanes == 1) ? Command::GROUP_WRKPL
                                                               : Command::GROUP_3D;

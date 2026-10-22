@@ -668,6 +668,9 @@ public:
     void SnapToView(ViewPreset p, bool animate);
     void SnapToDirection(Vector toViewer, bool animate); // the view cube's faces, edges, corners
     std::vector<Group *> OtherPartSolids();
+    // Implied scope: a selection of edges only that bounds faces whole becomes those faces
+    // (for the operations on faces); false, and the selection as it was, otherwise.
+    bool ImplyFacesFromEdges();
     void OrbitBy(double dx, double dy);                  // as a middle-drag of (dx, dy) pixels
     // The view, from typed text (the browser's view screen and NG's View panel): the scale in
     // pixels per display unit, the origin as "x, y, z" and a projection vector as "x, y, z".

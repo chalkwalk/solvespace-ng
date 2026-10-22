@@ -130,6 +130,11 @@ void Group::MenuGroup(Command id)  {
 void Group::MenuGroup(Command id, Platform::Path linkFile) {
     Platform::SettingsRef settings = Platform::GetSettings();
 
+    // The operations on faces take edges that bound a face whole as the face.
+    if(id == Command::GROUP_SHELL || id == Command::GROUP_DRAFT || id == Command::GROUP_WRKPL) {
+        SS.GW.ImplyFacesFromEdges();
+    }
+
     Group g = {};
     g.visible = true;
     g.color = RGBi(100, 100, 100);

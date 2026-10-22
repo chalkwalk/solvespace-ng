@@ -161,6 +161,23 @@ bindings. All bindings can be remapped and are stored in a keymap file
 | MMB / `Shift`+MMB / wheel | Orbit / pan / zoom (the mouse scheme is configurable) |
 | `Ctrl+Z` / `Ctrl+Shift+Z` | Undo / redo |
 
+**Implied selection scope** (decided by the owner after M4a, 2026-10-22, as in Blender): a
+selection stands for what the operation needs.
+- **Edges for faces:** edges that bound a face whole stand for the face, for the operations on
+  faces: shell, draft, sketch on a face, new part (`GraphicsWindow::ImplyFacesFromEdges`).
+- **Faces for edges:** faces stand for their edges for fillet and chamfer. That means all
+  their edges, or with the option, only the outline of the picked region.
+- **Rule for new operations:** every new operation states its scope and accepts the other
+  scopes through these conversions.
+
+**Feature sizes are free** (owner's feedback after M4a, 2026-10-22): a fillet's, chamfer's,
+shell's or draft's size is a free parameter.
+- **Setting it:** dragging the feature's handles or constraining them sets it; Properties sets
+  the value.
+- **Holding it:** "hold this size" adds a dimension (`FEATURE_SIZE`).
+- **Matching:** Equal between handles of two features of a kind ties their sizes
+  (`FEATURE_EQUAL`).
+
 **Keymap pass after the features land** (decided by the owner in review 5, 2026-10-21): once
 most M3–M5 features exist, rethink every binding by relative frequency of use and industry
 standards. Frequently used commands get unqualified keys, unless a qualified chord is very
