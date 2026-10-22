@@ -251,6 +251,7 @@ TEST_CASE(a_point_on_a_fillet_axis_follows_a_drag_before_the_solid_does) {
     hEntity edge = Edge(5, Group::REMAP_TOP);
     Group  *g    = MakeFeature(Command::GROUP_FILLET, { edge });
     Resize(g, "2");
+    hGroup  hg  = g->h; // g moves when the next group is added
     hEntity pt  = PointOn(g->Remap(edge, Group::REMAP_FILLET_AXIS));
     hGroup  box = Extrusion()->h;
     SS.backgroundRegenEnabled = true;
@@ -267,7 +268,7 @@ TEST_CASE(a_point_on_a_fillet_axis_follows_a_drag_before_the_solid_does) {
     SS.FlushRegeneration();
     CHECK_TRUE(SS.regenChainsApplied > applied); // made on the worker
     CHECK_EQ_EPS(SK.GetEntity(pt)->PointGetNum().z, 38);
-    CHECK_TRUE(fabs(8000 - Volume(SK.GetGroup(g->h)) - (1 - PI / 4) * 4 * 10) < 1);
+    CHECK_TRUE(fabs(8000 - Volume(SK.GetGroup(hg)) - (1 - PI / 4) * 4 * 10) < 1);
 }
 
 TEST_CASE(a_constraint_on_a_tangent_line_survives_undo_and_reload) {
@@ -303,11 +304,11 @@ TEST_CASE(a_rounded_edge_is_hidden_while_the_fillet_is_shown) {
     CHECK_LOAD("box.slvs");
     SS.kernelKind = KernelKind::OCCT;
     hEntity edge = Edge(5, Group::REMAP_TOP);
-    Group  *box  = Extrusion();
+    hGroup  box  = Extrusion()->h;
     MakeFeature(Command::GROUP_FILLET, { edge });
     CHECK_FALSE(SK.GetEntity(edge)->IsVisible());
     CHECK_TRUE(SK.GetEntity(Edge(7, Group::REMAP_TOP))->IsVisible());
-    SS.GW.activeGroup = box->h;
+    SS.GW.activeGroup = box;
     SS.GenerateAll(SolveSpaceUI::Generate::ALL);
     CHECK_TRUE(SK.GetEntity(edge)->IsVisible());
 }
