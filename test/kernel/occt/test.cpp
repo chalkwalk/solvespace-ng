@@ -27,7 +27,7 @@ struct Measure {
 Measure MeasureGroup(Group *g) {
     Measure m;
     SMesh   mesh = {};
-    mesh.MakeFromCopyOf(&g->runningMesh);
+    mesh.MakeFromCopyOf(&g->RunningMesh());
     g->runningShell.TriangulateInto(&mesh);
     m.volume = mesh.CalculateVolume();
     SEdgeList naked = {};
@@ -40,7 +40,7 @@ Measure MeasureGroup(Group *g) {
     for(const SSurface &ss : g->thisShell.surface) {
         if(ss.face != 0) m.faces.insert(ss.face);
     }
-    for(const STriangle &t : g->thisMesh.l) {
+    for(const STriangle &t : g->ThisMesh().l) {
         if(t.meta.face != 0) m.faces.insert(t.meta.face);
     }
     return m;
@@ -123,7 +123,7 @@ TEST_CASE(the_occt_body_keeps_its_b_rep_and_true_normals) {
     CHECK_TRUE(g->runningShape != nullptr);
     CHECK_TRUE(g->runningTessellated);
     CHECK_TRUE(g->runningShell.IsEmpty());
-    CHECK_FALSE(g->runningMesh.IsEmpty());
+    CHECK_FALSE(g->RunningMesh().IsEmpty());
     RegenerateWith(KernelKind::SOLVESPACE);
     CHECK_TRUE(g->runningShape == nullptr);
 }
@@ -174,7 +174,7 @@ TEST_CASE(step_export_writes_the_occt_b_rep) {
     Group *g = SK.GetGroup(SK.groupOrder[SK.groupOrder.n - 1]);
     SS.GW.activeGroup = g->h;
     SMesh mesh = {};
-    mesh.MakeFromCopyOf(&g->runningMesh);
+    mesh.MakeFromCopyOf(&g->RunningMesh());
     double meshVolume = mesh.CalculateVolume();
     mesh.Clear();
 
@@ -190,4 +190,36 @@ TEST_CASE(step_export_writes_the_occt_b_rep) {
     BRepGProp::VolumeProperties(reader.OneShape(), props);
     CHECK_TRUE(Near(props.Mass(), meshVolume, 0.01));
     remove(path.raw.c_str());
+}
+
+// The outlines the OCCT kernel makes from its triangulation's topology are the sharp edges
+// SolveSpace finds by searching the mesh (which draws an edge where four faces meet twice).
+static std::set<std::vector<long>> SharpEdges(SOutlineList *ol) {
+    std::set<std::vector<long>> edges;
+    for(const SOutline &o : ol->l) {
+        if(!o.tag) continue;
+        std::vector<long> a = { lround(o.a.x * 1e3), lround(o.a.y * 1e3), lround(o.a.z * 1e3) };
+        std::vector<long> b = { lround(o.b.x * 1e3), lround(o.b.y * 1e3), lround(o.b.z * 1e3) };
+        if(b < a) std::swap(a, b);
+        a.insert(a.end(), b.begin(), b.end());
+        edges.insert(a);
+    }
+    return edges;
+}
+
+TEST_CASE(kernel_outlines_match_the_mesh_search) {
+    for(const char *model : { "../solvespace/extrudes.slvs", "../../group/fillet/filleted.slvs" }) {
+        CHECK_TRUE(SS.LoadFromFile(helper->GetAssetPath(__FILE__, model)));
+        SS.AfterNewFile();
+        RegenerateWith(KernelKind::OCCT);
+        Group *g = SK.GetGroup(SK.groupOrder[SK.groupOrder.n - 1]);
+        SOutlineList searched = {};
+        g->RunningMesh().MakeOutlinesInto(&searched, EdgeKind::SHARP);
+        std::set<std::vector<long>> want = SharpEdges(&searched);
+        CHECK_TRUE(!want.empty());
+        std::set<std::vector<long>> got = SharpEdges(&g->runningOutlines_);
+        CHECK_TRUE(got == want);
+        searched.Clear();
+    }
+    RegenerateWith(KernelKind::SOLVESPACE);
 }

@@ -61,13 +61,15 @@ void SolveSpaceUI::PushFromCurrentOnto(UndoStack *uk) {
         dest.bezierLoops = {};
         dest.bezierOpens = {};
         dest.polyError = {};
-        dest.thisMesh = {};
-        dest.runningMesh = {};
+        dest.thisMesh_ = {};
+        dest.runningMesh_ = {};
+        dest.runningOutlines_ = {};
         dest.thisShell = {};
         dest.runningShell = {};
         dest.thisShape = nullptr;
         dest.runningShape = nullptr;
         dest.runningTessellated = false;
+        dest.thisTessellated = false;
         dest.displayMesh = {};
         dest.displayOutlines = {};
 

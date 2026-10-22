@@ -389,7 +389,7 @@ bool SolveSpaceUI::SaveToFile(const Platform::Path &filename) {
     // to print either of those just does nothing if the mesh/shell is empty.
 
     Group *g = SK.GetGroup(*SK.groupOrder.Last());
-    SMesh *m = &g->runningMesh;
+    SMesh *m = &g->RunningMesh();
     for(i = 0; i < m->l.n; i++) {
         STriangle *tr = &(m->l[i]);
         fprintf(fh, "Triangle %08x %08x "

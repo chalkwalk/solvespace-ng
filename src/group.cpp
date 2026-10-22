@@ -26,13 +26,15 @@ void Group::Clear() {
     polyLoops.Clear();
     bezierLoops.Clear();
     bezierOpens.Clear();
-    thisMesh.Clear();
-    runningMesh.Clear();
+    thisMesh_.Clear();
+    runningMesh_.Clear();
+    runningOutlines_.Clear();
     thisShell.Clear();
     runningShell.Clear();
     thisShape.reset();
     runningShape.reset();
     runningTessellated = false;
+    thisTessellated    = false;
     displayMesh.Clear();
     displayOutlines.Clear();
     impMesh.Clear();
@@ -435,8 +437,8 @@ void Group::MenuGroup(Command id, Platform::Path linkFile) {
             }
             if(shortest == VERY_POSITIVE) shortest = 10; // faces only: 1 mm
             if(!Kernel().Supports(fillet ? KernelFeature::FILLET : KernelFeature::CHAMFER)) {
-                Error(_("Fillets and chamfers need the Open CASCADE kernel (Preferences, "
-                        "SolveSpace NG)."));
+                Error(_("Fillets and chamfers need the Open CASCADE kernel, which this "
+                        "build lacks."));
                 return;
             }
             g.type = fillet ? Type::FILLET : Type::CHAMFER;
@@ -456,7 +458,7 @@ void Group::MenuGroup(Command id, Platform::Path linkFile) {
                 g.faces.push_back(e->h);
             }
             if(!Kernel().Supports(KernelFeature::SHELL)) {
-                Error(_("Shells need the Open CASCADE kernel (Preferences, SolveSpace NG)."));
+                Error(_("Shells need the Open CASCADE kernel, which this build lacks."));
                 return;
             }
             // A tenth of the solid's smallest extent.
@@ -466,7 +468,7 @@ void Group::MenuGroup(Command id, Platform::Path linkFile) {
                 return;
             }
             SMesh m = {};
-            m.MakeFromCopyOf(&running->runningMesh);
+            m.MakeFromCopyOf(&running->RunningMesh());
             running->runningShell.TriangulateInto(&m);
             Vector lo = Vector::From(VERY_POSITIVE, VERY_POSITIVE, VERY_POSITIVE);
             Vector hi = lo.ScaledBy(-1);
@@ -501,7 +503,7 @@ void Group::MenuGroup(Command id, Platform::Path linkFile) {
                 return;
             }
             if(!Kernel().Supports(KernelFeature::DRAFT)) {
-                Error(_("Drafts need the Open CASCADE kernel (Preferences, SolveSpace NG)."));
+                Error(_("Drafts need the Open CASCADE kernel, which this build lacks."));
                 return;
             }
             g.valA = 2;
@@ -526,7 +528,7 @@ void Group::MenuGroup(Command id, Platform::Path linkFile) {
                 return;
             }
             if(!Kernel().Supports(KernelFeature::HOLE)) {
-                Error(_("Holes need the Open CASCADE kernel (Preferences, SolveSpace NG)."));
+                Error(_("Holes need the Open CASCADE kernel, which this build lacks."));
                 return;
             }
             g.hole.diameter     = 5;
@@ -557,7 +559,7 @@ void Group::MenuGroup(Command id, Platform::Path linkFile) {
                 return;
             }
             if(!Kernel().Supports(KernelFeature::LOFT)) {
-                Error(_("Lofts need the Open CASCADE kernel (Preferences, SolveSpace NG)."));
+                Error(_("Lofts need the Open CASCADE kernel, which this build lacks."));
                 return;
             }
             g.type = Type::LOFT;
@@ -589,7 +591,7 @@ void Group::MenuGroup(Command id, Platform::Path linkFile) {
                 return;
             }
             if(!Kernel().Supports(KernelFeature::SWEEP)) {
-                Error(_("Sweeps need the Open CASCADE kernel (Preferences, SolveSpace NG)."));
+                Error(_("Sweeps need the Open CASCADE kernel, which this build lacks."));
                 return;
             }
             g.profiles = picked;
@@ -1428,7 +1430,7 @@ void Group::MakeHoleEntities(EntityList *el) {
         if(depth <= 0) {
             depth = hole.Bore();
             if(prevg != nullptr) {
-                for(const STriangle &t : prevg->runningMesh.l) {
+                for(const STriangle &t : prevg->RunningMesh().l) {
                     for(const Vector &v : t.vertices) depth = std::max(depth, v.Minus(p).Dot(d));
                 }
             }

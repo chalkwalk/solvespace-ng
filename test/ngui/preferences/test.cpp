@@ -102,16 +102,14 @@ TEST_CASE(constraint_state_colours_are_on_and_can_be_turned_off) {
     CHECK_FALSE(SS.constraintStateColors);
 }
 
-TEST_CASE(ng_makes_solids_with_occt_and_preferences_choose_the_kernel) {
+TEST_CASE(ng_makes_solids_with_occt_only) {
     CHECK_LOAD("line.slvs");
     CHECK_TRUE(SS.kernelKind == KernelKind::OCCT);
+    CHECK_TRUE(Platform::GetSettings()->ThawInt("Kernel", -1) == 1);
     Driver::Key("Ctrl+,");
-    CHECK_TRUE(RevealIn("Preferences", "SolveSpace kernel"));
-    CHECK_TRUE(Driver::ClickItem("SolveSpace kernel"));
-    CHECK_TRUE(SS.kernelKind == KernelKind::SOLVESPACE);
-    CHECK_TRUE(Platform::GetSettings()->ThawInt("Kernel", -1) == 0);
-    CHECK_TRUE(Driver::ClickItem("Open CASCADE kernel"));
-    CHECK_TRUE(SS.kernelKind == KernelKind::OCCT);
+    CHECK_TRUE(RevealIn("Preferences", "PETG"));
+    CHECK_FALSE(RevealIn("Preferences", "SolveSpace kernel"));
+    CHECK_FALSE(RevealIn("Preferences", "Open CASCADE kernel"));
 }
 
 TEST_CASE(ng_picks_a_material_for_mass_properties) {

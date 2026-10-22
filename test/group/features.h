@@ -29,7 +29,7 @@ void Select(std::vector<hEntity> entities) {
 
 double Volume(Group *g) {
     SMesh m = {};
-    m.MakeFromCopyOf(&g->runningMesh);
+    m.MakeFromCopyOf(&g->RunningMesh());
     g->runningShell.TriangulateInto(&m);
     double v = m.CalculateVolume();
     m.Clear();
@@ -38,7 +38,7 @@ double Volume(Group *g) {
 
 std::set<uint32_t> FaceNames(Group *g) {
     std::set<uint32_t> names;
-    for(const STriangle &t : g->runningMesh.l) {
+    for(const STriangle &t : g->RunningMesh().l) {
         if(t.meta.face != 0) names.insert(t.meta.face);
     }
     return names;

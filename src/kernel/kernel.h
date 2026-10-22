@@ -234,9 +234,10 @@ bool KernelMassProperties(const std::shared_ptr<const KernelShape> &shape, MassP
 
 // A STEP file's solid, or null if it can't be read.
 std::shared_ptr<const KernelShape> KernelImportStep(const Platform::Path &filename);
-// A B-rep's tessellation (as the kernel gives a body's), each triangle in color.
+// A B-rep's tessellation (as the kernel gives a body's), each triangle in color; and the
+// outlines to draw it with (the edges SMesh::MakeOutlinesInto(SHARP) would find).
 void KernelTessellate(const std::shared_ptr<const KernelShape> &shape, RgbaColor color,
-                      SMesh *mesh);
+                      SMesh *mesh, SOutlineList *outlines = nullptr);
 
 // A quad mesh of a B-rep for Blender (occtquadmesh.cpp, a spike): quad grids on four-sided
 // faces, n-gons on the rest, creases on sharp edges, written as USD text; edges cut no longer

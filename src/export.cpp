@@ -78,7 +78,7 @@ void SolveSpaceUI::ExportSectionTo(const Platform::Path &filename) {
     SBezierList bl = {};
 
     // If there's a mesh, then grab the edges from it.
-    g->runningMesh.MakeEdgesInPlaneInto(&el, n, d);
+    g->RunningMesh().MakeEdgesInPlaneInto(&el, n, d);
 
     // If there's a shell, then grab the edges and possibly Beziers.
     bool export_as_pwl = SS.exportPwlCurves || fabs(SS.exportOffset) > LENGTH_EPS;

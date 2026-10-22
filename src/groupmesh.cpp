@@ -144,7 +144,7 @@ KernelJob Group::BuildKernelJob() {
         job.skipFirst        = skipFirst;
         job.sourceSuppressed = srcg->suppress;
         job.sourceShell      = &srcg->thisShell;
-        job.sourceMesh       = &srcg->thisMesh;
+        job.sourceMesh       = &srcg->thisMesh_; // as made: the kernel meshes a shape itself
         job.sourceShape      = srcg->thisShape;
         job.stepTrans        = Vector::From(h.param(0), h.param(1), h.param(2));
         if(type == Type::ROTATE) {
@@ -274,7 +274,7 @@ KernelJob Group::BuildKernelJob() {
     static const SShell noShell = {};
     static const SMesh  noMesh  = {};
     job.prevShell     = prevg ? &prevg->runningShell : const_cast<SShell *>(&noShell);
-    job.prevMesh      = prevg ? &prevg->runningMesh : const_cast<SMesh *>(&noMesh);
+    job.prevMesh      = prevg ? &prevg->runningMesh_ : const_cast<SMesh *>(&noMesh);
     job.prevShape     = prevg ? prevg->runningShape : nullptr;
     return job;
 }
@@ -282,14 +282,15 @@ KernelJob Group::BuildKernelJob() {
 void Group::ApplyKernelResult(KernelResult *result) {
     bool prevBooleanFailed = booleanFailed;
     thisShell.Clear();
-    thisMesh.Clear();
+    thisMesh_.Clear();
     runningShell.Clear();
-    runningMesh.Clear();
+    runningMesh_.Clear();
+    runningOutlines_.Clear();
     // The lists move over; the result is left empty.
     thisShell    = result->thisBody.shell;
-    thisMesh     = result->thisBody.mesh;
+    thisMesh_    = result->thisBody.mesh;
     runningShell = result->running.shell;
-    runningMesh  = result->running.mesh;
+    runningMesh_ = result->running.mesh;
     result->thisBody.shell = {};
     result->thisBody.mesh  = {};
     result->running.shell  = {};
@@ -297,6 +298,7 @@ void Group::ApplyKernelResult(KernelResult *result) {
     thisShape          = std::move(result->thisBody.shape);
     runningShape       = std::move(result->running.shape);
     runningTessellated = result->running.tessellated;
+    thisTessellated    = result->thisBody.tessellated;
 
     // If the Boolean failed, then we should note that in the text screen
     // for this group.
@@ -325,7 +327,7 @@ void Group::GenerateDisplayItems() {
         Group *pg = RunningMeshGroup();
         bool reshapes = type == Type::FILLET || type == Type::CHAMFER || type == Type::SHELL ||
                         type == Type::DRAFT || type == Type::HOLE;
-        if(pg && thisMesh.IsEmpty() && thisShell.IsEmpty() && !reshapes) {
+        if(pg && !thisShape && thisMesh_.IsEmpty() && thisShell.IsEmpty() && !reshapes) {
             // We don't contribute any new solid model in this group, so our
             // display items are identical to the previous group's; which means
             // that we can just display those, and stop ourselves from
@@ -349,6 +351,7 @@ void Group::GenerateDisplayItems() {
             displayMesh.Clear();
             runningShell.TriangulateInto(&displayMesh);
             STriangle *t;
+            SMesh &runningMesh = RunningMesh();
             for(t = runningMesh.l.First(); t; t = runningMesh.l.NextAfter(t)) {
                 STriangle trn = *t;
                 if(!runningTessellated) {
@@ -367,6 +370,9 @@ void Group::GenerateDisplayItems() {
                 if(!runningMesh.l.IsEmpty() && !runningTessellated) {
                     // Triangle mesh only; no shell or emphasized edges.
                     runningMesh.MakeOutlinesInto(&rawOutlines, EdgeKind::EMPHASIZED);
+                } else if(runningTessellated && runningShape) {
+                    // The kernel made them with the mesh, from its topology.
+                    rawOutlines.MakeFromCopyOf(&runningOutlines_);
                 } else {
                     displayMesh.MakeOutlinesInto(&rawOutlines, EdgeKind::SHARP);
                 }
@@ -401,6 +407,32 @@ Group *Group::PreviousGroup() const {
         prev = g;
     }
     return nullptr;
+}
+
+SMesh &Group::ThisMesh() {
+    if(thisTessellated && thisMesh_.IsEmpty() && thisShape) {
+        KernelTessellate(thisShape, color, &thisMesh_);
+    }
+    return thisMesh_;
+}
+
+SMesh &Group::RunningMesh() {
+    if(runningTessellated && runningMesh_.IsEmpty() && runningShape) {
+        // The previous group's solid passed on (a sketch): its mesh, in its colours.
+        Group *pg = RunningMeshGroup();
+        runningOutlines_.Clear();
+        if(pg && pg->runningShape == runningShape) {
+            runningMesh_.MakeFromCopyOf(&pg->RunningMesh());
+            runningOutlines_.MakeFromCopyOf(&pg->runningOutlines_);
+        } else {
+            KernelTessellate(runningShape, color, &runningMesh_, &runningOutlines_);
+        }
+    }
+    return runningMesh_;
+}
+
+bool Group::HasRunningSolid() const {
+    return runningShape || !runningMesh_.IsEmpty() || !runningShell.IsEmpty();
 }
 
 Group *Group::PreviousGroupInPart() const {

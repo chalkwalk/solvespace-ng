@@ -19,7 +19,7 @@ struct Measure {
 Measure MeasureGroup(Group *g) {
     Measure m;
     SMesh   mesh = {};
-    mesh.MakeFromCopyOf(&g->runningMesh);
+    mesh.MakeFromCopyOf(&g->RunningMesh());
     g->runningShell.TriangulateInto(&mesh);
     if(mesh.l.n > 0) {
         m.solid  = true;
