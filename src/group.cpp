@@ -406,23 +406,29 @@ void Group::MenuGroup(Command id, Platform::Path linkFile) {
 
         case Command::GROUP_FILLET:
         case Command::GROUP_CHAMFER: {
+            // Edges, or faces (all their edges, or the outline of the picked region).
             bool   fillet   = id == Command::GROUP_FILLET;
+            bool   bad      = false;
             double shortest = VERY_POSITIVE;
             for(const GraphicsWindow::Selection &s : SS.GW.selection) {
                 Entity *e = s.entity.v ? SK.entity.FindByIdNoOops(s.entity) : nullptr;
-                if(e == nullptr || !IsEdgeEntity(e)) {
-                    g.edges.clear();
-                    break;
+                if(e && IsEdgeEntity(e)) {
+                    g.edges.push_back(e->h);
+                    shortest = std::min(shortest, EdgeLength(e));
+                } else if(e && IsSolidFace(e)) {
+                    g.faces.push_back(e->h);
+                } else {
+                    bad = true;
                 }
-                g.edges.push_back(e->h);
-                shortest = std::min(shortest, EdgeLength(e));
             }
-            if(g.edges.empty()) {
-                Error(_("Bad selection for a new %s group. Select one or more edges of "
-                        "the solid: the lines and curves an extrusion, lathe, revolve, "
-                        "helix or pattern makes."), fillet ? _("fillet") : _("chamfer"));
+            if(bad || (g.edges.empty() && g.faces.empty())) {
+                Error(_("Bad selection for a new %s group. Select edges of the solid (the "
+                        "lines and curves an extrusion, lathe, revolve, helix or pattern "
+                        "makes), or faces, for all their edges."),
+                      fillet ? _("fillet") : _("chamfer"));
                 return;
             }
+            if(shortest == VERY_POSITIVE) shortest = 10; // faces only: 1 mm
             if(!Kernel().Supports(fillet ? KernelFeature::FILLET : KernelFeature::CHAMFER)) {
                 Error(_("Fillets and chamfers need the Open CASCADE kernel (Preferences, "
                         "SolveSpace NG)."));
@@ -1601,6 +1607,11 @@ hEntity Group::FeatureAnchor() {
         default: break;
     }
     if(derived.v && exists(derived)) return derived;
+    // Faces only: the first face's point.
+    if(edges.empty() && !faces.empty() && exists(faces[0])) {
+        Entity *f = SK.GetEntity(faces[0]);
+        if(f->point[0].v && exists(f->point[0])) return f->point[0];
+    }
     // A curved edge has no derived lines: its own first point.
     if(!edges.empty() && exists(edges[0])) {
         Entity *e = SK.GetEntity(edges[0]);

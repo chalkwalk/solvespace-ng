@@ -163,7 +163,12 @@ bool SolveSpaceUI::RemoveGroupRef(hGroup hg, hEntity he) {
         if(g->type == Group::Type::SHELL) least = 0;
         if(g->type == Group::Type::LOFT || g->type == Group::Type::SWEEP) least = 2;
         if(g->type == Group::Type::SWEEP && it == refs->begin()) least = refs->size(); // profile
-        if(refs->size() <= least) {
+        // A fillet or chamfer needs an edge or a face, of either kind.
+        size_t have = refs->size();
+        if(g->type == Group::Type::FILLET || g->type == Group::Type::CHAMFER) {
+            have = g->edges.size() + g->faces.size();
+        }
+        if(have <= least) {
             Error(_("This feature needs it; delete the group instead."));
             return false;
         }
@@ -191,6 +196,12 @@ bool SolveSpaceUI::SetSweepCorners(hGroup hg, const std::string &expr) {
     SK.GetGroup(hg)->valB = mm;
     MarkGroupDirty(hg);
     return true;
+}
+
+void SolveSpaceUI::SetFeatureOutline(hGroup hg, bool outline) {
+    UndoRemember();
+    SK.GetGroup(hg)->featureOutline = outline ? 1 : 0;
+    MarkGroupDirty(hg);
 }
 
 void SolveSpaceUI::HoldFeatureSize(hGroup hg, bool hold) {

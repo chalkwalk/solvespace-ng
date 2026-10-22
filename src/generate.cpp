@@ -83,7 +83,9 @@ bool SolveSpaceUI::PruneGroups(hGroup hg) {
         Entity *e = SK.entity.FindByIdNoOops(he);
         return e == nullptr || !GroupsInOrder(e->group, hg);
     };
-    bool hadEdges = !g->edges.empty() || (g->type == Group::Type::DRAFT && !g->faces.empty());
+    bool hadEdges = !g->edges.empty() ||
+                    ((g->type == Group::Type::DRAFT || g->type == Group::Type::FILLET ||
+                      g->type == Group::Type::CHAMFER) && !g->faces.empty());
     g->edges.erase(std::remove_if(g->edges.begin(), g->edges.end(), gone), g->edges.end());
     g->faces.erase(std::remove_if(g->faces.begin(), g->faces.end(), gone), g->faces.end());
     hadEdges = hadEdges || !g->points.empty();

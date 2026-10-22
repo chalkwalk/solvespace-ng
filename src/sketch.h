@@ -310,6 +310,9 @@ public:
     // SHELL: the faces left open; DRAFT: the faces tapered (face entities of the solid).
     // valA is the wall thickness (mm) or the draft angle (degrees).
     std::vector<hEntity> faces;
+    // FILLET, CHAMFER with faces: only the edges round the picked faces' region (1), not all
+    // their edges (0).
+    int featureOutline = 0;
     // For each face entity of the previous solid (by handle), +1 if its entity's normal
     // points out of the solid, -1 if in; found on the previous group's solid. Not saved.
     std::map<uint32_t, double> faceOut;

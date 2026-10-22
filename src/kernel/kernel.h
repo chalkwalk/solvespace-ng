@@ -127,6 +127,9 @@ struct KernelJob {
     double size = 0;
     // SHELL: the faces left open (face entity handles); the wall thickness is size.
     std::vector<uint32_t> faceNames;
+    // FILLET, CHAMFER: faceNames' edges too, all of them or (outlineOnly) only those with one
+    // picked face beside them.
+    bool                  outlineOnly = false;
     ShellSide             shellSide = ShellSide::INSIDE;
     // DRAFT: each face (a face entity's handle) tapered by size (radians) about the plane
     // through point normal to pull, along pull; the drafted face is named name.

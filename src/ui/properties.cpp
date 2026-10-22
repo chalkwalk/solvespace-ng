@@ -267,7 +267,14 @@ static void DrawGroup(Group *g, std::function<void()> *run) {
             side("both sides", S::BOTH);
         }
         if(type == Type::FILLET || type == Type::CHAMFER) {
-            RefList("edges", hg, g->edges, run);
+            if(!g->edges.empty()) RefList("edges", hg, g->edges, run);
+            if(!g->faces.empty()) {
+                RefList("faces", hg, g->faces, run);
+                bool outline = g->featureOutline != 0;
+                if(ImGui::Checkbox("only the outline of these faces", &outline)) {
+                    *run = [hg, outline] { SS.SetFeatureOutline(hg, outline); };
+                }
+            }
         } else if(type == Type::SHELL) {
             RefList(g->faces.empty() ? "no face open (a sealed hollow)" : "faces left open", hg,
                     g->faces, run);

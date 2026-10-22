@@ -570,6 +570,35 @@ std::shared_ptr<KernelShape> RoundEdges(const KernelJob &job, std::string *probl
         *problem = ssprintf("%d of the %d edges were not found on the solid", missing,
                             (int)job.edgeCurves.size());
     }
+    // The picked faces' edges: all, or those with only one picked face beside them.
+    if(!job.faceNames.empty()) {
+        auto picked = [&](const TopoDS_Shape &face) {
+            const FaceInfo *info = prev.faces.Seek(face);
+            return info && std::find(job.faceNames.begin(), job.faceNames.end(), info->face) !=
+                               job.faceNames.end();
+        };
+        TopTools_IndexedDataMapOfShapeListOfShape facesOf;
+        TopExp::MapShapesAndAncestors(prev.shape, TopAbs_EDGE, TopAbs_FACE, facesOf);
+        for(int i = 1; i <= facesOf.Extent(); i++) {
+            const TopoDS_Edge &edge = TopoDS::Edge(facesOf.FindKey(i));
+            if(BRep_Tool::Degenerated(edge)) continue;
+            int beside = 0, faces = 0;
+            TopTools_MapOfShape seen;
+            for(const TopoDS_Shape &f : facesOf(i)) {
+                if(!seen.Add(f)) continue; // a seam's face, twice
+                faces++;
+                if(picked(f)) beside++;
+            }
+            if(beside == 0 || faces < 2) continue;
+            if(job.outlineOnly && beside != 1) continue;
+            if(!added.Add(edge)) continue;
+            if(fillet) {
+                makeFillet.Add(job.size, edge);
+            } else {
+                makeChamfer.Add(job.size, edge);
+            }
+        }
+    }
     if(added.IsEmpty()) return nullptr;
 
     try {

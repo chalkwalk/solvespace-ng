@@ -528,3 +528,38 @@ TEST_CASE(a_size_dimension_shows_only_while_its_feature_is_active) {
     CHECK_FALSE(SK.GetConstraint(hc)->IsVisible());
 }
 #endif
+
+#if defined(HAVE_OCCT)
+// Owner's feedback after M4a: pick faces for a fillet or chamfer: all their edges, or only the
+// outline of the picked region.
+TEST_CASE(a_chamfer_on_a_face_bevels_all_its_edges) {
+    CHECK_LOAD("box.slvs");
+    SS.kernelKind = KernelKind::OCCT;
+    Group *g = MakeFeature(Command::GROUP_CHAMFER, { Cap(Group::REMAP_TOP) });
+    CHECK_TRUE(g != nullptr && g->faces.size() == 1 && g->edges.empty());
+    hGroup hg = g->h;
+    Resize(g, "1");
+    CHECK_TRUE(SK.GetGroup(hg)->featureProblem.empty());
+    // The top slab, 1 deep, becomes a frustum from 10 x 20 to 8 x 18.
+    MassProps mp;
+    CHECK_TRUE(SS.MassProperties(&mp));
+    double frustum = 1.0 / 6 * (200 + 4 * 9 * 19 + 8 * 18);
+    CHECK_TRUE(fabs(mp.volume - (6000 - 200 + frustum)) < 1e-6);
+}
+
+TEST_CASE(the_outline_of_picked_faces_skips_the_edges_between_them) {
+    CHECK_LOAD("box.slvs");
+    SS.kernelKind = KernelKind::OCCT;
+    hGroup all = MakeFeature(Command::GROUP_CHAMFER, { Cap(Group::REMAP_TOP), SideFace(5) })->h;
+    Resize(SK.GetGroup(all), "1");
+    MassProps whole;
+    SS.MassProperties(&whole);
+    SS.SetFeatureOutline(all, true);
+    SS.GenerateAll(SolveSpaceUI::Generate::ALL);
+    CHECK_TRUE(SK.GetGroup(all)->featureProblem.empty());
+    MassProps outline;
+    SS.MassProperties(&outline);
+    // The edge between the top and the front stays sharp: less is cut away.
+    CHECK_TRUE(outline.volume > whole.volume + 0.1);
+}
+#endif
