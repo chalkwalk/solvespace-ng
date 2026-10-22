@@ -11,7 +11,7 @@ static Group *LastGroup() {
 
 static std::string Describe(Group *g) {
     SMesh m = {};
-    m.MakeFromCopyOf(&g->runningMesh);
+    m.MakeFromCopyOf(&g->RunningMesh());
     g->runningShell.TriangulateInto(&m);
     std::string s = ssprintf("surfaces %d volume %.4f", g->runningShell.surface.n,
                              m.CalculateVolume());

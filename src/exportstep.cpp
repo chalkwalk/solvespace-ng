@@ -643,7 +643,7 @@ void StepFileWriter::ExportSurfacesTo(const Platform::Path &filename) {
 
     if(shell->surface.IsEmpty()) {
         Error("The model does not contain any surfaces to export.%s",
-              !g->runningMesh.l.IsEmpty()
+              !g->RunningMesh().l.IsEmpty()
                   ? "\n\nThe model does contain triangles from a mesh, but "
                     "a triangle mesh cannot be exported as a STEP file. Try "
                     "File -> Export Mesh... instead."

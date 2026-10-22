@@ -11,7 +11,7 @@ static Group *Active() {
 
 static double Volume(Group *g) {
     SMesh m = {};
-    m.MakeFromCopyOf(&g->runningMesh);
+    m.MakeFromCopyOf(&g->RunningMesh());
     g->runningShell.TriangulateInto(&m);
     double v = m.CalculateVolume();
     m.Clear();

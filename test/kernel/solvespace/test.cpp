@@ -27,7 +27,7 @@ TEST_CASE(a_kernel_job_makes_the_groups_own_solid) {
         CHECK_FALSE(namer.missed);
         CHECK_TRUE(r.running.shell.surface.n == g->runningShell.surface.n);
         CHECK_TRUE(r.thisBody.shell.surface.n == g->thisShell.surface.n);
-        double want = Volume(&g->runningShell, &g->runningMesh);
+        double want = Volume(&g->runningShell, &g->RunningMesh());
         CHECK_EQ_EPS(Volume(&r.running.shell, &r.running.mesh), want);
         for(int i = 0; i < g->thisShell.surface.n; i++) {
             CHECK_TRUE(r.thisBody.shell.surface[i].face == g->thisShell.surface[i].face);

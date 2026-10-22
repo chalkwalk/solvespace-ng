@@ -78,7 +78,7 @@ TEST_CASE(a_part_follows_what_it_references_in_another) {
     SS.GenerateAll(SolveSpaceUI::Generate::ALL);
     Group *g = SS.PartSolid(lid);
     SMesh  m = {};
-    m.MakeFromCopyOf(&g->runningMesh);
+    m.MakeFromCopyOf(&g->RunningMesh());
     g->runningShell.TriangulateInto(&m);
     double zmin = VERY_POSITIVE;
     for(const STriangle &t : m.l) {

@@ -349,13 +349,20 @@ public:
     SShell          thisShell;
     SShell          runningShell;
 
-    SMesh           thisMesh;
-    SMesh           runningMesh;
+    // The meshes: SolveSpace's, or the OCCT kernel's shapes' tessellations, made when first
+    // asked for (ThisMesh(), RunningMesh()) so that groups nobody looks at aren't meshed.
+    SMesh           thisMesh_;
+    SMesh           runningMesh_;
+    SOutlineList    runningOutlines_; // made with runningMesh_ from a shape
+    SMesh &ThisMesh();
+    SMesh &RunningMesh();
+    bool   HasRunningSolid() const; // a running solid: a shape, a shell or a mesh
 
     // The OCCT kernel's B-reps (kernel/kernel.h); its meshes above are their tessellations.
     std::shared_ptr<const KernelShape> thisShape;
     std::shared_ptr<const KernelShape> runningShape;
     bool            runningTessellated = false;
+    bool            thisTessellated    = false;
 
     bool            displayDirty;
     SMesh           displayMesh;

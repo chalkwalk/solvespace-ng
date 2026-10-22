@@ -710,7 +710,7 @@ std::vector<Group *> GraphicsWindow::OtherPartSolids() {
     for(hGroup hg : SK.groupOrder) {
         Group *g = SK.GetGroup(hg);
         if(g->PartOf() != active->PartOf() && hg != Group::HGROUP_REFERENCES &&
-           (!g->runningMesh.IsEmpty() || !g->runningShell.IsEmpty())) {
+           g->HasRunningSolid()) {
             latest[g->PartOf().v] = g;
         }
         if(hg == activeGroup) break;

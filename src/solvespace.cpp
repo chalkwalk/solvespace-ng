@@ -978,7 +978,7 @@ void SolveSpaceUI::MenuAnalyze(Command id) {
                 SS.MmToStringSI(totalVol, /*dim=*/3).c_str());
 
             SMesh curMesh = {};
-            curMesh.MakeFromCopyOf(&g->thisMesh); // the OCCT kernel's, or a mesh group's
+            curMesh.MakeFromCopyOf(&g->ThisMesh()); // the OCCT kernel's, or a mesh group's
             g->thisShell.TriangulateInto(&curMesh);
             double curVol = curMesh.CalculateVolume();
             if(curVol > 0.0) {
@@ -1301,7 +1301,7 @@ bool SolveSpaceUI::MassProperties(MassProps *out) {
     *out     = {};
     if(KernelMassProperties(g->runningShape, out)) return true;
     SMesh m = {};
-    m.MakeFromCopyOf(&g->runningMesh);
+    m.MakeFromCopyOf(&g->RunningMesh());
     g->runningShell.TriangulateInto(&m);
     out->volume = m.CalculateVolume();
     for(const STriangle &t : m.l) {
@@ -1374,7 +1374,7 @@ Group *SolveSpaceUI::PartSolid(hPart hp) {
     for(hGroup hg : SK.groupOrder) {
         Group *g = SK.GetGroup(hg);
         if(g->PartOf() != hp) continue;
-        if(!g->runningMesh.IsEmpty() || !g->runningShell.IsEmpty()) last = g;
+        if(g->HasRunningSolid()) last = g;
     }
     return last;
 }
@@ -1403,7 +1403,7 @@ std::vector<Platform::Path> SolveSpaceUI::ExportParts(const Platform::Path &file
             filename.Parent().Join(filename.FileStem() + "-" + name + "." + ext);
         if(ext == "stl") {
             SMesh m = {};
-            m.MakeFromCopyOf(&g->runningMesh);
+            m.MakeFromCopyOf(&g->RunningMesh());
             g->runningShell.TriangulateInto(&m);
             FILE *f = OpenFile(path, "wb");
             if(!f) {

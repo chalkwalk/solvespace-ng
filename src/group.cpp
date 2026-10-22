@@ -26,13 +26,15 @@ void Group::Clear() {
     polyLoops.Clear();
     bezierLoops.Clear();
     bezierOpens.Clear();
-    thisMesh.Clear();
-    runningMesh.Clear();
+    thisMesh_.Clear();
+    runningMesh_.Clear();
+    runningOutlines_.Clear();
     thisShell.Clear();
     runningShell.Clear();
     thisShape.reset();
     runningShape.reset();
     runningTessellated = false;
+    thisTessellated    = false;
     displayMesh.Clear();
     displayOutlines.Clear();
     impMesh.Clear();
@@ -466,7 +468,7 @@ void Group::MenuGroup(Command id, Platform::Path linkFile) {
                 return;
             }
             SMesh m = {};
-            m.MakeFromCopyOf(&running->runningMesh);
+            m.MakeFromCopyOf(&running->RunningMesh());
             running->runningShell.TriangulateInto(&m);
             Vector lo = Vector::From(VERY_POSITIVE, VERY_POSITIVE, VERY_POSITIVE);
             Vector hi = lo.ScaledBy(-1);
@@ -1428,7 +1430,7 @@ void Group::MakeHoleEntities(EntityList *el) {
         if(depth <= 0) {
             depth = hole.Bore();
             if(prevg != nullptr) {
-                for(const STriangle &t : prevg->runningMesh.l) {
+                for(const STriangle &t : prevg->RunningMesh().l) {
                     for(const Vector &v : t.vertices) depth = std::max(depth, v.Minus(p).Dot(d));
                 }
             }

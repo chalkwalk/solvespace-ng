@@ -56,6 +56,7 @@
 #include <Geom_BezierCurve.hxx>
 #include <Geom_CylindricalSurface.hxx>
 #include <NCollection_DataMap.hxx>
+#include <Poly_PolygonOnTriangulation.hxx>
 #include <Poly_Triangulation.hxx>
 #include <TColStd_Array1OfReal.hxx>
 #include <TColgp_Array1OfPnt.hxx>
@@ -277,7 +278,9 @@ bool Boolean(KernelCombine how, const KernelShape &a, const KernelShape &b, Kern
     op->SetArguments(args);
     op->SetTools(tools);
     op->SetNonDestructive(true);
-    op->SetRunParallel(false);
+    // OCCT's own threads, and oriented boxes for the interference checks.
+    op->SetRunParallel(true);
+    op->SetUseOBB(true);
     op->Build();
     if(!op->IsDone() || op->HasErrors()) return false;
     op->SimplifyResult();
@@ -287,14 +290,29 @@ bool Boolean(KernelCombine how, const KernelShape &a, const KernelShape &b, Kern
 }
 
 // The shape's faces as triangles, with true normals, each carrying its face's name and colour.
-void Tessellate(const KernelShape &ks, RgbaColor color, SMesh *mesh) {
+// One side of a segment of a B-rep edge, as a face's triangulation has it.
+struct EdgeSide {
+    Vector a, b, facet, na, nb; // the ends, the facet beside it, the surface normals at the ends
+};
+
+// The shape's faces as triangles, with true normals, each carrying its face's name and colour;
+// and, if asked, the outlines SolveSpace draws from them, straight from the triangulation's
+// topology (a triangle edge inside a face where the facets turn; each B-rep edge between its
+// two faces, tagged sharp where their surfaces' normals differ), instead of searching the mesh.
+void Tessellate(const KernelShape &ks, RgbaColor color, SMesh *mesh,
+                SOutlineList *outlines = nullptr) {
     std::lock_guard<std::mutex> lock(gMeshMutex);
     double tol = SS.ChordTolMm();
     // Faces carried over from earlier bodies keep the triangulations made for those, whose
     // edges needn't match their new neighbours'; mesh the whole shape afresh.
     BRepTools::Clean(ks.shape);
     BRepMesh_IncrementalMesh(ks.shape, tol, /*isRelative=*/false, /*angle=*/0.35,
-                             /*parallel=*/false);
+                             /*parallel=*/true);
+    // Each B-rep edge's segments, with every face's side of them. Edges are told apart by
+    // shape and place: the copies of a step and repeat share their edges' shapes.
+    TopTools_IndexedMapOfShape edgeIndex;
+    if(outlines) TopExp::MapShapes(ks.shape, TopAbs_EDGE, edgeIndex);
+    std::map<int, std::vector<std::vector<EdgeSide>>> edgeSides;
     for(TopExp_Explorer ex(ks.shape, TopAbs_FACE); ex.More(); ex.Next()) {
         const TopoDS_Face &face = TopoDS::Face(ex.Current());
         TopLoc_Location    loc;
@@ -307,6 +325,8 @@ void Tessellate(const KernelShape &ks, RgbaColor color, SMesh *mesh) {
         STriMeta meta = { 0, color };
         if(const FaceInfo *info = ks.faces.Seek(face)) meta = { info->face, info->color };
 
+        // For the outlines: each triangle edge (by its nodes) and the facets beside it.
+        std::map<std::pair<int, int>, std::vector<Vector>> facetsBeside;
         for(int i = 1; i <= tri->NbTriangles(); i++) {
             int n[3];
             tri->Triangle(i).Get(n[0], n[1], n[2]);
@@ -321,6 +341,64 @@ void Tessellate(const KernelShape &ks, RgbaColor color, SMesh *mesh) {
                 st.normals[j]  = Vec(d.XYZ());
             }
             mesh->AddTriangle(&st);
+            if(outlines) {
+                Vector facet = st.Normal().WithMagnitude(1);
+                for(int j = 0; j < 3; j++) {
+                    int a = n[j], b = n[(j + 1) % 3];
+                    facetsBeside[{ std::min(a, b), std::max(a, b) }].push_back(facet);
+                }
+            }
+        }
+        if(!outlines) continue;
+        auto node = [&](int k) { return Vec(tri->Node(k).Transformed(trsf).XYZ()); };
+        auto normal = [&](int k) {
+            gp_Dir d = tri->Normal(k).Transformed(trsf);
+            if(reversed) d.Reverse();
+            return Vec(d.XYZ());
+        };
+        // Inside the face: where its facets turn (for silhouettes).
+        for(const auto &fb : facetsBeside) {
+            if(fb.second.size() != 2 || fb.second[0].Equals(fb.second[1])) continue;
+            outlines->AddEdge(node(fb.first.first), node(fb.first.second), fb.second[0],
+                              fb.second[1], 0);
+        }
+        // Along its B-rep edges: each segment kept until the face on the other side comes.
+        for(TopExp_Explorer ee(face, TopAbs_EDGE); ee.More(); ee.Next()) {
+            const TopoDS_Edge &edge = TopoDS::Edge(ee.Current());
+            if(BRep_Tool::Degenerated(edge) || BRep_Tool::IsClosed(edge, face)) continue;
+            Handle(Poly_PolygonOnTriangulation) poly =
+                BRep_Tool::PolygonOnTriangulation(edge, tri, loc);
+            if(poly.IsNull()) continue;
+            const TColStd_Array1OfInteger &nodes = poly->Nodes();
+            std::vector<std::vector<EdgeSide>> &segments = edgeSides[edgeIndex.FindIndex(edge)];
+            segments.resize(std::max((int)segments.size(), nodes.Length() - 1));
+            for(int k = nodes.Lower(); k < nodes.Upper(); k++) {
+                int a = nodes(k), b = nodes(k + 1);
+                auto it = facetsBeside.find({ std::min(a, b), std::max(a, b) });
+                if(it == facetsBeside.end() || it->second.empty()) continue;
+                segments[k - nodes.Lower()].push_back(
+                    { node(a), node(b), it->second[0], normal(a), normal(b) });
+            }
+        }
+    }
+    if(!outlines) return;
+    // Each segment once: sharp if any two of its faces' surfaces turn there (where solids
+    // touch, more than two faces meet), else drawn only where its facets turn.
+    for(const auto &es : edgeSides) {
+        for(const std::vector<EdgeSide> &sides : es.second) {
+            if(sides.size() < 2) continue;
+            const EdgeSide *l = &sides[0], *r = &sides[1];
+            bool            sharp = false;
+            for(size_t i = 0; i < sides.size() && !sharp; i++) {
+                for(size_t j = i + 1; j < sides.size() && !sharp; j++) {
+                    const EdgeSide &p = sides[i], &q = sides[j];
+                    sharp = !((p.na.Equals(q.na) && p.nb.Equals(q.nb)) ||
+                              (p.na.Equals(q.nb) && p.nb.Equals(q.na)));
+                    if(sharp) l = &p, r = &q;
+                }
+            }
+            if(!sharp && l->facet.Equals(r->facet)) continue;
+            outlines->AddEdge(l->a, l->b, l->facet, r->facet, sharp ? 1 : 0);
         }
     }
 }
@@ -496,7 +574,29 @@ std::shared_ptr<KernelShape> StepAndRepeat(const KernelJob &job, FaceNamer *name
         int remap = (a == (n - 1)) ? Group::REMAP_LAST : a;
         copies.push_back(Transformed(*job.sourceShape, trsf, namer, remap));
     }
-    // Combined in pairs, as SolveSpace's kernel does.
+    // All the copies fused in one boolean: much faster than in pairs, as SolveSpace's kernel
+    // combines them; in pairs only if that fails.
+    if(copies.size() > 1 && job.sourceCombine != KernelCombine::ASSEMBLE) {
+        BRepAlgoAPI_Fuse     fuse;
+        TopTools_ListOfShape args, tools;
+        args.Append(copies[0]->shape);
+        for(size_t i = 1; i < copies.size(); i++) tools.Append(copies[i]->shape);
+        fuse.SetArguments(args);
+        fuse.SetTools(tools);
+        fuse.SetNonDestructive(true);
+        fuse.SetRunParallel(true);
+        fuse.SetUseOBB(true);
+        fuse.Build();
+        if(fuse.IsDone() && !fuse.HasErrors()) {
+            fuse.SimplifyResult();
+            auto out   = std::make_shared<KernelShape>();
+            out->shape = fuse.Shape();
+            std::vector<const FaceMap *> names;
+            for(const auto &c : copies) names.push_back(&c->faces);
+            CarryNames(fuse, names, &out->faces);
+            return out;
+        }
+    }
     while(copies.size() > 1) {
         std::vector<std::shared_ptr<KernelShape>> next;
         for(size_t i = 0; i < copies.size(); i += 2) {
@@ -726,7 +826,8 @@ std::shared_ptr<KernelShape> Shell(const KernelJob &job, FaceNamer *namer, std::
         tools.Append(inner.shape);
         cut.SetArguments(args);
         cut.SetTools(tools);
-        cut.SetRunParallel(false);
+        cut.SetRunParallel(true);
+        cut.SetUseOBB(true);
         cut.Build();
         if(!cut.IsDone() || cut.HasErrors() || !IsGoodSolid(cut.Shape()) ||
            Volume(cut.Shape()) >= Volume(outer.shape) * (1 - 1e-9)) {
@@ -1120,19 +1221,33 @@ class OcctKernel final : public IKernel {
 public:
     void Run(const KernelJob &job, FaceNamer &namer, KernelResult *result) override {
         result->Clear();
-        bool prevHasBody = !job.prevMesh->IsEmpty() || !job.prevShell->IsEmpty();
+        bool prevHasBody = !job.prevMesh->IsEmpty() || !job.prevShell->IsEmpty() ||
+                           !IsEmpty(job.prevShape);
         bool isStep = job.op == KernelJob::Op::STEP_TRANSLATE ||
                       job.op == KernelJob::Op::STEP_ROTATE;
         bool sourceHasBody = isStep && !job.sourceSuppressed &&
-                             (!job.sourceMesh->IsEmpty() || !job.sourceShell->IsEmpty());
+                             (!job.sourceMesh->IsEmpty() || !job.sourceShell->IsEmpty() ||
+                              !IsEmpty(job.sourceShape));
         bool linkedMesh = job.op == KernelJob::Op::LINKED && (IsEmpty(job.impShape) || job.scale <= 0);
         if(job.forcedToMesh || linkedMesh ||
            (prevHasBody && IsEmpty(job.prevShape)) ||
            (sourceHasBody && IsEmpty(job.sourceShape))) {
-            // No B-rep to work with: SolveSpace's kernel, combining as meshes.
+            // No B-rep to work with: SolveSpace's kernel, combining as meshes. The groups' meshes
+            // are made when asked for, so mesh any B-rep it is given here.
             KernelJob meshJob    = job;
             meshJob.forcedToMesh = true;
+            SMesh prevMesh = {}, sourceMesh = {};
+            if(job.prevMesh->IsEmpty() && !IsEmpty(job.prevShape)) {
+                Tessellate(*job.prevShape, job.color, &prevMesh);
+                meshJob.prevMesh = &prevMesh;
+            }
+            if(job.sourceMesh && job.sourceMesh->IsEmpty() && !IsEmpty(job.sourceShape)) {
+                Tessellate(*job.sourceShape, job.color, &sourceMesh);
+                meshJob.sourceMesh = &sourceMesh;
+            }
             SolveSpaceKernelInstance().Run(meshJob, namer, result);
+            prevMesh.Clear();
+            sourceMesh.Clear();
             return;
         }
 
@@ -1181,7 +1296,6 @@ public:
         if(made && !made->shape.IsNull()) {
             result->thisBody.shape       = made;
             result->thisBody.tessellated = true;
-            Tessellate(*made, job.color, &result->thisBody.mesh);
         }
 
         if(IsEmpty(result->thisBody.shape) || job.suppress) {
@@ -1205,11 +1319,7 @@ public:
     // The running body is running: the previous one's mesh, or running's tessellation.
     static void Finish(const KernelJob &job, std::shared_ptr<const KernelShape> running,
                        KernelResult *result) {
-        if(running == job.prevShape) {
-            result->running.mesh.MakeFromCopyOf(job.prevMesh);
-        } else if(!IsEmpty(running)) {
-            Tessellate(*running, job.color, &result->running.mesh);
-        }
+        // The meshes are made from the shapes when first asked for (Group::RunningMesh).
         result->running.tessellated = !IsEmpty(running);
         result->running.shape       = std::move(running);
     }
@@ -1350,8 +1460,9 @@ std::shared_ptr<const KernelShape> KernelImportStep(const Platform::Path &filena
     }
 }
 
-void KernelTessellate(const std::shared_ptr<const KernelShape> &ks, RgbaColor color, SMesh *mesh) {
-    if(!IsEmpty(ks)) Tessellate(*ks, color, mesh);
+void KernelTessellate(const std::shared_ptr<const KernelShape> &ks, RgbaColor color, SMesh *mesh,
+                      SOutlineList *outlines) {
+    if(!IsEmpty(ks)) Tessellate(*ks, color, mesh, outlines);
 }
 
 

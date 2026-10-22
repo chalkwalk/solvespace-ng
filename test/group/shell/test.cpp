@@ -83,7 +83,7 @@ TEST_CASE(inner_faces_carry_their_names) {
     CHECK_TRUE(names.count(Inner(g, SideFace(5)).v) == 1);
     CHECK_TRUE(names.count(Cap(Group::REMAP_BOTTOM).v) == 1);
     // The opened top leaves the walls' rims, still in its plane.
-    for(const STriangle &t : g->runningMesh.l) {
+    for(const STriangle &t : g->RunningMesh().l) {
         if(t.meta.face == Cap(Group::REMAP_TOP).v) CHECK_EQ_EPS(t.a.z, 30);
     }
 }
