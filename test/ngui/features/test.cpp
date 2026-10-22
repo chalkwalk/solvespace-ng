@@ -52,3 +52,25 @@ TEST_CASE(ng_shows_mass_properties) {
     CHECK_TRUE(Driver::Dialogs()[0].message.find("Volume") != std::string::npos);
     CHECK_TRUE(Driver::Dialogs()[0].message.find("7.44 g") != std::string::npos);
 }
+
+// Sketching on a face: click the top, sketch in a new workplane on it, draw a rectangle and
+// extrude it up.
+TEST_CASE(ng_sketches_on_a_picked_face) {
+    CHECK_LOAD("box.slvs");
+    hEntity top = Face(Group::REMAP_TOP);
+    Driver::Key("Shift+7");
+    ClickAt(At({ 5, 10, 30 }));
+    CHECK_TRUE(SS.GW.IsSelected(top));
+    Driver::Key("Shift+W");
+    CHECK_TRUE(Active()->type == Group::Type::DRAWING_WORKPLANE);
+    CHECK_TRUE(Active()->subtype == Group::Subtype::WORKPLANE_BY_FACE);
+    Driver::Key("R");
+    ClickAt(At({ 2, 2, 30 }));
+    ClickAt(At({ 6, 6, 30 }));
+    Driver::Key("Escape");
+    Driver::Key("E");
+    CHECK_TRUE(Active()->type == Group::Type::EXTRUDE);
+    MassProps mp;
+    CHECK_TRUE(SS.MassProperties(&mp));
+    CHECK_TRUE(mp.volume > 6000 + 1);
+}

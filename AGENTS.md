@@ -359,6 +359,12 @@ a B-rep by the OCCT kernel; its tessellation (`impMesh`) is what SolveSpace's ke
 builds without OCCT use. Imported faces are unnamed: they can be picked and measured, not yet
 sketched on.
 
+**Sketch on a face (2026-10-21, after review 5):** Sketch in New Workplane (`Shift+W`) takes a
+face of the solid, an extrusion's cap or side or any feature's derived face, and optionally a
+point for the origin (`WORKPLANE_BY_FACE`, stock's long-stubbed subtype). The workplane follows
+the face's plane every regeneration; its normal points to the viewer as the face was picked
+(`predef.negateV`), its axes keep the view's (`predef.q`, re-projected).
+
 **Later:** variable-radius fillets, STEP import as a reference body (snappable, warned),
 XCAF colours and names, exact hidden-line drawing export (`HLRBRep`).
 

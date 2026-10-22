@@ -192,6 +192,10 @@ void Group::MenuGroup(Command id, Platform::Path linkFile) {
                     } else if(wrkplg->subtype == Subtype::WORKPLANE_BY_POINT_NORMAL) {
                         g.predef.q = wrkplg->predef.q;
                         g.predef.entityB = wrkplg->predef.entityB;
+                    } else if(wrkplg->subtype == Subtype::WORKPLANE_BY_FACE) {
+                        g.predef.q       = wrkplg->predef.q;
+                        g.predef.entityB = wrkplg->predef.entityB;
+                        g.predef.negateV = wrkplg->predef.negateV;
                     } else ssassert(false, "Unexpected workplane subtype");
                 }
             } else if(gs.anyNormals == 1 && gs.points == 1 && gs.n == 2) {
@@ -199,6 +203,23 @@ void Group::MenuGroup(Command id, Platform::Path linkFile) {
                 g.predef.entityB = gs.anyNormal[0];
                 g.predef.q      = SK.GetEntity(gs.anyNormal[0])->NormalGetNum();
                 g.predef.origin = gs.point[0];
+            } else if(gs.faces == 1 && (gs.n == 1 || (gs.n == 2 && gs.points == 1))) {
+                // On a face: it follows the face. Its normal points to the viewer, out of the
+                // face picked; its axes keep the view's.
+                Entity *face     = SK.GetEntity(gs.face[0]);
+                Vector  n        = face->FaceGetNormalNum().WithMagnitude(1);
+                Vector  toViewer = SS.GW.projRight.Cross(SS.GW.projUp);
+                g.subtype        = Subtype::WORKPLANE_BY_FACE;
+                g.predef.entityB = gs.face[0];
+                g.predef.origin  = gs.points == 1 ? gs.point[0] : Entity::NO_ENTITY;
+                g.predef.negateV = n.Dot(toViewer) < 0;
+                if(g.predef.negateV) n = n.ScaledBy(-1);
+                Vector u = SS.GW.projRight.Minus(n.ScaledBy(n.Dot(SS.GW.projRight)));
+                if(u.Magnitude() < LENGTH_EPS) {
+                    u = SS.GW.projUp.Minus(n.ScaledBy(n.Dot(SS.GW.projUp)));
+                }
+                u          = u.WithMagnitude(1);
+                g.predef.q = Quaternion::From(u, n.Cross(u));
             //} else if(gs.faces == 1 && gs.points == 1 && gs.n == 2) {
             //    g.subtype = Subtype::WORKPLANE_BY_POINT_FACE;
             //    g.predef.q      = SK.GetEntity(gs.face[0])->NormalGetNum();
@@ -213,7 +234,9 @@ void Group::MenuGroup(Command id, Platform::Path linkFile) {
                         "orthogonal to the normal)\n"
                         /*"    * a point and a face (through the point, "
                         "parallel to the face)\n"*/
-                        "    * a workplane (copy of the workplane)\n"));
+                        "    * a workplane (copy of the workplane)\n"
+                        "    * a face of the solid, and optionally a point (on the face, "
+                        "following it)\n"));
                 return;
             }
             break;
@@ -703,6 +726,14 @@ void Group::Generate(EntityList *entity, ParamList *param)
                 q = predef.q;
             } else if(subtype == Subtype::WORKPLANE_BY_POINT_NORMAL) {
                 q = SK.GetEntity(predef.entityB)->NormalGetNum();
+            } else if(subtype == Subtype::WORKPLANE_BY_FACE) {
+                // The face's plane now, its axes as near the ones it was made with as they go.
+                Vector n = SK.GetEntity(predef.entityB)->FaceGetNormalNum().WithMagnitude(1);
+                if(predef.negateV) n = n.ScaledBy(-1);
+                Vector u = predef.q.RotationU();
+                u        = u.Minus(n.ScaledBy(n.Dot(u)));
+                u        = u.Magnitude() < LENGTH_EPS ? n.Normal(0) : u.WithMagnitude(1);
+                q        = Quaternion::From(u, n.Cross(u));
             } else ssassert(false, "Unexpected workplane subtype");
 
             Entity normal = {};
@@ -716,7 +747,9 @@ void Group::Generate(EntityList *entity, ParamList *param)
 
             Entity point = {};
             point.type = Entity::Type::POINT_N_COPY;
-            point.numPoint = SK.GetEntity(predef.origin)->PointGetNum();
+            point.numPoint = predef.origin.v != 0
+                                 ? SK.GetEntity(predef.origin)->PointGetNum()
+                                 : SK.GetEntity(predef.entityB)->FaceGetPointNum();
             point.construction = true;
             point.group = h;
             point.h = h.entity(2);

@@ -87,6 +87,7 @@ set(testsuite_SOURCES
     request/workplane/test.cpp
     group/boolean_coplanar_union/test.cpp
     group/fillet/test.cpp
+    group/faceplane/test.cpp
     group/shell/test.cpp
     group/draft/test.cpp
     group/hole/test.cpp
