@@ -357,3 +357,64 @@ TEST_CASE(a_shell_can_lose_its_last_open_face) {
     CHECK_TRUE(SK.GetGroup(g->h)->faces.empty());
 }
 #endif
+
+#if defined(HAVE_OCCT)
+// M3h: the radius is a solver parameter. The derived points follow it, so constraints on them,
+// or dragging them, set it. (These delete the size dimension the group starts with, if any.)
+namespace {
+
+void FreeTheSize(hGroup hg) {
+    for(Constraint &c : SK.constraint) {
+        if(c.group == hg && c.type == Constraint::Type::FEATURE_SIZE) c.tag = 1;
+    }
+    SK.constraint.RemoveTagged();
+    SS.MarkGroupDirty(hg);
+    SS.GenerateAll(SolveSpaceUI::Generate::ALL);
+}
+
+double Radius(hGroup hg) {
+    return SK.GetParam(SK.GetGroup(hg)->h.param(0))->val;
+}
+
+}
+
+TEST_CASE(a_constraint_on_a_tangent_point_sets_the_radius) {
+    CHECK_LOAD("box.slvs");
+    SS.kernelKind = KernelKind::OCCT;
+    hEntity edge = Edge(5, Group::REMAP_TOP); // (0, 0, 30) to (10, 0, 30)
+    hGroup  hg   = MakeFeature(Command::GROUP_FILLET, { edge })->h;
+    FreeTheSize(hg);
+    // The tangent line on the top lies r in from the edge: pin its start 4 from the corner.
+    hEntity line = SK.GetGroup(hg)->Remap(edge, Group::REMAP_FILLET_TANGENT_1);
+    Entity *l    = SK.GetEntity(line);
+    if(SK.GetEntity(l->point[0])->PointGetNum().z < 29.5) {
+        line = SK.GetGroup(hg)->Remap(edge, Group::REMAP_FILLET_TANGENT_2);
+    }
+    Constraint c = {};
+    c.type       = Constraint::Type::PT_PT_DISTANCE;
+    c.group      = hg;
+    c.workplane  = Entity::FREE_IN_3D;
+    c.ptA        = SK.GetEntity(line)->point[0];
+    c.ptB        = Extrusion()->Remap(hRequest{ 5 }.entity(1), Group::REMAP_TOP);
+    c.valA       = 4;
+    Constraint::AddConstraint(&c, /*rememberForUndo=*/false);
+    SS.GenerateAll(SolveSpaceUI::Generate::ALL);
+    CHECK_EQ_EPS(Radius(hg), 4);
+    MassProps mp;
+    CHECK_TRUE(SS.MassProperties(&mp) && mp.exact);
+    CHECK_TRUE(fabs(6000 - mp.volume - (1 - PI / 4) * 16 * 10) < 1e-6);
+}
+
+TEST_CASE(dragging_a_tangent_point_sets_the_radius) {
+    CHECK_LOAD("box.slvs");
+    SS.kernelKind = KernelKind::OCCT;
+    hEntity edge = Edge(5, Group::REMAP_TOP);
+    hGroup  hg   = MakeFeature(Command::GROUP_FILLET, { edge })->h;
+    FreeTheSize(hg);
+    Entity *axis = SK.GetEntity(SK.GetGroup(hg)->Remap(edge, Group::REMAP_FILLET_AXIS));
+    // The axis lies r in along both faces: dragged to (5, 3, 27), the radius is 3.
+    SK.GetEntity(axis->point[0])->PointForceTo({ 0, 3, 27 });
+    SS.GenerateAll(SolveSpaceUI::Generate::ALL);
+    CHECK_EQ_EPS(Radius(hg), 3);
+}
+#endif

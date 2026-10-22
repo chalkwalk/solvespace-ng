@@ -1035,6 +1035,8 @@ void Group::Generate(EntityList *entity, ParamList *param)
         }
         case Type::FILLET:
         case Type::CHAMFER:
+            // The size, a parameter so constraints and drags can set it.
+            AddParam(param, h.param(0), valA);
             MakeFeatureLines(entity);
             return;
 
@@ -1223,20 +1225,26 @@ void Group::MakeExtrusionLines(EntityList *el, hEntity in) {
     }
 }
 
-void Group::AddFeatureLine(EntityList *el, hEntity edge, int which, Vector a, Vector b) {
+void Group::AddFeatureLine(EntityList *el, hEntity edge, int which, Vector a, Vector b,
+                           Vector along) {
     Entity en = {};
     en.group  = h;
     en.style  = hStyle{ Style::REFERENCE };
-    en.type   = Entity::Type::POINT_N_COPY;
-    en.h      = Remap(edge, which + 10);
-    en.numPoint = a;
+    // Moved by the feature's size (h.param(0)) along `along` per unit of it.
+    en.type      = Entity::Type::POINT_ALONG_PARAM;
+    en.param[0]  = h.param(0);
+    en.numNormal = Quaternion::From(0, along.x, along.y, along.z);
+    en.h         = Remap(edge, which + 10);
+    en.numPoint  = a;
     el->Add(&en);
     en.h        = Remap(edge, which + 20);
     en.numPoint = b;
     el->Add(&en);
 
-    en.type     = Entity::Type::LINE_SEGMENT;
-    en.numPoint = {};
+    en.type      = Entity::Type::LINE_SEGMENT;
+    en.param[0]  = {};
+    en.numNormal = {};
+    en.numPoint  = {};
     en.point[0] = Remap(edge, which + 10);
     en.point[1] = Remap(edge, which + 20);
     en.h        = Remap(edge, which);
@@ -1525,6 +1533,11 @@ void Group::MakeLoftFaces(EntityList *el) {
     AddFeatureFace(el, profiles.back(), REMAP_LOFT_END, known ? last.centre : Vector{}, end);
 }
 
+double Group::FeatureSize() const {
+    Param *p = SK.param.FindByIdNoOops(h.param(0));
+    return p ? p->val : valA;
+}
+
 // A face entity's normal now, or zero if there is none.
 static Vector FaceNormalNow(uint32_t face) {
     Entity *f = face ? SK.entity.FindByIdNoOops(hEntity{ face }) : nullptr;
@@ -1576,7 +1589,7 @@ void Group::MakeFeatureLines(EntityList *el) {
             u[j]     = (known.sign[j] != 0 && d.Magnitude() > LENGTH_EPS)
                            ? d.WithMagnitude(known.sign[j]) : known.into[j];
         }
-        double r = valA;
+        // Each line is the edge moved by the size r (the group's parameter).
         if(fillet) {
             // The circle of radius r tangent to both faces: its tangent points are set back
             // r / tan(a/2) from the edge, its centre r / sin(a/2) along the bisector.
@@ -1584,21 +1597,16 @@ void Group::MakeFeatureLines(EntityList *el) {
             double back = 0, out = 0;
             Vector mid  = u[0].Plus(u[1]);
             if(known.known && half > 1e-6 && mid.Magnitude() > LENGTH_EPS) {
-                back = r / tan(half);
-                out  = r / sin(half);
+                back = 1 / tan(half);
+                out  = 1 / sin(half);
                 mid  = mid.WithMagnitude(1);
             }
-            AddFeatureLine(el, edges[i], REMAP_FILLET_TANGENT_1, a.Plus(u[0].ScaledBy(back)),
-                           b.Plus(u[0].ScaledBy(back)));
-            AddFeatureLine(el, edges[i], REMAP_FILLET_TANGENT_2, a.Plus(u[1].ScaledBy(back)),
-                           b.Plus(u[1].ScaledBy(back)));
-            AddFeatureLine(el, edges[i], REMAP_FILLET_AXIS, a.Plus(mid.ScaledBy(out)),
-                           b.Plus(mid.ScaledBy(out)));
+            AddFeatureLine(el, edges[i], REMAP_FILLET_TANGENT_1, a, b, u[0].ScaledBy(back));
+            AddFeatureLine(el, edges[i], REMAP_FILLET_TANGENT_2, a, b, u[1].ScaledBy(back));
+            AddFeatureLine(el, edges[i], REMAP_FILLET_AXIS, a, b, mid.ScaledBy(out));
         } else {
-            AddFeatureLine(el, edges[i], REMAP_CHAMFER_EDGE_1, a.Plus(u[0].ScaledBy(r)),
-                           b.Plus(u[0].ScaledBy(r)));
-            AddFeatureLine(el, edges[i], REMAP_CHAMFER_EDGE_2, a.Plus(u[1].ScaledBy(r)),
-                           b.Plus(u[1].ScaledBy(r)));
+            AddFeatureLine(el, edges[i], REMAP_CHAMFER_EDGE_1, a, b, u[0]);
+            AddFeatureLine(el, edges[i], REMAP_CHAMFER_EDGE_2, a, b, u[1]);
         }
     }
 }

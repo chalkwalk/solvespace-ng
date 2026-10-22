@@ -113,6 +113,7 @@ void TextWindow::DescribeSelection() {
             case Entity::Type::POINT_N_TRANS:
             case Entity::Type::POINT_N_ROT_TRANS:
             case Entity::Type::POINT_N_COPY:
+            case Entity::Type::POINT_ALONG_PARAM:
             case Entity::Type::POINT_N_ROT_AA:
             case Entity::Type::POINT_N_ROT_AXIS_TRANS:
                 p = e->PointGetNum();

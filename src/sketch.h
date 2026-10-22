@@ -412,7 +412,10 @@ public:
     SnapshotFaceNamer FaceSnapshot() const;
     void MakeExtrusionLines(EntityList *el, hEntity in);
     void MakeFeatureLines(EntityList *el);
-    void AddFeatureLine(EntityList *el, hEntity edge, int which, Vector a, Vector b);
+    void AddFeatureLine(EntityList *el, hEntity edge, int which, Vector a, Vector b,
+                        Vector along);
+    // A fillet's, chamfer's, shell's or draft's size: its parameter, solved (M3h).
+    double FeatureSize() const;
     void AddFeatureFace(EntityList *el, hEntity face, int which, Vector point, Vector normal);
     void UpdateFaceOut();
     void MakeShellFaces(EntityList *el);
@@ -542,6 +545,9 @@ public:
         POINT_N_TRANS          =  2010,
         POINT_N_ROT_TRANS      =  2011,
         POINT_N_COPY           =  2012,
+        // numPoint + (numNormal's vector part) * param[0]: a feature's derived point that a
+        // feature size moves (M3h)
+        POINT_ALONG_PARAM      =  2020,
         POINT_N_ROT_AA         =  2013,
         POINT_N_ROT_AXIS_TRANS =  2014,
 
@@ -814,6 +820,8 @@ public:
         ARC_LINE_LEN_RATIO     = 211,
         ARC_ARC_DIFFERENCE     = 212,
         ARC_LINE_DIFFERENCE    = 213,
+        // A fillet's, chamfer's, shell's or draft's size, holding its group's parameter (M3h)
+        FEATURE_SIZE           = 300,
         COMMENT                = 1000
     };
 

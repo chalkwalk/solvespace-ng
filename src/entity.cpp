@@ -253,6 +253,7 @@ bool EntityBase::IsPoint() const {
         case Type::POINT_IN_3D:
         case Type::POINT_IN_2D:
         case Type::POINT_N_COPY:
+        case Type::POINT_ALONG_PARAM:
         case Type::POINT_N_TRANS:
         case Type::POINT_N_ROT_TRANS:
         case Type::POINT_N_ROT_AA:
@@ -502,6 +503,16 @@ void EntityBase::PointForceTo(Vector p) {
             // Nothing to do; it's a static copy
             break;
 
+        case Type::POINT_ALONG_PARAM: {
+            // The parameter that puts it nearest p.
+            Vector along = Vector::From(numNormal.vx, numNormal.vy, numNormal.vz);
+            double d     = along.Dot(along);
+            if(d > LENGTH_EPS * LENGTH_EPS) {
+                SK.GetParam(param[0])->val = p.Minus(numPoint).Dot(along) / d;
+            }
+            break;
+        }
+
         default: ssassert(false, "Unexpected entity type");
     }
 }
@@ -559,6 +570,11 @@ Vector EntityBase::PointGetNum() const {
 
         case Type::POINT_N_COPY:
             p = numPoint;
+            break;
+
+        case Type::POINT_ALONG_PARAM:
+            p = numPoint.Plus(Vector::From(numNormal.vx, numNormal.vy, numNormal.vz)
+                                  .ScaledBy(SK.GetParam(param[0])->val));
             break;
 
         default: ssassert(false, "Unexpected entity type");
@@ -620,6 +636,12 @@ ExprVector EntityBase::PointGetExprs() const {
         }
         case Type::POINT_N_COPY:
             r = ExprVector::From(numPoint);
+            break;
+
+        case Type::POINT_ALONG_PARAM:
+            r = ExprVector::From(numPoint).Plus(
+                ExprVector::From(numNormal.vx, numNormal.vy, numNormal.vz)
+                    .ScaledBy(Expr::From(param[0])));
             break;
 
         default: ssassert(false, "Unexpected entity type");

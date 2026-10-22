@@ -1290,6 +1290,21 @@ s:
             }
             return;
 
+        case Type::FEATURE_SIZE: {
+            // At the feature's derived point (ptA), the label where it was dragged, with a
+            // leader back to the point.
+            Vector anchor = SK.GetEntity(ptA)->PointGetDrawNum();
+            Vector ref    = anchor.Plus(disp.offset);
+            if(refs) refs->push_back(ref);
+            if(disp.offset.Magnitude() > LENGTH_EPS) {
+                DoLineTrimmedAgainstBox(canvas, hcs, ref, ref, anchor);
+            }
+            Vector topLeft;
+            DoLabel(canvas, hcs, ref, &topLeft, gr, gu);
+            if(labelPos) *labelPos = topLeft;
+            return;
+        }
+
         case Type::COMMENT: {
             Vector u, v;
             if(workplane == Entity::FREE_IN_3D) {

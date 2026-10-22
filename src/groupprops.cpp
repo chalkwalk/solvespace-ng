@@ -124,7 +124,9 @@ bool SolveSpaceUI::SetFeatureSize(hGroup hg, const std::string &expr) {
         return false;
     }
     UndoRemember();
+    g       = SK.GetGroup(hg);
     g->valA = mm;
+    if(Param *p = SK.param.FindByIdNoOops(g->h.param(0))) p->val = mm;
     MarkGroupDirty(hg);
     return true;
 }

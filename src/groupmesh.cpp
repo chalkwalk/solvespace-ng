@@ -196,7 +196,7 @@ KernelJob Group::BuildKernelJob() {
         }
     } else if(type == Type::FILLET || type == Type::CHAMFER) {
         job.op   = type == Type::FILLET ? KernelJob::Op::FILLET : KernelJob::Op::CHAMFER;
-        job.size = valA;
+        job.size = FeatureSize();
         for(hEntity he : edges) {
             Entity *e = SK.entity.FindByIdNoOops(he);
             if(e == nullptr) continue;

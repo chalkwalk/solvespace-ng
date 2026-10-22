@@ -84,6 +84,7 @@ BBox Entity::GetOrGenerateScreenBBox(bool *hasBBox) {
 void Entity::GetReferencePoints(std::vector<Vector> *refs) {
     switch(type) {
         case Type::POINT_N_COPY:
+        case Type::POINT_ALONG_PARAM:
         case Type::POINT_N_TRANS:
         case Type::POINT_N_ROT_TRANS:
         case Type::POINT_N_ROT_AA:
@@ -578,6 +579,7 @@ void Entity::Draw(DrawAs how, Canvas *canvas) {
 
     switch(type) {
         case Type::POINT_N_COPY:
+        case Type::POINT_ALONG_PARAM:
         case Type::POINT_N_TRANS:
         case Type::POINT_N_ROT_TRANS:
         case Type::POINT_N_ROT_AA:

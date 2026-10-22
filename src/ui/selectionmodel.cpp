@@ -135,6 +135,7 @@ static void DescribeEntity(Entity *e, SelectionModel *m) {
         case Entity::Type::POINT_N_TRANS:
         case Entity::Type::POINT_N_ROT_TRANS:
         case Entity::Type::POINT_N_COPY:
+        case Entity::Type::POINT_ALONG_PARAM:
         case Entity::Type::POINT_N_ROT_AA:
         case Entity::Type::POINT_N_ROT_AXIS_TRANS:
             m->title = "POINT";

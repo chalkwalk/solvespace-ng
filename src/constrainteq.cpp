@@ -26,6 +26,7 @@ bool ConstraintBase::HasLabel() const {
         case Type::ARC_ARC_DIFFERENCE: 
         case Type::ARC_LINE_DIFFERENCE:
         case Type::ANGLE:
+        case Type::FEATURE_SIZE:
         case Type::COMMENT:
             return true;
 
@@ -77,6 +78,7 @@ bool ConstraintBase::IsProjectible() const {
         case Type::CURVE_CURVE_TANGENT:
         case Type::ARC_LINE_TANGENT:
         case Type::EQUAL_RADIUS:
+        case Type::FEATURE_SIZE:
             return false;
     }
     ssassert(false, "Impossible");
@@ -562,6 +564,14 @@ void ConstraintBase::GenerateEquations(IdList<Equation,hEquation> *l,
             return;
         }
         
+        case Type::FEATURE_SIZE: {
+            // The group's size parameter; a draft's (other) is the tangent of its angle.
+            Expr *size = Expr::From(group.param(0));
+            Expr *want = other ? Expr::From(tan(valA * PI / 180)) : exA;
+            AddEq(l, size->Minus(want), 0);
+            return;
+        }
+
         case Type::DIAMETER: {
             EntityBase *circle = SK.GetEntity(entityA);
             Expr *r = circle->CircleGetRadiusExpr();
