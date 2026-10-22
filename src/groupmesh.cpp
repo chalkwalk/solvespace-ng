@@ -226,6 +226,7 @@ KernelJob Group::BuildKernelJob() {
             job.sectionHoles = p.holes;
             job.startName    = Remap(profiles[0], REMAP_SWEEP_START).v;
             job.endName      = Remap(profiles[0], REMAP_SWEEP_END).v;
+            job.cornerRadius = valB;
         }
     } else if(type == Type::HOLE) {
         job.op   = KernelJob::Op::HOLE;

@@ -148,8 +148,10 @@ struct KernelJob {
     std::vector<std::vector<SBezier>> sections;
     bool                              sectionHoles = false;
     uint32_t                          startName = 0, endName = 0;
-    // SWEEP: the path's curves, connected end to end in any order.
+    // SWEEP: the path's curves, connected end to end in any order; the radius its corners
+    // between straight pieces are rounded to (0: mitred).
     std::vector<SBezier> path;
+    double               cornerRadius = 0;
 
     // Combining with the previous groups' running body.
     bool          forcedToMesh = false; // combine as triangle meshes

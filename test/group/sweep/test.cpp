@@ -112,4 +112,23 @@ TEST_CASE(a_sweep_declares_its_end_faces) {
     CHECK_TRUE(names.count(g->Remap(c, Group::REMAP_SWEEP_START).v) == 1);
     CHECK_TRUE(names.count(g->Remap(c, Group::REMAP_SWEEP_END).v) == 1);
 }
+// Review 6: the path's corners rounded instead of mitred. A circle swept along a path keeps
+// Pappus: its area times the path's length, the corner now a quarter circle of radius 3.
+TEST_CASE(a_sweep_can_round_its_paths_corners) {
+    CHECK_LOAD("sketch.slvs");
+    hEntity c = Circle(1);
+    Group::MenuGroup(Command::GROUP_3D);
+    hEntity a = Line3D({ 0, 0, 0 }, { 0, 0, 10 }), b = Line3D({ 0, 0, 10 }, { 0, 10, 10 });
+    Group *g = MakeFeature(Command::GROUP_SWEEP, { c, a, b });
+    hGroup hg = g->h;
+    CHECK_TRUE(SS.SetSweepCorners(hg, "3"));
+    SS.GenerateAll(SolveSpaceUI::Generate::ALL);
+    CHECK_TRUE(SK.GetGroup(hg)->featureProblem.empty());
+    CHECK_TRUE(fabs(ExactVolume() - PI * (7 + 7 + PI / 2 * 3)) < 1e-3);
+    // Too big for the path: the corner stays mitred, and the Problems panel says why.
+    CHECK_TRUE(SS.SetSweepCorners(hg, "20"));
+    SS.GenerateAll(SolveSpaceUI::Generate::ALL);
+    CHECK_FALSE(SK.GetGroup(hg)->featureProblem.empty());
+    CHECK_TRUE(fabs(ExactVolume() - PI * 20) < 1e-3);
+}
 #endif

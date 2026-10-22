@@ -47,6 +47,8 @@
 #include <BRep_Builder.hxx>
 #include <BRep_Tool.hxx>
 #include <GCE2d_MakeSegment.hxx>
+#include <GC_MakeArcOfCircle.hxx>
+#include <Geom_TrimmedCurve.hxx>
 #include <Interface_Static.hxx>
 #include <STEPControl_Reader.hxx>
 #include <STEPControl_Writer.hxx>
@@ -994,10 +996,47 @@ std::shared_ptr<KernelShape> Sweep(const KernelJob &job, std::string *problem) {
     }
     auto ks = std::make_shared<KernelShape>();
     try {
+        // Each corner between two straight pieces rounded by the job's radius: the lines cut
+        // back by r tan(turn / 2) and a tangent arc between them (review 6).
+        std::vector<SBezier> path = job.path;
+        std::vector<double>  backStart(path.size(), 0), backEnd(path.size(), 0);
+        if(job.cornerRadius > 0) {
+            bool fits = true;
+            for(size_t i = 0; i + 1 < path.size(); i++) {
+                if(path[i].deg != 1 || path[i + 1].deg != 1) continue;
+                Vector u = path[i].ctrl[1].Minus(path[i].ctrl[0]).WithMagnitude(1);
+                Vector v = path[i + 1].ctrl[1].Minus(path[i + 1].ctrl[0]).WithMagnitude(1);
+                double turn = acos(std::max(-1.0, std::min(1.0, u.Dot(v))));
+                if(turn < 1e-6 || turn > PI - 1e-6) continue;
+                double back  = job.cornerRadius * tan(turn / 2);
+                backEnd[i]       = back;
+                backStart[i + 1] = back;
+            }
+            for(size_t i = 0; i < path.size(); i++) {
+                if(path[i].deg != 1) continue;
+                double length = path[i].ctrl[1].Minus(path[i].ctrl[0]).Magnitude();
+                fits = fits && backStart[i] + backEnd[i] < length - LENGTH_EPS;
+            }
+            if(!fits) {
+                *problem = "the path's corners are too tight for that radius; they stay sharp";
+                std::fill(backStart.begin(), backStart.end(), 0);
+                std::fill(backEnd.begin(), backEnd.end(), 0);
+            }
+        }
         BRepBuilderAPI_MakeWire spine;
-        for(const SBezier &sb : job.path) {
+        for(size_t i = 0; i < path.size(); i++) {
+            const SBezier &sb = path[i];
             if(sb.deg == 1) {
-                spine.Add(BRepBuilderAPI_MakeEdge(Pnt(sb.ctrl[0]), Pnt(sb.ctrl[1])).Edge());
+                Vector u = sb.ctrl[1].Minus(sb.ctrl[0]).WithMagnitude(1);
+                Vector a = sb.ctrl[0].Plus(u.ScaledBy(backStart[i]));
+                Vector b = sb.ctrl[1].Minus(u.ScaledBy(backEnd[i]));
+                spine.Add(BRepBuilderAPI_MakeEdge(Pnt(a), Pnt(b)).Edge());
+                if(backEnd[i] > 0) {
+                    Vector next = path[i + 1].ctrl[1].Minus(path[i + 1].ctrl[0]).WithMagnitude(1);
+                    Vector c    = path[i + 1].ctrl[0].Plus(next.ScaledBy(backStart[i + 1]));
+                    Handle(Geom_TrimmedCurve) arc = GC_MakeArcOfCircle(Pnt(b), Vec(u), Pnt(c));
+                    spine.Add(BRepBuilderAPI_MakeEdge(arc).Edge());
+                }
                 continue;
             }
             TColgp_Array1OfPnt   poles(1, sb.deg + 1);

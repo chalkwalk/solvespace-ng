@@ -176,6 +176,23 @@ bool SolveSpaceUI::RemoveGroupRef(hGroup hg, hEntity he) {
     return false;
 }
 
+bool SolveSpaceUI::SetSweepCorners(hGroup hg, const std::string &expr) {
+    double mm = 0;
+    if(!expr.empty()) {
+        Expr *e = Expr::From(expr, /*popUpError=*/true);
+        if(!e) return false;
+        mm = e->Eval() * MmPerUnit();
+    }
+    if(mm < 0) {
+        Error(_("The corner radius must be zero (sharp corners) or more."));
+        return false;
+    }
+    UndoRemember();
+    SK.GetGroup(hg)->valB = mm;
+    MarkGroupDirty(hg);
+    return true;
+}
+
 void SolveSpaceUI::SetShellSide(hGroup hg, ShellSide side) {
     UndoRemember();
     SK.GetGroup(hg)->shellSide = side;

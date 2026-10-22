@@ -266,6 +266,9 @@ static void DrawGroup(Group *g, std::function<void()> *run) {
             RefList("profiles, in order", hg, g->profiles, run);
         } else {
             RefList("profile, then the path", hg, g->profiles, run);
+            ImGui::TextUnformatted("round the path's corners (radius; 0: sharp)");
+            ValueField("##sweep-corners", SS.MmToString(g->valB), run,
+                       [hg](std::string s) { SS.SetSweepCorners(hg, s); });
         }
         if(!g->featureProblem.empty()) {
             std::string problem = g->featureProblem + ".";
