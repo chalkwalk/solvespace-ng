@@ -91,8 +91,9 @@ TEST_CASE(a_fillet_is_a_smooth_quad_strip) {
     QuadMeshStats  st;
     CHECK_TRUE(KernelExportQuadUsd(Last()->runningShape, path, /*target=*/2, &st));
     CHECK_TRUE(st.openEdges == 0);
-    // The two end faces have five sides now (a corner rounded): n-gons; the rest quads.
-    CHECK_TRUE(st.ngons == 2 && st.triangles == 0);
+    // The two end faces have five sides now (a corner rounded): rings round a fan of
+    // triangles at their centres (review 6); the rest quads.
+    CHECK_TRUE(st.ngons == 0 && st.triangles > 0);
     // The rounded edge is gone and its tangent edges are smooth; its two end arcs are sharp.
     CHECK_TRUE(st.creases == 11 + 2);
     // The round as a polygon: a little more is cut off than the true fillet.
@@ -118,5 +119,56 @@ TEST_CASE(a_face_with_one_hole_is_rings_of_quads) {
     CHECK_TRUE(st.ngons == 0 && st.triangles == 0);
     CHECK_TRUE(st.openEdges == 0);
     CHECK_TRUE(fabs(st.volume - (6000 - 7 * 17 * 28.5)) < 1e-6);
+    remove(path.raw.c_str());
+}
+
+TEST_CASE(other_faces_are_rings_and_a_centre_fan) {
+    // Review 6: the box with filleted top edges and a counterbore that cuts into the fillets
+    // leaves curved faces with more than four sides. Each is rings of quads from its edge in,
+    // and a fan of triangles round its centre: no n-gons.
+    CHECK_LOAD("holebox.slvs"); // box.slvs with a point sketched at (5, 10, 30) on its top
+    SS.SetKernel(KernelKind::OCCT);
+    hGroup sketch = SS.GW.activeGroup;
+    Group *box = nullptr;
+    for(hGroup hg : SK.groupOrder) {
+        if(SK.GetGroup(hg)->type == Group::Type::EXTRUDE) box = SK.GetGroup(hg);
+    }
+    SS.GW.activeGroup = box->h;
+    SS.GW.ClearSelection();
+    for(uint32_t r : { 5, 6, 7, 8 }) {
+        GraphicsWindow::Selection sel = {};
+        sel.entity = box->Remap(hRequest{ r }.entity(0), Group::REMAP_TOP);
+        SS.GW.selection.Add(&sel);
+    }
+    Group::MenuGroup(Command::GROUP_FILLET);
+    SS.SetFeatureSize(SS.GW.activeGroup, "3");
+    SS.GenerateAll(SolveSpaceUI::Generate::ALL);
+    // The hole, after the fillet, at the sketch's point.
+    hEntity point = {};
+    for(Request &r : SK.request) {
+        if(r.type == Request::Type::DATUM_POINT && r.group == sketch) point = r.h.entity(0);
+    }
+    SS.GW.activeGroup = sketch; // the hole goes after its centre's sketch
+    SS.GenerateAll(SolveSpaceUI::Generate::ALL);
+    SS.GW.ClearSelection();
+    GraphicsWindow::Selection sel = {};
+    sel.entity = point;
+    SS.GW.selection.Add(&sel);
+    Group::MenuGroup(Command::GROUP_HOLE);
+    Group::HoleSpec spec = SK.GetGroup(SS.GW.activeGroup)->hole;
+    spec.kind = Group::HoleKind::COUNTERBORE;
+    spec.diameter = 4;
+    spec.headDiameter = 7;
+    spec.headDepth = 3;
+    SS.SetHoleSpec(SS.GW.activeGroup, spec);
+    SS.GenerateAll(SolveSpaceUI::Generate::ALL);
+    CHECK_TRUE(Last()->featureProblem.empty());
+    Platform::Path path = helper->GetAssetPath(__FILE__, "notched.usda", "out");
+    QuadMeshStats  st;
+    CHECK_TRUE(KernelExportQuadUsd(Last()->runningShape, path, /*target=*/1.5, &st));
+    CHECK_TRUE(st.ngons == 0);
+    CHECK_TRUE(st.triangles > 0);
+    CHECK_TRUE(st.quads > 10 * st.triangles);
+    CHECK_TRUE(st.openEdges == 0);
     remove(path.raw.c_str());
 }

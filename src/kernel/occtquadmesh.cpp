@@ -1,7 +1,8 @@
 //-----------------------------------------------------------------------------
 // A quad mesh of the OCCT kernel's B-rep for Blender (a spike, after review 5): every
 // four-sided face is a structured quad grid following the face's own (u, v) flow, a flat face
-// with one hole rings of quads, the rest n-gons; each B-rep edge is cut into points once, so faces share them and the mesh is
+// with one hole rings of quads, any other face without a hole rings of quads round a fan of
+// triangles at its centre (when it can see its whole edge from there), the rest triangles; each B-rep edge is cut into points once, so faces share them and the mesh is
 // watertight; the sharp edges are creased, so Catmull-Clark subdivision keeps the shape.
 // Written as USD (.usda text), which Blender imports with its creases.
 //-----------------------------------------------------------------------------
@@ -12,6 +13,7 @@
 
 #include <BRepAdaptor_Curve.hxx>
 #include <BRepAdaptor_Surface.hxx>
+#include <BRepClass_FaceClassifier.hxx>
 #include <BRepTools.hxx>
 #include <BRepTools_WireExplorer.hxx>
 #include <BRep_Tool.hxx>
@@ -223,38 +225,124 @@ struct QuadMesher {
         return true;
     }
 
-    // Any other face: one polygon round its outer wire, each hole joined to it by a cut.
-    void NGon(const TopoDS_Face &face) {
-        BRepAdaptor_Surface surface(face);
-        TopoDS_Wire         outerWire = BRepTools::OuterWire(face);
-        auto loop = [&](const TopoDS_Wire &wire) {
-            std::vector<int> ids;
-            for(const TopoDS_Edge &e : WireEdges(wire, face)) {
-                std::vector<WirePoint> a = Along(e, face);
-                for(size_t k = 0; k + 1 < a.size(); k++) ids.push_back(a[k].id);
-            }
-            return ids;
+    // A face with no hole that is neither four-sided nor a ring (review 6): rings of quads
+    // from its edge in towards a centre, then a fan of triangles round the centre; false if
+    // the centre, or the way to it from the edge, leaves the face.
+    bool Radial(const TopoDS_Face &face, double target) {
+        BRepAdaptor_Surface    surface(face);
+        std::vector<WirePoint> edge = Round(WireEdges(BRepTools::OuterWire(face), face), face);
+        size_t                 n    = edge.size();
+        if(n < 3) return false;
+        gp_XY c(0, 0);
+        for(const WirePoint &p : edge) c += p.uv.XY();
+        c /= (double)n;
+        auto inside = [&](gp_XY uv) {
+            BRepClass_FaceClassifier where(face, gp_Pnt2d(uv), 1e-7);
+            return where.State() == TopAbs_IN || where.State() == TopAbs_ON;
         };
-        std::vector<int> outer = loop(outerWire);
+        if(!inside(c)) return false;
+        double reach = 0;
+        Vector centre = Vec(surface.Value(c.X(), c.Y()));
+        for(const WirePoint &p : edge) reach += points[p.id].Minus(centre).Magnitude() / n;
+        int rings = std::max(1, (int)ceil(reach / target - 1e-9));
+        // Every ring point, and the way between them, must be on the face itself (the
+        // surface goes on past it).
+        int steps = std::max(4, 2 * rings);
+        for(const WirePoint &p : edge) {
+            for(int k = 1; k < steps; k++) {
+                if(!inside(p.uv.XY() * (1 - (double)k / steps) + c * ((double)k / steps))) {
+                    return false;
+                }
+            }
+        }
+        std::vector<std::vector<int>> row(rings, std::vector<int>(n));
+        for(size_t i = 0; i < n; i++) {
+            row[0][i] = edge[i].id;
+            for(int k = 1; k < rings; k++) {
+                gp_XY uv  = edge[i].uv.XY() * (1.0 - (double)k / rings) + c * ((double)k / rings);
+                row[k][i] = (int)points.size();
+                points.push_back(Vec(surface.Value(uv.X(), uv.Y())));
+            }
+        }
+        int    mid   = (int)points.size();
+        points.push_back(centre);
+        size_t first = polys.size();
+        for(size_t i = 0; i < n; i++) {
+            size_t j = (i + 1) % n;
+            for(int k = 0; k + 1 < rings; k++) {
+                AddPoly({ row[k][i], row[k][j], row[k + 1][j], row[k + 1][i] });
+            }
+            AddPoly({ row[rings - 1][i], row[rings - 1][j], mid });
+        }
+        FaceOut(first, Outward(face, surface, gp_Pnt2d(c)));
+        return true;
+    }
+
+    // A simple polygon (uv) as triangles, by clipping ears; false if it won't go.
+    bool EarClip(std::vector<WirePoint> poly) {
+        auto cross = [](gp_XY a, gp_XY b, gp_XY c) { return (b - a) ^ (c - b); };
+        double area = 0;
+        for(size_t i = 0; i < poly.size(); i++) {
+            area += poly[i].uv.XY() ^ poly[(i + 1) % poly.size()].uv.XY();
+        }
+        if(area < 0) std::reverse(poly.begin(), poly.end());
+        while(poly.size() > 3) {
+            bool clipped = false;
+            for(size_t i = 0; i < poly.size() && !clipped; i++) {
+                const WirePoint &a = poly[(i + poly.size() - 1) % poly.size()], &b = poly[i],
+                                &c = poly[(i + 1) % poly.size()];
+                if(cross(a.uv.XY(), b.uv.XY(), c.uv.XY()) <= 1e-14) continue;
+                bool empty = true;
+                for(const WirePoint &p : poly) {
+                    if(p.id == a.id || p.id == b.id || p.id == c.id) continue;
+                    gp_XY q = p.uv.XY();
+                    if(cross(a.uv.XY(), b.uv.XY(), q) > 0 && cross(b.uv.XY(), c.uv.XY(), q) > 0 &&
+                       cross(c.uv.XY(), a.uv.XY(), q) > 0) {
+                        empty = false;
+                        break;
+                    }
+                }
+                if(!empty) continue;
+                AddPoly({ a.id, b.id, c.id });
+                poly.erase(poly.begin() + i);
+                clipped = true;
+            }
+            if(!clipped) return false;
+        }
+        AddPoly({ poly[0].id, poly[1].id, poly[2].id });
+        return true;
+    }
+
+    // Any other face: its outline, each hole joined to it by a cut, as triangles (an n-gon if
+    // that fails).
+    void Triangles(const TopoDS_Face &face) {
+        BRepAdaptor_Surface    surface(face);
+        TopoDS_Wire            outerWire = BRepTools::OuterWire(face);
+        std::vector<WirePoint> outer     = Round(WireEdges(outerWire, face), face);
         for(TopExp_Explorer ex(face, TopAbs_WIRE); ex.More(); ex.Next()) {
             if(ex.Current().IsSame(outerWire)) continue;
-            std::vector<int> hole = loop(TopoDS::Wire(ex.Current()));
+            std::vector<WirePoint> hole = Round(WireEdges(TopoDS::Wire(ex.Current()), face), face);
             if(hole.empty() || outer.empty()) continue;
             size_t a = 0, b = 0;
             double best = VERY_POSITIVE;
             for(size_t i = 0; i < outer.size(); i++) {
                 for(size_t j = 0; j < hole.size(); j++) {
-                    double d = points[outer[i]].Minus(points[hole[j]]).Magnitude();
+                    double d = points[outer[i].id].Minus(points[hole[j].id]).Magnitude();
                     if(d < best) best = d, a = i, b = j;
                 }
             }
-            std::vector<int> joined(outer.begin(), outer.begin() + a + 1);
+            std::vector<WirePoint> joined(outer.begin(), outer.begin() + a + 1);
             for(size_t k = 0; k <= hole.size(); k++) joined.push_back(hole[(b + k) % hole.size()]);
             joined.insert(joined.end(), outer.begin() + a, outer.end());
             outer = joined;
         }
         size_t first = polys.size();
-        AddPoly(outer);
+        if(!EarClip(outer)) {
+            polys.resize(first);
+            std::vector<int> ids;
+            for(const WirePoint &p : outer) ids.push_back(p.id);
+            AddPoly(ids);
+        }
         double u0, u1, v0, v1;
         BRepTools::UVBounds(face, u0, u1, v0, v1);
         FaceOut(first, Outward(face, surface, gp_Pnt2d((u0 + u1) / 2, (v0 + v1) / 2)));
@@ -383,7 +471,11 @@ bool KernelExportQuadUsd(const std::shared_ptr<const KernelShape> &ks,
     for(const Ring &r : rings) {
         if(!m.Rings(r.face, r.outer, r.inner, target)) others.push_back(r.face);
     }
-    for(const TopoDS_Face &face : others) m.NGon(face);
+    for(const TopoDS_Face &face : others) {
+        int wires = 0;
+        for(TopExp_Explorer w(face, TopAbs_WIRE); w.More(); w.Next()) wires++;
+        if(wires != 1 || !m.Radial(face, target)) m.Triangles(face);
+    }
 
     // Creases: the edges between two faces meeting at an angle (not a seam, not tangent).
     TopTools_IndexedDataMapOfShapeListOfShape facesOf;

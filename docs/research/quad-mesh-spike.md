@@ -21,7 +21,12 @@ Open CASCADE kernel. Tests: `test/kernel/quadmesh`.
   hole's. This covers a shell's rim and a plate with a hole.
   - The two wires are cut into as many points, they are lined up, and rings are added so
     none is wider than the target.
-- **Anything else is an n-gon,** with any holes bridged by a cut.
+- **Any other face without a hole** (review 6, the owner's suggestion) gets rings of quads from
+  its edge in towards its centre, then a fan of triangles round the centre. This applies when
+  the centre and every ring point lie on the face.
+- **Anything left** (a face the centre can't see all of, a curved face with holes) is
+  triangulated by clipping ears in its (u, v), its holes bridged by a cut. N-gons remain only if
+  that fails.
 - **Creases:** every edge where faces meet at more than 20° is creased at full sharpness
   (USD 10). Tangent edges, such as a fillet's boundaries, stay smooth.
 - **Output:** USD text: `faceVertexCounts`, `faceVertexIndices`, `points`, `creaseIndices`,
@@ -32,9 +37,13 @@ Open CASCADE kernel. Tests: `test/kernel/quadmesh`.
 - **A box with its top edges filleted:** all quads. It subdivides into a crisp box with
   round fillets. The fillet corners, where three fillets meet, gather lines but stay quads.
 - **A shelled box (open top):** all quads, rim included. It subdivides cleanly.
-- **A box with a counterbore cutting into the fillets:** the notched fillet faces (curved,
-  more than four sides) become n-gons and pucker when subdivided. The flat faces with
-  holes are clean rings.
+- **A box with a counterbore cutting into the fillets:** at first the notched fillet faces
+  (curved, more than four sides) were n-gons and puckered when subdivided. Since review 6 the
+  rounded box's five-sided end faces are rings round a centre fan, and the notched strips are
+  ear-clipped triangles: no n-gons (2075 quads, 134 triangles), and it subdivides cleanly.
+  The notched strips' triangles are long slivers (up to the strip's length), which Blender's
+  wireframe overlay draws as spikes. Splitting those strips at the notch into four-sided
+  patches would give quads there.
 
 The local Blender is a distro build without USD support. The check loaded the file with a
 small parser and set the `crease_edge` attribute itself. Official Blender builds import USD,

@@ -378,8 +378,9 @@ plain values. Feature groups saved before M3h load without the dimension (one fr
 **Quad mesh export, a spike (2026-10-21, owner's question in review 5):** Export Mesh to a
 `.usda` file writes the B-rep as quads for Blender, with creases for Catmull-Clark
 (`src/kernel/occtquadmesh.cpp`; findings in `docs/research/quad-mesh-spike.md`): quad grids
-on four-sided faces, rings on flat one-hole faces, n-gons on the rest, shared edge points.
-Curved faces with more than four sides are the open problem.
+on four-sided faces, rings on flat one-hole faces, rings round a centre fan of triangles on
+other faces without holes (review 6), ear-clipped triangles on the rest, shared edge points.
+Faces the centre can't see whole (a notched strip) are slivers: the open problem.
 
 **Later:** variable-radius fillets, STEP import as a reference body (snappable, warned),
 XCAF colours and names, exact hidden-line drawing export (`HLRBRep`).
