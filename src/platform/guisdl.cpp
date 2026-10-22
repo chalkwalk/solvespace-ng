@@ -129,10 +129,10 @@ SettingsRef GetSettings() {
            gSettings->ThawBool("ConstraintStateColors", false)) {
             gSettings->FreezeBool("ConstraintStateColors", true);
         }
-        // NG makes solids with Open CASCADE where it is built (AGENTS.md section 6).
-        if(gSettings->ThawInt("Kernel", -1) == -1) {
-            gSettings->FreezeInt("Kernel", KernelAvailable(KernelKind::OCCT) ? 1 : 0);
-        }
+        // NG makes solids with Open CASCADE only, where it is built (AGENTS.md section 6); an
+        // older choice of SolveSpace's kernel is dropped.
+        int kernel = KernelAvailable(KernelKind::OCCT) ? 1 : 0;
+        if(gSettings->ThawInt("Kernel", -1) != kernel) gSettings->FreezeInt("Kernel", kernel);
     }
     return gSettings;
 }

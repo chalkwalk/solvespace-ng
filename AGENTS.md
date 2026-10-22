@@ -313,8 +313,13 @@ the shell and mesh) and hands the rest of SolveSpace their tessellation: true no
 each triangle's face name. Faces get the same names as SolveSpace's kernel gives them (same
 `FaceNamer` calls, same order), carried through booleans and copies by OCCT's history.
 Links, meshes and groups forced to a mesh take SolveSpace's mesh path. STEP export writes the
-B-rep. The kernel is a setting (`SS.kernelKind`, `Kernel` in settings.txt, Preferences ▸
-SolveSpace NG): NG seeds Open CASCADE, stock and the core tests use SolveSpace's.
+B-rep. The kernel is `SS.kernelKind` (`Kernel` in settings.txt). **Decision (owner,
+2026-10-21, after comparing the two kernels' costs):** desktop NG makes solids with Open
+CASCADE only, with no choice in Preferences (an older choice of SolveSpace's is dropped).
+SolveSpace's kernel stays in the code for meshes and links, the web build, stock SolveSpace,
+the core tests and the parity suite. OCCT tessellates lazily, only when a mesh is asked for,
+and makes the drawn outlines from its triangulation's topology (`Tessellate`), not by
+searching the mesh; booleans and meshing run in parallel.
 `test/kernel/parity` regenerates every model under `test/` with both kernels and compares
 volume, area, bounding box and watertightness (all 102 solid groups of 287 models match).
 Files saved with OCCT store the solid as triangles, as mesh groups do, not NURBS surfaces.

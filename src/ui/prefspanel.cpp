@@ -130,17 +130,6 @@ static void Ng(std::function<void()> *run) {
     }
     // Under-constrained as the Constraints style, fully constrained quieter, culprits red.
     Toggle("colour constraints by state", SettingToggle::CONSTRAINT_STATE_COLORS, run);
-    if(KernelAvailable(KernelKind::OCCT)) {
-        // Which kernel makes the solids; Open CASCADE is NG's (M3).
-        bool occt = SS.kernelKind == KernelKind::OCCT;
-        if(ImGui::RadioButton("Open CASCADE kernel", occt) && !occt) {
-            *run = [] { SS.SetKernel(KernelKind::OCCT); };
-        }
-        ImGui::SameLine();
-        if(ImGui::RadioButton("SolveSpace kernel", !occt) && occt) {
-            *run = [] { SS.SetKernel(KernelKind::SOLVESPACE); };
-        }
-    }
     // The material mass properties weigh: a common filament, or any density.
     ImGui::TextDisabled("material for mass properties");
     for(const SolveSpaceUI::Material &m : SolveSpaceUI::Materials()) {

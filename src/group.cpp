@@ -437,8 +437,8 @@ void Group::MenuGroup(Command id, Platform::Path linkFile) {
             }
             if(shortest == VERY_POSITIVE) shortest = 10; // faces only: 1 mm
             if(!Kernel().Supports(fillet ? KernelFeature::FILLET : KernelFeature::CHAMFER)) {
-                Error(_("Fillets and chamfers need the Open CASCADE kernel (Preferences, "
-                        "SolveSpace NG)."));
+                Error(_("Fillets and chamfers need the Open CASCADE kernel, which this "
+                        "build lacks."));
                 return;
             }
             g.type = fillet ? Type::FILLET : Type::CHAMFER;
@@ -458,7 +458,7 @@ void Group::MenuGroup(Command id, Platform::Path linkFile) {
                 g.faces.push_back(e->h);
             }
             if(!Kernel().Supports(KernelFeature::SHELL)) {
-                Error(_("Shells need the Open CASCADE kernel (Preferences, SolveSpace NG)."));
+                Error(_("Shells need the Open CASCADE kernel, which this build lacks."));
                 return;
             }
             // A tenth of the solid's smallest extent.
@@ -503,7 +503,7 @@ void Group::MenuGroup(Command id, Platform::Path linkFile) {
                 return;
             }
             if(!Kernel().Supports(KernelFeature::DRAFT)) {
-                Error(_("Drafts need the Open CASCADE kernel (Preferences, SolveSpace NG)."));
+                Error(_("Drafts need the Open CASCADE kernel, which this build lacks."));
                 return;
             }
             g.valA = 2;
@@ -528,7 +528,7 @@ void Group::MenuGroup(Command id, Platform::Path linkFile) {
                 return;
             }
             if(!Kernel().Supports(KernelFeature::HOLE)) {
-                Error(_("Holes need the Open CASCADE kernel (Preferences, SolveSpace NG)."));
+                Error(_("Holes need the Open CASCADE kernel, which this build lacks."));
                 return;
             }
             g.hole.diameter     = 5;
@@ -559,7 +559,7 @@ void Group::MenuGroup(Command id, Platform::Path linkFile) {
                 return;
             }
             if(!Kernel().Supports(KernelFeature::LOFT)) {
-                Error(_("Lofts need the Open CASCADE kernel (Preferences, SolveSpace NG)."));
+                Error(_("Lofts need the Open CASCADE kernel, which this build lacks."));
                 return;
             }
             g.type = Type::LOFT;
@@ -591,7 +591,7 @@ void Group::MenuGroup(Command id, Platform::Path linkFile) {
                 return;
             }
             if(!Kernel().Supports(KernelFeature::SWEEP)) {
-                Error(_("Sweeps need the Open CASCADE kernel (Preferences, SolveSpace NG)."));
+                Error(_("Sweeps need the Open CASCADE kernel, which this build lacks."));
                 return;
             }
             g.profiles = picked;
