@@ -123,6 +123,17 @@ bool SolveSpaceUI::SetFeatureSize(hGroup hg, const std::string &expr) {
         Error(_("The radius or distance must be greater than zero."));
         return false;
     }
+    // The size's dimension, when it holds the size, is what changes (M3h).
+    for(Constraint &c : SK.constraint) {
+        if(c.group != hg || c.type != Constraint::Type::FEATURE_SIZE || c.reference) continue;
+        hConstraint hc = c.h;
+        UndoRemember();
+        SK.GetConstraint(hc)->valA = mm;
+        g       = SK.GetGroup(hg);
+        g->valA = mm;
+        MarkGroupDirty(hg);
+        return true;
+    }
     UndoRemember();
     g       = SK.GetGroup(hg);
     g->valA = mm;

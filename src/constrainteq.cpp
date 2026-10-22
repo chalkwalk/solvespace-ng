@@ -208,6 +208,9 @@ void ConstraintBase::ModifyToSatisfy() {
         }
         double c = (a.Dot(b))/(a.Magnitude() * b.Magnitude());
         valA = acos(c)*180/PI;
+    } else if(type == Type::FEATURE_SIZE) {
+        double size = SK.GetParam(group.param(0))->val;
+        valA        = other ? atan(size) * 180 / PI : size;
     } else if(type == Type::PT_ON_LINE) {
         EntityBase *eln = SK.GetEntity(entityA);
         EntityBase *ea = SK.GetEntity(eln->point[0]);

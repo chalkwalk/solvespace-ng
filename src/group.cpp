@@ -621,6 +621,8 @@ void Group::MenuGroup(Command id, Platform::Path linkFile) {
         gg->activeWorkplane = gg->h.entity(0);
     }
     gg->Activate();
+    // A feature starts with its size held by a dimension, as an extrusion's depth is (M3h).
+    if(gg->AddFeatureSizeDimension()) SS.GenerateAll();
     TextWindow::ScreenSelectGroup(0, gg->h.v);
     SS.GW.AnimateOntoWorkplane();
 }
@@ -1531,6 +1533,42 @@ void Group::MakeLoftFaces(EntityList *el) {
     }
     AddFeatureFace(el, profiles.front(), REMAP_LOFT_START, known ? first.centre : Vector{}, start);
     AddFeatureFace(el, profiles.back(), REMAP_LOFT_END, known ? last.centre : Vector{}, end);
+}
+
+hEntity Group::FeatureAnchor() {
+    auto exists = [](hEntity he) { return SK.entity.FindByIdNoOops(he) != nullptr; };
+    hEntity derived = {};
+    switch(type) {
+        case Type::FILLET:
+            if(!edges.empty()) derived = Remap(edges[0], REMAP_FILLET_TANGENT_1 + 10);
+            break;
+        case Type::CHAMFER:
+            if(!edges.empty()) derived = Remap(edges[0], REMAP_CHAMFER_EDGE_1 + 10);
+            break;
+        default: break;
+    }
+    if(derived.v && exists(derived)) return derived;
+    // A curved edge has no derived lines: its own first point.
+    if(!edges.empty() && exists(edges[0])) {
+        Entity *e = SK.GetEntity(edges[0]);
+        if(e->point[0].v && exists(e->point[0])) return e->point[0];
+    }
+    return Entity::NO_ENTITY;
+}
+
+bool Group::AddFeatureSizeDimension() {
+    if(type != Type::FILLET && type != Type::CHAMFER) return false;
+    hEntity anchor = FeatureAnchor();
+    if(!anchor.v) return false;
+    Constraint c = {};
+    c.type       = Constraint::Type::FEATURE_SIZE;
+    c.group      = h;
+    c.workplane  = Entity::FREE_IN_3D;
+    c.ptA        = anchor;
+    c.valA       = valA;
+    c.other      = type == Type::DRAFT; // the angle, held through its tangent
+    Constraint::AddConstraint(&c, /*rememberForUndo=*/false);
+    return true;
 }
 
 double Group::FeatureSize() const {

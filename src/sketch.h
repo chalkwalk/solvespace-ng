@@ -416,6 +416,10 @@ public:
                         Vector along);
     // A fillet's, chamfer's, shell's or draft's size: its parameter, solved (M3h).
     double FeatureSize() const;
+    // The point a feature's size dimension is drawn at; NO_ENTITY if it has none yet.
+    hEntity FeatureAnchor();
+    // Gives a fillet, chamfer, shell or draft its FEATURE_SIZE dimension; false for others.
+    bool AddFeatureSizeDimension();
     void AddFeatureFace(EntityList *el, hEntity face, int which, Vector point, Vector normal);
     void UpdateFaceOut();
     void MakeShellFaces(EntityList *el);

@@ -418,3 +418,82 @@ TEST_CASE(dragging_a_tangent_point_sets_the_radius) {
     CHECK_EQ_EPS(Radius(hg), 3);
 }
 #endif
+
+#if defined(HAVE_OCCT)
+// M3h: a feature starts with its size dimension (FEATURE_SIZE), which holds the parameter; it
+// is edited, made reference or deleted like any dimension.
+namespace {
+
+Constraint *SizeOf(hGroup hg) {
+    for(Constraint &c : SK.constraint) {
+        if(c.group == hg && c.type == Constraint::Type::FEATURE_SIZE) return &c;
+    }
+    return nullptr;
+}
+
+}
+
+TEST_CASE(a_fillet_starts_with_its_radius_dimension) {
+    CHECK_LOAD("box.slvs");
+    SS.kernelKind = KernelKind::OCCT;
+    hGroup hg = MakeFeature(Command::GROUP_FILLET, { Edge(5, Group::REMAP_TOP) })->h;
+    Constraint *c = SizeOf(hg);
+    CHECK_TRUE(c != nullptr);
+    CHECK_EQ_EPS(c->valA, 1);
+    CHECK_TRUE(SK.GetGroup(hg)->solved.dof == 0);
+    CHECK_TRUE(c->Label().find("R") == 0);
+    // Editing it, or the size in Properties, sets the radius.
+    CHECK_TRUE(SS.SetConstraintValue(c->h, "3"));
+    SS.GenerateAll(SolveSpaceUI::Generate::ALL);
+    CHECK_EQ_EPS(Radius(hg), 3);
+    CHECK_TRUE(SS.SetFeatureSize(hg, "2.5"));
+    SS.GenerateAll(SolveSpaceUI::Generate::ALL);
+    CHECK_EQ_EPS(SizeOf(hg)->valA, 2.5);
+    CHECK_EQ_EPS(Radius(hg), 2.5);
+    SS.UndoUndo();
+    CHECK_EQ_EPS(SizeOf(hg)->valA, 3);
+}
+
+TEST_CASE(a_radius_dimension_holds_against_a_drag) {
+    CHECK_LOAD("box.slvs");
+    SS.kernelKind = KernelKind::OCCT;
+    hEntity edge = Edge(5, Group::REMAP_TOP);
+    hGroup  hg   = MakeFeature(Command::GROUP_FILLET, { edge })->h;
+    Entity *axis = SK.GetEntity(SK.GetGroup(hg)->Remap(edge, Group::REMAP_FILLET_AXIS));
+    SK.GetEntity(axis->point[0])->PointForceTo({ 0, 3, 27 });
+    SS.GenerateAll(SolveSpaceUI::Generate::ALL);
+    CHECK_EQ_EPS(Radius(hg), 1);
+}
+
+TEST_CASE(a_reference_radius_shows_the_radius_others_set) {
+    CHECK_LOAD("box.slvs");
+    SS.kernelKind = KernelKind::OCCT;
+    hEntity edge = Edge(5, Group::REMAP_TOP);
+    hGroup  hg   = MakeFeature(Command::GROUP_FILLET, { edge })->h;
+    SizeOf(hg)->reference = true;
+    SS.MarkGroupDirty(hg);
+    SS.GenerateAll(SolveSpaceUI::Generate::ALL);
+    CHECK_TRUE(SK.GetGroup(hg)->solved.dof == 1);
+    Entity *axis = SK.GetEntity(SK.GetGroup(hg)->Remap(edge, Group::REMAP_FILLET_AXIS));
+    SK.GetEntity(axis->point[0])->PointForceTo({ 0, 2, 28 });
+    SS.GenerateAll(SolveSpaceUI::Generate::ALL);
+    CHECK_EQ_EPS(Radius(hg), 2);
+    CHECK_EQ_EPS(SizeOf(hg)->valA, 2);
+}
+
+TEST_CASE(the_radius_dimension_survives_save_and_reload) {
+    CHECK_LOAD("box.slvs");
+    SS.kernelKind = KernelKind::OCCT;
+    hGroup hg = MakeFeature(Command::GROUP_CHAMFER, { Edge(5, Group::REMAP_TOP) })->h;
+    SS.SetFeatureSize(hg, "2");
+    Platform::Path path = helper->GetAssetPath(__FILE__, "sized.slvs", "out");
+    CHECK_TRUE(SS.SaveToFile(path));
+    CHECK_TRUE(SS.LoadFromFile(path));
+    SS.AfterNewFile();
+    SS.kernelKind = KernelKind::OCCT;
+    SS.GenerateAll(SolveSpaceUI::Generate::ALL);
+    CHECK_TRUE(SizeOf(hg) != nullptr);
+    CHECK_EQ_EPS(Radius(hg), 2);
+    remove(path.raw.c_str());
+}
+#endif

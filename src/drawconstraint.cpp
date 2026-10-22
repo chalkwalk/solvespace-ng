@@ -18,6 +18,15 @@ std::string Constraint::Label() const {
         result = ssprintf("%.3f:1", valA);
     } else if(type == Type::COMMENT) {
         result = comment;
+    } else if(type == Type::FEATURE_SIZE) {
+        Group *g = SK.group.FindByIdNoOops(group);
+        if(other) {
+            result = SS.DegreeToString(valA) + "°";
+        } else if(g && g->type == Group::Type::FILLET) {
+            result = "R" + SS.MmToStringSI(valA);
+        } else {
+            result = SS.MmToStringSI(valA);
+        }
     } else if(type == Type::DIAMETER) {
         if(!other) {
             result = "⌀" + SS.MmToStringSI(valA);
