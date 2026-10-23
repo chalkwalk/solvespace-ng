@@ -56,7 +56,11 @@ void SolveSpaceUI::MakeSplit() {
     next.name = ssprintf("Part %d", SK.part.n + 1);
     SK.part.AddAndAssignId(&next);
 
-    int base = active->order;
+    // Adding a group can move the others: keep the source's values, not the pointer.
+    int       base    = active->order;
+    hGroup    hsrc    = src->h;
+    hPart     srcPart = src->part;
+    RgbaColor colour  = src->color;
     for(Group &g : SK.group) {
         if(g.order > base) g.order += 2;
     }
@@ -68,11 +72,11 @@ void SolveSpaceUI::MakeSplit() {
         g.type           = Group::Type::SPLIT;
         g.name           = C_("group-name", "split");
         g.order          = base + 1 + i;
-        g.opA            = src->h;
-        g.opB            = src->h;
+        g.opA            = hsrc;
+        g.opB            = hsrc;
         g.predef.entityB = planeEntity;
-        g.part           = i == 0 ? src->part : next.h;
-        g.color          = src->color;
+        g.part           = i == 0 ? srcPart : next.h;
+        g.color          = colour;
         g.valA           = 4;
         g.fit.kind       = FitTable()[0].h; // pressed in
         g.fit.dowel      = 1;

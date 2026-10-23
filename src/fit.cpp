@@ -163,7 +163,9 @@ void SolveSpaceUI::MakeFitJoint() {
 
     GW.ClearSelection();
     UndoRemember();
-    int base = sketch->order;
+    // Adding a group can move the others: keep the sketch's handle, not the pointer.
+    hGroup hsketch = sketch->h;
+    int    base    = sketch->order;
     for(Group &g : SK.group) {
         if(g.order > base) g.order += 2;
     }
@@ -175,7 +177,7 @@ void SolveSpaceUI::MakeFitJoint() {
         g.type           = Group::Type::FIT;
         g.name           = i == 0 ? C_("group-name", "fit-peg") : C_("group-name", "fit-pocket");
         g.order          = base + 1 + i;
-        g.opA            = sketch->h;
+        g.opA            = hsketch;
         g.predef.entityB = wrkpl;
         g.part           = SK.GetGroup(SK.GetEntity(picked[i])->group)->part;
         g.color          = RGBi(100, 100, 100);
