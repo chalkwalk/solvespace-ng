@@ -175,6 +175,12 @@ if(ENABLE_GUI OR ENABLE_CLI)
         target_link_libraries(solvespace-core PUBLIC occt)
         target_sources(solvespace-core PRIVATE kernel/occtkernel.cpp kernel/occtquadmesh.cpp)
         target_compile_definitions(solvespace-core PUBLIC HAVE_OCCT)
+        if(ENABLE_SANITIZERS AND NOT MSVC)
+            # OCCT's pool allocators hand out 4-byte aligned nodes, which its own header
+            # templates then trip UBSan's alignment check on.
+            set_source_files_properties(kernel/occtkernel.cpp kernel/occtquadmesh.cpp
+                exportstep.cpp PROPERTIES COMPILE_OPTIONS -fno-sanitize=alignment)
+        endif()
     endif()
 
     # solvespace translations

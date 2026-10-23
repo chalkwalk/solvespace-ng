@@ -57,6 +57,12 @@ else()
                    ApplicationFramework DataExchange Draw DETools)
         list(APPEND occt_modules -DBUILD_MODULE_${module}=OFF)
     endforeach()
+    # Sanitizer builds keep OCCT's frame pointers, so leak reports and their suppressions
+    # (test/harness.cpp) see its frames.
+    set(occt_cxx_flags)
+    if(ENABLE_SANITIZERS AND NOT MSVC)
+        set(occt_cxx_flags -DCMAKE_CXX_FLAGS=-fno-omit-frame-pointer)
+    endif()
     ExternalProject_Add(occt-external
         SOURCE_DIR       ${OCCT_SOURCE_DIR}
         PREFIX           ${CMAKE_BINARY_DIR}/occt
@@ -64,6 +70,7 @@ else()
         INSTALL_DIR      ${OCCT_INSTALL}
         CMAKE_ARGS
             -DCMAKE_BUILD_TYPE=Release
+            ${occt_cxx_flags}
             -DCMAKE_C_COMPILER=${CMAKE_C_COMPILER}
             -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
             -DCMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE}

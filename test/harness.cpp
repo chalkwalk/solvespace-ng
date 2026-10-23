@@ -25,10 +25,6 @@
 // The UI tests run the real solvespace-ng app (guisdl.cpp) and drive it with real events.
 #   include <filesystem>
 #   include "platform/sdl/uidriver.h"
-// For sanitizer builds: Mesa's EGL and gallium drivers keep these for the process lifetime.
-extern "C" const char *__lsan_default_suppressions() {
-    return "leak:libEGL_mesa.so\nleak:libgallium\nleak:libdrm.so\n";
-}
 #else
 namespace SolveSpace {
 namespace Platform {
@@ -38,6 +34,15 @@ namespace Platform {
 }
 #endif
 
+// For sanitizer builds: OCCT's STEP reader drops the text of each parse error it records, and
+// Mesa's EGL and gallium drivers (the UI tests) keep these for the process lifetime.
+extern "C" const char *__lsan_default_suppressions() {
+    return "leak:StepFile_ReadData::AddError\n"
+#if defined(NG_UITEST)
+           "leak:libEGL_mesa.so\nleak:libgallium\nleak:libdrm.so\n"
+#endif
+        ;
+}
 
 #ifdef TEST_BUILD_ON_WINDOWS
 static const char *VALID_BUILD_PATH_SEPS = "/\\";
