@@ -292,8 +292,9 @@ if(ENABLE_GUI AND ENABLE_NG_GUI)
                                                  IMGUI_ENABLE_TEST_ENGINE)
     target_link_libraries(imgui-sdl3 PUBLIC ${NG_SDL_TARGET})
     if(WIN32)
-        # ANGLE provides GLES 3 on Windows.
-        target_compile_definitions(imgui-sdl3 PUBLIC IMGUI_IMPL_OPENGL_ES3)
+        # ANGLE provides GLES 3 on Windows; its gl3.h declares functions only with
+        # GL_GLEXT_PROTOTYPES.
+        target_compile_definitions(imgui-sdl3 PUBLIC IMGUI_IMPL_OPENGL_ES3 GL_GLEXT_PROTOTYPES)
         target_include_directories(imgui-sdl3 PUBLIC ${CMAKE_SOURCE_DIR}/extlib/angle/include)
         target_link_libraries(imgui-sdl3 PUBLIC GLESv2)
     endif()

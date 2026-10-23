@@ -27,8 +27,9 @@ if(CMAKE_SYSTEM_NAME STREQUAL "FreeBSD")
 endif()
 
 if (APPLE)
-    # Docs say this must be set before the first project() call
-    set(CMAKE_OSX_DEPLOYMENT_TARGET "10.12" CACHE STRING "macOS minimum supported version")
+    # Docs say this must be set before the first project() call. 10.15 for std::filesystem
+    # (solvespace-ng).
+    set(CMAKE_OSX_DEPLOYMENT_TARGET "10.15" CACHE STRING "macOS minimum supported version")
 endif()
 
 # project
