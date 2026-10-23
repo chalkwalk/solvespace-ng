@@ -10,7 +10,7 @@ bin/solvespace-ng`.
 
 ## Hands-on checks
 
-### Line chains (2026-10-17, `9bdd5553`)
+### Line chains (2026-10-17, `1bcf590c`)
 - [ ] Right-click ends a chain without a segment to the cursor; so do Esc and Enter (nothing
       typed).
 - [ ] Double-click ends the chain at that point; so does clicking the last point again.
@@ -19,7 +19,7 @@ bin/solvespace-ng`.
 - [ ] Quick flicks then a click: horizontal/vertical constraints match the segment you see.
 - [ ] In a 3D sketch (New Group > Sketch In 3d) the line tool offers only a length field.
 
-### Theme (2026-10-17, `46874f16`, `88e0dfe3`)
+### Theme (2026-10-17, `2e6a67d5`, `e8cf38d0`)
 - [ ] `Ctrl+Alt+T` opens your terminal again, not the theme; the theme is in the palette
       ("toggle theme") and Preferences > SolveSpace NG.
 - [ ] Light theme: the drawing area is light, lines dark, hover orange; everything readable
@@ -74,7 +74,7 @@ Screenshots: `docs/owner-review/viewcube-dark.png`, `viewcube-light.png`.
 - [ ] It is 80% opaque until the mouse is on it, then solid.
 - [ ] In a small window it moves right of the Outliner when there is room.
 
-### Review answers P1-P14 (2026-10-17, `f20994bb`..`a8b41809`)
+### Review answers P1-P14 (2026-10-17, `06413e4c`..`6e000a9f`)
 From `docs/review/2026-10-17/answers.md`; the next review round shows them again.
 - [ ] Menus: File has an Export submenu and Quit; View has Standard Views, the panels with
       check marks, and Light Theme; Analyze is Inspect; Help lists the keyboard shortcuts. Each
@@ -89,7 +89,7 @@ From `docs/review/2026-10-17/answers.md`; the next review round shows them again
       keys; "Group Properties" / "Style Properties" replace the Info items.
 - [ ] Problems: the group by its name; culprits as "Vertical (c003)" with their icon.
 
-### Keys and layout from review 4 (2026-10-21, `e549b980`, `1cd86823`)
+### Keys and layout from review 4 (2026-10-21, `9caad1ae`, `f0d70882`)
 - [ ] Modern keys: `L R C A S P` draw, `H V I B/T Q M` constrain, `X` toggles construction,
       `Y`/`Shift+Y`/`Shift+I` hide/show/isolate groups, `Ctrl+A` selects all, `Shift+1..7`
       views, `W` looks at the sketch, `Alt+R` lathe, `Alt+E` helix. The menus show these keys.

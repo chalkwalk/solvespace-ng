@@ -630,8 +630,8 @@ SDL_VIDEO_DRIVER=x11 ./bin/solvespace-ng-uitest ngui/grab/   # watch them run on
 # file (also run by test_solvespace when Xvfb, xdotool and python3 are installed).
 make test_ng_x11        # or: python3 ../test/x11/run.py bin/solvespace-ng [filter]
 NGX11_SHOW=:0 python3 ../test/x11/run.py bin/solvespace-ng   # watch on your own display
-# Owner review rounds (blindweb, $BLINDWEB; its server on
-# <the review host> serves ~/*-blind): capture every menu, panel and overlay in both themes,
+# Owner review rounds (blindweb, the owner's local tool in $BLINDWEB, served on the owner's LAN
+# from ~/*-blind): capture every menu, panel and overlay in both themes,
 # put them side by side, and write rounds from a spec (docs/review/<date>/*.json).
 NG_CAPTURE_DIR=/tmp/cap ./bin/solvespace-ng-uitest ngui/capture/
 NG_CAPTURE_DIR=/tmp/cap NG_CAPTURE_THEME=light ./bin/solvespace-ng-uitest ngui/capture/
@@ -658,16 +658,21 @@ macOS and Emscripten builds.
 - Don't add dependencies beyond §2 without the owner's approval.
 - Update this file whenever a **Decision** changes. Record the date and the reason.
 - Branches: feature work on `ng/<milestone>-<topic>` branches, merged into `master`.
-- Remotes (decided 2026-10-16): the only remote is `origin` =
-  `<the owner's LAN repo>`, a private bare repo on the owner's LAN. The
-  GitHub remote (`solvespace/solvespace`) was removed on purpose: nothing goes to the official
-  repo unless the owner decides the work is excellent enough to offer, and a public GitHub fork
-  is only being considered. Never add a GitHub remote or push anywhere else without the owner's
-  say-so. GitHub Actions CI therefore does not run; verify Windows/macOS manually or once a fork
-  exists.
-- Upstream sync: when wanted, fetch without keeping a remote, e.g.
-  `git fetch https://github.com/solvespace/solvespace.git master` then merge `FETCH_HEAD`.
-  Merge upstream quarterly until M1 lands, then cherry-pick solver/kernel fixes only.
+- Remotes (decided 2026-10-16; revised 2026-10-23, when the owner made the fork public):
+  - `github` is the public fork on GitHub, forked from `solvespace/solvespace`. `master` and
+    the `ng/` branches are published there. GitHub Actions runs `.github/workflows/test.yml` on
+    every push: Ubuntu must pass; Windows and macOS may fail until their first green run.
+    Agents push to `github` only when the owner says so.
+  - `origin` stays the owner's private repo on the LAN: `github-master`, the `pr/` branches and
+    anything not yet published.
+  - Never push to `solvespace/solvespace` or open PRs there; nothing goes to the official repo
+    unless the owner decides the work is excellent enough to offer.
+- Upstream sync (revised 2026-10-23): for the first public push, NG's history was rebased once
+  onto upstream `30e1c3ac` (its merges kept; private LAN details scrubbed). From now on, merge
+  upstream regularly, small and often:
+  `git fetch https://github.com/solvespace/solvespace.git master && git merge FETCH_HEAD`.
+  Changes to code NG deleted (the old frontends, the toolbar) are dropped; changes to code NG
+  moved (`groupmesh.cpp` into `src/kernel/`) are ported. Never rebase published history again.
 - `github-master` mirrors the official GitHub `master` head (created 2026-10-16 at `8ef723e1`).
   Never commit NG work to it; only fast-forward it to upstream:
   `git fetch https://github.com/solvespace/solvespace.git master && git branch -f github-master
@@ -685,18 +690,18 @@ macOS and Emscripten builds.
   `github-master` with just that change (`git cherry-pick -x`, or the relevant hunks), verify it
   builds and passes `test/` as stock SolveSpace (C++11, no NG), push it to `origin`, and tell the
   owner. Existing `pr/` branches:
-  - `pr/undo-grouporder-leak`: UndoState `groupOrder` leaked on every undo step (from `e220b5d8`).
-  - `pr/headless-null-guards`: null window/menu-item guards for headless runs (from `978602ca`).
+  - `pr/undo-grouporder-leak`: UndoState `groupOrder` leaked on every undo step (from `9e3ad6ad`).
+  - `pr/headless-null-guards`: null window/menu-item guards for headless runs (from `5f915f74`).
   - `pr/diameter-label-leader`: a diameter label at the centre had no leader and logged a
-    zero-vector warning every frame (from `3827b2be`).
-  - `pr/hover-list-leak`: every hit test leaked the previous hover list (from `60b82650`).
+    zero-vector warning every frame (from `ec072682`).
+  - `pr/hover-list-leak`: every hit test leaked the previous hover list (from `dfcb08dc`).
   - `pr/paste-scale-crash`: a non-expression in Paste Transformed's scale crashed (from
-    `0868c8bd`).
+    `da6b804a`).
   - `pr/line-chain-ending`: right-click (and a second click on the last point) kept the line
     segment following the cursor; a stale horizontal/vertical suggestion after a quick move
-    (from `9bdd5553`; sits on `pr/headless-null-guards`).
+    (from `1bcf590c`; sits on `pr/headless-null-guards`).
   - `pr/volume-mesh-group`: Analyze ▸ Volume left a mesh group's own triangles out of the
-    current group's volume (from `ca419d95`).
+    current group's volume (from `a75c570c`).
 - Tests: `RUN_COMMAND("<command-name>")` in `test/` runs a menu command headlessly (names in
   `src/commandnames.cpp`). Headless code paths have null windows/menu items: guard them.
   Not headless-safe yet (null FileDialog/Window under `guinone.cpp`): `open`, `save`, `save-as`,

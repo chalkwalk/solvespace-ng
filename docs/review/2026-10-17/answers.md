@@ -33,7 +33,7 @@ pie icons · P13 context menu names and NG actions · P14 Problems names with ic
 
 ## Next
 1. Done: P1-P14 with the menu notes (Quit, Inspect, Help shortcut list), commits
-   `f20994bb`..`a8b41809`; hands-on list in `docs/owner-checks.md`.
+   `06413e4c`..`6e000a9f`; hands-on list in `docs/owner-checks.md`.
 2. Research shortcut sets across Blender, Fusion, Onshape, SOLIDWORKS, FreeCAD, Shapr3D,
    Plasticity (and vim-style unmodified keys) for a proposed Modern keymap, with Helix/Lathe.
 3. Research panel layouts (left-stacked Outliner + Properties, vertical tool column).
