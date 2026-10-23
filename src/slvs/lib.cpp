@@ -125,6 +125,8 @@ static bool Slvs_CanInitiallySatisfy(const ConstraintBase &c) {
     case ConstraintBase::Type::EQUAL_ANGLE:
     case ConstraintBase::Type::ARC_LINE_TANGENT:
     case ConstraintBase::Type::CURVE_CURVE_TANGENT:
+    case ConstraintBase::Type::FEATURE_SIZE:
+    case ConstraintBase::Type::FEATURE_EQUAL:
         return true;
 
     case ConstraintBase::Type::AT_MIDPOINT:
