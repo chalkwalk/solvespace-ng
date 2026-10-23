@@ -1,4 +1,34 @@
-# SolveSpace
+# SolveSpace NG
+
+> **A personal fork, not a release.** SolveSpace NG is a fork of [SolveSpace][] that I am
+> building for my own use. It may change or break at any time, and I am not offering support.
+> If you want SolveSpace, use [the official project](https://github.com/solvespace/solvespace).
+
+SolveSpace NG keeps SolveSpace's constraint solver and parametric modelling, and adds:
+
+- **A new interface:** a full-window viewport with floating panels (Outliner, Properties,
+  Problems), a command palette, pie menus, typed values that become constraints, and a
+  keyboard-first keymap. Built on SDL3 and Dear ImGui.
+- **An Open CASCADE kernel:** fillets, chamfers, shells, drafts, holes with modelled threads,
+  lofts, sweeps, mass properties, and STEP import and export.
+- **Assemblies in one file:** parts, revolute, slider, cylindrical, planar and ball joints,
+  gears, a fit table for 3D-printing clearances, fit joints, clearance sweeps, and splitting a
+  part with dowels.
+
+The design and its decisions are in [`AGENTS.md`](AGENTS.md). Upstream SolveSpace is merged
+in regularly.
+
+**Try it in a browser:** <https://chalkwalk.github.io/solvespace-ng/>. That is the web build,
+which still uses SolveSpace's classic interface and has no Open CASCADE features; see the
+issues for what is known not to work yet.
+
+To build it, follow "Building on Linux" below, then build the `solvespace-ng` target; the
+section "Build SolveSpace NG" of [`AGENTS.md`](AGENTS.md) has the details. The original
+SolveSpace README follows.
+
+---
+
+## SolveSpace
 
 <img src="res/freedesktop/solvespace-scalable.svg" width="70" height="70" alt="SolveSpace Logo" align="left">
 

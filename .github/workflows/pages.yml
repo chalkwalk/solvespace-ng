@@ -1,0 +1,56 @@
+name: Web build (GitHub Pages)
+
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    name: Build the web version
+    steps:
+    - uses: actions/checkout@v6
+    - name: Install Emscripten
+      run: |
+        git clone --depth 1 https://github.com/emscripten-core/emsdk.git ../emsdk
+        ../emsdk/emsdk install 6.0.13
+        ../emsdk/emsdk activate 6.0.13
+    - name: Build
+      # Without OpenMP: threads need cross-origin isolation headers, which Pages can't send.
+      run: |
+        git submodule update --init extlib/cairo extlib/freetype extlib/libdxfrw \
+          extlib/libpng extlib/mimalloc extlib/pixman extlib/zlib extlib/eigen
+        source ../emsdk/emsdk_env.sh
+        mkdir build
+        cd build
+        emcmake cmake .. -DCMAKE_BUILD_TYPE=Release -DENABLE_CLI=OFF -DENABLE_TESTS=OFF \
+          -DENABLE_COVERAGE=OFF -DENABLE_OPENMP=OFF -DENABLE_LTO=ON
+        cmake --build . -j$(nproc) --target solvespace
+        mkdir ../site
+        cp bin/*.html bin/*.js bin/*.wasm bin/*.data bin/*.css ../site/
+        cp ../site/solvespace.html ../site/index.html
+    - uses: actions/upload-pages-artifact@v4
+      with:
+        path: site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    name: Deploy to GitHub Pages
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+    - id: deployment
+      uses: actions/deploy-pages@v4

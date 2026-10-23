@@ -662,7 +662,9 @@ macOS and Emscripten builds.
   - `github` is the public fork on GitHub, forked from `solvespace/solvespace`. `master` and
     the `ng/` branches are published there. GitHub Actions runs `.github/workflows/test.yml` on
     every push: Ubuntu must pass; Windows and macOS may fail until their first green run.
-    Agents push to `github` only when the owner says so.
+    Agents push to `github` only when the owner says so. `.github/workflows/pages.yml` builds
+    the web version (single-threaded: Pages can't send cross-origin isolation headers) and
+    publishes it to GitHub Pages, linked from the README and the repo's description.
   - `origin` stays the owner's private repo on the LAN: `github-master`, the `pr/` branches and
     anything not yet published.
   - Never push to `solvespace/solvespace` or open PRs there; nothing goes to the official repo
