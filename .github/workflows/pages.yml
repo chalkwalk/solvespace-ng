@@ -30,16 +30,21 @@ jobs:
       # Without OpenMP: threads need cross-origin isolation headers, which Pages can't send.
       run: |
         git submodule update --init extlib/cairo extlib/freetype extlib/libdxfrw \
-          extlib/libpng extlib/mimalloc extlib/pixman extlib/zlib extlib/eigen
+          extlib/libpng extlib/mimalloc extlib/pixman extlib/zlib extlib/eigen \
+          extlib/SDL extlib/imgui extlib/lunasvg
         source ../emsdk/emsdk_env.sh
         mkdir build
         cd build
         emcmake cmake .. -DCMAKE_BUILD_TYPE=Release -DENABLE_CLI=OFF -DENABLE_TESTS=OFF \
-          -DENABLE_COVERAGE=OFF -DENABLE_OPENMP=OFF -DENABLE_LTO=ON
-        cmake --build . -j$(nproc) --target solvespace
-        mkdir ../site
-        cp bin/*.html bin/*.js bin/*.wasm bin/*.data bin/*.css ../site/
-        cp ../site/solvespace.html ../site/index.html
+          -DENABLE_COVERAGE=OFF -DENABLE_OPENMP=OFF -DENABLE_LTO=ON -DENABLE_NG_GUI=ON
+        cmake --build . -j$(nproc) --target solvespace solvespace-ng
+        # A landing page, SolveSpace NG in ng/, the classic web interface in classic/.
+        mkdir -p ../site/ng ../site/classic
+        cp ../.github/pages/index.html ../site/
+        cp bin/solvespace-ng.* ../site/ng/
+        cp ../site/ng/solvespace-ng.html ../site/ng/index.html
+        cp bin/solvespace.* bin/solvespaceui.* bin/filemanagerui.js ../site/classic/
+        cp ../site/classic/solvespace.html ../site/classic/index.html
     - uses: actions/upload-pages-artifact@v4
       with:
         path: site

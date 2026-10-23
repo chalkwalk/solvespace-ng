@@ -18,9 +18,11 @@ SolveSpace NG keeps SolveSpace's constraint solver and parametric modelling, and
 The design and its decisions are in [`AGENTS.md`](AGENTS.md). Upstream SolveSpace is merged
 in regularly.
 
-**Try it in a browser:** <https://chalkwalk.github.io/solvespace-ng/>. That is the web build,
-which still uses SolveSpace's classic interface and has no Open CASCADE features; see the
-issues for what is known not to work yet.
+**Try it in a browser:** <https://chalkwalk.github.io/solvespace-ng/> offers both web builds:
+[SolveSpace NG](https://chalkwalk.github.io/solvespace-ng/ng/) with the new interface, and the
+[classic interface](https://chalkwalk.github.io/solvespace-ng/classic/). Neither has the Open
+CASCADE features, and the NG one can't open or save files yet; see the issues for what is known
+not to work.
 
 To build it, follow "Building on Linux" below, then build the `solvespace-ng` target; the
 section "Build SolveSpace NG" of [`AGENTS.md`](AGENTS.md) has the details. The original
