@@ -664,8 +664,10 @@ macOS and Emscripten builds.
     are published there. GitHub Actions runs `.github/workflows/test.yml` on
     every push: Ubuntu must pass; Windows and macOS may fail until their first green run.
     Agents push to `github` only when the owner says so. `.github/workflows/pages.yml` builds
-    the web version (single-threaded: Pages can't send cross-origin isolation headers) and
-    publishes it to GitHub Pages, linked from the README and the repo's description.
+    both web versions (single-threaded: Pages can't send cross-origin isolation headers) and
+    publishes them to GitHub Pages: a landing page (`.github/pages/index.html`), SolveSpace NG
+    in `ng/` (`solvespace-ng` built with Emscripten: WebGL 2, ASYNCIFY for its event loops, no
+    background regeneration, no OCCT) and the classic `guihtml` build in `classic/`.
   - `origin` stays the owner's private repo on the LAN: `github-master`, the `pr/` branches and
     anything not yet published.
   - Never push to `solvespace/solvespace` or open PRs there; nothing goes to the official repo

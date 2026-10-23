@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SolveSpace NG</title>
+<style>
+  html, body { margin: 0; height: 100%; overflow: hidden; background: #16181d; }
+  canvas { display: block; outline: none; }
+  #status {
+    position: fixed; inset: 0; display: flex; align-items: center; justify-content: center;
+    color: #c8ccd4; font: 15px system-ui, sans-serif;
+  }
+</style>
+</head>
+<body>
+<div id="status">Loading SolveSpace NG…</div>
+<canvas id="canvas" tabindex="-1" oncontextmenu="event.preventDefault()"></canvas>
+<script>
+  var Module = {
+    canvas: document.getElementById('canvas'),
+    setStatus: function(text) {
+      var status = document.getElementById('status');
+      if(!status) return;
+      if(text) { status.textContent = text; } else { status.remove(); }
+    },
+    onAbort: function(what) {
+      document.body.insertAdjacentHTML('beforeend',
+        '<div id="status">SolveSpace NG stopped: ' + what + '</div>');
+    }
+  };
+</script>
+{{{ SCRIPT }}}
+</body>
+</html>

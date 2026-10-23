@@ -291,7 +291,9 @@ if(ENABLE_GUI AND ENABLE_NG_GUI)
     target_compile_definitions(imgui-sdl3 PUBLIC IMGUI_DISABLE_OBSOLETE_FUNCTIONS
                                                  IMGUI_ENABLE_TEST_ENGINE)
     target_link_libraries(imgui-sdl3 PUBLIC ${NG_SDL_TARGET})
-    if(WIN32)
+    if(EMSCRIPTEN)
+        target_compile_definitions(imgui-sdl3 PUBLIC IMGUI_IMPL_OPENGL_ES3)
+    elseif(WIN32)
         # ANGLE provides GLES 3 on Windows; its gl3.h declares functions only with
         # GL_GLEXT_PROTOTYPES.
         target_compile_definitions(imgui-sdl3 PUBLIC IMGUI_IMPL_OPENGL_ES3 GL_GLEXT_PROTOTYPES)
@@ -358,6 +360,27 @@ if(ENABLE_GUI AND ENABLE_NG_GUI)
         $<TARGET_PROPERTY:resources,EXTRA_SOURCES>)
     add_dependencies(solvespace-ng resources)
     target_link_libraries(solvespace-ng PRIVATE solvespace-ng-app)
+
+    if(EMSCRIPTEN)
+        # The web build of solvespace-ng: WebGL 2, and ASYNCIFY for the app's own event loops.
+        set(ng_web_flags
+            "-sALLOW_MEMORY_GROWTH=1" "-sASYNCIFY=1" "-sASYNCIFY_STACK_SIZE=1048576"
+            "-sSTACK_SIZE=33554432" "-sINITIAL_MEMORY=134217728"
+            "-sMIN_WEBGL_VERSION=2" "-sMAX_WEBGL_VERSION=2"
+            --shell-file "\"${CMAKE_CURRENT_SOURCE_DIR}/platform/html/ngshell.html\"")
+        get_target_property(ng_resources resources SOURCES)
+        foreach(resource ${ng_resources})
+            file(RELATIVE_PATH target_path "${CMAKE_SOURCE_DIR}" "${resource}")
+            list(APPEND ng_web_flags "--preload-file \"${resource}\"@\"${target_path}\"")
+        endforeach()
+        set(ng_resp_file "${CMAKE_CURRENT_BINARY_DIR}/emscripten_ng_flags.rsp")
+        file(GENERATE OUTPUT "${ng_resp_file}" CONTENT "$<JOIN:${ng_web_flags},\n>")
+        set_target_properties(solvespace-ng PROPERTIES
+            SUFFIX ".html"
+            LINK_FLAGS "@${ng_resp_file}"
+            LINK_DEPENDS
+                "${CMAKE_CURRENT_SOURCE_DIR}/platform/html/ngshell.html;${ng_resp_file};${ng_resources}")
+    endif()
 endif()
 
 # solvespace graphical executable: the web build (guihtml). The desktop is solvespace-ng.
