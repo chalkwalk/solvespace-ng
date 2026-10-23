@@ -28,6 +28,9 @@
 #endif
 #include "solvespace.h"
 #include "render/gl3shader.h"
+#if defined(__EMSCRIPTEN__)
+#   include <emscripten.h>
+#endif
 #include "platform/sdl/settingsfile.h"
 #include "platform/sdl/menumodel.h"
 #include "platform/sdl/timerregistry.h"
@@ -637,7 +640,9 @@ std::vector<std::string> InitGui(int argc, char **argv) {
     gTimerEvent = SDL_RegisterEvents(1);
     gWakeEvent  = SDL_RegisterEvents(1);
     // Solids are made on a worker thread while dragging; its finish wakes the event loop.
-    SS.backgroundRegenEnabled = true;
+#if !defined(__EMSCRIPTEN__)
+    SS.backgroundRegenEnabled = true; // the web build has no threads
+#endif
     SS.onRegenFinished        = [] {
         SDL_Event ev = {};
         ev.type      = gWakeEvent;
@@ -675,18 +680,23 @@ static void LoadKeymap() {
 }
 
 static SDL_Window *CreateSdlWindow() {
-    return SDL_CreateWindow("SolveSpace", 1280, 800,
-                            SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE |
-                            SDL_WINDOW_HIGH_PIXEL_DENSITY | SDL_WINDOW_HIDDEN);
+    SDL_WindowFlags flags = SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE |
+                            SDL_WINDOW_HIGH_PIXEL_DENSITY | SDL_WINDOW_HIDDEN;
+#if defined(__EMSCRIPTEN__)
+    flags |= SDL_WINDOW_FILL_DOCUMENT; // the canvas follows the browser window
+#endif
+    return SDL_CreateWindow("SolveSpace", 1280, 800, flags);
 }
 
 static void InitSdlWindow() {
-#if defined(_WIN32)
-    // ANGLE: GLES 3.0 context.
+#if defined(_WIN32) || defined(__EMSCRIPTEN__)
+    // ANGLE on Windows, WebGL 2 in a browser: GLES 3.0 context.
+#   if defined(_WIN32)
     SDL_SetHint(SDL_HINT_OPENGL_ES_DRIVER, "1");
     // Our ANGLE build names its DLLs without SDL's expected "lib" prefix.
     SDL_SetHint(SDL_HINT_EGL_LIBRARY, "EGL.dll");
     SDL_SetHint(SDL_HINT_OPENGL_LIBRARY, "GLESv2.dll");
+#   endif
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_ES);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 0);
@@ -718,7 +728,7 @@ static void InitSdlWindow() {
 }
 
 static const char *GlslVersion() {
-#if defined(_WIN32)
+#if defined(_WIN32) || defined(__EMSCRIPTEN__)
     return "#version 300 es";
 #else
     return "#version 120";
@@ -896,7 +906,13 @@ static void HandleEvent(const SDL_Event &ev) {
 
 static void PumpEventsOnce(bool wait) {
     SDL_Event ev;
+#if defined(__EMSCRIPTEN__)
+    // The browser delivers events only while we yield to it (ASYNCIFY).
+    emscripten_sleep(wait && !gNeedsFrame ? 16 : 0);
+    bool got = SDL_PollEvent(&ev);
+#else
     bool got = (wait && !gNeedsFrame) ? SDL_WaitEventTimeout(&ev, 500) : SDL_PollEvent(&ev);
+#endif
     while(got) {
         HandleEvent(ev);
         got = SDL_PollEvent(&ev);
