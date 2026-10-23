@@ -8,5 +8,5 @@ cmake \
   -DENABLE_SANITIZERS="ON" \
   -DENABLE_NG_GUI="ON" \
   ..
-make -j$(nproc) VERBOSE=1
+make -j$(nproc)
 make test_solvespace

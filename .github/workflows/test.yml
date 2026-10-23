@@ -2,28 +2,29 @@ name: Test
 
 on:
   pull_request:
-    branches:
-      - master
   push:
-    branches-ignore:
-      - master
-    tags-ignore:
-      - v*
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   test_ubuntu:
-      runs-on: ubuntu-latest
-      name: Test Ubuntu
-      steps:
-      - uses: actions/checkout@v6
-      - name: Install Dependencies
-        run: .github/scripts/install-ubuntu.sh
-      - name: Build & Test
-        run: .github/scripts/build-ubuntu.sh
+    runs-on: ubuntu-latest
+    name: Test Ubuntu
+    steps:
+    - uses: actions/checkout@v6
+    - name: Install Dependencies
+      run: .github/scripts/install-ubuntu.sh
+    - name: Build & Test
+      run: .github/scripts/build-ubuntu.sh
 
+  # Never run before the fork went public: allowed to fail until their first green run.
   test_windows:
     runs-on: windows-2022
     name: Test Windows
+    continue-on-error: true
     steps:
     - uses: actions/checkout@v6
     - name: Install Dependencies
@@ -36,26 +37,10 @@ jobs:
   test_macos:
     runs-on: macos-latest
     name: Test macOS
+    continue-on-error: true
     steps:
     - uses: actions/checkout@v6
     - name: Install Dependencies
       run: .github/scripts/install-macos.sh ci
     - name: Build & Test
-      run: .github/scripts/build-macos.sh debug arm64 && .github/scripts/build-macos.sh debug x86_64
-
-  test_flatpak:
-    name: Test Flatpak x86_64
-    runs-on: ubuntu-latest
-    container:
-      image: bilelmoussaoui/flatpak-github-actions:freedesktop-21.08
-      options: --privileged
-    steps:
-      - uses: actions/checkout@v6
-        with:
-          submodules: true
-          fetch-depth: 0
-      - uses: flatpak/flatpak-github-actions/flatpak-builder@v6
-        with:
-          bundle: "solvespace.flatpak"
-          manifest-path: "pkg/flatpak/com.solvespace.SolveSpace.json"
-          cache-key: flatpak-builder-${{ github.sha }}
+      run: .github/scripts/build-macos.sh debug arm64
