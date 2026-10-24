@@ -25,8 +25,9 @@ struct StatusModel {
     bool                 solveProblem = false;
 };
 
+// `touch`: the last input was a touch screen, so the hints are gestures rather than keys.
 StatusModel BuildStatus(const keymap::Keymap &km, const std::string &modalTool,
-                        const std::vector<KeyHint> &modalHints);
+                        const std::vector<KeyHint> &modalHints, bool touch = false);
 
 }
 }

@@ -224,6 +224,15 @@ like this, prefer the modern, industry-standard behaviour.
 `center-view` in the Modern preset (both remain in the menus and the palette).
 Panels since the keymap pass: `O` Outliner, `N` Properties, `F8` Problems.
 
+**Touch screens** (added 2026-10-23, for phones on the web build, as the classic web
+interface does it; `src/platform/sdl/touchgestures.h`): one finger is the left button (a tap
+clicks, a drag drags), two fingers pan and pinch to zoom, three orbit, and a long press is a
+right click (the context menu; it also ends a tool, as Esc does). A window narrower than
+600 px starts with the tool shelf shown and the Outliner and Properties hidden. Menus that
+don't fit the menu bar go in a More menu. After a touch, the status bar shows the gestures
+instead of keys. On the web, a hidden HTML field brings up the phone's keyboard while an ImGui
+field is being typed in (`ngshell.html`).
+
 **Visual style.**
 - Dark (default) and light themes, built from design tokens.
 - Inter for the UI and JetBrains Mono for numbers.
@@ -707,6 +716,9 @@ macOS and Emscripten builds.
     (from `1bcf590c`; sits on `pr/headless-null-guards`).
   - `pr/volume-mesh-group`: Analyze ▸ Volume left a mesh group's own triangles out of the
     current group's volume (from `a75c570c`).
+  - `pr/touch-taps-pinch`: two taps drew a zero-width rectangle (a tapped point's move wasn't
+    solved before the press finished it); a zoom during a pan (a pinch) drifted; headless
+    guards for the mouse handlers (from `06270556`; sits on `pr/headless-null-guards`).
 - Tests: `RUN_COMMAND("<command-name>")` in `test/` runs a menu command headlessly (names in
   `src/commandnames.cpp`). Headless code paths have null windows/menu items: guard them.
   Not headless-safe yet (null FileDialog/Window under `guinone.cpp`): `open`, `save`, `save-as`,

@@ -32,6 +32,15 @@ static std::string          gModalTool;
 static std::vector<KeyHint> gModalHints;
 static const keymap::Keymap *gKeymap = nullptr; // the router's, for ModalKey
 static bool                 gHideBrowser = false;
+static bool                 gTouchInput  = false;
+
+void SetTouchInput(bool touch) {
+    gTouchInput = touch;
+}
+
+bool TouchInput() {
+    return gTouchInput;
+}
 
 void SetModalStatus(std::string tool, std::vector<KeyHint> hints) {
     gModalTool  = std::move(tool);
@@ -40,7 +49,7 @@ void SetModalStatus(std::string tool, std::vector<KeyHint> hints) {
 
 // A bar along the bottom edge, floating over the viewport like the menu bar.
 static void DrawStatusBar(const keymap::Keymap &keymap) {
-    StatusModel m   = BuildStatus(keymap, gModalTool, gModalHints);
+    StatusModel m   = BuildStatus(keymap, gModalTool, gModalHints, gTouchInput);
     ImGuiIO    &io  = ImGui::GetIO();
     ImGuiStyle &st  = ImGui::GetStyle();
     float       h   = ImGui::GetFrameHeight() + 2 * 6.0f;

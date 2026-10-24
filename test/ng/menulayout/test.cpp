@@ -171,3 +171,11 @@ TEST_CASE(the_classic_property_browser_is_gone_from_the_menus) {
         CHECK_FALSE(f.item->commandId == (uint32_t)Command::SHOW_TEXT_WND);
     }
 }
+
+TEST_CASE(menus_that_do_not_fit_go_in_a_more_menu) {
+    using SolveSpace::Ui::MenusThatFit;
+    CHECK_TRUE(MenusThatFit({ 50, 50, 50 }, 150, 30) == 3); // all fit: no More menu
+    CHECK_TRUE(MenusThatFit({ 50, 50, 50, 50 }, 180, 30) == 3);
+    CHECK_TRUE(MenusThatFit({ 50, 50, 50, 50 }, 179, 30) == 2);
+    CHECK_TRUE(MenusThatFit({ 50, 50 }, 20, 30) == 0);
+}

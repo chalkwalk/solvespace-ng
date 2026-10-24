@@ -23,7 +23,7 @@ static void AddHint(StatusModel *m, const keymap::Keymap &km, const char *comman
 }
 
 StatusModel BuildStatus(const keymap::Keymap &km, const std::string &modalTool,
-                        const std::vector<KeyHint> &modalHints) {
+                        const std::vector<KeyHint> &modalHints, bool touch) {
     StatusModel m;
     if(!modalTool.empty()) {
         m.tool  = modalTool;
@@ -31,7 +31,14 @@ StatusModel BuildStatus(const keymap::Keymap &km, const std::string &modalTool,
     } else if(SS.GW.pending.operation != GraphicsWindow::Pending::NONE) {
         if(SS.GW.pending.description) m.tool = SS.GW.pending.description;
         m.hints = modalHints;
-        AddHint(&m, km, "unselect-all", "Cancel");
+        if(touch) {
+            m.hints.push_back({ "Hold", "Cancel" }); // a long press is a right click
+        } else {
+            AddHint(&m, km, "unselect-all", "Cancel");
+        }
+    } else if(touch) {
+        // The gestures of platform/sdl/touchgestures.h.
+        m.hints = { { "2 fingers", "Pan, zoom" }, { "3", "Orbit" }, { "Hold", "Menu" } };
     } else {
         AddHint(&m, km, "ui.command-palette", "Commands");
         AddHint(&m, km, "ui.pie-add", "Add");

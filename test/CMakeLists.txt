@@ -27,6 +27,7 @@ set(testsuite_SOURCES
     core/constraintprobe/test.cpp
     core/grab/test.cpp
     core/typedinput/test.cpp
+    core/tap/test.cpp
     libs/keymap/test.cpp
     libs/palette/test.cpp
     libs/pie/test.cpp
@@ -158,7 +159,8 @@ if(ENABLE_NG_GUI)
         ng/shelf/test.cpp
         ng/viewcube/test.cpp
         ng/glyphs/test.cpp
-        ng/menulayout/test.cpp)
+        ng/menulayout/test.cpp
+        ng/touch/test.cpp)
     target_link_libraries(solvespace-testsuite solvespace-ng-support)
 endif()
 
@@ -178,6 +180,7 @@ set(ngui_SOURCES
     ngui/grab/test.cpp
     ngui/constrain/test.cpp
     ngui/views/test.cpp
+    ngui/touch/test.cpp
     ngui/groups/test.cpp
     ngui/editing/test.cpp
     ngui/app/test.cpp

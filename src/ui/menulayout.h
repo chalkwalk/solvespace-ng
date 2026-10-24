@@ -10,6 +10,7 @@
 
 #include <functional>
 #include <string>
+#include <vector>
 #include "keymap.h"
 #include "platform/sdl/menumodel.h"
 
@@ -32,6 +33,10 @@ std::string CommandLabel(Command c);
 // The key shown beside a menu item in the current keymap: its action's or command's own,
 // else its alias's (Distance / Diameter shows D, the smart dimension, in Modern).
 std::string ShortcutText(const Platform::MenuItemSdl &item, const keymap::Keymap &keymap);
+
+// How many of the menu bar's titles (their widths, in order) fit in `available`; when not all
+// do, the rest go in a More menu `moreWidth` wide (a phone's narrow window).
+size_t MenusThatFit(const std::vector<float> &widths, float available, float moreWidth);
 
 // The canvas's context menu as the core built it, in NG's words ("Group Properties"), with
 // NG's actions for a selection first: Grab, Dimension, Constrain..., Hide Group.

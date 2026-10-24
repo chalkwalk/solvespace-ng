@@ -25,10 +25,23 @@ static std::string Key(const std::string &name, const char *what) {
 // The height of the top panel of the right-hand stack.
 static const float StackTopHeight = 220;
 
+static bool gCompact = false;
+
+void SetCompactLayout(bool compact) {
+    gCompact = compact;
+}
+
+bool CompactLayout() {
+    return gCompact;
+}
+
 void Panel::Load() {
     auto settings = Platform::GetSettings();
-    shown  = remembersShown ? settings->ThawBool("NG_Panel_" + name + "_Shown", shownByDefault)
-                            : shownByDefault;
+    // The right-hand stack would cover a phone's screen.
+    bool byDefault = shownByDefault &&
+                     !(gCompact && (edge == PanelEdge::RIGHT_TOP || edge == PanelEdge::RIGHT_BELOW));
+    shown  = remembersShown ? settings->ThawBool("NG_Panel_" + name + "_Shown", byDefault)
+                            : byDefault;
     savedX = (float)settings->ThawFloat(Key(name, "X"), -1);
     savedY = (float)settings->ThawFloat(Key(name, "Y"), -1);
     savedW = (float)settings->ThawFloat(Key(name, "W"), -1);

@@ -412,5 +412,15 @@ void ApplyContextMenuLayout(MenuSdl &menu, bool itemsSelected) {
     menu.entries.insert(menu.entries.begin(), first.begin(), first.end());
 }
 
+size_t MenusThatFit(const std::vector<float> &widths, float available, float moreWidth) {
+    float total = 0;
+    for(float w : widths) total += w;
+    if(total <= available) return widths.size();
+    size_t n    = 0;
+    float  used = moreWidth;
+    while(n < widths.size() && used + widths[n] <= available) used += widths[n++];
+    return n;
+}
+
 }
 }

@@ -58,3 +58,21 @@ TEST_CASE(hints_prefer_unmodified_chords) {
     CHECK_TRUE(HasHint(m, "Esc", "Cancel"));
     SS.GW.ClearPending();
 }
+
+TEST_CASE(touch_status_shows_gestures_not_keys) {
+    CHECK_LOAD("line.slvs");
+    std::string err;
+    keymap::Keymap km = *ModernPreset(&err);
+    StatusModel m = BuildStatus(km, "", {}, /*touch=*/true);
+    CHECK_FALSE(HasHint(m, "Space", "Commands"));
+    CHECK_TRUE(HasHint(m, "2 fingers", "Pan, zoom"));
+    CHECK_TRUE(HasHint(m, "3", "Orbit"));
+    CHECK_TRUE(HasHint(m, "Hold", "Menu"));
+    SS.GW.pending.operation   = GraphicsWindow::Pending::COMMAND;
+    SS.GW.pending.description = "click first point of line";
+    m = BuildStatus(km, "", {}, /*touch=*/true);
+    CHECK_EQ_STR(m.tool, "click first point of line");
+    CHECK_TRUE(HasHint(m, "Hold", "Cancel"));
+    CHECK_FALSE(HasHint(m, "Esc", "Cancel"));
+    SS.GW.pending.operation = GraphicsWindow::Pending::NONE;
+}
