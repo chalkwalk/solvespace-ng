@@ -660,17 +660,17 @@ bool OnCurves(const TopoDS_Edge &edge, const std::vector<SBezier> &curves) {
     BRepAdaptor_Curve c(edge);
     double f = c.FirstParameter(), l = c.LastParameter();
     for(double t : { f, (f + l) / 2, l }) {
-        Vector p    = Vec(c.Value(t).XYZ());
-        bool   near = false;
+        Vector p       = Vec(c.Value(t).XYZ());
+        bool   onCurve = false; // ("near" is a macro on Windows)
         for(const SBezier &sb : curves) {
             double u;
             sb.ClosestPointTo(p, &u, /*mustConverge=*/false);
             if(sb.PointAt(u).Equals(p, 1e-4)) {
-                near = true;
+                onCurve = true;
                 break;
             }
         }
-        if(!near) return false;
+        if(!onCurve) return false;
     }
     return true;
 }

@@ -1,6 +1,7 @@
 // The Open CASCADE kernel (src/kernel/occtkernel.cpp): the solids SolveSpace's own kernel
 // makes, measured the same within the tessellation's tolerance, with the same faces named.
 #include "solvespace.h"
+#include "kernel/occtshape.h" // windows.h before the OCCT headers
 #include <BRepGProp.hxx>
 #include <BRepPrimAPI_MakeBox.hxx>
 #include <GProp_GProps.hxx>
