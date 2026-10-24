@@ -79,3 +79,13 @@ TEST_CASE(suggested_save_path_uses_stem_folder_and_filter_extension) {
     CHECK_EQ_STR(SuggestedSavePath("", "/exports", png), "/exports/untitled.png");
     CHECK_EQ_STR(SuggestedSavePath("/work/model.slvs", "", {}), "/work/model");
 }
+
+TEST_CASE(web_file_name_keeps_only_a_plain_name) {
+    CHECK_EQ_STR(WebFileName("box.slvs"), "box.slvs");
+    CHECK_EQ_STR(WebFileName("C:\\Users\\me\\box.slvs"), "box.slvs");
+    CHECK_EQ_STR(WebFileName("../../etc/box.slvs"), "box.slvs");
+    CHECK_EQ_STR(WebFileName("  box.slvs  "), "box.slvs");
+    CHECK_EQ_STR(WebFileName(".."), "");
+    CHECK_EQ_STR(WebFileName("dir/"), "");
+    CHECK_EQ_STR(WebFileName(""), "");
+}

@@ -38,6 +38,38 @@
       if(k.parentElement !== document.body) document.body.appendChild(k);
       if(show) { k.value = ' '; k.focus(); } else { k.blur(); }
     },
+    // File ▸ Open: the browser's file picker. Sets Module.ngPicked to {name, data} or null,
+    // which the app waits for (guisdl.cpp, PickWebFile).
+    ngPickFile: function() {
+      var input = document.createElement('input');
+      input.type = 'file';
+      var picked = false;
+      var done = function(v) { if(Module.ngPicked === undefined) Module.ngPicked = v; };
+      input.addEventListener('change', function() {
+        picked = true;
+        var f = input.files[0];
+        if(!f) { done(null); return; }
+        f.arrayBuffer().then(function(b) { done({ name: f.name, data: new Uint8Array(b) }); },
+                             function() { done(null); });
+      });
+      input.addEventListener('cancel', function() { done(null); });
+      // Browsers without the cancel event: the page gets the focus back on a cancel.
+      window.addEventListener('focus', function() {
+        setTimeout(function() { if(!picked) done(null); }, 1500);
+      }, { once: true });
+      input.click();
+    },
+    // Saves and exports: hands a file the app wrote to the browser as a download.
+    ngDownload: function(name, bytes) {
+      var url = URL.createObjectURL(new Blob([bytes]));
+      var a = document.createElement('a');
+      a.href = url;
+      a.download = name;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      setTimeout(function() { URL.revokeObjectURL(url); }, 60000);
+    },
     onAbort: function(what) {
       document.body.insertAdjacentHTML('beforeend',
         '<div id="status">SolveSpace NG stopped: ' + what + '</div>');

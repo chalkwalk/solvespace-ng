@@ -19,6 +19,9 @@ std::string SuggestedSavePath(const std::string &suggested, const std::string &f
                               const std::vector<FileFilter> &filters);
 // "slvs;stl" style pattern for SDL_DialogFileFilter.
 std::string SdlFilterPattern(const FileFilter &filter);
+// The last component of a name the browser or the person gave a web file, trimmed; "" for none
+// (".", "..", or nothing after the last slash), so it can't leave the web build's folder.
+std::string WebFileName(const std::string &name);
 
 }
 }

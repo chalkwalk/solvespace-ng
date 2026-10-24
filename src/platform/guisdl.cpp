@@ -7,7 +7,9 @@
 #include <atomic>
 #include <deque>
 #include <filesystem>
+#include <map>
 #include <mutex>
+#include <optional>
 #include <SDL3/SDL.h>
 #include "imgui.h"
 #include "imgui_internal.h"
@@ -509,6 +511,93 @@ static void RunNestedLoop(const std::function<bool()> &done) {
 // File dialogs
 //-----------------------------------------------------------------------------
 
+#if defined(__EMSCRIPTEN__)
+// A browser has no file dialogs for SDL to show. Open copies a file picked with the browser's
+// own picker into this folder of Emscripten's in-memory file system. Save asks for a name, and
+// every file the app then writes there (one per part for Export Parts) is handed to the browser
+// as a download, as is every later Save.
+static const char *WebFolder = "/data";
+static std::vector<std::string> gWebDownloads;
+// The folder's files and their times when a save dialog returned, to see which the save wrote.
+static std::optional<std::map<std::string, std::filesystem::file_time_type>> gWebBeforeSave;
+
+static std::map<std::string, std::filesystem::file_time_type> WebFolderFiles() {
+    std::map<std::string, std::filesystem::file_time_type> files;
+    std::error_code ec;
+    for(const auto &entry : std::filesystem::directory_iterator(WebFolder, ec)) {
+        if(entry.is_regular_file(ec)) files[entry.path().string()] = entry.last_write_time(ec);
+    }
+    return files;
+}
+
+static bool PickWebFile(Path *path) {
+    EM_ASM({
+        delete Module.ngPicked;
+        Module.ngPickFile();
+    });
+    RunNestedLoop([] { return EM_ASM_INT({ return Module.ngPicked !== undefined; }) != 0; });
+    int size = EM_ASM_INT({ return Module.ngPicked ? Module.ngPicked.data.length : -1; });
+    if(size < 0) return false;
+    char name[256];
+    EM_ASM({ stringToUTF8(Module.ngPicked.name, $0, $1); }, name, (int)sizeof(name));
+    std::string data(size, '\0');
+    EM_ASM({
+        HEAPU8.set(Module.ngPicked.data, $0);
+        Module.ngPicked = null;
+    }, data.data());
+    std::string file = WebFileName(name);
+    if(file.empty()) return false;
+    std::error_code ec;
+    std::filesystem::create_directories(WebFolder, ec);
+    *path = Path::From(WebFolder).Join(file);
+    return WriteFile(*path, data);
+}
+
+static bool AskWebSaveName(const std::string &title, const std::vector<FileFilter> &filters,
+                           Path *path) {
+    std::string suggested = path->IsEmpty() ? "" : path->FileName();
+    if(suggested.empty()) suggested = SuggestedSavePath("", "", filters);
+    char answer[256];
+    int ok = EM_ASM_INT({
+        var name = prompt(UTF8ToString($0), UTF8ToString($1));
+        if(name === null) return 0;
+        stringToUTF8(name, $2, $3);
+        return 1;
+    }, title.empty() ? "Save as" : title.c_str(), suggested.c_str(), answer, (int)sizeof(answer));
+    std::string file = ok ? WebFileName(answer) : "";
+    if(file.empty()) return false;
+    std::error_code ec;
+    std::filesystem::create_directories(WebFolder, ec);
+    *path          = Path::From(EnsureExtension(Path::From(WebFolder).Join(file).raw, filters, 0));
+    gWebBeforeSave = WebFolderFiles();
+    return true;
+}
+
+// Runs between frames, after the save that asked for a name has written its files.
+static void DownloadWebFiles() {
+    if(gWebBeforeSave) {
+        for(const auto &[name, time] : WebFolderFiles()) {
+            auto before = gWebBeforeSave->find(name);
+            if(before == gWebBeforeSave->end() || before->second != time) {
+                if(std::find(gWebDownloads.begin(), gWebDownloads.end(), name) ==
+                   gWebDownloads.end()) {
+                    gWebDownloads.push_back(name);
+                }
+            }
+        }
+        gWebBeforeSave.reset();
+    }
+    for(const std::string &name : gWebDownloads) {
+        Path        path = Path::From(name);
+        std::string data;
+        if(!ReadFile(path, &data)) continue;
+        EM_ASM({ Module.ngDownload(UTF8ToString($0), HEAPU8.slice($1, $1 + $2)); },
+               path.FileName().c_str(), data.data(), (int)data.size());
+    }
+    gWebDownloads.clear();
+}
+#endif
+
 class FileDialogImplSdl final : public FileDialog {
 public:
     bool                    isSave;
@@ -546,6 +635,9 @@ public:
             gQueuedFiles.pop_front();
             return true;
         }
+#if defined(__EMSCRIPTEN__)
+        return isSave ? AskWebSaveName(title, filters, &filename) : PickWebFile(&filename);
+#endif
         struct Result {
             std::atomic<bool> done{ false };
             std::mutex        mutex;
@@ -758,6 +850,12 @@ static void InitSdlWindowAndImGui() {
     bool first = gSdlWindow == nullptr;
     if(first) {
         InitSdlWindow();
+#if defined(__EMSCRIPTEN__)
+        // Every save and export is a download, also a Save to the name the file was opened as.
+        SS.OnSaveFinished = [](const Path &path, bool, bool autosave) {
+            if(!autosave) gWebDownloads.push_back(path.raw);
+        };
+#endif
     } else {
         ShutdownImGui();
         gActivePopup = nullptr;
@@ -1033,6 +1131,7 @@ static void PumpEventsOnce(bool wait) {
     DispatchTouch();
 #if defined(__EMSCRIPTEN__)
     TakeSoftKeyboardInput();
+    DownloadWebFiles();
 #endif
 }
 
