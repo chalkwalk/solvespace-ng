@@ -187,7 +187,9 @@ if(ENABLE_GUI OR ENABLE_CLI)
 
     if(HAVE_GETTEXT)
         get_target_property(solvespace_core_SOURCES solvespace-core SOURCES)
+        get_target_property(slvs_solver_SOURCES slvs-solver INTERFACE_SOURCES)
         set(inputs
+            ${slvs_solver_SOURCES}
             ${solvespace_core_SOURCES}
             ${every_platform_SOURCES}
             ${solvespace_core_gl_SOURCES})

@@ -727,6 +727,9 @@ macOS and Emscripten builds.
     guards for the mouse handlers (from `06270556`; sits on `pr/headless-null-guards`).
   - `pr/headless-recent-files`: adding a recent file crashed without a window (the Open
     Recent menu is null headless; from `112bd403`).
+  - `pr/translate-solver-sources`: `translate_solvespace` didn't read the `slvs-solver`
+    library's sources, so regenerating the templates dropped `util.cpp`'s strings (Error,
+    Message, OK).
 - Tests: `RUN_COMMAND("<command-name>")` in `test/` runs a menu command headlessly (names in
   `src/commandnames.cpp`). Headless code paths have null windows/menu items: guard them.
   Not headless-safe yet (null FileDialog/Window under `guinone.cpp`): `open`, `save`, `save-as`,
