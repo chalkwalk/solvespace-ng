@@ -15,6 +15,8 @@ public:
     explicit SettingsFile(Path path);
     ~SettingsFile() override;
     bool Save();
+    // Changed since it was read or last saved.
+    bool Dirty() const { return dirty; }
 
     void FreezeInt(const std::string &key, uint32_t value) override;
     uint32_t ThawInt(const std::string &key, uint32_t defaultValue = 0) override;

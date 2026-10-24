@@ -364,10 +364,11 @@ if(ENABLE_GUI AND ENABLE_NG_GUI)
 
     if(EMSCRIPTEN)
         # The web build of solvespace-ng: WebGL 2, and ASYNCIFY for the app's own event loops.
+        # IDBFS keeps /data (files and settings) in the browser between visits.
         set(ng_web_flags
             "-sALLOW_MEMORY_GROWTH=1" "-sASYNCIFY=1" "-sASYNCIFY_STACK_SIZE=1048576"
             "-sSTACK_SIZE=33554432" "-sINITIAL_MEMORY=134217728"
-            "-sMIN_WEBGL_VERSION=2" "-sMAX_WEBGL_VERSION=2"
+            "-sMIN_WEBGL_VERSION=2" "-sMAX_WEBGL_VERSION=2" "-lidbfs.js"
             --shell-file "\"${CMAKE_CURRENT_SOURCE_DIR}/platform/html/ngshell.html\"")
         get_target_property(ng_resources resources SOURCES)
         foreach(resource ${ng_resources})

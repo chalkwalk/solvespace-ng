@@ -412,6 +412,7 @@ void GraphicsWindow::PopulateMainMenu() {
 static void PopulateMenuWithPathnames(Platform::MenuRef menu,
                                       std::vector<Platform::Path> pathnames,
                                       std::function<void(const Platform::Path &)> onTrigger) {
+    if(!menu) return; // headless
     menu->Clear();
     if(pathnames.empty()) {
         Platform::MenuItemRef menuItem = menu->AddItem(_("(no recent files)"));

@@ -677,9 +677,12 @@ macOS and Emscripten builds.
     publishes them to GitHub Pages: a landing page (`.github/pages/index.html`), SolveSpace NG
     in `ng/` (`solvespace-ng` built with Emscripten: WebGL 2, ASYNCIFY for its event loops, no
     background regeneration, no OCCT) and the classic `guihtml` build in `classic/`. In the
-    browser, NG's Open copies a file picked with the browser's picker into `/data` of the
-    in-memory file system, and Save asks for a name; every save and export is downloaded
-    (`PickWebFile`, `AskWebSaveName`, `DownloadWebFiles` in `guisdl.cpp`; added 2026-10-24).
+    browser, NG's Open copies a file picked with the browser's picker into `/data`, and Save
+    asks for a name; every save and export is downloaded (`PickWebFile`, `AskWebSaveName`,
+    `DownloadWebFiles` in `guisdl.cpp`; added 2026-10-24). `/data` is IDBFS, kept in the
+    browser's IndexedDB between visits: it holds those files and the settings
+    (`/data/settings`), which are saved every two seconds while they change
+    (`SaveWebSettings`, `SolveSpaceUI::SaveSettings`), since a closed tab never quits.
   - `origin` stays the owner's private repo on the LAN: `github-master`, the `pr/` branches and
     anything not yet published.
   - Never push to `solvespace/solvespace` or open PRs there; nothing goes to the official repo
