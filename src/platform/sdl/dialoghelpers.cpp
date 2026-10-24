@@ -41,5 +41,15 @@ std::string SdlFilterPattern(const FileFilter &filter) {
     return out;
 }
 
+std::string WebFileName(const std::string &name) {
+    size_t      slash = name.find_last_of("/\\");
+    std::string file  = slash == std::string::npos ? name : name.substr(slash + 1);
+    size_t      first = file.find_first_not_of(" \t");
+    if(first == std::string::npos) return "";
+    file = file.substr(first, file.find_last_not_of(" \t") - first + 1);
+    if(file == "." || file == "..") return "";
+    return file;
+}
+
 }
 }

@@ -676,7 +676,10 @@ macOS and Emscripten builds.
     both web versions (single-threaded: Pages can't send cross-origin isolation headers) and
     publishes them to GitHub Pages: a landing page (`.github/pages/index.html`), SolveSpace NG
     in `ng/` (`solvespace-ng` built with Emscripten: WebGL 2, ASYNCIFY for its event loops, no
-    background regeneration, no OCCT) and the classic `guihtml` build in `classic/`.
+    background regeneration, no OCCT) and the classic `guihtml` build in `classic/`. In the
+    browser, NG's Open copies a file picked with the browser's picker into `/data` of the
+    in-memory file system, and Save asks for a name; every save and export is downloaded
+    (`PickWebFile`, `AskWebSaveName`, `DownloadWebFiles` in `guisdl.cpp`; added 2026-10-24).
   - `origin` stays the owner's private repo on the LAN: `github-master`, the `pr/` branches and
     anything not yet published.
   - Never push to `solvespace/solvespace` or open PRs there; nothing goes to the official repo
