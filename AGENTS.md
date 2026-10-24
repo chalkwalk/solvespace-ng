@@ -730,6 +730,9 @@ macOS and Emscripten builds.
   - `pr/translate-solver-sources`: `translate_solvespace` didn't read the `slvs-solver`
     library's sources, so regenerating the templates dropped `util.cpp`'s strings (Error,
     Message, OK).
+  - `pr/cmake-worktree-hash`: configuring inside a git worktree failed (`GetGitCommitHash`
+    joined the worktree's absolute gitdir to the source directory, and looked for its branch
+    refs beside HEAD rather than in the main repository; from `3c43c148`).
 - Tests: `RUN_COMMAND("<command-name>")` in `test/` runs a menu command headlessly (names in
   `src/commandnames.cpp`). Headless code paths have null windows/menu items: guard them.
   Not headless-safe yet (null FileDialog/Window under `guinone.cpp`): `open`, `save`, `save-as`,
