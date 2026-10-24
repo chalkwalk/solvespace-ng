@@ -16,6 +16,9 @@ void InitNgUi(); // after the ImGui context exists
 std::function<void()> DrawNgUi(Platform::MenuBarSdl *menuBar, const keymap::Keymap &keymap);
 // The active modal tool's status text and key hints (empty when none is active).
 void SetModalStatus(std::string tool, std::vector<KeyHint> hints);
+// Whether the last input was a touch screen: the status bar then shows gestures, not keys.
+void SetTouchInput(bool touch);
+bool TouchInput();
 // True while a UI-layer text field (the palette) owns the keyboard.
 bool CapturesText();
 void HandleUiAction(const std::string &action);

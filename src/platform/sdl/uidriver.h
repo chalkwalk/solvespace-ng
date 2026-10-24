@@ -63,6 +63,13 @@ void    DoubleClick(double x, double y);
 void    Drag(double x0, double y0, double x1, double y1, Button b = Button::LEFT,
              int steps = 8);
 void    Wheel(double x, double y, double dy);
+// A touch screen (TouchGestures): a one-finger tap, and fingers put down together at `from`,
+// moved together to `to` in `steps` frames, then lifted. One finger drags with the left
+// button, two pan and pinch, three orbit.
+void    Tap(double x, double y);
+void    LongPress(double x, double y); // held still: a right click
+void    TouchDrag(const std::vector<Point2d> &from, const std::vector<Point2d> &to,
+                  int steps = 8);
 Point2d MousePos();
 Point2d WindowSize();
 void    Resize(int width, int height); // as if the person resized the window

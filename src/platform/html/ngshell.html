@@ -7,6 +7,11 @@
 <style>
   html, body { margin: 0; height: 100%; overflow: hidden; background: #16181d; }
   canvas { display: block; outline: none; }
+  /* Brings up a phone's keyboard for the app's text fields (guisdl.cpp, ShowSoftKeyboard). */
+  #keyboard {
+    position: fixed; left: 0; bottom: 0; width: 1px; height: 1px; opacity: 0;
+    border: 0; padding: 0; font-size: 16px; /* 16px: iOS zooms into smaller fields */
+  }
   #status {
     position: fixed; inset: 0; display: flex; align-items: center; justify-content: center;
     color: #c8ccd4; font: 15px system-ui, sans-serif;
@@ -16,6 +21,8 @@
 <body>
 <div id="status">Loading SolveSpace NG…</div>
 <canvas id="canvas" tabindex="-1" oncontextmenu="event.preventDefault()"></canvas>
+<input id="keyboard" type="text" autocomplete="off" autocorrect="off" autocapitalize="off"
+       spellcheck="false" aria-hidden="true">
 <script>
   var Module = {
     canvas: document.getElementById('canvas'),
@@ -24,11 +31,40 @@
       if(!status) return;
       if(text) { status.textContent = text; } else { status.remove(); }
     },
+    // The field holds one space, so a phone's Backspace always has something to delete.
+    ngSoftKeyboard: function(show) {
+      var k = document.getElementById('keyboard');
+      // SDL hides everything but the canvas, in a hidden div, when it fills the page.
+      if(k.parentElement !== document.body) document.body.appendChild(k);
+      if(show) { k.value = ' '; k.focus(); } else { k.blur(); }
+    },
     onAbort: function(what) {
       document.body.insertAdjacentHTML('beforeend',
         '<div id="status">SolveSpace NG stopped: ' + what + '</div>');
     }
   };
+  (function() {
+    var k = document.getElementById('keyboard');
+    k.addEventListener('input', function(e) {
+      var q = Module.ngTyped = Module.ngTyped || [];
+      if(e.inputType === 'deleteContentBackward') {
+        q.push(-1);
+      } else if(e.data) {
+        for(var ch of e.data) q.push(ch.codePointAt(0));
+      }
+      k.value = ' ';
+    });
+    k.addEventListener('keydown', function(e) {
+      var key = { Enter: -2, Escape: -3, Tab: -4 }[e.key];
+      if(key) {
+        (Module.ngTyped = Module.ngTyped || []).push(key);
+        e.preventDefault();
+      }
+      e.stopPropagation(); // the field's keys are its own, not SDL's
+    });
+    k.addEventListener('keypress', function(e) { e.stopPropagation(); });
+    k.addEventListener('keyup', function(e) { e.stopPropagation(); });
+  })();
 </script>
 {{{ SCRIPT }}}
 </body>

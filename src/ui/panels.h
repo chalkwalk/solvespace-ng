@@ -39,6 +39,12 @@ private:
     float       savedX = -1, savedY = -1, savedW = -1, savedH = -1;
 };
 
+// A phone-sized window (narrower than CompactWidth): the side panels start hidden, unless they
+// were shown before. Call before the panels' Load().
+constexpr float CompactWidth = 600;
+void SetCompactLayout(bool compact);
+bool CompactLayout();
+
 Panel &OutlinerPanel();
 Panel &PropertiesPanel();
 Panel &ProblemsPanel();

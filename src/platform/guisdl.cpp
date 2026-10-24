@@ -41,9 +41,11 @@
 #include "platform/sdl/uidriver.h"
 #include "platform/sdl/itemregistry.h"
 #include "platform/sdl/icontextures.h"
+#include "platform/sdl/touchgestures.h"
 #include "ui/iconraster.h"
 #include "ui/keyrouter.h"
 #include "ui/menulayout.h"
+#include "ui/panels.h"
 #include "ui/viewcube.h"
 #include "ui/uiactions.h"
 #include "ui/coreactions.h"
@@ -469,6 +471,9 @@ MessageDialogRef CreateMessageDialog(WindowRef parentWindow) {
 //-----------------------------------------------------------------------------
 
 static void PumpEventsOnce(bool wait);
+#if defined(__EMSCRIPTEN__)
+static void TakeSoftKeyboardInput();
+#endif
 
 // Runs until done(), even if the app is asked to quit meanwhile (the request is deferred):
 // a file dialog's callback must not outlive the RunModal frame that owns its result.
@@ -634,6 +639,9 @@ void OpenInBrowser(const std::string &url) {
 
 std::vector<std::string> InitGui(int argc, char **argv) {
     std::vector<std::string> args = InitCli(argc, argv);
+    // Fingers become mouse events through TouchGestures (pan, pinch, orbit), not SDL's own
+    // one-finger mouse.
+    SDL_SetHint(SDL_HINT_TOUCH_MOUSE_EVENTS, "0");
     if(!SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS)) {
         FatalError(std::string("SDL_Init failed: ") + SDL_GetError());
     }
@@ -764,6 +772,13 @@ static void InitSdlWindowAndImGui() {
     ImGui_ImplSDL3_InitForOpenGL(gSdlWindow, gGlContext);
     ImGuiRenderer_Init(GlslVersion());
     gShowMenuBar = GetSettings()->ThawBool("NG_ShowMenuBar", true);
+    int windowW = 0, windowH = 0;
+    SDL_GetWindowSize(gSdlWindow, &windowW, &windowH);
+    Ui::SetCompactLayout(windowW > 0 && windowW < Ui::CompactWidth);
+    if(Ui::CompactLayout()) {
+        SS.showToolbar = true; // a phone has no keys: the tools at hand
+        Ui::SetTouchInput(true);
+    }
     Ui::InitNgUi();
     Ui::RegisterCoreUiActions(/*animate=*/true);
     Ui::Actions().Bind("ui.reload-keymap", [] { LoadKeymap(); }); // after a preset change
@@ -783,6 +798,8 @@ static WindowImplSdl *MainWindow() {
     return gMainWindow.lock().get();
 }
 
+static bool gTouchPan = false; // a two-finger pan is under way: Shift+middle drag
+
 static MouseEvent MakeMouseEvent(MouseEvent::Type type, double x, double y) {
     MouseEvent me = {};
     me.type = type;
@@ -791,6 +808,7 @@ static MouseEvent MakeMouseEvent(MouseEvent::Type type, double x, double y) {
     SDL_Keymod mod = gDriver ? gDriverMods : SDL_GetModState();
     me.shiftDown   = (mod & SDL_KMOD_SHIFT) != 0;
     me.controlDown = (mod & SDL_KMOD_CTRL) != 0;
+    if(gTouchPan && type != MouseEvent::Type::SCROLL_VERT) me.shiftDown = true; // not a fine zoom
     return me;
 }
 
@@ -886,6 +904,86 @@ static void ForwardToMainWindow(const SDL_Event &ev) {
     }
 }
 
+static void HandleEvent(const SDL_Event &ev);
+
+static TouchGestures gTouch;
+
+// Sends the mouse events the fingers made through ImGui and on to the canvas, as a mouse's.
+static void DispatchTouch() {
+    using Out = TouchGestures::Out;
+    gTouch.Tick(SDL_GetTicks());
+    if(gTouch.Waiting()) gNeedsFrame = true; // to tick again
+    static SDL_MouseButtonFlags held = 0;
+    // One button change a frame, as a mouse makes them: a tap's press and release, or a long
+    // press's, in one frame would reach ImGui's input queue after the menu they open.
+    static std::deque<Out> queue;
+    for(const Out &o : gTouch.Take()) queue.push_back(o);
+    while(!queue.empty()) {
+        Out o = queue.front();
+        queue.pop_front();
+        // Two-finger pan is SolveSpace's Shift+middle drag (MakeMouseEvent adds the Shift).
+        Uint8 b = o.button == Out::Button::LEFT     ? SDL_BUTTON_LEFT
+                  : o.button == Out::Button::MIDDLE ? SDL_BUTTON_MIDDLE
+                  : o.button == Out::Button::PAN    ? SDL_BUTTON_MIDDLE
+                  : o.button == Out::Button::RIGHT  ? SDL_BUTTON_RIGHT
+                                                    : 0;
+        if(o.kind == Out::Kind::PRESS) gTouchPan = o.button == Out::Button::PAN;
+        SDL_Event ev = {};
+        switch(o.kind) {
+            case Out::Kind::MOTION:
+                ev.type          = SDL_EVENT_MOUSE_MOTION;
+                ev.motion.which  = SDL_TOUCH_MOUSEID;
+                ev.motion.x      = (float)o.x;
+                ev.motion.y      = (float)o.y;
+                ev.motion.state  = held;
+                break;
+            case Out::Kind::PRESS:
+            case Out::Kind::RELEASE:
+                if(o.kind == Out::Kind::PRESS) held |= SDL_BUTTON_MASK(b);
+                else held &= ~SDL_BUTTON_MASK(b);
+                ev.type           = o.kind == Out::Kind::PRESS ? SDL_EVENT_MOUSE_BUTTON_DOWN
+                                                               : SDL_EVENT_MOUSE_BUTTON_UP;
+                ev.button.which   = SDL_TOUCH_MOUSEID;
+                ev.button.button  = b;
+                ev.button.down    = o.kind == Out::Kind::PRESS;
+                ev.button.clicks  = 1;
+                ev.button.x       = (float)o.x;
+                ev.button.y       = (float)o.y;
+                break;
+            case Out::Kind::WHEEL:
+                ev.type          = SDL_EVENT_MOUSE_WHEEL;
+                ev.wheel.which   = SDL_TOUCH_MOUSEID;
+                ev.wheel.y       = (float)o.wheel;
+                ev.wheel.mouse_x = (float)o.x;
+                ev.wheel.mouse_y = (float)o.y;
+                break;
+        }
+        ev.common.timestamp = SDL_GetTicksNS();
+        if(gSdlWindow) ev.motion.windowID = SDL_GetWindowID(gSdlWindow);
+        HandleEvent(ev);
+        if(o.kind == Out::Kind::RELEASE) gTouchPan = false;
+        if(o.kind == Out::Kind::PRESS || o.kind == Out::Kind::RELEASE) {
+            if(!queue.empty()) gNeedsFrame = true;
+            break;
+        }
+    }
+}
+
+static void HandleFinger(const SDL_Event &ev) {
+    int w = 0, h = 0;
+    SDL_Window *win = SDL_GetWindowFromID(ev.tfinger.windowID);
+    SDL_GetWindowSize(win ? win : gSdlWindow, &w, &h);
+    double   x = ev.tfinger.x * w, y = ev.tfinger.y * h;
+    uint64_t ms = SDL_NS_TO_MS(ev.tfinger.timestamp);
+    switch(ev.type) {
+        case SDL_EVENT_FINGER_DOWN:     gTouch.FingerDown(ev.tfinger.fingerID, x, y, ms); break;
+        case SDL_EVENT_FINGER_MOTION:   gTouch.FingerMove(ev.tfinger.fingerID, x, y, ms); break;
+        case SDL_EVENT_FINGER_UP:       gTouch.FingerUp(ev.tfinger.fingerID, x, y, ms); break;
+        case SDL_EVENT_FINGER_CANCELED: gTouch.Cancel(); break;
+        default: break;
+    }
+}
+
 static void HandleEvent(const SDL_Event &ev) {
     gNeedsFrame = true;
     if(ev.type == gWakeEvent) return; // RunGui applies the solid before the frame
@@ -895,6 +993,21 @@ static void HandleEvent(const SDL_Event &ev) {
     }
     ImGui_ImplSDL3_ProcessEvent(&ev);
     switch(ev.type) {
+        case SDL_EVENT_FINGER_DOWN:
+        case SDL_EVENT_FINGER_MOTION:
+        case SDL_EVENT_FINGER_UP:
+        case SDL_EVENT_FINGER_CANCELED:
+            Ui::SetTouchInput(true);
+            HandleFinger(ev); // DispatchTouch() sends its mouse events once a batch
+            return;
+        case SDL_EVENT_MOUSE_MOTION:
+            if(ev.motion.which != SDL_TOUCH_MOUSEID) Ui::SetTouchInput(false);
+            ForwardToMainWindow(ev);
+            break;
+        case SDL_EVENT_KEY_DOWN:
+            Ui::SetTouchInput(false);
+            ForwardToMainWindow(ev);
+            break;
         case SDL_EVENT_QUIT:
         case SDL_EVENT_WINDOW_CLOSE_REQUESTED:
             gCloseRequested = true; // handled by the top-level loop, never inside a modal
@@ -917,6 +1030,10 @@ static void PumpEventsOnce(bool wait) {
         HandleEvent(ev);
         got = SDL_PollEvent(&ev);
     }
+    DispatchTouch();
+#if defined(__EMSCRIPTEN__)
+    TakeSoftKeyboardInput();
+#endif
 }
 
 static void DrawEditorOverlay(WindowImplSdl *w, ImVec2 origin) {
@@ -1297,6 +1414,37 @@ static void RunDebugScript(int pw, int ph) {
     }
 }
 
+#if defined(__EMSCRIPTEN__)
+// A phone's keyboard comes up only for a focused HTML text field: ngshell.html keeps a hidden
+// one, focused while an ImGui field wants text after a touch, and queues what is typed in
+// Module.ngTyped (code points; -1 Backspace, -2 Enter, -3 Esc, -4 Tab). The page can't call in
+// while the app sleeps (ASYNCIFY), so the event loop takes them from there.
+static void TakeSoftKeyboardInput() {
+    ImGuiIO &io = ImGui::GetIO();
+    for(;;) {
+        int c = EM_ASM_INT({ var q = Module.ngTyped; return q && q.length ? q.shift() : 0; });
+        if(c == 0) break;
+        gNeedsFrame = true;
+        if(c > 0) {
+            io.AddInputCharacter((unsigned)c);
+            continue;
+        }
+        ImGuiKey k = c == -1 ? ImGuiKey_Backspace : c == -2 ? ImGuiKey_Enter
+                   : c == -3 ? ImGuiKey_Escape    : ImGuiKey_Tab;
+        io.AddKeyEvent(k, true);
+        io.AddKeyEvent(k, false);
+    }
+}
+
+static void ShowSoftKeyboard() {
+    static bool shown = false;
+    bool        want  = ImGui::GetIO().WantTextInput && Ui::TouchInput();
+    if(want == shown) return;
+    shown = want;
+    EM_ASM({ if(Module.ngSoftKeyboard) Module.ngSoftKeyboard($0); }, want);
+}
+#endif
+
 static void RenderFrame() {
     if(!gSdlWindow) return;
     gNeedsFrame = false;
@@ -1321,6 +1469,9 @@ static void RenderFrame() {
         }
     }
     ImGui::Render();
+#if defined(__EMSCRIPTEN__)
+    ShowSoftKeyboard();
+#endif
 
     int pw, ph;
     SDL_GetWindowSizeInPixels(gSdlWindow, &pw, &ph);
@@ -1340,8 +1491,10 @@ static void RenderFrame() {
     }
     SDL_GL_SwapWindow(gSdlWindow);
 
-    gDeferred.RunAll();
+    // What ran (a menu item: a panel shown, the menu closing) shows on the next frame, which
+    // nothing else asks for when no mouse moves after a tap.
     if(!gDeferred.Empty()) gNeedsFrame = true;
+    gDeferred.RunAll();
     // ImGui spreads a burst of input (fast typing) over several frames; render until it's done.
     if(ImGui::GetCurrentContext()->InputEventsQueue.Size > 0) gNeedsFrame = true;
     // A window that sizes itself to its contents (the tool shelf) is hidden while it measures
@@ -1436,11 +1589,29 @@ static void DrawMainMenuBar() {
     if(!gShowMenuBar || !main || !main->menuBar) return;
     auto bar = std::static_pointer_cast<MenuBarSdl>(main->menuBar);
     if(ImGui::BeginMainMenuBar()) {
-        for(auto &m : bar->menus) {
+        // What doesn't fit (on a phone) goes in a More menu at the end.
+        float              gap = 2 * ImGui::GetStyle().ItemSpacing.x; // as BeginMenu spaces them
+        std::vector<float> widths;
+        for(auto &m : bar->menus) widths.push_back(ImGui::CalcTextSize(m.first.c_str()).x + gap);
+        const char *more   = "More";
+        size_t      fit    = Ui::MenusThatFit(widths, ImGui::GetContentRegionAvail().x,
+                                              ImGui::CalcTextSize(more).x + gap);
+        for(size_t i = 0; i < fit; i++) {
+            auto &m = bar->menus[i];
             if(ImGui::BeginMenu(m.first.c_str())) {
                 DrawMenuEntries(*m.second);
                 ImGui::EndMenu();
             }
+        }
+        if(fit < bar->menus.size() && ImGui::BeginMenu((std::string(more) + "###more").c_str())) {
+            for(size_t i = fit; i < bar->menus.size(); i++) {
+                auto &m = bar->menus[i];
+                if(ImGui::BeginMenu(m.first.c_str())) {
+                    DrawMenuEntries(*m.second);
+                    ImGui::EndMenu();
+                }
+            }
+            ImGui::EndMenu();
         }
         ImGui::EndMainMenuBar();
     }
@@ -1675,6 +1846,52 @@ void Wheel(double x, double y, double dy) {
     ev.wheel.mouse_y  = gDriverY;
     ev.wheel.direction = SDL_MOUSEWHEEL_NORMAL;
     SDL_PushEvent(&ev);
+    Settle();
+}
+
+static void PushFinger(Uint32 type, int finger, Point2d p) {
+    int w = 0, h = 0;
+    SDL_GetWindowSize(gSdlWindow, &w, &h);
+    SDL_Event ev        = {};
+    ev.type             = type;
+    ev.tfinger.touchID  = 1;
+    ev.tfinger.fingerID = (SDL_FingerID)finger + 1;
+    ev.tfinger.x        = (float)(p.x / w);
+    ev.tfinger.y        = (float)(p.y / h);
+    ev.tfinger.pressure = type == SDL_EVENT_FINGER_UP ? 0.0f : 1.0f;
+    ev.tfinger.windowID = SDL_GetWindowID(gSdlWindow);
+    SDL_PushEvent(&ev);
+}
+
+void Tap(double x, double y) {
+    PushFinger(SDL_EVENT_FINGER_DOWN, 0, Point2d::From(x, y));
+    PushFinger(SDL_EVENT_FINGER_UP, 0, Point2d::From(x, y));
+    Settle();
+}
+
+void LongPress(double x, double y) {
+    PushFinger(SDL_EVENT_FINGER_DOWN, 0, Point2d::From(x, y));
+    Uint64 until = SDL_GetTicks() + TouchGestures::LONG_PRESS_MS + 50;
+    while(SDL_GetTicks() < until) {
+        Frame(1);
+        SDL_Delay(10);
+    }
+    PushFinger(SDL_EVENT_FINGER_UP, 0, Point2d::From(x, y));
+    Settle();
+}
+
+void TouchDrag(const std::vector<Point2d> &from, const std::vector<Point2d> &to, int steps) {
+    for(size_t i = 0; i < from.size(); i++) PushFinger(SDL_EVENT_FINGER_DOWN, (int)i, from[i]);
+    Frame(1);
+    for(int k = 1; k <= steps; k++) {
+        double t = (double)k / steps;
+        for(size_t i = 0; i < from.size(); i++) {
+            Point2d p = from[i].Plus(to[i].Minus(from[i]).ScaledBy(t));
+            PushFinger(SDL_EVENT_FINGER_MOTION, (int)i, p);
+        }
+        Frame(1);
+    }
+    for(size_t i = 0; i < from.size(); i++) PushFinger(SDL_EVENT_FINGER_UP, (int)i, to[i]);
     Settle();
 }
 

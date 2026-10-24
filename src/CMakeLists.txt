@@ -308,6 +308,7 @@ if(ENABLE_GUI AND ENABLE_NG_GUI)
         platform/sdl/timerregistry.cpp
         platform/sdl/dialoghelpers.cpp
         platform/sdl/debugscript.cpp
+        platform/sdl/touchgestures.cpp
         ui/keypresets.cpp
         ui/keyrouter.cpp
         ui/uiactions.cpp
