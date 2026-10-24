@@ -716,6 +716,9 @@ macOS and Emscripten builds.
     (from `1bcf590c`; sits on `pr/headless-null-guards`).
   - `pr/volume-mesh-group`: Analyze ▸ Volume left a mesh group's own triangles out of the
     current group's volume (from `a75c570c`).
+  - `pr/touch-taps-pinch`: two taps drew a zero-width rectangle (a tapped point's move wasn't
+    solved before the press finished it); a zoom during a pan (a pinch) drifted; headless
+    guards for the mouse handlers (from `06270556`; sits on `pr/headless-null-guards`).
 - Tests: `RUN_COMMAND("<command-name>")` in `test/` runs a menu command headlessly (names in
   `src/commandnames.cpp`). Headless code paths have null windows/menu items: guard them.
   Not headless-safe yet (null FileDialog/Window under `guinone.cpp`): `open`, `save`, `save-as`,
