@@ -213,10 +213,15 @@ bool SolveSpaceUI::Load(const Platform::Path &filename) {
 }
 
 void SolveSpaceUI::Exit() {
+    SaveSettings();
+    Platform::ExitGui();
+}
+
+void SolveSpaceUI::SaveSettings() {
     Platform::SettingsRef settings = Platform::GetSettings();
 
-    GW.window->FreezePosition(settings, "GraphicsWindow");
-    TW.window->FreezePosition(settings, "TextWindow");
+    if(GW.window) GW.window->FreezePosition(settings, "GraphicsWindow");
+    if(TW.window) TW.window->FreezePosition(settings, "TextWindow");
 
     // Recent files
     for(size_t i = 0; i < MAX_RECENT; i++) {
@@ -323,8 +328,6 @@ void SolveSpaceUI::Exit() {
 
     // And the default styles, colors and line widths and such.
     Style::FreezeDefaultStyles(settings);
-
-    Platform::ExitGui();
 }
 
 void SolveSpaceUI::Refresh() {

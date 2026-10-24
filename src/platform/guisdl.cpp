@@ -113,13 +113,60 @@ void FatalError(const std::string &message) {
 
 static Path gConfigDir; // the test driver's; empty = the user's
 
+#if defined(__EMSCRIPTEN__)
+// The web build's files and settings: IDBFS keeps this folder in the browser's IndexedDB
+// between visits. It is read once at start, and written back after files are saved or opened
+// and when the settings change (PersistWebStorage).
+static const char *WebFolder = "/data";
+
+static void MountWebStorage() {
+    EM_ASM({
+        try { FS.mkdir(UTF8ToString($0)); } catch(e) {}
+        FS.mount(IDBFS, {}, UTF8ToString($0));
+        Module.ngLoaded = false;
+        FS.syncfs(true, function(err) {
+            if(err) console.log('SolveSpace NG: stored files not read:', err);
+            Module.ngLoaded = true;
+        });
+    }, WebFolder);
+    while(!EM_ASM_INT({ return Module.ngLoaded ? 1 : 0; })) emscripten_sleep(10);
+}
+
+// Writes the folder back to IndexedDB, once more after a write still under way finishes.
+static void PersistWebStorage() {
+    EM_ASM({
+        if(Module.ngPersisting) {
+            Module.ngPersistAgain = true;
+            return;
+        }
+        var persist = function() {
+            Module.ngPersisting   = true;
+            Module.ngPersistAgain = false;
+            FS.syncfs(false, function(err) {
+                if(err) console.log('SolveSpace NG: files not stored:', err);
+                Module.ngPersisting = false;
+                if(Module.ngPersistAgain) persist();
+            });
+        };
+        persist();
+    });
+}
+#endif
+
 static Path PrefDir() {
     if(!gConfigDir.IsEmpty()) return gConfigDir;
     if(const char *dir = getenv("SOLVESPACE_NG_CONFIG_DIR")) return Path::From(dir);
+#if defined(__EMSCRIPTEN__)
+    Path web = Path::From(WebFolder).Join("settings");
+    std::error_code ec;
+    std::filesystem::create_directories(web.raw, ec);
+    return web;
+#else
     char *pref = SDL_GetPrefPath("solvespace", "solvespace-ng");
     Path dir = Path::From(pref ? pref : ".");
     SDL_free(pref);
     return dir;
+#endif
 }
 
 static std::shared_ptr<SettingsFile> gSettings;
@@ -513,10 +560,9 @@ static void RunNestedLoop(const std::function<bool()> &done) {
 
 #if defined(__EMSCRIPTEN__)
 // A browser has no file dialogs for SDL to show. Open copies a file picked with the browser's
-// own picker into this folder of Emscripten's in-memory file system. Save asks for a name, and
+// own picker into the web folder (WebFolder, kept between visits). Save asks for a name, and
 // every file the app then writes there (one per part for Export Parts) is handed to the browser
 // as a download, as is every later Save.
-static const char *WebFolder = "/data";
 static std::vector<std::string> gWebDownloads;
 // The folder's files and their times when a save dialog returned, to see which the save wrote.
 static std::optional<std::map<std::string, std::filesystem::file_time_type>> gWebBeforeSave;
@@ -550,7 +596,9 @@ static bool PickWebFile(Path *path) {
     std::error_code ec;
     std::filesystem::create_directories(WebFolder, ec);
     *path = Path::From(WebFolder).Join(file);
-    return WriteFile(*path, data);
+    if(!WriteFile(*path, data)) return false;
+    PersistWebStorage();
+    return true;
 }
 
 static bool AskWebSaveName(const std::string &title, const std::vector<FileFilter> &filters,
@@ -596,7 +644,19 @@ static void DownloadWebFiles() {
         EM_ASM({ Module.ngDownload(UTF8ToString($0), HEAPU8.slice($1, $1 + $2)); },
                path.FileName().c_str(), data.data(), (int)data.size());
     }
+    if(!gWebDownloads.empty()) PersistWebStorage();
     gWebDownloads.clear();
+}
+
+// Settings are saved when the app quits, which a closed browser tab never does: save them
+// every couple of seconds while they have changed.
+static void SaveWebSettings() {
+    static Uint64 last = 0;
+    Uint64        now  = SDL_GetTicks();
+    if(now - last < 2000) return;
+    last = now;
+    SS.SaveSettings(); // the preferences and recent files reach the settings only on request
+    if(gSettings && gSettings->Dirty() && gSettings->Save()) PersistWebStorage();
 }
 #endif
 
@@ -732,6 +792,9 @@ void OpenInBrowser(const std::string &url) {
 }
 
 std::vector<std::string> InitGui(int argc, char **argv) {
+#if defined(__EMSCRIPTEN__)
+    MountWebStorage(); // before the settings are read
+#endif
     std::vector<std::string> args = InitCli(argc, argv);
     // Fingers become mouse events through TouchGestures (pan, pinch, orbit), not SDL's own
     // one-finger mouse.
@@ -1134,6 +1197,7 @@ static void PumpEventsOnce(bool wait) {
 #if defined(__EMSCRIPTEN__)
     TakeSoftKeyboardInput();
     DownloadWebFiles();
+    SaveWebSettings();
 #endif
 }
 

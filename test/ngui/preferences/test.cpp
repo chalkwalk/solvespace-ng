@@ -120,3 +120,14 @@ TEST_CASE(ng_picks_a_material_for_mass_properties) {
     CHECK_EQ_EPS(SS.density, 1.27);
     CHECK_TRUE(Platform::GetSettings()->ThawFloat("Density", 0) == 1.27);
 }
+
+// The preferences reach the settings while the app runs, not only when it quits: a browser tab
+// is closed without quitting (the web build saves them every couple of seconds).
+TEST_CASE(save_settings_writes_the_preferences_and_recent_files) {
+    Platform::SettingsRef settings = Platform::GetSettings();
+    SS.gridSpacing = 7.5;
+    SS.AddToRecentList(Platform::Path::From("/data/keep.slvs"));
+    SS.SaveSettings();
+    CHECK_EQ_EPS(settings->ThawFloat("GridSpacing"), 7.5);
+    CHECK_EQ_STR(settings->ThawString("RecentFile_0"), "/data/keep.slvs");
+}

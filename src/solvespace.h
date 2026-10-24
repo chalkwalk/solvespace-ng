@@ -648,6 +648,8 @@ public:
     // The platform-dependent code calls this before entering the msg loop
     void Init();
     void Exit();
+    // Writes the preferences and recent files to the settings (Exit does too).
+    void SaveSettings();
 
     // File load/save routines, including the additional files that get
     // loaded when we have link groups.

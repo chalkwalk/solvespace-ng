@@ -38,3 +38,28 @@ TEST_CASE(garbage_lines_are_ignored) {
     CHECK_TRUE(s.ThawInt("Good") == 5);
     remove(path.raw.c_str());
 }
+
+TEST_CASE(dirty_until_saved) {
+    Path path = TempSettingsPath("dirty");
+    remove(path.raw.c_str());
+    SettingsFile s(path);
+    CHECK_TRUE(!s.Dirty());
+    s.FreezeInt("Int", 1);
+    CHECK_TRUE(s.Dirty());
+    CHECK_TRUE(s.Save());
+    CHECK_TRUE(!s.Dirty());
+    remove(path.raw.c_str());
+}
+
+TEST_CASE(an_unchanged_value_leaves_it_clean) {
+    Path path = TempSettingsPath("unchanged");
+    remove(path.raw.c_str());
+    SettingsFile s(path);
+    s.FreezeInt("Int", 1);
+    CHECK_TRUE(s.Save());
+    s.FreezeInt("Int", 1);
+    CHECK_TRUE(!s.Dirty());
+    s.FreezeInt("Int", 2);
+    CHECK_TRUE(s.Dirty());
+    remove(path.raw.c_str());
+}

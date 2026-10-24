@@ -85,6 +85,8 @@ double SettingsFile::ThawFloat(const std::string &key, double defaultValue) {
 }
 
 void SettingsFile::FreezeString(const std::string &key, const std::string &value) {
+    auto it = values.find(key);
+    if(it != values.end() && it->second == value) return;
     values[key] = value;
     dirty = true;
 }
