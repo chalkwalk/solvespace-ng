@@ -725,6 +725,8 @@ macOS and Emscripten builds.
   - `pr/touch-taps-pinch`: two taps drew a zero-width rectangle (a tapped point's move wasn't
     solved before the press finished it); a zoom during a pan (a pinch) drifted; headless
     guards for the mouse handlers (from `06270556`; sits on `pr/headless-null-guards`).
+  - `pr/headless-recent-files`: adding a recent file crashed without a window (the Open
+    Recent menu is null headless; from `112bd403`).
 - Tests: `RUN_COMMAND("<command-name>")` in `test/` runs a menu command headlessly (names in
   `src/commandnames.cpp`). Headless code paths have null windows/menu items: guard them.
   Not headless-safe yet (null FileDialog/Window under `guinone.cpp`): `open`, `save`, `save-as`,
