@@ -573,8 +573,10 @@ static bool AskWebSaveName(const std::string &title, const std::vector<FileFilte
     return true;
 }
 
-// Runs between frames, after the save that asked for a name has written its files.
+// Runs between frames, after the save that asked for a name has written its files. An image
+// export writes its file at the next redraw, so its download waits for that.
 static void DownloadWebFiles() {
+    if(!SS.screenshotFile.IsEmpty()) return;
     if(gWebBeforeSave) {
         for(const auto &[name, time] : WebFolderFiles()) {
             auto before = gWebBeforeSave->find(name);
