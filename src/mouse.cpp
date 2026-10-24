@@ -571,7 +571,7 @@ void GraphicsWindow::ReplacePending(hRequest before, hRequest after) {
 }
 
 void GraphicsWindow::MouseMiddleOrRightDown(double x, double y) {
-    if(window->IsEditorVisible()) return;
+    if(window && window->IsEditorVisible()) return;
 
     orig.offset = offset;
     orig.projUp = projUp;
@@ -1060,6 +1060,17 @@ void GraphicsWindow::MouseLeftDown(double mx, double my, bool shiftDown, bool ct
     orig.mouse.y = my;
     orig.mouseOnButtonDown = orig.mouse;
     Point2d mouse = Point2d::From(mx, my);
+
+    // A press can come in the same frame as the move before it (a tap on a touch screen), so
+    // that move hasn't been solved yet. Solve it while the new point is still the one being
+    // dragged, or the solve after this press pulls the point back.
+    if(!havePainted && (pending.operation == Pending::DRAGGING_NEW_POINT ||
+                        pending.operation == Pending::DRAGGING_NEW_LINE_POINT ||
+                        pending.operation == Pending::DRAGGING_NEW_ARC_POINT ||
+                        pending.operation == Pending::DRAGGING_NEW_CUBIC_POINT ||
+                        pending.operation == Pending::DRAGGING_NEW_RADIUS)) {
+        SS.GenerateAll();
+    }
 
     // The current mouse location
     Vector v = offset.ScaledBy(-1);

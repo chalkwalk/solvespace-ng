@@ -784,9 +784,6 @@ void GraphicsWindow::ZoomToMouse(double zoomMultiplyer) {
     double offsetRight = offset.Dot(projRight);
     double offsetUp    = offset.Dot(projUp);
 
-    double width, height;
-    window->GetContentSize(&width, &height);
-
     double righti = currentMousePosition.x / scale - offsetRight;
     double upi    = currentMousePosition.y / scale - offsetUp;
 
@@ -801,6 +798,8 @@ void GraphicsWindow::ZoomToMouse(double zoomMultiplyer) {
 
     offset = offset.Plus(projRight.ScaledBy(rightf - righti));
     offset = offset.Plus(projUp.ScaledBy(upf - upi));
+    // A pan under way (a pinch on a touch screen pans and zooms at once) goes on from here.
+    orig.offset = offset;
 
     if(SS.TW.shown.screen == TextWindow::Screen::EDIT_VIEW) {
         if(havePainted) {

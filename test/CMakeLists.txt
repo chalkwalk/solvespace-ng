@@ -27,6 +27,7 @@ set(testsuite_SOURCES
     core/constraintprobe/test.cpp
     core/grab/test.cpp
     core/typedinput/test.cpp
+    core/tap/test.cpp
     libs/keymap/test.cpp
     libs/palette/test.cpp
     libs/pie/test.cpp
