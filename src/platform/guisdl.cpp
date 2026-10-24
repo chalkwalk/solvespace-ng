@@ -1191,6 +1191,13 @@ static void PumpEventsOnce(bool wait) {
 #endif
     while(got) {
         HandleEvent(ev);
+        // A key press gets a frame before what follows it: ImGui applies a modifier's release
+        // in the same frame as a press of another key, so Ctrl+A with Ctrl let go first would
+        // reach a text field as a bare A.
+        if(ev.type == SDL_EVENT_KEY_DOWN) {
+            gNeedsFrame = true;
+            break;
+        }
         got = SDL_PollEvent(&ev);
     }
     DispatchTouch();
@@ -1450,6 +1457,8 @@ static SDL_Keymod PressChord(SDL_Keycode key, SDL_Keymod mods, bool withText) {
         PushKey(key, gDriverMods, true);
         return (SDL_Keymod)(pressed | bit);
     }
+    // A person holds the modifiers down a moment before the key.
+    if(pressed) Driver::Frame();
     PushKey(key, gDriverMods, true);
     if(withText) {
         std::string text = TextForKey(key, gDriverMods);
@@ -1458,8 +1467,8 @@ static SDL_Keymod PressChord(SDL_Keycode key, SDL_Keymod mods, bool withText) {
     return pressed;
 }
 
+// The modifiers go up before the key, as xdotool and quick typists let go of them.
 static void ReleaseChord(SDL_Keycode key, SDL_Keymod pressed) {
-    if(!ModBit(key)) PushKey(key, gDriverMods, false);
     for(int i = (int)(sizeof(ModifierKeys) / sizeof(ModifierKeys[0])) - 1; i >= 0; i--) {
         SDL_Keycode m = ModifierKeys[i];
         if(key == m || ((pressed & ModBit(m)) && (gDriverMods & ModBit(m)))) {
@@ -1467,6 +1476,7 @@ static void ReleaseChord(SDL_Keycode key, SDL_Keymod pressed) {
             PushKey(m, gDriverMods, false);
         }
     }
+    if(!ModBit(key)) PushKey(key, gDriverMods, false);
 }
 
 // Types one character: its key (with Shift if the layout needs it), then the text.
@@ -1797,9 +1807,12 @@ static void DrawActivePopup() {
 }
 
 // True if a text field is or is about to be focused. ImGui only reports WantTextInput a frame
-// after a field takes focus, and keys typed right after opening one arrive before that frame.
+// after a field takes focus, and keys typed right after opening one arrive before that frame;
+// the field is already the active item then.
 static bool TextEntryActive() {
     if(ImGui::GetIO().WantTextInput || Ui::CapturesText()) return true;
+    ImGuiContext &g = *GImGui;
+    if(g.ActiveId != 0 && g.InputTextState.ID == g.ActiveId) return true;
     if(WindowImplSdl *main = MainWindow()) {
         if(main->editorVisible) return true;
     }
