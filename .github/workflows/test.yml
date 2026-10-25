@@ -20,11 +20,9 @@ jobs:
     - name: Build & Test
       run: .github/scripts/build-ubuntu.sh
 
-  # Never run before the fork went public: allowed to fail until their first green run.
   test_windows:
     runs-on: windows-2022
     name: Test Windows
-    continue-on-error: true
     steps:
     - uses: actions/checkout@v6
     - name: Install Dependencies
@@ -37,7 +35,6 @@ jobs:
   test_macos:
     runs-on: macos-latest
     name: Test macOS
-    continue-on-error: true
     steps:
     - uses: actions/checkout@v6
     - name: Install Dependencies

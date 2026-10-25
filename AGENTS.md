@@ -671,7 +671,8 @@ macOS and Emscripten builds.
   - `github` is the public fork, https://github.com/chalkwalk/solvespace-ng (forked from
     `solvespace/solvespace`; known problems are its issues). `master` and the `ng/` branches
     are published there. GitHub Actions runs `.github/workflows/test.yml` on
-    every push: Ubuntu must pass; Windows and macOS may fail until their first green run.
+    every push: Ubuntu, Windows and macOS must all pass (Windows and macOS since their first
+    green run, 2026-10-24; the NG UI tests run only on Ubuntu, as the others lack EGL).
     Agents push to `github` only when the owner says so. `.github/workflows/pages.yml` builds
     both web versions (single-threaded: Pages can't send cross-origin isolation headers) and
     publishes them to GitHub Pages: a landing page (`.github/pages/index.html`), SolveSpace NG
