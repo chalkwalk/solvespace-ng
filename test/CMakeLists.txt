@@ -215,7 +215,14 @@ if(ENABLE_GUI AND ENABLE_NG_GUI)
         ${CMAKE_SOURCE_DIR}/src ${CMAKE_BINARY_DIR}/src ${EIGEN3_INCLUDE_DIRS})
     target_link_libraries(solvespace-ng-uitest solvespace-ng-app ${COVERAGE_LIBRARY})
     add_dependencies(solvespace-ng-uitest resources)
-    set(ngui_COMMAND COMMAND $<TARGET_FILE:solvespace-ng-uitest>)
+    # SDL's offscreen driver renders through EGL: Mesa's on Linux. Windows and macOS CI
+    # runners have none ("Could not initialize OpenGL / GLES library"), so there the binary
+    # is built but run by hand.
+    if(NOT WIN32 AND NOT APPLE)
+        set(ngui_COMMAND COMMAND $<TARGET_FILE:solvespace-ng-uitest>)
+    else()
+        message(STATUS "NG UI tests built but not run by test_solvespace: needs EGL")
+    endif()
 endif()
 
 # Black-box tests of the real binary on a virtual X server (test/x11/run.py), when the tools
