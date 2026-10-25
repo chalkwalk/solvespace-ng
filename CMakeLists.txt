@@ -237,6 +237,23 @@ if(ENABLE_SANITIZERS)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${SANITIZE_FLAGS}")
 endif()
 
+# Open CASCADE, for the OCCT kernel (off by default for the web; a web build with it needs JSPI)
+
+if(EMSCRIPTEN)
+    set(ENABLE_OCCT_DEFAULT OFF)
+else()
+    set(ENABLE_OCCT_DEFAULT ON)
+endif()
+set(ENABLE_OCCT ${ENABLE_OCCT_DEFAULT} CACHE BOOL
+    "Whether to build the Open CASCADE kernel (extlib/occt)")
+if(ENABLE_OCCT AND EMSCRIPTEN)
+    # OCCT reports failures with exceptions: native WebAssembly ones, in every library (here,
+    # before the vendored ones), since link-time optimisation refuses a setjmp (libpng's)
+    # compiled without them.
+    add_compile_options(-fwasm-exceptions -sWASM_LEGACY_EXCEPTIONS=0)
+    add_link_options(-fwasm-exceptions -sWASM_LEGACY_EXCEPTIONS=0)
+endif()
+
 # common dependencies
 
 if(APPLE)
@@ -454,21 +471,9 @@ if(ENABLE_NG_GUI)
     set(BUILD_SHARED_LIBS ${NG_SAVED_BUILD_SHARED_LIBS})
 endif()
 
-# Open CASCADE, for the OCCT kernel (off by default for the web; a web build with it needs JSPI)
+# Open CASCADE, for the OCCT kernel (the option and its flags are set before the dependencies)
 
-if(EMSCRIPTEN)
-    set(ENABLE_OCCT_DEFAULT OFF)
-else()
-    set(ENABLE_OCCT_DEFAULT ON)
-endif()
-set(ENABLE_OCCT ${ENABLE_OCCT_DEFAULT} CACHE BOOL
-    "Whether to build the Open CASCADE kernel (extlib/occt)")
 if(ENABLE_OCCT)
-    if(EMSCRIPTEN)
-        # OCCT reports failures with exceptions: native WebAssembly ones, everywhere.
-        add_compile_options(-fwasm-exceptions -sWASM_LEGACY_EXCEPTIONS=0)
-        add_link_options(-fwasm-exceptions -sWASM_LEGACY_EXCEPTIONS=0)
-    endif()
     include(OcctVendored)
 endif()
 
