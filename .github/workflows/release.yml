@@ -7,8 +7,6 @@ on:
   push:
     tags:
       - 'v*'
-    branches:
-      - ng/releases # TEMPORARY: to try the workflow before it reaches master
   workflow_dispatch:
 
 permissions:

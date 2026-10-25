@@ -690,6 +690,14 @@ macOS and Emscripten builds.
     browser's IndexedDB between visits: it holds those files and the settings
     (`/data/settings`), which are saved every two seconds while they change
     (`SaveWebSettings`, `SolveSpaceUI::SaveSettings`), since a closed tab never quits.
+  - Releases (added 2026-10-25, #20): pushing a tag `v*` runs `.github/workflows/release.yml`,
+    which builds a Linux tarball (on Ubuntu 22.04, relocatable: `bin/` finds
+    `share/solvespace/`), a Windows zip (with ANGLE's DLLs and `vcomp140.dll`) and an Apple
+    silicon app bundle (`src/CMakeLists.txt` puts its resources and libomp inside and signs it
+    ad hoc; the release is built without OpenMP, as CI's only arm64 libomp is Homebrew's
+    bottle for the newest macOS), and publishes them as a prerelease with
+    `.github/release-notes.md`. Run by hand, it only keeps the packages as artifacts. Tags
+    are the owner's call.
   - `origin` stays the owner's private repo on the LAN: `github-master`, the `pr/` branches and
     anything not yet published.
   - Never push to `solvespace/solvespace` or open PRs there; nothing goes to the official repo
