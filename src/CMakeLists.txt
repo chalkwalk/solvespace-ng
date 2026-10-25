@@ -568,35 +568,33 @@ if(APPLE AND ENABLE_OPENMP AND NOT TARGET solvespace)
     endif()
 endif()
 
-# solvespace macOS package (the retired Cocoa app's bundle; solvespace-ng's is still to do)
+# solvespace-ng macOS bundle: the resources and libomp go inside it, and it is signed ad hoc
+# (Apple silicon runs nothing unsigned), so solvespace-ng.app can be copied anywhere.
 
-if(APPLE AND TARGET solvespace)
-    set(LIBOMP_LIB_PATH ${OpenMP_CXX_INCLUDE_DIRS}/../lib/libomp.dylib)
-    set(LIBOMP_LINK_PATH "@executable_path/../Resources/libomp.dylib")
-    set(LIBOMP_LINK_PATH_UTILS "@executable_path/SolveSpace.app/Contents/Resources/libomp.dylib")
-    if(ENABLE_GUI)
-        add_custom_command(TARGET solvespace POST_BUILD
-            COMMAND cp -r ${CMAKE_BINARY_DIR}/Resources $<TARGET_BUNDLE_CONTENT_DIR:solvespace>
-        )
-        if(ENABLE_OPENMP)
-            execute_process(COMMAND install_name_tool -id ${LIBOMP_LINK_PATH} ${LIBOMP_LIB_PATH})
-            message("FROM " ${${LIBOMP_LIB_PATH}} "TO" $<TARGET_BUNDLE_CONTENT_DIR:solvespace>/Resources/libomp.dylib)
-            add_custom_command(TARGET solvespace POST_BUILD
-                COMMAND ${CMAKE_COMMAND} -E copy ${LIBOMP_LIB_PATH} $<TARGET_BUNDLE_CONTENT_DIR:solvespace>/Resources/libomp.dylib
-                COMMAND install_name_tool -change ${LIBOMP_LINK_PATH} ${LIBOMP_LINK_PATH_UTILS} $<TARGET_FILE:solvespace-debugtool>
-            )
-        endif()
-    endif()
-    if(ENABLE_TESTS AND ENABLE_OPENMP)
-        add_custom_command(TARGET solvespace POST_BUILD
-            COMMAND install_name_tool -change ${LIBOMP_LINK_PATH} ${LIBOMP_LINK_PATH_UTILS} $<TARGET_FILE:solvespace-testsuite>)
-    endif()
-    if(ENABLE_CLI)
-        add_custom_command(TARGET solvespace POST_BUILD
-            COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:solvespace-cli> $<TARGET_FILE_DIR:solvespace>
-            COMMENT "Bundling executable solvespace-cli"
+if(APPLE AND TARGET solvespace-ng)
+    set(ng_contents $<TARGET_BUNDLE_CONTENT_DIR:solvespace-ng>)
+    add_custom_command(TARGET solvespace-ng POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_BINARY_DIR}/Resources
+                ${ng_contents}/Resources
+        VERBATIM)
+    if(ENABLE_OPENMP)
+        list(GET OpenMP_CXX_LIBRARIES 0 libomp_path)
+        execute_process(COMMAND otool -D ${libomp_path} OUTPUT_VARIABLE libomp_id
+                        OUTPUT_STRIP_TRAILING_WHITESPACE)
+        string(REGEX REPLACE "^[^\n]*\n" "" libomp_id "${libomp_id}") # after "path:"
+        add_custom_command(TARGET solvespace-ng POST_BUILD
+            COMMAND ${CMAKE_COMMAND} -E make_directory ${ng_contents}/Frameworks
+            COMMAND ${CMAKE_COMMAND} -E copy ${libomp_path} ${ng_contents}/Frameworks/libomp.dylib
+            COMMAND chmod u+w ${ng_contents}/Frameworks/libomp.dylib
+            COMMAND install_name_tool -id @executable_path/../Frameworks/libomp.dylib
+                    ${ng_contents}/Frameworks/libomp.dylib
+            COMMAND install_name_tool -change ${libomp_id}
+                    @executable_path/../Frameworks/libomp.dylib $<TARGET_FILE:solvespace-ng>
             VERBATIM)
     endif()
+    add_custom_command(TARGET solvespace-ng POST_BUILD
+        COMMAND codesign --force --deep --sign - $<TARGET_BUNDLE_DIR:solvespace-ng>
+        VERBATIM)
 endif()
 
 add_subdirectory(slvs)

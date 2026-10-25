@@ -1,0 +1,80 @@
+name: Release builds
+
+# A tag v* builds SolveSpace NG for Linux, Windows and macOS and publishes them as a GitHub
+# release; run by hand, it only uploads the packages as artifacts of the run.
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  linux:
+    # The oldest supported runner: its glibc sets the oldest distribution the build runs on.
+    runs-on: ubuntu-22.04
+    name: Linux
+    steps:
+    - uses: actions/checkout@v6
+    - name: Install Dependencies
+      run: .github/scripts/install-ubuntu.sh
+    - name: Build and package
+      run: .github/scripts/package-linux.sh
+    - uses: actions/upload-artifact@v4
+      with:
+        name: linux
+        path: dist/*
+
+  windows:
+    runs-on: windows-2022
+    name: Windows
+    steps:
+    - uses: actions/checkout@v6
+    - name: Install Dependencies
+      run: .github/scripts/install-windows.sh
+      shell: bash
+    - name: Build and test
+      run: .github/scripts/build-windows.sh
+      shell: bash
+    - name: Package
+      run: .github/scripts/package-windows.sh
+      shell: bash
+    - uses: actions/upload-artifact@v4
+      with:
+        name: windows
+        path: dist/*
+
+  macos:
+    runs-on: macos-latest
+    name: macOS
+    steps:
+    - uses: actions/checkout@v6
+    - name: Install Dependencies
+      run: .github/scripts/install-macos.sh ci
+    - name: Build, test and package
+      run: .github/scripts/package-macos.sh
+    - uses: actions/upload-artifact@v4
+      with:
+        name: macos
+        path: dist/*
+
+  release:
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: [linux, windows, macos]
+    runs-on: ubuntu-latest
+    name: Publish the release
+    steps:
+    - uses: actions/checkout@v6
+    - uses: actions/download-artifact@v4
+      with:
+        path: dist
+        merge-multiple: true
+    - name: Create the release
+      env:
+        GH_TOKEN: ${{ github.token }}
+      run: |
+        gh release create "$GITHUB_REF_NAME" dist/* --title "SolveSpace NG $GITHUB_REF_NAME" \
+          --notes-file .github/release-notes.md --prerelease
