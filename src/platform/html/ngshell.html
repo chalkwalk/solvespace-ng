@@ -97,6 +97,14 @@
     k.addEventListener('keypress', function(e) { e.stopPropagation(); });
     k.addEventListener('keyup', function(e) { e.stopPropagation(); });
   })();
+  // ?open=URL opens a model from that URL (same origin, or one that allows CORS).
+  var openUrl = new URLSearchParams(location.search).get('open');
+  if(openUrl) {
+    Module.arguments = ['/model.slvs'];
+    Module.preRun = [function() {
+      Module.FS_createPreloadedFile('/', 'model.slvs', openUrl, true, false);
+    }];
+  }
 </script>
 {{{ SCRIPT }}}
 </body>

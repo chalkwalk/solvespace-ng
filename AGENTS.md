@@ -327,8 +327,12 @@ configure a build with `-DCMAKE_CXX_FLAGS=-fsanitize=thread`), `test/ngui/regen/
 
 **Built in M3a (2026-10-21, branch `ng/m3-occt`):** Open CASCADE V7_9_3 is a shallow
 submodule (`extlib/occt`), built once per build directory as a Release static external
-project with only the toolkits used (`cmake/OcctVendored.cmake`; `ENABLE_OCCT`, off for the
-web; `OCCT_PREFIX` reuses another build's install, e.g. for the ThreadSanitizer build).
+project with only the toolkits used (`cmake/OcctVendored.cmake`; `ENABLE_OCCT`, off by default
+for the web; `OCCT_PREFIX` reuses another build's install, e.g. for the ThreadSanitizer build).
+A web build with OCCT (2026-10-24, #3) uses native WebAssembly exceptions and JSPI instead of
+ASYNCIFY, which don't mix with them (Chrome and Edge 137+; `src/platform/html/jspi-check.js`
+tells other browsers); OCCT itself is built without `OCC_CONVERT_SIGNALS` and longjmp, whose
+setjmp inside try blocks crashes LLVM's wasm backend.
 `OcctKernel` (`src/kernel/occtkernel.cpp`) makes extrude, lathe, revolve, helix, step and
 repeat and the four combines as B-reps (`KernelShape`, kept in each `Body` and group beside
 the shell and mesh) and hands the rest of SolveSpace their tessellation: true normals and
@@ -673,10 +677,12 @@ macOS and Emscripten builds.
     are published there. GitHub Actions runs `.github/workflows/test.yml` on
     every push: Ubuntu must pass; Windows and macOS may fail until their first green run.
     Agents push to `github` only when the owner says so. `.github/workflows/pages.yml` builds
-    both web versions (single-threaded: Pages can't send cross-origin isolation headers) and
+    the web versions (single-threaded: Pages can't send cross-origin isolation headers) and
     publishes them to GitHub Pages: a landing page (`.github/pages/index.html`), SolveSpace NG
     in `ng/` (`solvespace-ng` built with Emscripten: WebGL 2, ASYNCIFY for its event loops, no
-    background regeneration, no OCCT) and the classic `guihtml` build in `classic/`. In the
+    background regeneration, no OCCT), the same with OCCT in `ng-occt/` (JSPI; its OCCT install
+    is cached between runs) and the classic `guihtml` build in `classic/`. `?open=URL` opens a
+    model from that URL. In the
     browser, NG's Open copies a file picked with the browser's picker into `/data`, and Save
     asks for a name; every save and export is downloaded (`PickWebFile`, `AskWebSaveName`,
     `DownloadWebFiles` in `guisdl.cpp`; added 2026-10-24). `/data` is IDBFS, kept in the

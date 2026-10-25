@@ -454,7 +454,7 @@ if(ENABLE_NG_GUI)
     set(BUILD_SHARED_LIBS ${NG_SAVED_BUILD_SHARED_LIBS})
 endif()
 
-# Open CASCADE, for the OCCT kernel (desktop only; the web build keeps SolveSpace's own kernel)
+# Open CASCADE, for the OCCT kernel (off by default for the web; a web build with it needs JSPI)
 
 if(EMSCRIPTEN)
     set(ENABLE_OCCT_DEFAULT OFF)
@@ -464,6 +464,11 @@ endif()
 set(ENABLE_OCCT ${ENABLE_OCCT_DEFAULT} CACHE BOOL
     "Whether to build the Open CASCADE kernel (extlib/occt)")
 if(ENABLE_OCCT)
+    if(EMSCRIPTEN)
+        # OCCT reports failures with exceptions: native WebAssembly ones, everywhere.
+        add_compile_options(-fwasm-exceptions -sWASM_LEGACY_EXCEPTIONS=0)
+        add_link_options(-fwasm-exceptions -sWASM_LEGACY_EXCEPTIONS=0)
+    endif()
     include(OcctVendored)
 endif()
 
