@@ -62,6 +62,10 @@ else()
     set(occt_cxx_flags)
     if(ENABLE_SANITIZERS AND NOT MSVC)
         set(occt_cxx_flags -DCMAKE_CXX_FLAGS=-fno-omit-frame-pointer)
+    elseif(MSVC)
+        # SolveSpace links the static C runtime (/MT); OCCT would otherwise take /MD.
+        set(occt_cxx_flags -DCMAKE_POLICY_DEFAULT_CMP0091=NEW
+            -DCMAKE_MSVC_RUNTIME_LIBRARY=MultiThreaded)
     endif()
     ExternalProject_Add(occt-external
         SOURCE_DIR       ${OCCT_SOURCE_DIR}
