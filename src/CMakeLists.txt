@@ -366,11 +366,19 @@ if(ENABLE_GUI AND ENABLE_NG_GUI)
 
     if(EMSCRIPTEN)
         # The web build of solvespace-ng: WebGL 2, and ASYNCIFY for the app's own event loops.
+        # With OCCT, JSPI instead: ASYNCIFY and native WebAssembly exceptions don't mix
+        # (Chrome 137 or later; jspi-check.js tells other browsers).
         # IDBFS keeps /data (files and settings) in the browser between visits.
-        set(ng_web_flags
-            "-sALLOW_MEMORY_GROWTH=1" "-sASYNCIFY=1" "-sASYNCIFY_STACK_SIZE=1048576"
-            "-sSTACK_SIZE=33554432" "-sINITIAL_MEMORY=134217728"
+        if(ENABLE_OCCT)
+            set(ng_web_flags "-sJSPI=1"
+                --pre-js "\"${CMAKE_CURRENT_SOURCE_DIR}/platform/html/jspi-check.js\"")
+        else()
+            set(ng_web_flags "-sASYNCIFY=1" "-sASYNCIFY_STACK_SIZE=1048576")
+        endif()
+        list(APPEND ng_web_flags
+            "-sALLOW_MEMORY_GROWTH=1" "-sSTACK_SIZE=33554432" "-sINITIAL_MEMORY=134217728"
             "-sMIN_WEBGL_VERSION=2" "-sMAX_WEBGL_VERSION=2" "-lidbfs.js"
+            "-sEXPORTED_RUNTIME_METHODS=FS_createPreloadedFile" # for the page's ?open=
             --shell-file "\"${CMAKE_CURRENT_SOURCE_DIR}/platform/html/ngshell.html\"")
         get_target_property(ng_resources resources SOURCES)
         foreach(resource ${ng_resources})
@@ -379,11 +387,13 @@ if(ENABLE_GUI AND ENABLE_NG_GUI)
         endforeach()
         set(ng_resp_file "${CMAKE_CURRENT_BINARY_DIR}/emscripten_ng_flags.rsp")
         file(GENERATE OUTPUT "${ng_resp_file}" CONTENT "$<JOIN:${ng_web_flags},\n>")
+        set(ng_link_depends ${ng_resp_file} ${ng_resources}
+            ${CMAKE_CURRENT_SOURCE_DIR}/platform/html/ngshell.html
+            ${CMAKE_CURRENT_SOURCE_DIR}/platform/html/jspi-check.js)
         set_target_properties(solvespace-ng PROPERTIES
             SUFFIX ".html"
             LINK_FLAGS "@${ng_resp_file}"
-            LINK_DEPENDS
-                "${CMAKE_CURRENT_SOURCE_DIR}/platform/html/ngshell.html;${ng_resp_file};${ng_resources}")
+            LINK_DEPENDS "${ng_link_depends}")
     endif()
 endif()
 

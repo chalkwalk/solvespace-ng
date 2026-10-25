@@ -66,6 +66,13 @@ else()
         # SolveSpace links the static C runtime (/MT); OCCT would otherwise take /MD.
         set(occt_cxx_flags -DCMAKE_POLICY_DEFAULT_CMP0091=NEW
             -DCMAKE_MSVC_RUNTIME_LIBRARY=MultiThreaded)
+    elseif(EMSCRIPTEN)
+        # Native WebAssembly exceptions, as solvespace-ng's web build uses (with JSPI). No
+        # signals to turn into exceptions in a browser: without OCC_CONVERT_SIGNALS,
+        # OCC_CATCH_SIGNALS needs no setjmp, whose wasm lowering inside try blocks crashes LLVM.
+        set(occt_web_flags
+            "-fwasm-exceptions -sWASM_LEGACY_EXCEPTIONS=0 -sSUPPORT_LONGJMP=0 -UOCC_CONVERT_SIGNALS")
+        set(occt_cxx_flags "-DCMAKE_CXX_FLAGS=${occt_web_flags}" "-DCMAKE_C_FLAGS=${occt_web_flags}")
     endif()
     ExternalProject_Add(occt-external
         SOURCE_DIR       ${OCCT_SOURCE_DIR}

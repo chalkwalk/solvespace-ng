@@ -26,25 +26,47 @@ jobs:
         git clone --depth 1 https://github.com/emscripten-core/emsdk.git ../emsdk
         ../emsdk/emsdk install 6.0.13
         ../emsdk/emsdk activate 6.0.13
-    - name: Build
-      # Without OpenMP: threads need cross-origin isolation headers, which Pages can't send.
+    - name: Check out the submodules
+      id: submodules
       run: |
         git submodule update --init extlib/cairo extlib/freetype extlib/libdxfrw \
           extlib/libpng extlib/mimalloc extlib/pixman extlib/zlib extlib/eigen \
           extlib/SDL extlib/imgui extlib/lunasvg
+        git submodule update --init --depth 1 extlib/occt
+        echo "occt=$(git rev-parse HEAD:extlib/occt)" >> "$GITHUB_OUTPUT"
+    # Open CASCADE built with Emscripten takes most of the job: keep its install between runs.
+    - name: Cache Open CASCADE for the web
+      uses: actions/cache@v4
+      with:
+        path: occt-web
+        key: occt-web-${{ steps.submodules.outputs.occt }}-${{ hashFiles('cmake/OcctVendored.cmake') }}-emsdk-6.0.13
+    - name: Build
+      # Without OpenMP: threads need cross-origin isolation headers, which Pages can't send.
+      run: |
         source ../emsdk/emsdk_env.sh
+        flags="-DCMAKE_BUILD_TYPE=Release -DENABLE_CLI=OFF -DENABLE_TESTS=OFF \
+          -DENABLE_COVERAGE=OFF -DENABLE_OPENMP=OFF -DENABLE_LTO=ON -DENABLE_NG_GUI=ON"
         mkdir build
-        cd build
-        emcmake cmake .. -DCMAKE_BUILD_TYPE=Release -DENABLE_CLI=OFF -DENABLE_TESTS=OFF \
-          -DENABLE_COVERAGE=OFF -DENABLE_OPENMP=OFF -DENABLE_LTO=ON -DENABLE_NG_GUI=ON
-        cmake --build . -j$(nproc) --target solvespace solvespace-ng
-        # A landing page, SolveSpace NG in ng/, the classic web interface in classic/.
-        mkdir -p ../site/ng ../site/classic
-        cp ../.github/pages/index.html ../site/
-        cp bin/solvespace-ng.* ../site/ng/
-        cp ../site/ng/solvespace-ng.html ../site/ng/index.html
-        cp bin/solvespace.* bin/solvespaceui.* bin/filemanagerui.js ../site/classic/
-        cp ../site/classic/solvespace.html ../site/classic/index.html
+        (cd build && emcmake cmake .. $flags &&
+          cmake --build . -j$(nproc) --target solvespace solvespace-ng)
+        # SolveSpace NG with Open CASCADE (JSPI: Chrome and Edge 137 and later).
+        occt_prefix=
+        if [ -d occt-web/lib ]; then occt_prefix="-DOCCT_PREFIX=$PWD/occt-web"; fi
+        mkdir build-occt
+        (cd build-occt && emcmake cmake .. $flags -DENABLE_OCCT=ON $occt_prefix &&
+          cmake --build . -j$(nproc) --target solvespace-ng)
+        if [ -z "$occt_prefix" ]; then cp -r build-occt/occt/install occt-web; fi
+        # A landing page, SolveSpace NG in ng/ (with Open CASCADE in ng-occt/), the classic
+        # web interface in classic/.
+        mkdir -p site/ng site/ng-occt site/classic
+        cp .github/pages/index.html site/
+        cp build/bin/solvespace-ng.* site/ng/
+        cp site/ng/solvespace-ng.html site/ng/index.html
+        cp build-occt/bin/solvespace-ng.* site/ng-occt/
+        cp site/ng-occt/solvespace-ng.html site/ng-occt/index.html
+        cp build/bin/solvespace.* build/bin/solvespaceui.* build/bin/filemanagerui.js \
+          site/classic/
+        cp site/classic/solvespace.html site/classic/index.html
     - uses: actions/upload-pages-artifact@v4
       with:
         path: site
