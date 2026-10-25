@@ -11,10 +11,10 @@ cmake \
   -DENABLE_LTO="ON" \
   -DENABLE_NG_GUI="ON" \
   -DENABLE_TESTS="OFF" \
-  -DCMAKE_INSTALL_PREFIX=/ \
   ..
 make -j$(nproc)
-DESTDIR=../dist/${NAME} cmake --install . --strip
+# --prefix, not DESTDIR with a prefix of /: GNUInstallDirs would make that usr/.
+cmake --install . --strip --prefix "$(pwd)/../dist/${NAME}"
 cd ..
 cp COPYING.txt dist/${NAME}/
 tar -C dist -czf dist/${NAME}.tar.gz ${NAME}

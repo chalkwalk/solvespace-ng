@@ -6,8 +6,8 @@ are the repository's issues.
 **Downloads**
 
 - **Linux** (`solvespace-ng-linux-x86_64.tar.gz`): unpack anywhere and run
-  `bin/solvespace-ng`. Built on Ubuntu 22.04; needs glibc 2.35 or later, OpenGL, libpng and
-  FreeType.
+  `bin/solvespace-ng`. Built on Ubuntu 22.04; needs glibc 2.35 or later, OpenGL, libpng, FreeType and
+  the OpenMP runtime (libgomp).
 - **Windows** (`solvespace-ng-windows-x64.zip`): unpack and run `solvespace-ng.exe`. Keep the
   DLLs beside it.
 - **macOS** (`solvespace-ng-macos-arm64.zip`, Apple silicon): unpack and move
