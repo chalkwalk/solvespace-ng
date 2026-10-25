@@ -49,6 +49,11 @@ if [ "$3" = "xcode" ]; then
 else
     cmake --build . --config "${BUILD_TYPE}" -j$(sysctl -n hw.logicalcpu)
     if [ $(uname -m) = "$2" ]; then
-        make -j$(sysctl -n hw.logicalcpu) test_solvespace
+        if ! make -j$(sysctl -n hw.logicalcpu) test_solvespace; then
+            # The crash leaves no backtrace in the log: run the suite again under lldb for one.
+            (cd test && lldb --batch -o run -k "thread backtrace all" -k quit \
+                -- ../bin/solvespace-testsuite) || true
+            exit 1
+        fi
     fi
 fi

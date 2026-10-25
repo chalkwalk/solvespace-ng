@@ -306,8 +306,13 @@ def main():
                         app.kill()
     finally:
         if xvfb:
-            xvfb.kill()
-            xvfb.wait()
+            # SIGTERM, so Xvfb removes its /tmp/.X<n>-lock; killed, it leaves the display taken.
+            xvfb.terminate()
+            try:
+                xvfb.wait(timeout=10)
+            except subprocess.TimeoutExpired:
+                xvfb.kill()
+                xvfb.wait()
     print("x11: %s" % ("all passed" if not failed else "%d failed" % failed))
     return 1 if failed else 0
 

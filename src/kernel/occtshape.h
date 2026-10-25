@@ -5,6 +5,13 @@
 #ifndef SOLVESPACE_KERNEL_OCCTSHAPE_H
 #define SOLVESPACE_KERNEL_OCCTSHAPE_H
 
+#if defined(_WIN32)
+// Before any OCCT header: OCCT defines NOUSER and the like to trim windows.h, and the Windows
+// SDK (10.0.26100) then fails in winuser.inl when an OCCT header includes it. winuser.h's
+// DIFFERENCE would replace KernelCombine::DIFFERENCE.
+#   include <windows.h>
+#   undef DIFFERENCE
+#endif
 #include <NCollection_DataMap.hxx>
 #include <TopTools_ShapeMapHasher.hxx>
 #include <TopoDS_Shape.hxx>

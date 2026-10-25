@@ -546,6 +546,18 @@ if(NOT (WIN32 OR APPLE OR EMSCRIPTEN))
     endif()
 endif()
 
+# An unpacked Homebrew bottle of libomp (macOS CI) names itself
+# @@HOMEBREW_PREFIX@@/opt/libomp/lib/libomp.dylib, which dyld can't load: OpenMP calls then
+# jump to null. Name it by where it is (re-signed, as the edit breaks its signature).
+if(APPLE AND ENABLE_OPENMP AND NOT TARGET solvespace)
+    list(GET OpenMP_CXX_LIBRARIES 0 libomp_path)
+    execute_process(COMMAND otool -D ${libomp_path} OUTPUT_VARIABLE libomp_id)
+    if(libomp_id MATCHES "@@HOMEBREW_PREFIX@@")
+        execute_process(COMMAND install_name_tool -id ${libomp_path} ${libomp_path})
+        execute_process(COMMAND codesign --force --sign - ${libomp_path})
+    endif()
+endif()
+
 # solvespace macOS package (the retired Cocoa app's bundle; solvespace-ng's is still to do)
 
 if(APPLE AND TARGET solvespace)

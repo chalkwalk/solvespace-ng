@@ -21,10 +21,10 @@ std::string ConstraintLabel(const Constraint &c);
 
 struct SelectionRow {
     std::string label, value;
-    hEntity     entity;
-    hConstraint constraint;
-    hGroup      group;
-    hStyle      style;
+    hEntity     entity     = {};
+    hConstraint constraint = {};
+    hGroup      group      = {};
+    hStyle      style      = {};
 };
 
 struct SelectionSection {
@@ -40,14 +40,14 @@ struct SelectionModel {
     std::vector<SelectionSection> sections;
 
     // Exactly one constraint selected.
-    hConstraint constraint;
+    hConstraint constraint = {};
     bool        isComment = false, hasValue = false, reference = false;
     bool        isDiameter = false, showAsRadius = false;
     std::string valueText; // at the display precision
     std::string unit;      // shown beside the value: "mm", "\xC2\xB0", or nothing for a ratio
 
     // A TrueType text entity from a request.
-    hRequest    ttf;
+    hRequest    ttf        = {};
     std::string ttfText, ttfFont;
     bool        ttfKerning = false;
 

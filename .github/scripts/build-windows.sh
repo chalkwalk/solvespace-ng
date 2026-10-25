@@ -15,4 +15,7 @@ cmake \
     ..
 
 cmake --build . --config "${BUILD_TYPE}" -- -maxcpucount
-cmake --build . --config "${BUILD_TYPE}" -t test_solvespace -- -maxcpucount
+# Not through the test_solvespace target: MSBuild takes the "Error: ..." lines that headless
+# message boxes print for a build error, and fails the step after the suite has passed.
+cd test
+../bin/${BUILD_TYPE}/solvespace-testsuite.exe
