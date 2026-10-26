@@ -282,6 +282,8 @@ if(ENABLE_GUI AND ENABLE_NG_GUI)
     if(APPLE)
         # Legacy GL 2.1 context on macOS: no vertex array objects for the GL3 backend.
         target_sources(imgui-sdl3 PRIVATE ${IMGUI_DIR}/backends/imgui_impl_opengl2.cpp)
+    elseif(WIN32)
+        target_sources(imgui-sdl3 PRIVATE platform/sdl/imguiangle.cpp)
     else()
         target_sources(imgui-sdl3 PRIVATE ${IMGUI_DIR}/backends/imgui_impl_opengl3.cpp)
     endif()
