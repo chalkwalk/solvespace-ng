@@ -4,7 +4,7 @@
 NAME=solvespace-ng-windows-x64
 
 mkdir -p dist/${NAME}
-cp build/bin/Release/solvespace-ng.exe build/bin/Release/EGL.dll build/bin/Release/GLESv2.dll \
+cp build/bin/Release/solvespace-ng.exe build/bin/Release/libEGL.dll build/bin/Release/libGLESv2.dll \
    dist/${NAME}/
 # OpenMP (/openmp) needs vcomp140.dll, which the static C runtime doesn't include.
 vcomp=$(find "/c/Program Files/Microsoft Visual Studio/2022" \

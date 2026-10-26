@@ -412,6 +412,12 @@ if(ENABLE_GUI)
             set(ANGLE_ENABLE_GLSL       ON  CACHE INTERNAL "")
             set(ANGLE_ENABLE_HLSL       ON  CACHE INTERNAL "")
             add_vendored_subdirectory(extlib/angle)
+            if(ENABLE_NG_GUI)
+                # Name the DLLs as their .def files (and so the import libraries) do, which is
+                # also what SDL loads: libEGL.dll and libGLESv2.dll.
+                set_target_properties(EGL PROPERTIES PREFIX "" OUTPUT_NAME libEGL)
+                set_target_properties(GLESv2 PROPERTIES PREFIX "" OUTPUT_NAME libGLESv2)
+            endif()
             set(OPENGL_LIBRARIES        EGL GLESv2)
             set(OPENGL_INCLUDE_DIR      ${CMAKE_SOURCE_DIR}/extlib/angle/include)
         else()
