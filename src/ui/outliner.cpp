@@ -46,7 +46,7 @@ std::function<void()> DrawOutliner() {
     ImGui::TableSetupColumn("##active", ImGuiTableColumnFlags_WidthFixed);
     ImGui::TableSetupColumn("##shown", ImGuiTableColumnFlags_WidthFixed);
     ImGui::TableSetupColumn("DOF", ImGuiTableColumnFlags_WidthFixed);
-    ImGui::TableSetupColumn("Group", ImGuiTableColumnFlags_WidthStretch);
+    ImGui::TableSetupColumn(_("Group"), ImGuiTableColumnFlags_WidthStretch);
     ImGui::TableHeadersRow();
     for(const OutlinerRow &r : BuildOutliner()) {
         hGroup hg = r.group;
@@ -129,15 +129,15 @@ std::function<void()> DrawOutliner() {
                 }
             }
             if(ImGui::BeginPopupContextItem("##context")) {
-                if(ImGui::MenuItem("Rename", nullptr, false, !r.references)) {
+                if(ImGui::MenuItem(_("Rename"), nullptr, false, !r.references)) {
                     gRenaming    = hg;
                     gRenameFocus = true;
                     snprintf(gRenameText, sizeof(gRenameText), "%s", r.name.c_str());
                 }
-                if(ImGui::MenuItem("Isolate")) {
+                if(ImGui::MenuItem(_("Isolate"))) {
                     run = [hg] { SS.GW.IsolateGroups({ hg }); };
                 }
-                if(ImGui::MenuItem("Delete", nullptr, false, !r.references)) {
+                if(ImGui::MenuItem(_("Delete"), nullptr, false, !r.references)) {
                     run = [hg] { SS.GW.DeleteGroup(hg); };
                 }
                 ImGui::EndPopup();
@@ -152,7 +152,7 @@ std::function<void()> DrawOutliner() {
         if(&j == &*SK.joint.begin()) {
             ImGui::TableNextRow();
             ImGui::TableSetColumnIndex(3);
-            ImGui::TextDisabled("Joints");
+            ImGui::TextDisabled(_("Joints"));
         }
         hJoint hj = j.h;
         ImGui::TableNextRow();

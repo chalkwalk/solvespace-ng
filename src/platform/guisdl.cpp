@@ -611,7 +611,7 @@ static bool AskWebSaveName(const std::string &title, const std::vector<FileFilte
         if(name === null) return 0;
         stringToUTF8(name, $2, $3);
         return 1;
-    }, title.empty() ? "Save as" : title.c_str(), suggested.c_str(), answer, (int)sizeof(answer));
+    }, title.empty() ? _("Save as") : title.c_str(), suggested.c_str(), answer, (int)sizeof(answer));
     std::string file = ok ? WebFileName(answer) : "";
     if(file.empty()) return false;
     std::error_code ec;

@@ -10,31 +10,31 @@ namespace Ui {
 
 const std::vector<UiActionInfo> &UiActionList() {
     static const std::vector<UiActionInfo> list = {
-        { "ui.command-palette", "View \xE2\x80\xBA Command Palette" },
-        { "ui.toggle-menu-bar", "View \xE2\x80\xBA Toggle Menu Bar" },
-        { "ui.toggle-theme",    "View \xE2\x80\xBA Toggle Theme" },
-        { "ui.toggle-outliner", "View \xE2\x80\xBA Outliner" },
-        { "ui.toggle-properties", "View \xE2\x80\xBA Properties" },
-        { "ui.toggle-problems", "View \xE2\x80\xBA Problems" },
-        { "ui.view-front",          "View \xE2\x80\xBA Front" },
-        { "ui.view-back",           "View \xE2\x80\xBA Back" },
-        { "ui.view-right",          "View \xE2\x80\xBA Right" },
-        { "ui.view-left",           "View \xE2\x80\xBA Left" },
-        { "ui.view-top",            "View \xE2\x80\xBA Top" },
-        { "ui.view-bottom",         "View \xE2\x80\xBA Bottom" },
-        { "ui.view-frame-selected", "View \xE2\x80\xBA Frame Selected" },
-        { "ui.hide",                "View \xE2\x80\xBA Hide Group" },
-        { "ui.unhide-all",          "View \xE2\x80\xBA Show All Groups" },
-        { "ui.isolate",             "View \xE2\x80\xBA Isolate Group" },
-        { "ui.toggle-sketch",       "Sketch \xE2\x80\xBA Enter/Exit Sketch" },
-        { "ui.grab",                "Edit \xE2\x80\xBA Grab" },
-        { "ui.smart-dimension",     "Constrain \xE2\x80\xBA Smart Dimension" },
-        { "ui.pie-add",             "Sketch \xE2\x80\xBA Add\xE2\x80\xA6 (pie)" },
-        { "ui.pie-constrain",       "Constrain \xE2\x80\xBA Constrain\xE2\x80\xA6 (pie)" },
-        { "ui.pie-view",            "View \xE2\x80\xBA Views\xE2\x80\xA6 (pie)" },
-        { "ui.show-shortcuts",      "Help \xE2\x80\xBA Keyboard Shortcuts" },
-        { "ui.fit-table",           "Inspect \xE2\x80\xBA Fit Table" },
-        { "ui.pie-joint",           "New Group \xE2\x80\xBA Joints\xE2\x80\xA6 (pie)" },
+        { "ui.command-palette", N_("View \xE2\x80\xBA Command Palette") },
+        { "ui.toggle-menu-bar", N_("View \xE2\x80\xBA Toggle Menu Bar") },
+        { "ui.toggle-theme",    N_("View \xE2\x80\xBA Toggle Theme") },
+        { "ui.toggle-outliner", N_("View \xE2\x80\xBA Outliner") },
+        { "ui.toggle-properties", N_("View \xE2\x80\xBA Properties") },
+        { "ui.toggle-problems", N_("View \xE2\x80\xBA Problems") },
+        { "ui.view-front",          N_("View \xE2\x80\xBA Front") },
+        { "ui.view-back",           N_("View \xE2\x80\xBA Back") },
+        { "ui.view-right",          N_("View \xE2\x80\xBA Right") },
+        { "ui.view-left",           N_("View \xE2\x80\xBA Left") },
+        { "ui.view-top",            N_("View \xE2\x80\xBA Top") },
+        { "ui.view-bottom",         N_("View \xE2\x80\xBA Bottom") },
+        { "ui.view-frame-selected", N_("View \xE2\x80\xBA Frame Selected") },
+        { "ui.hide",                N_("View \xE2\x80\xBA Hide Group") },
+        { "ui.unhide-all",          N_("View \xE2\x80\xBA Show All Groups") },
+        { "ui.isolate",             N_("View \xE2\x80\xBA Isolate Group") },
+        { "ui.toggle-sketch",       N_("Sketch \xE2\x80\xBA Enter/Exit Sketch") },
+        { "ui.grab",                N_("Edit \xE2\x80\xBA Grab") },
+        { "ui.smart-dimension",     N_("Constrain \xE2\x80\xBA Smart Dimension") },
+        { "ui.pie-add",             N_("Sketch \xE2\x80\xBA Add\xE2\x80\xA6 (pie)") },
+        { "ui.pie-constrain",       N_("Constrain \xE2\x80\xBA Constrain\xE2\x80\xA6 (pie)") },
+        { "ui.pie-view",            N_("View \xE2\x80\xBA Views\xE2\x80\xA6 (pie)") },
+        { "ui.show-shortcuts",      N_("Help \xE2\x80\xBA Keyboard Shortcuts") },
+        { "ui.fit-table",           N_("Inspect \xE2\x80\xBA Fit Table") },
+        { "ui.pie-joint",           N_("New Group \xE2\x80\xBA Joints\xE2\x80\xA6 (pie)") },
     };
     return list;
 }
@@ -102,7 +102,7 @@ std::vector<PaletteEntry> BuildPaletteEntries(const std::vector<Platform::FlatMe
     for(const UiActionInfo &a : UiActionList()) {
         if(inMenus.count(a.name)) continue;
         PaletteEntry e;
-        e.label          = a.label;
+        e.label          = _(a.label);
         e.commandName    = a.name;
         e.enabled        = Actions().IsEnabled(a.name);
         std::string name = a.name;

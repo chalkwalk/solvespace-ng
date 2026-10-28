@@ -182,3 +182,15 @@ TEST_CASE(context_menu_offers_grab_for_the_selection) {
     CHECK_TRUE(SS.GW.pending.operation == GraphicsWindow::Pending::GRABBING);
     Driver::Key("Escape");
 }
+
+// Help ▸ Language translates NG's own menus too, not only the core's.
+TEST_CASE(menus_follow_the_language) {
+    CHECK_LOAD("line.slvs");
+    CHECK_TRUE(Driver::ClickMenu({ "Help", "Language", "Deutsch" }));
+    bool german  = Driver::FindItem("Datei").has_value() && Driver::FindItem("Skizze").has_value();
+    bool english = Driver::FindItem("File").has_value() || Driver::FindItem("Help").has_value();
+    CHECK_TRUE(Driver::ClickMenu({ "Hilfe", "Sprache", "English (US)" }));
+    CHECK_TRUE(german);
+    CHECK_FALSE(english);
+    CHECK_TRUE(Driver::FindItem("File").has_value());
+}

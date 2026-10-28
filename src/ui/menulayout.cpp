@@ -52,128 +52,137 @@ struct Top {
 const std::vector<Top> &Layout() {
     using K = Spec::Kind;
     static const std::vector<Top> layout = {
-        { "File", {
-            C(Command::NEW, "New"), C(Command::OPEN, "Open..."),
-            Special(K::RECENT_FILES, "Open Recent"),
-            C(Command::SAVE, "Save"), C(Command::SAVE_AS, "Save As..."), Sep(),
-            C(Command::IMPORT, "Import..."),
-            Sub("Export", {
-                C(Command::EXPORT_IMAGE, "Image..."), C(Command::EXPORT_VIEW, "2D View..."),
-                C(Command::EXPORT_SECTION, "2D Section..."),
-                C(Command::EXPORT_WIREFRAME, "3D Wireframe..."),
-                C(Command::EXPORT_MESH, "Triangle Mesh..."),
-                C(Command::EXPORT_PARTS, "Parts, One File Each..."),
-                C(Command::EXPORT_PARTS_LIST, "Parts List (CSV)..."),
-                C(Command::EXPORT_SURFACES, "Surfaces...") }),
-            Sep(), C(Command::EXIT, "Quit") } },
-        { "Edit", {
-            C(Command::UNDO, "Undo"), C(Command::REDO, "Redo"), Sep(),
-            C(Command::CUT, "Cut"), C(Command::COPY, "Copy"), C(Command::PASTE, "Paste"),
-            C(Command::PASTE_TRANSFORM, "Paste Transformed..."), C(Command::DELETE, "Delete"),
+        { N_("File"), {
+            C(Command::NEW, N_("New")), C(Command::OPEN, N_("Open...")),
+            Special(K::RECENT_FILES, N_("Open Recent")),
+            C(Command::SAVE, N_("Save")), C(Command::SAVE_AS, N_("Save As...")), Sep(),
+            C(Command::IMPORT, N_("Import...")),
+            Sub(N_("Export"), {
+                C(Command::EXPORT_IMAGE, N_("Image...")), C(Command::EXPORT_VIEW, N_("2D View...")),
+                C(Command::EXPORT_SECTION, N_("2D Section...")),
+                C(Command::EXPORT_WIREFRAME, N_("3D Wireframe...")),
+                C(Command::EXPORT_MESH, N_("Triangle Mesh...")),
+                C(Command::EXPORT_PARTS, N_("Parts, One File Each...")),
+                C(Command::EXPORT_PARTS_LIST, N_("Parts List (CSV)...")),
+                C(Command::EXPORT_SURFACES, N_("Surfaces...")) }),
+            Sep(), C(Command::EXIT, N_("Quit")) } },
+        { N_("Edit"), {
+            C(Command::UNDO, N_("Undo")), C(Command::REDO, N_("Redo")), Sep(),
+            C(Command::CUT, N_("Cut")), C(Command::COPY, N_("Copy")),
+            C(Command::PASTE, N_("Paste")),
+            C(Command::PASTE_TRANSFORM, N_("Paste Transformed...")),
+            C(Command::DELETE, N_("Delete")),
             Sep(),
-            C(Command::SELECT_ALL, "Select All"), C(Command::UNSELECT_ALL, "Unselect All"),
-            C(Command::SELECT_CHAIN, "Select Edge Chain"), Sep(),
-            A("ui.grab", "Grab"), C(Command::SNAP_TO_GRID, "Snap to Grid"),
-            C(Command::ROTATE_90, "Rotate Imported 90\xC2\xB0"),
-            C(Command::REGEN_ALL, "Regenerate All"), Sep(),
-            C(Command::EDIT_LINE_STYLES, "Line Styles..."),
-            C(Command::CONFIGURATION, "Preferences...") } },
-        { "View", {
-            C(Command::ZOOM_IN, "Zoom In"), C(Command::ZOOM_OUT, "Zoom Out"),
-            C(Command::ZOOM_TO_FIT, "Zoom to Fit"),
-            A("ui.view-frame-selected", "Frame Selection"),
-            C(Command::CENTER_VIEW, "Center View at Point"), Sep(),
-            Sub("Standard Views", {
-                A("ui.view-front", "Front"), A("ui.view-back", "Back"),
-                A("ui.view-right", "Right"), A("ui.view-left", "Left"),
-                A("ui.view-top", "Top"), A("ui.view-bottom", "Bottom"), Sep(),
-                C(Command::NEAREST_ISO, "Nearest Isometric"),
-                C(Command::NEAREST_ORTHO, "Nearest Orthographic"),
-                C(Command::ONTO_WORKPLANE, "Align to Workplane") }),
+            C(Command::SELECT_ALL, N_("Select All")), C(Command::UNSELECT_ALL, N_("Unselect All")),
+            C(Command::SELECT_CHAIN, N_("Select Edge Chain")), Sep(),
+            A("ui.grab", N_("Grab")), C(Command::SNAP_TO_GRID, N_("Snap to Grid")),
+            C(Command::ROTATE_90, N_("Rotate Imported 90\xC2\xB0")),
+            C(Command::REGEN_ALL, N_("Regenerate All")), Sep(),
+            C(Command::EDIT_LINE_STYLES, N_("Line Styles...")),
+            C(Command::CONFIGURATION, N_("Preferences...")) } },
+        { N_("View"), {
+            C(Command::ZOOM_IN, N_("Zoom In")), C(Command::ZOOM_OUT, N_("Zoom Out")),
+            C(Command::ZOOM_TO_FIT, N_("Zoom to Fit")),
+            A("ui.view-frame-selected", N_("Frame Selection")),
+            C(Command::CENTER_VIEW, N_("Center View at Point")), Sep(),
+            Sub(N_("Standard Views"), {
+                A("ui.view-front", N_("Front")), A("ui.view-back", N_("Back")),
+                A("ui.view-right", N_("Right")), A("ui.view-left", N_("Left")),
+                A("ui.view-top", N_("Top")), A("ui.view-bottom", N_("Bottom")), Sep(),
+                C(Command::NEAREST_ISO, N_("Nearest Isometric")),
+                C(Command::NEAREST_ORTHO, N_("Nearest Orthographic")),
+                C(Command::ONTO_WORKPLANE, N_("Align to Workplane")) }),
             Sep(),
-            C(Command::PERSPECTIVE_PROJ, "Perspective"),
-            C(Command::EXPLODE_SKETCH, "Exploded View"),
-            C(Command::DIM_SOLID_MODEL, "Darken Inactive Solids"),
-            C(Command::SHOW_GRID, "Snap Grid"), Special(K::UNITS, "Units"), Sep(),
-            A("ui.toggle-outliner", "Outliner", true),
-            A("ui.toggle-properties", "Properties", true),
-            A("ui.toggle-problems", "Problems", true),
-            C(Command::SHOW_TOOLBAR, "Tool Shelf"),
-            A("ui.toggle-menu-bar", "Menu Bar", true),
-            A("ui.command-palette", "Command Palette..."), Sep(),
-            A("ui.hide", "Hide Group"), A("ui.isolate", "Isolate Group"),
-            A("ui.unhide-all", "Show All Groups"), Sep(),
-            C(Command::VIEW_PROJECTION, "View Settings..."),
-            A("ui.toggle-theme", "Light Theme", true),
-            C(Command::FULL_SCREEN, "Full Screen") } },
-        { "New Group", {
-            C(Command::PART_NEW, "New Part"), C(Command::GROUP_SPLIT, "Split Part"),
-            Sub("Joints", {
-                C(Command::JOINT_REVOLUTE, "Revolute Joint"),
-                C(Command::JOINT_SLIDER, "Slider Joint"),
-                C(Command::JOINT_CYLINDRICAL, "Cylindrical Joint"),
-                C(Command::JOINT_PLANAR, "Planar Joint"),
-                C(Command::JOINT_BALL, "Ball Joint"), Sep(),
-                C(Command::JOINT_GEAR, "Gear Coupling"), Sep(),
-                C(Command::GROUP_FIT, "Fit Joint") }), Sep(),
-            C(Command::GROUP_3D, "Sketch in 3D"),
-            C(Command::GROUP_WRKPL, "Sketch in New Workplane"), Sep(),
-            C(Command::GROUP_EXTRUDE, "Extrude"),
-            C(Command::GROUP_EXTRUDE_CUT, "Extrude as a Cut"), C(Command::GROUP_REVOLVE, "Revolve"),
-            C(Command::GROUP_LATHE, "Lathe"), C(Command::GROUP_HELIX, "Helix"), Sep(),
-            C(Command::GROUP_FILLET, "Fillet Edges"), C(Command::GROUP_CHAMFER, "Chamfer Edges"),
-            C(Command::GROUP_SHELL, "Shell"), C(Command::GROUP_DRAFT, "Draft Faces"),
-            C(Command::GROUP_HOLE, "Hole"), C(Command::GROUP_LOFT, "Loft"),
-            C(Command::GROUP_SWEEP, "Sweep"),
+            C(Command::PERSPECTIVE_PROJ, N_("Perspective")),
+            C(Command::EXPLODE_SKETCH, N_("Exploded View")),
+            C(Command::DIM_SOLID_MODEL, N_("Darken Inactive Solids")),
+            C(Command::SHOW_GRID, N_("Snap Grid")), Special(K::UNITS, N_("Units")), Sep(),
+            A("ui.toggle-outliner", N_("Outliner"), true),
+            A("ui.toggle-properties", N_("Properties"), true),
+            A("ui.toggle-problems", N_("Problems"), true),
+            C(Command::SHOW_TOOLBAR, N_("Tool Shelf")),
+            A("ui.toggle-menu-bar", N_("Menu Bar"), true),
+            A("ui.command-palette", N_("Command Palette...")), Sep(),
+            A("ui.hide", N_("Hide Group")), A("ui.isolate", N_("Isolate Group")),
+            A("ui.unhide-all", N_("Show All Groups")), Sep(),
+            C(Command::VIEW_PROJECTION, N_("View Settings...")),
+            A("ui.toggle-theme", N_("Light Theme"), true),
+            C(Command::FULL_SCREEN, N_("Full Screen")) } },
+        { N_("New Group"), {
+            C(Command::PART_NEW, N_("New Part")), C(Command::GROUP_SPLIT, N_("Split Part")),
+            Sub(N_("Joints"), {
+                C(Command::JOINT_REVOLUTE, N_("Revolute Joint")),
+                C(Command::JOINT_SLIDER, N_("Slider Joint")),
+                C(Command::JOINT_CYLINDRICAL, N_("Cylindrical Joint")),
+                C(Command::JOINT_PLANAR, N_("Planar Joint")),
+                C(Command::JOINT_BALL, N_("Ball Joint")), Sep(),
+                C(Command::JOINT_GEAR, N_("Gear Coupling")), Sep(),
+                C(Command::GROUP_FIT, N_("Fit Joint")) }), Sep(),
+            C(Command::GROUP_3D, N_("Sketch in 3D")),
+            C(Command::GROUP_WRKPL, N_("Sketch in New Workplane")), Sep(),
+            C(Command::GROUP_EXTRUDE, N_("Extrude")),
+            C(Command::GROUP_EXTRUDE_CUT, N_("Extrude as a Cut")),
+            C(Command::GROUP_REVOLVE, N_("Revolve")),
+            C(Command::GROUP_LATHE, N_("Lathe")), C(Command::GROUP_HELIX, N_("Helix")), Sep(),
+            C(Command::GROUP_FILLET, N_("Fillet Edges")),
+            C(Command::GROUP_CHAMFER, N_("Chamfer Edges")),
+            C(Command::GROUP_SHELL, N_("Shell")), C(Command::GROUP_DRAFT, N_("Draft Faces")),
+            C(Command::GROUP_HOLE, N_("Hole")), C(Command::GROUP_LOFT, N_("Loft")),
+            C(Command::GROUP_SWEEP, N_("Sweep")),
             Sep(),
-            C(Command::GROUP_TRANS, "Linear Pattern"),
-            C(Command::GROUP_ROT, "Circular Pattern"), Sep(),
-            C(Command::GROUP_LINK, "Link Part..."),
-            Special(K::RECENT_LINKS, "Link Recent") } },
-        { "Sketch", {
-            C(Command::SEL_WORKPLANE, "In Workplane"), C(Command::FREE_IN_3D, "Anywhere in 3D"),
+            C(Command::GROUP_TRANS, N_("Linear Pattern")),
+            C(Command::GROUP_ROT, N_("Circular Pattern")), Sep(),
+            C(Command::GROUP_LINK, N_("Link Part...")),
+            Special(K::RECENT_LINKS, N_("Link Recent")) } },
+        { N_("Sketch"), {
+            C(Command::SEL_WORKPLANE, N_("In Workplane")),
+            C(Command::FREE_IN_3D, N_("Anywhere in 3D")),
             Sep(),
-            C(Command::DATUM_POINT, "Point"), C(Command::WORKPLANE, "Workplane"), Sep(),
-            C(Command::LINE_SEGMENT, "Line"), C(Command::CONSTR_SEGMENT, "Construction Line"),
-            C(Command::RECTANGLE, "Rectangle"), C(Command::CIRCLE, "Circle"),
-            C(Command::ARC, "Arc"), C(Command::CUBIC, "Spline"), Sep(),
-            C(Command::TTF_TEXT, "Text"), C(Command::IMAGE, "Image..."), Sep(),
-            C(Command::CONSTRUCTION, "Toggle Construction"),
-            C(Command::TANGENT_ARC, "Tangent Arc at Point"),
-            C(Command::SPLIT_CURVES, "Split at Intersections") } },
-        { "Constrain", {
-            C(Command::DISTANCE_DIA, "Distance / Diameter", "ui.smart-dimension"),
-            C(Command::REF_DISTANCE, "Reference Dimension"),
-            C(Command::ANGLE, "Angle / Equal Angle"), C(Command::REF_ANGLE, "Reference Angle"),
-            C(Command::OTHER_ANGLE, "Supplementary Angle"),
-            C(Command::REFERENCE, "Toggle Reference"), Sep(),
-            C(Command::HORIZONTAL, "Horizontal"), C(Command::VERTICAL, "Vertical"), Sep(),
-            C(Command::ON_ENTITY, "On Point / Curve / Plane"),
-            C(Command::EQUAL, "Equal Length / Radius"),
-            C(Command::RATIO, "Length / Arc Ratio"),
-            C(Command::DIFFERENCE, "Length / Arc Difference"),
-            C(Command::AT_MIDPOINT, "Midpoint"), C(Command::SYMMETRIC, "Symmetric"),
-            C(Command::PARALLEL, "Parallel / Tangent"),
-            C(Command::PERPENDICULAR, "Perpendicular"),
-            C(Command::ORIENTED_SAME, "Same Orientation"),
-            C(Command::WHERE_DRAGGED, "Lock Point Where Dragged"), Sep(),
-            C(Command::COMMENT, "Comment") } },
-        { "Inspect", {
-            C(Command::VOLUME, "Measure Volume"), C(Command::AREA, "Measure Area"),
-            C(Command::PERIMETER, "Measure Perimeter"),
-            C(Command::INTERFERENCE, "Interfering Parts"),
-            C(Command::NAKED_EDGES, "Naked Edges"),
-            C(Command::CENTER_OF_MASS, "Center of Mass"),
-            C(Command::MASS_PROPERTIES, "Mass Properties..."),
-            C(Command::PARTS_LIST, "Parts List..."),
-            C(Command::DESIGN_POSE, "Design Pose"), A("ui.fit-table", "Fit Table..."), Sep(),
-            C(Command::SHOW_DOF, "Underconstrained Points"), Sep(),
-            C(Command::TRACE_PT, "Trace Point"), C(Command::STOP_TRACING, "Stop Tracing..."),
-            C(Command::STEP_DIM, "Step Dimension...") } },
-        { "Help", {
-            A("ui.show-shortcuts", "Keyboard Shortcuts"), Sep(),
-            C(Command::WEBSITE, "Website / Manual"), C(Command::GITHUB, "GitHub Commit"),
-            C(Command::ABOUT, "About") } },
+            C(Command::DATUM_POINT, N_("Point")), C(Command::WORKPLANE, N_("Workplane")), Sep(),
+            C(Command::LINE_SEGMENT, N_("Line")),
+            C(Command::CONSTR_SEGMENT, N_("Construction Line")),
+            C(Command::RECTANGLE, N_("Rectangle")), C(Command::CIRCLE, N_("Circle")),
+            C(Command::ARC, N_("Arc")), C(Command::CUBIC, N_("Spline")), Sep(),
+            C(Command::TTF_TEXT, N_("Text")), C(Command::IMAGE, N_("Image...")), Sep(),
+            C(Command::CONSTRUCTION, N_("Toggle Construction")),
+            C(Command::TANGENT_ARC, N_("Tangent Arc at Point")),
+            C(Command::SPLIT_CURVES, N_("Split at Intersections")) } },
+        { N_("Constrain"), {
+            C(Command::DISTANCE_DIA, N_("Distance / Diameter"), "ui.smart-dimension"),
+            C(Command::REF_DISTANCE, N_("Reference Dimension")),
+            C(Command::ANGLE, N_("Angle / Equal Angle")),
+            C(Command::REF_ANGLE, N_("Reference Angle")),
+            C(Command::OTHER_ANGLE, N_("Supplementary Angle")),
+            C(Command::REFERENCE, N_("Toggle Reference")), Sep(),
+            C(Command::HORIZONTAL, N_("Horizontal")), C(Command::VERTICAL, N_("Vertical")), Sep(),
+            C(Command::ON_ENTITY, N_("On Point / Curve / Plane")),
+            C(Command::EQUAL, N_("Equal Length / Radius")),
+            C(Command::RATIO, N_("Length / Arc Ratio")),
+            C(Command::DIFFERENCE, N_("Length / Arc Difference")),
+            C(Command::AT_MIDPOINT, N_("Midpoint")), C(Command::SYMMETRIC, N_("Symmetric")),
+            C(Command::PARALLEL, N_("Parallel / Tangent")),
+            C(Command::PERPENDICULAR, N_("Perpendicular")),
+            C(Command::ORIENTED_SAME, N_("Same Orientation")),
+            C(Command::WHERE_DRAGGED, N_("Lock Point Where Dragged")), Sep(),
+            C(Command::COMMENT, N_("Comment")) } },
+        { N_("Inspect"), {
+            C(Command::VOLUME, N_("Measure Volume")), C(Command::AREA, N_("Measure Area")),
+            C(Command::PERIMETER, N_("Measure Perimeter")),
+            C(Command::INTERFERENCE, N_("Interfering Parts")),
+            C(Command::NAKED_EDGES, N_("Naked Edges")),
+            C(Command::CENTER_OF_MASS, N_("Center of Mass")),
+            C(Command::MASS_PROPERTIES, N_("Mass Properties...")),
+            C(Command::PARTS_LIST, N_("Parts List...")),
+            C(Command::DESIGN_POSE, N_("Design Pose")), A("ui.fit-table", N_("Fit Table...")),
+            Sep(),
+            C(Command::SHOW_DOF, N_("Underconstrained Points")), Sep(),
+            C(Command::TRACE_PT, N_("Trace Point")),
+            C(Command::STOP_TRACING, N_("Stop Tracing...")),
+            C(Command::STEP_DIM, N_("Step Dimension...")) } },
+        { N_("Help"), {
+            A("ui.show-shortcuts", N_("Keyboard Shortcuts")), Sep(),
+            C(Command::WEBSITE, N_("Website / Manual")), C(Command::GITHUB, N_("GitHub Commit")),
+            C(Command::ABOUT, N_("About")) } },
     };
     return layout;
 }
@@ -226,9 +235,9 @@ void Build(const std::vector<Spec> &specs, MenuSdl *out, Found *found,
                 auto it = found->items.find((uint32_t)s.cmd);
                 if(it == found->items.end()) break; // not in this build
                 std::shared_ptr<MenuItemSdl> item = it->second;
-                if(s.label && item->label != s.label) {
+                if(s.label && item->label != _(s.label)) {
                     if(item->searchAlias.empty()) item->searchAlias = item->label;
-                    item->label = s.label;
+                    item->label = _(s.label);
                 }
                 if(s.alias) item->keyAlias = s.alias;
                 found->placed.insert(item.get());
@@ -237,7 +246,7 @@ void Build(const std::vector<Spec> &specs, MenuSdl *out, Found *found,
             }
             case K::ACTION: {
                 auto item    = std::make_shared<MenuItemSdl>();
-                item->label  = s.label;
+                item->label  = _(s.label);
                 item->action = s.action;
                 // The palette still finds it by its action-list name ("Toggle Theme").
                 for(const UiActionInfo &a : UiActionList()) {
@@ -253,7 +262,7 @@ void Build(const std::vector<Spec> &specs, MenuSdl *out, Found *found,
                     item->indicator = Platform::MenuItem::Indicator::CHECK_MARK;
                     item->isActive  = [checked, name] { return checked && checked(name); };
                 }
-                out->entries.push_back({ MenuSdl::Entry::Kind::ITEM, item, nullptr, s.label });
+                out->entries.push_back({ MenuSdl::Entry::Kind::ITEM, item, nullptr, item->label });
                 break;
             }
             case K::SUB: {
@@ -261,7 +270,8 @@ void Build(const std::vector<Spec> &specs, MenuSdl *out, Found *found,
                 Build(s.children, menu.get(), found, checked);
                 TrimSeparator(menu.get());
                 if(!menu->entries.empty()) {
-                    out->entries.push_back({ MenuSdl::Entry::Kind::SUBMENU, nullptr, menu, s.label });
+                    out->entries.push_back(
+                        { MenuSdl::Entry::Kind::SUBMENU, nullptr, menu, _(s.label) });
                 }
                 break;
             }
@@ -273,7 +283,8 @@ void Build(const std::vector<Spec> &specs, MenuSdl *out, Found *found,
                                                                           : found->recentLinks;
                 if(!menu) break;
                 found->placed.insert(menu.get());
-                out->entries.push_back({ MenuSdl::Entry::Kind::SUBMENU, nullptr, menu, s.label });
+                out->entries.push_back(
+                    { MenuSdl::Entry::Kind::SUBMENU, nullptr, menu, _(s.label) });
                 break;
             }
         }
@@ -314,7 +325,7 @@ static const char *FindLabel(const std::vector<Spec> &specs, Command c) {
 
 std::string CommandLabel(Command c) {
     for(const Top &top : Layout()) {
-        if(const char *l = FindLabel(top.entries, c)) return l;
+        if(const char *l = FindLabel(top.entries, c)) return _(l);
     }
     std::string core = GraphicsWindow::MenuLabel(c);
     return core.empty() ? CommandName(c) : Platform::StripMnemonic(core);
@@ -351,7 +362,7 @@ void ApplyMenuLayout(MenuBarSdl &bar,
         auto menu = std::make_shared<MenuSdl>();
         Build(top.entries, menu.get(), &found, actionChecked);
         TrimSeparator(menu.get());
-        menus.push_back({ top.title, menu });
+        menus.push_back({ _(top.title), menu });
     }
     // Whatever wasn't placed stays with its menu: the one of the same name, else a menu of
     // its own at the end.

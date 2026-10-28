@@ -44,35 +44,35 @@ static std::string Xyz(Vector v, bool lengths) {
 static void DrawView(std::function<void()> *run) {
     if(!ViewPanel().Begin()) return;
     GraphicsWindow &gw = SS.GW;
-    ImGui::TextUnformatted(ssprintf("scale (px per %s)", SS.UnitName()).c_str());
+    ImGui::TextUnformatted(ssprintf(_("scale (px per %s)"), SS.UnitName()).c_str());
     ValueField("##view-scale", ssprintf("%.3f", gw.scale * SS.MmPerUnit()), run,
                [](std::string s) { SS.GW.SetViewScale(s); });
-    if(ImGui::Button("set to full scale")) {
+    if(ImGui::Button(_("set to full scale"))) {
         *run = [] { TextWindow::ScreenChangeViewToFullScale(0, 0); };
     }
-    ImGui::TextUnformatted("origin (the centre of the screen)");
+    ImGui::TextUnformatted(_("origin (the centre of the screen)"));
     ValueField("##view-origin", Xyz(gw.offset.ScaledBy(-1), true), run,
                [](std::string s) { SS.GW.SetViewOrigin(s); });
-    ImGui::TextUnformatted("projection: right");
+    ImGui::TextUnformatted(_("projection: right"));
     ValueField("##view-right", Xyz(gw.projRight, false), run,
                [](std::string s) { SS.GW.SetViewProjection(/*right=*/true, s); });
-    ImGui::TextUnformatted("projection: up");
+    ImGui::TextUnformatted(_("projection: up"));
     ValueField("##view-up", Xyz(gw.projUp, false), run,
                [](std::string s) { SS.GW.SetViewProjection(/*right=*/false, s); });
-    ImGui::TextDisabled("out (%.3f, %.3f, %.3f)", gw.projRight.Cross(gw.projUp).x,
+    ImGui::TextDisabled(_("out (%.3f, %.3f, %.3f)"), gw.projRight.Cross(gw.projUp).x,
                         gw.projRight.Cross(gw.projUp).y, gw.projRight.Cross(gw.projUp).z);
-    SettingField("perspective factor (0 for parallel)", "##perspective", Setting::CAMERA_TANGENT,
+    SettingField(_("perspective factor (0 for parallel)"), "##perspective", Setting::CAMERA_TANGENT,
                  0, run);
     for(int i = 0; i < 2; i++) {
-        SettingField(ssprintf("light %d direction", i).c_str(),
+        SettingField(ssprintf(_("light %d direction"), i).c_str(),
                      ssprintf("##light-direction:%d", i).c_str(), Setting::LIGHT_DIRECTION, i,
                      run);
-        SettingField(ssprintf("light %d intensity", i).c_str(),
+        SettingField(ssprintf(_("light %d intensity"), i).c_str(),
                      ssprintf("##light-intensity:%d", i).c_str(), Setting::LIGHT_INTENSITY, i,
                      run);
     }
-    SettingField("ambient lighting", "##ambient", Setting::LIGHT_AMBIENT, 0, run);
-    SettingField("explode distance", "##explode-distance", Setting::EXPLODE_DISTANCE, 0, run);
+    SettingField(_("ambient lighting"), "##ambient", Setting::LIGHT_AMBIENT, 0, run);
+    SettingField(_("explode distance"), "##explode-distance", Setting::EXPLODE_DISTANCE, 0, run);
     ViewPanel().End();
 }
 
@@ -94,26 +94,26 @@ static bool BeginTool(Panel &panel, Screen screen) {
 static void DrawPaste(std::function<void()> *run) {
     if(!BeginTool(PastePanel(), Screen::PASTE_TRANSFORMED)) return;
     auto &paste = SS.TW.shown.paste;
-    Field("repeat (times)", "##paste-times", std::to_string(paste.times),
+    Field(_("repeat (times)"), "##paste-times", std::to_string(paste.times),
           Edit::PASTE_TIMES_REPEATED, run);
-    Field("rotate (degrees)", "##paste-angle", ssprintf("%.3f", paste.theta * 180 / PI),
+    Field(_("rotate (degrees)"), "##paste-angle", ssprintf("%.3f", paste.theta * 180 / PI),
           Edit::PASTE_ANGLE, run);
-    ImGui::TextUnformatted("about point");
-    ImGui::TextDisabled("%s", Xyz(paste.origin, true).c_str());
-    if(ImGui::Button("use the selected point")) {
+    ImGui::TextUnformatted(_("about point"));
+    ImGui::TextDisabled(_("%s"), Xyz(paste.origin, true).c_str());
+    if(ImGui::Button(_("use the selected point"))) {
         *run = [] { TextWindow::ScreenPasteTransformed('o', 0); };
     }
-    ImGui::TextUnformatted("translate");
-    ImGui::TextDisabled("%s", Xyz(paste.trans, true).c_str());
-    if(ImGui::Button("use the two selected points")) {
+    ImGui::TextUnformatted(_("translate"));
+    ImGui::TextDisabled(_("%s"), Xyz(paste.trans, true).c_str());
+    if(ImGui::Button(_("use the two selected points"))) {
         *run = [] { TextWindow::ScreenPasteTransformed('t', 0); };
     }
-    Field("scale", "##paste-scale", ssprintf("%.3f", fabs(paste.scale)), Edit::PASTE_SCALE, run);
+    Field(_("scale"), "##paste-scale", ssprintf("%.3f", fabs(paste.scale)), Edit::PASTE_SCALE, run);
     bool mirror = paste.scale < 0;
-    if(ImGui::Checkbox("mirror", &mirror)) {
+    if(ImGui::Checkbox(_("mirror"), &mirror)) {
         *run = [] { TextWindow::ScreenChangePasteTransformed('f', 0); };
     }
-    if(ImGui::Button("paste transformed now")) {
+    if(ImGui::Button(_("paste transformed now"))) {
         *run = [] { TextWindow::ScreenPasteTransformed('g', 0); };
     }
     PastePanel().End();
@@ -127,10 +127,10 @@ static void DrawStepDimension(std::function<void()> *run) {
         auto value = [&](double v) {
             return step.isDistance ? SS.MmToString(v, true) : ssprintf("%.3f", v);
         };
-        ImGui::TextDisabled("start %s", value(c->valA).c_str());
-        Field("finish", "##step-finish", value(step.finish), Edit::STEP_DIM_FINISH, run);
-        Field("steps", "##step-steps", std::to_string(step.steps), Edit::STEP_DIM_STEPS, run);
-        if(ImGui::Button("step dimension now")) {
+        ImGui::TextDisabled(_("start %s"), value(c->valA).c_str());
+        Field(_("finish"), "##step-finish", value(step.finish), Edit::STEP_DIM_FINISH, run);
+        Field(_("steps"), "##step-steps", std::to_string(step.steps), Edit::STEP_DIM_STEPS, run);
+        if(ImGui::Button(_("step dimension now"))) {
             *run = [] { TextWindow::ScreenStepDimGo(0, 0); };
         }
     }
@@ -140,19 +140,19 @@ static void DrawStepDimension(std::function<void()> *run) {
 static void DrawTangentArc(std::function<void()> *run) {
     if(!BeginTool(TangentArcPanel(), Screen::TANGENT_ARC)) return;
     bool automatic = !SS.tangentArcManual;
-    if(ImGui::Checkbox("choose radius automatically", &automatic)) {
+    if(ImGui::Checkbox(_("choose radius automatically"), &automatic)) {
         *run = [] { TextWindow::ScreenChangeTangentArc('a', 0); };
     }
     ImGui::BeginDisabled(automatic);
-    Field("radius", "##tangent-radius", SS.MmToString(SS.tangentArcRadius, true),
+    Field(_("radius"), "##tangent-radius", SS.MmToString(SS.tangentArcRadius, true),
           Edit::TANGENT_ARC_RADIUS, run);
     ImGui::EndDisabled();
     bool modify = SS.tangentArcModify;
-    if(ImGui::Checkbox("modify original entities", &modify)) {
+    if(ImGui::Checkbox(_("modify original entities"), &modify)) {
         *run = [] { TextWindow::ScreenChangeTangentArc('m', 0); };
     }
-    ImGui::TextWrapped("To make a tangent arc at a point, select the point and choose Sketch > "
-                       "Tangent Arc at Point.");
+    ImGui::TextWrapped(_("To make a tangent arc at a point, select the point and choose Sketch > "
+                         "Tangent Arc at Point."));
     TangentArcPanel().End();
 }
 

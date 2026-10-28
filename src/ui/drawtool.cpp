@@ -24,11 +24,11 @@ void DrawTool::Sync() {
     switch(kind) {
         // An angle needs a plane to be measured in.
         case TypedKind::LINE:
-            fields = SS.GW.LockedInWorkplane() ? TypedFields({ "length", "angle" })
-                                               : TypedFields({ "length" });
+            fields = SS.GW.LockedInWorkplane() ? TypedFields({ _("length"), _("angle") })
+                                               : TypedFields({ _("length") });
             break;
-        case TypedKind::CIRCLE:    fields = TypedFields({ "diameter" }); break;
-        case TypedKind::RECTANGLE: fields = TypedFields({ "width", "height" }); break;
+        case TypedKind::CIRCLE:    fields = TypedFields({ _("diameter") }); break;
+        case TypedKind::RECTANGLE: fields = TypedFields({ _("width"), _("height") }); break;
         case TypedKind::NONE:      fields = TypedFields(std::vector<std::string>{}); break;
     }
 }
@@ -79,8 +79,8 @@ bool DrawTool::HandleChord(const keymap::Chord &c) {
 
 std::string DrawTool::Description() {
     if(!Active()) return "";
-    static const char *names[] = { "", "Line", "Circle", "Rectangle" };
-    std::string        d       = names[(int)lastKind];
+    static const char *names[] = { "", N_("Line"), N_("Circle"), N_("Rectangle") };
+    std::string        d       = lastKind == TypedKind::NONE ? "" : _(names[(int)lastKind]);
     for(int i = 0; i < (int)fields.Count(); i++) {
         d += " \xC2\xB7 " + fields.Label(i) + " " + fields.Text(i);
         if(i == fields.Active()) d += "_";
@@ -90,11 +90,11 @@ std::string DrawTool::Description() {
 
 std::vector<KeyHint> DrawTool::Hints() {
     if(lastKind == TypedKind::LINE && !fields.Any()) {
-        return { { "0-9", "Value" }, { "Backspace", "Remove last segment" },
-                 { "Enter / Esc / RMB", "Finish" } };
+        return { { "0-9", _("Value") }, { "Backspace", _("Remove last segment") },
+                 { "Enter / Esc / RMB", _("Finish") } };
     }
-    return { { "0-9", "Value" }, { "Tab", "Next field" }, { "Enter", "Apply" },
-             { "Esc", "Clear / cancel" } };
+    return { { "0-9", _("Value") }, { "Tab", _("Next field") }, { "Enter", _("Apply") },
+             { "Esc", _("Clear / cancel") } };
 }
 
 }

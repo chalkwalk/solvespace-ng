@@ -74,5 +74,9 @@ bool ColourField(const char *label, const float current[3], float rgb[3], bool *
     return changed;
 }
 
+std::string LabelId(const char *text, const char *id) {
+    return std::string(text) + id;
+}
+
 }
 }

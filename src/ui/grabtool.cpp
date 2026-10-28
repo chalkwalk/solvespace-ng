@@ -43,19 +43,19 @@ bool GrabTool::HandleChord(const keymap::Chord &c) {
 }
 
 std::string GrabTool::Description() const {
-    std::string d    = "Grab";
+    std::string d    = _("Grab");
     int         axis = SS.GW.grab.axis;
     if(axis >= 0) d += std::string(" \xC2\xB7 ") + "XYZ"[axis];
     if(!field.Text(0).empty()) {
         d += " \xC2\xB7 " + field.Text(0);
-        if(axis < 0) d += " (lock an axis to use a typed distance)";
+        if(axis < 0) d += std::string(" ") + _("(lock an axis to use a typed distance)");
     }
     return d;
 }
 
 std::vector<KeyHint> GrabTool::Hints() const {
-    return { { SS.GW.LockedInWorkplane() ? "X Y" : "X Y Z", "Axis" }, { "0-9", "Distance" },
-             { "Enter", "Confirm" }, { "Esc", "Cancel" } };
+    return { { SS.GW.LockedInWorkplane() ? "X Y" : "X Y Z", _("Axis") }, { "0-9", _("Distance") },
+             { "Enter", _("Confirm") }, { "Esc", _("Cancel") } };
 }
 
 }

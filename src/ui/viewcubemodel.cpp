@@ -14,12 +14,12 @@ static const struct {
     const char *label;
     Vector      normal, a, b; // a and b span the face
 } Faces[] = {
-    { "Front",  { 0, -1, 0 }, { 1, 0, 0 }, { 0, 0, 1 } },
-    { "Back",   { 0, 1, 0 },  { 1, 0, 0 }, { 0, 0, 1 } },
-    { "Right",  { 1, 0, 0 },  { 0, 1, 0 }, { 0, 0, 1 } },
-    { "Left",   { -1, 0, 0 }, { 0, 1, 0 }, { 0, 0, 1 } },
-    { "Top",    { 0, 0, 1 },  { 1, 0, 0 }, { 0, 1, 0 } },
-    { "Bottom", { 0, 0, -1 }, { 1, 0, 0 }, { 0, 1, 0 } },
+    { N_("Front"),  { 0, -1, 0 }, { 1, 0, 0 }, { 0, 0, 1 } },
+    { N_("Back"),   { 0, 1, 0 },  { 1, 0, 0 }, { 0, 0, 1 } },
+    { N_("Right"),  { 1, 0, 0 },  { 0, 1, 0 }, { 0, 0, 1 } },
+    { N_("Left"),   { -1, 0, 0 }, { 0, 1, 0 }, { 0, 0, 1 } },
+    { N_("Top"),    { 0, 0, 1 },  { 1, 0, 0 }, { 0, 1, 0 } },
+    { N_("Bottom"), { 0, 0, -1 }, { 1, 0, 0 }, { 0, 1, 0 } },
 };
 
 static Point2d Project(Vector p, Vector right, Vector up, Point2d center, double size) {
@@ -31,7 +31,7 @@ std::vector<CubeFace> ViewCubeFaces(Vector right, Vector up, Point2d center, dou
     std::vector<CubeFace> out;
     for(const auto &f : Faces) {
         CubeFace face;
-        face.label   = f.label;
+        face.label   = _(f.label);
         face.normal  = f.normal;
         face.facing  = f.normal.Dot(toViewer);
         face.visible = face.facing > 1e-6;

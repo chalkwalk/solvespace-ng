@@ -32,31 +32,33 @@ StatusModel BuildStatus(const keymap::Keymap &km, const std::string &modalTool,
         if(SS.GW.pending.description) m.tool = SS.GW.pending.description;
         m.hints = modalHints;
         if(touch) {
-            m.hints.push_back({ "Hold", "Cancel" }); // a long press is a right click
+            m.hints.push_back({ _("Hold"), _("Cancel") }); // a long press is a right click
         } else {
-            AddHint(&m, km, "unselect-all", "Cancel");
+            AddHint(&m, km, "unselect-all", _("Cancel"));
         }
     } else if(touch) {
         // The gestures of platform/sdl/touchgestures.h.
-        m.hints = { { "2 fingers", "Pan, zoom" }, { "3", "Orbit" }, { "Hold", "Menu" } };
+        m.hints = { { _("2 fingers"), _("Pan, zoom") },
+                    { "3", _("Orbit") },
+                    { _("Hold"), _("Menu") } };
     } else {
-        AddHint(&m, km, "ui.command-palette", "Commands");
-        AddHint(&m, km, "ui.pie-add", "Add");
-        AddHint(&m, km, "ui.pie-constrain", "Constrain");
-        AddHint(&m, km, "ui.smart-dimension", "Dimension");
-        AddHint(&m, km, "ui.grab", "Grab");
-        AddHint(&m, km, "ui.toggle-sketch", "Sketch");
-        AddHint(&m, km, "ui.pie-view", "Views");
+        AddHint(&m, km, "ui.command-palette", _("Commands"));
+        AddHint(&m, km, "ui.pie-add", _("Add"));
+        AddHint(&m, km, "ui.pie-constrain", _("Constrain"));
+        AddHint(&m, km, "ui.smart-dimension", _("Dimension"));
+        AddHint(&m, km, "ui.grab", _("Grab"));
+        AddHint(&m, km, "ui.toggle-sketch", _("Sketch"));
+        AddHint(&m, km, "ui.pie-view", _("Views"));
     }
     if(Group *g = SK.group.FindByIdNoOops(SS.GW.activeGroup)) {
         m.group = g->name;
         m.dof   = g->solved.dof;
         switch(g->solved.how) {
-            case SolveResult::OKAY:                     m.solve = "Solved"; break;
-            case SolveResult::REDUNDANT_OKAY:           m.solve = "Redundant"; break;
+            case SolveResult::OKAY:                     m.solve = _("Solved"); break;
+            case SolveResult::REDUNDANT_OKAY:           m.solve = _("Redundant"); break;
             case SolveResult::DIDNT_CONVERGE:
-            case SolveResult::REDUNDANT_DIDNT_CONVERGE: m.solve = "Didn't converge"; break;
-            case SolveResult::TOO_MANY_UNKNOWNS:        m.solve = "Too many unknowns"; break;
+            case SolveResult::REDUNDANT_DIDNT_CONVERGE: m.solve = _("Didn't converge"); break;
+            case SolveResult::TOO_MANY_UNKNOWNS:        m.solve = _("Too many unknowns"); break;
         }
         m.solveProblem = g->solved.how != SolveResult::OKAY;
     }

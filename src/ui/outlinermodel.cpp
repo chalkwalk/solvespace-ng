@@ -57,7 +57,7 @@ std::vector<OutlinerRow> BuildOutliner() {
         r.name        = g->name;
         r.type        = g->type;
         r.references  = hg == Group::HGROUP_REFERENCES;
-        r.displayName = r.references ? "Origin" : g->name;
+        r.displayName = r.references ? _("Origin") : g->name;
         r.icon        = r.references ? "origin" : IconFor(g->type);
         r.active      = hg == SS.GW.activeGroup;
         r.visible     = g->visible;
@@ -80,7 +80,7 @@ std::vector<OutlinerRow> BuildOutliner() {
         }
         if(!SK.part.IsEmpty() && !r.references) {
             if(skeleton) {
-                if(rows.back().references) r.partHeader = "Skeleton";
+                if(rows.back().references) r.partHeader = _("Skeleton");
             } else if(g->PartOf() != lastPart) {
                 r.partHeader = SS.PartName(g->PartOf());
                 lastPart     = g->PartOf();

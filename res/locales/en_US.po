@@ -1,22 +1,3 @@
-# English translations for SolveSpace package.
-# Copyright (C) 2017 the SolveSpace authors
-# This file is distributed under the same license as the SolveSpace package.
-# Automatically generated, 2017.
-#
-msgid ""
-msgstr ""
-"Project-Id-Version: SolveSpace 3.0\n"
-"Report-Msgid-Bugs-To: phkahler@gmail.com\n"
-"POT-Creation-Date: 2026-10-28 14:29-0700\n"
-"PO-Revision-Date: 2017-01-05 10:30+0000\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
-"Language: en_US\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
-
 #: clipboard.cpp:317
 msgid ""
 "Cut, paste, and copy work only in a workplane.\n"
@@ -948,7 +929,7 @@ msgstr "&Center View At Point"
 msgid "Show Snap &Grid"
 msgstr "Show Snap &Grid"
 
-#: graphicswin.cpp:99
+#: graphicswin.cpp:99 ui/menulayout.cpp:98
 msgid "Darken Inactive Solids"
 msgstr "Darken Inactive Solids"
 
@@ -1100,7 +1081,7 @@ msgstr "S&weep"
 msgid "Link / Assemble..."
 msgstr "Link / Assemble..."
 
-#: graphicswin.cpp:145
+#: graphicswin.cpp:145 ui/menulayout.cpp:136
 msgid "Link Recent"
 msgstr "Link Recent"
 
@@ -1244,7 +1225,8 @@ msgstr "Same Orient&ation"
 msgid "Lock Point Where &Dragged"
 msgstr "Lock Point Where &Dragged"
 
-#: graphicswin.cpp:190
+#: graphicswin.cpp:190 ui/menulayout.cpp:167 ui/selectionmodel.cpp:54
+#: ui/selectionmodel.cpp:311
 msgid "Comment"
 msgstr "Comment"
 
@@ -1965,7 +1947,7 @@ msgstr "Group Info"
 msgid "Style Info"
 msgstr "Style Info"
 
-#: mouse.cpp:701
+#: mouse.cpp:701 ui/menulayout.cpp:77
 msgid "Select Edge Chain"
 msgstr "Select Edge Chain"
 
@@ -1977,7 +1959,7 @@ msgstr "Toggle Reference Dimension"
 msgid "Other Supplementary Angle"
 msgstr "Other Supplementary Angle"
 
-#: mouse.cpp:718
+#: mouse.cpp:718 ui/menulayout.cpp:78
 msgid "Snap to Grid"
 msgstr "Snap to Grid"
 
@@ -1993,7 +1975,7 @@ msgstr "Add Spline Point"
 msgid "Cannot add spline point: maximum number of points reached."
 msgstr "Cannot add spline point: maximum number of points reached."
 
-#: mouse.cpp:791
+#: mouse.cpp:791 ui/menulayout.cpp:147
 msgid "Toggle Construction"
 msgstr "Toggle Construction"
 
@@ -2001,31 +1983,31 @@ msgstr "Toggle Construction"
 msgid "Delete Point-Coincident Constraint"
 msgstr "Delete Point-Coincident Constraint"
 
-#: mouse.cpp:825
+#: mouse.cpp:825 ui/menulayout.cpp:71
 msgid "Cut"
 msgstr "Cut"
 
-#: mouse.cpp:827
+#: mouse.cpp:827 ui/menulayout.cpp:71
 msgid "Copy"
 msgstr "Copy"
 
-#: mouse.cpp:831
+#: mouse.cpp:831 ui/menulayout.cpp:76
 msgid "Select All"
 msgstr "Select All"
 
-#: mouse.cpp:836
+#: mouse.cpp:836 ui/menulayout.cpp:72
 msgid "Paste"
 msgstr "Paste"
 
-#: mouse.cpp:838
+#: mouse.cpp:838 ui/menulayout.cpp:73
 msgid "Paste Transformed..."
 msgstr "Paste Transformed..."
 
-#: mouse.cpp:843
+#: mouse.cpp:843 ui/menulayout.cpp:74 ui/outliner.cpp:140
 msgid "Delete"
 msgstr "Delete"
 
-#: mouse.cpp:846
+#: mouse.cpp:846 ui/menulayout.cpp:76
 msgid "Unselect All"
 msgstr "Unselect All"
 
@@ -2033,7 +2015,7 @@ msgstr "Unselect All"
 msgid "Unselect Hovered"
 msgstr "Unselect Hovered"
 
-#: mouse.cpp:862
+#: mouse.cpp:862 ui/menulayout.cpp:85
 msgid "Zoom to Fit"
 msgstr "Zoom to Fit"
 
@@ -2199,6 +2181,10 @@ msgstr "AutoCAD DXF and DWG files"
 msgctxt "file-type"
 msgid "Comma-separated values"
 msgstr "Comma-separated values"
+
+#: platform/guisdl.cpp:614
+msgid "Save as"
+msgstr "Save as"
 
 #: preferences.cpp:77 styleedit.cpp:90 textscreens.cpp:776
 msgid "Bad format: specify color as r, g, b"
@@ -2770,6 +2756,2376 @@ msgstr "Nearest isometric view"
 #: toolbar.cpp:92
 msgid "Align view to active workplane"
 msgstr "Align view to active workplane"
+
+#: ui/drawtool.cpp:27 ui/properties.cpp:706 ui/properties.cpp:708
+#: ui/properties.cpp:709 ui/selectionmodel.cpp:437 ui/selectionmodel.cpp:447
+#: ui/stylespanel.cpp:116
+msgid "angle"
+msgstr "angle"
+
+#: ui/drawtool.cpp:27 ui/drawtool.cpp:28 ui/properties.cpp:176
+#: ui/selectionmodel.cpp:159
+msgid "length"
+msgstr "length"
+
+#: ui/drawtool.cpp:30 ui/properties.cpp:174 ui/properties.cpp:382
+#: ui/selectionmodel.cpp:186 ui/selectionmodel.cpp:195
+#: ui/selectionmodel.cpp:390
+msgid "diameter"
+msgstr "diameter"
+
+#: ui/drawtool.cpp:31 ui/prefspanel.cpp:103 ui/stylespanel.cpp:109
+msgid "height"
+msgstr "height"
+
+#: ui/drawtool.cpp:31 ui/prefspanel.cpp:102 ui/stylespanel.cpp:75
+msgid "width"
+msgstr "width"
+
+#: ui/drawtool.cpp:82 ui/menulayout.cpp:144 ui/ngui.cpp:153
+#: ui/selectionmodel.cpp:193
+msgid "Circle"
+msgstr "Circle"
+
+#: ui/drawtool.cpp:82 ui/menulayout.cpp:142 ui/ngui.cpp:151
+msgid "Line"
+msgstr "Line"
+
+#: ui/drawtool.cpp:82 ui/menulayout.cpp:144 ui/ngui.cpp:152
+msgid "Rectangle"
+msgstr "Rectangle"
+
+#: ui/drawtool.cpp:93
+msgid "Remove last segment"
+msgstr "Remove last segment"
+
+#: ui/drawtool.cpp:93 ui/drawtool.cpp:96
+msgid "Value"
+msgstr "Value"
+
+#: ui/drawtool.cpp:94
+msgid "Finish"
+msgstr "Finish"
+
+#: ui/drawtool.cpp:96
+msgid "Apply"
+msgstr "Apply"
+
+#: ui/drawtool.cpp:96
+msgid "Next field"
+msgstr "Next field"
+
+#: ui/drawtool.cpp:97
+msgid "Clear / cancel"
+msgstr "Clear / cancel"
+
+#: ui/grabtool.cpp:46 ui/menulayout.cpp:78 ui/statusmodel.cpp:49
+msgid "Grab"
+msgstr "Grab"
+
+#: ui/grabtool.cpp:51
+msgid "(lock an axis to use a typed distance)"
+msgstr "(lock an axis to use a typed distance)"
+
+#: ui/grabtool.cpp:57
+msgid "Axis"
+msgstr "Axis"
+
+#: ui/grabtool.cpp:57 ui/selectionmodel.cpp:17
+msgid "Distance"
+msgstr "Distance"
+
+#: ui/grabtool.cpp:58 ui/statusmodel.cpp:35 ui/statusmodel.cpp:37
+msgid "Cancel"
+msgstr "Cancel"
+
+#: ui/grabtool.cpp:58
+msgid "Confirm"
+msgstr "Confirm"
+
+#: ui/menulayout.cpp:55
+msgid "File"
+msgstr "File"
+
+#: ui/menulayout.cpp:56
+msgid "New"
+msgstr "New"
+
+#: ui/menulayout.cpp:56
+msgid "Open..."
+msgstr "Open..."
+
+#: ui/menulayout.cpp:57
+msgid "Open Recent"
+msgstr "Open Recent"
+
+#: ui/menulayout.cpp:58
+msgid "Save"
+msgstr "Save"
+
+#: ui/menulayout.cpp:58
+msgid "Save As..."
+msgstr "Save As..."
+
+#: ui/menulayout.cpp:59
+msgid "Import..."
+msgstr "Import..."
+
+#: ui/menulayout.cpp:60 ui/prefspanel.cpp:156
+msgid "Export"
+msgstr "Export"
+
+#: ui/menulayout.cpp:61
+msgid "2D View..."
+msgstr "2D View..."
+
+#: ui/menulayout.cpp:61 ui/menulayout.cpp:146
+msgid "Image..."
+msgstr "Image..."
+
+#: ui/menulayout.cpp:62
+msgid "2D Section..."
+msgstr "2D Section..."
+
+#: ui/menulayout.cpp:63
+msgid "3D Wireframe..."
+msgstr "3D Wireframe..."
+
+#: ui/menulayout.cpp:64
+msgid "Triangle Mesh..."
+msgstr "Triangle Mesh..."
+
+#: ui/menulayout.cpp:65
+msgid "Parts, One File Each..."
+msgstr "Parts, One File Each..."
+
+#: ui/menulayout.cpp:66
+msgid "Parts List (CSV)..."
+msgstr "Parts List (CSV)..."
+
+#: ui/menulayout.cpp:67
+msgid "Surfaces..."
+msgstr "Surfaces..."
+
+#: ui/menulayout.cpp:68
+msgid "Quit"
+msgstr "Quit"
+
+#: ui/menulayout.cpp:69
+msgid "Edit"
+msgstr "Edit"
+
+#: ui/menulayout.cpp:70
+msgid "Redo"
+msgstr "Redo"
+
+#: ui/menulayout.cpp:70
+msgid "Undo"
+msgstr "Undo"
+
+#: ui/menulayout.cpp:79
+msgid "Rotate Imported 90°"
+msgstr "Rotate Imported 90°"
+
+#: ui/menulayout.cpp:80
+msgid "Regenerate All"
+msgstr "Regenerate All"
+
+#: ui/menulayout.cpp:81
+msgid "Line Styles..."
+msgstr "Line Styles..."
+
+#: ui/menulayout.cpp:82
+msgid "Preferences..."
+msgstr "Preferences..."
+
+#: ui/menulayout.cpp:83 ui/ngui.cpp:170 ui/panels.cpp:173
+msgid "View"
+msgstr "View"
+
+#: ui/menulayout.cpp:84
+msgid "Zoom In"
+msgstr "Zoom In"
+
+#: ui/menulayout.cpp:84
+msgid "Zoom Out"
+msgstr "Zoom Out"
+
+#: ui/menulayout.cpp:86
+msgid "Frame Selection"
+msgstr "Frame Selection"
+
+#: ui/menulayout.cpp:87
+msgid "Center View at Point"
+msgstr "Center View at Point"
+
+#: ui/menulayout.cpp:88
+msgid "Standard Views"
+msgstr "Standard Views"
+
+#: ui/menulayout.cpp:89 ui/ngui.cpp:174 ui/viewcubemodel.cpp:18
+msgid "Back"
+msgstr "Back"
+
+#: ui/menulayout.cpp:89 ui/ngui.cpp:172 ui/viewcubemodel.cpp:17
+msgid "Front"
+msgstr "Front"
+
+#: ui/menulayout.cpp:90 ui/ngui.cpp:173 ui/viewcubemodel.cpp:20
+msgid "Left"
+msgstr "Left"
+
+#: ui/menulayout.cpp:90 ui/ngui.cpp:171 ui/viewcubemodel.cpp:19
+msgid "Right"
+msgstr "Right"
+
+#: ui/menulayout.cpp:91 ui/ngui.cpp:173 ui/viewcubemodel.cpp:22
+msgid "Bottom"
+msgstr "Bottom"
+
+#: ui/menulayout.cpp:91 ui/ngui.cpp:171 ui/viewcubemodel.cpp:21
+msgid "Top"
+msgstr "Top"
+
+#: ui/menulayout.cpp:92
+msgid "Nearest Isometric"
+msgstr "Nearest Isometric"
+
+#: ui/menulayout.cpp:93
+msgid "Nearest Orthographic"
+msgstr "Nearest Orthographic"
+
+#: ui/menulayout.cpp:94
+msgid "Align to Workplane"
+msgstr "Align to Workplane"
+
+#: ui/menulayout.cpp:96
+msgid "Perspective"
+msgstr "Perspective"
+
+#: ui/menulayout.cpp:97
+msgid "Exploded View"
+msgstr "Exploded View"
+
+#: ui/menulayout.cpp:99
+msgid "Snap Grid"
+msgstr "Snap Grid"
+
+#: ui/menulayout.cpp:99
+msgid "Units"
+msgstr "Units"
+
+#: ui/menulayout.cpp:100 ui/panels.cpp:196
+msgid "Outliner"
+msgstr "Outliner"
+
+#: ui/menulayout.cpp:101 ui/panels.cpp:150
+msgid "Properties"
+msgstr "Properties"
+
+#: ui/menulayout.cpp:102 ui/panels.cpp:156
+msgid "Problems"
+msgstr "Problems"
+
+#: ui/menulayout.cpp:103
+msgid "Tool Shelf"
+msgstr "Tool Shelf"
+
+#: ui/menulayout.cpp:104
+msgid "Menu Bar"
+msgstr "Menu Bar"
+
+#: ui/menulayout.cpp:105
+msgid "Command Palette..."
+msgstr "Command Palette..."
+
+#: ui/menulayout.cpp:106
+msgid "Hide Group"
+msgstr "Hide Group"
+
+#: ui/menulayout.cpp:106
+msgid "Isolate Group"
+msgstr "Isolate Group"
+
+#: ui/menulayout.cpp:107
+msgid "Show All Groups"
+msgstr "Show All Groups"
+
+#: ui/menulayout.cpp:108
+msgid "View Settings..."
+msgstr "View Settings..."
+
+#: ui/menulayout.cpp:109
+msgid "Light Theme"
+msgstr "Light Theme"
+
+#: ui/menulayout.cpp:110
+msgid "Full Screen"
+msgstr "Full Screen"
+
+#: ui/menulayout.cpp:111
+msgid "New Group"
+msgstr "New Group"
+
+#: ui/menulayout.cpp:112
+msgid "New Part"
+msgstr "New Part"
+
+#: ui/menulayout.cpp:112
+msgid "Split Part"
+msgstr "Split Part"
+
+#: ui/menulayout.cpp:113 ui/outliner.cpp:155
+msgid "Joints"
+msgstr "Joints"
+
+#: ui/menulayout.cpp:114
+msgid "Revolute Joint"
+msgstr "Revolute Joint"
+
+#: ui/menulayout.cpp:115
+msgid "Slider Joint"
+msgstr "Slider Joint"
+
+#: ui/menulayout.cpp:116
+msgid "Cylindrical Joint"
+msgstr "Cylindrical Joint"
+
+#: ui/menulayout.cpp:117
+msgid "Planar Joint"
+msgstr "Planar Joint"
+
+#: ui/menulayout.cpp:118
+msgid "Ball Joint"
+msgstr "Ball Joint"
+
+#: ui/menulayout.cpp:119
+msgid "Gear Coupling"
+msgstr "Gear Coupling"
+
+#: ui/menulayout.cpp:120
+msgid "Fit Joint"
+msgstr "Fit Joint"
+
+#: ui/menulayout.cpp:121
+msgid "Sketch in 3D"
+msgstr "Sketch in 3D"
+
+#: ui/menulayout.cpp:122
+msgid "Sketch in New Workplane"
+msgstr "Sketch in New Workplane"
+
+#: ui/menulayout.cpp:123
+msgid "Extrude"
+msgstr "Extrude"
+
+#: ui/menulayout.cpp:124
+msgid "Extrude as a Cut"
+msgstr "Extrude as a Cut"
+
+#: ui/menulayout.cpp:125
+msgid "Revolve"
+msgstr "Revolve"
+
+#: ui/menulayout.cpp:126
+msgid "Helix"
+msgstr "Helix"
+
+#: ui/menulayout.cpp:126
+msgid "Lathe"
+msgstr "Lathe"
+
+#: ui/menulayout.cpp:127
+msgid "Fillet Edges"
+msgstr "Fillet Edges"
+
+#: ui/menulayout.cpp:128
+msgid "Chamfer Edges"
+msgstr "Chamfer Edges"
+
+#: ui/menulayout.cpp:129
+msgid "Draft Faces"
+msgstr "Draft Faces"
+
+#: ui/menulayout.cpp:129
+msgid "Shell"
+msgstr "Shell"
+
+#: ui/menulayout.cpp:130
+msgid "Hole"
+msgstr "Hole"
+
+#: ui/menulayout.cpp:130
+msgid "Loft"
+msgstr "Loft"
+
+#: ui/menulayout.cpp:131
+msgid "Sweep"
+msgstr "Sweep"
+
+#: ui/menulayout.cpp:133
+msgid "Linear Pattern"
+msgstr "Linear Pattern"
+
+#: ui/menulayout.cpp:134
+msgid "Circular Pattern"
+msgstr "Circular Pattern"
+
+#: ui/menulayout.cpp:135
+msgid "Link Part..."
+msgstr "Link Part..."
+
+#: ui/menulayout.cpp:137 ui/statusmodel.cpp:50
+msgid "Sketch"
+msgstr "Sketch"
+
+#: ui/menulayout.cpp:138
+msgid "In Workplane"
+msgstr "In Workplane"
+
+#: ui/menulayout.cpp:139
+msgid "Anywhere in 3D"
+msgstr "Anywhere in 3D"
+
+#: ui/menulayout.cpp:141 ui/ngui.cpp:155 ui/selectionmodel.cpp:130
+msgid "Point"
+msgstr "Point"
+
+#: ui/menulayout.cpp:141 ui/ngui.cpp:156 ui/selectionmodel.cpp:147
+msgid "Workplane"
+msgstr "Workplane"
+
+#: ui/menulayout.cpp:143
+msgid "Construction Line"
+msgstr "Construction Line"
+
+#: ui/menulayout.cpp:145 ui/ngui.cpp:153
+msgid "Arc"
+msgstr "Arc"
+
+#: ui/menulayout.cpp:145 ui/ngui.cpp:154
+msgid "Spline"
+msgstr "Spline"
+
+#: ui/menulayout.cpp:146 ui/ngui.cpp:155
+msgid "Text"
+msgstr "Text"
+
+#: ui/menulayout.cpp:148
+msgid "Tangent Arc at Point"
+msgstr "Tangent Arc at Point"
+
+#: ui/menulayout.cpp:149
+msgid "Split at Intersections"
+msgstr "Split at Intersections"
+
+#: ui/menulayout.cpp:150 ui/ngui.cpp:167 ui/statusmodel.cpp:47
+msgid "Constrain"
+msgstr "Constrain"
+
+#: ui/menulayout.cpp:151
+msgid "Distance / Diameter"
+msgstr "Distance / Diameter"
+
+#: ui/menulayout.cpp:152
+msgid "Reference Dimension"
+msgstr "Reference Dimension"
+
+#: ui/menulayout.cpp:153
+msgid "Angle / Equal Angle"
+msgstr "Angle / Equal Angle"
+
+#: ui/menulayout.cpp:154
+msgid "Reference Angle"
+msgstr "Reference Angle"
+
+#: ui/menulayout.cpp:155
+msgid "Supplementary Angle"
+msgstr "Supplementary Angle"
+
+#: ui/menulayout.cpp:156
+msgid "Toggle Reference"
+msgstr "Toggle Reference"
+
+#: ui/menulayout.cpp:157 ui/selectionmodel.cpp:39
+msgid "Horizontal"
+msgstr "Horizontal"
+
+#: ui/menulayout.cpp:157 ui/selectionmodel.cpp:40
+msgid "Vertical"
+msgstr "Vertical"
+
+#: ui/menulayout.cpp:158
+msgid "On Point / Curve / Plane"
+msgstr "On Point / Curve / Plane"
+
+#: ui/menulayout.cpp:159
+msgid "Equal Length / Radius"
+msgstr "Equal Length / Radius"
+
+#: ui/menulayout.cpp:160
+msgid "Length / Arc Ratio"
+msgstr "Length / Arc Ratio"
+
+#: ui/menulayout.cpp:161
+msgid "Length / Arc Difference"
+msgstr "Length / Arc Difference"
+
+#: ui/menulayout.cpp:162 ui/selectionmodel.cpp:38
+msgid "Midpoint"
+msgstr "Midpoint"
+
+#: ui/menulayout.cpp:162 ui/selectionmodel.cpp:34
+msgid "Symmetric"
+msgstr "Symmetric"
+
+#: ui/menulayout.cpp:163
+msgid "Parallel / Tangent"
+msgstr "Parallel / Tangent"
+
+#: ui/menulayout.cpp:164 ui/selectionmodel.cpp:49
+msgid "Perpendicular"
+msgstr "Perpendicular"
+
+#: ui/menulayout.cpp:165
+msgid "Same Orientation"
+msgstr "Same Orientation"
+
+#: ui/menulayout.cpp:166
+msgid "Lock Point Where Dragged"
+msgstr "Lock Point Where Dragged"
+
+#: ui/menulayout.cpp:168
+msgid "Inspect"
+msgstr "Inspect"
+
+#: ui/menulayout.cpp:169
+msgid "Measure Area"
+msgstr "Measure Area"
+
+#: ui/menulayout.cpp:169
+msgid "Measure Volume"
+msgstr "Measure Volume"
+
+#: ui/menulayout.cpp:170
+msgid "Measure Perimeter"
+msgstr "Measure Perimeter"
+
+#: ui/menulayout.cpp:171
+msgid "Interfering Parts"
+msgstr "Interfering Parts"
+
+#: ui/menulayout.cpp:172
+msgid "Naked Edges"
+msgstr "Naked Edges"
+
+#: ui/menulayout.cpp:173
+msgid "Center of Mass"
+msgstr "Center of Mass"
+
+#: ui/menulayout.cpp:174
+msgid "Mass Properties..."
+msgstr "Mass Properties..."
+
+#: ui/menulayout.cpp:175
+msgid "Parts List..."
+msgstr "Parts List..."
+
+#: ui/menulayout.cpp:176 ui/ngui.cpp:188
+msgid "Design Pose"
+msgstr "Design Pose"
+
+#: ui/menulayout.cpp:176
+msgid "Fit Table..."
+msgstr "Fit Table..."
+
+#: ui/menulayout.cpp:178
+msgid "Underconstrained Points"
+msgstr "Underconstrained Points"
+
+#: ui/menulayout.cpp:179
+msgid "Trace Point"
+msgstr "Trace Point"
+
+#: ui/menulayout.cpp:180
+msgid "Stop Tracing..."
+msgstr "Stop Tracing..."
+
+#: ui/menulayout.cpp:181
+msgid "Step Dimension..."
+msgstr "Step Dimension..."
+
+#: ui/menulayout.cpp:182
+msgid "Help"
+msgstr "Help"
+
+#: ui/menulayout.cpp:183 ui/panels.cpp:144
+msgid "Keyboard Shortcuts"
+msgstr "Keyboard Shortcuts"
+
+#: ui/menulayout.cpp:184
+msgid "GitHub Commit"
+msgstr "GitHub Commit"
+
+#: ui/menulayout.cpp:184
+msgid "Website / Manual"
+msgstr "Website / Manual"
+
+#: ui/menulayout.cpp:185 ui/prefspanel.cpp:163
+msgid "About"
+msgstr "About"
+
+#: ui/ngui.cpp:150 ui/statusmodel.cpp:46
+msgid "Add"
+msgstr "Add"
+
+#: ui/ngui.cpp:172
+msgid "Isometric"
+msgstr "Isometric"
+
+#: ui/ngui.cpp:174
+msgid "Frame Selected"
+msgstr "Frame Selected"
+
+#: ui/ngui.cpp:175
+msgid "Grid"
+msgstr "Grid"
+
+#: ui/ngui.cpp:182 ui/properties.cpp:686
+msgid "Joint"
+msgstr "Joint"
+
+#: ui/ngui.cpp:183
+msgid "Revolute"
+msgstr "Revolute"
+
+#: ui/ngui.cpp:184
+msgid "Slider"
+msgstr "Slider"
+
+#: ui/ngui.cpp:185
+msgid "Cylindrical"
+msgstr "Cylindrical"
+
+#: ui/ngui.cpp:186
+msgid "Planar"
+msgstr "Planar"
+
+#: ui/ngui.cpp:187
+msgid "Ball"
+msgstr "Ball"
+
+#: ui/ngui.cpp:187
+msgid "Gear"
+msgstr "Gear"
+
+#: ui/ngui.cpp:188
+msgid "Fit"
+msgstr "Fit"
+
+#: ui/outliner.cpp:49 ui/properties.cpp:271
+msgid "Group"
+msgstr "Group"
+
+#: ui/outliner.cpp:132
+msgid "Rename"
+msgstr "Rename"
+
+#: ui/outliner.cpp:137
+msgid "Isolate"
+msgstr "Isolate"
+
+#: ui/outlinermodel.cpp:60
+msgid "Origin"
+msgstr "Origin"
+
+#: ui/outlinermodel.cpp:83
+msgid "Skeleton"
+msgstr "Skeleton"
+
+#: ui/palettewidget.cpp:47
+msgid "Type a command..."
+msgstr "Type a command..."
+
+#: ui/panels.cpp:135
+msgid "Tools"
+msgstr "Tools"
+
+#: ui/panels.cpp:162
+msgid "Preferences"
+msgstr "Preferences"
+
+#: ui/panels.cpp:168
+msgid "Styles"
+msgstr "Styles"
+
+#: ui/panels.cpp:178
+msgid "Paste Transformed"
+msgstr "Paste Transformed"
+
+#: ui/panels.cpp:184
+msgid "Step Dimension"
+msgstr "Step Dimension"
+
+#: ui/panels.cpp:190
+msgid "Tangent Arc"
+msgstr "Tangent Arc"
+
+#: ui/prefspanel.cpp:30
+msgid "model colours"
+msgstr "model colours"
+
+#: ui/prefspanel.cpp:41
+msgid "chord tolerance (%)"
+msgstr "chord tolerance (%)"
+
+#: ui/prefspanel.cpp:42
+#, c-format
+msgid "%g mm, %d triangles"
+msgstr "%g mm, %d triangles"
+
+#: ui/prefspanel.cpp:44 ui/prefspanel.cpp:72
+msgid "max piecewise linear segments"
+msgstr "max piecewise linear segments"
+
+#: ui/prefspanel.cpp:45
+msgid "snap grid spacing"
+msgstr "snap grid spacing"
+
+#: ui/prefspanel.cpp:46
+msgid "digits after the decimal point (distances)"
+msgstr "digits after the decimal point (distances)"
+
+#: ui/prefspanel.cpp:48 ui/prefspanel.cpp:51
+#, c-format
+msgid "e.g. %s"
+msgstr "e.g. %s"
+
+#: ui/prefspanel.cpp:49
+msgid "digits after the decimal point (angles)"
+msgstr "digits after the decimal point (angles)"
+
+#: ui/prefspanel.cpp:52
+msgid "use SI prefixes for distances"
+msgstr "use SI prefixes for distances"
+
+#: ui/prefspanel.cpp:53
+msgid "draw triangle back faces in red"
+msgstr "draw triangle back faces in red"
+
+#: ui/prefspanel.cpp:54
+msgid "check sketch for closed contour"
+msgstr "check sketch for closed contour"
+
+#: ui/prefspanel.cpp:55
+msgid "show areas of closed contours"
+msgstr "show areas of closed contours"
+
+#: ui/prefspanel.cpp:56
+msgid "enable automatic line constraints"
+msgstr "enable automatic line constraints"
+
+#: ui/prefspanel.cpp:57
+msgid "edit newly added dimensions"
+msgstr "edit newly added dimensions"
+
+#: ui/prefspanel.cpp:58
+msgid "arc default is diameter"
+msgstr "arc default is diameter"
+
+#: ui/prefspanel.cpp:59
+msgid "display the full path in the title bar"
+msgstr "display the full path in the title bar"
+
+#: ui/prefspanel.cpp:63
+msgid "use camera mouse navigation"
+msgstr "use camera mouse navigation"
+
+#: ui/prefspanel.cpp:64
+msgid "use turntable mouse navigation"
+msgstr "use turntable mouse navigation"
+
+#: ui/prefspanel.cpp:65
+msgid "animation speed (ms; 0 to disable)"
+msgstr "animation speed (ms; 0 to disable)"
+
+#: ui/prefspanel.cpp:70
+msgid "chord tolerance (mm)"
+msgstr "chord tolerance (mm)"
+
+#: ui/prefspanel.cpp:74
+msgid "scale factor 1: (1:1 = mm, 1:25.4 = inch)"
+msgstr "scale factor 1: (1:1 = mm, 1:25.4 = inch)"
+
+#: ui/prefspanel.cpp:76
+msgid "cutter radius offset (0 = none)"
+msgstr "cutter radius offset (0 = none)"
+
+#: ui/prefspanel.cpp:77
+msgid "export shaded 2d triangles"
+msgstr "export shaded 2d triangles"
+
+#: ui/prefspanel.cpp:79
+msgid "curves as piecewise linear (the cutter radius is not zero)"
+msgstr "curves as piecewise linear (the cutter radius is not zero)"
+
+#: ui/prefspanel.cpp:81
+msgid "export curves as piecewise linear"
+msgstr "export curves as piecewise linear"
+
+#: ui/prefspanel.cpp:83
+msgid "fix white exported lines"
+msgstr "fix white exported lines"
+
+#: ui/prefspanel.cpp:84
+msgid "export background color"
+msgstr "export background color"
+
+#: ui/prefspanel.cpp:85
+msgid "lay parts flat on export"
+msgstr "lay parts flat on export"
+
+#: ui/prefspanel.cpp:87
+msgid "canvas size"
+msgstr "canvas size"
+
+#: ui/prefspanel.cpp:89
+msgid "fixed"
+msgstr "fixed"
+
+#: ui/prefspanel.cpp:93
+msgid "auto (margins)"
+msgstr "auto (margins)"
+
+#: ui/prefspanel.cpp:97 ui/stylespanel.cpp:121
+msgid "left"
+msgstr "left"
+
+#: ui/prefspanel.cpp:98 ui/stylespanel.cpp:125
+msgid "right"
+msgstr "right"
+
+#: ui/prefspanel.cpp:99 ui/stylespanel.cpp:126
+msgid "bottom"
+msgstr "bottom"
+
+#: ui/prefspanel.cpp:100 ui/stylespanel.cpp:130
+msgid "top"
+msgstr "top"
+
+#: ui/prefspanel.cpp:104
+msgid "offset x"
+msgstr "offset x"
+
+#: ui/prefspanel.cpp:105
+msgid "offset y"
+msgstr "offset y"
+
+#: ui/prefspanel.cpp:108
+msgid "g code"
+msgstr "g code"
+
+#: ui/prefspanel.cpp:109 ui/properties.cpp:117
+msgid "depth"
+msgstr "depth"
+
+#: ui/prefspanel.cpp:110
+msgid "passes"
+msgstr "passes"
+
+#: ui/prefspanel.cpp:111
+msgid "feed"
+msgstr "feed"
+
+#: ui/prefspanel.cpp:112
+msgid "plunge feed"
+msgstr "plunge feed"
+
+#: ui/prefspanel.cpp:117
+msgid "dark theme"
+msgstr "dark theme"
+
+#: ui/prefspanel.cpp:119
+msgid "light theme"
+msgstr "light theme"
+
+#: ui/prefspanel.cpp:122
+msgid "classic keys"
+msgstr "classic keys"
+
+#: ui/prefspanel.cpp:122
+msgid "modern keys"
+msgstr "modern keys"
+
+#: ui/prefspanel.cpp:133
+msgid "colour constraints by state"
+msgstr "colour constraints by state"
+
+#: ui/prefspanel.cpp:135
+msgid "material for mass properties"
+msgstr "material for mass properties"
+
+#: ui/prefspanel.cpp:146
+msgid "density (g/cm³)"
+msgstr "density (g/cm³)"
+
+#: ui/prefspanel.cpp:154
+msgid "Display"
+msgstr "Display"
+
+#: ui/prefspanel.cpp:155
+msgid "Navigation"
+msgstr "Navigation"
+
+#: ui/prefspanel.cpp:157
+msgid "Solver and files"
+msgstr "Solver and files"
+
+#: ui/prefspanel.cpp:158
+msgid "redundant constraint timeout (ms)"
+msgstr "redundant constraint timeout (ms)"
+
+#: ui/prefspanel.cpp:160
+msgid "autosave interval (minutes)"
+msgstr "autosave interval (minutes)"
+
+#: ui/prefspanel.cpp:166
+#, c-format
+msgid "gl vendor   %s"
+msgstr "gl vendor   %s"
+
+#: ui/prefspanel.cpp:167
+#, c-format
+msgid "gl renderer %s"
+msgstr "gl renderer %s"
+
+#: ui/prefspanel.cpp:168
+#, c-format
+msgid "gl version  %s"
+msgstr "gl version  %s"
+
+#: ui/problems.cpp:49
+msgid "No problems."
+msgstr "No problems."
+
+#: ui/problems.cpp:63
+msgid "select all"
+msgstr "select all"
+
+#: ui/problems.cpp:80
+msgid "Some were left out: the search timed out."
+msgstr "Some were left out: the search timed out."
+
+#: ui/problems.cpp:82 ui/properties.cpp:532
+msgid "allow redundant constraints"
+msgstr "allow redundant constraints"
+
+#: ui/problems.cpp:85
+msgid "force to triangle mesh"
+msgstr "force to triangle mesh"
+
+#: ui/problemsmodel.cpp:19 ui/problemsmodel.cpp:24
+msgid "unsolvable constraints"
+msgstr "unsolvable constraints"
+
+#: ui/problemsmodel.cpp:20
+msgid "These constraints are incompatible. Edit > Undo may fix it."
+msgstr "These constraints are incompatible. Edit > Undo may fix it."
+
+#: ui/problemsmodel.cpp:25
+msgid "These constraints are unsatisfied. Edit > Undo may fix it."
+msgstr "These constraints are unsatisfied. Edit > Undo may fix it."
+
+#: ui/problemsmodel.cpp:29
+msgid "redundant constraints"
+msgstr "redundant constraints"
+
+#: ui/problemsmodel.cpp:30
+msgid ""
+"Remove any one of these to fix it, or allow redundant constraints in this "
+"group."
+msgstr ""
+"Remove any one of these to fix it, or allow redundant constraints in this "
+"group."
+
+#: ui/problemsmodel.cpp:36
+msgid "too many unknowns in a single group"
+msgstr "too many unknowns in a single group"
+
+#: ui/problemsmodel.cpp:37
+msgid "Split the sketch into more groups."
+msgstr "Split the sketch into more groups."
+
+#: ui/problemsmodel.cpp:61
+msgid "not closed contour, or not all same style"
+msgstr "not closed contour, or not all same style"
+
+#: ui/problemsmodel.cpp:62
+msgid "points not all coplanar"
+msgstr "points not all coplanar"
+
+#: ui/problemsmodel.cpp:63
+msgid "contour is self-intersecting"
+msgstr "contour is self-intersecting"
+
+#: ui/problemsmodel.cpp:64
+msgid "zero-length edge"
+msgstr "zero-length edge"
+
+#: ui/problemsmodel.cpp:67
+msgid "The sketch shows where."
+msgstr "The sketch shows where."
+
+#: ui/problemsmodel.cpp:68
+#, c-format
+msgid "In %s."
+msgstr "In %s."
+
+#: ui/problemsmodel.cpp:83
+msgid "the Boolean operation failed"
+msgstr "the Boolean operation failed"
+
+#: ui/problemsmodel.cpp:84
+msgid "Forcing NURBS surfaces to a triangle mesh may fix it."
+msgstr "Forcing NURBS surfaces to a triangle mesh may fix it."
+
+#: ui/properties.cpp:83
+#, c-format
+msgid "a dowel's pocket; the other is in %s"
+msgstr "a dowel's pocket; the other is in %s"
+
+#: ui/properties.cpp:85
+#, c-format
+msgid "the pocket; the peg is on %s"
+msgstr "the pocket; the peg is on %s"
+
+#: ui/properties.cpp:87
+#, c-format
+msgid "the peg; the pocket is in %s"
+msgstr "the peg; the pocket is in %s"
+
+#: ui/properties.cpp:90 ui/properties.cpp:178
+msgid "fit"
+msgstr "fit"
+
+#: ui/properties.cpp:100
+msgid "fit table"
+msgstr "fit table"
+
+#: ui/properties.cpp:103 ui/selectionmodel.cpp:254 ui/selectionmodel.cpp:258
+msgid "style"
+msgstr "style"
+
+#: ui/properties.cpp:104
+msgid "peg and pocket"
+msgstr "peg and pocket"
+
+#: ui/properties.cpp:110
+msgid "dowel (a pocket in each)"
+msgstr "dowel (a pocket in each)"
+
+#: ui/properties.cpp:117
+msgid "dowel length"
+msgstr "dowel length"
+
+#: ui/properties.cpp:126
+msgid "other way"
+msgstr "other way"
+
+#: ui/properties.cpp:145
+#, c-format
+msgid "%s; the other half is %s"
+msgstr "%s; the other half is %s"
+
+#: ui/properties.cpp:146
+msgid "the half behind"
+msgstr "the half behind"
+
+#: ui/properties.cpp:146
+msgid "the half in front"
+msgstr "the half in front"
+
+#: ui/properties.cpp:152
+msgid "swap the halves"
+msgstr "swap the halves"
+
+#: ui/properties.cpp:158
+msgid "dowels across the cut"
+msgstr "dowels across the cut"
+
+#: ui/properties.cpp:198
+msgid "sketch in 3d"
+msgstr "sketch in 3d"
+
+#: ui/properties.cpp:199
+msgid "sketch in new workplane"
+msgstr "sketch in new workplane"
+
+#: ui/properties.cpp:200
+msgid "extrude plane sketch"
+msgstr "extrude plane sketch"
+
+#: ui/properties.cpp:201
+msgid "lathe plane sketch"
+msgstr "lathe plane sketch"
+
+#: ui/properties.cpp:202
+msgid "revolve original sketch"
+msgstr "revolve original sketch"
+
+#: ui/properties.cpp:203
+msgid "create helical extrusion"
+msgstr "create helical extrusion"
+
+#: ui/properties.cpp:204
+msgid "rotate original sketch"
+msgstr "rotate original sketch"
+
+#: ui/properties.cpp:205
+msgid "translate original sketch"
+msgstr "translate original sketch"
+
+#: ui/properties.cpp:206
+msgid "link geometry from file"
+msgstr "link geometry from file"
+
+#: ui/properties.cpp:207
+msgid "round edges"
+msgstr "round edges"
+
+#: ui/properties.cpp:208
+msgid "bevel edges"
+msgstr "bevel edges"
+
+#: ui/properties.cpp:209
+msgid "hollow the solid"
+msgstr "hollow the solid"
+
+#: ui/properties.cpp:210
+msgid "taper faces"
+msgstr "taper faces"
+
+#: ui/properties.cpp:211
+msgid "drill holes"
+msgstr "drill holes"
+
+#: ui/properties.cpp:212
+msgid "loft through profiles"
+msgstr "loft through profiles"
+
+#: ui/properties.cpp:213
+msgid "sweep a profile along a path"
+msgstr "sweep a profile along a path"
+
+#: ui/properties.cpp:214
+msgid "fit joint"
+msgstr "fit joint"
+
+#: ui/properties.cpp:215
+msgid "split the part"
+msgstr "split the part"
+
+# English translations for SolveSpace package.
+# Copyright (C) 2017 the SolveSpace authors
+# This file is distributed under the same license as the SolveSpace package.
+# Automatically generated, 2017.
+#
+#: ui/properties.cpp:217
+msgid ""
+msgstr ""
+"Project-Id-Version: SolveSpace 3.0\n"
+"Report-Msgid-Bugs-To: phkahler@gmail.com\n"
+"POT-Creation-Date: 2026-10-28 14:58-0700\n"
+"PO-Revision-Date: 2017-01-05 10:30+0000\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: en_US\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: ui/properties.cpp:223
+msgid "(gone)"
+msgstr "(gone)"
+
+#: ui/properties.cpp:224
+msgid "curve"
+msgstr "curve"
+
+#: ui/properties.cpp:226
+msgid "face"
+msgstr "face"
+
+#: ui/properties.cpp:228 ui/selectionmodel.cpp:388 ui/selectionmodel.cpp:398
+#: ui/selectionmodel.cpp:420
+msgid "point"
+msgstr "point"
+
+#: ui/properties.cpp:230
+msgid "line"
+msgstr "line"
+
+#: ui/properties.cpp:232
+msgid "arc"
+msgstr "arc"
+
+#: ui/properties.cpp:234
+msgid "circle"
+msgstr "circle"
+
+#: ui/properties.cpp:237
+#, c-format
+msgid "%s in %s"
+msgstr "%s in %s"
+
+#: ui/properties.cpp:280
+msgid "part"
+msgstr "part"
+
+#: ui/properties.cpp:293
+msgid "own part"
+msgstr "own part"
+
+#: ui/properties.cpp:300
+msgid "material"
+msgstr "material"
+
+#: ui/properties.cpp:301
+msgid "default"
+msgstr "default"
+
+#: ui/properties.cpp:318
+msgid "one-sided"
+msgstr "one-sided"
+
+#: ui/properties.cpp:320
+msgid "two-sided"
+msgstr "two-sided"
+
+#: ui/properties.cpp:323
+msgid "skewed"
+msgstr "skewed"
+
+#: ui/properties.cpp:328
+msgid "start with original"
+msgstr "start with original"
+
+#: ui/properties.cpp:331
+msgid "start with copy #1"
+msgstr "start with copy #1"
+
+#: ui/properties.cpp:334 ui/toolpanels.cpp:97
+msgid "repeat (times)"
+msgstr "repeat (times)"
+
+#: ui/properties.cpp:341
+msgid "scaled by"
+msgstr "scaled by"
+
+#: ui/properties.cpp:347
+msgid "pitch (length per turn)"
+msgstr "pitch (length per turn)"
+
+#: ui/properties.cpp:355
+msgid "fixed pitch"
+msgstr "fixed pitch"
+
+#: ui/properties.cpp:370
+msgid "plain"
+msgstr "plain"
+
+#: ui/properties.cpp:372
+msgid "counterbore"
+msgstr "counterbore"
+
+#: ui/properties.cpp:374
+msgid "countersink"
+msgstr "countersink"
+
+#: ui/properties.cpp:379
+msgid "thread (M4, M4x0.5 or none)"
+msgstr "thread (M4, M4x0.5 or none)"
+
+#: ui/properties.cpp:384
+msgid "depth (blank: through all)"
+msgstr "depth (blank: through all)"
+
+#: ui/properties.cpp:387
+msgid "counterbore diameter"
+msgstr "counterbore diameter"
+
+#: ui/properties.cpp:388
+msgid "countersink diameter"
+msgstr "countersink diameter"
+
+#: ui/properties.cpp:392
+msgid "counterbore depth"
+msgstr "counterbore depth"
+
+#: ui/properties.cpp:395
+msgid "countersink angle (degrees)"
+msgstr "countersink angle (degrees)"
+
+#: ui/properties.cpp:398
+msgid "print clearance (added to every diameter)"
+msgstr "print clearance (added to every diameter)"
+
+#: ui/properties.cpp:401
+msgid "drill the other way"
+msgstr "drill the other way"
+
+#: ui/properties.cpp:408
+msgid "hole centres"
+msgstr "hole centres"
+
+#: ui/properties.cpp:421 ui/selectionmodel.cpp:187 ui/selectionmodel.cpp:196
+#: ui/selectionmodel.cpp:391 ui/toolpanels.cpp:147
+msgid "radius"
+msgstr "radius"
+
+#: ui/properties.cpp:422 ui/properties.cpp:707 ui/properties.cpp:708
+#: ui/selectionmodel.cpp:316 ui/selectionmodel.cpp:379
+#: ui/selectionmodel.cpp:392 ui/selectionmodel.cpp:401
+#: ui/selectionmodel.cpp:454
+msgid "distance"
+msgstr "distance"
+
+#: ui/properties.cpp:423
+msgid "wall thickness"
+msgstr "wall thickness"
+
+#: ui/properties.cpp:424
+msgid "angle (degrees)"
+msgstr "angle (degrees)"
+
+#: ui/properties.cpp:437
+msgid "hold this size (a dimension)"
+msgstr "hold this size (a dimension)"
+
+#: ui/properties.cpp:445
+msgid "inside"
+msgstr "inside"
+
+#: ui/properties.cpp:447
+msgid "outside"
+msgstr "outside"
+
+#: ui/properties.cpp:449
+msgid "both sides"
+msgstr "both sides"
+
+#: ui/properties.cpp:452
+msgid "edges"
+msgstr "edges"
+
+#: ui/properties.cpp:454 ui/properties.cpp:464
+msgid "faces"
+msgstr "faces"
+
+#: ui/properties.cpp:456
+msgid "only the outline of these faces"
+msgstr "only the outline of these faces"
+
+#: ui/properties.cpp:461
+msgid "faces left open"
+msgstr "faces left open"
+
+#: ui/properties.cpp:461
+msgid "no face open (a sealed hollow)"
+msgstr "no face open (a sealed hollow)"
+
+#: ui/properties.cpp:470
+msgid "profiles, in order"
+msgstr "profiles, in order"
+
+#: ui/properties.cpp:472
+msgid "profile, then the path"
+msgstr "profile, then the path"
+
+#: ui/properties.cpp:473
+msgid "round the path's corners (radius; 0: sharp)"
+msgstr "round the path's corners (radius; 0: sharp)"
+
+#: ui/properties.cpp:495
+msgid "solid model as"
+msgstr "solid model as"
+
+#: ui/properties.cpp:500
+msgid "union"
+msgstr "union"
+
+#: ui/properties.cpp:502
+msgid "assemble"
+msgstr "assemble"
+
+#: ui/properties.cpp:503
+msgid "difference"
+msgstr "difference"
+
+#: ui/properties.cpp:505
+msgid "intersection"
+msgstr "intersection"
+
+#: ui/properties.cpp:509
+msgid "color"
+msgstr "color"
+
+#: ui/properties.cpp:514
+msgid "opacity"
+msgstr "opacity"
+
+#: ui/properties.cpp:518
+msgid "suppress this group's solid model"
+msgstr "suppress this group's solid model"
+
+#: ui/properties.cpp:523
+msgid "show entities from this group"
+msgstr "show entities from this group"
+
+#: ui/properties.cpp:525
+msgid "force NURBS surfaces to triangle mesh"
+msgstr "force NURBS surfaces to triangle mesh"
+
+#: ui/properties.cpp:528
+msgid "(model already forced to triangle mesh)"
+msgstr "(model already forced to triangle mesh)"
+
+#: ui/properties.cpp:530
+msgid "relax constraints and dimensions"
+msgstr "relax constraints and dimensions"
+
+#: ui/properties.cpp:534
+msgid "suppress dof calculation"
+msgstr "suppress dof calculation"
+
+#: ui/properties.cpp:536
+msgid "treat all dimensions as reference"
+msgstr "treat all dimensions as reference"
+
+#: ui/properties.cpp:540
+msgid ""
+"The Boolean operation failed. It may be possible to fix the problem by "
+"choosing 'force NURBS surfaces to triangle mesh'."
+msgstr ""
+"The Boolean operation failed. It may be possible to fix the problem by "
+"choosing 'force NURBS surfaces to triangle mesh'."
+
+#: ui/properties.cpp:549
+#, c-format
+msgid "Requests (%d)"
+msgstr "Requests (%d)"
+
+#: ui/properties.cpp:562
+#, c-format
+msgid "Constraints (%d, %d DOF)"
+msgstr "Constraints (%d, %d DOF)"
+
+#: ui/properties.cpp:615
+msgid "Selection"
+msgstr "Selection"
+
+#: ui/properties.cpp:627
+msgid "reference"
+msgstr "reference"
+
+#: ui/properties.cpp:632
+msgid "use radius"
+msgstr "use radius"
+
+#: ui/properties.cpp:640 ui/selectionmodel.cpp:221 ui/stylespanel.cpp:108
+msgid "text"
+msgstr "text"
+
+#: ui/properties.cpp:644
+msgid "apply kerning"
+msgstr "apply kerning"
+
+#: ui/properties.cpp:674
+msgid "remove assigned style"
+msgstr "remove assigned style"
+
+#: ui/properties.cpp:677
+msgid "unselect all"
+msgstr "unselect all"
+
+#: ui/properties.cpp:688
+msgid "cylindrical"
+msgstr "cylindrical"
+
+#: ui/properties.cpp:688
+msgid "revolute"
+msgstr "revolute"
+
+#: ui/properties.cpp:688
+msgid "slider"
+msgstr "slider"
+
+#: ui/properties.cpp:689
+msgid "ball"
+msgstr "ball"
+
+#: ui/properties.cpp:689
+msgid "gear coupling"
+msgstr "gear coupling"
+
+#: ui/properties.cpp:689
+msgid "planar"
+msgstr "planar"
+
+#: ui/properties.cpp:692
+#, c-format
+msgid "%s: %s drives %s"
+msgstr "%s: %s drives %s"
+
+#: ui/properties.cpp:696
+msgid "ratio"
+msgstr "ratio"
+
+#: ui/properties.cpp:701
+#, c-format
+msgid "%s: %s holds %s"
+msgstr "%s: %s holds %s"
+
+#: ui/properties.cpp:709
+msgid "along u"
+msgstr "along u"
+
+#: ui/properties.cpp:709
+msgid "along v"
+msgstr "along v"
+
+#: ui/properties.cpp:710
+msgid "about x"
+msgstr "about x"
+
+#: ui/properties.cpp:710
+msgid "about y"
+msgstr "about y"
+
+#: ui/properties.cpp:710
+msgid "about z"
+msgstr "about z"
+
+#: ui/properties.cpp:744
+msgid "limits"
+msgstr "limits"
+
+#: ui/properties.cpp:750 ui/selectionmodel.cpp:157 ui/selectionmodel.cpp:377
+msgid "from"
+msgstr "from"
+
+#: ui/properties.cpp:756 ui/selectionmodel.cpp:158 ui/selectionmodel.cpp:378
+msgid "to"
+msgstr "to"
+
+#: ui/properties.cpp:763
+msgid "sweep clearance"
+msgstr "sweep clearance"
+
+#: ui/properties.cpp:770
+msgid "design pose"
+msgstr "design pose"
+
+#: ui/properties.cpp:774 ui/properties.cpp:797
+msgid "delete"
+msgstr "delete"
+
+#: ui/properties.cpp:781
+msgid "Fit table"
+msgstr "Fit table"
+
+#: ui/properties.cpp:782
+msgid ""
+"Clearances for fit joints, tuned to your printer: each side's gap (negative "
+"presses)."
+msgstr ""
+"Clearances for fit joints, tuned to your printer: each side's gap (negative "
+"presses)."
+
+#: ui/properties.cpp:802
+msgid "add a fit"
+msgstr "add a fit"
+
+#: ui/selectionmodel.cpp:16
+msgid "Coincident"
+msgstr "Coincident"
+
+#: ui/selectionmodel.cpp:18
+msgid "Point to line distance"
+msgstr "Point to line distance"
+
+#: ui/selectionmodel.cpp:19
+msgid "Point to plane distance"
+msgstr "Point to plane distance"
+
+#: ui/selectionmodel.cpp:20
+msgid "Point to face distance"
+msgstr "Point to face distance"
+
+#: ui/selectionmodel.cpp:21
+msgid "Projected distance"
+msgstr "Projected distance"
+
+#: ui/selectionmodel.cpp:22
+msgid "Point in plane"
+msgstr "Point in plane"
+
+#: ui/selectionmodel.cpp:23
+msgid "Point on line"
+msgstr "Point on line"
+
+#: ui/selectionmodel.cpp:24
+msgid "Point on face"
+msgstr "Point on face"
+
+#: ui/selectionmodel.cpp:25
+msgid "Equal length"
+msgstr "Equal length"
+
+#: ui/selectionmodel.cpp:26
+msgid "Equal length and distance"
+msgstr "Equal length and distance"
+
+#: ui/selectionmodel.cpp:27
+msgid "Equal distances"
+msgstr "Equal distances"
+
+#: ui/selectionmodel.cpp:28
+msgid "Length ratio"
+msgstr "Length ratio"
+
+#: ui/selectionmodel.cpp:29
+msgid "Arc length ratio"
+msgstr "Arc length ratio"
+
+#: ui/selectionmodel.cpp:30
+msgid "Arc to line length ratio"
+msgstr "Arc to line length ratio"
+
+#: ui/selectionmodel.cpp:31
+msgid "Length difference"
+msgstr "Length difference"
+
+#: ui/selectionmodel.cpp:32
+msgid "Arc length difference"
+msgstr "Arc length difference"
+
+#: ui/selectionmodel.cpp:33
+msgid "Arc to line length difference"
+msgstr "Arc to line length difference"
+
+#: ui/selectionmodel.cpp:35
+msgid "Symmetric horizontally"
+msgstr "Symmetric horizontally"
+
+#: ui/selectionmodel.cpp:36
+msgid "Symmetric vertically"
+msgstr "Symmetric vertically"
+
+#: ui/selectionmodel.cpp:37
+msgid "Symmetric about line"
+msgstr "Symmetric about line"
+
+#: ui/selectionmodel.cpp:41
+msgid "Diameter"
+msgstr "Diameter"
+
+#: ui/selectionmodel.cpp:42
+msgid "Point on circle"
+msgstr "Point on circle"
+
+#: ui/selectionmodel.cpp:43
+msgid "Same orientation"
+msgstr "Same orientation"
+
+#: ui/selectionmodel.cpp:44
+msgid "Angle"
+msgstr "Angle"
+
+#: ui/selectionmodel.cpp:45
+msgid "Parallel"
+msgstr "Parallel"
+
+#: ui/selectionmodel.cpp:46 ui/selectionmodel.cpp:47 ui/selectionmodel.cpp:48
+msgid "Tangent"
+msgstr "Tangent"
+
+#: ui/selectionmodel.cpp:50
+msgid "Equal radius"
+msgstr "Equal radius"
+
+#: ui/selectionmodel.cpp:51
+msgid "Equal angle"
+msgstr "Equal angle"
+
+#: ui/selectionmodel.cpp:52
+msgid "Equal line and arc length"
+msgstr "Equal line and arc length"
+
+#: ui/selectionmodel.cpp:53
+msgid "Lock"
+msgstr "Lock"
+
+#: ui/selectionmodel.cpp:66 ui/selectionmodel.cpp:339
+msgid "Constraint"
+msgstr "Constraint"
+
+#: ui/selectionmodel.cpp:113 ui/selectionmodel.cpp:114
+#: ui/selectionmodel.cpp:248 ui/selectionmodel.cpp:345
+#: ui/selectionmodel.cpp:427
+msgid "workplane"
+msgstr "workplane"
+
+#: ui/selectionmodel.cpp:131
+msgid "at"
+msgstr "at"
+
+#: ui/selectionmodel.cpp:140
+msgid "Normal / coordinate system"
+msgstr "Normal / coordinate system"
+
+#: ui/selectionmodel.cpp:141 ui/selectionmodel.cpp:149
+#: ui/selectionmodel.cpp:208
+msgid "normal"
+msgstr "normal"
+
+#: ui/selectionmodel.cpp:142
+msgid "u"
+msgstr "u"
+
+#: ui/selectionmodel.cpp:143
+msgid "v"
+msgstr "v"
+
+#: ui/selectionmodel.cpp:148
+msgid "origin"
+msgstr "origin"
+
+#: ui/selectionmodel.cpp:156
+msgid "Line segment"
+msgstr "Line segment"
+
+#: ui/selectionmodel.cpp:166
+msgid "Periodic C2 cubic spline"
+msgstr "Periodic C2 cubic spline"
+
+#: ui/selectionmodel.cpp:169
+msgid "Interpolating C2 cubic spline"
+msgstr "Interpolating C2 cubic spline"
+
+#: ui/selectionmodel.cpp:172
+msgid "Cubic Bézier curve"
+msgstr "Cubic Bézier curve"
+
+#: ui/selectionmodel.cpp:182
+msgid "Arc of a circle"
+msgstr "Arc of a circle"
+
+#: ui/selectionmodel.cpp:183 ui/selectionmodel.cpp:194
+#: ui/selectionmodel.cpp:389 ui/stylespanel.cpp:123
+msgid "center"
+msgstr "center"
+
+#: ui/selectionmodel.cpp:184
+msgid "endpoints"
+msgstr "endpoints"
+
+#: ui/selectionmodel.cpp:188
+msgid "arc length"
+msgstr "arc length"
+
+#: ui/selectionmodel.cpp:197
+msgid "circumference"
+msgstr "circumference"
+
+#: ui/selectionmodel.cpp:207
+msgid "Plane face"
+msgstr "Plane face"
+
+#: ui/selectionmodel.cpp:209
+msgid "through"
+msgstr "through"
+
+#: ui/selectionmodel.cpp:213
+msgid "TrueType font text"
+msgstr "TrueType font text"
+
+#: ui/selectionmodel.cpp:214
+msgid "font"
+msgstr "font"
+
+#: ui/selectionmodel.cpp:227
+msgid "Image"
+msgstr "Image"
+
+#: ui/selectionmodel.cpp:228
+msgid "file"
+msgstr "file"
+
+#: ui/selectionmodel.cpp:232
+msgid "Entity"
+msgstr "Entity"
+
+#: ui/selectionmodel.cpp:239 ui/selectionmodel.cpp:241
+msgid "sketch entity"
+msgstr "sketch entity"
+
+#: ui/selectionmodel.cpp:244
+msgid "group"
+msgstr "group"
+
+#: ui/selectionmodel.cpp:248
+msgid "none (free in 3d)"
+msgstr "none (free in 3d)"
+
+#: ui/selectionmodel.cpp:258
+msgid "none"
+msgstr "none"
+
+#: ui/selectionmodel.cpp:261
+msgid "construction"
+msgstr "construction"
+
+#: ui/selectionmodel.cpp:261
+msgid "yes"
+msgstr "yes"
+
+#: ui/selectionmodel.cpp:281
+msgid "constrained by"
+msgstr "constrained by"
+
+#: ui/selectionmodel.cpp:281
+msgid "measured by"
+msgstr "measured by"
+
+#: ui/selectionmodel.cpp:299
+#, c-format
+msgid "plane%c normal"
+msgstr "plane%c normal"
+
+#: ui/selectionmodel.cpp:300
+#, c-format
+msgid "plane%c thru"
+msgstr "plane%c thru"
+
+#: ui/selectionmodel.cpp:315
+msgid "attached to"
+msgstr "attached to"
+
+#: ui/selectionmodel.cpp:317 ui/selectionmodel.cpp:380
+msgid "offset (x, y, z)"
+msgstr "offset (x, y, z)"
+
+#: ui/selectionmodel.cpp:320 ui/statusmodel.cpp:48
+msgid "Dimension"
+msgstr "Dimension"
+
+#: ui/selectionmodel.cpp:320
+msgid "Reference"
+msgstr "Reference"
+
+#: ui/selectionmodel.cpp:341
+msgid "type"
+msgstr "type"
+
+#: ui/selectionmodel.cpp:345
+msgid "none (not projected)"
+msgstr "none (not projected)"
+
+#: ui/selectionmodel.cpp:352
+msgid "constrains"
+msgstr "constrains"
+
+#: ui/selectionmodel.cpp:352
+msgid "measures"
+msgstr "measures"
+
+#: ui/selectionmodel.cpp:376
+msgid "Two points"
+msgstr "Two points"
+
+#: ui/selectionmodel.cpp:386
+msgid "Point and a circle"
+msgstr "Point and a circle"
+
+#: ui/selectionmodel.cpp:387
+msgid "Point and an arc"
+msgstr "Point and an arc"
+
+#: ui/selectionmodel.cpp:397
+msgid "A point and a plane face"
+msgstr "A point and a plane face"
+
+#: ui/selectionmodel.cpp:399
+msgid "plane normal"
+msgstr "plane normal"
+
+#: ui/selectionmodel.cpp:400
+msgid "plane through"
+msgstr "plane through"
+
+#: ui/selectionmodel.cpp:406
+msgid "Two points and a vector"
+msgstr "Two points and a vector"
+
+#: ui/selectionmodel.cpp:407
+msgid "point A"
+msgstr "point A"
+
+#: ui/selectionmodel.cpp:408
+msgid "point B"
+msgstr "point B"
+
+#: ui/selectionmodel.cpp:409
+msgid "vector"
+msgstr "vector"
+
+#: ui/selectionmodel.cpp:410
+msgid "projected distance"
+msgstr "projected distance"
+
+#: ui/selectionmodel.cpp:417
+msgid "Line segment and point"
+msgstr "Line segment and point"
+
+#: ui/selectionmodel.cpp:418
+msgid "line through"
+msgstr "line through"
+
+#: ui/selectionmodel.cpp:421
+msgid "distance to line"
+msgstr "distance to line"
+
+#: ui/selectionmodel.cpp:434
+msgid "Two vectors"
+msgstr "Two vectors"
+
+#: ui/selectionmodel.cpp:435
+msgid "vector A"
+msgstr "vector A"
+
+#: ui/selectionmodel.cpp:436
+msgid "vector B"
+msgstr "vector B"
+
+#: ui/selectionmodel.cpp:437 ui/selectionmodel.cpp:447
+#, c-format
+msgid "%.2f degrees"
+msgstr "%.2f degrees"
+
+#: ui/selectionmodel.cpp:440 ui/selectionmodel.cpp:450
+#, c-format
+msgid "%.2f (mod 180)"
+msgstr "%.2f (mod 180)"
+
+#: ui/selectionmodel.cpp:440 ui/selectionmodel.cpp:450
+msgid "or"
+msgstr "or"
+
+#: ui/selectionmodel.cpp:442
+msgid "Two plane faces"
+msgstr "Two plane faces"
+
+#: ui/selectionmodel.cpp:457
+msgid "Three plane faces"
+msgstr "Three plane faces"
+
+#: ui/selectionmodel.cpp:462
+#, c-format
+msgid "%d item"
+msgstr "%d item"
+
+#: ui/selectionmodel.cpp:462
+#, c-format
+msgid "%d items"
+msgstr "%d items"
+
+#: ui/shortcuts.cpp:21
+msgid "filter"
+msgstr "filter"
+
+#: ui/statusmodel.cpp:35 ui/statusmodel.cpp:43
+msgid "Hold"
+msgstr "Hold"
+
+#: ui/statusmodel.cpp:41
+msgid "2 fingers"
+msgstr "2 fingers"
+
+#: ui/statusmodel.cpp:41
+msgid "Pan, zoom"
+msgstr "Pan, zoom"
+
+#: ui/statusmodel.cpp:42
+msgid "Orbit"
+msgstr "Orbit"
+
+#: ui/statusmodel.cpp:43
+msgid "Menu"
+msgstr "Menu"
+
+#: ui/statusmodel.cpp:45
+msgid "Commands"
+msgstr "Commands"
+
+#: ui/statusmodel.cpp:51
+msgid "Views"
+msgstr "Views"
+
+#: ui/statusmodel.cpp:57
+msgid "Solved"
+msgstr "Solved"
+
+#: ui/statusmodel.cpp:58
+msgid "Redundant"
+msgstr "Redundant"
+
+#: ui/statusmodel.cpp:60
+msgid "Didn't converge"
+msgstr "Didn't converge"
+
+#: ui/statusmodel.cpp:61
+msgid "Too many unknowns"
+msgstr "Too many unknowns"
+
+#: ui/stylespanel.cpp:56
+msgid "Style"
+msgstr "Style"
+
+#: ui/stylespanel.cpp:58
+msgid "name"
+msgstr "name"
+
+#: ui/stylespanel.cpp:59
+msgid "delete style"
+msgstr "delete style"
+
+#: ui/stylespanel.cpp:69
+msgid "line stroke"
+msgstr "line stroke"
+
+#: ui/stylespanel.cpp:72
+msgid "stroke color"
+msgstr "stroke color"
+
+#: ui/stylespanel.cpp:76
+msgid "stipple width"
+msgstr "stipple width"
+
+#: ui/stylespanel.cpp:78 ui/stylespanel.cpp:111
+msgid "pixels"
+msgstr "pixels"
+
+#: ui/stylespanel.cpp:84 ui/stylespanel.cpp:132
+msgid "in pixels"
+msgstr "in pixels"
+
+#: ui/stylespanel.cpp:86
+msgid "continuous"
+msgstr "continuous"
+
+#: ui/stylespanel.cpp:86
+msgid "dash"
+msgstr "dash"
+
+#: ui/stylespanel.cpp:86
+msgid "short dash"
+msgstr "short dash"
+
+#: ui/stylespanel.cpp:87
+msgid "dash dot"
+msgstr "dash dot"
+
+#: ui/stylespanel.cpp:87
+msgid "dash dot dot"
+msgstr "dash dot dot"
+
+#: ui/stylespanel.cpp:87
+msgid "long dash"
+msgstr "long dash"
+
+#: ui/stylespanel.cpp:88
+msgid "dot"
+msgstr "dot"
+
+#: ui/stylespanel.cpp:88
+msgid "freehand"
+msgstr "freehand"
+
+#: ui/stylespanel.cpp:88
+msgid "zigzag"
+msgstr "zigzag"
+
+#: ui/stylespanel.cpp:89
+msgid "stipple type"
+msgstr "stipple type"
+
+#: ui/stylespanel.cpp:99
+msgid "contour fill"
+msgstr "contour fill"
+
+#: ui/stylespanel.cpp:100
+msgid "fill color"
+msgstr "fill color"
+
+#: ui/stylespanel.cpp:105
+msgid "contours are filled"
+msgstr "contours are filled"
+
+#: ui/stylespanel.cpp:120
+msgid "comment alignment"
+msgstr "comment alignment"
+
+#: ui/stylespanel.cpp:128
+msgid "middle"
+msgstr "middle"
+
+#: ui/stylespanel.cpp:136
+msgid "show these objects on screen"
+msgstr "show these objects on screen"
+
+#: ui/stylespanel.cpp:137
+msgid "export these objects"
+msgstr "export these objects"
+
+#: ui/stylespanel.cpp:140
+msgid "assign the selection to this style"
+msgstr "assign the selection to this style"
+
+#: ui/stylespanel.cpp:143
+msgid "Or right-click lines and curves on the drawing."
+msgstr "Or right-click lines and curves on the drawing."
+
+#: ui/stylespanel.cpp:161
+msgid "create a new custom style"
+msgstr "create a new custom style"
+
+#: ui/stylespanel.cpp:165
+msgid "load factory defaults"
+msgstr "load factory defaults"
+
+#: ui/stylespanel.cpp:170
+msgid "background color"
+msgstr "background color"
+
+#: ui/toolpanels.cpp:47
+#, c-format
+msgid "scale (px per %s)"
+msgstr "scale (px per %s)"
+
+#: ui/toolpanels.cpp:50
+msgid "set to full scale"
+msgstr "set to full scale"
+
+#: ui/toolpanels.cpp:53
+msgid "origin (the centre of the screen)"
+msgstr "origin (the centre of the screen)"
+
+#: ui/toolpanels.cpp:56
+msgid "projection: right"
+msgstr "projection: right"
+
+#: ui/toolpanels.cpp:59
+msgid "projection: up"
+msgstr "projection: up"
+
+#: ui/toolpanels.cpp:62
+#, c-format
+msgid "out (%.3f, %.3f, %.3f)"
+msgstr "out (%.3f, %.3f, %.3f)"
+
+#: ui/toolpanels.cpp:64
+msgid "perspective factor (0 for parallel)"
+msgstr "perspective factor (0 for parallel)"
+
+#: ui/toolpanels.cpp:67
+#, c-format
+msgid "light %d direction"
+msgstr "light %d direction"
+
+#: ui/toolpanels.cpp:70
+#, c-format
+msgid "light %d intensity"
+msgstr "light %d intensity"
+
+#: ui/toolpanels.cpp:74
+msgid "ambient lighting"
+msgstr "ambient lighting"
+
+#: ui/toolpanels.cpp:75
+msgid "explode distance"
+msgstr "explode distance"
+
+#: ui/toolpanels.cpp:99
+msgid "rotate (degrees)"
+msgstr "rotate (degrees)"
+
+#: ui/toolpanels.cpp:101
+msgid "about point"
+msgstr "about point"
+
+#: ui/toolpanels.cpp:102 ui/toolpanels.cpp:107
+#, c-format
+msgid "%s"
+msgstr "%s"
+
+#: ui/toolpanels.cpp:103
+msgid "use the selected point"
+msgstr "use the selected point"
+
+#: ui/toolpanels.cpp:106
+msgid "translate"
+msgstr "translate"
+
+#: ui/toolpanels.cpp:108
+msgid "use the two selected points"
+msgstr "use the two selected points"
+
+#: ui/toolpanels.cpp:111
+msgid "scale"
+msgstr "scale"
+
+#: ui/toolpanels.cpp:113
+msgid "mirror"
+msgstr "mirror"
+
+#: ui/toolpanels.cpp:116
+msgid "paste transformed now"
+msgstr "paste transformed now"
+
+#: ui/toolpanels.cpp:130
+#, c-format
+msgid "start %s"
+msgstr "start %s"
+
+#: ui/toolpanels.cpp:131
+msgid "finish"
+msgstr "finish"
+
+#: ui/toolpanels.cpp:132
+msgid "steps"
+msgstr "steps"
+
+#: ui/toolpanels.cpp:133
+msgid "step dimension now"
+msgstr "step dimension now"
+
+#: ui/toolpanels.cpp:143
+msgid "choose radius automatically"
+msgstr "choose radius automatically"
+
+#: ui/toolpanels.cpp:151
+msgid "modify original entities"
+msgstr "modify original entities"
+
+#: ui/toolpanels.cpp:154
+msgid ""
+"To make a tangent arc at a point, select the point and choose Sketch > "
+"Tangent Arc at Point."
+msgstr ""
+"To make a tangent arc at a point, select the point and choose Sketch > "
+"Tangent Arc at Point."
+
+#: ui/uiactions.cpp:13
+msgid "View › Command Palette"
+msgstr "View › Command Palette"
+
+#: ui/uiactions.cpp:14
+msgid "View › Toggle Menu Bar"
+msgstr "View › Toggle Menu Bar"
+
+#: ui/uiactions.cpp:15
+msgid "View › Toggle Theme"
+msgstr "View › Toggle Theme"
+
+#: ui/uiactions.cpp:16
+msgid "View › Outliner"
+msgstr "View › Outliner"
+
+#: ui/uiactions.cpp:17
+msgid "View › Properties"
+msgstr "View › Properties"
+
+#: ui/uiactions.cpp:18
+msgid "View › Problems"
+msgstr "View › Problems"
+
+#: ui/uiactions.cpp:19
+msgid "View › Front"
+msgstr "View › Front"
+
+#: ui/uiactions.cpp:20
+msgid "View › Back"
+msgstr "View › Back"
+
+#: ui/uiactions.cpp:21
+msgid "View › Right"
+msgstr "View › Right"
+
+#: ui/uiactions.cpp:22
+msgid "View › Left"
+msgstr "View › Left"
+
+#: ui/uiactions.cpp:23
+msgid "View › Top"
+msgstr "View › Top"
+
+#: ui/uiactions.cpp:24
+msgid "View › Bottom"
+msgstr "View › Bottom"
+
+#: ui/uiactions.cpp:25
+msgid "View › Frame Selected"
+msgstr "View › Frame Selected"
+
+#: ui/uiactions.cpp:26
+msgid "View › Hide Group"
+msgstr "View › Hide Group"
+
+#: ui/uiactions.cpp:27
+msgid "View › Show All Groups"
+msgstr "View › Show All Groups"
+
+#: ui/uiactions.cpp:28
+msgid "View › Isolate Group"
+msgstr "View › Isolate Group"
+
+#: ui/uiactions.cpp:29
+msgid "Sketch › Enter/Exit Sketch"
+msgstr "Sketch › Enter/Exit Sketch"
+
+#: ui/uiactions.cpp:30
+msgid "Edit › Grab"
+msgstr "Edit › Grab"
+
+#: ui/uiactions.cpp:31
+msgid "Constrain › Smart Dimension"
+msgstr "Constrain › Smart Dimension"
+
+#: ui/uiactions.cpp:32
+msgid "Sketch › Add… (pie)"
+msgstr "Sketch › Add… (pie)"
+
+#: ui/uiactions.cpp:33
+msgid "Constrain › Constrain… (pie)"
+msgstr "Constrain › Constrain… (pie)"
+
+#: ui/uiactions.cpp:34
+msgid "View › Views… (pie)"
+msgstr "View › Views… (pie)"
+
+#: ui/uiactions.cpp:35
+msgid "Help › Keyboard Shortcuts"
+msgstr "Help › Keyboard Shortcuts"
+
+#: ui/uiactions.cpp:36
+msgid "Inspect › Fit Table"
+msgstr "Inspect › Fit Table"
+
+#: ui/uiactions.cpp:37
+msgid "New Group › Joints… (pie)"
+msgstr "New Group › Joints… (pie)"
 
 #: util.cpp:172
 msgctxt "title"

@@ -44,7 +44,7 @@ std::function<void()> CommandPalette::Draw(const std::vector<PaletteEntry> &entr
         ImGui::SetKeyboardFocusHere();
     }
     ImGui::SetNextItemWidth(-1);
-    ImGui::InputTextWithHint("##query", "Type a command...", query, sizeof(query));
+    ImGui::InputTextWithHint("##query", _("Type a command..."), query, sizeof(query));
     bool justActivated = !fieldActive && ImGui::IsItemActive();
     fieldActive = ImGui::IsItemActive();
     if(justActivated) {

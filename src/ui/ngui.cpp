@@ -147,13 +147,13 @@ void InitNgUi() {
     Actions().Bind("ui.show-shortcuts", [] { ShortcutsPanel().Toggle(); });
     Actions().Bind("ui.fit-table", [] { ShowFitTableInProperties(); });
     Actions().Bind("ui.pie-add", [] {
-        Pie().Open("Add", {
-            { "Line", "line-segment", true, "line" },
-            { "Rectangle", "rectangle", true, "rectangle" },
-            { "Circle", "circle", true, "circle" }, { "Arc", "arc", true, "arc" },
-            { "Spline", "cubic-spline", true, "spline" },
-            { "Point", "datum-point", true, "point" }, { "Text", "ttf-text", true, "text" },
-            { "Workplane", "workplane", true, "new-sketch" } }, "ui.pie-add");
+        Pie().Open(_("Add"), {
+            { _("Line"), "line-segment", true, "line" },
+            { _("Rectangle"), "rectangle", true, "rectangle" },
+            { _("Circle"), "circle", true, "circle" }, { _("Arc"), "arc", true, "arc" },
+            { _("Spline"), "cubic-spline", true, "spline" },
+            { _("Point"), "datum-point", true, "point" }, { _("Text"), "ttf-text", true, "text" },
+            { _("Workplane"), "workplane", true, "new-sketch" } }, "ui.pie-add");
     });
     Actions().Bind("ui.pie-constrain", [] {
         SS.GW.SelectHoveredIfNothingSelected();
@@ -164,26 +164,28 @@ void InitNgUi() {
             if(!Constraint::AppliesToSelection(c)) continue;
             items.push_back({ MenuLabelFor(c), CommandName(c), true, CommandIcon(c) });
         }
-        Pie().Open("Constrain", std::move(items), "ui.pie-constrain");
+        Pie().Open(_("Constrain"), std::move(items), "ui.pie-constrain");
     });
     Actions().Bind("ui.pie-view", [] {
-        Pie().Open("View", {
-            { "Top", "ui.view-top" }, { "Right", "ui.view-right" },
-            { "Isometric", "nearest-iso" }, { "Front", "ui.view-front" },
-            { "Bottom", "ui.view-bottom" }, { "Left", "ui.view-left" },
-            { "Frame Selected", "ui.view-frame-selected" }, { "Back", "ui.view-back" },
-            { "Grid", "show-grid" } },
+        Pie().Open(_("View"), {
+            { _("Top"), "ui.view-top" }, { _("Right"), "ui.view-right" },
+            { _("Isometric"), "nearest-iso" }, { _("Front"), "ui.view-front" },
+            { _("Bottom"), "ui.view-bottom" }, { _("Left"), "ui.view-left" },
+            { _("Frame Selected"), "ui.view-frame-selected" }, { _("Back"), "ui.view-back" },
+            { _("Grid"), "show-grid" } },
                    "ui.pie-view");
     });
     Actions().Bind("ui.pie-joint", [] {
         auto item = [](const char *label, Command c) {
             return PieItem{ label, CommandName(c), true, CommandIcon(c) };
         };
-        Pie().Open("Joint", {
-            item("Revolute", Command::JOINT_REVOLUTE), item("Slider", Command::JOINT_SLIDER),
-            item("Cylindrical", Command::JOINT_CYLINDRICAL), item("Planar", Command::JOINT_PLANAR),
-            item("Ball", Command::JOINT_BALL), item("Gear", Command::JOINT_GEAR),
-            item("Fit", Command::GROUP_FIT), item("Design Pose", Command::DESIGN_POSE) },
+        Pie().Open(_("Joint"), {
+            item(_("Revolute"), Command::JOINT_REVOLUTE),
+            item(_("Slider"), Command::JOINT_SLIDER),
+            item(_("Cylindrical"), Command::JOINT_CYLINDRICAL),
+            item(_("Planar"), Command::JOINT_PLANAR),
+            item(_("Ball"), Command::JOINT_BALL), item(_("Gear"), Command::JOINT_GEAR),
+            item(_("Fit"), Command::GROUP_FIT), item(_("Design Pose"), Command::DESIGN_POSE) },
                    "ui.pie-joint");
     });
 }

@@ -195,8 +195,12 @@ if(ENABLE_GUI OR ENABLE_CLI)
             file(RELATIVE_PATH source ${CMAKE_CURRENT_SOURCE_DIR} ${source})
             list(APPEND slvs_solver_relative_SOURCES ${source})
         endforeach()
+        # NG's interface, whether or not this build has it, so the template is the same in all.
+        file(GLOB ng_ui_SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
+            ui/*.cpp platform/guisdl.cpp platform/sdl/*.cpp)
         set(inputs
             ${slvs_solver_relative_SOURCES}
+            ${ng_ui_SOURCES}
             ${solvespace_core_SOURCES}
             ${every_platform_SOURCES}
             ${solvespace_core_gl_SOURCES})

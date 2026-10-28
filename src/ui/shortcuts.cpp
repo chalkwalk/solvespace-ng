@@ -18,7 +18,7 @@ std::function<void()> DrawShortcuts(const Platform::MenuBarSdl &menuBar,
     if(panel.Begin()) {
         static char filter[64] = "";
         ImGui::SetNextItemWidth(-1);
-        ImGui::InputTextWithHint("##shortcuts-filter", "filter", filter, sizeof(filter));
+        ImGui::InputTextWithHint("##shortcuts-filter", _("filter"), filter, sizeof(filter));
         std::string f = filter;
         for(char &c : f) c = (char)tolower((unsigned char)c);
         // Whatever the palette offers (menus and actions), with the key it has now.

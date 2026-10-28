@@ -86,7 +86,7 @@ bool Panel::Begin() {
         if(!autoSize) ImGui::SetNextWindowSize(ImVec2(width, h), ImGuiCond_FirstUseEver);
     }
     bool open    = true;
-    std::string id = title + "###panel-" + name;
+    std::string id = std::string(_(title.c_str())) + "###panel-" + name;
     // Keep the panel on screen when the window has shrunk under it: smaller if it must be,
     // then moved back inside.
     if(ImGuiWindow *w = ImGui::FindWindowByName(id.c_str())) {
@@ -132,7 +132,7 @@ void Panel::End() {
 Panel &ShelfPanel() {
     // Shown or not is SS.showToolbar (View > Show Toolbar), which the core saves.
     static Panel panel = [] {
-        Panel p("Shelf", "Tools", PanelEdge::LEFT, 100, /*shownByDefault=*/false,
+        Panel p("Shelf", N_("Tools"), PanelEdge::LEFT, 100, /*shownByDefault=*/false,
                 /*remembersShown=*/false);
         p.autoSize = true;
         return p;
@@ -141,59 +141,60 @@ Panel &ShelfPanel() {
 }
 
 Panel &ShortcutsPanel() {
-    static Panel panel("Shortcuts", "Keyboard Shortcuts", PanelEdge::CENTER, 460,
+    static Panel panel("Shortcuts", N_("Keyboard Shortcuts"), PanelEdge::CENTER, 460,
                        /*shownByDefault=*/false, /*remembersShown=*/false);
     return panel;
 }
 
 Panel &PropertiesPanel() {
-    static Panel panel("Properties", "Properties", PanelEdge::RIGHT_BELOW, 320,
+    static Panel panel("Properties", N_("Properties"), PanelEdge::RIGHT_BELOW, 320,
                        /*shownByDefault=*/true);
     return panel;
 }
 
 Panel &ProblemsPanel() {
-    static Panel panel("Problems", "Problems", PanelEdge::BOTTOM_RIGHT, 320,
+    static Panel panel("Problems", N_("Problems"), PanelEdge::BOTTOM_RIGHT, 320,
                        /*shownByDefault=*/false);
     return panel;
 }
 
 Panel &PreferencesPanel() {
-    static Panel panel("Preferences", "Preferences", PanelEdge::CENTER, 380,
+    static Panel panel("Preferences", N_("Preferences"), PanelEdge::CENTER, 380,
                        /*shownByDefault=*/false);
     return panel;
 }
 
 Panel &StylesPanel() {
-    static Panel panel("Styles", "Styles", PanelEdge::CENTER, 380, /*shownByDefault=*/false);
+    static Panel panel("Styles", N_("Styles"), PanelEdge::CENTER, 380, /*shownByDefault=*/false);
     return panel;
 }
 
 Panel &ViewPanel() {
-    static Panel panel("View", "View", PanelEdge::CENTER, 380, /*shownByDefault=*/false);
+    static Panel panel("View", N_("View"), PanelEdge::CENTER, 380, /*shownByDefault=*/false);
     return panel;
 }
 
 Panel &PastePanel() {
-    static Panel panel("Paste", "Paste Transformed", PanelEdge::CENTER, 380, false,
+    static Panel panel("Paste", N_("Paste Transformed"), PanelEdge::CENTER, 380, false,
                        /*remembersShown=*/false);
     return panel;
 }
 
 Panel &StepDimensionPanel() {
-    static Panel panel("StepDimension", "Step Dimension", PanelEdge::CENTER, 380, false,
+    static Panel panel("StepDimension", N_("Step Dimension"), PanelEdge::CENTER, 380, false,
                        /*remembersShown=*/false);
     return panel;
 }
 
 Panel &TangentArcPanel() {
-    static Panel panel("TangentArc", "Tangent Arc", PanelEdge::CENTER, 380, false,
+    static Panel panel("TangentArc", N_("Tangent Arc"), PanelEdge::CENTER, 380, false,
                        /*remembersShown=*/false);
     return panel;
 }
 
 Panel &OutlinerPanel() {
-    static Panel panel("Outliner", "Outliner", PanelEdge::RIGHT_TOP, 320, /*shownByDefault=*/true);
+    static Panel panel("Outliner", N_("Outliner"), PanelEdge::RIGHT_TOP, 320,
+                       /*shownByDefault=*/true);
     return panel;
 }
 

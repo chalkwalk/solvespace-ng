@@ -46,7 +46,7 @@ std::function<void()> DrawProblems() {
     gKnown = now;
 
     if(!ProblemsPanel().Begin()) return run;
-    if(problems.empty()) ImGui::TextDisabled("No problems.");
+    if(problems.empty()) ImGui::TextDisabled(_("No problems."));
     for(size_t i = 0; i < problems.size(); i++) {
         const Problem &p = problems[i];
         ImGui::PushID((int)i);
@@ -60,7 +60,9 @@ std::function<void()> DrawProblems() {
         ImGui::TextWrapped("%s", p.detail.c_str());
         if(!p.culprits.empty()) {
             std::vector<hConstraint> culprits = p.culprits;
-            if(ImGui::SmallButton("select all")) run = [culprits] { SelectConstraints(culprits); };
+            if(ImGui::SmallButton(_("select all"))) {
+                run = [culprits] { SelectConstraints(culprits); };
+            }
             for(hConstraint hc : p.culprits) {
                 Constraint *c = SK.constraint.FindByIdNoOops(hc);
                 if(!c) continue;
@@ -75,12 +77,12 @@ std::function<void()> DrawProblems() {
                 if(ImGui::Selectable(label.c_str())) run = [hc] { SelectConstraints({ hc }); };
                 ImGui::Unindent();
             }
-            if(p.timedOut) ImGui::TextDisabled("Some were left out: the search timed out.");
+            if(p.timedOut) ImGui::TextDisabled(_("Some were left out: the search timed out."));
         }
-        if(p.canAllowRedundant && ImGui::Button("allow redundant constraints")) {
+        if(p.canAllowRedundant && ImGui::Button(_("allow redundant constraints"))) {
             run = [hg] { SS.ChangeGroupOption(hg, GroupOption::ALLOW_REDUNDANT); };
         }
-        if(p.canForceToMesh && ImGui::Button("force to triangle mesh")) {
+        if(p.canForceToMesh && ImGui::Button(_("force to triangle mesh"))) {
             run = [hg] { SS.ChangeGroupOption(hg, GroupOption::FORCE_TO_MESH); };
         }
         ImGui::Separator();

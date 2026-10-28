@@ -80,14 +80,14 @@ static void DrawFitJoint(Group *g, std::function<void()> *run) {
     std::string    them  = other ? SS.PartName(other->PartOf()) : "?";
     ImGui::Spacing();
     if(spec.dowel) {
-        ImGui::TextDisabled("a dowel's pocket; the other is in %s", them.c_str());
+        ImGui::TextDisabled(_("a dowel's pocket; the other is in %s"), them.c_str());
     } else if(spec.female) {
-        ImGui::TextDisabled("the pocket; the peg is on %s", them.c_str());
+        ImGui::TextDisabled(_("the pocket; the peg is on %s"), them.c_str());
     } else {
-        ImGui::TextDisabled("the peg; the pocket is in %s", them.c_str());
+        ImGui::TextDisabled(_("the peg; the pocket is in %s"), them.c_str());
     }
     auto set = [hg, run](Group::FitSpec s) { *run = [hg, s] { SS.SetFitJoint(hg, s); }; };
-    ImGui::TextUnformatted("fit");
+    ImGui::TextUnformatted(_("fit"));
     for(const Fit &f : SS.FitTable()) {
         std::string label = ssprintf("%s (%s)##fit-kind-%s", f.name.c_str(),
                                      SS.MmToString(f.clearance).c_str(), f.name.c_str());
@@ -97,20 +97,24 @@ static void DrawFitJoint(Group *g, std::function<void()> *run) {
             set(s);
         }
     }
-    if(ImGui::Button("fit table##fit-table")) *run = [] { ShowFitTableInProperties(); };
-    ImGui::TextUnformatted("style");
-    if(ImGui::RadioButton("peg and pocket##fit-peg", !spec.dowel) && spec.dowel) {
+    if(ImGui::Button(LabelId(_("fit table"), "##fit-table").c_str())) {
+        *run = [] { ShowFitTableInProperties(); };
+    }
+    ImGui::TextUnformatted(_("style"));
+    if(ImGui::RadioButton(LabelId(_("peg and pocket"), "##fit-peg").c_str(), !spec.dowel) &&
+       spec.dowel) {
         Group::FitSpec s = spec;
         s.dowel          = 0;
         set(s);
     }
-    if(ImGui::RadioButton("dowel (a pocket in each)##fit-dowel", spec.dowel != 0) &&
+    if(ImGui::RadioButton(LabelId(_("dowel (a pocket in each)"), "##fit-dowel").c_str(),
+                          spec.dowel != 0) &&
        !spec.dowel) {
         Group::FitSpec s = spec;
         s.dowel          = 1;
         set(s);
     }
-    ImGui::TextUnformatted(spec.dowel ? "dowel length" : "depth");
+    ImGui::TextUnformatted(spec.dowel ? _("dowel length") : _("depth"));
     ValueField("##fit-depth", SS.MmToString(spec.depth), run, [hg, spec](std::string text) {
         if(Expr *e = Expr::From(text, /*popUpError=*/true)) {
             Group::FitSpec s = spec;
@@ -119,7 +123,7 @@ static void DrawFitJoint(Group *g, std::function<void()> *run) {
         }
     }, SS.UnitName());
     bool flip = spec.flip != 0;
-    if(ImGui::Checkbox("other way##fit-flip", &flip)) {
+    if(ImGui::Checkbox(LabelId(_("other way"), "##fit-flip").c_str(), &flip)) {
         Group::FitSpec s = spec;
         s.flip           = flip;
         set(s);
@@ -138,19 +142,20 @@ static void DrawSplit(Group *g, std::function<void()> *run) {
     double         dia   = g->valA;
     Group         *other = SK.group.FindByIdNoOops(spec.partner);
     ImGui::Spacing();
-    ImGui::TextDisabled("%s; the other half is %s", spec.female ? "the half in front" : "the half behind",
+    ImGui::TextDisabled(_("%s; the other half is %s"),
+                        spec.female ? _("the half in front") : _("the half behind"),
                         other ? SS.PartName(other->PartOf()).c_str() : "?");
     auto set = [hg, dia, run](Group::FitSpec s, double d) {
         *run = [hg, s, d] { SS.SetSplit(hg, s, d); };
     };
     bool flip = spec.flip != 0;
-    if(ImGui::Checkbox("swap the halves##split-flip", &flip)) {
+    if(ImGui::Checkbox(LabelId(_("swap the halves"), "##split-flip").c_str(), &flip)) {
         Group::FitSpec s = spec;
         s.flip           = flip;
         set(s, dia);
     }
     bool dowels = spec.dowel != 0;
-    if(ImGui::Checkbox("dowels across the cut##split-dowels", &dowels)) {
+    if(ImGui::Checkbox(LabelId(_("dowels across the cut"), "##split-dowels").c_str(), &dowels)) {
         Group::FitSpec s = spec;
         s.dowel          = dowels;
         set(s, dia);
@@ -166,11 +171,11 @@ static void DrawSplit(Group *g, std::function<void()> *run) {
                 SS.SetSplit(hg, s, d);
             };
         };
-        ImGui::TextUnformatted("diameter");
+        ImGui::TextUnformatted(_("diameter"));
         ValueField("##split-diameter", SS.MmToString(dia), run, mm(false), SS.UnitName());
-        ImGui::TextUnformatted("length");
+        ImGui::TextUnformatted(_("length"));
         ValueField("##split-length", SS.MmToString(spec.depth), run, mm(true), SS.UnitName());
-        ImGui::TextUnformatted("fit");
+        ImGui::TextUnformatted(_("fit"));
         for(const Fit &f : SS.FitTable()) {
             std::string label = ssprintf("%s (%s)##split-kind-%s", f.name.c_str(),
                                          SS.MmToString(f.clearance).c_str(), f.name.c_str());
@@ -190,46 +195,46 @@ static void DrawSplit(Group *g, std::function<void()> *run) {
 
 static const char *TypeLine(const Group *g) {
     switch(g->type) {
-        case Group::Type::DRAWING_3D:        return "sketch in 3d";
-        case Group::Type::DRAWING_WORKPLANE: return "sketch in new workplane";
-        case Group::Type::EXTRUDE:           return "extrude plane sketch";
-        case Group::Type::LATHE:             return "lathe plane sketch";
-        case Group::Type::REVOLVE:           return "revolve original sketch";
-        case Group::Type::HELIX:             return "create helical extrusion";
-        case Group::Type::ROTATE:            return "rotate original sketch";
-        case Group::Type::TRANSLATE:         return "translate original sketch";
-        case Group::Type::LINKED:            return "link geometry from file";
-        case Group::Type::FILLET:            return "round edges";
-        case Group::Type::CHAMFER:           return "bevel edges";
-        case Group::Type::SHELL:             return "hollow the solid";
-        case Group::Type::DRAFT:             return "taper faces";
-        case Group::Type::HOLE:              return "drill holes";
-        case Group::Type::LOFT:              return "loft through profiles";
-        case Group::Type::SWEEP:             return "sweep a profile along a path";
-        case Group::Type::FIT:               return "fit joint";
-        case Group::Type::SPLIT:             return "split the part";
+        case Group::Type::DRAWING_3D:        return _("sketch in 3d");
+        case Group::Type::DRAWING_WORKPLANE: return _("sketch in new workplane");
+        case Group::Type::EXTRUDE:           return _("extrude plane sketch");
+        case Group::Type::LATHE:             return _("lathe plane sketch");
+        case Group::Type::REVOLVE:           return _("revolve original sketch");
+        case Group::Type::HELIX:             return _("create helical extrusion");
+        case Group::Type::ROTATE:            return _("rotate original sketch");
+        case Group::Type::TRANSLATE:         return _("translate original sketch");
+        case Group::Type::LINKED:            return _("link geometry from file");
+        case Group::Type::FILLET:            return _("round edges");
+        case Group::Type::CHAMFER:           return _("bevel edges");
+        case Group::Type::SHELL:             return _("hollow the solid");
+        case Group::Type::DRAFT:             return _("taper faces");
+        case Group::Type::HOLE:              return _("drill holes");
+        case Group::Type::LOFT:              return _("loft through profiles");
+        case Group::Type::SWEEP:             return _("sweep a profile along a path");
+        case Group::Type::FIT:               return _("fit joint");
+        case Group::Type::SPLIT:             return _("split the part");
     }
-    return "";
+    return _("");
 }
 
 // What a feature refers to, as a row: the kind of entity and its group.
 static std::string RefLabel(hEntity he) {
     Entity *e = SK.entity.FindByIdNoOops(he);
-    if(e == nullptr) return "(gone)";
-    const char *kind = "curve";
+    if(e == nullptr) return _("(gone)");
+    const char *kind = _("curve");
     if(e->IsFace()) {
-        kind = "face";
+        kind = _("face");
     } else if(e->IsPoint()) {
-        kind = "point";
+        kind = _("point");
     } else if(e->type == Entity::Type::LINE_SEGMENT) {
-        kind = "line";
+        kind = _("line");
     } else if(e->type == Entity::Type::ARC_OF_CIRCLE) {
-        kind = "arc";
+        kind = _("arc");
     } else if(e->type == Entity::Type::CIRCLE) {
-        kind = "circle";
+        kind = _("circle");
     }
     Group *g = SK.group.FindByIdNoOops(e->group);
-    return ssprintf("%s in %s", kind, g ? g->name.c_str() : "?");
+    return ssprintf(_("%s in %s"), kind, g ? g->name.c_str() : "?");
 }
 
 // A feature's edges, faces, centres or profiles (review 5): a click selects one, x removes it.
@@ -263,7 +268,7 @@ static void DrawGroup(Group *g, std::function<void()> *run) {
     using Sub   = Group::Subtype;
     Type   type = g->type;
 
-    ImGui::TextDisabled("Group");
+    ImGui::TextDisabled(_("Group"));
     if(hg == Group::HGROUP_REFERENCES) {
         ImGui::TextUnformatted(g->name.c_str());
     } else {
@@ -272,7 +277,7 @@ static void DrawGroup(Group *g, std::function<void()> *run) {
     ImGui::TextDisabled("%s", TypeLine(g));
     if(!SK.part.IsEmpty() && hg != Group::HGROUP_REFERENCES) {
         hPart hp = g->PartOf();
-        ImGui::TextUnformatted("part");
+        ImGui::TextUnformatted(_("part"));
         ValueField("##part-name", SS.PartName(hp), run,
                    [hp](std::string s) { SS.RenamePart(hp, s); });
     }
@@ -285,15 +290,16 @@ static void DrawGroup(Group *g, std::function<void()> *run) {
                 shared = true;
             }
         }
-        if(shared && ImGui::Button("own part")) *run = [hg] { SS.MoveToNewPart(hg); };
+        if(shared && ImGui::Button(_("own part"))) *run = [hg] { SS.MoveToNewPart(hg); };
     }
     if(hg != Group::HGROUP_REFERENCES && g->HasRunningSolid()) {
         // The part's material (M4b), for its mass in the parts list; default: Preferences'.
         hPart  hp  = g->PartOf();
         Part  *p   = SK.part.FindByIdNoOops(hp);
         double own = p ? p->density : 0;
-        ImGui::TextUnformatted("material");
-        Radio("default##part-material-default", own == 0, [hp] { SS.SetPartMaterial(hp, 0); }, run);
+        ImGui::TextUnformatted(_("material"));
+        Radio(LabelId(_("default"), "##part-material-default").c_str(), own == 0,
+              [hp] { SS.SetPartMaterial(hp, 0); }, run);
         int i = 1;
         for(const SolveSpaceUI::Material &m : SolveSpaceUI::Materials()) {
             if(i++ % 3 != 0) ImGui::SameLine();
@@ -309,36 +315,36 @@ static void DrawGroup(Group *g, std::function<void()> *run) {
         bool one  = g->subtype == Sub::ONE_SIDED || g->subtype == Sub::ONE_SKEWED;
         bool two  = g->subtype == Sub::TWO_SIDED || g->subtype == Sub::TWO_SKEWED;
         bool skew = g->subtype == Sub::ONE_SKEWED || g->subtype == Sub::TWO_SKEWED;
-        Radio("one-sided", one, [hg] { SS.ChangeGroupOption(hg, GroupOption::ONE_SIDED); }, run);
+        Radio(_("one-sided"), one, [hg] { SS.ChangeGroupOption(hg, GroupOption::ONE_SIDED); }, run);
         ImGui::SameLine();
-        Radio("two-sided", two, [hg] { SS.ChangeGroupOption(hg, GroupOption::TWO_SIDED); }, run);
+        Radio(_("two-sided"), two, [hg] { SS.ChangeGroupOption(hg, GroupOption::TWO_SIDED); }, run);
         if(type == Type::EXTRUDE) {
             ImGui::SameLine();
-            Option("skewed", skew, hg, GroupOption::SKEWED, run);
+            Option(_("skewed"), skew, hg, GroupOption::SKEWED, run);
         }
     }
     if(type == Type::ROTATE || type == Type::TRANSLATE) {
         if(g->subtype == Sub::ONE_SIDED) {
-            Radio("start with original", !g->skipFirst,
+            Radio(_("start with original"), !g->skipFirst,
                   [hg] { SS.ChangeGroupOption(hg, GroupOption::START_WITH_ORIGINAL); }, run);
             ImGui::SameLine();
-            Radio("start with copy #1", g->skipFirst,
+            Radio(_("start with copy #1"), g->skipFirst,
                   [hg] { SS.ChangeGroupOption(hg, GroupOption::START_WITH_COPY); }, run);
         }
-        ImGui::TextUnformatted("repeat (times)");
+        ImGui::TextUnformatted(_("repeat (times)"));
         ValueField("##repeat", std::to_string((int)g->valA), run,
                    [hg](std::string s) { SS.SetGroupRepeat(hg, s); });
     }
     if(type == Type::LINKED) {
         Platform::Path rel = g->linkFile.RelativeTo(SS.saveFile.Parent());
         ImGui::TextWrapped("%s", (rel.IsEmpty() ? g->linkFile : rel).raw.c_str());
-        ImGui::TextUnformatted("scaled by");
+        ImGui::TextUnformatted(_("scaled by"));
         ValueField("##scale", ssprintf("%.3f", g->scale), run,
                    [hg](std::string s) { SS.SetGroupScale(hg, s); });
     }
     if(type == Type::HELIX) {
         bool fixed = g->valB != 0;
-        ImGui::TextUnformatted("pitch (length per turn)");
+        ImGui::TextUnformatted(_("pitch (length per turn)"));
         double pitch = fixed ? g->valB
                              : SK.GetParam(g->h.param(7))->val * PI / SK.GetParam(g->h.param(3))->val;
         ImGui::BeginDisabled(!fixed);
@@ -346,7 +352,7 @@ static void DrawGroup(Group *g, std::function<void()> *run) {
                    [hg](std::string s) { SS.SetHelixPitch(hg, s); });
         ImGui::EndDisabled();
         bool f = fixed;
-        if(ImGui::Checkbox("fixed pitch", &f)) *run = [hg] { SS.ToggleHelixPitchFixed(hg); };
+        if(ImGui::Checkbox(_("fixed pitch"), &f)) *run = [hg] { SS.ToggleHelixPitchFixed(hg); };
     }
 
     if(type == Type::HOLE) {
@@ -361,45 +367,45 @@ static void DrawGroup(Group *g, std::function<void()> *run) {
                   },
                   run);
         };
-        kind("plain", HoleKind::SIMPLE);
+        kind(_("plain"), HoleKind::SIMPLE);
         ImGui::SameLine();
-        kind("counterbore", HoleKind::COUNTERBORE);
+        kind(_("counterbore"), HoleKind::COUNTERBORE);
         ImGui::SameLine();
-        kind("countersink", HoleKind::COUNTERSINK);
+        kind(_("countersink"), HoleKind::COUNTERSINK);
         auto field = [&](const char *label, const char *id, std::string now, F f) {
             ImGui::TextUnformatted(label);
             ValueField(id, now, run, [hg, f](std::string s) { SS.SetHoleField(hg, f, s); });
         };
-        field("thread (M4, M4x0.5 or none)", "##hole-thread", SS.HoleThreadText(spec),
+        field(_("thread (M4, M4x0.5 or none)"), "##hole-thread", SS.HoleThreadText(spec),
               F::THREAD);
         if(spec.thread <= 0) {
-            field("diameter", "##hole-diameter", SS.MmToString(spec.diameter), F::DIAMETER);
+            field(_("diameter"), "##hole-diameter", SS.MmToString(spec.diameter), F::DIAMETER);
         }
-        field("depth (blank: through all)", "##hole-depth",
+        field(_("depth (blank: through all)"), "##hole-depth",
               spec.depth > 0 ? SS.MmToString(spec.depth) : "", F::DEPTH);
         if(spec.kind != HoleKind::SIMPLE) {
-            field(spec.kind == HoleKind::COUNTERBORE ? "counterbore diameter"
-                                                     : "countersink diameter",
+            field(spec.kind == HoleKind::COUNTERBORE ? _("counterbore diameter")
+                                                     : _("countersink diameter"),
                   "##hole-head-diameter", SS.MmToString(spec.headDiameter), F::HEAD_DIAMETER);
         }
         if(spec.kind == HoleKind::COUNTERBORE) {
-            field("counterbore depth", "##hole-head-depth", SS.MmToString(spec.headDepth),
+            field(_("counterbore depth"), "##hole-head-depth", SS.MmToString(spec.headDepth),
                   F::HEAD_DEPTH);
         } else if(spec.kind == HoleKind::COUNTERSINK) {
-            field("countersink angle (degrees)", "##hole-head-angle",
+            field(_("countersink angle (degrees)"), "##hole-head-angle",
                   ssprintf("%g", spec.headAngle), F::HEAD_ANGLE);
         }
-        field("print clearance (added to every diameter)", "##hole-clearance",
+        field(_("print clearance (added to every diameter)"), "##hole-clearance",
               SS.MmToString(spec.clearance), F::CLEARANCE);
         bool flip = spec.flip != 0;
-        if(ImGui::Checkbox("drill the other way", &flip)) {
+        if(ImGui::Checkbox(_("drill the other way"), &flip)) {
             *run = [hg, spec] {
                 HoleSpec s = spec;
                 s.flip     = s.flip ? 0 : 1;
                 SS.SetHoleSpec(hg, s);
             };
         }
-        RefList("hole centres", hg, g->points, run);
+        RefList(_("hole centres"), hg, g->points, run);
         if(!g->featureProblem.empty()) {
             std::string problem = g->featureProblem + ".";
             problem[0]          = (char)toupper(problem[0]);
@@ -412,10 +418,10 @@ static void DrawGroup(Group *g, std::function<void()> *run) {
 
     if(type == Type::FILLET || type == Type::CHAMFER || type == Type::SHELL ||
        type == Type::DRAFT) {
-        const char *label = type == Type::FILLET    ? "radius"
-                            : type == Type::CHAMFER ? "distance"
-                            : type == Type::SHELL   ? "wall thickness"
-                                                    : "angle (degrees)";
+        const char *label = type == Type::FILLET    ? _("radius")
+                            : type == Type::CHAMFER ? _("distance")
+                            : type == Type::SHELL   ? _("wall thickness")
+                                                    : _("angle (degrees)");
         ImGui::TextUnformatted(label);
         // The solved size: what its dimension holds, or what constraints and drags set.
         std::string size = type == Type::DRAFT ? ssprintf("%.2f", atan(g->FeatureSize()) * 180 / PI)
@@ -428,7 +434,7 @@ static void DrawGroup(Group *g, std::function<void()> *run) {
             held = held || (c.group == hg && c.type == Constraint::Type::FEATURE_SIZE);
         }
         bool hold = held;
-        if(ImGui::Checkbox("hold this size (a dimension)", &hold)) {
+        if(ImGui::Checkbox(_("hold this size (a dimension)"), &hold)) {
             *run = [hg, hold] { SS.HoldFeatureSize(hg, hold); };
         }
         if(type == Type::SHELL) {
@@ -436,35 +442,35 @@ static void DrawGroup(Group *g, std::function<void()> *run) {
             auto side = [&](const char *label, S s) {
                 Radio(label, g->shellSide == s, [hg, s] { SS.SetShellSide(hg, s); }, run);
             };
-            side("inside", S::INSIDE);
+            side(_("inside"), S::INSIDE);
             ImGui::SameLine();
-            side("outside", S::OUTSIDE);
+            side(_("outside"), S::OUTSIDE);
             ImGui::SameLine();
-            side("both sides", S::BOTH);
+            side(_("both sides"), S::BOTH);
         }
         if(type == Type::FILLET || type == Type::CHAMFER) {
-            if(!g->edges.empty()) RefList("edges", hg, g->edges, run);
+            if(!g->edges.empty()) RefList(_("edges"), hg, g->edges, run);
             if(!g->faces.empty()) {
-                RefList("faces", hg, g->faces, run);
+                RefList(_("faces"), hg, g->faces, run);
                 bool outline = g->featureOutline != 0;
-                if(ImGui::Checkbox("only the outline of these faces", &outline)) {
+                if(ImGui::Checkbox(_("only the outline of these faces"), &outline)) {
                     *run = [hg, outline] { SS.SetFeatureOutline(hg, outline); };
                 }
             }
         } else if(type == Type::SHELL) {
-            RefList(g->faces.empty() ? "no face open (a sealed hollow)" : "faces left open", hg,
-                    g->faces, run);
+            RefList(g->faces.empty() ? _("no face open (a sealed hollow)") : _("faces left open"),
+                    hg, g->faces, run);
         } else {
-            RefList("faces", hg, g->faces, run);
+            RefList(_("faces"), hg, g->faces, run);
         }
     }
 
     if(type == Type::LOFT || type == Type::SWEEP) {
         if(type == Type::LOFT) {
-            RefList("profiles, in order", hg, g->profiles, run);
+            RefList(_("profiles, in order"), hg, g->profiles, run);
         } else {
-            RefList("profile, then the path", hg, g->profiles, run);
-            ImGui::TextUnformatted("round the path's corners (radius; 0: sharp)");
+            RefList(_("profile, then the path"), hg, g->profiles, run);
+            ImGui::TextUnformatted(_("round the path's corners (radius; 0: sharp)"));
             ValueField("##sweep-corners", SS.MmToString(g->valB), run,
                        [hg](std::string s) { SS.SetSweepCorners(hg, s); });
         }
@@ -486,53 +492,53 @@ static void DrawGroup(Group *g, std::function<void()> *run) {
        type == Type::SWEEP) {
         using C = Group::CombineAs;
         ImGui::Spacing();
-        ImGui::TextDisabled("solid model as");
+        ImGui::TextDisabled(_("solid model as"));
         auto combine = [&](const char *label, C c) {
             Radio(label, g->meshCombine == c,
                   [hg, c] { SS.ChangeGroupOption(hg, GroupOption::COMBINE, c); }, run);
         };
-        combine("union", C::UNION);
+        combine(_("union"), C::UNION);
         ImGui::SameLine();
-        combine("assemble", C::ASSEMBLE);
-        combine("difference", C::DIFFERENCE);
+        combine(_("assemble"), C::ASSEMBLE);
+        combine(_("difference"), C::DIFFERENCE);
         ImGui::SameLine();
-        combine("intersection", C::INTERSECTION);
+        combine(_("intersection"), C::INTERSECTION);
         if(type != Type::LINKED) {
             float now[3] = { g->color.redF(), g->color.greenF(), g->color.blueF() }, rgb[3];
             bool  first;
-            if(ColourField("color", now, rgb, &first)) {
+            if(ColourField(_("color"), now, rgb, &first)) {
                 // One undo step per click or drag, not per frame of it.
                 RgbaColor c = RgbaColor::FromFloat(rgb[0], rgb[1], rgb[2]);
                 *run = [hg, c, first] { SS.SetGroupColor(hg, c, first); };
             }
-            ImGui::TextUnformatted("opacity");
+            ImGui::TextUnformatted(_("opacity"));
             ValueField("##opacity", ssprintf("%.2f", g->color.alphaF()), run,
                        [hg](std::string s) { SS.SetGroupOpacity(hg, s); });
         }
-        Option("suppress this group's solid model", g->suppress, hg,
+        Option(_("suppress this group's solid model"), g->suppress, hg,
                GroupOption::SUPPRESS_SOLID, run);
     }
 
     ImGui::Spacing();
-    Option("show entities from this group", g->visible, hg, GroupOption::VISIBLE, run);
+    Option(_("show entities from this group"), g->visible, hg, GroupOption::VISIBLE, run);
     if(!g->IsForcedToMeshBySource() && !g->IsTriangleMeshAssembly()) {
-        Option("force NURBS surfaces to triangle mesh", g->forceToMesh, hg,
+        Option(_("force NURBS surfaces to triangle mesh"), g->forceToMesh, hg,
                GroupOption::FORCE_TO_MESH, run);
     } else {
-        ImGui::TextDisabled("(model already forced to triangle mesh)");
+        ImGui::TextDisabled(_("(model already forced to triangle mesh)"));
     }
-    Option("relax constraints and dimensions", g->relaxConstraints, hg,
+    Option(_("relax constraints and dimensions"), g->relaxConstraints, hg,
            GroupOption::RELAX_CONSTRAINTS, run);
-    Option("allow redundant constraints", g->allowRedundant, hg, GroupOption::ALLOW_REDUNDANT,
+    Option(_("allow redundant constraints"), g->allowRedundant, hg, GroupOption::ALLOW_REDUNDANT,
            run);
-    Option("suppress dof calculation", g->suppressDofCalculation, hg, GroupOption::SUPPRESS_DOF,
+    Option(_("suppress dof calculation"), g->suppressDofCalculation, hg, GroupOption::SUPPRESS_DOF,
            run);
-    Option("treat all dimensions as reference", g->allDimsReference, hg,
+    Option(_("treat all dimensions as reference"), g->allDimsReference, hg,
            GroupOption::ALL_DIMS_REFERENCE, run);
     if(g->booleanFailed) {
         ImGui::PushStyleColor(ImGuiCol_Text, ImGui::GetStyleColorVec4(ImGuiCol_PlotLinesHovered));
-        ImGui::TextWrapped("The Boolean operation failed. It may be possible to fix the problem "
-                           "by choosing 'force NURBS surfaces to triangle mesh'.");
+        ImGui::TextWrapped(_("The Boolean operation failed. It may be possible to fix the problem "
+                             "by choosing 'force NURBS surfaces to triangle mesh'."));
         ImGui::PopStyleColor();
     }
 
@@ -540,7 +546,7 @@ static void DrawGroup(Group *g, std::function<void()> *run) {
     ImGui::Spacing();
     int requests = 0;
     for(const Request &r : SK.request) requests += r.group == hg;
-    if(ImGui::CollapsingHeader(ssprintf("Requests (%d)###requests", requests).c_str(),
+    if(ImGui::CollapsingHeader((ssprintf(_("Requests (%d)"), requests) + "###requests").c_str(),
                                ImGuiTreeNodeFlags_DefaultOpen)) {
         for(const Request &r : SK.request) {
             if(r.group != hg) continue;
@@ -553,8 +559,8 @@ static void DrawGroup(Group *g, std::function<void()> *run) {
     }
     int constraints = 0;
     for(const Constraint &c : SK.constraint) constraints += c.group == hg;
-    if(ImGui::CollapsingHeader(ssprintf("Constraints (%d, %d DOF)###constraints", constraints,
-                                        g->solved.dof).c_str(),
+    if(ImGui::CollapsingHeader((ssprintf(_("Constraints (%d, %d DOF)"), constraints,
+                                         g->solved.dof) + "###constraints").c_str(),
                                ImGuiTreeNodeFlags_DefaultOpen)) {
         for(const Constraint &c : SK.constraint) {
             if(c.group != hg) continue;
@@ -606,7 +612,7 @@ static void DrawRows(const std::vector<SelectionRow> &rows, const char *idPrefix
 }
 
 static void DrawSelection(const SelectionModel &m, std::function<void()> *run) {
-    ImGui::TextDisabled("Selection");
+    ImGui::TextDisabled(_("Selection"));
     ImGui::TextUnformatted(m.title.c_str());
     if(m.constraint.v) {
         hConstraint hc = m.constraint;
@@ -618,12 +624,12 @@ static void DrawSelection(const SelectionModel &m, std::function<void()> *run) {
             ValueField("##value", m.valueText, run, setValue, m.unit.c_str());
             ImGui::EndDisabled();
             bool reference = m.reference;
-            if(ImGui::Checkbox("reference", &reference)) {
+            if(ImGui::Checkbox(_("reference"), &reference)) {
                 *run = [hc] { TextWindow::ScreenConstraintToggleReference(0, hc.v); };
             }
             if(m.isDiameter) {
                 bool radius = m.showAsRadius;
-                if(ImGui::Checkbox("use radius", &radius)) {
+                if(ImGui::Checkbox(_("use radius"), &radius)) {
                     *run = [hc] { TextWindow::ScreenConstraintShowAsRadius(0, hc.v); };
                 }
             }
@@ -631,11 +637,11 @@ static void DrawSelection(const SelectionModel &m, std::function<void()> *run) {
     }
     if(m.ttf.v) {
         hRequest hr = m.ttf;
-        ImGui::TextUnformatted("text");
+        ImGui::TextUnformatted(_("text"));
         ValueField("##ttf-text", m.ttfText, run,
                    [hr](std::string s) { SS.SetTtfText(hr, s); });
         bool kerning = m.ttfKerning;
-        if(ImGui::Checkbox("apply kerning", &kerning)) {
+        if(ImGui::Checkbox(_("apply kerning"), &kerning)) {
             *run = [hr] { TextWindow::ScreenToggleTtfKerning(0, hr.v); };
         }
         SS.fonts.LoadAll();
@@ -665,10 +671,10 @@ static void DrawSelection(const SelectionModel &m, std::function<void()> *run) {
         }
     }
     ImGui::Spacing();
-    if(m.styleAssigned && ImGui::Button("remove assigned style")) {
+    if(m.styleAssigned && ImGui::Button(_("remove assigned style"))) {
         *run = [] { TextWindow::ScreenAssignSelectionToStyle(0, 0); };
     }
-    if(ImGui::Button("unselect all")) {
+    if(ImGui::Button(_("unselect all"))) {
         *run = [] { GraphicsWindow::MenuEdit(Command::UNSELECT_ALL); };
     }
 }
@@ -677,30 +683,31 @@ static void DrawSelection(const SelectionModel &m, std::function<void()> *run) {
 // clearance sweep.
 static void DrawJoint(Joint *j, std::function<void()> *run) {
     hJoint hj = j->h;
-    ImGui::TextDisabled("Joint");
+    ImGui::TextDisabled(_("Joint"));
     ValueField("##joint-name", j->name, run, [hj](std::string s) { SS.RenameJoint(hj, s); });
-    static const char *const kinds[] = { "", "revolute", "slider", "cylindrical",
-                                         "planar", "ball", "gear coupling" };
+    static const char *const kinds[] = { "", N_("revolute"), N_("slider"), N_("cylindrical"),
+                                         N_("planar"), N_("ball"), N_("gear coupling") };
     if(j->type == Joint::Type::GEAR) {
         Joint *a = SK.joint.FindByIdNoOops(j->driver), *b = SK.joint.FindByIdNoOops(j->driven);
-        ImGui::TextDisabled("%s: %s drives %s", kinds[(int)j->type], a ? a->name.c_str() : "?",
+        ImGui::TextDisabled(_("%s: %s drives %s"), _(kinds[(int)j->type]),
+                            a ? a->name.c_str() : "?",
                             b ? b->name.c_str() : "?");
         ImGui::Spacing();
-        ImGui::TextUnformatted("ratio");
+        ImGui::TextUnformatted(_("ratio"));
         ValueField("##joint-ratio", ssprintf("%.6g", j->ratio), run, [hj](std::string s) {
             if(Expr *e = Expr::From(s, /*popUpError=*/true)) SS.SetJointRatio(hj, e->Eval());
         });
     } else {
-        ImGui::TextDisabled("%s: %s holds %s", kinds[(int)j->type],
+        ImGui::TextDisabled(_("%s: %s holds %s"), _(kinds[(int)j->type]),
                             SS.PartName(j->parent).c_str(), SS.PartName(j->child).c_str());
     }
     static const char *const names[][Joint::MAX_MOTIONS] = {
         {},
-        { "angle" },
-        { "distance" },
-        { "angle", "distance" },
-        { "along u", "along v", "angle" },
-        { "about x", "about y", "about z" },
+        { N_("angle") },
+        { N_("distance") },
+        { N_("angle"), N_("distance") },
+        { N_("along u"), N_("along v"), N_("angle") },
+        { N_("about x"), N_("about y"), N_("about z") },
         {},
     };
     for(int dof = 0; dof < j->Motions(); dof++) {
@@ -714,7 +721,7 @@ static void DrawJoint(Joint *j, std::function<void()> *run) {
             };
         };
         ImGui::Spacing();
-        ImGui::TextUnformatted(names[(int)j->type][dof]);
+        ImGui::TextUnformatted(_(names[(int)j->type][dof]));
         ValueField(("##joint-value" + id).c_str(), SS.JointValueString(hj, j->value[dof], dof), run,
                    parsed([hj, dof](double v) { SS.SetJointValue(hj, v, true, dof); }), unit);
         // Scrubbing: one undo step per drag of the slider.
@@ -734,42 +741,46 @@ static void DrawJoint(Joint *j, std::function<void()> *run) {
         }
         bool   limited = j->limited[dof];
         double jlo = j->lo[dof], jhi = j->hi[dof];
-        if(ImGui::Checkbox(("limits##joint-limited" + id).c_str(), &limited)) {
+        if(ImGui::Checkbox((LabelId(_("limits"), "##joint-limited") + id).c_str(), &limited)) {
             // Turned on: from the design pose to a quarter turn, or 10 along.
             double a = j->limited[dof] ? jlo : 0, b = j->limited[dof] ? jhi : (angle ? 90 : 10);
             *run = [hj, limited, a, b, dof] { SS.SetJointLimits(hj, limited, a, b, dof); };
         }
         if(j->limited[dof]) {
-            ImGui::TextUnformatted("from");
+            ImGui::TextUnformatted(_("from"));
             ValueField(("##joint-lo" + id).c_str(), SS.JointValueString(hj, jlo, dof), run,
                        parsed([hj, jhi, dof](double x) {
                            SS.SetJointLimits(hj, true, x, jhi, dof);
                        }),
                        unit);
-            ImGui::TextUnformatted("to");
+            ImGui::TextUnformatted(_("to"));
             ValueField(("##joint-hi" + id).c_str(), SS.JointValueString(hj, jhi, dof), run,
                        parsed([hj, jlo, dof](double x) {
                            SS.SetJointLimits(hj, true, jlo, x, dof);
                        }),
                        unit);
         }
-        if(ImGui::Button(("sweep clearance##joint-sweep" + id).c_str())) {
+        if(ImGui::Button((LabelId(_("sweep clearance"), "##joint-sweep") + id).c_str())) {
             *run = [hj, dof] { gSweepText[hj.v] = SS.SweepClearance(hj, 72, dof).text; };
         }
     }
     auto it = gSweepText.find(hj.v);
     if(it != gSweepText.end()) ImGui::TextWrapped("%s", it->second.c_str());
     ImGui::Spacing();
-    if(ImGui::Button("design pose##joint-design-pose")) *run = [] { SS.DesignPose(); };
+    if(ImGui::Button(LabelId(_("design pose"), "##joint-design-pose").c_str())) {
+        *run = [] { SS.DesignPose(); };
+    }
     ImGui::SameLine();
-    if(ImGui::Button("delete##joint-delete")) *run = [hj] { SS.DeleteJoint(hj); };
+    if(ImGui::Button(LabelId(_("delete"), "##joint-delete").c_str())) {
+        *run = [hj] { SS.DeleteJoint(hj); };
+    }
 }
 
 // The fit table: each fit's name and clearance, editable; add and delete.
 static void DrawFitTable(std::function<void()> *run) {
-    ImGui::TextDisabled("Fit table");
-    ImGui::TextWrapped("Clearances for fit joints, tuned to your printer: each side's gap "
-                       "(negative presses).");
+    ImGui::TextDisabled(_("Fit table"));
+    ImGui::TextWrapped(_("Clearances for fit joints, tuned to your printer: each side's gap "
+                         "(negative presses)."));
     for(const Fit &f : SS.FitTable()) {
         hFit        hf = f.h;
         std::string id = std::to_string(hf.v);
@@ -783,12 +794,12 @@ static void DrawFitTable(std::function<void()> *run) {
                        }
                    },
                    SS.UnitName());
-        if(ImGui::Button(("delete##fit-delete-" + id).c_str())) {
+        if(ImGui::Button((LabelId(_("delete"), "##fit-delete-") + id).c_str())) {
             *run = [hf] { SS.DeleteFit(hf); };
         }
     }
     ImGui::Spacing();
-    if(ImGui::Button("add a fit##fit-add")) *run = [] { SS.AddFit(); };
+    if(ImGui::Button(LabelId(_("add a fit"), "##fit-add").c_str())) *run = [] { SS.AddFit(); };
 }
 
 std::function<void()> DrawProperties() {

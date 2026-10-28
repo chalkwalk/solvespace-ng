@@ -22,6 +22,10 @@ void ValueField(const char *label, const std::string &value, std::function<void(
 // so the caller can make the whole gesture one undo step.
 bool ColourField(const char *label, const float current[3], float rgb[3], bool *gestureStart);
 
+// A translated label with an id that stays the same in every language: LabelId(_("delete"),
+// "##joint-delete") is "delete##joint-delete" in English and "löschen##joint-delete" in German.
+std::string LabelId(const char *text, const char *id);
+
 }
 }
 
