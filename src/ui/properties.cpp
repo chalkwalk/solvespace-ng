@@ -214,7 +214,7 @@ static const char *TypeLine(const Group *g) {
         case Group::Type::FIT:               return _("fit joint");
         case Group::Type::SPLIT:             return _("split the part");
     }
-    return _("");
+    return "";
 }
 
 // What a feature refers to, as a row: the kind of entity and its group.
