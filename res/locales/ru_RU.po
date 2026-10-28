@@ -659,12 +659,12 @@ msgstr "Активная группа не содержит тел; нечего
 #: export.cpp:838
 #, fuzzy
 msgid "A quad mesh needs the Open CASCADE kernel and a solid it made."
-msgstr "Чотирикутна сітка потребує ядра Open CASCADE та створеного ним тіла."
+msgstr "Четырёхугольная сетка требует ядра Open CASCADE и созданного им тела."
 
 #: export3mf.cpp:180
 #, fuzzy
 msgid "The 3MF file would be over 4 GB; it was not written."
-msgstr "Файл 3MF був би більшим за 4 ГБ; його не записано."
+msgstr "Файл 3MF получился бы больше 4 ГБ; он не записан."
 
 #: exportvector.cpp:338
 msgid "freehand lines were replaced with continuous lines"
@@ -751,7 +751,7 @@ msgstr "Отменить"
 #: fit.cpp:86
 #, fuzzy, c-format
 msgid "The fit '%s' is used by the fit joint '%s'."
-msgstr "Посадку '%s' використовує з'єднання посадки '%s'."
+msgstr "Посадка '%s' используется соединением посадки '%s'."
 
 #: fit.cpp:134
 #, fuzzy
@@ -760,9 +760,9 @@ msgid ""
 "drawn where the parts meet. Sketch it, then pick something on the male part "
 "and on the female part."
 msgstr ""
-"З'єднання посадки створюється з активного креслення: замкненого профілю в "
-"робочій площині, намальованого там, де сходяться деталі. Намалюйте його, "
-"потім оберіть щось на деталі з виступом і на деталі з гніздом."
+"Соединение посадки создаётся из активного эскиза: замкнутого профиля в "
+"рабочей плоскости, нарисованного там, где соприкасаются детали. Нарисуйте "
+"его, затем выберите что-либо на детали с выступом и на детали с гнездом."
 
 #: fit.cpp:144
 #, fuzzy
@@ -770,47 +770,47 @@ msgid ""
 "Pick something on the male part, then on the female part: the peg goes on "
 "the first, the pocket in the second."
 msgstr ""
-"Оберіть щось на деталі з виступом, потім на деталі з гніздом: виступ піде на "
-"першу, гніздо на другу."
+"Выберите что-либо на детали с выступом, затем на детали с гнездом: выступ "
+"будет на первой, гнездо во второй."
 
 #: fit.cpp:149
 #, fuzzy
 msgid "Fit joints need the Open CASCADE kernel, which this build lacks."
 msgstr ""
-"З'єднання посадки потребують ядра Open CASCADE, якого немає в цій збірці."
+"Соединения посадки требуют ядра Open CASCADE, которого нет в этой сборке."
 
 #: fit.cpp:178
 #, fuzzy
 msgctxt "group-name"
 msgid "fit-peg"
-msgstr "посадка-виступ"
+msgstr "посадка-выступ"
 
 #: fit.cpp:178
 #, fuzzy
 msgctxt "group-name"
 msgid "fit-pocket"
-msgstr "посадка-гніздо"
+msgstr "посадка-гнездо"
 
 #: grab.cpp:77
 #, fuzzy
 msgid "grab: move the mouse; X/Y/Z lock an axis; type a distance"
-msgstr "переміщення: рухайте мишу; X/Y/Z фіксують вісь; введіть відстань"
+msgstr "перенос: двигайте мышь; X/Y/Z фиксируют ось; введите расстояние"
 
 #: grab.cpp:87
 #, fuzzy
 msgid "grab: turn the joint with the mouse; type an angle"
-msgstr "переміщення: повертайте з'єднання мишею; введіть кут"
+msgstr "перенос: поворачивайте соединение мышью; введите угол"
 
 #: grab.cpp:90
 #, fuzzy
 msgid "grab: slide the joint with the mouse; type a distance"
-msgstr "переміщення: зсувайте з'єднання мишею; введіть відстань"
+msgstr "перенос: сдвигайте соединение мышью; введите расстояние"
 
 #: grab.cpp:94
 #, fuzzy
 msgid "grab: move the joint with the mouse; X/Y/Z pick a motion; type a value"
 msgstr ""
-"переміщення: рухайте з'єднання мишею; X/Y/Z обирають рух; введіть значення"
+"перенос: двигайте соединение мышью; X/Y/Z выбирают движение; введите значение"
 
 #: graphicswin.cpp:43
 msgid "&File"
@@ -859,12 +859,12 @@ msgstr "Экспортировать &полигональную сетку…"
 #: graphicswin.cpp:55
 #, fuzzy
 msgid "Export &Parts..."
-msgstr "Експорт &деталей..."
+msgstr "Экспорт &деталей…"
 
 #: graphicswin.cpp:56
 #, fuzzy
 msgid "Export Parts &List..."
-msgstr "Експорт &списку деталей..."
+msgstr "Экспорт &списка деталей…"
 
 #: graphicswin.cpp:57#, fuzzy
 msgid "Export &Assembly (STEP)..."
@@ -1037,47 +1037,47 @@ msgstr "&Новая группа"
 #: graphicswin.cpp:115
 #, fuzzy
 msgid "New &Part"
-msgstr "Нова &деталь"
+msgstr "Новая &деталь"
 
 #: graphicswin.cpp:116
 #, fuzzy
 msgid "&Revolute Joint"
-msgstr "&Обертальне з'єднання"
+msgstr "&Вращательное соединение"
 
 #: graphicswin.cpp:117
 #, fuzzy
 msgid "S&lider Joint"
-msgstr "&Повзункове з'єднання"
+msgstr "&Ползунковое соединение"
 
 #: graphicswin.cpp:118
 #, fuzzy
 msgid "C&ylindrical Joint"
-msgstr "&Циліндричне з'єднання"
+msgstr "&Цилиндрическое соединение"
 
 #: graphicswin.cpp:119
 #, fuzzy
 msgid "Pla&nar Joint"
-msgstr "&Площинне з'єднання"
+msgstr "&Плоскостное соединение"
 
 #: graphicswin.cpp:120
 #, fuzzy
 msgid "&Ball Joint"
-msgstr "&Кульове з'єднання"
+msgstr "&Шаровое соединение"
 
 #: graphicswin.cpp:121
 #, fuzzy
 msgid "&Gear Coupling"
-msgstr "&Зубчаста передача"
+msgstr "&Зубчатая передача"
 
 #: graphicswin.cpp:122
 #, fuzzy
 msgid "&Fit Joint"
-msgstr "З'єднання &посадки"
+msgstr "Соединение &посадки"
 
 #: graphicswin.cpp:123
 #, fuzzy
 msgid "Spli&t Part"
-msgstr "Роз&ділити деталь"
+msgstr "Раз&делить деталь"
 
 #: graphicswin.cpp:125
 msgid "Sketch In &3d"
@@ -1102,7 +1102,7 @@ msgstr "Тело &выдавливания"
 #: graphicswin.cpp:132
 #, fuzzy
 msgid "Extrude as a &Cut"
-msgstr "Видавити як &виріз"
+msgstr "Выдавить как &вырез"
 
 #: graphicswin.cpp:133
 msgid "&Helix"
@@ -1119,37 +1119,37 @@ msgstr "Тело в&ращения на угол"
 #: graphicswin.cpp:137
 #, fuzzy
 msgid "&Fillet Edges"
-msgstr "&Скруглити ребра"
+msgstr "&Скруглить рёбра"
 
 #: graphicswin.cpp:138
 #, fuzzy
 msgid "&Chamfer Edges"
-msgstr "&Фаска на ребрах"
+msgstr "&Фаска на рёбрах"
 
 #: graphicswin.cpp:139
 #, fuzzy
 msgid "S&hell"
-msgstr "&Оболонка"
+msgstr "О&болочка"
 
 #: graphicswin.cpp:140
 #, fuzzy
 msgid "&Draft Faces"
-msgstr "&Ухил граней"
+msgstr "&Уклон граней"
 
 #: graphicswin.cpp:141
 #, fuzzy
 msgid "H&ole"
-msgstr "&Отвір"
+msgstr "От&верстие"
 
 #: graphicswin.cpp:142
 #, fuzzy
 msgid "Lo&ft"
-msgstr "&За перерізами"
+msgstr "По с&ечениям"
 
 #: graphicswin.cpp:143
 #, fuzzy
 msgid "S&weep"
-msgstr "За &траєкторією"
+msgstr "По &траектории"
 
 #: graphicswin.cpp:145
 msgid "Link / Assemble..."
@@ -1335,7 +1335,7 @@ msgstr "Показать &центр массы"
 #: graphicswin.cpp:200
 #, fuzzy
 msgid "&Mass Properties"
-msgstr "&Масові властивості"
+msgstr "&Массовые характеристики"
 
 #: graphicswin.cpp:201
 #, fuzzy
@@ -1345,7 +1345,7 @@ msgstr "&Список деталей"
 #: graphicswin.cpp:202
 #, fuzzy
 msgid "&Design Pose"
-msgstr "&Вихідна поза"
+msgstr "&Исходная поза"
 
 #: graphicswin.cpp:204
 msgid "Show &Underconstrained Points"
@@ -1543,14 +1543,14 @@ msgid ""
 "    * a face of the solid, and optionally a point (on the face, following "
 "it)\n"
 msgstr ""
-"Неправильне виділення для нового креслення в робочій площині. Цю групу можна "
-"створити так:\n"
+"Неверное выделение для нового эскиза в рабочей плоскости. Эту группу можно "
+"создать так:\n"
 "\n"
-"    * точкою (через точку, ортогонально до осей координат)\n"
-"    * точкою і двома відрізками (через точку, паралельно до відрізків)\n"
-"    * точкою і нормаллю (через точку, ортогонально до нормалі)\n"
-"    * робочою площиною (копія робочої площини)\n"
-"    * гранню тіла і, за бажанням, точкою (на грані, слідуючи за нею)\n"
+"    * точкой (через точку, ортогонально координатным осям)\n"
+"    * точкой и двумя отрезками (через точку, параллельно отрезкам)\n"
+"    * точкой и нормалью (через точку, ортогонально нормали)\n"
+"    * рабочей плоскостью (копия рабочей плоскости)\n"
+"    * гранью тела и, по желанию, точкой (на грани, следуя за ней)\n"
 
 #: group.cpp:271
 msgid ""
@@ -1685,9 +1685,9 @@ msgid ""
 "curves an extrusion, lathe, revolve, helix or pattern makes), or faces, for "
 "all their edges."
 msgstr ""
-"Неправильне виділення для нової групи «%s». Оберіть ребра тіла (лінії та "
-"криві, які створюють видавлювання, проточування, прокручування, спіраль або "
-"масив) або грані: для всіх їхніх ребер."
+"Неверное выделение для новой группы «%s». Выберите рёбра тела (линии и "
+"кривые, которые создают выдавливание, вращение, винтовое тело или массив) "
+"либо грани — для всех их рёбер."
 
 #: group.cpp:451
 #, fuzzy
@@ -1697,14 +1697,14 @@ msgstr "фаска"
 #: group.cpp:451
 #, fuzzy
 msgid "fillet"
-msgstr "скруглення"
+msgstr "скругление"
 
 #: group.cpp:456
 #, fuzzy
 msgid ""
 "Fillets and chamfers need the Open CASCADE kernel, which this build lacks."
 msgstr ""
-"Скруглення і фаски потребують ядра Open CASCADE, якого немає в цій збірці."
+"Скругления и фаски требуют ядра Open CASCADE, которого нет в этой сборке."
 
 #: group.cpp:462
 #, fuzzy
@@ -1716,7 +1716,7 @@ msgstr "фаска"
 #, fuzzy
 msgctxt "group-name"
 msgid "fillet"
-msgstr "скруглення"
+msgstr "скругление"
 
 #: group.cpp:470
 #, fuzzy
@@ -1724,24 +1724,24 @@ msgid ""
 "Bad selection for a new shell group. Select the faces of the solid to leave "
 "open, or nothing for a closed shell."
 msgstr ""
-"Неправильне виділення для нової групи оболонки. Оберіть грані тіла, які "
-"залишаться відкритими, або нічого для замкненої оболонки."
+"Неверное выделение для новой группы оболочки. Выберите грани тела, которые "
+"останутся открытыми, или ничего — для замкнутой оболочки."
 
 #: group.cpp:477
 #, fuzzy
 msgid "Shells need the Open CASCADE kernel, which this build lacks."
-msgstr "Оболонки потребують ядра Open CASCADE, якого немає в цій збірці."
+msgstr "Оболочки требуют ядра Open CASCADE, которого нет в этой сборке."
 
 #: group.cpp:483
 #, fuzzy
 msgid "There is no solid to make a shell of."
-msgstr "Немає тіла, з якого можна зробити оболонку."
+msgstr "Нет тела, из которого можно сделать оболочку."
 
 #: group.cpp:501
 #, fuzzy
 msgctxt "group-name"
 msgid "shell"
-msgstr "оболонка"
+msgstr "оболочка"
 
 #: group.cpp:517
 #, fuzzy
@@ -1749,20 +1749,20 @@ msgid ""
 "Bad selection for a new draft group. Select side faces of an extrusion; they "
 "taper about its sketch plane, along its direction."
 msgstr ""
-"Неправильне виділення для нової групи ухилу. Оберіть бічні грані "
-"видавлювання: вони звужуються навколо площини свого креслення, вздовж його "
-"напряму."
+"Неверное выделение для новой группы уклона. Выберите боковые грани "
+"выдавливания: они сужаются относительно плоскости своего эскиза вдоль его "
+"направления."
 
 #: group.cpp:522
 #, fuzzy
 msgid "Drafts need the Open CASCADE kernel, which this build lacks."
-msgstr "Ухили потребують ядра Open CASCADE, якого немає в цій збірці."
+msgstr "Уклоны требуют ядра Open CASCADE, которого нет в этой сборке."
 
 #: group.cpp:527
 #, fuzzy
 msgctxt "group-name"
 msgid "draft"
-msgstr "ухил"
+msgstr "уклон"
 
 #: group.cpp:541
 #, fuzzy
@@ -1771,20 +1771,20 @@ msgid ""
 "workplane, such as a sketch on a face. The holes go into the face, against "
 "the workplane's normal."
 msgstr ""
-"Неправильне виділення для нової групи отворів. Оберіть центри отворів: точки "
-"в робочій площині, наприклад креслення на грані. Отвори йдуть у грань, проти "
-"нормалі робочої площини."
+"Неверное выделение для новой группы отверстий. Выберите центры отверстий: "
+"точки в рабочей плоскости, например эскиз на грани. Отверстия идут в грань "
+"против нормали рабочей плоскости."
 
 #: group.cpp:547
 #, fuzzy
 msgid "Holes need the Open CASCADE kernel, which this build lacks."
-msgstr "Отвори потребують ядра Open CASCADE, якого немає в цій збірці."
+msgstr "Отверстия требуют ядра Open CASCADE, которого нет в этой сборке."
 
 #: group.cpp:555
 #, fuzzy
 msgctxt "group-name"
 msgid "hole"
-msgstr "отвір"
+msgstr "отверстие"
 
 #: group.cpp:573
 #, fuzzy
@@ -1792,21 +1792,20 @@ msgid ""
 "Bad selection for a new loft group. Select a curve of each profile, in "
 "order: two or more closed shapes, each in its own sketch."
 msgstr ""
-"Неправильне виділення для нової групи «за перерізами». Оберіть криву кожного "
-"профілю по порядку: дві або більше замкнених фігур, кожна у власному "
-"кресленні."
+"Неверное выделение для новой группы «по сечениям». Выберите кривую каждого "
+"профиля по порядку: две или более замкнутых фигуры, каждая в своём эскизе."
 
 #: group.cpp:578
 #, fuzzy
 msgid "Lofts need the Open CASCADE kernel, which this build lacks."
 msgstr ""
-"Групи «за перерізами» потребують ядра Open CASCADE, якого немає в цій збірці."
+"Группы «по сечениям» требуют ядра Open CASCADE, которого нет в этой сборке."
 
 #: group.cpp:582
 #, fuzzy
 msgctxt "group-name"
 msgid "loft"
-msgstr "за-перерізами"
+msgstr "по-сечениям"
 
 #: group.cpp:604
 #, fuzzy
@@ -1815,22 +1814,21 @@ msgid ""
 "shape in a sketch) first, then the path's curves, connected end to end, in "
 "another sketch."
 msgstr ""
-"Неправильне виділення для нової групи «за траєкторією». Спочатку оберіть "
-"криву профілю (замкненої фігури в кресленні), потім криві траєкторії, "
-"з'єднані одна з одною, в іншому кресленні."
+"Неверное выделение для новой группы «по траектории». Сначала выберите кривую "
+"профиля (замкнутой фигуры в эскизе), затем кривые траектории, соединённые "
+"встык, в другом эскизе."
 
 #: group.cpp:610
 #, fuzzy
 msgid "Sweeps need the Open CASCADE kernel, which this build lacks."
 msgstr ""
-"Групи «за траєкторією» потребують ядра Open CASCADE, якого немає в цій "
-"збірці."
+"Группы «по траектории» требуют ядра Open CASCADE, которого нет в этой сборке."
 
 #: group.cpp:615
 #, fuzzy
 msgctxt "group-name"
 msgid "sweep"
-msgstr "за-траєкторією"
+msgstr "по-траектории"
 
 #: group.cpp:736
 msgid "(unnamed)"
@@ -1863,67 +1861,67 @@ msgstr "Невозможно сделать повтор больше, чем 99
 #: groupprops.cpp:113
 #, fuzzy
 msgid "The draft angle must be between -89 and 89 degrees, and not zero."
-msgstr "Кут ухилу має бути між −89 і 89 градусами та не дорівнювати нулю."
+msgstr "Угол уклона должен быть между −89 и 89 градусами и не равен нулю."
 
 #: groupprops.cpp:130
 #, fuzzy
 msgid "The radius or distance must be greater than zero."
-msgstr "Радіус або відстань мають бути більшими за нуль."
+msgstr "Радиус или расстояние должны быть больше нуля."
 
 #: groupprops.cpp:172
 #, fuzzy
 msgid "This feature needs it; delete the group instead."
-msgstr "Ця операція його потребує; натомість видаліть групу."
+msgstr "Эта операция в нём нуждается; вместо этого удалите группу."
 
 #: groupprops.cpp:192
 #, fuzzy
 msgid "The corner radius must be zero (sharp corners) or more."
-msgstr "Радіус скруглення кутів має бути нулем (гострі кути) або більшим."
+msgstr "Радиус скругления углов должен быть нулём (острые углы) или больше."
 
 #: groupprops.cpp:229
 #, fuzzy
 msgid "A thread needs a pitch smaller than its diameter."
-msgstr "Різьба потребує кроку менше за діаметр."
+msgstr "Резьба требует шага меньше диаметра."
 
 #: groupprops.cpp:231
 #, fuzzy
 msgid "The hole's diameter must be greater than zero."
-msgstr "Діаметр отвору має бути більшим за нуль."
+msgstr "Диаметр отверстия должен быть больше нуля."
 
 #: groupprops.cpp:233
 #, fuzzy
 msgid "The print clearance must be zero or more."
-msgstr "Друкарський зазор має бути нулем або більшим."
+msgstr "Печатный зазор должен быть нулём или больше."
 
 #: groupprops.cpp:235
 #, fuzzy
 msgid "The hole's depth must be zero (through all) or more."
-msgstr "Глибина отвору має бути нулем (наскрізний) або більшою."
+msgstr "Глубина отверстия должна быть нулём (насквозь) или больше."
 
 #: groupprops.cpp:237
 #, fuzzy
 msgid "The head's diameter must be greater than the hole's."
-msgstr "Діаметр голівки має бути більшим за діаметр отвору."
+msgstr "Диаметр головки должен быть больше диаметра отверстия."
 
 #: groupprops.cpp:239
 #, fuzzy
 msgid "The counterbore's depth must be greater than zero."
-msgstr "Глибина зенкування під голівку має бути більшою за нуль."
+msgstr "Глубина зенковки под головку должна быть больше нуля."
 
 #: groupprops.cpp:242
 #, fuzzy
 msgid "The countersink's angle must be between 0 and 180 degrees."
-msgstr "Кут зенкування має бути між 0 і 180 градусами."
+msgstr "Угол зенковки должен быть между 0 и 180 градусами."
 
 #: groupprops.cpp:287
 #, fuzzy
 msgid "Write the thread as M4, M4x0.5, or none."
-msgstr "Запишіть різьбу як M4, M4x0.5 або none."
+msgstr "Запишите резьбу как M4, M4x0.5 или none."
 
 #: groupprops.cpp:292
 #, fuzzy, c-format
 msgid "M%g has no standard coarse pitch; write it as M%gx<pitch>."
-msgstr "У M%g немає стандартного крупного кроку; запишіть його як M%gx<крок>."
+msgstr "У M%g нет стандартного крупного шага; запишите его как M%gx<шаг>."
 
 #: groupprops.cpp:342
 msgid "Opacity must be between zero and one."
@@ -1939,32 +1937,34 @@ msgid ""
 "Pick something on each of two parts that revolute, slider or cylindrical "
 "joints move: the gears' pitch circles, or a pinion's and its rack."
 msgstr ""
-"Оберіть на кожній з двох деталей щось, що рухають обертальні, повзункові або "
-"циліндричні з'єднання: ділильні кола шестерень або шестерню та її рейку."
+"Выберите на каждой из двух деталей что-нибудь, что двигают вращательные, "
+"ползунковые или цилиндрические соединения: делительные окружности шестерён "
+"или шестерню и её рейку."
 
 #: joint.cpp:149
 #, fuzzy
 msgid "The two picks are moved by the same joint."
-msgstr "Обидва вибрані елементи рухає одне й те саме з'єднання."
+msgstr "Оба выбранных элемента движутся одним соединением."
 
 #: joint.cpp:154
 #, fuzzy
 msgid "Those two joints are coupled already."
-msgstr "Ці два з'єднання вже зв'язані."
+msgstr "Эти два соединения уже связаны."
 
 #: joint.cpp:203
 #, fuzzy
 msgid "Select the ball joint's centre on each part: points, circles or arcs."
 msgstr ""
-"Оберіть центр кульового з'єднання на кожній деталі: точки, кола або дуги."
+"Выберите центр шарового соединения на каждой детали: точки, окружности или "
+"дуги."
 
 #: joint.cpp:209
 #, fuzzy
 msgid ""
 "Select the joint's plane on each part: faces, or lines along its normal."
 msgstr ""
-"Оберіть площину з'єднання на кожній деталі: грані або лінії вздовж її "
-"нормалі."
+"Выберите плоскость соединения на каждой детали: грани или линии вдоль её "
+"нормали."
 
 #: joint.cpp:211
 #, fuzzy
@@ -1972,70 +1972,71 @@ msgid ""
 "Select two axes for the joint, one on each part: line segments, circles, "
 "arcs or faces."
 msgstr ""
-"Оберіть дві осі для з'єднання, по одній на кожній деталі: відрізки, кола, "
-"дуги або грані."
+"Выберите две оси для соединения, по одной на каждой детали: отрезки, "
+"окружности, дуги или грани."
 
 #: joint.cpp:218
 #, fuzzy
 msgid ""
 "The two picks are on the same part; a joint moves one part against another."
 msgstr ""
-"Обидва вибрані елементи на одній деталі; з'єднання рухає одну деталь "
-"відносно іншої."
+"Оба выбранных элемента на одной детали; соединение двигает одну деталь "
+"относительно другой."
 
 #: joint.cpp:234
 #, fuzzy
 msgid ""
 "The two centres aren't the same point; a ball joint turns about one centre."
 msgstr ""
-"Два центри не збігаються; кульове з'єднання обертається навколо одного "
-"центру."
+"Два центра не совпадают; шаровое соединение поворачивается вокруг одного "
+"центра."
 
 #: joint.cpp:239
 #, fuzzy
 msgid "The two planes aren't parallel."
-msgstr "Дві площини не паралельні."
+msgstr "Две плоскости не параллельны."
 
 #: joint.cpp:240
 #, fuzzy
 msgid "The two axes aren't parallel."
-msgstr "Дві осі не паралельні."
+msgstr "Две оси не параллельны."
 
 #: joint.cpp:245
 #, fuzzy
 msgid "The two axes aren't the same line; the joint turns about one axis."
 msgstr ""
-"Дві осі не лежать на одній прямій; з'єднання обертається навколо однієї осі."
+"Две оси не лежат на одной прямой; соединение поворачивается вокруг одной оси."
 
 #: joint.cpp:249
 #, fuzzy, c-format
 msgid "Part '%s' already has a joint to move it."
-msgstr "Деталь '%s' уже має з'єднання, яке її рухає."
+msgstr "Деталь '%s' уже имеет соединение, которое её двигает."
 
 #: joint.cpp:434
 #, fuzzy
 msgid "Set the slide's limits first: the sweep runs between them."
-msgstr "Спочатку задайте межі повзунка: прохід іде між ними."
+msgstr "Сначала задайте пределы ползуна: проход идёт между ними."
 
 #: joint.cpp:452
 #, fuzzy
 msgid "The joint moves no solid past another; there is nothing to sweep."
-msgstr "З'єднання не рухає тіла одне повз інше; перевіряти нічого."
+msgstr ""
+"Соединение не двигает тела одно относительно другого; проверять нечего."
 
 #: joint.cpp:489
 #, fuzzy
 msgid "The clearance sweep needs the Open CASCADE kernel's solids."
-msgstr "Перевірка зазору потребує тіл ядра Open CASCADE."
+msgstr "Проверка зазора требует тел ядра Open CASCADE."
 
 #: joint.cpp:540
 #, fuzzy, c-format
 msgid "Minimum gap %s mm at %s."
-msgstr "Мінімальний зазор %s мм при %s."
+msgstr "Минимальный зазор %s мм при %s."
 
 #: joint.cpp:543
 #, fuzzy
 msgid "The parts touch or overlap"
-msgstr "Деталі торкаються або перетинаються"
+msgstr "Детали касаются или пересекаются"
 
 #: joint.cpp:548
 #, fuzzy, c-format
@@ -2045,7 +2046,7 @@ msgstr "при %s"
 #: joint.cpp:549
 #, fuzzy, c-format
 msgid "from %s to %s"
-msgstr "від %s до %s"
+msgstr "от %s до %s"
 
 #: modify.cpp:254
 msgid "Must be sketching in workplane to create tangent arc."
@@ -2256,7 +2257,7 @@ msgstr "ВСЕ"
 #, fuzzy
 msgctxt "file-type"
 msgid "STEP solid"
-msgstr "Тіло STEP"
+msgstr "Тело STEP"
 
 #: platform/gui.cpp:92
 msgctxt "file-type"
@@ -2302,7 +2303,7 @@ msgstr "VRML файл"
 #, fuzzy
 msgctxt "file-type"
 msgid "Quad mesh for Blender, with creases (USD)"
-msgstr "Чотирикутна сітка для Blender, з ребрами згину (USD)"
+msgstr "Четырёхугольная сетка для Blender, с рёбрами сгиба (USD)"
 
 #: platform/gui.cpp:110 platform/gui.cpp:117 platform/gui.cpp:124
 #: solvespace.cpp:850
@@ -2385,7 +2386,7 @@ msgstr ""
 #: preferences.cpp:186
 #, fuzzy
 msgid "The density must be greater than zero."
-msgstr "Щільність має бути більшою за нуль."
+msgstr "Плотность должна быть больше нуля."
 
 #: preferences.cpp:199
 msgid "Bad format: specify coordinates as x, y, z"
@@ -2479,13 +2480,13 @@ msgstr ""
 #, fuzzy
 msgctxt "file-type"
 msgid "STL mesh, one per part"
-msgstr "Сітка STL, по файлу на деталь"
+msgstr "Сетка STL, по файлу на деталь"
 
 #: solvespace.cpp:835
 #, fuzzy
 msgctxt "file-type"
 msgid "3MF, an object per part"
-msgstr "3MF, об'єкт на деталь"
+msgstr "3MF, объект на деталь"
 
 #: solvespace.cpp:836
 #, fuzzy
@@ -2496,7 +2497,7 @@ msgstr "Файл STEP, по файлу на деталь"
 #: solvespace.cpp:844
 #, fuzzy, c-format
 msgid "Exported %d parts:%s"
-msgstr "Експортовано деталей: %d:%s"
+msgstr "Экспортировано деталей: %d:%s"
 
 #: solvespace.cpp:856
 #, fuzzy
@@ -2728,7 +2729,7 @@ msgstr ""
 #: solvespace.cpp:1365
 #, fuzzy
 msgid "There is no solid in the active group."
-msgstr "В активній групі немає тіла."
+msgstr "В активной группе нет тела."
 
 #: solvespace.cpp:1373
 #, fuzzy, c-format
@@ -2738,25 +2739,25 @@ msgid ""
 "Mass:  %s (%s)\n"
 "Center of mass:  (%s, %s, %s)"
 msgstr ""
-"Об'єм:  %s\n"
-"Площа поверхні:  %s\n"
-"Маса:  %s (%s)\n"
-"Центр мас:  (%s, %s, %s)"
+"Объём:  %s\n"
+"Площадь поверхности:  %s\n"
+"Масса:  %s (%s)\n"
+"Центр масс:  (%s, %s, %s)"
 
 #: solvespace.cpp:1418
 #, fuzzy
 msgid "A part's name can't be empty."
-msgstr "Ім'я деталі не може бути порожнім."
+msgstr "Имя детали не может быть пустым."
 
 #: solvespace.cpp:1504
 #, fuzzy
 msgid "No part has a solid yet."
-msgstr "Жодна деталь ще не має тіла."
+msgstr "Ни одна деталь ещё не имеет тела."
 
 #: solvespace.cpp:1508
 #, fuzzy, c-format
 msgid "%s%s:  %s, %s, %.2f g;  %s x %s x %s\n"
-msgstr "%s%s:  %s, %s, %.2f г;  %s x %s x %s\n"
+msgstr "%s%s:  %s, %s, %.2f г;  %s × %s × %s\n"
 
 #: solvespace.cpp:1515
 #, fuzzy, c-format
@@ -2765,42 +2766,44 @@ msgid ""
 "%d parts, %.2f g in all."
 msgstr ""
 "\n"
-"Деталей: %d, усього %.2f г."
+"Деталей: %d, всего %.2f г."
 
 #: solvespace.cpp:1617
 #, fuzzy
 msgid ""
 "Parts export as STL, 3MF or STEP; choose a .stl, .3mf or .step file name."
 msgstr ""
-"Деталі експортуються як STL, 3MF або STEP; оберіть ім'я файлу .stl, .3mf "
-"або .step."
+"Детали экспортируются в STL, 3MF или STEP; выберите имя файла .stl, .3mf "
+"или .step."
 
 #: solvespace.cpp:1652
 #, fuzzy, c-format
 msgid "STEP needs the Open CASCADE kernel; part '%s' was not written."
-msgstr "STEP потребує ядра Open CASCADE; деталь '%s' не записано."
+msgstr "STEP требует ядра Open CASCADE; деталь '%s' не записана."
 
 #: split.cpp:33
 #, fuzzy
 msgid "Select the plane to split the part by: a workplane or a flat face."
 msgstr ""
-"Оберіть площину для розділення деталі: робочу площину або плоску грань."
+"Выберите плоскость для разделения детали: рабочую плоскость или плоскую "
+"грань."
 
 #: split.cpp:39
 #, fuzzy
 msgid "Activate a group of the part to split: its solid is what is split."
-msgstr "Активуйте групу деталі, яку треба розділити: розділяється її тіло."
+msgstr ""
+"Активируйте группу детали, которую нужно разделить: разделяется её тело."
 
 #: split.cpp:43
 #, fuzzy
 msgid "Splitting needs the Open CASCADE kernel, which this build lacks."
-msgstr "Розділення потребує ядра Open CASCADE, якого немає в цій збірці."
+msgstr "Разделение требует ядра Open CASCADE, которого нет в этой сборке."
 
 #: split.cpp:73
 #, fuzzy
 msgctxt "group-name"
 msgid "split"
-msgstr "розділення"
+msgstr "разделение"
 
 #: style.cpp:188
 msgid ""

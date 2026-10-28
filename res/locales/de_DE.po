@@ -2043,7 +2043,7 @@ msgstr "Kleinster Spalt %s mm bei %s."
 #: joint.cpp:543
 #, fuzzy
 msgid "The parts touch or overlap"
-msgstr "Die Teile berühren sich oder überlappen."
+msgstr "Die Teile berühren sich oder überlappen"
 
 #: joint.cpp:548
 #, fuzzy, c-format
