@@ -1044,9 +1044,22 @@ bool SolveSpaceUI::ReloadAllLinked(const Platform::Path &saveFile, bool canCance
 try_again:
         std::string ext = g.linkFile.Extension();
         std::transform(ext.begin(), ext.end(), ext.begin(), ::tolower);
-        bool loaded = (ext == "step" || ext == "stp")
-                          ? LinkStep(g.linkFile, &g.impShape, &g.impMesh)
-                          : LoadEntitiesFromFile(g.linkFile, &g.impEntity, &g.impMesh, &g.impShell);
+        bool step   = ext == "step" || ext == "stp";
+        bool loaded = step ? LinkStep(g.linkFile, &g.impShape, &g.impMesh)
+                           : LoadEntitiesFromFile(g.linkFile, &g.impEntity, &g.impMesh, &g.impShell);
+        if(loaded && step) {
+            // Its planar faces as face entities (#9), which the link copies and places as it
+            // does a sketch's, so a sketch can go on one. Each one's handle carries the face's
+            // index, by which the solid's faces are named.
+            for(const KernelPlanarFace &f : KernelPlanarFaces(g.impShape)) {
+                Entity e    = {};
+                e.type      = Entity::Type::FACE_NORMAL_PT;
+                e.h         = hEntity{ (uint32_t)(f.index + 1) << 16 };
+                e.actPoint  = f.point;
+                e.actNormal = Quaternion::From(0, f.normal.x, f.normal.y, f.normal.z);
+                g.impEntity.Add(&e);
+            }
+        }
         if(loaded) {
             // We loaded the data, good. Now import its dependencies as well.
             for(Entity &e : g.impEntity) {

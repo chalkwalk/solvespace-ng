@@ -288,6 +288,12 @@ KernelJob Group::BuildKernelJob() {
         job.impShell = &impShell;
         job.impMesh  = &impMesh;
         job.impShape = impShape;
+        for(Entity &ie : impEntity) {
+            if(!impShape || ie.type != Entity::Type::FACE_NORMAL_PT) continue;
+            size_t index = (ie.h.v >> 16) - 1;
+            if(job.impFaceNames.size() <= index) job.impFaceNames.resize(index + 1, 0);
+            job.impFaceNames[index] = Remap(ie.h, 0).v;
+        }
         job.offset   = { SK.GetParam(h.param(0))->val, SK.GetParam(h.param(1))->val,
                          SK.GetParam(h.param(2))->val };
         job.q        = { SK.GetParam(h.param(3))->val, SK.GetParam(h.param(4))->val,

@@ -1434,15 +1434,22 @@ std::shared_ptr<KernelShape> Sweep(const KernelJob &job, KernelProblem *problem)
 
 // A linked B-rep (a STEP file) scaled, rotated and moved as the link says, as SolveSpace
 // places a linked mesh.
+// Its planar faces are named as the link's face entities (#9).
 std::shared_ptr<KernelShape> PlaceLinked(const KernelJob &job) {
     gp_Trsf scale, rotate, move;
     scale.SetScale(gp_Pnt(0, 0, 0), job.scale);
     rotate.SetRotation(gp_Quaternion(job.q.vx, job.q.vy, job.q.vz, job.q.w));
     move.SetTranslation(Vec(job.offset));
-    auto out   = std::make_shared<KernelShape>();
-    out->shape = BRepBuilderAPI_Transform(job.impShape->shape, move * rotate * scale,
-                                          /*copy=*/true)
-                     .Shape();
+    auto out = std::make_shared<KernelShape>();
+    BRepBuilderAPI_Transform placed(job.impShape->shape, move * rotate * scale, /*copy=*/true);
+    out->shape = placed.Shape();
+    TopTools_IndexedMapOfShape faces;
+    TopExp::MapShapes(job.impShape->shape, TopAbs_FACE, faces);
+    for(int i = 0; i < faces.Extent() && i < (int)job.impFaceNames.size(); i++) {
+        if(job.impFaceNames[i] == 0) continue;
+        out->faces.Bind(placed.ModifiedShape(faces(i + 1)),
+                        FaceInfo{ job.impFaceNames[i], job.color });
+    }
     return out;
 }
 
@@ -1728,6 +1735,26 @@ std::vector<KernelFaceNormal> KernelFaceNormals(const std::shared_ptr<const Kern
     return normals;
 }
 
+
+std::vector<KernelPlanarFace> KernelPlanarFaces(const std::shared_ptr<const KernelShape> &ks) {
+    std::vector<KernelPlanarFace> out;
+    if(!ks || ks->shape.IsNull()) return out;
+    TopTools_IndexedMapOfShape faces;
+    TopExp::MapShapes(ks->shape, TopAbs_FACE, faces);
+    for(int i = 1; i <= faces.Extent(); i++) {
+        TopoDS_Face         face = TopoDS::Face(faces(i));
+        BRepAdaptor_Surface surface(face);
+        if(surface.GetType() != GeomAbs_Plane) continue;
+        gp_Dir n = surface.Plane().Axis().Direction();
+        if(face.Orientation() == TopAbs_REVERSED) n.Reverse();
+        GProp_GProps props;
+        BRepGProp::SurfaceProperties(face, props);
+        gp_Pnt c = props.CentreOfMass();
+        out.push_back({ i - 1, Vector::From(c.X(), c.Y(), c.Z()),
+                        Vector::From(n.X(), n.Y(), n.Z()) });
+    }
+    return out;
+}
 
 std::shared_ptr<const KernelShape> KernelImportStep(const Platform::Path &filename) {
     STEPControl_Reader reader;

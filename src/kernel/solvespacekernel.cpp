@@ -373,6 +373,10 @@ std::vector<uint32_t> KernelFacesBoundedBy(const std::shared_ptr<const KernelSha
     return {};
 }
 
+std::vector<KernelPlanarFace> KernelPlanarFaces(const std::shared_ptr<const KernelShape> &) {
+    return {};
+}
+
 std::shared_ptr<const KernelShape> KernelImportStep(const Platform::Path &) {
     return nullptr;
 }

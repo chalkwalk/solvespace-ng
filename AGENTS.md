@@ -411,8 +411,10 @@ leaves them out, with a note.
 Part takes `.step`/`.stp` files (`SolveSpaceUI::LinkStep`). The B-rep (`Group::impShape`, read
 again on load, not saved) is placed by the link's position, rotation and scale and combined as
 a B-rep by the OCCT kernel; its tessellation (`impMesh`) is what SolveSpace's kernel and
-builds without OCCT use. Imported faces are unnamed: they can be picked and measured, not yet
-sketched on.
+builds without OCCT use. Its planar faces (2026-10-28, #9) are face entities of the link
+(`KernelPlanarFaces`, each handle carrying the face's index in the B-rep), placed with the
+link and naming its faces, so a sketch can go on one and follows the link; curved faces are
+unnamed (picked and measured only), and so are all of them with SolveSpace's kernel.
 
 **Sketch on a face (2026-10-21, after review 5):** Sketch in New Workplane (`Shift+W`) takes a
 face of the solid, an extrusion's cap or side or any feature's derived face, and optionally a

@@ -114,10 +114,12 @@ struct KernelJob {
     std::shared_ptr<const KernelShape> sourceShape;
     KernelCombine sourceCombine = KernelCombine::UNION; // how the copies join each other
 
-    // LINKED: the imported solid, placed.
+    // LINKED: the imported solid, placed; the names of its faces, by their index in
+    // KernelPlanarFaces (0: unnamed).
     SShell    *impShell = nullptr;
     SMesh     *impMesh  = nullptr;
     std::shared_ptr<const KernelShape> impShape;
+    std::vector<uint32_t>              impFaceNames;
     Vector     offset   = {};
     Quaternion q        = {};
     double     scale    = 1;
@@ -272,6 +274,14 @@ bool KernelMinDistance(const std::shared_ptr<const KernelShape> &a, Quaternion q
                        double *distance);
 // The B-rep's mass properties, exactly; false if there is no B-rep.
 bool KernelMassProperties(const std::shared_ptr<const KernelShape> &shape, MassProps *out);
+
+// The planar faces of a B-rep (#9): each one's index among all its faces (an order that is the
+// same for the same file), a point on it (its centroid) and its outward normal.
+struct KernelPlanarFace {
+    int    index = 0;
+    Vector point = {}, normal = {};
+};
+std::vector<KernelPlanarFace> KernelPlanarFaces(const std::shared_ptr<const KernelShape> &shape);
 
 // A STEP file's solid, or null if it can't be read.
 std::shared_ptr<const KernelShape> KernelImportStep(const Platform::Path &filename);
