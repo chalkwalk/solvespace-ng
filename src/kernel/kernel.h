@@ -148,10 +148,10 @@ struct KernelJob {
     };
     std::vector<HoleAt> holes;
     HoleSpec            hole;
-    // LOFT: the sections' outer loops, in order; SWEEP: the profile's (one). sectionHoles: a
-    // profile had holes, which are left out. The end caps are named startName and endName.
-    std::vector<std::vector<SBezier>> sections;
-    bool                              sectionHoles = false;
+    // LOFT: the sections' outer loops, in order; SWEEP: the profile's (one). sectionHoles:
+    // each section's holes, the loops inside it. The end caps are named startName and endName.
+    std::vector<std::vector<SBezier>>              sections;
+    std::vector<std::vector<std::vector<SBezier>>> sectionHoles;
     uint32_t                          startName = 0, endName = 0;
     // SWEEP: the path's curves, connected end to end in any order; the radius its corners
     // between straight pieces are rounded to (0: mitred).

@@ -131,4 +131,20 @@ TEST_CASE(a_sweep_can_round_its_paths_corners) {
     CHECK_FALSE(SK.GetGroup(hg)->featureProblem.empty());
     CHECK_TRUE(fabs(ExactVolume() - PI * 20) < 1e-3);
 }
+// #10: a hole inside the profile is swept too, and cut: a circle in a circle makes a tube.
+TEST_CASE(a_profile_with_a_hole_sweeps_a_tube) {
+    CHECK_LOAD("sketch.slvs");
+    hEntity c = Circle(2);
+    Circle(1);
+    Group::MenuGroup(Command::GROUP_3D);
+    hEntity a = Line3D({ 0, 0, 0 }, { 0, 0, 10 }), b = Line3D({ 0, 0, 10 }, { 0, 10, 10 });
+    Group  *g = MakeFeature(Command::GROUP_SWEEP, { c, a, b });
+    CHECK_TRUE(g != nullptr && g->featureProblem.empty());
+    // Round the corner so Pappus gives the volume: the ring's area along the path.
+    hGroup hg = g->h;
+    CHECK_TRUE(SS.SetSweepCorners(hg, "3"));
+    SS.GenerateAll(SolveSpaceUI::Generate::ALL);
+    CHECK_TRUE(SK.GetGroup(hg)->featureProblem.empty());
+    CHECK_TRUE(fabs(ExactVolume() - 3 * PI * (7 + 7 + PI / 2 * 3)) < 1e-3);
+}
 #endif

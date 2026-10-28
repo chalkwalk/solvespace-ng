@@ -213,7 +213,7 @@ KernelJob Group::BuildKernelJob() {
             Profile p;
             if(!ProfileOf(he, &p)) continue;
             job.sections.push_back(p.loop);
-            job.sectionHoles = job.sectionHoles || p.holes;
+            job.sectionHoles.push_back(p.holes);
         }
         if(!profiles.empty()) {
             job.startName = Remap(profiles.front(), REMAP_LOFT_START).v;
@@ -225,7 +225,7 @@ KernelJob Group::BuildKernelJob() {
         std::vector<hEntity> curves(profiles.begin() + (profiles.empty() ? 0 : 1), profiles.end());
         if(!profiles.empty() && ProfileOf(profiles[0], &p) && PathOf(curves, p.centre, &job.path)) {
             job.sections.push_back(p.loop);
-            job.sectionHoles = p.holes;
+            job.sectionHoles.push_back(p.holes);
             job.startName    = Remap(profiles[0], REMAP_SWEEP_START).v;
             job.endName      = Remap(profiles[0], REMAP_SWEEP_END).v;
             job.cornerRadius = valB;

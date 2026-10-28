@@ -447,12 +447,13 @@ public:
     // LOFT: a curve of each profile sketch, in order (the profile is the closed loop it is
     // in); SWEEP: a curve of the profile sketch, then the path's curves.
     std::vector<hEntity> profiles;
-    // A profile: the outer closed loop (in its sketch) of the loop set holding curve, its
-    // plane's normal and a point in it; false if the curve is in no closed loop.
+    // A profile: the outer closed loop (in its sketch) of the loop set holding curve, the
+    // loops inside it (its holes), its plane's normal and a point in it; false if the curve
+    // is in no closed loop.
     struct Profile {
-        std::vector<SBezier> loop;
-        Vector               normal = {}, centre = {};
-        bool                 holes  = false; // the loop has holes inside, left out
+        std::vector<SBezier>              loop;
+        std::vector<std::vector<SBezier>> holes;
+        Vector                            normal = {}, centre = {};
     };
     static bool ProfileOf(hEntity curve, Profile *out);
     // A sweep's path: the curves' pieces chained end to end, from the end nearest near;

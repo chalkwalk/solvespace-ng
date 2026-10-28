@@ -1240,6 +1240,51 @@ void NameCaps(const KernelJob &job, const TopoDS_Shape &solid, const TopoDS_Shap
     }
 }
 
+// The holes' solids cut from a made solid, whose face names are kept.
+bool CutHoles(const std::vector<TopoDS_Shape> &holes, KernelShape *ks) {
+    if(holes.empty()) return true;
+    KernelShape cutter, cut;
+    cutter.shape = MakeCompound(holes);
+    if(!Boolean(KernelCombine::DIFFERENCE, *ks, cutter, &cut)) return false;
+    *ks = cut;
+    return true;
+}
+
+// Each section's holes in loft order: chains[k][i] is the k-th chain's hole in section i,
+// each matched to the hole of the next section nearest it about its section's centre. Empty
+// if any section has a different number of holes.
+std::vector<std::vector<const std::vector<SBezier> *>> HoleChains(const KernelJob &job) {
+    auto centre = [](const std::vector<SBezier> &loop) {
+        Vector sum = {};
+        for(const SBezier &sb : loop) sum = sum.Plus(sb.Start());
+        return sum.ScaledBy(1.0 / std::max<size_t>(1, loop.size()));
+    };
+    size_t n = job.sectionHoles.empty() ? 0 : job.sectionHoles[0].size();
+    for(const auto &holes : job.sectionHoles) {
+        if(holes.size() != n) return {};
+    }
+    std::vector<std::vector<const std::vector<SBezier> *>> chains(n);
+    for(size_t k = 0; k < n; k++) chains[k].push_back(&job.sectionHoles[0][k]);
+    for(size_t i = 1; i < job.sections.size(); i++) {
+        Vector             was = centre(job.sections[i - 1]), now = centre(job.sections[i]);
+        std::vector<bool>  taken(n, false);
+        for(auto &chain : chains) {
+            Vector at   = centre(*chain.back()).Minus(was);
+            size_t best = n;
+            for(size_t m = 0; m < n; m++) {
+                if(taken[m]) continue;
+                double d = centre(job.sectionHoles[i][m]).Minus(now).Minus(at).Magnitude();
+                if(best == n || d < centre(job.sectionHoles[i][best]).Minus(now).Minus(at).Magnitude()) {
+                    best = m;
+                }
+            }
+            taken[best] = true;
+            chain.push_back(&job.sectionHoles[i][best]);
+        }
+    }
+    return chains;
+}
+
 std::shared_ptr<KernelShape> Loft(const KernelJob &job, std::string *problem) {
     if(job.sections.size() < 2) return nullptr;
     auto ks = std::make_shared<KernelShape>();
@@ -1256,11 +1301,31 @@ std::shared_ptr<KernelShape> Loft(const KernelJob &job, std::string *problem) {
         ks->shape = loft.Shape();
         Orient(&ks->shape);
         NameCaps(job, ks->shape, loft.FirstShape(), loft.LastShape(), ks.get());
+        // Each chain of matching holes lofted the same way and cut.
+        bool anyHoles = false;
+        for(const auto &holes : job.sectionHoles) anyHoles = anyHoles || !holes.empty();
+        std::vector<std::vector<const std::vector<SBezier> *>> chains = HoleChains(job);
+        if(anyHoles && chains.empty()) {
+            *problem = "holes are lofted only when every profile has as many; these are left out";
+        }
+        std::vector<TopoDS_Shape> cutters;
+        for(const auto &chain : chains) {
+            BRepOffsetAPI_ThruSections hole(/*isSolid=*/true, /*ruled=*/false);
+            for(const std::vector<SBezier> *loop : chain) hole.AddWire(SectionWire(*loop));
+            hole.Build();
+            if(!hole.IsDone() || !IsGoodSolid(hole.Shape())) {
+                *problem = "the holes could not be lofted";
+                return ks;
+            }
+            TopoDS_Shape solid = hole.Shape();
+            Orient(&solid);
+            cutters.push_back(solid);
+        }
+        if(!CutHoles(cutters, ks.get())) *problem = "the holes could not be cut";
     } catch(const Standard_Failure &) {
         *problem = "the loft failed";
         return nullptr;
     }
-    if(job.sectionHoles) *problem = "holes inside the profiles are not lofted";
     return ks;
 }
 
@@ -1328,24 +1393,40 @@ std::shared_ptr<KernelShape> Sweep(const KernelJob &job, std::string *problem) {
             *problem = "the sweep's path is not connected";
             return nullptr;
         }
-        BRepOffsetAPI_MakePipeShell pipe(spine.Wire());
-        pipe.SetMode(/*isFrenet=*/false); // corrected Frenet
-        // A sharp corner in the path is mitred.
-        pipe.SetTransitionMode(BRepBuilderAPI_RightCorner);
-        pipe.Add(SectionWire(job.sections[0]), /*withContact=*/false, /*withCorrection=*/false);
-        pipe.Build();
-        if(!pipe.IsDone() || !pipe.MakeSolid() || !IsGoodSolid(pipe.Shape())) {
-            *problem = "the sweep failed";
-            return nullptr;
+        // The profile's outer loop, then each hole, swept the same way; the holes are cut.
+        std::vector<TopoDS_Shape> cutters;
+        size_t holes = job.sectionHoles.empty() ? 0 : job.sectionHoles[0].size();
+        for(size_t i = 0; i <= holes; i++) {
+            BRepOffsetAPI_MakePipeShell pipe(spine.Wire());
+            pipe.SetMode(/*isFrenet=*/false); // corrected Frenet
+            // A sharp corner in the path is mitred.
+            pipe.SetTransitionMode(BRepBuilderAPI_RightCorner);
+            const std::vector<SBezier> &loop =
+                i == 0 ? job.sections[0] : job.sectionHoles[0][i - 1];
+            pipe.Add(SectionWire(loop), /*withContact=*/false, /*withCorrection=*/false);
+            pipe.Build();
+            if(!pipe.IsDone() || !pipe.MakeSolid() || !IsGoodSolid(pipe.Shape())) {
+                if(i == 0) {
+                    *problem = "the sweep failed";
+                    return nullptr;
+                }
+                *problem = "the holes could not be swept";
+                return ks;
+            }
+            TopoDS_Shape solid = pipe.Shape();
+            Orient(&solid);
+            if(i == 0) {
+                ks->shape = solid;
+                NameCaps(job, ks->shape, pipe.FirstShape(), pipe.LastShape(), ks.get());
+            } else {
+                cutters.push_back(solid);
+            }
         }
-        ks->shape = pipe.Shape();
-        Orient(&ks->shape);
-        NameCaps(job, ks->shape, pipe.FirstShape(), pipe.LastShape(), ks.get());
+        if(!CutHoles(cutters, ks.get())) *problem = "the holes could not be cut";
     } catch(const Standard_Failure &) {
         *problem = "the sweep failed";
         return nullptr;
     }
-    if(job.sectionHoles) *problem = "holes inside the profile are not swept";
     return ks;
 }
 

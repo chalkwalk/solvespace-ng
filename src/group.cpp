@@ -1521,7 +1521,10 @@ bool Group::ProfileOf(hEntity curve, Profile *out) {
         }
         out->loop.assign(outer->l.begin(), outer->l.end());
         out->normal = sbls.normal.WithMagnitude(1);
-        out->holes  = sbls.l.n > 1;
+        out->holes.clear();
+        for(const SBezierLoop &loop : sbls.l) {
+            if(&loop != outer) out->holes.emplace_back(loop.l.begin(), loop.l.end());
+        }
         Vector sum  = {};
         for(const SBezier &sb : out->loop) sum = sum.Plus(sb.Start());
         out->centre = sum.ScaledBy(1.0 / out->loop.size());

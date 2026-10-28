@@ -47,6 +47,14 @@ hEntity SquareIn3D(double s, double z) {
     return Polygon(Square(s, z));
 }
 
+// A square of side s with a square hole of side h, centred on the Z axis at height z.
+hEntity SquareWithHoleIn3D(double s, double h, double z) {
+    Group::MenuGroup(Command::GROUP_3D);
+    hEntity outer = Polygon(Square(s, z));
+    Polygon(Square(h, z));
+    return outer;
+}
+
 double ExactVolume() {
     MassProps mp;
     SS.MassProperties(&mp);
@@ -148,5 +156,24 @@ TEST_CASE(the_loft_survives_save_and_reload) {
     CHECK_TRUE(g->profiles.size() == 2 && g->profiles[0] == a && g->profiles[1] == b);
     CHECK_TRUE(fabs(ExactVolume() - 1040) < 1e-6);
     remove(path.raw.c_str());
+}
+// #10: holes inside the profiles are lofted too, each to the matching hole of the next profile.
+TEST_CASE(loft_between_squares_with_holes_is_a_hollow_prism) {
+    CHECK_LOAD("sketch.slvs");
+    Begin();
+    hEntity a = SquareWithHoleIn3D(10, 4, 0), b = SquareWithHoleIn3D(10, 4, 20);
+    Group  *g = MakeFeature(Command::GROUP_LOFT, { a, b });
+    CHECK_TRUE(g != nullptr && g->featureProblem.empty());
+    CHECK_TRUE(fabs(ExactVolume() - (100 - 16) * 20) < 1e-6);
+}
+
+// Profiles with different numbers of holes: the holes are left out, with a note.
+TEST_CASE(loft_with_unmatched_holes_leaves_them_out) {
+    CHECK_LOAD("sketch.slvs");
+    Begin();
+    hEntity a = SquareWithHoleIn3D(10, 4, 0), b = SquareIn3D(10, 20);
+    Group  *g = MakeFeature(Command::GROUP_LOFT, { a, b });
+    CHECK_TRUE(g != nullptr && !g->featureProblem.empty());
+    CHECK_TRUE(fabs(ExactVolume() - 2000) < 1e-6);
 }
 #endif

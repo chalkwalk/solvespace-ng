@@ -397,8 +397,10 @@ being the closed outer loop holding it; for a sweep, a curve of the profile sket
 path's curves (chained end to end from the end nearest the profile, picked in any order).
 `BRepOffsetAPI_ThruSections` (smooth) and `BRepOffsetAPI_MakePipeShell` (corrected Frenet,
 mitred corners). Derived entities: the end faces (`REMAP_LOFT_START/END`,
-`REMAP_SWEEP_START/END`), facing out, naming the end caps. Holes inside profiles are left out
-(with a note).
+`REMAP_SWEEP_START/END`), facing out, naming the end caps. Holes inside profiles (2026-10-28,
+#10) are swept along the same path, or lofted each to the hole of the next profile nearest
+it about the profile's centre, and cut; a loft whose profiles have different numbers of holes
+leaves them out, with a note.
 
 **Built in M3f (2026-10-21, branch `ng/m3f-step-import`):** STEP import: New Group ▸ Link
 Part takes `.step`/`.stp` files (`SolveSpaceUI::LinkStep`). The B-rep (`Group::impShape`, read
