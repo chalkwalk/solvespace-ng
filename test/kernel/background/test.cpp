@@ -3,6 +3,9 @@
 // name sends the work back to the main thread.
 #include "solvespace.h"
 
+#include <atomic>
+#include <thread>
+
 #include "harness.h"
 
 static Group *LastGroup() {
@@ -46,6 +49,31 @@ TEST_CASE(a_drag_makes_the_solids_on_the_worker) {
     CHECK_FALSE(LastGroup()->regenPending);
     CHECK_TRUE(SS.regenChainsApplied == applied + 1);
     CHECK_EQ_STR(Describe(LastGroup()), want);
+}
+
+// A drag that goes on still renews the solids: a chain finished while a newer one is on the
+// worker is applied (it is the newest made), and the solids stay ghosts until the newer one
+// lands. (The bench's drag found them renewed once in five seconds: every frame superseded the
+// chain being made.)
+TEST_CASE(a_long_drag_renews_the_solids) {
+    CHECK_LOAD("extrudes.slvs");
+    SS.GW.activeGroup = LastGroup()->h;
+    SS.GenerateAll(SolveSpaceUI::Generate::ALL);
+    SS.backgroundRegenEnabled = true;
+    std::atomic<int> finished(0);
+    SS.onRegenFinished = [&finished] { finished++; };
+    int applied = SS.regenChainsApplied;
+    DragFrame();
+    while(finished == 0) std::this_thread::yield();
+    DragFrame(); // a newer chain, on the worker now
+    CHECK_TRUE(SS.PollRegeneration());
+    CHECK_TRUE(SS.regenChainsApplied == applied + 1);
+    CHECK_TRUE(LastGroup()->regenPending);
+    EndDrag();
+    SS.FlushRegeneration();
+    CHECK_TRUE(SS.regenChainsApplied == applied + 2);
+    CHECK_FALSE(LastGroup()->regenPending);
+    SS.onRegenFinished = nullptr;
 }
 
 TEST_CASE(a_stale_result_is_dropped) {

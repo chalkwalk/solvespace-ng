@@ -34,7 +34,7 @@ struct RegenItem {
 };
 
 struct RegenChain {
-    uint64_t                                generation = 0;
+    uint64_t                                generation = 0, epoch = 0;
     KernelKind                              kernel     = KernelKind::SOLVESPACE;
     double                                  chordTol   = 0;
     int                                     maxSegments = 0;
@@ -105,7 +105,10 @@ LatestTaskWorker &Worker() {
 
 std::mutex                  gFinishedMutex;
 std::shared_ptr<RegenChain> gFinished; // the last chain the worker finished
-uint64_t                    gGeneration = 0;
+// Every chain submitted gets the next generation. A synchronous regeneration (undo, say) starts
+// a new epoch, and chains of an older epoch are dropped; a chain of this epoch is applied when
+// it finishes even if newer ones are on the way, so a long drag still renews the solids.
+uint64_t                    gGeneration = 0, gEpoch = 0;
 
 }
 
@@ -130,6 +133,7 @@ bool SolveSpaceUI::BackgroundRegenAllowed() {
 void SolveSpaceUI::SubmitBackgroundRegen(const std::vector<hGroup> &groups) {
     auto chain         = std::make_shared<RegenChain>();
     chain->generation  = ++gGeneration;
+    chain->epoch       = gEpoch;
     chain->kernel      = kernelKind;
     chain->chordTol    = ChordTolMm();
     chain->maxSegments = GetMaxSegments();
@@ -173,7 +177,7 @@ void SolveSpaceUI::SubmitBackgroundRegen(const std::vector<hGroup> &groups) {
 }
 
 void SolveSpaceUI::DropBackgroundRegen() {
-    gGeneration++;
+    gEpoch++;
     for(Group &g : SK.group) g.regenPending = false;
     GW.Invalidate(/*clearPersistent=*/true);
 }
@@ -191,7 +195,7 @@ bool SolveSpaceUI::PollRegeneration() {
         std::lock_guard<std::mutex> lock(gFinishedMutex);
         chain.swap(gFinished);
     }
-    if(!chain || chain->generation != gGeneration) return false; // superseded
+    if(!chain || chain->epoch != gEpoch) return false; // the model was made again since
     if(chain->missed) {
         // A face the snapshot couldn't name: make this regeneration on the main thread.
         regenMisses++;
@@ -207,11 +211,13 @@ bool SolveSpaceUI::PollRegeneration() {
     for(auto &item : chain->items) {
         if(!SK.group.FindByIdNoOops(item->group)) return false; // the model changed under it
     }
+    // A newer chain still on the way: these solids are drawn, as ghosts until it lands.
+    bool newest = chain->generation == gGeneration;
     for(auto &item : chain->items) {
         Group *g = SK.GetGroup(item->group);
         g->ApplyKernelResult(&item->result);
-        g->regenPending = false;
-        g->clean        = true;
+        g->regenPending = !newest;
+        if(newest) g->clean = true;
     }
     nakedEdges.Clear();
     for(const SEdge &e : chain->naked.l) nakedEdges.AddEdge(e.a, e.b);

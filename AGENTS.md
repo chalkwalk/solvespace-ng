@@ -321,8 +321,10 @@ stale mesh shows as a ghost until the new one arrives.
 `groupmesh.cpp`, unchanged), `FaceNamer` (`facenamer.h`) and the worker thread (`worker.h`). A
 group captures its solid's inputs in a `KernelJob` (`Group::BuildKernelJob`), so the kernel
 never reads the sketch. While dragging (NG only), `GenerateAll` hands the groups to the worker
-as one chain (`src/regen.cpp`); the newest finished chain is applied between frames, older
-ones are dropped, and the solids are drawn dimmed until then. Faces are named from a snapshot
+as one chain (`src/regen.cpp`); the newest finished chain is applied between frames (a
+chain queued behind a newer one is dropped; a finished one is applied even while a newer one
+is being made, fixed 2026-10-28 when the drag benchmark found a long drag renewed the solids
+only at its end), and the solids are drawn dimmed until the newest lands. Faces are named from a snapshot
 of each group's remap table; a name the snapshot lacks sends that regeneration back to the
 main thread, so files stay byte-identical. Save, export, undo and the end of a drag wait for
 the worker (`FlushRegeneration`). Tests: `test/kernel/` (also clean under ThreadSanitizer:
@@ -627,6 +629,15 @@ M(n+1) features before M(n)'s "done when" is met, unless the owner says otherwis
 - **Format golden files:** old `.slvs` files load, and saving then reloading gives the same file.
   New records have version tags.
 - **Performance:** benchmarks in `bench/`. Dragging a reference assembly must hold 60 fps.
+  `bench/hinge.slvs` is the reference (2026-10-28, #18): a chamfered knuckle with a hole, and
+  a pin and lever as a second part on a revolute joint. In a Release build,
+  `solvespace-benchmark drag bench/hinge.slvs [point]` drags a point (the hole's centre)
+  round a small circle at 60 fps and reports the main thread's share of each frame, how often
+  the worker renewed the solids, and the same drag without the worker;
+  `solvespace-benchmark pose bench/hinge.slvs` swings the joints. Rendering isn't measured.
+  First results (Ryzen 9 5900HX, load 1.4, another user's session idle): drag 0.45 ms mean,
+  0.62 ms p95, solids renewed 22 times a second; without the worker 46 ms a frame; pose
+  0.73 ms mean.
 - Use test-driven development for new logic (commands, keymap, derived entities, joints).
 
 ## 9. Working in this repo
