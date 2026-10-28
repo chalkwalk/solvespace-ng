@@ -1,4 +1,5 @@
 #include <filesystem>
+#include <random>
 #include "solvespace.h"
 #include "platform/sdl/settingsfile.h"
 
@@ -6,9 +7,12 @@
 
 using namespace SolveSpace::Platform;
 
+// Unique per run: the temporary directory is shared, and a file another user's run left there
+// can't be replaced.
 static Path TempSettingsPath(const char *name) {
+    static const std::string run = std::to_string(std::random_device{}());
     return Path::From(std::filesystem::temp_directory_path().string())
-               .Join(std::string("ssng-test-") + name + ".txt");
+               .Join(std::string("ssng-test-") + run + "-" + name + ".txt");
 }
 
 TEST_CASE(round_trip_all_types) {
@@ -42,24 +46,28 @@ TEST_CASE(garbage_lines_are_ignored) {
 TEST_CASE(dirty_until_saved) {
     Path path = TempSettingsPath("dirty");
     remove(path.raw.c_str());
-    SettingsFile s(path);
-    CHECK_TRUE(!s.Dirty());
-    s.FreezeInt("Int", 1);
-    CHECK_TRUE(s.Dirty());
-    CHECK_TRUE(s.Save());
-    CHECK_TRUE(!s.Dirty());
+    {
+        SettingsFile s(path);
+        CHECK_TRUE(!s.Dirty());
+        s.FreezeInt("Int", 1);
+        CHECK_TRUE(s.Dirty());
+        CHECK_TRUE(s.Save());
+        CHECK_TRUE(!s.Dirty());
+    } // saves again if dirty
     remove(path.raw.c_str());
 }
 
 TEST_CASE(an_unchanged_value_leaves_it_clean) {
     Path path = TempSettingsPath("unchanged");
     remove(path.raw.c_str());
-    SettingsFile s(path);
-    s.FreezeInt("Int", 1);
-    CHECK_TRUE(s.Save());
-    s.FreezeInt("Int", 1);
-    CHECK_TRUE(!s.Dirty());
-    s.FreezeInt("Int", 2);
-    CHECK_TRUE(s.Dirty());
+    {
+        SettingsFile s(path);
+        s.FreezeInt("Int", 1);
+        CHECK_TRUE(s.Save());
+        s.FreezeInt("Int", 1);
+        CHECK_TRUE(!s.Dirty());
+        s.FreezeInt("Int", 2);
+        CHECK_TRUE(s.Dirty());
+    } // saves again if dirty
     remove(path.raw.c_str());
 }
