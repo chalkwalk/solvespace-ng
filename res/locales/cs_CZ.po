@@ -624,12 +624,15 @@ msgid "Active group mesh is empty; nothing to export."
 msgstr "Síť aktivní skupiny je prázdná; není co exportovat."
 
 #: export.cpp:838
+#, fuzzy
 msgid "A quad mesh needs the Open CASCADE kernel and a solid it made."
 msgstr ""
+"Čtyřúhelníková síť vyžaduje jádro Open CASCADE a těleso, z něhož vznikla."
 
 #: export3mf.cpp:180
+#, fuzzy
 msgid "The 3MF file would be over 4 GB; it was not written."
-msgstr ""
+msgstr "Soubor 3MF by měl více než 4 GB; nebyl zapsán."
 
 #: exportvector.cpp:338
 msgid "freehand lines were replaced with continuous lines"
@@ -715,52 +718,67 @@ msgid "&Cancel"
 msgstr "&Zrušit"
 
 #: fit.cpp:86
-#, c-format
+#, fuzzy, c-format
 msgid "The fit '%s' is used by the fit joint '%s'."
-msgstr ""
+msgstr "Lícování '%s' používá lícovaný spoj '%s'."
 
 #: fit.cpp:134
+#, fuzzy
 msgid ""
 "A fit joint is made from the active sketch: a closed profile in a workplane, "
 "drawn where the parts meet. Sketch it, then pick something on the male part "
 "and on the female part."
 msgstr ""
+"Lícovaný spoj vznikne z aktivního náčrtu: uzavřeného profilu v pracovní "
+"rovině, nakresleného tam, kde se části stýkají. Nakresli ho a pak vyber něco "
+"na části s čepem a něco na části s kapsou."
 
 #: fit.cpp:144
+#, fuzzy
 msgid ""
 "Pick something on the male part, then on the female part: the peg goes on "
 "the first, the pocket in the second."
 msgstr ""
+"Vyber něco na části s čepem a pak na části s kapsou: čep patří do první, "
+"kapsa do druhé."
 
 #: fit.cpp:149
+#, fuzzy
 msgid "Fit joints need the Open CASCADE kernel, which this build lacks."
 msgstr ""
+"Lícované spoje vyžadují jádro Open CASCADE, které tato sestavení nemají."
 
 #: fit.cpp:178
+#, fuzzy
 msgctxt "group-name"
 msgid "fit-peg"
-msgstr ""
+msgstr "lícovací-čep"
 
 #: fit.cpp:178
+#, fuzzy
 msgctxt "group-name"
 msgid "fit-pocket"
-msgstr ""
+msgstr "lícovací-kapsa"
 
 #: grab.cpp:77
+#, fuzzy
 msgid "grab: move the mouse; X/Y/Z lock an axis; type a distance"
-msgstr ""
+msgstr "přesun: pohni myší; X/Y/Z zamkne osu; zadej vzdálenost"
 
 #: grab.cpp:87
+#, fuzzy
 msgid "grab: turn the joint with the mouse; type an angle"
-msgstr ""
+msgstr "přesun: otoč kloubem myší; zadej úhel"
 
 #: grab.cpp:90
+#, fuzzy
 msgid "grab: slide the joint with the mouse; type a distance"
-msgstr ""
+msgstr "přesun: posuň kloub myší; zadej vzdálenost"
 
 #: grab.cpp:94
+#, fuzzy
 msgid "grab: move the joint with the mouse; X/Y/Z pick a motion; type a value"
-msgstr ""
+msgstr "přesun: pohni kloubem myší; X/Y/Z vyber pohyb; zadej hodnotu"
 
 #: graphicswin.cpp:43
 msgid "&File"
@@ -807,12 +825,14 @@ msgid "Export Triangle &Mesh..."
 msgstr "Exportovat &trojúhelníkovou síť (mesh)..."
 
 #: graphicswin.cpp:55
+#, fuzzy
 msgid "Export &Parts..."
-msgstr ""
+msgstr "&Exportovat části..."
 
 #: graphicswin.cpp:56
+#, fuzzy
 msgid "Export Parts &List..."
-msgstr ""
+msgstr "Exportovat &seznam částí..."
 
 #: graphicswin.cpp:57
 msgid "Export &Surfaces..."
@@ -979,40 +999,49 @@ msgid "&New Group"
 msgstr "&Nová skupina"
 
 #: graphicswin.cpp:114
+#, fuzzy
 msgid "New &Part"
-msgstr ""
+msgstr "Nová &část"
 
 #: graphicswin.cpp:115
+#, fuzzy
 msgid "&Revolute Joint"
-msgstr ""
+msgstr "&Rotační kloub"
 
 #: graphicswin.cpp:116
+#, fuzzy
 msgid "S&lider Joint"
-msgstr ""
+msgstr "Po&suvný kloub"
 
 #: graphicswin.cpp:117
+#, fuzzy
 msgid "C&ylindrical Joint"
-msgstr ""
+msgstr "&Válcový kloub"
 
 #: graphicswin.cpp:118
+#, fuzzy
 msgid "Pla&nar Joint"
-msgstr ""
+msgstr "Rovinný k&loub"
 
 #: graphicswin.cpp:119
+#, fuzzy
 msgid "&Ball Joint"
-msgstr ""
+msgstr "&Kulový kloub"
 
 #: graphicswin.cpp:120
+#, fuzzy
 msgid "&Gear Coupling"
-msgstr ""
+msgstr "&Ozubené spojení"
 
 #: graphicswin.cpp:121
+#, fuzzy
 msgid "&Fit Joint"
-msgstr ""
+msgstr "&Lícovaný spoj"
 
 #: graphicswin.cpp:122
+#, fuzzy
 msgid "Spli&t Part"
-msgstr ""
+msgstr "Roz&dělit část"
 
 #: graphicswin.cpp:124
 msgid "Sketch In &3d"
@@ -1035,8 +1064,9 @@ msgid "E&xtrude"
 msgstr "Extruze (e&xtrude)"
 
 #: graphicswin.cpp:131
+#, fuzzy
 msgid "Extrude as a &Cut"
-msgstr ""
+msgstr "Extruze jako &řez"
 
 #: graphicswin.cpp:132
 msgid "&Helix"
@@ -1051,32 +1081,39 @@ msgid "Re&volve"
 msgstr "Volná rotace (re&volve)"
 
 #: graphicswin.cpp:136
+#, fuzzy
 msgid "&Fillet Edges"
-msgstr ""
+msgstr "&Zaoblit hrany"
 
 #: graphicswin.cpp:137
+#, fuzzy
 msgid "&Chamfer Edges"
-msgstr ""
+msgstr "&Sražit hrany"
 
 #: graphicswin.cpp:138
+#, fuzzy
 msgid "S&hell"
-msgstr ""
+msgstr "Skoř&epina"
 
 #: graphicswin.cpp:139
+#, fuzzy
 msgid "&Draft Faces"
-msgstr ""
+msgstr "&Úkosit plochy"
 
 #: graphicswin.cpp:140
+#, fuzzy
 msgid "H&ole"
-msgstr ""
+msgstr "D&íra"
 
 #: graphicswin.cpp:141
+#, fuzzy
 msgid "Lo&ft"
-msgstr ""
+msgstr "Lof&ting"
 
 #: graphicswin.cpp:142
+#, fuzzy
 msgid "S&weep"
-msgstr ""
+msgstr "Ta&žení po křivce"
 
 #: graphicswin.cpp:144
 msgid "Link / Assemble..."
@@ -1259,16 +1296,19 @@ msgid "Show &Center of Mass"
 msgstr "Zobrazit &těžiště"
 
 #: graphicswin.cpp:199
+#, fuzzy
 msgid "&Mass Properties"
-msgstr ""
+msgstr "&Hmotnostní vlastnosti"
 
 #: graphicswin.cpp:200
+#, fuzzy
 msgid "&Parts List"
-msgstr ""
+msgstr "&Seznam částí"
 
 #: graphicswin.cpp:201
+#, fuzzy
 msgid "&Design Pose"
-msgstr ""
+msgstr "&Návrhová poloha"
 
 #: graphicswin.cpp:203
 msgid "Show &Underconstrained Points"
@@ -1444,6 +1484,7 @@ msgid "sketch-in-3d"
 msgstr "náčrt-ve-3D"
 
 #: group.cpp:252
+#, fuzzy
 msgid ""
 "Bad selection for new sketch in workplane. This group can be created with:\n"
 "\n"
@@ -1455,6 +1496,13 @@ msgid ""
 "    * a face of the solid, and optionally a point (on the face, following "
 "it)\n"
 msgstr ""
+"Chybný výběr pro nový náčrt v pracovní rovině. Tuto skupinu lze vytvořit:\n"
+"\n"
+"    * bodem (prochází bodem, kolmo na souřadnicové osy)\n"
+"    * bodem a dvěma úsečkami (prochází bodem, rovnoběžně s úsečkami)\n"
+"    * bodem a normálou (prochází bodem, kolmo na normálu)\n"
+"    * pracovní rovinou (kopie pracovní roviny)\n"
+"    * plochou tělesa a volitelně bodem (na ploše, sledující ji)\n"
 
 #: group.cpp:271
 msgid ""
@@ -1568,116 +1616,155 @@ msgid "translate"
 msgstr "posun"
 
 #: group.cpp:448
-#, c-format
+#, fuzzy, c-format
 msgid ""
 "Bad selection for a new %s group. Select edges of the solid (the lines and "
 "curves an extrusion, lathe, revolve, helix or pattern makes), or faces, for "
 "all their edges."
 msgstr ""
+"Chybný výběr pro novou skupinu %s. Vyber hrany tělesa (čáry a křivky, které "
+"vytvoří extruze, plná rotace, volná rotace, šroubovice nebo kopie), nebo "
+"plochy pro všechny jejich hrany."
 
 #: group.cpp:451
+#, fuzzy
 msgid "chamfer"
-msgstr ""
+msgstr "sražení hran"
 
 #: group.cpp:451
+#, fuzzy
 msgid "fillet"
-msgstr ""
+msgstr "zaoblení hran"
 
 #: group.cpp:456
+#, fuzzy
 msgid ""
 "Fillets and chamfers need the Open CASCADE kernel, which this build lacks."
 msgstr ""
+"Zaoblení a sražení hran vyžaduje jádro Open CASCADE, které tato sestavení "
+"nemají."
 
 #: group.cpp:462
+#, fuzzy
 msgctxt "group-name"
 msgid "chamfer"
-msgstr ""
+msgstr "sražení-hran"
 
 #: group.cpp:462
+#, fuzzy
 msgctxt "group-name"
 msgid "fillet"
-msgstr ""
+msgstr "zaoblení-hran"
 
 #: group.cpp:470
+#, fuzzy
 msgid ""
 "Bad selection for a new shell group. Select the faces of the solid to leave "
 "open, or nothing for a closed shell."
 msgstr ""
+"Chybný výběr pro novou skupinu skořepiny. Vyber plochy tělesa, které se mají "
+"nechat otevřené, nebo nic pro uzavřenou skořepinu."
 
 #: group.cpp:477
+#, fuzzy
 msgid "Shells need the Open CASCADE kernel, which this build lacks."
-msgstr ""
+msgstr "Skořepiny vyžadují jádro Open CASCADE, které tato sestavení nemají."
 
 #: group.cpp:483
+#, fuzzy
 msgid "There is no solid to make a shell of."
-msgstr ""
+msgstr "Není těleso, ze kterého by se dala vytvořit skořepina."
 
 #: group.cpp:501
+#, fuzzy
 msgctxt "group-name"
 msgid "shell"
-msgstr ""
+msgstr "skořepina"
 
 #: group.cpp:517
+#, fuzzy
 msgid ""
 "Bad selection for a new draft group. Select side faces of an extrusion; they "
 "taper about its sketch plane, along its direction."
 msgstr ""
+"Chybný výběr pro novou skupinu úkosu. Vyber boční plochy extruze; zužují se "
+"kolem roviny jejího náčrtu ve směru extruze."
 
 #: group.cpp:522
+#, fuzzy
 msgid "Drafts need the Open CASCADE kernel, which this build lacks."
-msgstr ""
+msgstr "Úkosy vyžadují jádro Open CASCADE, které tato sestavení nemají."
 
 #: group.cpp:527
+#, fuzzy
 msgctxt "group-name"
 msgid "draft"
-msgstr ""
+msgstr "úkos"
 
 #: group.cpp:541
+#, fuzzy
 msgid ""
 "Bad selection for a new hole group. Select the hole centres: points in a "
 "workplane, such as a sketch on a face. The holes go into the face, against "
 "the workplane's normal."
 msgstr ""
+"Chybný výběr pro novou skupinu díry. Vyber středy děr: body v pracovní "
+"rovině, například náčrt na ploše. Díry vedou do plochy, proti normále "
+"pracovní roviny."
 
 #: group.cpp:547
+#, fuzzy
 msgid "Holes need the Open CASCADE kernel, which this build lacks."
-msgstr ""
+msgstr "Díry vyžadují jádro Open CASCADE, které tato sestavení nemají."
 
 #: group.cpp:555
+#, fuzzy
 msgctxt "group-name"
 msgid "hole"
-msgstr ""
+msgstr "díra"
 
 #: group.cpp:573
+#, fuzzy
 msgid ""
 "Bad selection for a new loft group. Select a curve of each profile, in "
 "order: two or more closed shapes, each in its own sketch."
 msgstr ""
+"Chybný výběr pro novou skupinu loftingu. Vyber křivku každého profilu v "
+"pořadí: dva nebo více uzavřených tvarů, každý ve vlastním náčrtu."
 
 #: group.cpp:578
+#, fuzzy
 msgid "Lofts need the Open CASCADE kernel, which this build lacks."
-msgstr ""
+msgstr "Loftingy vyžadují jádro Open CASCADE, které tato sestavení nemají."
 
 #: group.cpp:582
+#, fuzzy
 msgctxt "group-name"
 msgid "loft"
-msgstr ""
+msgstr "lofting"
 
 #: group.cpp:604
+#, fuzzy
 msgid ""
 "Bad selection for a new sweep group. Select a curve of the profile (a closed "
 "shape in a sketch) first, then the path's curves, connected end to end, in "
 "another sketch."
 msgstr ""
+"Chybný výběr pro novou skupinu tažení. Nejprve vyber křivku profilu "
+"(uzavřený tvar v náčrtu), pak křivky dráhy, navazující jedna na druhou, v "
+"jiném náčrtu."
 
 #: group.cpp:610
+#, fuzzy
 msgid "Sweeps need the Open CASCADE kernel, which this build lacks."
 msgstr ""
+"Tažení po křivce vyžaduje jádro Open CASCADE, které tato sestavení nemají."
 
 #: group.cpp:615
+#, fuzzy
 msgctxt "group-name"
 msgid "sweep"
-msgstr ""
+msgstr "tažení"
 
 #: group.cpp:736
 msgid "(unnamed)"
@@ -1708,57 +1795,69 @@ msgid "Can't repeat more than 999 times."
 msgstr "Nelze opakovat více než 999krát."
 
 #: groupprops.cpp:113
+#, fuzzy
 msgid "The draft angle must be between -89 and 89 degrees, and not zero."
-msgstr ""
+msgstr "Úhel úkosu musí být mezi -89 a 89 stupni a nesmí být nulový."
 
 #: groupprops.cpp:130
+#, fuzzy
 msgid "The radius or distance must be greater than zero."
-msgstr ""
+msgstr "Poloměr nebo vzdálenost musí být větší než nula."
 
 #: groupprops.cpp:172
+#, fuzzy
 msgid "This feature needs it; delete the group instead."
-msgstr ""
+msgstr "Tento prvek to potřebuje; místo toho smaž skupinu."
 
 #: groupprops.cpp:192
+#, fuzzy
 msgid "The corner radius must be zero (sharp corners) or more."
-msgstr ""
+msgstr "Poloměr rohu musí být nula (ostré rohy) nebo více."
 
 #: groupprops.cpp:229
+#, fuzzy
 msgid "A thread needs a pitch smaller than its diameter."
-msgstr ""
+msgstr "Závit potřebuje stoupání menší než jeho průměr."
 
 #: groupprops.cpp:231
+#, fuzzy
 msgid "The hole's diameter must be greater than zero."
-msgstr ""
+msgstr "Průměr díry musí být větší než nula."
 
 #: groupprops.cpp:233
+#, fuzzy
 msgid "The print clearance must be zero or more."
-msgstr ""
+msgstr "Tisková vůle musí být nula nebo více."
 
 #: groupprops.cpp:235
+#, fuzzy
 msgid "The hole's depth must be zero (through all) or more."
-msgstr ""
+msgstr "Hloubka díry musí být nula (skrz celé těleso) nebo více."
 
 #: groupprops.cpp:237
+#, fuzzy
 msgid "The head's diameter must be greater than the hole's."
-msgstr ""
+msgstr "Průměr hlavy musí být větší než průměr díry."
 
 #: groupprops.cpp:239
+#, fuzzy
 msgid "The counterbore's depth must be greater than zero."
-msgstr ""
+msgstr "Hloubka zahloubení musí být větší než nula."
 
 #: groupprops.cpp:242
+#, fuzzy
 msgid "The countersink's angle must be between 0 and 180 degrees."
-msgstr ""
+msgstr "Úhel záhlubu musí být mezi 0 a 180 stupni."
 
 #: groupprops.cpp:287
+#, fuzzy
 msgid "Write the thread as M4, M4x0.5, or none."
-msgstr ""
+msgstr "Závit zapiš jako M4, M4x0.5, nebo žádný."
 
 #: groupprops.cpp:292
-#, c-format
+#, fuzzy, c-format
 msgid "M%g has no standard coarse pitch; write it as M%gx<pitch>."
-msgstr ""
+msgstr "M%g nemá standardní hrubé stoupání; zapiš jej jako M%gx<stoupání>."
 
 #: groupprops.cpp:342
 msgid "Opacity must be between zero and one."
@@ -1769,91 +1868,114 @@ msgid "Text-formated STL files are not currently supported"
 msgstr "Textové soubory STL nejsou v této chvíli podporovány."
 
 #: joint.cpp:144
+#, fuzzy
 msgid ""
 "Pick something on each of two parts that revolute, slider or cylindrical "
 "joints move: the gears' pitch circles, or a pinion's and its rack."
 msgstr ""
+"Vyber něco na každé ze dvou částí, které pohybují rotační, posuvné nebo "
+"válcové klouby: roztečné kružnice ozubených kol, nebo pastorek a jeho hřeben."
 
 #: joint.cpp:149
+#, fuzzy
 msgid "The two picks are moved by the same joint."
-msgstr ""
+msgstr "Oba výběry pohybuje tentýž kloub."
 
 #: joint.cpp:154
+#, fuzzy
 msgid "Those two joints are coupled already."
-msgstr ""
+msgstr "Tyto dva klouby už jsou spojeny."
 
 #: joint.cpp:203
+#, fuzzy
 msgid "Select the ball joint's centre on each part: points, circles or arcs."
 msgstr ""
+"Vyber střed kulového kloubu na každé části: body, kružnice nebo oblouky."
 
 #: joint.cpp:209
+#, fuzzy
 msgid ""
 "Select the joint's plane on each part: faces, or lines along its normal."
 msgstr ""
+"Vyber rovinu kloubu na každé části: plochy, nebo přímky ve směru její "
+"normály."
 
 #: joint.cpp:211
+#, fuzzy
 msgid ""
 "Select two axes for the joint, one on each part: line segments, circles, "
 "arcs or faces."
 msgstr ""
+"Vyber dvě osy kloubu, každou na jiné části: úsečky, kružnice, oblouky nebo "
+"plochy."
 
 #: joint.cpp:218
+#, fuzzy
 msgid ""
 "The two picks are on the same part; a joint moves one part against another."
-msgstr ""
+msgstr "Oba výběry jsou na téže části; kloub pohybuje jednu část vůči druhé."
 
 #: joint.cpp:234
+#, fuzzy
 msgid ""
 "The two centres aren't the same point; a ball joint turns about one centre."
 msgstr ""
+"Oba středy nejsou stejný bod; kulový kloub se otáčí kolem jednoho středu."
 
 #: joint.cpp:239
+#, fuzzy
 msgid "The two planes aren't parallel."
-msgstr ""
+msgstr "Obě roviny nejsou rovnoběžné."
 
 #: joint.cpp:240
+#, fuzzy
 msgid "The two axes aren't parallel."
-msgstr ""
+msgstr "Obě osy nejsou rovnoběžné."
 
 #: joint.cpp:245
+#, fuzzy
 msgid "The two axes aren't the same line; the joint turns about one axis."
-msgstr ""
+msgstr "Obě osy nejsou stejná přímka; kloub se otáčí kolem jedné osy."
 
 #: joint.cpp:249
-#, c-format
+#, fuzzy, c-format
 msgid "Part '%s' already has a joint to move it."
-msgstr ""
+msgstr "Část '%s' už má kloub, který ji pohybuje."
 
 #: joint.cpp:434
+#, fuzzy
 msgid "Set the slide's limits first: the sweep runs between them."
-msgstr ""
+msgstr "Nejprve nastav meze posuvu: prověřování probíhá mezi nimi."
 
 #: joint.cpp:452
+#, fuzzy
 msgid "The joint moves no solid past another; there is nothing to sweep."
-msgstr ""
+msgstr "Kloub nepřesouvá žádné těleso za jiné; není co prověřit."
 
 #: joint.cpp:489
+#, fuzzy
 msgid "The clearance sweep needs the Open CASCADE kernel's solids."
-msgstr ""
+msgstr "Prověření vůle vyžaduje tělesa jádra Open CASCADE."
 
 #: joint.cpp:540
-#, c-format
+#, fuzzy, c-format
 msgid "Minimum gap %s mm at %s."
-msgstr ""
+msgstr "Nejmenší mezera %s mm při %s."
 
 #: joint.cpp:543
+#, fuzzy
 msgid "The parts touch or overlap"
-msgstr ""
+msgstr "Části se dotýkají nebo překrývají"
 
 #: joint.cpp:548
-#, c-format
+#, fuzzy, c-format
 msgid "at %s"
-msgstr ""
+msgstr "při %s"
 
 #: joint.cpp:549
-#, c-format
+#, fuzzy, c-format
 msgid "from %s to %s"
-msgstr ""
+msgstr "od %s do %s"
 
 #: modify.cpp:254
 msgid "Must be sketching in workplane to create tangent arc."
@@ -2062,9 +2184,10 @@ msgid "ALL"
 msgstr "VŠE"
 
 #: platform/gui.cpp:91
+#, fuzzy
 msgctxt "file-type"
 msgid "STEP solid"
-msgstr ""
+msgstr "Těleso STEP"
 
 #: platform/gui.cpp:92
 msgctxt "file-type"
@@ -2107,9 +2230,10 @@ msgid "VRML text file"
 msgstr "VRML textový soubor"
 
 #: platform/gui.cpp:106
+#, fuzzy
 msgctxt "file-type"
 msgid "Quad mesh for Blender, with creases (USD)"
-msgstr ""
+msgstr "Čtyřúhelníková síť pro Blender s hranami (USD)"
 
 #: platform/gui.cpp:110 platform/gui.cpp:117 platform/gui.cpp:124
 msgctxt "file-type"
@@ -2182,8 +2306,9 @@ msgid "Bad value: autosave interval should be positive"
 msgstr "Chybná hodnota: interval automatického ukládání by měl být kladný"
 
 #: preferences.cpp:186
+#, fuzzy
 msgid "The density must be greater than zero."
-msgstr ""
+msgstr "Hustota musí být větší než nula."
 
 #: preferences.cpp:199
 msgid "Bad format: specify coordinates as x, y, z"
@@ -2274,24 +2399,27 @@ msgstr ""
 "textového okna."
 
 #: solvespace.cpp:834
+#, fuzzy
 msgctxt "file-type"
 msgid "STL mesh, one per part"
-msgstr ""
+msgstr "Síť STL, jedna na část"
 
 #: solvespace.cpp:835
+#, fuzzy
 msgctxt "file-type"
 msgid "3MF, an object per part"
-msgstr ""
+msgstr "3MF, jeden objekt na část"
 
 #: solvespace.cpp:836
+#, fuzzy
 msgctxt "file-type"
 msgid "STEP file, one per part"
-msgstr ""
+msgstr "Soubor STEP, jeden na část"
 
 #: solvespace.cpp:844
-#, c-format
+#, fuzzy, c-format
 msgid "Exported %d parts:%s"
-msgstr ""
+msgstr "Exportováno částí %d:%s"
 
 #: solvespace.cpp:893
 #, c-format
@@ -2509,64 +2637,83 @@ msgstr ""
 "© 2008-%d Jonathan Westhues a další autoři.\n"
 
 #: solvespace.cpp:1351
+#, fuzzy
 msgid "There is no solid in the active group."
-msgstr ""
+msgstr "V aktivní skupině není žádné těleso."
 
 #: solvespace.cpp:1359
-#, c-format
+#, fuzzy, c-format
 msgid ""
 "Volume:  %s\n"
 "Surface area:  %s\n"
 "Mass:  %s (%s)\n"
 "Center of mass:  (%s, %s, %s)"
 msgstr ""
+"Objem:  %s\n"
+"Plocha povrchu:  %s\n"
+"Hmotnost:  %s (%s)\n"
+"Těžiště:  (%s, %s, %s)"
 
 #: solvespace.cpp:1404
+#, fuzzy
 msgid "A part's name can't be empty."
-msgstr ""
+msgstr "Název části nesmí být prázdný."
 
 #: solvespace.cpp:1490
+#, fuzzy
 msgid "No part has a solid yet."
-msgstr ""
+msgstr "Žádná část zatím nemá těleso."
 
 #: solvespace.cpp:1494
-#, c-format
+#, fuzzy, c-format
 msgid "%s%s:  %s, %s, %.2f g;  %s x %s x %s\n"
-msgstr ""
+msgstr "%s%s:  %s, %s, %.2f g;  %s x %s x %s\n"
 
 #: solvespace.cpp:1501
-#, c-format
+#, fuzzy, c-format
 msgid ""
 "\n"
 "%d parts, %.2f g in all."
 msgstr ""
+"\n"
+"%d částí, %.2f g celkem."
 
 #: solvespace.cpp:1603
+#, fuzzy
 msgid ""
 "Parts export as STL, 3MF or STEP; choose a .stl, .3mf or .step file name."
 msgstr ""
+"Části se exportují jako STL, 3MF nebo STEP; zvol název souboru .stl, .3mf "
+"nebo .step."
 
 #: solvespace.cpp:1638
-#, c-format
+#, fuzzy, c-format
 msgid "STEP needs the Open CASCADE kernel; part '%s' was not written."
-msgstr ""
+msgstr "STEP vyžaduje jádro Open CASCADE; část '%s' nebyla zapsána."
 
 #: split.cpp:33
+#, fuzzy
 msgid "Select the plane to split the part by: a workplane or a flat face."
 msgstr ""
+"Vyber rovinu, podle které se část rozdělí: pracovní rovinu nebo rovnou "
+"plochu."
 
 #: split.cpp:39
+#, fuzzy
 msgid "Activate a group of the part to split: its solid is what is split."
 msgstr ""
+"Aktivuj skupinu části, kterou chceš rozdělit: rozděluje se její těleso."
 
 #: split.cpp:43
+#, fuzzy
 msgid "Splitting needs the Open CASCADE kernel, which this build lacks."
-msgstr ""
+msgstr "Rozdělení vyžaduje jádro Open CASCADE, které tato sestavení nemají."
 
 #: split.cpp:73
+#, fuzzy
 msgctxt "group-name"
 msgid "split"
-msgstr ""
+msgstr "rozdělení"
 
 #: style.cpp:188
 msgid ""

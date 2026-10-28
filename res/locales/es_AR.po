@@ -260,6 +260,7 @@ msgid "comment"
 msgstr "comentario"
 
 #: constraint.cpp:153
+#, fuzzy
 msgid ""
 "The point you selected does not belong to the arc. The arc and line segment "
 "do not share an end point.\n"
@@ -267,6 +268,10 @@ msgid ""
 "Select the end point of the arc at which you want it to be tangent to the "
 "line."
 msgstr ""
+"El punto seleccionado no pertenece al arco. El arco y el segmento de línea "
+"no comparten un extremo.\n"
+"\n"
+"Seleccione el extremo del arco en el que quiere que sea tangente a la línea."
 
 #: constraint.cpp:160
 msgid ""
@@ -283,6 +288,7 @@ msgstr ""
 "tangent to the line."
 
 #: constraint.cpp:188
+#, fuzzy
 msgid ""
 "The point you selected is not an end point of the cubic spline. The spline "
 "and line segment do not share an end point.\n"
@@ -290,6 +296,11 @@ msgid ""
 "Select the end point of the spline at which you want it to be tangent to the "
 "line."
 msgstr ""
+"El punto seleccionado no es un extremo de la spline cúbica. La spline y el "
+"segmento de línea no comparten un extremo.\n"
+"\n"
+"Seleccione el extremo de la spline en el que quiere que sea tangente a la "
+"línea."
 
 #: constraint.cpp:195
 msgid ""
@@ -306,6 +317,7 @@ msgstr ""
 "to be tangent to the line."
 
 #: constraint.cpp:239
+#, fuzzy
 msgid ""
 "The points you selected are not end points of the two curves. The curves do "
 "not share an end point.\n"
@@ -313,6 +325,11 @@ msgid ""
 "Select the end points of both curves at which you want them to be tangent to "
 "each other."
 msgstr ""
+"Los puntos seleccionados no son extremos de las dos curvas. Las curvas no "
+"comparten un extremo.\n"
+"\n"
+"Seleccione los extremos de ambas curvas en los que quiere que sean tangentes "
+"entre sí."
 
 #: constraint.cpp:246
 msgid ""
@@ -635,12 +652,16 @@ msgid "Active group mesh is empty; nothing to export."
 msgstr "La malla del grupo activo está vacía; nada para exportar."
 
 #: export.cpp:838
+#, fuzzy
 msgid "A quad mesh needs the Open CASCADE kernel and a solid it made."
 msgstr ""
+"Una malla de cuadriláteros necesita el núcleo Open CASCADE y un sólido "
+"generado por él."
 
 #: export3mf.cpp:180
+#, fuzzy
 msgid "The 3MF file would be over 4 GB; it was not written."
-msgstr ""
+msgstr "El archivo 3MF pesaría más de 4 GB; no se escribió."
 
 #: exportvector.cpp:338
 msgid "freehand lines were replaced with continuous lines"
@@ -725,52 +746,70 @@ msgid "&Cancel"
 msgstr "&Cancelar"
 
 #: fit.cpp:86
-#, c-format
+#, fuzzy, c-format
 msgid "The fit '%s' is used by the fit joint '%s'."
-msgstr ""
+msgstr "El ajuste '%s' lo usa la unión de ajuste '%s'."
 
 #: fit.cpp:134
+#, fuzzy
 msgid ""
 "A fit joint is made from the active sketch: a closed profile in a workplane, "
 "drawn where the parts meet. Sketch it, then pick something on the male part "
 "and on the female part."
 msgstr ""
+"Una unión de ajuste se hace desde el croquis activo: un perfil cerrado en un "
+"plano de trabajo, dibujado donde se encuentran las piezas. Dibújelo y luego "
+"seleccione algo en la pieza macho y algo en la pieza hembra."
 
 #: fit.cpp:144
+#, fuzzy
 msgid ""
 "Pick something on the male part, then on the female part: the peg goes on "
 "the first, the pocket in the second."
 msgstr ""
+"Seleccione algo en la pieza macho y luego en la hembra: la clavija va en la "
+"primera y el alojamiento en la segunda."
 
 #: fit.cpp:149
+#, fuzzy
 msgid "Fit joints need the Open CASCADE kernel, which this build lacks."
 msgstr ""
+"Las uniones de ajuste necesitan el núcleo Open CASCADE, que esta compilación "
+"no incluye."
 
 #: fit.cpp:178
+#, fuzzy
 msgctxt "group-name"
 msgid "fit-peg"
-msgstr ""
+msgstr "ajuste-macho"
 
 #: fit.cpp:178
+#, fuzzy
 msgctxt "group-name"
 msgid "fit-pocket"
-msgstr ""
+msgstr "ajuste-hembra"
 
 #: grab.cpp:77
+#, fuzzy
 msgid "grab: move the mouse; X/Y/Z lock an axis; type a distance"
-msgstr ""
+msgstr "mover: mueva el ratón; X/Y/Z fijan un eje; escriba una distancia"
 
 #: grab.cpp:87
+#, fuzzy
 msgid "grab: turn the joint with the mouse; type an angle"
-msgstr ""
+msgstr "mover: gire la unión con el ratón; escriba un ángulo"
 
 #: grab.cpp:90
+#, fuzzy
 msgid "grab: slide the joint with the mouse; type a distance"
-msgstr ""
+msgstr "mover: deslice la unión con el ratón; escriba una distancia"
 
 #: grab.cpp:94
+#, fuzzy
 msgid "grab: move the joint with the mouse; X/Y/Z pick a motion; type a value"
 msgstr ""
+"mover: mueva la unión con el ratón; X/Y/Z eligen un movimiento; escriba un "
+"valor"
 
 #: graphicswin.cpp:43
 msgid "&File"
@@ -817,12 +856,14 @@ msgid "Export Triangle &Mesh..."
 msgstr "Exportar &Malla Triangular..."
 
 #: graphicswin.cpp:55
+#, fuzzy
 msgid "Export &Parts..."
-msgstr ""
+msgstr "Exportar &piezas..."
 
 #: graphicswin.cpp:56
+#, fuzzy
 msgid "Export Parts &List..."
-msgstr ""
+msgstr "Exportar &lista de piezas..."
 
 #: graphicswin.cpp:57
 msgid "Export &Surfaces..."
@@ -989,40 +1030,49 @@ msgid "&New Group"
 msgstr "&Nuevo Grupo"
 
 #: graphicswin.cpp:114
+#, fuzzy
 msgid "New &Part"
-msgstr ""
+msgstr "Nueva &pieza"
 
 #: graphicswin.cpp:115
+#, fuzzy
 msgid "&Revolute Joint"
-msgstr ""
+msgstr "Unión &giratoria"
 
 #: graphicswin.cpp:116
+#, fuzzy
 msgid "S&lider Joint"
-msgstr ""
+msgstr "Unión desli&zante"
 
 #: graphicswin.cpp:117
+#, fuzzy
 msgid "C&ylindrical Joint"
-msgstr ""
+msgstr "Unión &cilíndrica"
 
 #: graphicswin.cpp:118
+#, fuzzy
 msgid "Pla&nar Joint"
-msgstr ""
+msgstr "Unión p&lana"
 
 #: graphicswin.cpp:119
+#, fuzzy
 msgid "&Ball Joint"
-msgstr ""
+msgstr "Unión &esférica"
 
 #: graphicswin.cpp:120
+#, fuzzy
 msgid "&Gear Coupling"
-msgstr ""
+msgstr "Acoplamiento de &engranajes"
 
 #: graphicswin.cpp:121
+#, fuzzy
 msgid "&Fit Joint"
-msgstr ""
+msgstr "Unión de &ajuste"
 
 #: graphicswin.cpp:122
+#, fuzzy
 msgid "Spli&t Part"
-msgstr ""
+msgstr "Di&vidir pieza"
 
 #: graphicswin.cpp:124
 msgid "Sketch In &3d"
@@ -1045,8 +1095,9 @@ msgid "E&xtrude"
 msgstr "E&xtrusión"
 
 #: graphicswin.cpp:131
+#, fuzzy
 msgid "Extrude as a &Cut"
-msgstr ""
+msgstr "Extruir como &corte"
 
 #: graphicswin.cpp:132
 msgid "&Helix"
@@ -1061,32 +1112,39 @@ msgid "Re&volve"
 msgstr "Re&volución"
 
 #: graphicswin.cpp:136
+#, fuzzy
 msgid "&Fillet Edges"
-msgstr ""
+msgstr "&Redondear aristas"
 
 #: graphicswin.cpp:137
+#, fuzzy
 msgid "&Chamfer Edges"
-msgstr ""
+msgstr "&Chaflanar aristas"
 
 #: graphicswin.cpp:138
+#, fuzzy
 msgid "S&hell"
-msgstr ""
+msgstr "Va&ciado"
 
 #: graphicswin.cpp:139
+#, fuzzy
 msgid "&Draft Faces"
-msgstr ""
+msgstr "&Desmoldear caras"
 
 #: graphicswin.cpp:140
+#, fuzzy
 msgid "H&ole"
-msgstr ""
+msgstr "Agu&jero"
 
 #: graphicswin.cpp:141
+#, fuzzy
 msgid "Lo&ft"
-msgstr ""
+msgstr "Recu&brimiento"
 
 #: graphicswin.cpp:142
+#, fuzzy
 msgid "S&weep"
-msgstr ""
+msgstr "Ba&rrido"
 
 #: graphicswin.cpp:144
 msgid "Link / Assemble..."
@@ -1269,16 +1327,19 @@ msgid "Show &Center of Mass"
 msgstr "Mostrar &Centro de Masa"
 
 #: graphicswin.cpp:199
+#, fuzzy
 msgid "&Mass Properties"
-msgstr ""
+msgstr "Propiedades de &masa"
 
 #: graphicswin.cpp:200
+#, fuzzy
 msgid "&Parts List"
-msgstr ""
+msgstr "&Lista de piezas"
 
 #: graphicswin.cpp:201
+#, fuzzy
 msgid "&Design Pose"
-msgstr ""
+msgstr "Posición de &diseño"
 
 #: graphicswin.cpp:203
 msgid "Show &Underconstrained Points"
@@ -1461,6 +1522,7 @@ msgid "sketch-in-3d"
 msgstr "croquis-en-3d"
 
 #: group.cpp:252
+#, fuzzy
 msgid ""
 "Bad selection for new sketch in workplane. This group can be created with:\n"
 "\n"
@@ -1472,6 +1534,16 @@ msgid ""
 "    * a face of the solid, and optionally a point (on the face, following "
 "it)\n"
 msgstr ""
+"Selección incorrecta para un nuevo croquis en plano de trabajo. Este grupo "
+"se puede crear con:\n"
+"\n"
+"    * un punto (por el punto, ortogonal a los ejes de coordenadas)\n"
+"    * un punto y dos segmentos de línea (por el punto, paralelo a las "
+"líneas)\n"
+"    * un punto y una normal (por el punto, ortogonal a la normal)\n"
+"    * un plano de trabajo (copia del plano de trabajo)\n"
+"    * una cara del sólido, y opcionalmente un punto (sobre la cara, "
+"siguiendo su forma)\n"
 
 #: group.cpp:271
 msgid ""
@@ -1585,116 +1657,166 @@ msgid "translate"
 msgstr "traslación"
 
 #: group.cpp:448
-#, c-format
+#, fuzzy, c-format
 msgid ""
 "Bad selection for a new %s group. Select edges of the solid (the lines and "
 "curves an extrusion, lathe, revolve, helix or pattern makes), or faces, for "
 "all their edges."
 msgstr ""
+"Selección incorrecta para un nuevo grupo de %s. Seleccione aristas del "
+"sólido (las líneas y curvas que genera una extrusión, torno, revolución, "
+"hélice o patrón), o caras, para todas sus aristas."
 
 #: group.cpp:451
+#, fuzzy
 msgid "chamfer"
-msgstr ""
+msgstr "chaflán"
 
 #: group.cpp:451
+#, fuzzy
 msgid "fillet"
-msgstr ""
+msgstr "redondeo"
 
 #: group.cpp:456
+#, fuzzy
 msgid ""
 "Fillets and chamfers need the Open CASCADE kernel, which this build lacks."
 msgstr ""
+"Los redondeos y chaflanes necesitan el núcleo Open CASCADE, que esta "
+"compilación no incluye."
 
 #: group.cpp:462
+#, fuzzy
 msgctxt "group-name"
 msgid "chamfer"
-msgstr ""
+msgstr "chaflán"
 
 #: group.cpp:462
+#, fuzzy
 msgctxt "group-name"
 msgid "fillet"
-msgstr ""
+msgstr "redondeo"
 
 #: group.cpp:470
+#, fuzzy
 msgid ""
 "Bad selection for a new shell group. Select the faces of the solid to leave "
 "open, or nothing for a closed shell."
 msgstr ""
+"Selección incorrecta para un nuevo grupo de vaciado. Seleccione las caras "
+"del sólido que quedarán abiertas, o nada para un vaciado cerrado."
 
 #: group.cpp:477
+#, fuzzy
 msgid "Shells need the Open CASCADE kernel, which this build lacks."
 msgstr ""
+"Los vaciados necesitan el núcleo Open CASCADE, que esta compilación no "
+"incluye."
 
 #: group.cpp:483
+#, fuzzy
 msgid "There is no solid to make a shell of."
-msgstr ""
+msgstr "No hay ningún sólido al que hacer un vaciado."
 
 #: group.cpp:501
+#, fuzzy
 msgctxt "group-name"
 msgid "shell"
-msgstr ""
+msgstr "vaciado"
 
 #: group.cpp:517
+#, fuzzy
 msgid ""
 "Bad selection for a new draft group. Select side faces of an extrusion; they "
 "taper about its sketch plane, along its direction."
 msgstr ""
+"Selección incorrecta para un nuevo grupo de desmoldeo. Seleccione caras "
+"laterales de una extrusión; se inclinan alrededor de su plano de croquis, a "
+"lo largo de su dirección."
 
 #: group.cpp:522
+#, fuzzy
 msgid "Drafts need the Open CASCADE kernel, which this build lacks."
 msgstr ""
+"Los desmoldeos necesitan el núcleo Open CASCADE, que esta compilación no "
+"incluye."
 
 #: group.cpp:527
+#, fuzzy
 msgctxt "group-name"
 msgid "draft"
-msgstr ""
+msgstr "desmoldeo"
 
 #: group.cpp:541
+#, fuzzy
 msgid ""
 "Bad selection for a new hole group. Select the hole centres: points in a "
 "workplane, such as a sketch on a face. The holes go into the face, against "
 "the workplane's normal."
 msgstr ""
+"Selección incorrecta para un nuevo grupo de agujero. Seleccione los centros "
+"de los agujeros: puntos en un plano de trabajo, como un croquis sobre una "
+"cara. Los agujeros entran en la cara, contra la normal del plano de trabajo."
 
 #: group.cpp:547
+#, fuzzy
 msgid "Holes need the Open CASCADE kernel, which this build lacks."
 msgstr ""
+"Los agujeros necesitan el núcleo Open CASCADE, que esta compilación no "
+"incluye."
 
 #: group.cpp:555
+#, fuzzy
 msgctxt "group-name"
 msgid "hole"
-msgstr ""
+msgstr "agujero"
 
 #: group.cpp:573
+#, fuzzy
 msgid ""
 "Bad selection for a new loft group. Select a curve of each profile, in "
 "order: two or more closed shapes, each in its own sketch."
 msgstr ""
+"Selección incorrecta para un nuevo grupo de recubrimiento. Seleccione una "
+"curva de cada perfil, en orden: dos o más formas cerradas, cada una en su "
+"propio croquis."
 
 #: group.cpp:578
+#, fuzzy
 msgid "Lofts need the Open CASCADE kernel, which this build lacks."
 msgstr ""
+"Los recubrimientos necesitan el núcleo Open CASCADE, que esta compilación no "
+"incluye."
 
 #: group.cpp:582
+#, fuzzy
 msgctxt "group-name"
 msgid "loft"
-msgstr ""
+msgstr "recubrimiento"
 
 #: group.cpp:604
+#, fuzzy
 msgid ""
 "Bad selection for a new sweep group. Select a curve of the profile (a closed "
 "shape in a sketch) first, then the path's curves, connected end to end, in "
 "another sketch."
 msgstr ""
+"Selección incorrecta para un nuevo grupo de barrido. Seleccione primero una "
+"curva del perfil (una forma cerrada en un croquis) y luego las curvas de la "
+"trayectoria, conectadas de extremo a extremo, en otro croquis."
 
 #: group.cpp:610
+#, fuzzy
 msgid "Sweeps need the Open CASCADE kernel, which this build lacks."
 msgstr ""
+"Los barridos necesitan el núcleo Open CASCADE, que esta compilación no "
+"incluye."
 
 #: group.cpp:615
+#, fuzzy
 msgctxt "group-name"
 msgid "sweep"
-msgstr ""
+msgstr "barrido"
 
 #: group.cpp:736
 msgid "(unnamed)"
@@ -1725,57 +1847,70 @@ msgid "Can't repeat more than 999 times."
 msgstr "No se puede repetir más de 999 veces."
 
 #: groupprops.cpp:113
+#, fuzzy
 msgid "The draft angle must be between -89 and 89 degrees, and not zero."
 msgstr ""
+"El ángulo de desmoldeo debe estar entre -89 y 89 grados, y no ser cero."
 
 #: groupprops.cpp:130
+#, fuzzy
 msgid "The radius or distance must be greater than zero."
-msgstr ""
+msgstr "El radio o la distancia deben ser mayores que cero."
 
 #: groupprops.cpp:172
+#, fuzzy
 msgid "This feature needs it; delete the group instead."
-msgstr ""
+msgstr "Esta función lo necesita; elimine el grupo en su lugar."
 
 #: groupprops.cpp:192
+#, fuzzy
 msgid "The corner radius must be zero (sharp corners) or more."
-msgstr ""
+msgstr "El radio de esquina debe ser cero (esquinas vivas) o mayor."
 
 #: groupprops.cpp:229
+#, fuzzy
 msgid "A thread needs a pitch smaller than its diameter."
-msgstr ""
+msgstr "Una rosca necesita un paso menor que su diámetro."
 
 #: groupprops.cpp:231
+#, fuzzy
 msgid "The hole's diameter must be greater than zero."
-msgstr ""
+msgstr "El diámetro del agujero debe ser mayor que cero."
 
 #: groupprops.cpp:233
+#, fuzzy
 msgid "The print clearance must be zero or more."
-msgstr ""
+msgstr "La holgura de impresión debe ser cero o mayor."
 
 #: groupprops.cpp:235
+#, fuzzy
 msgid "The hole's depth must be zero (through all) or more."
-msgstr ""
+msgstr "La profundidad del agujero debe ser cero (pasante) o mayor."
 
 #: groupprops.cpp:237
+#, fuzzy
 msgid "The head's diameter must be greater than the hole's."
-msgstr ""
+msgstr "El diámetro de la cabeza debe ser mayor que el del agujero."
 
 #: groupprops.cpp:239
+#, fuzzy
 msgid "The counterbore's depth must be greater than zero."
-msgstr ""
+msgstr "La profundidad de la cajera debe ser mayor que cero."
 
 #: groupprops.cpp:242
+#, fuzzy
 msgid "The countersink's angle must be between 0 and 180 degrees."
-msgstr ""
+msgstr "El ángulo del avellanado debe estar entre 0 y 180 grados."
 
 #: groupprops.cpp:287
+#, fuzzy
 msgid "Write the thread as M4, M4x0.5, or none."
-msgstr ""
+msgstr "Escriba la rosca como M4, M4x0.5 o ninguna."
 
 #: groupprops.cpp:292
-#, c-format
+#, fuzzy, c-format
 msgid "M%g has no standard coarse pitch; write it as M%gx<pitch>."
-msgstr ""
+msgstr "M%g no tiene un paso grueso estándar; escríbalo como M%gx<paso>."
 
 #: groupprops.cpp:342
 msgid "Opacity must be between zero and one."
@@ -1786,91 +1921,122 @@ msgid "Text-formated STL files are not currently supported"
 msgstr "Los archivos STL con formato de texto no son compatibles actualmente"
 
 #: joint.cpp:144
+#, fuzzy
 msgid ""
 "Pick something on each of two parts that revolute, slider or cylindrical "
 "joints move: the gears' pitch circles, or a pinion's and its rack."
 msgstr ""
+"Seleccione algo en cada una de dos piezas que muevan las uniones giratorias, "
+"deslizantes o cilíndricas: los círculos primitivos de los engranajes, o el "
+"de un piñón y su cremallera."
 
 #: joint.cpp:149
+#, fuzzy
 msgid "The two picks are moved by the same joint."
-msgstr ""
+msgstr "Las dos selecciones las mueve la misma unión."
 
 #: joint.cpp:154
+#, fuzzy
 msgid "Those two joints are coupled already."
-msgstr ""
+msgstr "Esas dos uniones ya están acopladas."
 
 #: joint.cpp:203
+#, fuzzy
 msgid "Select the ball joint's centre on each part: points, circles or arcs."
 msgstr ""
+"Seleccione el centro de la unión esférica en cada pieza: puntos, círculos o "
+"arcos."
 
 #: joint.cpp:209
+#, fuzzy
 msgid ""
 "Select the joint's plane on each part: faces, or lines along its normal."
 msgstr ""
+"Seleccione el plano de la unión en cada pieza: caras o líneas a lo largo de "
+"su normal."
 
 #: joint.cpp:211
+#, fuzzy
 msgid ""
 "Select two axes for the joint, one on each part: line segments, circles, "
 "arcs or faces."
 msgstr ""
+"Seleccione dos ejes para la unión, uno en cada pieza: segmentos de línea, "
+"círculos, arcos o caras."
 
 #: joint.cpp:218
+#, fuzzy
 msgid ""
 "The two picks are on the same part; a joint moves one part against another."
 msgstr ""
+"Las dos selecciones están en la misma pieza; una unión mueve una pieza "
+"contra otra."
 
 #: joint.cpp:234
+#, fuzzy
 msgid ""
 "The two centres aren't the same point; a ball joint turns about one centre."
 msgstr ""
+"Los dos centros no son el mismo punto; una unión esférica gira alrededor de "
+"un solo centro."
 
 #: joint.cpp:239
+#, fuzzy
 msgid "The two planes aren't parallel."
-msgstr ""
+msgstr "Los dos planos no son paralelos."
 
 #: joint.cpp:240
+#, fuzzy
 msgid "The two axes aren't parallel."
-msgstr ""
+msgstr "Los dos ejes no son paralelos."
 
 #: joint.cpp:245
+#, fuzzy
 msgid "The two axes aren't the same line; the joint turns about one axis."
 msgstr ""
+"Los dos ejes no son la misma línea; la unión gira alrededor de un solo eje."
 
 #: joint.cpp:249
-#, c-format
+#, fuzzy, c-format
 msgid "Part '%s' already has a joint to move it."
-msgstr ""
+msgstr "La pieza '%s' ya tiene una unión que la mueve."
 
 #: joint.cpp:434
+#, fuzzy
 msgid "Set the slide's limits first: the sweep runs between them."
 msgstr ""
+"Primero fije los límites de la corredera: el barrido se hace entre ellos."
 
 #: joint.cpp:452
+#, fuzzy
 msgid "The joint moves no solid past another; there is nothing to sweep."
 msgstr ""
+"La unión no mueve ningún sólido más allá de otro; no hay nada que barrer."
 
 #: joint.cpp:489
+#, fuzzy
 msgid "The clearance sweep needs the Open CASCADE kernel's solids."
-msgstr ""
+msgstr "El barrido de holgura necesita los sólidos del núcleo Open CASCADE."
 
 #: joint.cpp:540
-#, c-format
+#, fuzzy, c-format
 msgid "Minimum gap %s mm at %s."
-msgstr ""
+msgstr "Holgura mínima %s mm en %s."
 
 #: joint.cpp:543
+#, fuzzy
 msgid "The parts touch or overlap"
-msgstr ""
+msgstr "Las piezas se tocan o se superponen"
 
 #: joint.cpp:548
-#, c-format
+#, fuzzy, c-format
 msgid "at %s"
-msgstr ""
+msgstr "en %s"
 
 #: joint.cpp:549
-#, c-format
+#, fuzzy, c-format
 msgid "from %s to %s"
-msgstr ""
+msgstr "de %s a %s"
 
 #: modify.cpp:254
 msgid "Must be sketching in workplane to create tangent arc."
@@ -2082,9 +2248,10 @@ msgid "ALL"
 msgstr "TODO"
 
 #: platform/gui.cpp:91
+#, fuzzy
 msgctxt "file-type"
 msgid "STEP solid"
-msgstr ""
+msgstr "Sólido STEP"
 
 #: platform/gui.cpp:92
 msgctxt "file-type"
@@ -2127,9 +2294,10 @@ msgid "VRML text file"
 msgstr "Archivo texto VRML"
 
 #: platform/gui.cpp:106
+#, fuzzy
 msgctxt "file-type"
 msgid "Quad mesh for Blender, with creases (USD)"
-msgstr ""
+msgstr "Malla de cuadriláteros para Blender, con pliegues (USD)"
 
 #: platform/gui.cpp:110 platform/gui.cpp:117 platform/gui.cpp:124
 msgctxt "file-type"
@@ -2202,8 +2370,9 @@ msgid "Bad value: autosave interval should be positive"
 msgstr "Valor incorrecto: el intervalo de autoguardado debe ser positivo"
 
 #: preferences.cpp:186
+#, fuzzy
 msgid "The density must be greater than zero."
-msgstr ""
+msgstr "La densidad debe ser mayor que cero."
 
 #: preferences.cpp:199
 msgid "Bad format: specify coordinates as x, y, z"
@@ -2294,24 +2463,27 @@ msgstr ""
 "enlace en la parte superior de la ventana de texto."
 
 #: solvespace.cpp:834
+#, fuzzy
 msgctxt "file-type"
 msgid "STL mesh, one per part"
-msgstr ""
+msgstr "Malla STL, una por pieza"
 
 #: solvespace.cpp:835
+#, fuzzy
 msgctxt "file-type"
 msgid "3MF, an object per part"
-msgstr ""
+msgstr "3MF, un objeto por pieza"
 
 #: solvespace.cpp:836
+#, fuzzy
 msgctxt "file-type"
 msgid "STEP file, one per part"
-msgstr ""
+msgstr "Archivo STEP, uno por pieza"
 
 #: solvespace.cpp:844
-#, c-format
+#, fuzzy, c-format
 msgid "Exported %d parts:%s"
-msgstr ""
+msgstr "Se exportaron %d piezas:%s"
 
 #: solvespace.cpp:893
 #, c-format
@@ -2533,64 +2705,83 @@ msgstr ""
 "© 2008-%d Jonathan Westhues y otros autores.\n"
 
 #: solvespace.cpp:1351
+#, fuzzy
 msgid "There is no solid in the active group."
-msgstr ""
+msgstr "No hay ningún sólido en el grupo activo."
 
 #: solvespace.cpp:1359
-#, c-format
+#, fuzzy, c-format
 msgid ""
 "Volume:  %s\n"
 "Surface area:  %s\n"
 "Mass:  %s (%s)\n"
 "Center of mass:  (%s, %s, %s)"
 msgstr ""
+"Volumen:  %s\n"
+"Área superficial:  %s\n"
+"Masa:  %s (%s)\n"
+"Centro de masa:  (%s, %s, %s)"
 
 #: solvespace.cpp:1404
+#, fuzzy
 msgid "A part's name can't be empty."
-msgstr ""
+msgstr "El nombre de una pieza no puede estar vacío."
 
 #: solvespace.cpp:1490
+#, fuzzy
 msgid "No part has a solid yet."
-msgstr ""
+msgstr "Ninguna pieza tiene todavía un sólido."
 
 #: solvespace.cpp:1494
-#, c-format
+#, fuzzy, c-format
 msgid "%s%s:  %s, %s, %.2f g;  %s x %s x %s\n"
-msgstr ""
+msgstr "%s%s:  %s, %s, %.2f g;  %s x %s x %s\n"
 
 #: solvespace.cpp:1501
-#, c-format
+#, fuzzy, c-format
 msgid ""
 "\n"
 "%d parts, %.2f g in all."
 msgstr ""
+"\n"
+"%d piezas, %.2f g en total."
 
 #: solvespace.cpp:1603
+#, fuzzy
 msgid ""
 "Parts export as STL, 3MF or STEP; choose a .stl, .3mf or .step file name."
 msgstr ""
+"Las piezas se exportan como STL, 3MF o STEP; elija un nombre de "
+"archivo .stl, .3mf o .step."
 
 #: solvespace.cpp:1638
-#, c-format
+#, fuzzy, c-format
 msgid "STEP needs the Open CASCADE kernel; part '%s' was not written."
-msgstr ""
+msgstr "STEP necesita el núcleo Open CASCADE; la pieza '%s' no se escribió."
 
 #: split.cpp:33
+#, fuzzy
 msgid "Select the plane to split the part by: a workplane or a flat face."
 msgstr ""
+"Seleccione el plano para dividir la pieza: un plano de trabajo o una cara "
+"plana."
 
 #: split.cpp:39
+#, fuzzy
 msgid "Activate a group of the part to split: its solid is what is split."
-msgstr ""
+msgstr "Active un grupo de la pieza a dividir: se divide su sólido."
 
 #: split.cpp:43
+#, fuzzy
 msgid "Splitting needs the Open CASCADE kernel, which this build lacks."
 msgstr ""
+"Dividir necesita el núcleo Open CASCADE, que esta compilación no incluye."
 
 #: split.cpp:73
+#, fuzzy
 msgctxt "group-name"
 msgid "split"
-msgstr ""
+msgstr "división"
 
 #: style.cpp:188
 msgid ""

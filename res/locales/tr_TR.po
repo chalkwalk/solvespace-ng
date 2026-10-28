@@ -649,12 +649,15 @@ msgid "Active group mesh is empty; nothing to export."
 msgstr "Etkin grup ağı boş; dışa aktarılacak bir şey yok."
 
 #: export.cpp:838
+#, fuzzy
 msgid "A quad mesh needs the Open CASCADE kernel and a solid it made."
 msgstr ""
+"Dörtgen ağ, Open CASCADE çekirdeğini ve onu oluşturan bir katıyı gerektirir."
 
 #: export3mf.cpp:180
+#, fuzzy
 msgid "The 3MF file would be over 4 GB; it was not written."
-msgstr ""
+msgstr "3MF dosyası 4 GB'tan büyük olurdu; yazılmadı."
 
 #: exportvector.cpp:338
 msgid "freehand lines were replaced with continuous lines"
@@ -738,52 +741,70 @@ msgid "&Cancel"
 msgstr "&İptal"
 
 #: fit.cpp:86
-#, c-format
+#, fuzzy, c-format
 msgid "The fit '%s' is used by the fit joint '%s'."
-msgstr ""
+msgstr "'%s' geçmesi, '%s' geçme bağlantısı tarafından kullanılıyor."
 
 #: fit.cpp:134
+#, fuzzy
 msgid ""
 "A fit joint is made from the active sketch: a closed profile in a workplane, "
 "drawn where the parts meet. Sketch it, then pick something on the male part "
 "and on the female part."
 msgstr ""
+"Geçme bağlantısı, etkin çizimden yapılır: parçaların buluştuğu yerde, bir "
+"çalışma düzlemindeki kapalı bir profil. Çizimi yapın, ardından erkek parçada "
+"bir şey ve dişi parçada bir şey seçin."
 
 #: fit.cpp:144
+#, fuzzy
 msgid ""
 "Pick something on the male part, then on the female part: the peg goes on "
 "the first, the pocket in the second."
 msgstr ""
+"Erkek parçada bir şey, ardından dişi parçada bir şey seçin: çıkıntı "
+"birincide, yuva ikincide olur."
 
 #: fit.cpp:149
+#, fuzzy
 msgid "Fit joints need the Open CASCADE kernel, which this build lacks."
 msgstr ""
+"Geçme bağlantıları, bu derlemede olmayan Open CASCADE çekirdeğini gerektirir."
 
 #: fit.cpp:178
+#, fuzzy
 msgctxt "group-name"
 msgid "fit-peg"
-msgstr ""
+msgstr "geçme çıkıntı"
 
 #: fit.cpp:178
+#, fuzzy
 msgctxt "group-name"
 msgid "fit-pocket"
-msgstr ""
+msgstr "geçme yuva"
 
 #: grab.cpp:77
+#, fuzzy
 msgid "grab: move the mouse; X/Y/Z lock an axis; type a distance"
 msgstr ""
+"taşı: fareyi hareket ettirin; X/Y/Z bir eksen kilitler; bir mesafe yazın"
 
 #: grab.cpp:87
+#, fuzzy
 msgid "grab: turn the joint with the mouse; type an angle"
-msgstr ""
+msgstr "taşı: mafsalı fareyle döndürün; bir açı yazın"
 
 #: grab.cpp:90
+#, fuzzy
 msgid "grab: slide the joint with the mouse; type a distance"
-msgstr ""
+msgstr "taşı: mafsalı fareyle kaydırın; bir mesafe yazın"
 
 #: grab.cpp:94
+#, fuzzy
 msgid "grab: move the joint with the mouse; X/Y/Z pick a motion; type a value"
 msgstr ""
+"taşı: mafsalı fareyle hareket ettirin; X/Y/Z bir hareket seçer; bir değer "
+"yazın"
 
 #: graphicswin.cpp:43
 msgid "&File"
@@ -830,12 +851,14 @@ msgid "Export Triangle &Mesh..."
 msgstr "&Üçgensel Ağ olarak dışa aktar..."
 
 #: graphicswin.cpp:55
+#, fuzzy
 msgid "Export &Parts..."
-msgstr ""
+msgstr "Parçaları &Dışa Aktar..."
 
 #: graphicswin.cpp:56
+#, fuzzy
 msgid "Export Parts &List..."
-msgstr ""
+msgstr "Parça &Listesini Dışa Aktar..."
 
 #: graphicswin.cpp:57
 msgid "Export &Surfaces..."
@@ -1002,40 +1025,49 @@ msgid "&New Group"
 msgstr "Yeni &Grup"
 
 #: graphicswin.cpp:114
+#, fuzzy
 msgid "New &Part"
-msgstr ""
+msgstr "Yeni &Parça"
 
 #: graphicswin.cpp:115
+#, fuzzy
 msgid "&Revolute Joint"
-msgstr ""
+msgstr "&Döner Mafsal"
 
 #: graphicswin.cpp:116
+#, fuzzy
 msgid "S&lider Joint"
-msgstr ""
+msgstr "Kay&malı Mafsal"
 
 #: graphicswin.cpp:117
+#, fuzzy
 msgid "C&ylindrical Joint"
-msgstr ""
+msgstr "&Silindirik Mafsal"
 
 #: graphicswin.cpp:118
+#, fuzzy
 msgid "Pla&nar Joint"
-msgstr ""
+msgstr "&Düzlemsel Mafsal"
 
 #: graphicswin.cpp:119
+#, fuzzy
 msgid "&Ball Joint"
-msgstr ""
+msgstr "&Küresel Mafsal"
 
 #: graphicswin.cpp:120
+#, fuzzy
 msgid "&Gear Coupling"
-msgstr ""
+msgstr "&Dişli Bağlantısı"
 
 #: graphicswin.cpp:121
+#, fuzzy
 msgid "&Fit Joint"
-msgstr ""
+msgstr "&Geçme Bağlantısı"
 
 #: graphicswin.cpp:122
+#, fuzzy
 msgid "Spli&t Part"
-msgstr ""
+msgstr "Parçayı B&öl"
 
 #: graphicswin.cpp:124
 msgid "Sketch In &3d"
@@ -1058,8 +1090,9 @@ msgid "E&xtrude"
 msgstr "&Uzatarak Katıla"
 
 #: graphicswin.cpp:131
+#, fuzzy
 msgid "Extrude as a &Cut"
-msgstr ""
+msgstr "Uzatarak &Kes"
 
 #: graphicswin.cpp:132
 msgid "&Helix"
@@ -1074,32 +1107,39 @@ msgid "Re&volve"
 msgstr "&Kısmen döndürerek katıla"
 
 #: graphicswin.cpp:136
+#, fuzzy
 msgid "&Fillet Edges"
-msgstr ""
+msgstr "Kenarları &Yuvarla"
 
 #: graphicswin.cpp:137
+#, fuzzy
 msgid "&Chamfer Edges"
-msgstr ""
+msgstr "Kenarlara &Pah Kır"
 
 #: graphicswin.cpp:138
+#, fuzzy
 msgid "S&hell"
-msgstr ""
+msgstr "&Kabuklaştır"
 
 #: graphicswin.cpp:139
+#, fuzzy
 msgid "&Draft Faces"
-msgstr ""
+msgstr "Yüzeylere &Eğim Ver"
 
 #: graphicswin.cpp:140
+#, fuzzy
 msgid "H&ole"
-msgstr ""
+msgstr "&Delik"
 
 #: graphicswin.cpp:141
+#, fuzzy
 msgid "Lo&ft"
-msgstr ""
+msgstr "&Harmanla"
 
 #: graphicswin.cpp:142
+#, fuzzy
 msgid "S&weep"
-msgstr ""
+msgstr "Yol &Boyunca Süpür"
 
 #: graphicswin.cpp:144
 msgid "Link / Assemble..."
@@ -1282,16 +1322,19 @@ msgid "Show &Center of Mass"
 msgstr "&Kütle Merkezini Göster"
 
 #: graphicswin.cpp:199
+#, fuzzy
 msgid "&Mass Properties"
-msgstr ""
+msgstr "Kütle &Özellikleri"
 
 #: graphicswin.cpp:200
+#, fuzzy
 msgid "&Parts List"
-msgstr ""
+msgstr "Parça &Listesi"
 
 #: graphicswin.cpp:201
+#, fuzzy
 msgid "&Design Pose"
-msgstr ""
+msgstr "Tasarım &Konumu"
 
 #: graphicswin.cpp:203
 msgid "Show &Underconstrained Points"
@@ -1468,6 +1511,7 @@ msgid "sketch-in-3d"
 msgstr "3d-de-çizim"
 
 #: group.cpp:252
+#, fuzzy
 msgid ""
 "Bad selection for new sketch in workplane. This group can be created with:\n"
 "\n"
@@ -1479,6 +1523,14 @@ msgid ""
 "    * a face of the solid, and optionally a point (on the face, following "
 "it)\n"
 msgstr ""
+"Çalışma düzleminde yeni çizim için seçim hatalı. Bu grup şunlarla "
+"oluşturulabilir:\n"
+"\n"
+"    * bir nokta (noktadan geçer, koordinat eksenlerine dik)\n"
+"    * bir nokta ve iki çizgi parçası (noktadan geçer, çizgilere paralel)\n"
+"    * bir nokta ve bir normal (noktadan geçer, normale dik)\n"
+"    * bir çalışma düzlemi (çalışma düzleminin kopyası)\n"
+"    * katının bir yüzeyi ve isteğe bağlı bir nokta (yüzeyde, onu izleyerek)\n"
 
 #: group.cpp:271
 msgid ""
@@ -1597,116 +1649,157 @@ msgid "translate"
 msgstr "doğrusal kopya"
 
 #: group.cpp:448
-#, c-format
+#, fuzzy, c-format
 msgid ""
 "Bad selection for a new %s group. Select edges of the solid (the lines and "
 "curves an extrusion, lathe, revolve, helix or pattern makes), or faces, for "
 "all their edges."
 msgstr ""
+"Yeni %s grubu için seçim hatalı. Katının kenarlarını seçin (bir uzatma, "
+"döndürme, serbest döndürme, helis ya da örüntünün oluşturduğu çizgi ve "
+"eğriler) veya tüm kenarları için yüzeyleri seçin."
 
 #: group.cpp:451
+#, fuzzy
 msgid "chamfer"
-msgstr ""
+msgstr "pah kırma"
 
 #: group.cpp:451
+#, fuzzy
 msgid "fillet"
-msgstr ""
+msgstr "yuvarlama"
 
 #: group.cpp:456
+#, fuzzy
 msgid ""
 "Fillets and chamfers need the Open CASCADE kernel, which this build lacks."
 msgstr ""
+"Kenar yuvarlama ve pah kırma, bu derlemede olmayan Open CASCADE çekirdeğini "
+"gerektirir."
 
 #: group.cpp:462
+#, fuzzy
 msgctxt "group-name"
 msgid "chamfer"
-msgstr ""
+msgstr "pah"
 
 #: group.cpp:462
+#, fuzzy
 msgctxt "group-name"
 msgid "fillet"
-msgstr ""
+msgstr "yuvarlama"
 
 #: group.cpp:470
+#, fuzzy
 msgid ""
 "Bad selection for a new shell group. Select the faces of the solid to leave "
 "open, or nothing for a closed shell."
 msgstr ""
+"Yeni kabuk grubu için seçim hatalı. Açık bırakılacak katı yüzeylerini seçin "
+"ya da kapalı bir kabuk için hiçbir şey seçmeyin."
 
 #: group.cpp:477
+#, fuzzy
 msgid "Shells need the Open CASCADE kernel, which this build lacks."
-msgstr ""
+msgstr "Kabuklar, bu derlemede olmayan Open CASCADE çekirdeğini gerektirir."
 
 #: group.cpp:483
+#, fuzzy
 msgid "There is no solid to make a shell of."
-msgstr ""
+msgstr "Kabuk oluşturulacak bir katı yok."
 
 #: group.cpp:501
+#, fuzzy
 msgctxt "group-name"
 msgid "shell"
-msgstr ""
+msgstr "kabuk"
 
 #: group.cpp:517
+#, fuzzy
 msgid ""
 "Bad selection for a new draft group. Select side faces of an extrusion; they "
 "taper about its sketch plane, along its direction."
 msgstr ""
+"Yeni eğim grubu için seçim hatalı. Bir uzatmanın yan yüzeylerini seçin; "
+"yüzeyler, çizim düzlemi etrafında uzatma yönünde daralır."
 
 #: group.cpp:522
+#, fuzzy
 msgid "Drafts need the Open CASCADE kernel, which this build lacks."
-msgstr ""
+msgstr "Eğimler, bu derlemede olmayan Open CASCADE çekirdeğini gerektirir."
 
 #: group.cpp:527
+#, fuzzy
 msgctxt "group-name"
 msgid "draft"
-msgstr ""
+msgstr "eğim"
 
 #: group.cpp:541
+#, fuzzy
 msgid ""
 "Bad selection for a new hole group. Select the hole centres: points in a "
 "workplane, such as a sketch on a face. The holes go into the face, against "
 "the workplane's normal."
 msgstr ""
+"Yeni delik grubu için seçim hatalı. Delik merkezlerini seçin: bir çalışma "
+"düzlemindeki noktalar, örneğin bir yüzey üzerindeki çizim. Delikler, çalışma "
+"düzleminin normaline karşı yüzeye açılır."
 
 #: group.cpp:547
+#, fuzzy
 msgid "Holes need the Open CASCADE kernel, which this build lacks."
-msgstr ""
+msgstr "Delikler, bu derlemede olmayan Open CASCADE çekirdeğini gerektirir."
 
 #: group.cpp:555
+#, fuzzy
 msgctxt "group-name"
 msgid "hole"
-msgstr ""
+msgstr "delik"
 
 #: group.cpp:573
+#, fuzzy
 msgid ""
 "Bad selection for a new loft group. Select a curve of each profile, in "
 "order: two or more closed shapes, each in its own sketch."
 msgstr ""
+"Yeni harmanlama grubu için seçim hatalı. Her profilden sırayla bir eğri "
+"seçin: her biri kendi çiziminde olan, iki ya da daha fazla kapalı şekil."
 
 #: group.cpp:578
+#, fuzzy
 msgid "Lofts need the Open CASCADE kernel, which this build lacks."
 msgstr ""
+"Harmanlamalar, bu derlemede olmayan Open CASCADE çekirdeğini gerektirir."
 
 #: group.cpp:582
+#, fuzzy
 msgctxt "group-name"
 msgid "loft"
-msgstr ""
+msgstr "harmanla"
 
 #: group.cpp:604
+#, fuzzy
 msgid ""
 "Bad selection for a new sweep group. Select a curve of the profile (a closed "
 "shape in a sketch) first, then the path's curves, connected end to end, in "
 "another sketch."
 msgstr ""
+"Yeni yol boyunca süpürme grubu için seçim hatalı. Önce profilin bir eğrisini "
+"(bir çizimdeki kapalı şekil) seçin, ardından yolun, uçtan uca bağlı "
+"eğrilerini başka bir çizimde seçin."
 
 #: group.cpp:610
+#, fuzzy
 msgid "Sweeps need the Open CASCADE kernel, which this build lacks."
 msgstr ""
+"Yol boyunca süpürmeler, bu derlemede olmayan Open CASCADE çekirdeğini "
+"gerektirir."
 
 #: group.cpp:615
+#, fuzzy
 msgctxt "group-name"
 msgid "sweep"
-msgstr ""
+msgstr "süpür"
 
 #: group.cpp:736
 msgid "(unnamed)"
@@ -1737,57 +1830,69 @@ msgid "Can't repeat more than 999 times."
 msgstr "999 defadan fazla tekrarlanamaz."
 
 #: groupprops.cpp:113
+#, fuzzy
 msgid "The draft angle must be between -89 and 89 degrees, and not zero."
-msgstr ""
+msgstr "Eğim açısı -89 ile 89 derece arasında olmalı ve sıfır olmamalıdır."
 
 #: groupprops.cpp:130
+#, fuzzy
 msgid "The radius or distance must be greater than zero."
-msgstr ""
+msgstr "Yarıçap ya da mesafe sıfırdan büyük olmalıdır."
 
 #: groupprops.cpp:172
+#, fuzzy
 msgid "This feature needs it; delete the group instead."
-msgstr ""
+msgstr "Bu özellik buna gerek duyuyor; bunun yerine grubu silin."
 
 #: groupprops.cpp:192
+#, fuzzy
 msgid "The corner radius must be zero (sharp corners) or more."
-msgstr ""
+msgstr "Köşe yarıçapı sıfır (keskin köşeler) ya da daha büyük olmalıdır."
 
 #: groupprops.cpp:229
+#, fuzzy
 msgid "A thread needs a pitch smaller than its diameter."
-msgstr ""
+msgstr "Dişin adımı, çapından küçük olmalıdır."
 
 #: groupprops.cpp:231
+#, fuzzy
 msgid "The hole's diameter must be greater than zero."
-msgstr ""
+msgstr "Deliğin çapı sıfırdan büyük olmalıdır."
 
 #: groupprops.cpp:233
+#, fuzzy
 msgid "The print clearance must be zero or more."
-msgstr ""
+msgstr "Baskı boşluğu sıfır ya da daha büyük olmalıdır."
 
 #: groupprops.cpp:235
+#, fuzzy
 msgid "The hole's depth must be zero (through all) or more."
-msgstr ""
+msgstr "Deliğin derinliği sıfır (tamamen delik) ya da daha büyük olmalıdır."
 
 #: groupprops.cpp:237
+#, fuzzy
 msgid "The head's diameter must be greater than the hole's."
-msgstr ""
+msgstr "Başın çapı, deliğin çapından büyük olmalıdır."
 
 #: groupprops.cpp:239
+#, fuzzy
 msgid "The counterbore's depth must be greater than zero."
-msgstr ""
+msgstr "Havşa deliğinin derinliği sıfırdan büyük olmalıdır."
 
 #: groupprops.cpp:242
+#, fuzzy
 msgid "The countersink's angle must be between 0 and 180 degrees."
-msgstr ""
+msgstr "Gömme deliğinin açısı 0 ile 180 derece arasında olmalıdır."
 
 #: groupprops.cpp:287
+#, fuzzy
 msgid "Write the thread as M4, M4x0.5, or none."
-msgstr ""
+msgstr "Dişi M4, M4x0.5 ya da hiçbiri olarak yazın."
 
 #: groupprops.cpp:292
-#, c-format
+#, fuzzy, c-format
 msgid "M%g has no standard coarse pitch; write it as M%gx<pitch>."
-msgstr ""
+msgstr "M%g için standart iri adım yok; M%gx<adım> biçiminde yazın."
 
 #: groupprops.cpp:342
 msgid "Opacity must be between zero and one."
@@ -1798,91 +1903,118 @@ msgid "Text-formated STL files are not currently supported"
 msgstr "Metin-biçimli STL dosyaları şu anda desteklenmiyor"
 
 #: joint.cpp:144
+#, fuzzy
 msgid ""
 "Pick something on each of two parts that revolute, slider or cylindrical "
 "joints move: the gears' pitch circles, or a pinion's and its rack."
 msgstr ""
+"Döner, kayma veya silindirik mafsalların hareket ettirdiği iki parçanın her "
+"birinde bir şey seçin: dişlilerin taksim daireleri ya da bir pinyon ile rafı."
 
 #: joint.cpp:149
+#, fuzzy
 msgid "The two picks are moved by the same joint."
-msgstr ""
+msgstr "İki seçimi aynı mafsal hareket ettiriyor."
 
 #: joint.cpp:154
+#, fuzzy
 msgid "Those two joints are coupled already."
-msgstr ""
+msgstr "Bu iki mafsal zaten bağlı."
 
 #: joint.cpp:203
+#, fuzzy
 msgid "Select the ball joint's centre on each part: points, circles or arcs."
 msgstr ""
+"Her parçada küresel mafsalın merkezini seçin: noktalar, daireler ya da "
+"yaylar."
 
 #: joint.cpp:209
+#, fuzzy
 msgid ""
 "Select the joint's plane on each part: faces, or lines along its normal."
 msgstr ""
+"Her parçada mafsalın düzlemini seçin: yüzeyler ya da normaline paralel "
+"çizgiler."
 
 #: joint.cpp:211
+#, fuzzy
 msgid ""
 "Select two axes for the joint, one on each part: line segments, circles, "
 "arcs or faces."
 msgstr ""
+"Mafsal için her parçadan birer olmak üzere iki eksen seçin: çizgi parçaları, "
+"daireler, yaylar ya da yüzeyler."
 
 #: joint.cpp:218
+#, fuzzy
 msgid ""
 "The two picks are on the same part; a joint moves one part against another."
 msgstr ""
+"İki seçim aynı parçada; bir mafsal bir parçayı diğerine karşı hareket "
+"ettirir."
 
 #: joint.cpp:234
+#, fuzzy
 msgid ""
 "The two centres aren't the same point; a ball joint turns about one centre."
 msgstr ""
+"İki merkez aynı nokta değil; küresel mafsal tek bir merkez etrafında döner."
 
 #: joint.cpp:239
+#, fuzzy
 msgid "The two planes aren't parallel."
-msgstr ""
+msgstr "İki düzlem paralel değil."
 
 #: joint.cpp:240
+#, fuzzy
 msgid "The two axes aren't parallel."
-msgstr ""
+msgstr "İki eksen paralel değil."
 
 #: joint.cpp:245
+#, fuzzy
 msgid "The two axes aren't the same line; the joint turns about one axis."
-msgstr ""
+msgstr "İki eksen aynı doğru değil; mafsal tek bir eksen etrafında döner."
 
 #: joint.cpp:249
-#, c-format
+#, fuzzy, c-format
 msgid "Part '%s' already has a joint to move it."
-msgstr ""
+msgstr "'%s' parçasının onu hareket ettiren bir mafsalı zaten var."
 
 #: joint.cpp:434
+#, fuzzy
 msgid "Set the slide's limits first: the sweep runs between them."
-msgstr ""
+msgstr "Önce kaymanın sınırlarını ayarlayın: tarama bunların arasında yapılır."
 
 #: joint.cpp:452
+#, fuzzy
 msgid "The joint moves no solid past another; there is nothing to sweep."
 msgstr ""
+"Mafsal hiçbir katıyı bir diğerinin ötesine taşımıyor; taranacak bir şey yok."
 
 #: joint.cpp:489
+#, fuzzy
 msgid "The clearance sweep needs the Open CASCADE kernel's solids."
-msgstr ""
+msgstr "Boşluk taraması, Open CASCADE çekirdeğinin katılarını gerektirir."
 
 #: joint.cpp:540
-#, c-format
+#, fuzzy, c-format
 msgid "Minimum gap %s mm at %s."
-msgstr ""
+msgstr "En küçük boşluk %s mm, %s konumunda."
 
 #: joint.cpp:543
+#, fuzzy
 msgid "The parts touch or overlap"
-msgstr ""
+msgstr "Parçalar birbirine değiyor ya da üst üste biniyor"
 
 #: joint.cpp:548
-#, c-format
+#, fuzzy, c-format
 msgid "at %s"
-msgstr ""
+msgstr "%s konumunda"
 
 #: joint.cpp:549
-#, c-format
+#, fuzzy, c-format
 msgid "from %s to %s"
-msgstr ""
+msgstr "%s ile %s arasında"
 
 #: modify.cpp:254
 msgid "Must be sketching in workplane to create tangent arc."
@@ -2092,9 +2224,10 @@ msgid "ALL"
 msgstr "TÜMÜ"
 
 #: platform/gui.cpp:91
+#, fuzzy
 msgctxt "file-type"
 msgid "STEP solid"
-msgstr ""
+msgstr "STEP katısı"
 
 #: platform/gui.cpp:92
 msgctxt "file-type"
@@ -2137,9 +2270,10 @@ msgid "VRML text file"
 msgstr "VRML metin dosyası"
 
 #: platform/gui.cpp:106
+#, fuzzy
 msgctxt "file-type"
 msgid "Quad mesh for Blender, with creases (USD)"
-msgstr ""
+msgstr "Blender için dörtgen ağ, keskin kenarlarla (USD)"
 
 #: platform/gui.cpp:110 platform/gui.cpp:117 platform/gui.cpp:124
 msgctxt "file-type"
@@ -2212,8 +2346,9 @@ msgid "Bad value: autosave interval should be positive"
 msgstr "Hatalı değer: otomatik kaydetme süresi pozitif olmalıdır"
 
 #: preferences.cpp:186
+#, fuzzy
 msgid "The density must be greater than zero."
-msgstr ""
+msgstr "Yoğunluk sıfırdan büyük olmalıdır."
 
 #: preferences.cpp:199
 msgid "Bad format: specify coordinates as x, y, z"
@@ -2304,24 +2439,27 @@ msgstr ""
 "bağlantıya tıklayarak bunları gizleyin."
 
 #: solvespace.cpp:834
+#, fuzzy
 msgctxt "file-type"
 msgid "STL mesh, one per part"
-msgstr ""
+msgstr "STL ağı, parça başına bir"
 
 #: solvespace.cpp:835
+#, fuzzy
 msgctxt "file-type"
 msgid "3MF, an object per part"
-msgstr ""
+msgstr "3MF, parça başına bir nesne"
 
 #: solvespace.cpp:836
+#, fuzzy
 msgctxt "file-type"
 msgid "STEP file, one per part"
-msgstr ""
+msgstr "STEP dosyası, parça başına bir"
 
 #: solvespace.cpp:844
-#, c-format
+#, fuzzy, c-format
 msgid "Exported %d parts:%s"
-msgstr ""
+msgstr "%d parça dışa aktarıldı:%s"
 
 #: solvespace.cpp:893
 #, c-format
@@ -2541,64 +2679,82 @@ msgstr ""
 "© 2008-% d Jonathan Westhues ve diğer yazarlar.\n"
 
 #: solvespace.cpp:1351
+#, fuzzy
 msgid "There is no solid in the active group."
-msgstr ""
+msgstr "Etkin grupta katı yok."
 
 #: solvespace.cpp:1359
-#, c-format
+#, fuzzy, c-format
 msgid ""
 "Volume:  %s\n"
 "Surface area:  %s\n"
 "Mass:  %s (%s)\n"
 "Center of mass:  (%s, %s, %s)"
 msgstr ""
+"Hacim:  %s\n"
+"Yüzey alanı:  %s\n"
+"Kütle:  %s (%s)\n"
+"Kütle merkezi:  (%s, %s, %s)"
 
 #: solvespace.cpp:1404
+#, fuzzy
 msgid "A part's name can't be empty."
-msgstr ""
+msgstr "Parçanın adı boş olamaz."
 
 #: solvespace.cpp:1490
+#, fuzzy
 msgid "No part has a solid yet."
-msgstr ""
+msgstr "Henüz hiçbir parçanın katısı yok."
 
 #: solvespace.cpp:1494
-#, c-format
+#, fuzzy, c-format
 msgid "%s%s:  %s, %s, %.2f g;  %s x %s x %s\n"
-msgstr ""
+msgstr "%s%s:  %s, %s, %.2f g;  %s x %s x %s\n"
 
 #: solvespace.cpp:1501
-#, c-format
+#, fuzzy, c-format
 msgid ""
 "\n"
 "%d parts, %.2f g in all."
 msgstr ""
+"\n"
+"%d parça, toplam %.2f g."
 
 #: solvespace.cpp:1603
+#, fuzzy
 msgid ""
 "Parts export as STL, 3MF or STEP; choose a .stl, .3mf or .step file name."
 msgstr ""
+"Parçalar STL, 3MF ya da STEP olarak dışa aktarılır; bir .stl, .3mf ya "
+"da .step dosya adı seçin."
 
 #: solvespace.cpp:1638
-#, c-format
+#, fuzzy, c-format
 msgid "STEP needs the Open CASCADE kernel; part '%s' was not written."
-msgstr ""
+msgstr "STEP, Open CASCADE çekirdeğini gerektirir; '%s' parçası yazılmadı."
 
 #: split.cpp:33
+#, fuzzy
 msgid "Select the plane to split the part by: a workplane or a flat face."
 msgstr ""
+"Parçayı bölecek düzlemi seçin: bir çalışma düzlemi ya da düz bir yüzey."
 
 #: split.cpp:39
+#, fuzzy
 msgid "Activate a group of the part to split: its solid is what is split."
 msgstr ""
+"Bölünecek parçanın bir grubunu etkinleştirin: bölünen şey o grubun katısıdır."
 
 #: split.cpp:43
+#, fuzzy
 msgid "Splitting needs the Open CASCADE kernel, which this build lacks."
-msgstr ""
+msgstr "Bölme, bu derlemede olmayan Open CASCADE çekirdeğini gerektirir."
 
 #: split.cpp:73
+#, fuzzy
 msgctxt "group-name"
 msgid "split"
-msgstr ""
+msgstr "bölme"
 
 #: style.cpp:188
 msgid ""

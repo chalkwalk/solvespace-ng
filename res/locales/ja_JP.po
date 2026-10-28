@@ -62,199 +62,238 @@ msgid "No workplane active."
 msgstr "作業平面がアクティブでありません。"
 
 #: constraint.cpp:14
+#, fuzzy
 msgctxt "constr-name"
 msgid "pts-coincident"
-msgstr ""
+msgstr "点の一致"
 
 #: constraint.cpp:15
+#, fuzzy
 msgctxt "constr-name"
 msgid "pt-pt-distance"
-msgstr ""
+msgstr "点間距離"
 
 #: constraint.cpp:16
+#, fuzzy
 msgctxt "constr-name"
 msgid "pt-line-distance"
-msgstr ""
+msgstr "点と線の距離"
 
 #: constraint.cpp:17
+#, fuzzy
 msgctxt "constr-name"
 msgid "pt-plane-distance"
-msgstr ""
+msgstr "点と平面の距離"
 
 #: constraint.cpp:18
+#, fuzzy
 msgctxt "constr-name"
 msgid "pt-face-distance"
-msgstr ""
+msgstr "点と面の距離"
 
 #: constraint.cpp:19
+#, fuzzy
 msgctxt "constr-name"
 msgid "proj-pt-pt-distance"
-msgstr ""
+msgstr "投影した点間距離"
 
 #: constraint.cpp:20
+#, fuzzy
 msgctxt "constr-name"
 msgid "pt-in-plane"
-msgstr ""
+msgstr "点を平面上に"
 
 #: constraint.cpp:21
+#, fuzzy
 msgctxt "constr-name"
 msgid "pt-on-line"
-msgstr ""
+msgstr "点を線上に"
 
 #: constraint.cpp:22
+#, fuzzy
 msgctxt "constr-name"
 msgid "pt-on-face"
-msgstr ""
+msgstr "点を面上に"
 
 #: constraint.cpp:23
+#, fuzzy
 msgctxt "constr-name"
 msgid "eq-length"
-msgstr ""
+msgstr "長さの一致"
 
 #: constraint.cpp:24
+#, fuzzy
 msgctxt "constr-name"
 msgid "eq-length-and-pt-ln-dist"
-msgstr ""
+msgstr "長さと点線距離の一致"
 
 #: constraint.cpp:25
+#, fuzzy
 msgctxt "constr-name"
 msgid "eq-pt-line-distances"
-msgstr ""
+msgstr "点線距離の一致"
 
 #: constraint.cpp:26
+#, fuzzy
 msgctxt "constr-name"
 msgid "length-ratio"
-msgstr ""
+msgstr "長さの比"
 
 #: constraint.cpp:27
+#, fuzzy
 msgctxt "constr-name"
 msgid "arc-arc-length-ratio"
-msgstr ""
+msgstr "円弧同士の長さの比"
 
 #: constraint.cpp:28
+#, fuzzy
 msgctxt "constr-name"
 msgid "arc-line-length-ratio"
-msgstr ""
+msgstr "円弧と線の長さの比"
 
 #: constraint.cpp:29
+#, fuzzy
 msgctxt "constr-name"
 msgid "length-difference"
-msgstr ""
+msgstr "長さの差"
 
 #: constraint.cpp:30
+#, fuzzy
 msgctxt "constr-name"
 msgid "arc-arc-len-difference"
-msgstr ""
+msgstr "円弧同士の長さの差"
 
 #: constraint.cpp:31
+#, fuzzy
 msgctxt "constr-name"
 msgid "arc-line-len-difference"
-msgstr ""
+msgstr "円弧と線の長さの差"
 
 #: constraint.cpp:32
+#, fuzzy
 msgctxt "constr-name"
 msgid "symmetric"
-msgstr ""
+msgstr "対称"
 
 #: constraint.cpp:33
+#, fuzzy
 msgctxt "constr-name"
 msgid "symmetric-h"
-msgstr ""
+msgstr "水平対称"
 
 #: constraint.cpp:34
+#, fuzzy
 msgctxt "constr-name"
 msgid "symmetric-v"
-msgstr ""
+msgstr "垂直対称"
 
 #: constraint.cpp:35
+#, fuzzy
 msgctxt "constr-name"
 msgid "symmetric-line"
-msgstr ""
+msgstr "直線に対して対称"
 
 #: constraint.cpp:36
+#, fuzzy
 msgctxt "constr-name"
 msgid "at-midpoint"
-msgstr ""
+msgstr "中点"
 
 #: constraint.cpp:37
+#, fuzzy
 msgctxt "constr-name"
 msgid "horizontal"
-msgstr ""
+msgstr "水平"
 
 #: constraint.cpp:38
+#, fuzzy
 msgctxt "constr-name"
 msgid "vertical"
-msgstr ""
+msgstr "鉛直"
 
 #: constraint.cpp:39
+#, fuzzy
 msgctxt "constr-name"
 msgid "diameter"
-msgstr ""
+msgstr "直径"
 
 #: constraint.cpp:40
+#, fuzzy
 msgctxt "constr-name"
 msgid "pt-on-circle"
-msgstr ""
+msgstr "点を円上に"
 
 #: constraint.cpp:41
+#, fuzzy
 msgctxt "constr-name"
 msgid "same-orientation"
-msgstr ""
+msgstr "向きの一致"
 
 #: constraint.cpp:42
+#, fuzzy
 msgctxt "constr-name"
 msgid "angle"
-msgstr ""
+msgstr "角度"
 
 #: constraint.cpp:43
+#, fuzzy
 msgctxt "constr-name"
 msgid "parallel"
-msgstr ""
+msgstr "平行"
 
 #: constraint.cpp:44
+#, fuzzy
 msgctxt "constr-name"
 msgid "arc-line-tangent"
-msgstr ""
+msgstr "円弧と線の正接"
 
 #: constraint.cpp:45
+#, fuzzy
 msgctxt "constr-name"
 msgid "cubic-line-tangent"
-msgstr ""
+msgstr "3次曲線と線の正接"
 
 #: constraint.cpp:46
+#, fuzzy
 msgctxt "constr-name"
 msgid "curve-curve-tangent"
-msgstr ""
+msgstr "曲線同士の正接"
 
 #: constraint.cpp:47
+#, fuzzy
 msgctxt "constr-name"
 msgid "perpendicular"
-msgstr ""
+msgstr "垂直"
 
 #: constraint.cpp:48
+#, fuzzy
 msgctxt "constr-name"
 msgid "eq-radius"
-msgstr ""
+msgstr "半径の一致"
 
 #: constraint.cpp:49
+#, fuzzy
 msgctxt "constr-name"
 msgid "eq-angle"
-msgstr ""
+msgstr "角度の一致"
 
 #: constraint.cpp:50
+#, fuzzy
 msgctxt "constr-name"
 msgid "eq-line-len-arc-len"
-msgstr ""
+msgstr "線の長さと円弧の長さの一致"
 
 #: constraint.cpp:51
+#, fuzzy
 msgctxt "constr-name"
 msgid "lock-where-dragged"
-msgstr ""
+msgstr "ドラッグ位置で固定"
 
 #: constraint.cpp:52
+#, fuzzy
 msgctxt "constr-name"
 msgid "comment"
-msgstr ""
+msgstr "コメント"
 
 #: constraint.cpp:153
 msgid ""
@@ -621,12 +660,16 @@ msgstr ""
 "アクティブなグループのメッシュは空です。エクスポートは行なわれませんでした。"
 
 #: export.cpp:838
+#, fuzzy
 msgid "A quad mesh needs the Open CASCADE kernel and a solid it made."
 msgstr ""
+"四角形メッシュには、Open CASCADE カーネルと、それで作成されたソリッドが必要で"
+"す。"
 
 #: export3mf.cpp:180
+#, fuzzy
 msgid "The 3MF file would be over 4 GB; it was not written."
-msgstr ""
+msgstr "3MF ファイルが 4 GB を超えるため、書き出しませんでした。"
 
 #: exportvector.cpp:338
 msgid "freehand lines were replaced with continuous lines"
@@ -651,14 +694,16 @@ msgstr ""
 "み込めません。"
 
 #: file.cpp:49 group.cpp:168
+#, fuzzy
 msgctxt "group-name"
 msgid "sketch-in-plane"
-msgstr ""
+msgstr "平面スケッチ"
 
 #: file.cpp:67
+#, fuzzy
 msgctxt "group-name"
 msgid "#references"
-msgstr ""
+msgstr "#参照"
 
 #: file.cpp:661
 msgid "The file is empty. It may be corrupt."
@@ -711,52 +756,68 @@ msgid "&Cancel"
 msgstr "キャンセル (&C)"
 
 #: fit.cpp:86
-#, c-format
+#, fuzzy, c-format
 msgid "The fit '%s' is used by the fit joint '%s'."
-msgstr ""
+msgstr "フィット '%s' は、フィットジョイント '%s' で使用されています。"
 
 #: fit.cpp:134
+#, fuzzy
 msgid ""
 "A fit joint is made from the active sketch: a closed profile in a workplane, "
 "drawn where the parts meet. Sketch it, then pick something on the male part "
 "and on the female part."
 msgstr ""
+"フィットジョイントは、アクティブなスケッチから作成します。部品が接する位置の"
+"作業平面に描いた閉じた輪郭です。スケッチしたら、オス側の部品とメス側の部品"
+"で、それぞれ何かを選択してください。"
 
 #: fit.cpp:144
+#, fuzzy
 msgid ""
 "Pick something on the male part, then on the female part: the peg goes on "
 "the first, the pocket in the second."
 msgstr ""
+"オス側の部品で何かを選択し、次にメス側の部品で何かを選択してください。ピンは1"
+"つ目の部品に、ポケットは2つ目の部品に作成されます。"
 
 #: fit.cpp:149
+#, fuzzy
 msgid "Fit joints need the Open CASCADE kernel, which this build lacks."
 msgstr ""
+"フィットジョイントには Open CASCADE カーネルが必要ですが、このビルドには含ま"
+"れていません。"
 
 #: fit.cpp:178
+#, fuzzy
 msgctxt "group-name"
 msgid "fit-peg"
-msgstr ""
+msgstr "はめ合いピン"
 
 #: fit.cpp:178
+#, fuzzy
 msgctxt "group-name"
 msgid "fit-pocket"
-msgstr ""
+msgstr "はめ合いポケット"
 
 #: grab.cpp:77
+#, fuzzy
 msgid "grab: move the mouse; X/Y/Z lock an axis; type a distance"
-msgstr ""
+msgstr "グラブ: マウスで移動; X/Y/Z で軸を固定; 距離を入力"
 
 #: grab.cpp:87
+#, fuzzy
 msgid "grab: turn the joint with the mouse; type an angle"
-msgstr ""
+msgstr "グラブ: マウスでジョイントを回転; 角度を入力"
 
 #: grab.cpp:90
+#, fuzzy
 msgid "grab: slide the joint with the mouse; type a distance"
-msgstr ""
+msgstr "グラブ: マウスでジョイントをスライド; 距離を入力"
 
 #: grab.cpp:94
+#, fuzzy
 msgid "grab: move the joint with the mouse; X/Y/Z pick a motion; type a value"
-msgstr ""
+msgstr "グラブ: マウスでジョイントを動かす; X/Y/Z で動きを選択; 値を入力"
 
 #: graphicswin.cpp:43
 msgid "&File"
@@ -803,12 +864,14 @@ msgid "Export Triangle &Mesh..."
 msgstr "三角メッシュをエクスポート... (&M)"
 
 #: graphicswin.cpp:55
+#, fuzzy
 msgid "Export &Parts..."
-msgstr ""
+msgstr "部品をエクスポート... (&P)"
 
 #: graphicswin.cpp:56
+#, fuzzy
 msgid "Export Parts &List..."
-msgstr ""
+msgstr "部品表をエクスポート... (&L)"
 
 #: graphicswin.cpp:57
 msgid "Export &Surfaces..."
@@ -975,40 +1038,49 @@ msgid "&New Group"
 msgstr "グループ (&N)"
 
 #: graphicswin.cpp:114
+#, fuzzy
 msgid "New &Part"
-msgstr ""
+msgstr "新規部品 (&P)"
 
 #: graphicswin.cpp:115
+#, fuzzy
 msgid "&Revolute Joint"
-msgstr ""
+msgstr "回転ジョイント (&R)"
 
 #: graphicswin.cpp:116
+#, fuzzy
 msgid "S&lider Joint"
-msgstr ""
+msgstr "スライダージョイント (&L)"
 
 #: graphicswin.cpp:117
+#, fuzzy
 msgid "C&ylindrical Joint"
-msgstr ""
+msgstr "円筒ジョイント (&Y)"
 
 #: graphicswin.cpp:118
+#, fuzzy
 msgid "Pla&nar Joint"
-msgstr ""
+msgstr "平面ジョイント (&N)"
 
 #: graphicswin.cpp:119
+#, fuzzy
 msgid "&Ball Joint"
-msgstr ""
+msgstr "ボールジョイント (&B)"
 
 #: graphicswin.cpp:120
+#, fuzzy
 msgid "&Gear Coupling"
-msgstr ""
+msgstr "歯車連結 (&G)"
 
 #: graphicswin.cpp:121
+#, fuzzy
 msgid "&Fit Joint"
-msgstr ""
+msgstr "フィットジョイント (&F)"
 
 #: graphicswin.cpp:122
+#, fuzzy
 msgid "Spli&t Part"
-msgstr ""
+msgstr "部品を分割 (&T)"
 
 #: graphicswin.cpp:124
 msgid "Sketch In &3d"
@@ -1031,8 +1103,9 @@ msgid "E&xtrude"
 msgstr "押し出し (&x)"
 
 #: graphicswin.cpp:131
+#, fuzzy
 msgid "Extrude as a &Cut"
-msgstr ""
+msgstr "切り抜きとして押し出し (&C)"
 
 #: graphicswin.cpp:132
 msgid "&Helix"
@@ -1047,32 +1120,39 @@ msgid "Re&volve"
 msgstr "回転 (&v)"
 
 #: graphicswin.cpp:136
+#, fuzzy
 msgid "&Fillet Edges"
-msgstr ""
+msgstr "稜線にフィレット (&F)"
 
 #: graphicswin.cpp:137
+#, fuzzy
 msgid "&Chamfer Edges"
-msgstr ""
+msgstr "稜線に面取り (&C)"
 
 #: graphicswin.cpp:138
+#, fuzzy
 msgid "S&hell"
-msgstr ""
+msgstr "シェル (&H)"
 
 #: graphicswin.cpp:139
+#, fuzzy
 msgid "&Draft Faces"
-msgstr ""
+msgstr "面に抜き勾配 (&D)"
 
 #: graphicswin.cpp:140
+#, fuzzy
 msgid "H&ole"
-msgstr ""
+msgstr "穴 (&O)"
 
 #: graphicswin.cpp:141
+#, fuzzy
 msgid "Lo&ft"
-msgstr ""
+msgstr "ロフト (&F)"
 
 #: graphicswin.cpp:142
+#, fuzzy
 msgid "S&weep"
-msgstr ""
+msgstr "スイープ (&W)"
 
 #: graphicswin.cpp:144
 msgid "Link / Assemble..."
@@ -1255,16 +1335,19 @@ msgid "Show &Center of Mass"
 msgstr "重心を表示 (&C)"
 
 #: graphicswin.cpp:199
+#, fuzzy
 msgid "&Mass Properties"
-msgstr ""
+msgstr "質量特性 (&M)"
 
 #: graphicswin.cpp:200
+#, fuzzy
 msgid "&Parts List"
-msgstr ""
+msgstr "部品表 (&P)"
 
 #: graphicswin.cpp:201
+#, fuzzy
 msgid "&Design Pose"
-msgstr ""
+msgstr "設計時の姿勢 (&D)"
 
 #: graphicswin.cpp:203
 msgid "Show &Underconstrained Points"
@@ -1436,11 +1519,13 @@ msgstr ""
 "択してください。"
 
 #: group.cpp:163
+#, fuzzy
 msgctxt "group-name"
 msgid "sketch-in-3d"
-msgstr ""
+msgstr "三次元スケッチ"
 
 #: group.cpp:252
+#, fuzzy
 msgid ""
 "Bad selection for new sketch in workplane. This group can be created with:\n"
 "\n"
@@ -1452,6 +1537,14 @@ msgid ""
 "    * a face of the solid, and optionally a point (on the face, following "
 "it)\n"
 msgstr ""
+"作業平面で新規スケッチを作成するための選択が不適切です。このグループは次の方"
+"法で作成できます:\n"
+"\n"
+"    * 点 (点を通り、座標軸に直交)\n"
+"    * 点と2本の線分 (点を通り、線分に平行)\n"
+"    * 点と法線 (点を通り、法線に直交)\n"
+"    * 作業平面 (作業平面のコピー)\n"
+"    * ソリッドの面と、任意で点 (点を面上に、面に沿って)\n"
 
 #: group.cpp:271
 msgid ""
@@ -1462,9 +1555,10 @@ msgstr ""
 "アクティブにしてください。作業平面の法線方向へ押し出しを作成します。"
 
 #: group.cpp:280
+#, fuzzy
 msgctxt "group-name"
 msgid "extrude"
-msgstr ""
+msgstr "押し出し"
 
 #: group.cpp:287
 msgid "Lathe operation can only be applied to planar sketches."
@@ -1485,9 +1579,10 @@ msgstr ""
 "　* 線分 (直線を回転軸とします)\n"
 
 #: group.cpp:308
+#, fuzzy
 msgctxt "group-name"
 msgid "lathe"
-msgstr ""
+msgstr "周回"
 
 #: group.cpp:313
 msgid "Revolve operation can only be applied to planar sketches."
@@ -1508,9 +1603,10 @@ msgstr ""
 "　* 線分 (直線を回転軸とします)\n"
 
 #: group.cpp:336
+#, fuzzy
 msgctxt "group-name"
 msgid "revolve"
-msgstr ""
+msgstr "回転体"
 
 #: group.cpp:341
 msgid "Helix operation can only be applied to planar sketches."
@@ -1531,9 +1627,10 @@ msgstr ""
 "　* 線分 (直線を回転軸とします)\n"
 
 #: group.cpp:364
+#, fuzzy
 msgctxt "group-name"
 msgid "helix"
-msgstr ""
+msgstr "螺旋"
 
 #: group.cpp:377
 msgid ""
@@ -1551,126 +1648,175 @@ msgstr ""
 "ます)\n"
 
 #: group.cpp:390
+#, fuzzy
 msgctxt "group-name"
 msgid "rotate"
-msgstr ""
+msgstr "回転"
 
 #: group.cpp:401
+#, fuzzy
 msgctxt "group-name"
 msgid "translate"
-msgstr ""
+msgstr "平行移動"
 
 #: group.cpp:448
-#, c-format
+#, fuzzy, c-format
 msgid ""
 "Bad selection for a new %s group. Select edges of the solid (the lines and "
 "curves an extrusion, lathe, revolve, helix or pattern makes), or faces, for "
 "all their edges."
 msgstr ""
+"新規の %s グループの選択が不適切です。ソリッドの稜線 (押し出し、周回、回転、"
+"螺旋、パターンが作る線や曲線) を選択してください。面を選択した場合は、その全"
+"稜線が対象になります。"
 
 #: group.cpp:451
+#, fuzzy
 msgid "chamfer"
-msgstr ""
+msgstr "面取り"
 
 #: group.cpp:451
+#, fuzzy
 msgid "fillet"
-msgstr ""
+msgstr "フィレット"
 
 #: group.cpp:456
+#, fuzzy
 msgid ""
 "Fillets and chamfers need the Open CASCADE kernel, which this build lacks."
 msgstr ""
+"フィレットと面取りには Open CASCADE カーネルが必要ですが、このビルドには含ま"
+"れていません。"
 
 #: group.cpp:462
+#, fuzzy
 msgctxt "group-name"
 msgid "chamfer"
-msgstr ""
+msgstr "面取り"
 
 #: group.cpp:462
+#, fuzzy
 msgctxt "group-name"
 msgid "fillet"
-msgstr ""
+msgstr "フィレット"
 
 #: group.cpp:470
+#, fuzzy
 msgid ""
 "Bad selection for a new shell group. Select the faces of the solid to leave "
 "open, or nothing for a closed shell."
 msgstr ""
+"新規シェルグループの選択が不適切です。開いたままにするソリッドの面を選択して"
+"ください。何も選択しなければ閉じたシェルになります。"
 
 #: group.cpp:477
+#, fuzzy
 msgid "Shells need the Open CASCADE kernel, which this build lacks."
 msgstr ""
+"シェルには Open CASCADE カーネルが必要ですが、このビルドには含まれていませ"
+"ん。"
 
 #: group.cpp:483
+#, fuzzy
 msgid "There is no solid to make a shell of."
-msgstr ""
+msgstr "シェルを作成するソリッドがありません。"
 
 #: group.cpp:501
+#, fuzzy
 msgctxt "group-name"
 msgid "shell"
-msgstr ""
+msgstr "シェル"
 
 #: group.cpp:517
+#, fuzzy
 msgid ""
 "Bad selection for a new draft group. Select side faces of an extrusion; they "
 "taper about its sketch plane, along its direction."
 msgstr ""
+"新規の抜き勾配グループの選択が不適切です。押し出しの側面を選択してください。"
+"側面はスケッチ平面を基準に、押し出し方向に沿って傾斜します。"
 
 #: group.cpp:522
+#, fuzzy
 msgid "Drafts need the Open CASCADE kernel, which this build lacks."
 msgstr ""
+"抜き勾配には Open CASCADE カーネルが必要ですが、このビルドには含まれていませ"
+"ん。"
 
 #: group.cpp:527
+#, fuzzy
 msgctxt "group-name"
 msgid "draft"
-msgstr ""
+msgstr "抜き勾配"
 
 #: group.cpp:541
+#, fuzzy
 msgid ""
 "Bad selection for a new hole group. Select the hole centres: points in a "
 "workplane, such as a sketch on a face. The holes go into the face, against "
 "the workplane's normal."
 msgstr ""
+"新規の穴グループの選択が不適切です。穴の中心を選択してください: 作業平面上の"
+"点 (面に描いたスケッチなど) です。穴は作業平面の法線と逆向きに、面の中へ開け"
+"られます。"
 
 #: group.cpp:547
+#, fuzzy
 msgid "Holes need the Open CASCADE kernel, which this build lacks."
 msgstr ""
+"穴には Open CASCADE カーネルが必要ですが、このビルドには含まれていません。"
 
 #: group.cpp:555
+#, fuzzy
 msgctxt "group-name"
 msgid "hole"
-msgstr ""
+msgstr "穴"
 
 #: group.cpp:573
+#, fuzzy
 msgid ""
 "Bad selection for a new loft group. Select a curve of each profile, in "
 "order: two or more closed shapes, each in its own sketch."
 msgstr ""
+"新規ロフトグループの選択が不適切です。各断面の曲線を順に選択してください: そ"
+"れぞれ別々のスケッチにある、2つ以上の閉じた図形です。"
 
 #: group.cpp:578
+#, fuzzy
 msgid "Lofts need the Open CASCADE kernel, which this build lacks."
 msgstr ""
+"ロフトには Open CASCADE カーネルが必要ですが、このビルドには含まれていませ"
+"ん。"
 
 #: group.cpp:582
+#, fuzzy
 msgctxt "group-name"
 msgid "loft"
-msgstr ""
+msgstr "ロフト"
 
 #: group.cpp:604
+#, fuzzy
 msgid ""
 "Bad selection for a new sweep group. Select a curve of the profile (a closed "
 "shape in a sketch) first, then the path's curves, connected end to end, in "
 "another sketch."
 msgstr ""
+"新規スイープグループの選択が不適切です。まず断面 (スケッチ内の閉じた図形) の"
+"曲線を選択し、次に別のスケッチにあるパスの曲線を、端から端へつながるように選"
+"択してください。"
 
 #: group.cpp:610
+#, fuzzy
 msgid "Sweeps need the Open CASCADE kernel, which this build lacks."
 msgstr ""
+"スイープには Open CASCADE カーネルが必要ですが、このビルドには含まれていませ"
+"ん。"
 
 #: group.cpp:615
+#, fuzzy
 msgctxt "group-name"
 msgid "sweep"
-msgstr ""
+msgstr "スイープ"
 
 #: group.cpp:736
 msgid "(unnamed)"
@@ -1703,57 +1849,71 @@ msgid "Can't repeat more than 999 times."
 msgstr "999回を超えて繰り返すことはできません。"
 
 #: groupprops.cpp:113
+#, fuzzy
 msgid "The draft angle must be between -89 and 89 degrees, and not zero."
 msgstr ""
+"抜き勾配の角度は -89 度から 89 度までの範囲で、0 以外でなければなりません。"
 
 #: groupprops.cpp:130
+#, fuzzy
 msgid "The radius or distance must be greater than zero."
-msgstr ""
+msgstr "半径または距離は 0 より大きくなければなりません。"
 
 #: groupprops.cpp:172
+#, fuzzy
 msgid "This feature needs it; delete the group instead."
-msgstr ""
+msgstr "この機能に必要なため、代わりにグループを削除してください。"
 
 #: groupprops.cpp:192
+#, fuzzy
 msgid "The corner radius must be zero (sharp corners) or more."
-msgstr ""
+msgstr "角の半径は 0 (角を尖らせる) 以上でなければなりません。"
 
 #: groupprops.cpp:229
+#, fuzzy
 msgid "A thread needs a pitch smaller than its diameter."
-msgstr ""
+msgstr "ねじには、直径より小さいピッチが必要です。"
 
 #: groupprops.cpp:231
+#, fuzzy
 msgid "The hole's diameter must be greater than zero."
-msgstr ""
+msgstr "穴の直径は 0 より大きくなければなりません。"
 
 #: groupprops.cpp:233
+#, fuzzy
 msgid "The print clearance must be zero or more."
-msgstr ""
+msgstr "印刷時のクリアランスは 0 以上でなければなりません。"
 
 #: groupprops.cpp:235
+#, fuzzy
 msgid "The hole's depth must be zero (through all) or more."
-msgstr ""
+msgstr "穴の深さは 0 (貫通) 以上でなければなりません。"
 
 #: groupprops.cpp:237
+#, fuzzy
 msgid "The head's diameter must be greater than the hole's."
-msgstr ""
+msgstr "頭部の直径は穴の直径より大きくなければなりません。"
 
 #: groupprops.cpp:239
+#, fuzzy
 msgid "The counterbore's depth must be greater than zero."
-msgstr ""
+msgstr "座ぐりの深さは 0 より大きくなければなりません。"
 
 #: groupprops.cpp:242
+#, fuzzy
 msgid "The countersink's angle must be between 0 and 180 degrees."
-msgstr ""
+msgstr "皿穴の角度は 0 度から 180 度までの範囲でなければなりません。"
 
 #: groupprops.cpp:287
+#, fuzzy
 msgid "Write the thread as M4, M4x0.5, or none."
-msgstr ""
+msgstr "ねじは M4、M4x0.5、または無しと指定してください。"
 
 #: groupprops.cpp:292
-#, c-format
+#, fuzzy, c-format
 msgid "M%g has no standard coarse pitch; write it as M%gx<pitch>."
 msgstr ""
+"M%g には標準の並目ピッチがありません。M%gx<ピッチ> と指定してください。"
 
 #: groupprops.cpp:342
 msgid "Opacity must be between zero and one."
@@ -1764,91 +1924,118 @@ msgid "Text-formated STL files are not currently supported"
 msgstr "テキスト形式のSTLファイルは、いまのところサポートされていません。"
 
 #: joint.cpp:144
+#, fuzzy
 msgid ""
 "Pick something on each of two parts that revolute, slider or cylindrical "
 "joints move: the gears' pitch circles, or a pinion's and its rack."
 msgstr ""
+"回転・スライダー・円筒ジョイントで動く2つの部品それぞれで何かを選択してくださ"
+"い: 歯車のピッチ円、またはピニオンとそのラック。"
 
 #: joint.cpp:149
+#, fuzzy
 msgid "The two picks are moved by the same joint."
-msgstr ""
+msgstr "選んだ2つは同じジョイントで動かされています。"
 
 #: joint.cpp:154
+#, fuzzy
 msgid "Those two joints are coupled already."
-msgstr ""
+msgstr "それら2つのジョイントは既に連結されています。"
 
 #: joint.cpp:203
+#, fuzzy
 msgid "Select the ball joint's centre on each part: points, circles or arcs."
-msgstr ""
+msgstr "各部品でボールジョイントの中心を選択してください: 点、円、または円弧。"
 
 #: joint.cpp:209
+#, fuzzy
 msgid ""
 "Select the joint's plane on each part: faces, or lines along its normal."
-msgstr ""
+msgstr "各部品でジョイントの平面を選択してください: 面、または法線に沿った線。"
 
 #: joint.cpp:211
+#, fuzzy
 msgid ""
 "Select two axes for the joint, one on each part: line segments, circles, "
 "arcs or faces."
 msgstr ""
+"ジョイントの軸を2つ選択してください。各部品に1つずつです: 線分、円、円弧、ま"
+"たは面。"
 
 #: joint.cpp:218
+#, fuzzy
 msgid ""
 "The two picks are on the same part; a joint moves one part against another."
 msgstr ""
+"選んだ2つは同じ部品上にあります。ジョイントは部品同士を相対的に動かすもので"
+"す。"
 
 #: joint.cpp:234
+#, fuzzy
 msgid ""
 "The two centres aren't the same point; a ball joint turns about one centre."
 msgstr ""
+"2つの中心が同じ点ではありません。ボールジョイントは1つの中心を軸に回転しま"
+"す。"
 
 #: joint.cpp:239
+#, fuzzy
 msgid "The two planes aren't parallel."
-msgstr ""
+msgstr "2つの平面が平行ではありません。"
 
 #: joint.cpp:240
+#, fuzzy
 msgid "The two axes aren't parallel."
-msgstr ""
+msgstr "2つの軸が平行ではありません。"
 
 #: joint.cpp:245
+#, fuzzy
 msgid "The two axes aren't the same line; the joint turns about one axis."
 msgstr ""
+"2つの軸が同一直線上にありません。ジョイントは1つの軸を中心に回転します。"
 
 #: joint.cpp:249
-#, c-format
+#, fuzzy, c-format
 msgid "Part '%s' already has a joint to move it."
-msgstr ""
+msgstr "部品 '%s' には、既にこれを動かすジョイントがあります。"
 
 #: joint.cpp:434
+#, fuzzy
 msgid "Set the slide's limits first: the sweep runs between them."
 msgstr ""
+"先にスライダーの可動範囲を設定してください: 掃引はその範囲内で行われます。"
 
 #: joint.cpp:452
+#, fuzzy
 msgid "The joint moves no solid past another; there is nothing to sweep."
 msgstr ""
+"このジョイントはソリッド同士を重ねて動かさないため、掃引するものがありませ"
+"ん。"
 
 #: joint.cpp:489
+#, fuzzy
 msgid "The clearance sweep needs the Open CASCADE kernel's solids."
-msgstr ""
+msgstr "クリアランス掃引には Open CASCADE カーネルのソリッドが必要です。"
 
 #: joint.cpp:540
-#, c-format
+#, fuzzy, c-format
 msgid "Minimum gap %s mm at %s."
-msgstr ""
+msgstr "最小隙間 %s mm、%s の位置。"
 
 #: joint.cpp:543
+#, fuzzy
 msgid "The parts touch or overlap"
-msgstr ""
+msgstr "部品が接触しているか、重なっています"
 
 #: joint.cpp:548
-#, c-format
+#, fuzzy, c-format
 msgid "at %s"
-msgstr ""
+msgstr "%s の位置"
 
 #: joint.cpp:549
-#, c-format
+#, fuzzy, c-format
 msgid "from %s to %s"
-msgstr ""
+msgstr "%s から %s まで"
 
 #: modify.cpp:254
 msgid "Must be sketching in workplane to create tangent arc."
@@ -2055,9 +2242,10 @@ msgid "ALL"
 msgstr "(すべてのファイル)"
 
 #: platform/gui.cpp:91
+#, fuzzy
 msgctxt "file-type"
 msgid "STEP solid"
-msgstr ""
+msgstr "STEP ソリッド"
 
 #: platform/gui.cpp:92
 msgctxt "file-type"
@@ -2100,9 +2288,10 @@ msgid "VRML text file"
 msgstr "VRML テキストファイル"
 
 #: platform/gui.cpp:106
+#, fuzzy
 msgctxt "file-type"
 msgid "Quad mesh for Blender, with creases (USD)"
-msgstr ""
+msgstr "Blender 用の四角形メッシュ、折り目付き (USD)"
 
 #: platform/gui.cpp:110 platform/gui.cpp:117 platform/gui.cpp:124
 msgctxt "file-type"
@@ -2175,8 +2364,9 @@ msgid "Bad value: autosave interval should be positive"
 msgstr "値が誤っています。オートセーブの間隔は正の値を指定してください。"
 
 #: preferences.cpp:186
+#, fuzzy
 msgid "The density must be greater than zero."
-msgstr ""
+msgstr "密度は 0 より大きくなければなりません。"
 
 #: preferences.cpp:199
 msgid "Bad format: specify coordinates as x, y, z"
@@ -2267,24 +2457,27 @@ msgstr ""
 "にできます。"
 
 #: solvespace.cpp:834
+#, fuzzy
 msgctxt "file-type"
 msgid "STL mesh, one per part"
-msgstr ""
+msgstr "STL メッシュ、部品ごとに1つ"
 
 #: solvespace.cpp:835
+#, fuzzy
 msgctxt "file-type"
 msgid "3MF, an object per part"
-msgstr ""
+msgstr "3MF、部品ごとのオブジェクト"
 
 #: solvespace.cpp:836
+#, fuzzy
 msgctxt "file-type"
 msgid "STEP file, one per part"
-msgstr ""
+msgstr "STEP ファイル、部品ごとに1つ"
 
 #: solvespace.cpp:844
-#, c-format
+#, fuzzy, c-format
 msgid "Exported %d parts:%s"
-msgstr ""
+msgstr "%d 個の部品を書き出しました:%s"
 
 #: solvespace.cpp:893
 #, c-format
@@ -2475,7 +2668,7 @@ msgstr ""
 "%d 個の問題のあるエッジが見つかりました。%s"
 
 #: solvespace.cpp:1182
-#, c-format
+#, fuzzy, c-format
 msgid ""
 "This is SolveSpace version %s.\n"
 "\n"
@@ -2490,66 +2683,97 @@ msgid ""
 "\n"
 "© 2008-%d Jonathan Westhues and other authors.\n"
 msgstr ""
+"これは SolveSpace バージョン %s です。\n"
+"\n"
+"詳細は http://solvespace.com/ をご覧ください。\n"
+"\n"
+"SolveSpace はフリーソフトウェアです。GNU 一般公衆利用許諾書 (GPL) バージョン "
+"3 以降の条件に従い、自由に改変および/または再配布できます。\n"
+"\n"
+"本ソフトウェアには一切の保証がありません。適用法で許される範囲で、詳細は "
+"http://gnu.org/licenses/ をご覧ください。\n"
+"\n"
+"© 2008-%d Jonathan Westhues and other authors.\n"
 
 #: solvespace.cpp:1351
+#, fuzzy
 msgid "There is no solid in the active group."
-msgstr ""
+msgstr "アクティブなグループにソリッドがありません。"
 
 #: solvespace.cpp:1359
-#, c-format
+#, fuzzy, c-format
 msgid ""
 "Volume:  %s\n"
 "Surface area:  %s\n"
 "Mass:  %s (%s)\n"
 "Center of mass:  (%s, %s, %s)"
 msgstr ""
+"体積:  %s\n"
+"表面積:  %s\n"
+"質量:  %s (%s)\n"
+"重心:  (%s, %s, %s)"
 
 #: solvespace.cpp:1404
+#, fuzzy
 msgid "A part's name can't be empty."
-msgstr ""
+msgstr "部品の名前は空にできません。"
 
 #: solvespace.cpp:1490
+#, fuzzy
 msgid "No part has a solid yet."
-msgstr ""
+msgstr "まだソリッドを持つ部品がありません。"
 
 #: solvespace.cpp:1494
-#, c-format
+#, fuzzy, c-format
 msgid "%s%s:  %s, %s, %.2f g;  %s x %s x %s\n"
-msgstr ""
+msgstr "%s%s:  %s、%s、%.2f g;  %s x %s x %s\n"
 
 #: solvespace.cpp:1501
-#, c-format
+#, fuzzy, c-format
 msgid ""
 "\n"
 "%d parts, %.2f g in all."
 msgstr ""
+"\n"
+"部品 %d 個、合計 %.2f g。"
 
 #: solvespace.cpp:1603
+#, fuzzy
 msgid ""
 "Parts export as STL, 3MF or STEP; choose a .stl, .3mf or .step file name."
 msgstr ""
+"部品は STL、3MF、STEP で書き出せます。.stl、.3mf、.step のファイル名を選んで"
+"ください。"
 
 #: solvespace.cpp:1638
-#, c-format
+#, fuzzy, c-format
 msgid "STEP needs the Open CASCADE kernel; part '%s' was not written."
 msgstr ""
+"STEP には Open CASCADE カーネルが必要です。部品 '%s' は書き出しませんでした。"
 
 #: split.cpp:33
+#, fuzzy
 msgid "Select the plane to split the part by: a workplane or a flat face."
-msgstr ""
+msgstr "部品を分割する平面を選択してください: 作業平面または平らな面。"
 
 #: split.cpp:39
+#, fuzzy
 msgid "Activate a group of the part to split: its solid is what is split."
 msgstr ""
+"分割する部品のグループをアクティブにしてください。分割されるのはそのソリッド"
+"です。"
 
 #: split.cpp:43
+#, fuzzy
 msgid "Splitting needs the Open CASCADE kernel, which this build lacks."
 msgstr ""
+"分割には Open CASCADE カーネルが必要ですが、このビルドには含まれていません。"
 
 #: split.cpp:73
+#, fuzzy
 msgctxt "group-name"
 msgid "split"
-msgstr ""
+msgstr "分割"
 
 #: style.cpp:188
 msgid ""

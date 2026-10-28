@@ -622,12 +622,14 @@ msgid "Active group mesh is empty; nothing to export."
 msgstr "活动组网格为空；没有能导出的。"
 
 #: export.cpp:838
+#, fuzzy
 msgid "A quad mesh needs the Open CASCADE kernel and a solid it made."
-msgstr ""
+msgstr "四边形网格需要 Open CASCADE 内核，以及由它生成的实体。"
 
 #: export3mf.cpp:180
+#, fuzzy
 msgid "The 3MF file would be over 4 GB; it was not written."
-msgstr ""
+msgstr "3MF 文件将超过 4 GB，因此未写入。"
 
 #: exportvector.cpp:338
 msgid "freehand lines were replaced with continuous lines"
@@ -703,52 +705,65 @@ msgid "&Cancel"
 msgstr "取消(&C)"
 
 #: fit.cpp:86
-#, c-format
+#, fuzzy, c-format
 msgid "The fit '%s' is used by the fit joint '%s'."
-msgstr ""
+msgstr "配合 '%s' 正被配合关节 '%s' 使用。"
 
 #: fit.cpp:134
+#, fuzzy
 msgid ""
 "A fit joint is made from the active sketch: a closed profile in a workplane, "
 "drawn where the parts meet. Sketch it, then pick something on the male part "
 "and on the female part."
 msgstr ""
+"配合关节由当前草图创建：在工作面中绘制的闭合轮廓，位于零件接触处。先绘制草"
+"图，然后在凸件零件和凹件零件上各选择一个对象。"
 
 #: fit.cpp:144
+#, fuzzy
 msgid ""
 "Pick something on the male part, then on the female part: the peg goes on "
 "the first, the pocket in the second."
 msgstr ""
+"先在凸件零件上选择一个对象，再在凹件零件上选择：凸台生成在第一个零件上，凹槽"
+"生成在第二个零件上。"
 
 #: fit.cpp:149
+#, fuzzy
 msgid "Fit joints need the Open CASCADE kernel, which this build lacks."
-msgstr ""
+msgstr "配合关节需要 Open CASCADE 内核，而此版本不包含该内核。"
 
 #: fit.cpp:178
+#, fuzzy
 msgctxt "group-name"
 msgid "fit-peg"
-msgstr ""
+msgstr "配合凸台"
 
 #: fit.cpp:178
+#, fuzzy
 msgctxt "group-name"
 msgid "fit-pocket"
-msgstr ""
+msgstr "配合凹槽"
 
 #: grab.cpp:77
+#, fuzzy
 msgid "grab: move the mouse; X/Y/Z lock an axis; type a distance"
-msgstr ""
+msgstr "抓取: 移动鼠标; X/Y/Z 锁定轴; 输入距离"
 
 #: grab.cpp:87
+#, fuzzy
 msgid "grab: turn the joint with the mouse; type an angle"
-msgstr ""
+msgstr "抓取: 用鼠标转动关节; 输入角度"
 
 #: grab.cpp:90
+#, fuzzy
 msgid "grab: slide the joint with the mouse; type a distance"
-msgstr ""
+msgstr "抓取: 用鼠标滑动关节; 输入距离"
 
 #: grab.cpp:94
+#, fuzzy
 msgid "grab: move the joint with the mouse; X/Y/Z pick a motion; type a value"
-msgstr ""
+msgstr "抓取: 用鼠标移动关节; X/Y/Z 选择运动; 输入数值"
 
 #: graphicswin.cpp:43
 msgid "&File"
@@ -795,12 +810,14 @@ msgid "Export Triangle &Mesh..."
 msgstr "导出三角网格...(&M)"
 
 #: graphicswin.cpp:55
+#, fuzzy
 msgid "Export &Parts..."
-msgstr ""
+msgstr "导出零件...(&P)"
 
 #: graphicswin.cpp:56
+#, fuzzy
 msgid "Export Parts &List..."
-msgstr ""
+msgstr "导出零件表...(&L)"
 
 #: graphicswin.cpp:57
 msgid "Export &Surfaces..."
@@ -967,40 +984,49 @@ msgid "&New Group"
 msgstr "新建组(&N)"
 
 #: graphicswin.cpp:114
+#, fuzzy
 msgid "New &Part"
-msgstr ""
+msgstr "新建零件(&P)"
 
 #: graphicswin.cpp:115
+#, fuzzy
 msgid "&Revolute Joint"
-msgstr ""
+msgstr "旋转关节(&R)"
 
 #: graphicswin.cpp:116
+#, fuzzy
 msgid "S&lider Joint"
-msgstr ""
+msgstr "滑块关节(&L)"
 
 #: graphicswin.cpp:117
+#, fuzzy
 msgid "C&ylindrical Joint"
-msgstr ""
+msgstr "圆柱关节(&Y)"
 
 #: graphicswin.cpp:118
+#, fuzzy
 msgid "Pla&nar Joint"
-msgstr ""
+msgstr "平面关节(&N)"
 
 #: graphicswin.cpp:119
+#, fuzzy
 msgid "&Ball Joint"
-msgstr ""
+msgstr "球关节(&B)"
 
 #: graphicswin.cpp:120
+#, fuzzy
 msgid "&Gear Coupling"
-msgstr ""
+msgstr "齿轮耦合(&G)"
 
 #: graphicswin.cpp:121
+#, fuzzy
 msgid "&Fit Joint"
-msgstr ""
+msgstr "配合关节(&F)"
 
 #: graphicswin.cpp:122
+#, fuzzy
 msgid "Spli&t Part"
-msgstr ""
+msgstr "拆分零件(&T)"
 
 #: graphicswin.cpp:124
 msgid "Sketch In &3d"
@@ -1023,8 +1049,9 @@ msgid "E&xtrude"
 msgstr "挤出(&E)"
 
 #: graphicswin.cpp:131
+#, fuzzy
 msgid "Extrude as a &Cut"
-msgstr ""
+msgstr "挤出切除(&C)"
 
 #: graphicswin.cpp:132
 msgid "&Helix"
@@ -1039,32 +1066,39 @@ msgid "Re&volve"
 msgstr "扫略(&V)"
 
 #: graphicswin.cpp:136
+#, fuzzy
 msgid "&Fillet Edges"
-msgstr ""
+msgstr "圆角边(&F)"
 
 #: graphicswin.cpp:137
+#, fuzzy
 msgid "&Chamfer Edges"
-msgstr ""
+msgstr "倒角边(&C)"
 
 #: graphicswin.cpp:138
+#, fuzzy
 msgid "S&hell"
-msgstr ""
+msgstr "抽壳(&H)"
 
 #: graphicswin.cpp:139
+#, fuzzy
 msgid "&Draft Faces"
-msgstr ""
+msgstr "拔模面(&D)"
 
 #: graphicswin.cpp:140
+#, fuzzy
 msgid "H&ole"
-msgstr ""
+msgstr "孔(&O)"
 
 #: graphicswin.cpp:141
+#, fuzzy
 msgid "Lo&ft"
-msgstr ""
+msgstr "放样(&F)"
 
 #: graphicswin.cpp:142
+#, fuzzy
 msgid "S&weep"
-msgstr ""
+msgstr "扫掠(&W)"
 
 #: graphicswin.cpp:144
 msgid "Link / Assemble..."
@@ -1247,16 +1281,19 @@ msgid "Show &Center of Mass"
 msgstr "显示质心(&C)"
 
 #: graphicswin.cpp:199
+#, fuzzy
 msgid "&Mass Properties"
-msgstr ""
+msgstr "质量属性(&M)"
 
 #: graphicswin.cpp:200
+#, fuzzy
 msgid "&Parts List"
-msgstr ""
+msgstr "零件表(&P)"
 
 #: graphicswin.cpp:201
+#, fuzzy
 msgid "&Design Pose"
-msgstr ""
+msgstr "设计姿态(&D)"
 
 #: graphicswin.cpp:203
 msgid "Show &Underconstrained Points"
@@ -1422,6 +1459,7 @@ msgid "sketch-in-3d"
 msgstr "三维草图"
 
 #: group.cpp:252
+#, fuzzy
 msgid ""
 "Bad selection for new sketch in workplane. This group can be created with:\n"
 "\n"
@@ -1433,6 +1471,13 @@ msgid ""
 "    * a face of the solid, and optionally a point (on the face, following "
 "it)\n"
 msgstr ""
+"在工作面中新建草图的选择无效。此组可通过以下方式创建:\n"
+"\n"
+"    * 一个点（过该点，与坐标轴正交）\n"
+"    * 一个点和两条线段（过该点，与这些线平行）\n"
+"    * 一个点和一个法线（过该点，与法线正交）\n"
+"    * 一个工作面（工作面的副本）\n"
+"    * 实体的一个面，以及可选的一个点（位于该面上，随面移动）\n"
 
 #: group.cpp:271
 msgid ""
@@ -1536,116 +1581,149 @@ msgid "translate"
 msgstr "平移"
 
 #: group.cpp:448
-#, c-format
+#, fuzzy, c-format
 msgid ""
 "Bad selection for a new %s group. Select edges of the solid (the lines and "
 "curves an extrusion, lathe, revolve, helix or pattern makes), or faces, for "
 "all their edges."
 msgstr ""
+"新建 %s 组的选择无效。请选择实体的边（挤出、转圈、扫略、螺旋或阵列所生成的直"
+"线和曲线），或选择面（将取其全部边）。"
 
 #: group.cpp:451
+#, fuzzy
 msgid "chamfer"
-msgstr ""
+msgstr "倒角"
 
 #: group.cpp:451
+#, fuzzy
 msgid "fillet"
-msgstr ""
+msgstr "圆角"
 
 #: group.cpp:456
+#, fuzzy
 msgid ""
 "Fillets and chamfers need the Open CASCADE kernel, which this build lacks."
-msgstr ""
+msgstr "圆角和倒角需要 Open CASCADE 内核，而此版本不包含该内核。"
 
 #: group.cpp:462
+#, fuzzy
 msgctxt "group-name"
 msgid "chamfer"
-msgstr ""
+msgstr "倒角"
 
 #: group.cpp:462
+#, fuzzy
 msgctxt "group-name"
 msgid "fillet"
-msgstr ""
+msgstr "圆角"
 
 #: group.cpp:470
+#, fuzzy
 msgid ""
 "Bad selection for a new shell group. Select the faces of the solid to leave "
 "open, or nothing for a closed shell."
 msgstr ""
+"新建抽壳组的选择无效。请选择实体上要保持开口的面；若要闭合抽壳，则不选择任何"
+"面。"
 
 #: group.cpp:477
+#, fuzzy
 msgid "Shells need the Open CASCADE kernel, which this build lacks."
-msgstr ""
+msgstr "抽壳需要 Open CASCADE 内核，而此版本不包含该内核。"
 
 #: group.cpp:483
+#, fuzzy
 msgid "There is no solid to make a shell of."
-msgstr ""
+msgstr "没有可用于抽壳的实体。"
 
 #: group.cpp:501
+#, fuzzy
 msgctxt "group-name"
 msgid "shell"
-msgstr ""
+msgstr "抽壳"
 
 #: group.cpp:517
+#, fuzzy
 msgid ""
 "Bad selection for a new draft group. Select side faces of an extrusion; they "
 "taper about its sketch plane, along its direction."
 msgstr ""
+"新建拔模组的选择无效。请选择挤出体的侧面；它们将沿挤出方向，绕其草图平面倾"
+"斜。"
 
 #: group.cpp:522
+#, fuzzy
 msgid "Drafts need the Open CASCADE kernel, which this build lacks."
-msgstr ""
+msgstr "拔模需要 Open CASCADE 内核，而此版本不包含该内核。"
 
 #: group.cpp:527
+#, fuzzy
 msgctxt "group-name"
 msgid "draft"
-msgstr ""
+msgstr "拔模"
 
 #: group.cpp:541
+#, fuzzy
 msgid ""
 "Bad selection for a new hole group. Select the hole centres: points in a "
 "workplane, such as a sketch on a face. The holes go into the face, against "
 "the workplane's normal."
 msgstr ""
+"新建孔组的选择无效。请选择孔的中心：工作面中的点，例如在面上绘制的草图中的"
+"点。孔沿工作面法线的反方向钻入该面。"
 
 #: group.cpp:547
+#, fuzzy
 msgid "Holes need the Open CASCADE kernel, which this build lacks."
-msgstr ""
+msgstr "孔需要 Open CASCADE 内核，而此版本不包含该内核。"
 
 #: group.cpp:555
+#, fuzzy
 msgctxt "group-name"
 msgid "hole"
-msgstr ""
+msgstr "孔"
 
 #: group.cpp:573
+#, fuzzy
 msgid ""
 "Bad selection for a new loft group. Select a curve of each profile, in "
 "order: two or more closed shapes, each in its own sketch."
 msgstr ""
+"新建放样组的选择无效。请按顺序选择每个截面的一条曲线：两个或更多闭合图形，每"
+"个位于各自的草图中。"
 
 #: group.cpp:578
+#, fuzzy
 msgid "Lofts need the Open CASCADE kernel, which this build lacks."
-msgstr ""
+msgstr "放样需要 Open CASCADE 内核，而此版本不包含该内核。"
 
 #: group.cpp:582
+#, fuzzy
 msgctxt "group-name"
 msgid "loft"
-msgstr ""
+msgstr "放样"
 
 #: group.cpp:604
+#, fuzzy
 msgid ""
 "Bad selection for a new sweep group. Select a curve of the profile (a closed "
 "shape in a sketch) first, then the path's curves, connected end to end, in "
 "another sketch."
 msgstr ""
+"新建扫掠组的选择无效。请先选择截面（草图中的闭合图形）的一条曲线，然后在另一"
+"个草图中选择路径的曲线，且首尾相连。"
 
 #: group.cpp:610
+#, fuzzy
 msgid "Sweeps need the Open CASCADE kernel, which this build lacks."
-msgstr ""
+msgstr "扫掠需要 Open CASCADE 内核，而此版本不包含该内核。"
 
 #: group.cpp:615
+#, fuzzy
 msgctxt "group-name"
 msgid "sweep"
-msgstr ""
+msgstr "扫掠"
 
 #: group.cpp:736
 msgid "(unnamed)"
@@ -1676,57 +1754,69 @@ msgid "Can't repeat more than 999 times."
 msgstr "不能重复 999 次以上。"
 
 #: groupprops.cpp:113
+#, fuzzy
 msgid "The draft angle must be between -89 and 89 degrees, and not zero."
-msgstr ""
+msgstr "拔模角度必须在 -89 到 89 度之间，且不能为零。"
 
 #: groupprops.cpp:130
+#, fuzzy
 msgid "The radius or distance must be greater than zero."
-msgstr ""
+msgstr "半径或距离必须大于零。"
 
 #: groupprops.cpp:172
+#, fuzzy
 msgid "This feature needs it; delete the group instead."
-msgstr ""
+msgstr "此特征需要它；请改为删除该组。"
 
 #: groupprops.cpp:192
+#, fuzzy
 msgid "The corner radius must be zero (sharp corners) or more."
-msgstr ""
+msgstr "拐角半径必须为零（尖角）或更大。"
 
 #: groupprops.cpp:229
+#, fuzzy
 msgid "A thread needs a pitch smaller than its diameter."
-msgstr ""
+msgstr "螺纹的螺距必须小于其直径。"
 
 #: groupprops.cpp:231
+#, fuzzy
 msgid "The hole's diameter must be greater than zero."
-msgstr ""
+msgstr "孔的直径必须大于零。"
 
 #: groupprops.cpp:233
+#, fuzzy
 msgid "The print clearance must be zero or more."
-msgstr ""
+msgstr "打印间隙必须为零或更大。"
 
 #: groupprops.cpp:235
+#, fuzzy
 msgid "The hole's depth must be zero (through all) or more."
-msgstr ""
+msgstr "孔深必须为零（贯穿）或更大。"
 
 #: groupprops.cpp:237
+#, fuzzy
 msgid "The head's diameter must be greater than the hole's."
-msgstr ""
+msgstr "沉头直径必须大于孔径。"
 
 #: groupprops.cpp:239
+#, fuzzy
 msgid "The counterbore's depth must be greater than zero."
-msgstr ""
+msgstr "沉孔深度必须大于零。"
 
 #: groupprops.cpp:242
+#, fuzzy
 msgid "The countersink's angle must be between 0 and 180 degrees."
-msgstr ""
+msgstr "埋头孔角度必须在 0 到 180 度之间。"
 
 #: groupprops.cpp:287
+#, fuzzy
 msgid "Write the thread as M4, M4x0.5, or none."
-msgstr ""
+msgstr "螺纹请写作 M4、M4x0.5，或留空。"
 
 #: groupprops.cpp:292
-#, c-format
+#, fuzzy, c-format
 msgid "M%g has no standard coarse pitch; write it as M%gx<pitch>."
-msgstr ""
+msgstr "M%g 没有标准粗牙螺距；请写作 M%gx<螺距>。"
 
 #: groupprops.cpp:342
 msgid "Opacity must be between zero and one."
@@ -1737,91 +1827,108 @@ msgid "Text-formated STL files are not currently supported"
 msgstr "目前不支持文本格式的STL文件"
 
 #: joint.cpp:144
+#, fuzzy
 msgid ""
 "Pick something on each of two parts that revolute, slider or cylindrical "
 "joints move: the gears' pitch circles, or a pinion's and its rack."
 msgstr ""
+"分别在两个零件上选择旋转、滑块或圆柱关节可带动的对象：齿轮的节圆，或小齿轮与"
+"其齿条。"
 
 #: joint.cpp:149
+#, fuzzy
 msgid "The two picks are moved by the same joint."
-msgstr ""
+msgstr "所选的两个对象由同一关节带动。"
 
 #: joint.cpp:154
+#, fuzzy
 msgid "Those two joints are coupled already."
-msgstr ""
+msgstr "这两个关节已经耦合。"
 
 #: joint.cpp:203
+#, fuzzy
 msgid "Select the ball joint's centre on each part: points, circles or arcs."
-msgstr ""
+msgstr "分别在每个零件上选择球关节的中心：点、圆或圆弧。"
 
 #: joint.cpp:209
+#, fuzzy
 msgid ""
 "Select the joint's plane on each part: faces, or lines along its normal."
-msgstr ""
+msgstr "分别在每个零件上选择关节的平面：面，或沿其法线的直线。"
 
 #: joint.cpp:211
+#, fuzzy
 msgid ""
 "Select two axes for the joint, one on each part: line segments, circles, "
 "arcs or faces."
-msgstr ""
+msgstr "为关节选择两条轴线，每个零件各一条：线段、圆、圆弧或面。"
 
 #: joint.cpp:218
+#, fuzzy
 msgid ""
 "The two picks are on the same part; a joint moves one part against another."
-msgstr ""
+msgstr "所选的两个对象位于同一零件上；关节是让一个零件相对另一个零件运动。"
 
 #: joint.cpp:234
+#, fuzzy
 msgid ""
 "The two centres aren't the same point; a ball joint turns about one centre."
-msgstr ""
+msgstr "两个中心不是同一点；球关节绕一个中心转动。"
 
 #: joint.cpp:239
+#, fuzzy
 msgid "The two planes aren't parallel."
-msgstr ""
+msgstr "两个平面不平行。"
 
 #: joint.cpp:240
+#, fuzzy
 msgid "The two axes aren't parallel."
-msgstr ""
+msgstr "两条轴线不平行。"
 
 #: joint.cpp:245
+#, fuzzy
 msgid "The two axes aren't the same line; the joint turns about one axis."
-msgstr ""
+msgstr "两条轴线不在同一直线上；关节绕一条轴线转动。"
 
 #: joint.cpp:249
-#, c-format
+#, fuzzy, c-format
 msgid "Part '%s' already has a joint to move it."
-msgstr ""
+msgstr "零件 '%s' 已有用于带动它的关节。"
 
 #: joint.cpp:434
+#, fuzzy
 msgid "Set the slide's limits first: the sweep runs between them."
-msgstr ""
+msgstr "请先设置滑块的范围：扫描在此范围内进行。"
 
 #: joint.cpp:452
+#, fuzzy
 msgid "The joint moves no solid past another; there is nothing to sweep."
-msgstr ""
+msgstr "该关节不会使实体相互穿越运动；没有可扫描的内容。"
 
 #: joint.cpp:489
+#, fuzzy
 msgid "The clearance sweep needs the Open CASCADE kernel's solids."
-msgstr ""
+msgstr "间隙扫描需要 Open CASCADE 内核的实体。"
 
 #: joint.cpp:540
-#, c-format
+#, fuzzy, c-format
 msgid "Minimum gap %s mm at %s."
-msgstr ""
+msgstr "最小间隙 %s mm，位于 %s。"
 
 #: joint.cpp:543
+#, fuzzy
 msgid "The parts touch or overlap"
-msgstr ""
+msgstr "零件接触或重叠"
 
 #: joint.cpp:548
-#, c-format
+#, fuzzy, c-format
 msgid "at %s"
-msgstr ""
+msgstr "%s 处"
 
 #: joint.cpp:549
-#, c-format
+#, fuzzy, c-format
 msgid "from %s to %s"
-msgstr ""
+msgstr "从 %s 到 %s"
 
 #: modify.cpp:254
 msgid "Must be sketching in workplane to create tangent arc."
@@ -2013,9 +2120,10 @@ msgid "ALL"
 msgstr "全部"
 
 #: platform/gui.cpp:91
+#, fuzzy
 msgctxt "file-type"
 msgid "STEP solid"
-msgstr ""
+msgstr "STEP 实体"
 
 #: platform/gui.cpp:92
 msgctxt "file-type"
@@ -2058,9 +2166,10 @@ msgid "VRML text file"
 msgstr "VRML文本文件"
 
 #: platform/gui.cpp:106
+#, fuzzy
 msgctxt "file-type"
 msgid "Quad mesh for Blender, with creases (USD)"
-msgstr ""
+msgstr "用于 Blender 的四边形网格，带折痕 (USD)"
 
 #: platform/gui.cpp:110 platform/gui.cpp:117 platform/gui.cpp:124
 msgctxt "file-type"
@@ -2133,8 +2242,9 @@ msgid "Bad value: autosave interval should be positive"
 msgstr "值错误：自动保存间隔应为正"
 
 #: preferences.cpp:186
+#, fuzzy
 msgid "The density must be greater than zero."
-msgstr ""
+msgstr "密度必须大于零。"
 
 #: preferences.cpp:199
 msgid "Bad format: specify coordinates as x, y, z"
@@ -2225,24 +2335,27 @@ msgstr ""
 "来隐藏它们。"
 
 #: solvespace.cpp:834
+#, fuzzy
 msgctxt "file-type"
 msgid "STL mesh, one per part"
-msgstr ""
+msgstr "STL 网格，每个零件一个"
 
 #: solvespace.cpp:835
+#, fuzzy
 msgctxt "file-type"
 msgid "3MF, an object per part"
-msgstr ""
+msgstr "3MF，每个零件一个对象"
 
 #: solvespace.cpp:836
+#, fuzzy
 msgctxt "file-type"
 msgid "STEP file, one per part"
-msgstr ""
+msgstr "STEP 文件，每个零件一个"
 
 #: solvespace.cpp:844
-#, c-format
+#, fuzzy, c-format
 msgid "Exported %d parts:%s"
-msgstr ""
+msgstr "已导出 %d 个零件:%s"
 
 #: solvespace.cpp:893
 #, c-format
@@ -2453,64 +2566,78 @@ msgstr ""
 "© 2008-%d Jonathan Westhues等作者\n"
 
 #: solvespace.cpp:1351
+#, fuzzy
 msgid "There is no solid in the active group."
-msgstr ""
+msgstr "活动组中没有实体。"
 
 #: solvespace.cpp:1359
-#, c-format
+#, fuzzy, c-format
 msgid ""
 "Volume:  %s\n"
 "Surface area:  %s\n"
 "Mass:  %s (%s)\n"
 "Center of mass:  (%s, %s, %s)"
 msgstr ""
+"体积:  %s\n"
+"表面积:  %s\n"
+"质量:  %s (%s)\n"
+"质心:  (%s, %s, %s)"
 
 #: solvespace.cpp:1404
+#, fuzzy
 msgid "A part's name can't be empty."
-msgstr ""
+msgstr "零件名称不能为空。"
 
 #: solvespace.cpp:1490
+#, fuzzy
 msgid "No part has a solid yet."
-msgstr ""
+msgstr "还没有零件具有实体。"
 
 #: solvespace.cpp:1494
-#, c-format
+#, fuzzy, c-format
 msgid "%s%s:  %s, %s, %.2f g;  %s x %s x %s\n"
-msgstr ""
+msgstr "%s%s:  %s，%s，%.2f g;  %s x %s x %s\n"
 
 #: solvespace.cpp:1501
-#, c-format
+#, fuzzy, c-format
 msgid ""
 "\n"
 "%d parts, %.2f g in all."
 msgstr ""
+"\n"
+"共 %d 个零件，合计 %.2f g。"
 
 #: solvespace.cpp:1603
+#, fuzzy
 msgid ""
 "Parts export as STL, 3MF or STEP; choose a .stl, .3mf or .step file name."
-msgstr ""
+msgstr "零件可导出为 STL、3MF 或 STEP；请选择 .stl、.3mf 或 .step 文件名。"
 
 #: solvespace.cpp:1638
-#, c-format
+#, fuzzy, c-format
 msgid "STEP needs the Open CASCADE kernel; part '%s' was not written."
-msgstr ""
+msgstr "STEP 需要 Open CASCADE 内核；零件 '%s' 未写入。"
 
 #: split.cpp:33
+#, fuzzy
 msgid "Select the plane to split the part by: a workplane or a flat face."
-msgstr ""
+msgstr "选择用于拆分零件的平面：工作面或平面。"
 
 #: split.cpp:39
+#, fuzzy
 msgid "Activate a group of the part to split: its solid is what is split."
-msgstr ""
+msgstr "激活要拆分零件的一个组：拆分的是其实体。"
 
 #: split.cpp:43
+#, fuzzy
 msgid "Splitting needs the Open CASCADE kernel, which this build lacks."
-msgstr ""
+msgstr "拆分需要 Open CASCADE 内核，而此版本不包含该内核。"
 
 #: split.cpp:73
+#, fuzzy
 msgctxt "group-name"
 msgid "split"
-msgstr ""
+msgstr "拆分"
 
 #: style.cpp:188
 msgid ""
