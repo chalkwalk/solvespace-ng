@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: SolveSpace 3.0\n"
 "Report-Msgid-Bugs-To: phkahler@gmail.com\n"
-"POT-Creation-Date: 2026-10-28 15:31-0700\n"
+"POT-Creation-Date: 2026-10-28 15:53-0700\n"
 "PO-Revision-Date: 2025-01-26 21:48+0100\n"
 "Last-Translator: whitequark <whitequark@whitequark.org>\n"
 "Language-Team: none\n"
@@ -1824,19 +1824,19 @@ msgstr "balayage"
 msgid "(unnamed)"
 msgstr "(sans nom)"
 
-#: groupmesh.cpp:708
+#: groupmesh.cpp:714
 msgid "not closed contour, or not all same style!"
 msgstr "contour non fermé ou tout n'est pas du même style !"
 
-#: groupmesh.cpp:721
+#: groupmesh.cpp:727
 msgid "points not all coplanar!"
 msgstr "les points ne sont pas tous coplanaires !"
 
-#: groupmesh.cpp:723
+#: groupmesh.cpp:729
 msgid "contour is self-intersecting!"
 msgstr "le contour s'entrecroise !"
 
-#: groupmesh.cpp:725
+#: groupmesh.cpp:731
 msgid "zero-length edge!"
 msgstr "arête de longueur nulle !"
 
@@ -4265,27 +4265,27 @@ msgstr "moteur GL %s"
 msgid "gl version  %s"
 msgstr "version GL  %s"
 
-#: ui/problems.cpp:49
+#: ui/problems.cpp:50
 #, fuzzy
 msgid "No problems."
 msgstr "Aucun problème."
 
-#: ui/problems.cpp:63
+#: ui/problems.cpp:64
 #, fuzzy
 msgid "select all"
 msgstr "tout sélectionner"
 
-#: ui/problems.cpp:80
+#: ui/problems.cpp:81
 #, fuzzy
 msgid "Some were left out: the search timed out."
 msgstr "Certains ont été omis : la recherche a dépassé le délai."
 
-#: ui/problems.cpp:82 ui/properties.cpp:532
+#: ui/problems.cpp:83 ui/properties.cpp:532
 #, fuzzy
 msgid "allow redundant constraints"
 msgstr "autoriser les contraintes redondantes"
 
-#: ui/problems.cpp:85
+#: ui/problems.cpp:86
 #, fuzzy
 msgid "force to triangle mesh"
 msgstr "forcer en maillage triangulaire"
@@ -4373,6 +4373,25 @@ msgstr "l'opération booléenne a échoué"
 msgid "Forcing NURBS surfaces to a triangle mesh may fix it."
 msgstr ""
 "Forcer les surfaces NURBS en maillage triangulaire peut corriger le problème."
+
+#: ui/problemsmodel.cpp:101
+#, c-format
+#, fuzzy
+msgid "%d edge has no lines to constrain"
+msgstr "%d arête n'a pas de lignes à contraindre"
+
+#: ui/problemsmodel.cpp:102
+#, c-format
+#, fuzzy
+msgid "%d edges have no lines to constrain"
+msgstr "%d arêtes n'ont pas de lignes à contraindre"
+
+#: ui/problemsmodel.cpp:104
+#, fuzzy
+msgid ""
+"It is curved, or a face beside it is: what it makes has no closed form, so "
+"it can be snapped to but not constrained."
+msgstr "Elle est courbe, ou une face voisine l'est : ce qu'elle produit n'a pas de forme close, on peut s'y accrocher mais pas le contraindre."
 
 #: ui/properties.cpp:83
 #, fuzzy, c-format
@@ -5527,8 +5546,7 @@ msgid "%d items"
 msgstr "%d éléments"
 
 #: ui/shortcuts.cpp:75
-#, c-format
-#, fuzzy
+#, fuzzy, c-format
 msgid "%s no longer runs %s."
 msgstr "%s ne lance plus %s."
 
@@ -5542,7 +5560,9 @@ msgstr "filtre"
 msgid ""
 "Click a key to change it: press the new one, Delete to remove it or Esc to "
 "keep it."
-msgstr "Cliquez sur une touche pour la changer : appuyez sur la nouvelle, Delete pour la retirer ou Esc pour la garder."
+msgstr ""
+"Cliquez sur une touche pour la changer : appuyez sur la nouvelle, Delete "
+"pour la retirer ou Esc pour la garder."
 
 #: ui/shortcuts.cpp:94
 #, fuzzy

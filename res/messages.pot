@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: SolveSpace 3.3\n"
 "Report-Msgid-Bugs-To: phkahler@gmail.com\n"
-"POT-Creation-Date: 2026-10-28 15:31-0700\n"
+"POT-Creation-Date: 2026-10-28 15:53-0700\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1469,19 +1469,19 @@ msgstr ""
 msgid "(unnamed)"
 msgstr ""
 
-#: groupmesh.cpp:708
+#: groupmesh.cpp:714
 msgid "not closed contour, or not all same style!"
 msgstr ""
 
-#: groupmesh.cpp:721
+#: groupmesh.cpp:727
 msgid "points not all coplanar!"
 msgstr ""
 
-#: groupmesh.cpp:723
+#: groupmesh.cpp:729
 msgid "contour is self-intersecting!"
 msgstr ""
 
-#: groupmesh.cpp:725
+#: groupmesh.cpp:731
 msgid "zero-length edge!"
 msgstr ""
 
@@ -3456,23 +3456,23 @@ msgstr ""
 msgid "gl version  %s"
 msgstr ""
 
-#: ui/problems.cpp:49
+#: ui/problems.cpp:50
 msgid "No problems."
 msgstr ""
 
-#: ui/problems.cpp:63
+#: ui/problems.cpp:64
 msgid "select all"
 msgstr ""
 
-#: ui/problems.cpp:80
+#: ui/problems.cpp:81
 msgid "Some were left out: the search timed out."
 msgstr ""
 
-#: ui/problems.cpp:82 ui/properties.cpp:532
+#: ui/problems.cpp:83 ui/properties.cpp:532
 msgid "allow redundant constraints"
 msgstr ""
 
-#: ui/problems.cpp:85
+#: ui/problems.cpp:86
 msgid "force to triangle mesh"
 msgstr ""
 
@@ -3535,6 +3535,22 @@ msgstr ""
 
 #: ui/problemsmodel.cpp:84
 msgid "Forcing NURBS surfaces to a triangle mesh may fix it."
+msgstr ""
+
+#: ui/problemsmodel.cpp:101
+#, c-format
+msgid "%d edge has no lines to constrain"
+msgstr ""
+
+#: ui/problemsmodel.cpp:102
+#, c-format
+msgid "%d edges have no lines to constrain"
+msgstr ""
+
+#: ui/problemsmodel.cpp:104
+msgid ""
+"It is curved, or a face beside it is: what it makes has no closed form, so it can be snapped to "
+"but not constrained."
 msgstr ""
 
 #: ui/properties.cpp:83

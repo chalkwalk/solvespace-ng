@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: SolveSpace 3.0\n"
 "Report-Msgid-Bugs-To: phkahler@gmail.com\n"
-"POT-Creation-Date: 2026-10-28 15:31-0700\n"
+"POT-Creation-Date: 2026-10-28 15:53-0700\n"
 "PO-Revision-Date: 2025-02-01 10:31+0900\n"
 "Last-Translator: https://github.com/verylowfreq\n"
 "Language-Team: \n"
@@ -1827,21 +1827,21 @@ msgstr "スイープ"
 msgid "(unnamed)"
 msgstr "(名称未設定)"
 
-#: groupmesh.cpp:708
+#: groupmesh.cpp:714
 msgid "not closed contour, or not all same style!"
 msgstr ""
 "閉じた輪郭でない、もしくは、輪郭を構成する要素のスタイルが同一ではありませ"
 "ん。"
 
-#: groupmesh.cpp:721
+#: groupmesh.cpp:727
 msgid "points not all coplanar!"
 msgstr "点が同一平面上にありません。"
 
-#: groupmesh.cpp:723
+#: groupmesh.cpp:729
 msgid "contour is self-intersecting!"
 msgstr "輪郭線が自己交差しています。"
 
-#: groupmesh.cpp:725
+#: groupmesh.cpp:731
 msgid "zero-length edge!"
 msgstr "長さが 0 のエッジです。"
 
@@ -4252,27 +4252,27 @@ msgstr "GL レンダラー %s"
 msgid "gl version  %s"
 msgstr "GL バージョン  %s"
 
-#: ui/problems.cpp:49
+#: ui/problems.cpp:50
 #, fuzzy
 msgid "No problems."
 msgstr "問題はありません。"
 
-#: ui/problems.cpp:63
+#: ui/problems.cpp:64
 #, fuzzy
 msgid "select all"
 msgstr "すべて選択"
 
-#: ui/problems.cpp:80
+#: ui/problems.cpp:81
 #, fuzzy
 msgid "Some were left out: the search timed out."
 msgstr "一部は除外されました: 検索がタイムアウトしました。"
 
-#: ui/problems.cpp:82 ui/properties.cpp:532
+#: ui/problems.cpp:83 ui/properties.cpp:532
 #, fuzzy
 msgid "allow redundant constraints"
 msgstr "冗長な拘束を許可"
 
-#: ui/problems.cpp:85
+#: ui/problems.cpp:86
 #, fuzzy
 msgid "force to triangle mesh"
 msgstr "三角メッシュに変換"
@@ -4354,6 +4354,25 @@ msgstr "ブール演算に失敗しました"
 #, fuzzy
 msgid "Forcing NURBS surfaces to a triangle mesh may fix it."
 msgstr "NURBS サーフェスを三角メッシュに変換すると直る場合があります。"
+
+#: ui/problemsmodel.cpp:101
+#, c-format
+#, fuzzy
+msgid "%d edge has no lines to constrain"
+msgstr "%d 本のエッジに拘束できる線がありません"
+
+#: ui/problemsmodel.cpp:102
+#, c-format
+#, fuzzy
+msgid "%d edges have no lines to constrain"
+msgstr "%d 本のエッジに拘束できる線がありません"
+
+#: ui/problemsmodel.cpp:104
+#, fuzzy
+msgid ""
+"It is curved, or a face beside it is: what it makes has no closed form, so "
+"it can be snapped to but not constrained."
+msgstr "エッジか隣の面が曲がっているため、できる形に閉じた式がありません。スナップはできますが、拘束はできません。"
 
 #: ui/properties.cpp:83
 #, fuzzy, c-format
@@ -5508,8 +5527,7 @@ msgid "%d items"
 msgstr "%d 個"
 
 #: ui/shortcuts.cpp:75
-#, c-format
-#, fuzzy
+#, fuzzy, c-format
 msgid "%s no longer runs %s."
 msgstr "%s で %s は実行されなくなりました。"
 
@@ -5523,7 +5541,9 @@ msgstr "絞り込み"
 msgid ""
 "Click a key to change it: press the new one, Delete to remove it or Esc to "
 "keep it."
-msgstr "キーをクリックして変更します。新しいキーを押すか、Delete で削除、Esc でそのままにします。"
+msgstr ""
+"キーをクリックして変更します。新しいキーを押すか、Delete で削除、Esc でそのま"
+"まにします。"
 
 #: ui/shortcuts.cpp:94
 #, fuzzy

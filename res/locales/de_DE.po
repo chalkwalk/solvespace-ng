@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: SolveSpace 3.0\n"
 "Report-Msgid-Bugs-To: phkahler@gmail.com\n"
-"POT-Creation-Date: 2026-10-28 15:31-0700\n"
+"POT-Creation-Date: 2026-10-28 15:53-0700\n"
 "PO-Revision-Date: 2022-04-30 16:44+0200\n"
 "Last-Translator: Reini Urban <rurban@cpan.org>\n"
 "Language-Team: none\n"
@@ -1832,19 +1832,19 @@ msgstr "Sweep"
 msgid "(unnamed)"
 msgstr "unbenannt"
 
-#: groupmesh.cpp:708
+#: groupmesh.cpp:714
 msgid "not closed contour, or not all same style!"
 msgstr "Kontur nicht geschlossen, oder kein einheitlicher Linientyp!"
 
-#: groupmesh.cpp:721
+#: groupmesh.cpp:727
 msgid "points not all coplanar!"
 msgstr "Punkte sind nicht alle koplanar!"
 
-#: groupmesh.cpp:723
+#: groupmesh.cpp:729
 msgid "contour is self-intersecting!"
 msgstr "Kontur überschneidet sich selbst!"
 
-#: groupmesh.cpp:725
+#: groupmesh.cpp:731
 msgid "zero-length edge!"
 msgstr "Kante mit Länge Null!"
 
@@ -4280,27 +4280,27 @@ msgstr "GL-Renderer %s"
 msgid "gl version  %s"
 msgstr "GL-Version  %s"
 
-#: ui/problems.cpp:49
+#: ui/problems.cpp:50
 #, fuzzy
 msgid "No problems."
 msgstr "Keine Probleme."
 
-#: ui/problems.cpp:63
+#: ui/problems.cpp:64
 #, fuzzy
 msgid "select all"
 msgstr "alle auswählen"
 
-#: ui/problems.cpp:80
+#: ui/problems.cpp:81
 #, fuzzy
 msgid "Some were left out: the search timed out."
 msgstr "Einige wurden ausgelassen: Die Suche hat die Zeitgrenze überschritten."
 
-#: ui/problems.cpp:82 ui/properties.cpp:532
+#: ui/problems.cpp:83 ui/properties.cpp:532
 #, fuzzy
 msgid "allow redundant constraints"
 msgstr "überflüssige Einschränkungen zulassen"
 
-#: ui/problems.cpp:85
+#: ui/problems.cpp:86
 #, fuzzy
 msgid "force to triangle mesh"
 msgstr "Als Dreiecksnetz erzwingen"
@@ -4386,6 +4386,25 @@ msgstr "die Boolesche Operation ist fehlgeschlagen"
 #, fuzzy
 msgid "Forcing NURBS surfaces to a triangle mesh may fix it."
 msgstr "Das Umwandeln von NURBS-Flächen in ein Dreiecksnetz kann das beheben."
+
+#: ui/problemsmodel.cpp:101
+#, c-format
+#, fuzzy
+msgid "%d edge has no lines to constrain"
+msgstr "%d Kante hat keine Linien zum Bemaßen"
+
+#: ui/problemsmodel.cpp:102
+#, c-format
+#, fuzzy
+msgid "%d edges have no lines to constrain"
+msgstr "%d Kanten haben keine Linien zum Bemaßen"
+
+#: ui/problemsmodel.cpp:104
+#, fuzzy
+msgid ""
+"It is curved, or a face beside it is: what it makes has no closed form, so "
+"it can be snapped to but not constrained."
+msgstr "Sie ist gekrümmt oder eine angrenzende Fläche ist es: Was dabei entsteht, hat keine geschlossene Form; man kann darauf fangen, es aber nicht bemaßen."
 
 #: ui/properties.cpp:83
 #, fuzzy, c-format
@@ -5541,8 +5560,7 @@ msgid "%d items"
 msgstr "%d Elemente"
 
 #: ui/shortcuts.cpp:75
-#, c-format
-#, fuzzy
+#, fuzzy, c-format
 msgid "%s no longer runs %s."
 msgstr "%s führt %s nicht mehr aus."
 
@@ -5556,7 +5574,9 @@ msgstr "Filter"
 msgid ""
 "Click a key to change it: press the new one, Delete to remove it or Esc to "
 "keep it."
-msgstr "Klicke auf eine Taste, um sie zu ändern: drücke die neue, Delete zum Entfernen oder Esc zum Behalten."
+msgstr ""
+"Klicke auf eine Taste, um sie zu ändern: drücke die neue, Delete zum "
+"Entfernen oder Esc zum Behalten."
 
 #: ui/shortcuts.cpp:94
 #, fuzzy

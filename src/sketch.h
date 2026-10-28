@@ -399,6 +399,9 @@ public:
         Vector   into[2] = {};  // as found, for a face without an entity
     };
     std::vector<EdgeFaces> edgeFaces;
+    // How many of the edges have no derived lines to constrain (curved, or beside a curved
+    // face): a note in Problems (#7). Not saved.
+    int curvedEdges = 0;
     // SHELL: the faces left open; DRAFT: the faces tapered (face entities of the solid).
     // valA is the wall thickness (mm) or the draft angle (degrees).
     std::vector<hEntity> faces;

@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: SolveSpace 3.0\n"
 "Report-Msgid-Bugs-To: phkahler@gmail.com\n"
-"POT-Creation-Date: 2026-10-28 15:31-0700\n"
+"POT-Creation-Date: 2026-10-28 15:53-0700\n"
 "PO-Revision-Date: 2025-02-22 14:48-0800\n"
 "Last-Translator: Milan Djurovic <mdjurovic@zohomail.com>\n"
 "Language-Team: Russian <gnome-cyr@lists.gnome.org>\n"
@@ -1834,19 +1834,19 @@ msgstr "по-траектории"
 msgid "(unnamed)"
 msgstr "(без имени)"
 
-#: groupmesh.cpp:708
+#: groupmesh.cpp:714
 msgid "not closed contour, or not all same style!"
 msgstr "незамкнутый контур или несовпадение стилей!"
 
-#: groupmesh.cpp:721
+#: groupmesh.cpp:727
 msgid "points not all coplanar!"
 msgstr "не все точки лежат в одной плоскости!"
 
-#: groupmesh.cpp:723
+#: groupmesh.cpp:729
 msgid "contour is self-intersecting!"
 msgstr "контур имеет самопересечения!"
 
-#: groupmesh.cpp:725
+#: groupmesh.cpp:731
 msgid "zero-length edge!"
 msgstr "ребро нулевой длины!"
 
@@ -4262,27 +4262,27 @@ msgstr "отрисовщик GL %s"
 msgid "gl version  %s"
 msgstr "версия GL  %s"
 
-#: ui/problems.cpp:49
+#: ui/problems.cpp:50
 #, fuzzy
 msgid "No problems."
 msgstr "Проблем нет."
 
-#: ui/problems.cpp:63
+#: ui/problems.cpp:64
 #, fuzzy
 msgid "select all"
 msgstr "выбрать всё"
 
-#: ui/problems.cpp:80
+#: ui/problems.cpp:81
 #, fuzzy
 msgid "Some were left out: the search timed out."
 msgstr "Часть пропущена: поиск превысил время ожидания."
 
-#: ui/problems.cpp:82 ui/properties.cpp:532
+#: ui/problems.cpp:83 ui/properties.cpp:532
 #, fuzzy
 msgid "allow redundant constraints"
 msgstr "разрешить избыточные ограничения"
 
-#: ui/problems.cpp:85
+#: ui/problems.cpp:86
 #, fuzzy
 msgid "force to triangle mesh"
 msgstr "принудительно в треугольную сетку"
@@ -4367,6 +4367,25 @@ msgid "Forcing NURBS surfaces to a triangle mesh may fix it."
 msgstr ""
 "Возможно, поможет принудительное преобразование NURBS-поверхностей в "
 "треугольную сетку."
+
+#: ui/problemsmodel.cpp:101
+#, c-format
+#, fuzzy
+msgid "%d edge has no lines to constrain"
+msgstr "У %d ребра нет линий для ограничений"
+
+#: ui/problemsmodel.cpp:102
+#, c-format
+#, fuzzy
+msgid "%d edges have no lines to constrain"
+msgstr "У %d рёбер нет линий для ограничений"
+
+#: ui/problemsmodel.cpp:104
+#, fuzzy
+msgid ""
+"It is curved, or a face beside it is: what it makes has no closed form, so "
+"it can be snapped to but not constrained."
+msgstr "Оно кривое или соседняя грань кривая: результат не имеет замкнутой формы, к нему можно привязаться, но нельзя наложить ограничение."
 
 #: ui/properties.cpp:83
 #, fuzzy, c-format
@@ -5521,8 +5540,7 @@ msgid "%d items"
 msgstr "%d элементов"
 
 #: ui/shortcuts.cpp:75
-#, c-format
-#, fuzzy
+#, fuzzy, c-format
 msgid "%s no longer runs %s."
 msgstr "%s больше не запускает %s."
 
@@ -5536,7 +5554,9 @@ msgstr "фильтр"
 msgid ""
 "Click a key to change it: press the new one, Delete to remove it or Esc to "
 "keep it."
-msgstr "Щёлкните клавишу, чтобы изменить её: нажмите новую, Delete — чтобы убрать, Esc — чтобы оставить."
+msgstr ""
+"Щёлкните клавишу, чтобы изменить её: нажмите новую, Delete — чтобы убрать, "
+"Esc — чтобы оставить."
 
 #: ui/shortcuts.cpp:94
 #, fuzzy

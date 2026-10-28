@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: SolveSpace 3.1\n"
 "Report-Msgid-Bugs-To: phkahler@gmail.com\n"
-"POT-Creation-Date: 2026-10-28 15:31-0700\n"
+"POT-Creation-Date: 2026-10-28 15:53-0700\n"
 "PO-Revision-Date: 2022-06-19 20:16+0200\n"
 "Last-Translator: Pavel Stržínek <pavel.strzinek@gmail.com>\n"
 "Language-Team: none\n"
@@ -1775,19 +1775,19 @@ msgstr "tažení"
 msgid "(unnamed)"
 msgstr "(nepojmenované)"
 
-#: groupmesh.cpp:708
+#: groupmesh.cpp:714
 msgid "not closed contour, or not all same style!"
 msgstr "Obrys není uzavřený nebo není celý v jednotném stylu!"
 
-#: groupmesh.cpp:721
+#: groupmesh.cpp:727
 msgid "points not all coplanar!"
 msgstr "Ne všechny body jsou v rovině!"
 
-#: groupmesh.cpp:723
+#: groupmesh.cpp:729
 msgid "contour is self-intersecting!"
 msgstr "Obrys se sám protíná!"
 
-#: groupmesh.cpp:725
+#: groupmesh.cpp:731
 msgid "zero-length edge!"
 msgstr "Nulová délka hrany!"
 
@@ -4190,27 +4190,27 @@ msgstr "gl renderer %s"
 msgid "gl version  %s"
 msgstr "gl verze  %s"
 
-#: ui/problems.cpp:49
+#: ui/problems.cpp:50
 #, fuzzy
 msgid "No problems."
 msgstr "Žádné problémy."
 
-#: ui/problems.cpp:63
+#: ui/problems.cpp:64
 #, fuzzy
 msgid "select all"
 msgstr "vybrat vše"
 
-#: ui/problems.cpp:80
+#: ui/problems.cpp:81
 #, fuzzy
 msgid "Some were left out: the search timed out."
 msgstr "Některé byly vynechány: hledání vypršelo."
 
-#: ui/problems.cpp:82 ui/properties.cpp:532
+#: ui/problems.cpp:83 ui/properties.cpp:532
 #, fuzzy
 msgid "allow redundant constraints"
 msgstr "povolit nadbytečná omezení"
 
-#: ui/problems.cpp:85
+#: ui/problems.cpp:86
 #, fuzzy
 msgid "force to triangle mesh"
 msgstr "vynutit trojúhelníkovou síť"
@@ -4293,6 +4293,25 @@ msgstr "booleovská operace selhala"
 #, fuzzy
 msgid "Forcing NURBS surfaces to a triangle mesh may fix it."
 msgstr "Pomoci může vynucení NURBS ploch na trojúhelníkovou síť."
+
+#: ui/problemsmodel.cpp:101
+#, c-format
+#, fuzzy
+msgid "%d edge has no lines to constrain"
+msgstr "%d hrana nemá čáry k vazbení"
+
+#: ui/problemsmodel.cpp:102
+#, c-format
+#, fuzzy
+msgid "%d edges have no lines to constrain"
+msgstr "%d hran nemá čáry k vazbení"
+
+#: ui/problemsmodel.cpp:104
+#, fuzzy
+msgid ""
+"It is curved, or a face beside it is: what it makes has no closed form, so "
+"it can be snapped to but not constrained."
+msgstr "Je zakřivená, nebo je zakřivená sousední plocha: výsledek nemá uzavřený tvar, lze se k němu přichytit, ale ne ho vazbit."
 
 #: ui/properties.cpp:83
 #, fuzzy, c-format
@@ -5447,8 +5466,7 @@ msgid "%d items"
 msgstr "%d položek"
 
 #: ui/shortcuts.cpp:75
-#, c-format
-#, fuzzy
+#, fuzzy, c-format
 msgid "%s no longer runs %s."
 msgstr "%s už nespouští %s."
 
@@ -5462,7 +5480,9 @@ msgstr "filtr"
 msgid ""
 "Click a key to change it: press the new one, Delete to remove it or Esc to "
 "keep it."
-msgstr "Klepnutím na klávesu ji změníte: stiskněte novou, Delete pro odebrání nebo Esc pro ponechání."
+msgstr ""
+"Klepnutím na klávesu ji změníte: stiskněte novou, Delete pro odebrání nebo "
+"Esc pro ponechání."
 
 #: ui/shortcuts.cpp:94
 #, fuzzy

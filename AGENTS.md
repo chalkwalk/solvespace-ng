@@ -368,9 +368,10 @@ faces meet at the edge (`KernelEdgeFaces`, cached per edge); the lines' position
 those faces' entities, so they follow a drag at once, and they always exist (on the edge when
 no solid is known, e.g. with SolveSpace's kernel), so constraints on them are never pruned.
 When an edge's faces change on the fresh solid, `GenerateAll` solves the later groups once
-more. An edge rounded away is hidden while its fillet is shown. Not yet: edges no entity
-describes (two bodies' intersection), derived entities for curved edges, a Problems note for
-a straight edge on a curved face.
+more. An edge rounded away is hidden while its fillet is shown. Edges with no lines
+(curved, or beside a curved face) are a note in Problems (2026-10-28, #7; notes don't open
+the panel). Not yet: edges no entity describes (two bodies' intersection), derived entities
+for curved edges.
 
 **Built in M3c (2026-10-21, branch `ng/m3c-features`):** Inspect ▸ Mass Properties (volume,
 surface area, mass at a density set in Preferences, centre of mass; exact from the B-rep via

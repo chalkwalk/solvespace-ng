@@ -103,4 +103,33 @@ TEST_CASE(a_fillet_that_fails_is_a_problem) {
         CHECK_TRUE(problems[0].title.find("fillet failed") != std::string::npos);
     }
 }
+// #7: edges with no lines to constrain (a curved edge, or one beside a curved face) are a note
+// in Problems: they can be snapped to, not constrained.
+TEST_CASE(a_fillet_on_a_curved_edge_is_a_note) {
+    CHECK_LOAD("../../group/fillet/box.slvs");
+    SS.kernelKind = KernelKind::OCCT;
+    SS.checkClosedContour = false;
+    hGroup extrude = SK.groupOrder[SK.groupOrder.n - 1];
+    // A hole through the box: a circle in its sketch.
+    SS.GW.activeGroup = SK.groupOrder[1];
+    hRequest c = SS.GW.AddRequest(Request::Type::CIRCLE, /*rememberForUndo=*/false);
+    SS.GenerateAll(SolveSpaceUI::Generate::ALL);
+    SK.GetEntity(c.entity(1))->PointForceTo({ 5, 10, 0 });
+    SK.GetEntity(c.entity(64))->DistanceForceTo(2);
+    SS.GW.activeGroup = extrude;
+    SS.GenerateAll(SolveSpaceUI::Generate::ALL);
+    SS.GW.ClearSelection();
+    GraphicsWindow::Selection sel = {};
+    sel.entity = SK.GetGroup(extrude)->Remap(c.entity(0), Group::REMAP_TOP);
+    SS.GW.selection.Add(&sel);
+    Group::MenuGroup(Command::GROUP_FILLET);
+    SS.SetFeatureSize(SS.GW.activeGroup, "0.5");
+    SS.GenerateAll(SolveSpaceUI::Generate::ALL);
+    std::vector<Problem> problems = BuildProblems();
+    CHECK_TRUE(problems.size() == 1);
+    if(problems.size() == 1) {
+        CHECK_TRUE(problems[0].kind == Problem::Kind::NOTE);
+        CHECK_TRUE(problems[0].title.find("1 edge") != std::string::npos);
+    }
+}
 #endif

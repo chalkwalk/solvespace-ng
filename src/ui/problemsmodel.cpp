@@ -93,6 +93,18 @@ std::vector<Problem> BuildProblems() {
             p.title     = g->featureProblem;
             out.push_back(p);
         }
+        if(g->curvedEdges > 0 && (g->type == Group::Type::FILLET || g->type == Group::Type::CHAMFER)) {
+            Problem p;
+            p.group     = hg;
+            p.groupName = g->name;
+            p.kind      = Problem::Kind::NOTE;
+            p.title     = ssprintf(g->curvedEdges == 1 ? _("%d edge has no lines to constrain")
+                                                       : _("%d edges have no lines to constrain"),
+                                   g->curvedEdges);
+            p.detail    = _("It is curved, or a face beside it is: what it makes has no closed "
+                            "form, so it can be snapped to but not constrained.");
+            out.push_back(p);
+        }
         if(hg == SS.GW.activeGroup) break;
     }
     return out;

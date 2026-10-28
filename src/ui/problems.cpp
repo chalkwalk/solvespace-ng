@@ -39,7 +39,8 @@ std::function<void()> DrawProblems() {
     std::set<std::string> now;
     for(const Problem &p : problems) {
         now.insert(p.Key());
-        if(!gKnown.count(p.Key()) && p.kind != Problem::Kind::CONTOUR) {
+        if(!gKnown.count(p.Key()) && p.kind != Problem::Kind::CONTOUR &&
+           p.kind != Problem::Kind::NOTE) {
             ProblemsPanel().SetShown(true);
         }
     }

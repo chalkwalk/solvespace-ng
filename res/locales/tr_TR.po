@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: SolveSpace 3.1\n"
 "Report-Msgid-Bugs-To: phkahler@gmail.com\n"
-"POT-Creation-Date: 2026-10-28 15:31-0700\n"
+"POT-Creation-Date: 2026-10-28 15:53-0700\n"
 "PO-Revision-Date: 2025-01-29 21:16+0300\n"
 "Last-Translator: mustafa halil <halil.mustafa@gmail.com>\n"
 "Language-Team: Turkish <kde-l10n-tr@kde.org>\n"
@@ -1810,19 +1810,19 @@ msgstr "süpür"
 msgid "(unnamed)"
 msgstr "(isimsiz)"
 
-#: groupmesh.cpp:708
+#: groupmesh.cpp:714
 msgid "not closed contour, or not all same style!"
 msgstr "kapali olmayan kontur veya tümü ayni bicimde degil!"
 
-#: groupmesh.cpp:721
+#: groupmesh.cpp:727
 msgid "points not all coplanar!"
 msgstr "noktaların hepsi aynı düzlemde değil!"
 
-#: groupmesh.cpp:723
+#: groupmesh.cpp:729
 msgid "contour is self-intersecting!"
 msgstr "kontur kendisiyle kesisiyor!"
 
-#: groupmesh.cpp:725
+#: groupmesh.cpp:731
 msgid "zero-length edge!"
 msgstr "sıfır-uzunluklu kenar!"
 
@@ -4233,27 +4233,27 @@ msgstr "gl renderer %s"
 msgid "gl version  %s"
 msgstr "gl sürüm    %s"
 
-#: ui/problems.cpp:49
+#: ui/problems.cpp:50
 #, fuzzy
 msgid "No problems."
 msgstr "Sorun yok."
 
-#: ui/problems.cpp:63
+#: ui/problems.cpp:64
 #, fuzzy
 msgid "select all"
 msgstr "tümünü seç"
 
-#: ui/problems.cpp:80
+#: ui/problems.cpp:81
 #, fuzzy
 msgid "Some were left out: the search timed out."
 msgstr "Bazıları atlandı: arama zaman aşımına uğradı."
 
-#: ui/problems.cpp:82 ui/properties.cpp:532
+#: ui/problems.cpp:83 ui/properties.cpp:532
 #, fuzzy
 msgid "allow redundant constraints"
 msgstr "fazla kısıtlara izin ver"
 
-#: ui/problems.cpp:85
+#: ui/problems.cpp:86
 #, fuzzy
 msgid "force to triangle mesh"
 msgstr "üçgen ağa zorla"
@@ -4336,6 +4336,25 @@ msgstr "Boole işlemi başarısız oldu"
 #, fuzzy
 msgid "Forcing NURBS surfaces to a triangle mesh may fix it."
 msgstr "NURBS yüzeylerini üçgen ağa zorlamak sorunu çözebilir."
+
+#: ui/problemsmodel.cpp:101
+#, c-format
+#, fuzzy
+msgid "%d edge has no lines to constrain"
+msgstr "%d kenarın kısıtlanacak çizgisi yok"
+
+#: ui/problemsmodel.cpp:102
+#, c-format
+#, fuzzy
+msgid "%d edges have no lines to constrain"
+msgstr "%d kenarın kısıtlanacak çizgisi yok"
+
+#: ui/problemsmodel.cpp:104
+#, fuzzy
+msgid ""
+"It is curved, or a face beside it is: what it makes has no closed form, so "
+"it can be snapped to but not constrained."
+msgstr "Kenar eğri ya da yanındaki bir yüz eğri: ortaya çıkanın kapalı bir biçimi yok; ona yakalanılabilir ama kısıtlanamaz."
 
 #: ui/properties.cpp:83
 #, fuzzy, c-format
@@ -5490,8 +5509,7 @@ msgid "%d items"
 msgstr "%d öğe"
 
 #: ui/shortcuts.cpp:75
-#, c-format
-#, fuzzy
+#, fuzzy, c-format
 msgid "%s no longer runs %s."
 msgstr "%s artık %s komutunu çalıştırmıyor."
 
@@ -5505,7 +5523,9 @@ msgstr "süzgeç"
 msgid ""
 "Click a key to change it: press the new one, Delete to remove it or Esc to "
 "keep it."
-msgstr "Değiştirmek için bir tuşa tıklayın: yenisine basın, kaldırmak için Delete, korumak için Esc."
+msgstr ""
+"Değiştirmek için bir tuşa tıklayın: yenisine basın, kaldırmak için Delete, "
+"korumak için Esc."
 
 #: ui/shortcuts.cpp:94
 #, fuzzy

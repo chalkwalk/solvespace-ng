@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: SolveSpace 3.0\n"
 "Report-Msgid-Bugs-To: phkahler@gmail.com\n"
-"POT-Creation-Date: 2026-10-28 15:31-0700\n"
+"POT-Creation-Date: 2026-10-28 15:53-0700\n"
 "PO-Revision-Date: 2017-01-05 10:30+0000\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -1727,19 +1727,19 @@ msgstr "sweep"
 msgid "(unnamed)"
 msgstr "(unnamed)"
 
-#: groupmesh.cpp:708
+#: groupmesh.cpp:714
 msgid "not closed contour, or not all same style!"
 msgstr "not closed contour, or not all same style!"
 
-#: groupmesh.cpp:721
+#: groupmesh.cpp:727
 msgid "points not all coplanar!"
 msgstr "points not all coplanar!"
 
-#: groupmesh.cpp:723
+#: groupmesh.cpp:729
 msgid "contour is self-intersecting!"
 msgstr "contour is self-intersecting!"
 
-#: groupmesh.cpp:725
+#: groupmesh.cpp:731
 msgid "zero-length edge!"
 msgstr "zero-length edge!"
 
@@ -3841,23 +3841,23 @@ msgstr "gl renderer %s"
 msgid "gl version  %s"
 msgstr "gl version  %s"
 
-#: ui/problems.cpp:49
+#: ui/problems.cpp:50
 msgid "No problems."
 msgstr "No problems."
 
-#: ui/problems.cpp:63
+#: ui/problems.cpp:64
 msgid "select all"
 msgstr "select all"
 
-#: ui/problems.cpp:80
+#: ui/problems.cpp:81
 msgid "Some were left out: the search timed out."
 msgstr "Some were left out: the search timed out."
 
-#: ui/problems.cpp:82 ui/properties.cpp:532
+#: ui/problems.cpp:83 ui/properties.cpp:532
 msgid "allow redundant constraints"
 msgstr "allow redundant constraints"
 
-#: ui/problems.cpp:85
+#: ui/problems.cpp:86
 msgid "force to triangle mesh"
 msgstr "force to triangle mesh"
 
@@ -3925,6 +3925,24 @@ msgstr "the Boolean operation failed"
 #: ui/problemsmodel.cpp:84
 msgid "Forcing NURBS surfaces to a triangle mesh may fix it."
 msgstr "Forcing NURBS surfaces to a triangle mesh may fix it."
+
+#: ui/problemsmodel.cpp:101
+#, c-format
+msgid "%d edge has no lines to constrain"
+msgstr "%d edge has no lines to constrain"
+
+#: ui/problemsmodel.cpp:102
+#, c-format
+msgid "%d edges have no lines to constrain"
+msgstr "%d edges have no lines to constrain"
+
+#: ui/problemsmodel.cpp:104
+msgid ""
+"It is curved, or a face beside it is: what it makes has no closed form, so "
+"it can be snapped to but not constrained."
+msgstr ""
+"It is curved, or a face beside it is: what it makes has no closed form, so "
+"it can be snapped to but not constrained."
 
 #: ui/properties.cpp:83
 #, c-format

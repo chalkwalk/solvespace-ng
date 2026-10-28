@@ -1697,11 +1697,15 @@ void Group::MakeFeatureLines(EntityList *el) {
     Group *prevg  = RunningMeshGroup();
     std::shared_ptr<const KernelShape> shape = prevg ? prevg->runningShape : nullptr;
     edgeFaces.resize(edges.size());
+    curvedEdges = 0;
     for(size_t i = 0; i < edges.size(); i++) {
         Entity *e = SK.entity.FindByIdNoOops(edges[i]);
         if(e == nullptr) continue;
         e->roundedBy = h;
-        if(e->type != Entity::Type::LINE_SEGMENT) continue;
+        if(e->type != Entity::Type::LINE_SEGMENT) {
+            curvedEdges++;
+            continue;
+        }
         Vector a = SK.GetEntity(e->point[0])->PointGetNum();
         Vector b = SK.GetEntity(e->point[1])->PointGetNum();
         Vector t = b.Minus(a).WithMagnitude(1);
@@ -1709,7 +1713,9 @@ void Group::MakeFeatureLines(EntityList *el) {
         // The faces, from the previous solid when it has this edge; else as last found.
         EdgeFaces     &known = edgeFaces[i];
         KernelEdgeFace found[2];
-        if(KernelEdgeFaces(shape, a, b, found) == KernelEdgeFacesResult::FOUND) {
+        KernelEdgeFacesResult faces = KernelEdgeFaces(shape, a, b, found);
+        if(faces == KernelEdgeFacesResult::NOT_PLANAR) curvedEdges++;
+        if(faces == KernelEdgeFacesResult::FOUND) {
             if(found[1].face != 0 && found[1].face < found[0].face) swap(found[0], found[1]);
             EdgeFaces now;
             now.known = true;
