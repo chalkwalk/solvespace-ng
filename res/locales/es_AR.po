@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: SolveSpace 3.0\n"
 "Report-Msgid-Bugs-To: phkahler@gmail.com\n"
-"POT-Creation-Date: 2026-10-28 15:24-0700\n"
+"POT-Creation-Date: 2026-10-28 15:31-0700\n"
 "PO-Revision-Date: 2021-09-17 \n"
 "Last-Translator: Maxi Vasquez <mvasquez@epet12smandes.edu.ar>\n"
 "Language-Team: AndesFreeDesign\n"
@@ -2049,14 +2049,12 @@ msgid "the fit's clearance couldn't be added to the profile"
 msgstr "no se pudo agregar la holgura del ajuste al perfil"
 
 #: kernel/occtkernel.cpp:711
-#, c-format
-#, fuzzy
+#, fuzzy, c-format
 msgid "%d of the %d edges were not found on the solid"
 msgstr "%d de las %d aristas no se encontraron en el sólido"
 
 #: kernel/occtkernel.cpp:924 kernel/occtkernel.cpp:966
-#, c-format
-#, fuzzy
+#, fuzzy, c-format
 msgid "%d of the %d faces were not found on the solid"
 msgstr "%d de las %d caras no se encontraron en el sólido"
 
@@ -2073,7 +2071,8 @@ msgstr "ninguna de las caras se encontró en el sólido"
 #: kernel/occtkernel.cpp:962
 #, fuzzy
 msgid "the draft failed; the angle may be too big for the solid"
-msgstr "el desmoldeo falló; el ángulo puede ser demasiado grande para el sólido"
+msgstr ""
+"el desmoldeo falló; el ángulo puede ser demasiado grande para el sólido"
 
 #: kernel/occtkernel.cpp:1086
 #, fuzzy
@@ -2125,7 +2124,9 @@ msgstr "el recubrimiento falló"
 #, fuzzy
 msgid ""
 "holes are lofted only when every profile has as many; these are left out"
-msgstr "los agujeros se recubren solo si cada perfil tiene la misma cantidad; estos se omiten"
+msgstr ""
+"los agujeros se recubren solo si cada perfil tiene la misma cantidad; estos "
+"se omiten"
 
 #: kernel/occtkernel.cpp:1319
 #, fuzzy
@@ -2140,7 +2141,9 @@ msgstr "el barrido no tiene perfil o no tiene trayectoria"
 #: kernel/occtkernel.cpp:1364
 #, fuzzy
 msgid "the path's corners are too tight for that radius; they stay sharp"
-msgstr "las esquinas de la trayectoria son demasiado cerradas para ese radio; quedan vivas"
+msgstr ""
+"las esquinas de la trayectoria son demasiado cerradas para ese radio; quedan "
+"vivas"
 
 #: kernel/occtkernel.cpp:1395
 #, fuzzy
@@ -2163,7 +2166,10 @@ msgid ""
 "fillets, chamfers, shells, drafts, holes, lofts, sweeps, fit joints and "
 "splits need the Open CASCADE kernel (Preferences, SolveSpace NG) and a solid "
 "that is not a triangle mesh"
-msgstr "los redondeos, chaflanes, vaciados, desmoldeos, agujeros, recubrimientos, barridos, uniones de ajuste y divisiones necesitan el núcleo Open CASCADE (Preferencias, SolveSpace NG) y un sólido que no sea una malla de triángulos"
+msgstr ""
+"los redondeos, chaflanes, vaciados, desmoldeos, agujeros, recubrimientos, "
+"barridos, uniones de ajuste y divisiones necesitan el núcleo Open CASCADE "
+"(Preferencias, SolveSpace NG) y un sólido que no sea una malla de triángulos"
 
 #: modify.cpp:254
 msgid "Must be sketching in workplane to create tangent arc."
@@ -2472,7 +2478,7 @@ msgctxt "file-type"
 msgid "Comma-separated values"
 msgstr "Valores separados por comas"
 
-#: platform/guisdl.cpp:614
+#: platform/guisdl.cpp:615
 #, fuzzy
 msgid "Save as"
 msgstr "Guardar como"
@@ -5515,10 +5521,33 @@ msgstr "%d elemento"
 msgid "%d items"
 msgstr "%d elementos"
 
-#: ui/shortcuts.cpp:21
+#: ui/shortcuts.cpp:75
+#, c-format
+#, fuzzy
+msgid "%s no longer runs %s."
+msgstr "%s ya no ejecuta %s."
+
+#: ui/shortcuts.cpp:88
 #, fuzzy
 msgid "filter"
 msgstr "filtro"
+
+#: ui/shortcuts.cpp:90
+#, fuzzy
+msgid ""
+"Click a key to change it: press the new one, Delete to remove it or Esc to "
+"keep it."
+msgstr "Hacé clic en una tecla para cambiarla: presioná la nueva, Delete para quitarla o Esc para conservarla."
+
+#: ui/shortcuts.cpp:94
+#, fuzzy
+msgid "use the preset's keys"
+msgstr "usar las teclas del preajuste"
+
+#: ui/shortcuts.cpp:125
+#, fuzzy
+msgid "press a key"
+msgstr "presioná una tecla"
 
 #: ui/statusmodel.cpp:35 ui/statusmodel.cpp:43
 #, fuzzy

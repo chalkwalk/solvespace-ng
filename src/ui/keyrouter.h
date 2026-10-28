@@ -48,6 +48,13 @@ bool IsKnownUiAction(const std::string &name);
 keymap::Keymap LoadUserKeymap(const std::string &preset, const std::string &userFileText,
                               std::string *error);
 
+// The keymap editor (#17): km with command's chord `was` replaced by `now`; without `was`,
+// `now` is added, and without `now`, `was` is removed. A chord another command had moves to
+// this one, and *displaced names that command (else it is empty).
+keymap::Keymap Rebind(keymap::Keymap km, const std::string &command,
+                      std::optional<keymap::Chord> was, std::optional<keymap::Chord> now,
+                      std::string *displaced);
+
 }
 }
 

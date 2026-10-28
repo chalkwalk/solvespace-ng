@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: SolveSpace 3.0\n"
 "Report-Msgid-Bugs-To: phkahler@gmail.com\n"
-"POT-Creation-Date: 2026-10-28 15:24-0700\n"
+"POT-Creation-Date: 2026-10-28 15:31-0700\n"
 "PO-Revision-Date: 2025-02-01 10:31+0900\n"
 "Last-Translator: https://github.com/verylowfreq\n"
 "Language-Team: \n"
@@ -2048,14 +2048,12 @@ msgid "the fit's clearance couldn't be added to the profile"
 msgstr "はめあいのすきまをプロファイルに追加できませんでした"
 
 #: kernel/occtkernel.cpp:711
-#, c-format
-#, fuzzy
+#, fuzzy, c-format
 msgid "%d of the %d edges were not found on the solid"
 msgstr "%d / %d 本のエッジがソリッド上に見つかりません"
 
 #: kernel/occtkernel.cpp:924 kernel/occtkernel.cpp:966
-#, c-format
-#, fuzzy
+#, fuzzy, c-format
 msgid "%d of the %d faces were not found on the solid"
 msgstr "%d / %d 枚の面がソリッド上に見つかりません"
 
@@ -2072,7 +2070,8 @@ msgstr "どの面もソリッド上に見つかりません"
 #: kernel/occtkernel.cpp:962
 #, fuzzy
 msgid "the draft failed; the angle may be too big for the solid"
-msgstr "抜き勾配に失敗しました。角度がソリッドに対して大きすぎる可能性があります"
+msgstr ""
+"抜き勾配に失敗しました。角度がソリッドに対して大きすぎる可能性があります"
 
 #: kernel/occtkernel.cpp:1086
 #, fuzzy
@@ -2124,7 +2123,9 @@ msgstr "ロフトに失敗しました"
 #, fuzzy
 msgid ""
 "holes are lofted only when every profile has as many; these are left out"
-msgstr "穴はすべてのプロファイルが同じ数を持つときだけロフトされます。これらは省かれました"
+msgstr ""
+"穴はすべてのプロファイルが同じ数を持つときだけロフトされます。これらは省かれ"
+"ました"
 
 #: kernel/occtkernel.cpp:1319
 #, fuzzy
@@ -2162,7 +2163,10 @@ msgid ""
 "fillets, chamfers, shells, drafts, holes, lofts, sweeps, fit joints and "
 "splits need the Open CASCADE kernel (Preferences, SolveSpace NG) and a solid "
 "that is not a triangle mesh"
-msgstr "フィレット、面取り、シェル、抜き勾配、穴、ロフト、スイープ、はめあいジョイント、分割には Open CASCADE カーネル (設定、SolveSpace NG) と、三角形メッシュではないソリッドが必要です"
+msgstr ""
+"フィレット、面取り、シェル、抜き勾配、穴、ロフト、スイープ、はめあいジョイン"
+"ト、分割には Open CASCADE カーネル (設定、SolveSpace NG) と、三角形メッシュで"
+"はないソリッドが必要です"
 
 #: modify.cpp:254
 msgid "Must be sketching in workplane to create tangent arc."
@@ -2466,7 +2470,7 @@ msgctxt "file-type"
 msgid "Comma-separated values"
 msgstr "CSV ファイル (Comma-separated values)"
 
-#: platform/guisdl.cpp:614
+#: platform/guisdl.cpp:615
 #, fuzzy
 msgid "Save as"
 msgstr "名前を付けて保存"
@@ -5503,10 +5507,33 @@ msgstr "%d 個"
 msgid "%d items"
 msgstr "%d 個"
 
-#: ui/shortcuts.cpp:21
+#: ui/shortcuts.cpp:75
+#, c-format
+#, fuzzy
+msgid "%s no longer runs %s."
+msgstr "%s で %s は実行されなくなりました。"
+
+#: ui/shortcuts.cpp:88
 #, fuzzy
 msgid "filter"
 msgstr "絞り込み"
+
+#: ui/shortcuts.cpp:90
+#, fuzzy
+msgid ""
+"Click a key to change it: press the new one, Delete to remove it or Esc to "
+"keep it."
+msgstr "キーをクリックして変更します。新しいキーを押すか、Delete で削除、Esc でそのままにします。"
+
+#: ui/shortcuts.cpp:94
+#, fuzzy
+msgid "use the preset's keys"
+msgstr "プリセットのキーを使う"
+
+#: ui/shortcuts.cpp:125
+#, fuzzy
+msgid "press a key"
+msgstr "キーを押してください"
 
 #: ui/statusmodel.cpp:35 ui/statusmodel.cpp:43
 #, fuzzy

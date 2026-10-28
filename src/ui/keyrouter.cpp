@@ -68,6 +68,19 @@ bool IsKnownUiAction(const std::string &name) {
     return false;
 }
 
+keymap::Keymap Rebind(keymap::Keymap km, const std::string &command,
+                      std::optional<keymap::Chord> was, std::optional<keymap::Chord> now,
+                      std::string *displaced) {
+    displaced->clear();
+    if(was) km.Unbind(*was);
+    if(now) {
+        std::string had = km.Unbind(*now);
+        if(had != command) *displaced = had;
+        km.Bind(command, *now, nullptr);
+    }
+    return km;
+}
+
 keymap::Keymap LoadUserKeymap(const std::string &preset, const std::string &userFileText,
                               std::string *error) {
     keymap::Keymap base;

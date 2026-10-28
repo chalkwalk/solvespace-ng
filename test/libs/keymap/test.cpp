@@ -115,3 +115,25 @@ TEST_CASE(utf8_bom_is_ignored) {
     CHECK_TRUE(km.has_value());
     CHECK_TRUE(*km->Lookup(*keymap::ParseChord("L")) == "line-segment");
 }
+
+TEST_CASE(unbind_a_chord_or_a_command) {
+    Keymap km;
+    Chord  l = *keymap::ParseChord("L"), f3 = *keymap::ParseChord("F3"),
+           space = *keymap::ParseChord("Space");
+    CHECK_TRUE(km.Bind("line", l, nullptr));
+    CHECK_TRUE(km.Bind("palette", space, nullptr));
+    CHECK_TRUE(km.Bind("palette", f3, nullptr));
+    // A chord: the command it was bound to, which keeps its others.
+    CHECK_EQ_STR(km.Unbind(f3), "palette");
+    CHECK_TRUE(km.Lookup(f3) == nullptr);
+    CHECK_TRUE(km.ChordsFor("palette").size() == 1);
+    CHECK_EQ_STR(km.Unbind(f3), "");
+    // A command: every chord of it, and it is no longer listed.
+    km.UnbindCommand("palette");
+    CHECK_TRUE(km.Lookup(space) == nullptr);
+    CHECK_TRUE(km.Commands().size() == 1);
+    // The last chord of a command gone, the command goes too.
+    CHECK_EQ_STR(km.Unbind(l), "line");
+    CHECK_TRUE(km.Commands().empty());
+    CHECK_TRUE(km.Bind("line", l, nullptr));
+}

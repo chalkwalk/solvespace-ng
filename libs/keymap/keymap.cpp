@@ -88,6 +88,25 @@ bool Keymap::Bind(const std::string &command, const Chord &chord, std::string *e
     return true;
 }
 
+std::string Keymap::Unbind(const Chord &chord) {
+    auto it = commandByChord.find(FormatChord(chord));
+    if(it == commandByChord.end()) return "";
+    std::string         command = it->second;
+    std::vector<Chord> &chords  = chordsByCommand[command];
+    commandByChord.erase(it);
+    std::string name = FormatChord(chord);
+    chords.erase(std::remove_if(chords.begin(), chords.end(),
+                                [&](const Chord &c) { return FormatChord(c) == name; }),
+                 chords.end());
+    if(chords.empty()) chordsByCommand.erase(command);
+    return command;
+}
+
+void Keymap::UnbindCommand(const std::string &command) {
+    for(const Chord &chord : ChordsFor(command)) commandByChord.erase(FormatChord(chord));
+    chordsByCommand.erase(command);
+}
+
 const std::string *Keymap::Lookup(const Chord &chord) const {
     auto it = commandByChord.find(FormatChord(chord));
     return it == commandByChord.end() ? nullptr : &it->second;

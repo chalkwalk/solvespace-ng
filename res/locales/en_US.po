@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: SolveSpace 3.0\n"
 "Report-Msgid-Bugs-To: phkahler@gmail.com\n"
-"POT-Creation-Date: 2026-10-28 15:24-0700\n"
+"POT-Creation-Date: 2026-10-28 15:31-0700\n"
 "PO-Revision-Date: 2017-01-05 10:30+0000\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -2309,7 +2309,7 @@ msgctxt "file-type"
 msgid "Comma-separated values"
 msgstr "Comma-separated values"
 
-#: platform/guisdl.cpp:614
+#: platform/guisdl.cpp:615
 msgid "Save as"
 msgstr "Save as"
 
@@ -4866,9 +4866,30 @@ msgstr "%d item"
 msgid "%d items"
 msgstr "%d items"
 
-#: ui/shortcuts.cpp:21
+#: ui/shortcuts.cpp:75
+#, c-format
+msgid "%s no longer runs %s."
+msgstr "%s no longer runs %s."
+
+#: ui/shortcuts.cpp:88
 msgid "filter"
 msgstr "filter"
+
+#: ui/shortcuts.cpp:90
+msgid ""
+"Click a key to change it: press the new one, Delete to remove it or Esc to "
+"keep it."
+msgstr ""
+"Click a key to change it: press the new one, Delete to remove it or Esc to "
+"keep it."
+
+#: ui/shortcuts.cpp:94
+msgid "use the preset's keys"
+msgstr "use the preset's keys"
+
+#: ui/shortcuts.cpp:125
+msgid "press a key"
+msgstr "press a key"
 
 #: ui/statusmodel.cpp:35 ui/statusmodel.cpp:43
 msgid "Hold"

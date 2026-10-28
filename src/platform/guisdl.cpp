@@ -47,6 +47,7 @@
 #include "ui/iconraster.h"
 #include "ui/keyrouter.h"
 #include "ui/menulayout.h"
+#include "ui/shortcuts.h"
 #include "ui/panels.h"
 #include "ui/viewcube.h"
 #include "ui/uiactions.h"
@@ -840,6 +841,19 @@ static void LoadKeymap() {
         notify->RunAfter(0);
     }
     gKeyRouter.onUiAction = [](const std::string &action) { Ui::HandleUiAction(action); };
+    // Help > Keyboard Shortcuts saves its changes as the user's keymap file.
+    Ui::SetKeymapWriter([](const std::string &text) {
+        Path path = PrefDir().Join("keymap.txt");
+        if(text.empty()) {
+            std::error_code ec;
+            std::filesystem::remove(path.raw, ec);
+        } else {
+            WriteFile(path, "# SolveSpace NG keys, changed in Help > Keyboard Shortcuts. This "
+                            "file replaces the\n# preset's keys; without it, the preset's are "
+                            "used.\n" + text);
+        }
+        LoadKeymap();
+    });
     gKeyRouter.modal       = Ui::ModalKey;
     gKeyRouter.modalRepeat = Ui::ModalRepeatKey;
 }

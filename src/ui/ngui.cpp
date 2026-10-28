@@ -258,6 +258,7 @@ std::function<void()> DrawNgUi(Platform::MenuBarSdl *menuBar, const keymap::Keym
 }
 
 bool ModalKey(const keymap::Chord &c) {
+    if(ShortcutsTakeKey(c)) return true;
     if(Pie().IsOpen()) {
         // The key that opened the pie closes it again, as in Blender.
         const std::string *name = gKeymap ? gKeymap->Lookup(c) : nullptr;

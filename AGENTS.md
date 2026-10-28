@@ -141,7 +141,10 @@ they differ (decided by the owner in review 4, 2026-10-17, replacing the Blender
 "as many unqualified controls as possible, overlapping with industry standard";
 `docs/research/keymap-and-layout.md`). A **"SolveSpace Classic"** preset reproduces today's
 bindings. All bindings can be remapped and are stored in a keymap file
-(`res/keymaps/modern.keymap` is the preset).
+(`res/keymaps/modern.keymap` is the preset). Help ▸ Keyboard Shortcuts edits them (added
+2026-10-28, #17): a click on a key waits for the new one (Delete removes it, Esc keeps it,
+"+" adds one); a key another command had moves, with a note; the result is saved as the
+user's `keymap.txt`, and "use the preset's keys" deletes that file.
 
 | Key | Action |
 |---|---|

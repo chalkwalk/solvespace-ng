@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: SolveSpace 3.1\n"
 "Report-Msgid-Bugs-To: phkahler@gmail.com\n"
-"POT-Creation-Date: 2026-10-28 15:24-0700\n"
+"POT-Creation-Date: 2026-10-28 15:31-0700\n"
 "PO-Revision-Date: 2025-01-29 21:16+0300\n"
 "Last-Translator: mustafa halil <halil.mustafa@gmail.com>\n"
 "Language-Team: Turkish <kde-l10n-tr@kde.org>\n"
@@ -2027,14 +2027,12 @@ msgid "the fit's clearance couldn't be added to the profile"
 msgstr "geçme boşluğu profile eklenemedi"
 
 #: kernel/occtkernel.cpp:711
-#, c-format
-#, fuzzy
+#, fuzzy, c-format
 msgid "%d of the %d edges were not found on the solid"
 msgstr "%d / %d kenar katıda bulunamadı"
 
 #: kernel/occtkernel.cpp:924 kernel/occtkernel.cpp:966
-#, c-format
-#, fuzzy
+#, fuzzy, c-format
 msgid "%d of the %d faces were not found on the solid"
 msgstr "%d / %d yüz katıda bulunamadı"
 
@@ -2103,7 +2101,9 @@ msgstr "loft başarısız oldu"
 #, fuzzy
 msgid ""
 "holes are lofted only when every profile has as many; these are left out"
-msgstr "delikler yalnızca her profilde aynı sayıda varsa loft edilir; bunlar dışarıda bırakıldı"
+msgstr ""
+"delikler yalnızca her profilde aynı sayıda varsa loft edilir; bunlar "
+"dışarıda bırakıldı"
 
 #: kernel/occtkernel.cpp:1319
 #, fuzzy
@@ -2141,7 +2141,10 @@ msgid ""
 "fillets, chamfers, shells, drafts, holes, lofts, sweeps, fit joints and "
 "splits need the Open CASCADE kernel (Preferences, SolveSpace NG) and a solid "
 "that is not a triangle mesh"
-msgstr "kavisler, pahlar, kabuklar, eğimler, delikler, loftlar, süpürmeler, geçme mafsalları ve bölmeler Open CASCADE çekirdeğini (Tercihler, SolveSpace NG) ve üçgen ağ olmayan bir katıyı gerektirir"
+msgstr ""
+"kavisler, pahlar, kabuklar, eğimler, delikler, loftlar, süpürmeler, geçme "
+"mafsalları ve bölmeler Open CASCADE çekirdeğini (Tercihler, SolveSpace NG) "
+"ve üçgen ağ olmayan bir katıyı gerektirir"
 
 #: modify.cpp:254
 msgid "Must be sketching in workplane to create tangent arc."
@@ -2448,7 +2451,7 @@ msgctxt "file-type"
 msgid "Comma-separated values"
 msgstr "Virgülle ayrılmış değerler (CSV)"
 
-#: platform/guisdl.cpp:614
+#: platform/guisdl.cpp:615
 #, fuzzy
 msgid "Save as"
 msgstr "Farklı kaydet"
@@ -5486,10 +5489,33 @@ msgstr "%d öğe"
 msgid "%d items"
 msgstr "%d öğe"
 
-#: ui/shortcuts.cpp:21
+#: ui/shortcuts.cpp:75
+#, c-format
+#, fuzzy
+msgid "%s no longer runs %s."
+msgstr "%s artık %s komutunu çalıştırmıyor."
+
+#: ui/shortcuts.cpp:88
 #, fuzzy
 msgid "filter"
 msgstr "süzgeç"
+
+#: ui/shortcuts.cpp:90
+#, fuzzy
+msgid ""
+"Click a key to change it: press the new one, Delete to remove it or Esc to "
+"keep it."
+msgstr "Değiştirmek için bir tuşa tıklayın: yenisine basın, kaldırmak için Delete, korumak için Esc."
+
+#: ui/shortcuts.cpp:94
+#, fuzzy
+msgid "use the preset's keys"
+msgstr "ön ayarın tuşlarını kullan"
+
+#: ui/shortcuts.cpp:125
+#, fuzzy
+msgid "press a key"
+msgstr "bir tuşa basın"
 
 #: ui/statusmodel.cpp:35 ui/statusmodel.cpp:43
 #, fuzzy

@@ -29,6 +29,10 @@ public:
     // Adds a binding. Fails (returning false and describing the clash in *error) if the
     // chord is already bound to any command.
     bool Bind(const std::string &command, const Chord &chord, std::string *error);
+    // Removes a binding: the command the chord was bound to, or "" if none. A command left
+    // with no chord is no longer listed.
+    std::string Unbind(const Chord &chord);
+    void        UnbindCommand(const std::string &command);
     const std::string *Lookup(const Chord &chord) const;
     std::vector<Chord> ChordsFor(const std::string &command) const;
     std::vector<std::string> Commands() const;

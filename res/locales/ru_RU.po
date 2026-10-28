@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: SolveSpace 3.0\n"
 "Report-Msgid-Bugs-To: phkahler@gmail.com\n"
-"POT-Creation-Date: 2026-10-28 15:24-0700\n"
+"POT-Creation-Date: 2026-10-28 15:31-0700\n"
 "PO-Revision-Date: 2025-02-22 14:48-0800\n"
 "Last-Translator: Milan Djurovic <mdjurovic@zohomail.com>\n"
 "Language-Team: Russian <gnome-cyr@lists.gnome.org>\n"
@@ -2054,14 +2054,12 @@ msgid "the fit's clearance couldn't be added to the profile"
 msgstr "не удалось добавить зазор посадки к профилю"
 
 #: kernel/occtkernel.cpp:711
-#, c-format
-#, fuzzy
+#, fuzzy, c-format
 msgid "%d of the %d edges were not found on the solid"
 msgstr "%d из %d рёбер не найдены на теле"
 
 #: kernel/occtkernel.cpp:924 kernel/occtkernel.cpp:966
-#, c-format
-#, fuzzy
+#, fuzzy, c-format
 msgid "%d of the %d faces were not found on the solid"
 msgstr "%d из %d граней не найдены на теле"
 
@@ -2130,7 +2128,9 @@ msgstr "лофт не удался"
 #, fuzzy
 msgid ""
 "holes are lofted only when every profile has as many; these are left out"
-msgstr "отверстия проходят в лофт, только если у каждого профиля их поровну; эти пропущены"
+msgstr ""
+"отверстия проходят в лофт, только если у каждого профиля их поровну; эти "
+"пропущены"
 
 #: kernel/occtkernel.cpp:1319
 #, fuzzy
@@ -2168,7 +2168,10 @@ msgid ""
 "fillets, chamfers, shells, drafts, holes, lofts, sweeps, fit joints and "
 "splits need the Open CASCADE kernel (Preferences, SolveSpace NG) and a solid "
 "that is not a triangle mesh"
-msgstr "скруглениям, фаскам, оболочкам, уклонам, отверстиям, лофтам, протягиваниям, соединениям посадки и разделениям нужны ядро Open CASCADE (Настройки, SolveSpace NG) и тело, которое не является сеткой треугольников"
+msgstr ""
+"скруглениям, фаскам, оболочкам, уклонам, отверстиям, лофтам, протягиваниям, "
+"соединениям посадки и разделениям нужны ядро Open CASCADE (Настройки, "
+"SolveSpace NG) и тело, которое не является сеткой треугольников"
 
 #: modify.cpp:254
 msgid "Must be sketching in workplane to create tangent arc."
@@ -2473,7 +2476,7 @@ msgctxt "file-type"
 msgid "Comma-separated values"
 msgstr "CSV файлы (значения, разделенные запятой)"
 
-#: platform/guisdl.cpp:614
+#: platform/guisdl.cpp:615
 #, fuzzy
 msgid "Save as"
 msgstr "Сохранить как"
@@ -5517,10 +5520,33 @@ msgstr "%d элемент"
 msgid "%d items"
 msgstr "%d элементов"
 
-#: ui/shortcuts.cpp:21
+#: ui/shortcuts.cpp:75
+#, c-format
+#, fuzzy
+msgid "%s no longer runs %s."
+msgstr "%s больше не запускает %s."
+
+#: ui/shortcuts.cpp:88
 #, fuzzy
 msgid "filter"
 msgstr "фильтр"
+
+#: ui/shortcuts.cpp:90
+#, fuzzy
+msgid ""
+"Click a key to change it: press the new one, Delete to remove it or Esc to "
+"keep it."
+msgstr "Щёлкните клавишу, чтобы изменить её: нажмите новую, Delete — чтобы убрать, Esc — чтобы оставить."
+
+#: ui/shortcuts.cpp:94
+#, fuzzy
+msgid "use the preset's keys"
+msgstr "использовать клавиши шаблона"
+
+#: ui/shortcuts.cpp:125
+#, fuzzy
+msgid "press a key"
+msgstr "нажмите клавишу"
 
 #: ui/statusmodel.cpp:35 ui/statusmodel.cpp:43
 #, fuzzy

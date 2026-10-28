@@ -20,7 +20,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: SolveSpace 3.2\n"
 "Report-Msgid-Bugs-To: phkahler@gmail.com\n"
-"POT-Creation-Date: 2026-10-28 15:24-0700\n"
+"POT-Creation-Date: 2026-10-28 15:31-0700\n"
 "PO-Revision-Date: 2023-04-30 15:58+0800\n"
 "Last-Translator: liuxilu@live.com\n"
 "Language-Team: none\n"
@@ -1941,14 +1941,12 @@ msgid "the fit's clearance couldn't be added to the profile"
 msgstr "无法将配合间隙加到轮廓上"
 
 #: kernel/occtkernel.cpp:711
-#, c-format
-#, fuzzy
+#, fuzzy, c-format
 msgid "%d of the %d edges were not found on the solid"
 msgstr "%d 条边（共 %d 条）在实体上找不到"
 
 #: kernel/occtkernel.cpp:924 kernel/occtkernel.cpp:966
-#, c-format
-#, fuzzy
+#, fuzzy, c-format
 msgid "%d of the %d faces were not found on the solid"
 msgstr "%d 个面（共 %d 个）在实体上找不到"
 
@@ -2055,7 +2053,9 @@ msgid ""
 "fillets, chamfers, shells, drafts, holes, lofts, sweeps, fit joints and "
 "splits need the Open CASCADE kernel (Preferences, SolveSpace NG) and a solid "
 "that is not a triangle mesh"
-msgstr "圆角、倒角、抽壳、拔模、孔、放样、扫掠、配合关节和分割需要 Open CASCADE 内核（设置，SolveSpace NG）以及一个不是三角网格的实体"
+msgstr ""
+"圆角、倒角、抽壳、拔模、孔、放样、扫掠、配合关节和分割需要 Open CASCADE 内核"
+"（设置，SolveSpace NG）以及一个不是三角网格的实体"
 
 #: modify.cpp:254
 msgid "Must be sketching in workplane to create tangent arc."
@@ -2344,7 +2344,7 @@ msgctxt "file-type"
 msgid "Comma-separated values"
 msgstr "逗号分隔数据"
 
-#: platform/guisdl.cpp:614
+#: platform/guisdl.cpp:615
 #, fuzzy
 msgid "Save as"
 msgstr "另存为"
@@ -5358,10 +5358,33 @@ msgstr "%d 项"
 msgid "%d items"
 msgstr "%d 项"
 
-#: ui/shortcuts.cpp:21
+#: ui/shortcuts.cpp:75
+#, c-format
+#, fuzzy
+msgid "%s no longer runs %s."
+msgstr "%s 不再执行 %s。"
+
+#: ui/shortcuts.cpp:88
 #, fuzzy
 msgid "filter"
 msgstr "筛选"
+
+#: ui/shortcuts.cpp:90
+#, fuzzy
+msgid ""
+"Click a key to change it: press the new one, Delete to remove it or Esc to "
+"keep it."
+msgstr "点击一个按键来更改它：按下新键，按 Delete 删除，或按 Esc 保留。"
+
+#: ui/shortcuts.cpp:94
+#, fuzzy
+msgid "use the preset's keys"
+msgstr "使用预设的按键"
+
+#: ui/shortcuts.cpp:125
+#, fuzzy
+msgid "press a key"
+msgstr "请按一个键"
 
 #: ui/statusmodel.cpp:35 ui/statusmodel.cpp:43
 #, fuzzy

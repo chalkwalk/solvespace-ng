@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: SolveSpace 3.1\n"
 "Report-Msgid-Bugs-To: phkahler@gmail.com\n"
-"POT-Creation-Date: 2026-10-28 15:24-0700\n"
+"POT-Creation-Date: 2026-10-28 15:31-0700\n"
 "PO-Revision-Date: 2022-06-19 20:16+0200\n"
 "Last-Translator: Pavel Stržínek <pavel.strzinek@gmail.com>\n"
 "Language-Team: none\n"
@@ -1988,14 +1988,12 @@ msgid "the fit's clearance couldn't be added to the profile"
 msgstr "vůli uložení se nepodařilo přidat k profilu"
 
 #: kernel/occtkernel.cpp:711
-#, c-format
-#, fuzzy
+#, fuzzy, c-format
 msgid "%d of the %d edges were not found on the solid"
 msgstr "%d z %d hran se na tělese nenašlo"
 
 #: kernel/occtkernel.cpp:924 kernel/occtkernel.cpp:966
-#, c-format
-#, fuzzy
+#, fuzzy, c-format
 msgid "%d of the %d faces were not found on the solid"
 msgstr "%d z %d ploch se na tělese nenašlo"
 
@@ -2064,7 +2062,8 @@ msgstr "šablonování selhalo"
 #, fuzzy
 msgid ""
 "holes are lofted only when every profile has as many; these are left out"
-msgstr "díry se šablonují, jen když má každý profil stejný počet; tyto jsou vynechány"
+msgstr ""
+"díry se šablonují, jen když má každý profil stejný počet; tyto jsou vynechány"
 
 #: kernel/occtkernel.cpp:1319
 #, fuzzy
@@ -2102,7 +2101,10 @@ msgid ""
 "fillets, chamfers, shells, drafts, holes, lofts, sweeps, fit joints and "
 "splits need the Open CASCADE kernel (Preferences, SolveSpace NG) and a solid "
 "that is not a triangle mesh"
-msgstr "zaoblení, sražení, skořepiny, úkosy, díry, šablonování, tažení, spoje uložení a dělení potřebují jádro Open CASCADE (Předvolby, SolveSpace NG) a těleso, které není trojúhelníková síť"
+msgstr ""
+"zaoblení, sražení, skořepiny, úkosy, díry, šablonování, tažení, spoje "
+"uložení a dělení potřebují jádro Open CASCADE (Předvolby, SolveSpace NG) a "
+"těleso, které není trojúhelníková síť"
 
 #: modify.cpp:254
 msgid "Must be sketching in workplane to create tangent arc."
@@ -2408,7 +2410,7 @@ msgctxt "file-type"
 msgid "Comma-separated values"
 msgstr "CSV soubor"
 
-#: platform/guisdl.cpp:614
+#: platform/guisdl.cpp:615
 #, fuzzy
 msgid "Save as"
 msgstr "Uložit jako"
@@ -5444,10 +5446,33 @@ msgstr "%d položka"
 msgid "%d items"
 msgstr "%d položek"
 
-#: ui/shortcuts.cpp:21
+#: ui/shortcuts.cpp:75
+#, c-format
+#, fuzzy
+msgid "%s no longer runs %s."
+msgstr "%s už nespouští %s."
+
+#: ui/shortcuts.cpp:88
 #, fuzzy
 msgid "filter"
 msgstr "filtr"
+
+#: ui/shortcuts.cpp:90
+#, fuzzy
+msgid ""
+"Click a key to change it: press the new one, Delete to remove it or Esc to "
+"keep it."
+msgstr "Klepnutím na klávesu ji změníte: stiskněte novou, Delete pro odebrání nebo Esc pro ponechání."
+
+#: ui/shortcuts.cpp:94
+#, fuzzy
+msgid "use the preset's keys"
+msgstr "použít klávesy předvolby"
+
+#: ui/shortcuts.cpp:125
+#, fuzzy
+msgid "press a key"
+msgstr "stiskněte klávesu"
 
 #: ui/statusmodel.cpp:35 ui/statusmodel.cpp:43
 #, fuzzy

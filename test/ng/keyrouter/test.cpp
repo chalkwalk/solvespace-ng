@@ -155,3 +155,33 @@ TEST_CASE(an_open_menu_still_passes_ctrl_z) {
     CHECK_TRUE(r.Route(C("Ctrl+Z"), true, /*inMenu=*/true) == RouteResult::COMMAND);
     CHECK_TRUE(r.Route(C("L"), true, /*inMenu=*/true) == RouteResult::SUPPRESSED);
 }
+
+// The keymap editor (#17): a command's chord replaced, added or removed; a chord another
+// command had moves, and that command is named.
+TEST_CASE(rebinding_a_command) {
+    std::string    err;
+    keymap::Keymap km = *keymap::Keymap::Parse(
+        "line-segment: L\nui.command-palette: Space, F3\nreference: Shift+D\n", &err);
+    std::string displaced;
+    // Replaced: L becomes Shift+L.
+    keymap::Keymap a = Rebind(km, "line-segment", C("L"), C("Shift+L"), &displaced);
+    CHECK_TRUE(a.Lookup(C("L")) == nullptr);
+    CHECK_EQ_STR(*a.Lookup(C("Shift+L")), "line-segment");
+    CHECK_EQ_STR(displaced, "");
+    // Added: F3 taken from the palette, which keeps Space.
+    keymap::Keymap b = Rebind(km, "line-segment", std::nullopt, C("F3"), &displaced);
+    CHECK_EQ_STR(displaced, "ui.command-palette");
+    CHECK_TRUE(b.ChordsFor("line-segment").size() == 2);
+    CHECK_TRUE(b.ChordsFor("ui.command-palette").size() == 1);
+    // Removed.
+    keymap::Keymap c = Rebind(km, "reference", C("Shift+D"), std::nullopt, &displaced);
+    CHECK_TRUE(c.Lookup(C("Shift+D")) == nullptr);
+    CHECK_EQ_STR(displaced, "");
+    // Its own chord again: nothing moves.
+    keymap::Keymap d = Rebind(km, "ui.command-palette", C("F3"), C("Space"), &displaced);
+    CHECK_EQ_STR(displaced, "");
+    CHECK_EQ_STR(*d.Lookup(C("Space")), "ui.command-palette");
+    // The original is unchanged, and the result saves and parses back.
+    CHECK_EQ_STR(*km.Lookup(C("L")), "line-segment");
+    CHECK_TRUE(keymap::Keymap::Parse(a.Serialize(), &err).has_value());
+}

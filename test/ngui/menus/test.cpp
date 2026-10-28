@@ -3,6 +3,7 @@
 #include "platform/sdl/uidriver.h"
 #include "ui/ngui.h"
 
+#include "ui/shortcuts.h"
 #include "harness.h"
 
 namespace Driver = SolveSpace::Platform::Driver;
@@ -163,6 +164,49 @@ TEST_CASE(help_lists_the_keyboard_shortcuts) {
     CHECK_TRUE(Driver::FindItem("Keyboard Shortcuts").has_value()); // the panel
     CHECK_TRUE(SolveSpace::UiTest::EditField("shortcuts-filter", "sketch line"));
     CHECK_TRUE(Driver::FindItem("Sketch \xE2\x80\xBA Line").has_value());
+}
+
+// #17: a click on a key changes it. The keymap is saved as the user's file and used at once;
+// Esc keeps a key, Delete removes it, and the preset's keys come back.
+TEST_CASE(a_key_is_changed_in_the_shortcuts_panel) {
+    CHECK_LOAD("line.slvs");
+    Platform::Path file = Driver::ConfigDir().Join("keymap.txt");
+    CHECK_TRUE(Driver::ClickMenu({ "Help", "Keyboard Shortcuts" }));
+    CHECK_TRUE(SolveSpace::UiTest::EditField("shortcuts-filter", "sketch line"));
+    CHECK_TRUE(Driver::ClickItem("key-line-segment-0"));
+    CHECK_TRUE(Driver::FindItem("press a key").has_value());
+    Driver::Key("Ctrl+Alt+L");
+    std::string text;
+    CHECK_TRUE(ReadFile(file, &text));
+    CHECK_TRUE(text.find("line-segment: Ctrl+Alt+L") != std::string::npos);
+    CHECK_FALSE(Driver::FindItem("press a key").has_value());
+    // L no longer draws a line; the new key does.
+    Driver::Key("L");
+    CHECK_TRUE(SS.GW.pending.operation == GraphicsWindow::Pending::NONE);
+    Driver::Key("Ctrl+Alt+L");
+    CHECK_TRUE(SS.GW.pending.command == Command::LINE_SEGMENT);
+    Driver::Key("Escape");
+    // Esc keeps the key.
+    CHECK_TRUE(Driver::ClickItem("key-line-segment-0"));
+    Driver::Key("Escape");
+    CHECK_TRUE(ReadFile(file, &text));
+    CHECK_TRUE(text.find("line-segment: Ctrl+Alt+L") != std::string::npos);
+    // Delete removes it; "+" adds one, taking it from the command that had it.
+    CHECK_TRUE(Driver::ClickItem("key-line-segment-0"));
+    Driver::Key("Delete");
+    CHECK_TRUE(ReadFile(file, &text));
+    CHECK_TRUE(text.find("line-segment:") == std::string::npos);
+    CHECK_TRUE(Driver::ClickItem("key-add-line-segment"));
+    Driver::Key("Ctrl+A");
+    CHECK_TRUE(ReadFile(file, &text));
+    CHECK_TRUE(text.find("line-segment: Ctrl+A") != std::string::npos);
+    CHECK_EQ_STR(Ui::ShortcutsNote(), "Ctrl+A no longer runs Edit \xE2\x80\xBA Select All.");
+    // Back to the preset's keys: the file is gone and L draws again.
+    CHECK_TRUE(Driver::ClickItem("keys-preset"));
+    CHECK_FALSE(ReadFile(file, &text));
+    Driver::Key("L");
+    CHECK_TRUE(SS.GW.pending.command == Command::LINE_SEGMENT);
+    Driver::Key("Escape");
 }
 
 TEST_CASE(the_palette_still_finds_old_names) {
