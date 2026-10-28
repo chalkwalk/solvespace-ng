@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: SolveSpace 3.0\n"
 "Report-Msgid-Bugs-To: phkahler@gmail.com\n"
-"POT-Creation-Date: 2026-10-24 07:25-0700\n"
+"POT-Creation-Date: 2026-10-28 14:29-0700\n"
 "PO-Revision-Date: 2017-01-05 10:30+0000\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -16,21 +16,6 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-
-#: /home/chalkwalk/Programming/solvespace/src/util.cpp:172
-msgctxt "title"
-msgid "Error"
-msgstr "Error"
-
-#: /home/chalkwalk/Programming/solvespace/src/util.cpp:172
-msgctxt "title"
-msgid "Message"
-msgstr "Message"
-
-#: /home/chalkwalk/Programming/solvespace/src/util.cpp:177
-msgctxt "button"
-msgid "&OK"
-msgstr "&OK"
 
 #: clipboard.cpp:317
 msgid ""
@@ -2785,6 +2770,21 @@ msgstr "Nearest isometric view"
 #: toolbar.cpp:92
 msgid "Align view to active workplane"
 msgstr "Align view to active workplane"
+
+#: util.cpp:172
+msgctxt "title"
+msgid "Error"
+msgstr "Error"
+
+#: util.cpp:172
+msgctxt "title"
+msgid "Message"
+msgstr "Message"
+
+#: util.cpp:177
+msgctxt "button"
+msgid "&OK"
+msgstr "&OK"
 
 #: view.cpp:125
 msgid "Scale cannot be zero or negative."

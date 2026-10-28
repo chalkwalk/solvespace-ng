@@ -188,8 +188,15 @@ if(ENABLE_GUI OR ENABLE_CLI)
     if(HAVE_GETTEXT)
         get_target_property(solvespace_core_SOURCES solvespace-core SOURCES)
         get_target_property(slvs_solver_SOURCES slvs-solver INTERFACE_SOURCES)
+        # An interface library's sources come back absolute; the references in the template
+        # stay relative, as the others are.
+        set(slvs_solver_relative_SOURCES)
+        foreach(source ${slvs_solver_SOURCES})
+            file(RELATIVE_PATH source ${CMAKE_CURRENT_SOURCE_DIR} ${source})
+            list(APPEND slvs_solver_relative_SOURCES ${source})
+        endforeach()
         set(inputs
-            ${slvs_solver_SOURCES}
+            ${slvs_solver_relative_SOURCES}
             ${solvespace_core_SOURCES}
             ${every_platform_SOURCES}
             ${solvespace_core_gl_SOURCES})
