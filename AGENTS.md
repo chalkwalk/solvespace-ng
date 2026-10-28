@@ -751,7 +751,11 @@ macOS and Emscripten builds.
     Recent menu is null headless; from `112bd403`).
   - `pr/translate-solver-sources`: `translate_solvespace` didn't read the `slvs-solver`
     library's sources, so regenerating the templates dropped `util.cpp`'s strings (Error,
-    Message, OK).
+    Message, OK). A later commit makes those paths relative, so the template doesn't carry
+    the builder's home directory.
+  - `pr/zh-cn-newline`: a Chinese message lacked its original's final newline, which
+    `msgfmt --check` rejects.
+  - `pr/ja-lathe-helix`: the Japanese menu had Lathe and Helix swapped.
   - `pr/cmake-worktree-hash`: configuring inside a git worktree failed (`GetGitCommitHash`
     joined the worktree's absolute gitdir to the source directory, and looked for its branch
     refs beside HEAD rather than in the main repository; from `3c43c148`).
