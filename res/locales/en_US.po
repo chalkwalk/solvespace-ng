@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: SolveSpace 3.0\n"
 "Report-Msgid-Bugs-To: phkahler@gmail.com\n"
-"POT-Creation-Date: 2026-10-28 15:14-0700\n"
+"POT-Creation-Date: 2026-10-28 15:24-0700\n"
 "PO-Revision-Date: 2017-01-05 10:30+0000\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -1727,19 +1727,19 @@ msgstr "sweep"
 msgid "(unnamed)"
 msgstr "(unnamed)"
 
-#: groupmesh.cpp:700
+#: groupmesh.cpp:708
 msgid "not closed contour, or not all same style!"
 msgstr "not closed contour, or not all same style!"
 
-#: groupmesh.cpp:713
+#: groupmesh.cpp:721
 msgid "points not all coplanar!"
 msgstr "points not all coplanar!"
 
-#: groupmesh.cpp:715
+#: groupmesh.cpp:723
 msgid "contour is self-intersecting!"
 msgstr "contour is self-intersecting!"
 
-#: groupmesh.cpp:717
+#: groupmesh.cpp:725
 msgid "zero-length edge!"
 msgstr "zero-length edge!"
 
@@ -1905,6 +1905,109 @@ msgstr "at %s"
 #, c-format
 msgid "from %s to %s"
 msgstr "from %s to %s"
+
+#: kernel/occtkernel.cpp:480
+msgid "the fit's clearance couldn't be added to the profile"
+msgstr "the fit's clearance couldn't be added to the profile"
+
+#: kernel/occtkernel.cpp:711
+#, c-format
+msgid "%d of the %d edges were not found on the solid"
+msgstr "%d of the %d edges were not found on the solid"
+
+#: kernel/occtkernel.cpp:924 kernel/occtkernel.cpp:966
+#, c-format
+msgid "%d of the %d faces were not found on the solid"
+msgstr "%d of the %d faces were not found on the solid"
+
+#: kernel/occtkernel.cpp:947
+msgid "the draft failed on a face it cannot taper"
+msgstr "the draft failed on a face it cannot taper"
+
+#: kernel/occtkernel.cpp:955
+msgid "none of the faces were found on the solid"
+msgstr "none of the faces were found on the solid"
+
+#: kernel/occtkernel.cpp:962
+msgid "the draft failed; the angle may be too big for the solid"
+msgstr "the draft failed; the angle may be too big for the solid"
+
+#: kernel/occtkernel.cpp:1086
+msgid "the split's plane is gone"
+msgstr "the split's plane is gone"
+
+#: kernel/occtkernel.cpp:1102
+msgid "the solid couldn't be split"
+msgstr "the solid couldn't be split"
+
+#: kernel/occtkernel.cpp:1109
+msgid "the cut is too small for a dowel this size"
+msgstr "the cut is too small for a dowel this size"
+
+#: kernel/occtkernel.cpp:1121
+msgid "the dowel pockets couldn't be cut"
+msgstr "the dowel pockets couldn't be cut"
+
+#: kernel/occtkernel.cpp:1165
+msgid "the thread could not be made"
+msgstr "the thread could not be made"
+
+#: kernel/occtkernel.cpp:1172
+msgid "the holes could not be made"
+msgstr "the holes could not be made"
+
+#: kernel/occtkernel.cpp:1188 kernel/occtkernel.cpp:1326
+#: kernel/occtkernel.cpp:1427
+msgid "the holes could not be cut"
+msgstr "the holes could not be cut"
+
+#: kernel/occtkernel.cpp:1193
+msgid "the holes miss the solid"
+msgstr "the holes miss the solid"
+
+#: kernel/occtkernel.cpp:1300 kernel/occtkernel.cpp:1328
+msgid "the loft failed"
+msgstr "the loft failed"
+
+#: kernel/occtkernel.cpp:1311
+msgid ""
+"holes are lofted only when every profile has as many; these are left out"
+msgstr ""
+"holes are lofted only when every profile has as many; these are left out"
+
+#: kernel/occtkernel.cpp:1319
+msgid "the holes could not be lofted"
+msgstr "the holes could not be lofted"
+
+#: kernel/occtkernel.cpp:1337
+msgid "the sweep has no profile or no path"
+msgstr "the sweep has no profile or no path"
+
+#: kernel/occtkernel.cpp:1364
+msgid "the path's corners are too tight for that radius; they stay sharp"
+msgstr "the path's corners are too tight for that radius; they stay sharp"
+
+#: kernel/occtkernel.cpp:1395
+msgid "the sweep's path is not connected"
+msgstr "the sweep's path is not connected"
+
+#: kernel/occtkernel.cpp:1412 kernel/occtkernel.cpp:1429
+msgid "the sweep failed"
+msgstr "the sweep failed"
+
+#: kernel/occtkernel.cpp:1415
+msgid "the holes could not be swept"
+msgstr "the holes could not be swept"
+
+#: kernel/solvespacekernel.cpp:244
+msgid ""
+"fillets, chamfers, shells, drafts, holes, lofts, sweeps, fit joints and "
+"splits need the Open CASCADE kernel (Preferences, SolveSpace NG) and a solid "
+"that is not a triangle mesh"
+msgstr ""
+"fillets, chamfers, shells, drafts, holes, lofts, sweeps, fit joints and "
+"splits need the Open CASCADE kernel (Preferences, SolveSpace NG) and a solid "
+"that is not a triangle mesh"
 
 #: modify.cpp:254
 msgid "Must be sketching in workplane to create tangent arc."

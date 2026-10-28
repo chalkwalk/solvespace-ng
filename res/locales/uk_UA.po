@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: SolveSpace 3.0\n"
 "Report-Msgid-Bugs-To: phkahler@gmail.com\n"
-"POT-Creation-Date: 2026-10-28 15:14-0700\n"
+"POT-Creation-Date: 2026-10-28 15:24-0700\n"
 "PO-Revision-Date: 2025-01-27 12:58+0200\n"
 "Last-Translator: https://github.com/Symbian9\n"
 "Language-Team: app4soft\n"
@@ -1792,19 +1792,19 @@ msgstr "за-траєкторією"
 msgid "(unnamed)"
 msgstr "(безіменне)"
 
-#: groupmesh.cpp:700
+#: groupmesh.cpp:708
 msgid "not closed contour, or not all same style!"
 msgstr "не замкнений контур або не все в єдиному стилі!"
 
-#: groupmesh.cpp:713
+#: groupmesh.cpp:721
 msgid "points not all coplanar!"
 msgstr "не всі точки знаходяться в одній площині!"
 
-#: groupmesh.cpp:715
+#: groupmesh.cpp:723
 msgid "contour is self-intersecting!"
 msgstr "контур самоперетинається!"
 
-#: groupmesh.cpp:717
+#: groupmesh.cpp:725
 msgid "zero-length edge!"
 msgstr "ребро нульової довжини!"
 
@@ -2002,6 +2002,128 @@ msgstr "при %s"
 #, fuzzy, c-format
 msgid "from %s to %s"
 msgstr "від %s до %s"
+
+#: kernel/occtkernel.cpp:480
+#, fuzzy
+msgid "the fit's clearance couldn't be added to the profile"
+msgstr "не вдалося додати зазор посадки до профілю"
+
+#: kernel/occtkernel.cpp:711
+#, c-format
+#, fuzzy
+msgid "%d of the %d edges were not found on the solid"
+msgstr "%d з %d ребер не знайдено на тілі"
+
+#: kernel/occtkernel.cpp:924 kernel/occtkernel.cpp:966
+#, c-format
+#, fuzzy
+msgid "%d of the %d faces were not found on the solid"
+msgstr "%d з %d граней не знайдено на тілі"
+
+#: kernel/occtkernel.cpp:947
+#, fuzzy
+msgid "the draft failed on a face it cannot taper"
+msgstr "ухил не вдався на грані, яку не можна нахилити"
+
+#: kernel/occtkernel.cpp:955
+#, fuzzy
+msgid "none of the faces were found on the solid"
+msgstr "жодної з граней не знайдено на тілі"
+
+#: kernel/occtkernel.cpp:962
+#, fuzzy
+msgid "the draft failed; the angle may be too big for the solid"
+msgstr "ухил не вдався; можливо, кут завеликий для тіла"
+
+#: kernel/occtkernel.cpp:1086
+#, fuzzy
+msgid "the split's plane is gone"
+msgstr "площини розділення більше немає"
+
+#: kernel/occtkernel.cpp:1102
+#, fuzzy
+msgid "the solid couldn't be split"
+msgstr "не вдалося розділити тіло"
+
+#: kernel/occtkernel.cpp:1109
+#, fuzzy
+msgid "the cut is too small for a dowel this size"
+msgstr "зріз замалий для штифта такого розміру"
+
+#: kernel/occtkernel.cpp:1121
+#, fuzzy
+msgid "the dowel pockets couldn't be cut"
+msgstr "не вдалося вирізати гнізда для штифтів"
+
+#: kernel/occtkernel.cpp:1165
+#, fuzzy
+msgid "the thread could not be made"
+msgstr "не вдалося побудувати різьбу"
+
+#: kernel/occtkernel.cpp:1172
+#, fuzzy
+msgid "the holes could not be made"
+msgstr "не вдалося побудувати отвори"
+
+#: kernel/occtkernel.cpp:1188 kernel/occtkernel.cpp:1326
+#: kernel/occtkernel.cpp:1427
+#, fuzzy
+msgid "the holes could not be cut"
+msgstr "не вдалося вирізати отвори"
+
+#: kernel/occtkernel.cpp:1193
+#, fuzzy
+msgid "the holes miss the solid"
+msgstr "отвори не зачіпають тіло"
+
+#: kernel/occtkernel.cpp:1300 kernel/occtkernel.cpp:1328
+#, fuzzy
+msgid "the loft failed"
+msgstr "лофт не вдався"
+
+#: kernel/occtkernel.cpp:1311
+#, fuzzy
+msgid ""
+"holes are lofted only when every profile has as many; these are left out"
+msgstr "отвори потрапляють у лофт, лише якщо в кожного профілю їх порівну; ці пропущено"
+
+#: kernel/occtkernel.cpp:1319
+#, fuzzy
+msgid "the holes could not be lofted"
+msgstr "не вдалося побудувати лофт отворів"
+
+#: kernel/occtkernel.cpp:1337
+#, fuzzy
+msgid "the sweep has no profile or no path"
+msgstr "у протягування немає профілю або траєкторії"
+
+#: kernel/occtkernel.cpp:1364
+#, fuzzy
+msgid "the path's corners are too tight for that radius; they stay sharp"
+msgstr "кути траєкторії загострі для цього радіуса; вони лишаються гострими"
+
+#: kernel/occtkernel.cpp:1395
+#, fuzzy
+msgid "the sweep's path is not connected"
+msgstr "траєкторія протягування не зв'язна"
+
+#: kernel/occtkernel.cpp:1412 kernel/occtkernel.cpp:1429
+#, fuzzy
+msgid "the sweep failed"
+msgstr "протягування не вдалося"
+
+#: kernel/occtkernel.cpp:1415
+#, fuzzy
+msgid "the holes could not be swept"
+msgstr "не вдалося протягнути отвори"
+
+#: kernel/solvespacekernel.cpp:244
+#, fuzzy
+msgid ""
+"fillets, chamfers, shells, drafts, holes, lofts, sweeps, fit joints and "
+"splits need the Open CASCADE kernel (Preferences, SolveSpace NG) and a solid "
+"that is not a triangle mesh"
+msgstr "заокругленням, фаскам, оболонкам, ухилам, отворам, лофтам, протягуванням, з'єднанням посадки та розділенням потрібні ядро Open CASCADE (Налаштування, SolveSpace NG) і тіло, яке не є сіткою трикутників"
 
 #: modify.cpp:254
 msgid "Must be sketching in workplane to create tangent arc."

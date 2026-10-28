@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: SolveSpace 3.0\n"
 "Report-Msgid-Bugs-To: phkahler@gmail.com\n"
-"POT-Creation-Date: 2026-10-28 15:14-0700\n"
+"POT-Creation-Date: 2026-10-28 15:24-0700\n"
 "PO-Revision-Date: 2021-09-17 \n"
 "Last-Translator: Maxi Vasquez <mvasquez@epet12smandes.edu.ar>\n"
 "Language-Team: AndesFreeDesign\n"
@@ -1827,19 +1827,19 @@ msgstr "barrido"
 msgid "(unnamed)"
 msgstr "(sin nombre)"
 
-#: groupmesh.cpp:700
+#: groupmesh.cpp:708
 msgid "not closed contour, or not all same style!"
 msgstr "¡Contorno no cerrado, o no todos del mismo estilo!"
 
-#: groupmesh.cpp:713
+#: groupmesh.cpp:721
 msgid "points not all coplanar!"
 msgstr "¡No todos los puntos son coplanares!"
 
-#: groupmesh.cpp:715
+#: groupmesh.cpp:723
 msgid "contour is self-intersecting!"
 msgstr "¡El contorno se intersecta a sí mismo!"
 
-#: groupmesh.cpp:717
+#: groupmesh.cpp:725
 msgid "zero-length edge!"
 msgstr "¡arista de longitud cero!"
 
@@ -2042,6 +2042,128 @@ msgstr "en %s"
 #, fuzzy, c-format
 msgid "from %s to %s"
 msgstr "de %s a %s"
+
+#: kernel/occtkernel.cpp:480
+#, fuzzy
+msgid "the fit's clearance couldn't be added to the profile"
+msgstr "no se pudo agregar la holgura del ajuste al perfil"
+
+#: kernel/occtkernel.cpp:711
+#, c-format
+#, fuzzy
+msgid "%d of the %d edges were not found on the solid"
+msgstr "%d de las %d aristas no se encontraron en el sólido"
+
+#: kernel/occtkernel.cpp:924 kernel/occtkernel.cpp:966
+#, c-format
+#, fuzzy
+msgid "%d of the %d faces were not found on the solid"
+msgstr "%d de las %d caras no se encontraron en el sólido"
+
+#: kernel/occtkernel.cpp:947
+#, fuzzy
+msgid "the draft failed on a face it cannot taper"
+msgstr "el desmoldeo falló en una cara que no puede inclinar"
+
+#: kernel/occtkernel.cpp:955
+#, fuzzy
+msgid "none of the faces were found on the solid"
+msgstr "ninguna de las caras se encontró en el sólido"
+
+#: kernel/occtkernel.cpp:962
+#, fuzzy
+msgid "the draft failed; the angle may be too big for the solid"
+msgstr "el desmoldeo falló; el ángulo puede ser demasiado grande para el sólido"
+
+#: kernel/occtkernel.cpp:1086
+#, fuzzy
+msgid "the split's plane is gone"
+msgstr "el plano de la división ya no existe"
+
+#: kernel/occtkernel.cpp:1102
+#, fuzzy
+msgid "the solid couldn't be split"
+msgstr "no se pudo dividir el sólido"
+
+#: kernel/occtkernel.cpp:1109
+#, fuzzy
+msgid "the cut is too small for a dowel this size"
+msgstr "el corte es demasiado chico para una espiga de este tamaño"
+
+#: kernel/occtkernel.cpp:1121
+#, fuzzy
+msgid "the dowel pockets couldn't be cut"
+msgstr "no se pudieron cortar los alojamientos de las espigas"
+
+#: kernel/occtkernel.cpp:1165
+#, fuzzy
+msgid "the thread could not be made"
+msgstr "no se pudo hacer la rosca"
+
+#: kernel/occtkernel.cpp:1172
+#, fuzzy
+msgid "the holes could not be made"
+msgstr "no se pudieron hacer los agujeros"
+
+#: kernel/occtkernel.cpp:1188 kernel/occtkernel.cpp:1326
+#: kernel/occtkernel.cpp:1427
+#, fuzzy
+msgid "the holes could not be cut"
+msgstr "no se pudieron cortar los agujeros"
+
+#: kernel/occtkernel.cpp:1193
+#, fuzzy
+msgid "the holes miss the solid"
+msgstr "los agujeros no tocan el sólido"
+
+#: kernel/occtkernel.cpp:1300 kernel/occtkernel.cpp:1328
+#, fuzzy
+msgid "the loft failed"
+msgstr "el recubrimiento falló"
+
+#: kernel/occtkernel.cpp:1311
+#, fuzzy
+msgid ""
+"holes are lofted only when every profile has as many; these are left out"
+msgstr "los agujeros se recubren solo si cada perfil tiene la misma cantidad; estos se omiten"
+
+#: kernel/occtkernel.cpp:1319
+#, fuzzy
+msgid "the holes could not be lofted"
+msgstr "no se pudieron recubrir los agujeros"
+
+#: kernel/occtkernel.cpp:1337
+#, fuzzy
+msgid "the sweep has no profile or no path"
+msgstr "el barrido no tiene perfil o no tiene trayectoria"
+
+#: kernel/occtkernel.cpp:1364
+#, fuzzy
+msgid "the path's corners are too tight for that radius; they stay sharp"
+msgstr "las esquinas de la trayectoria son demasiado cerradas para ese radio; quedan vivas"
+
+#: kernel/occtkernel.cpp:1395
+#, fuzzy
+msgid "the sweep's path is not connected"
+msgstr "la trayectoria del barrido no es continua"
+
+#: kernel/occtkernel.cpp:1412 kernel/occtkernel.cpp:1429
+#, fuzzy
+msgid "the sweep failed"
+msgstr "el barrido falló"
+
+#: kernel/occtkernel.cpp:1415
+#, fuzzy
+msgid "the holes could not be swept"
+msgstr "no se pudieron barrer los agujeros"
+
+#: kernel/solvespacekernel.cpp:244
+#, fuzzy
+msgid ""
+"fillets, chamfers, shells, drafts, holes, lofts, sweeps, fit joints and "
+"splits need the Open CASCADE kernel (Preferences, SolveSpace NG) and a solid "
+"that is not a triangle mesh"
+msgstr "los redondeos, chaflanes, vaciados, desmoldeos, agujeros, recubrimientos, barridos, uniones de ajuste y divisiones necesitan el núcleo Open CASCADE (Preferencias, SolveSpace NG) y un sólido que no sea una malla de triángulos"
 
 #: modify.cpp:254
 msgid "Must be sketching in workplane to create tangent arc."

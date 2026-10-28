@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: SolveSpace 3.1\n"
 "Report-Msgid-Bugs-To: phkahler@gmail.com\n"
-"POT-Creation-Date: 2026-10-28 15:14-0700\n"
+"POT-Creation-Date: 2026-10-28 15:24-0700\n"
 "PO-Revision-Date: 2025-01-29 21:16+0300\n"
 "Last-Translator: mustafa halil <halil.mustafa@gmail.com>\n"
 "Language-Team: Turkish <kde-l10n-tr@kde.org>\n"
@@ -1810,19 +1810,19 @@ msgstr "süpür"
 msgid "(unnamed)"
 msgstr "(isimsiz)"
 
-#: groupmesh.cpp:700
+#: groupmesh.cpp:708
 msgid "not closed contour, or not all same style!"
 msgstr "kapali olmayan kontur veya tümü ayni bicimde degil!"
 
-#: groupmesh.cpp:713
+#: groupmesh.cpp:721
 msgid "points not all coplanar!"
 msgstr "noktaların hepsi aynı düzlemde değil!"
 
-#: groupmesh.cpp:715
+#: groupmesh.cpp:723
 msgid "contour is self-intersecting!"
 msgstr "kontur kendisiyle kesisiyor!"
 
-#: groupmesh.cpp:717
+#: groupmesh.cpp:725
 msgid "zero-length edge!"
 msgstr "sıfır-uzunluklu kenar!"
 
@@ -2020,6 +2020,128 @@ msgstr "%s konumunda"
 #, fuzzy, c-format
 msgid "from %s to %s"
 msgstr "%s ile %s arasında"
+
+#: kernel/occtkernel.cpp:480
+#, fuzzy
+msgid "the fit's clearance couldn't be added to the profile"
+msgstr "geçme boşluğu profile eklenemedi"
+
+#: kernel/occtkernel.cpp:711
+#, c-format
+#, fuzzy
+msgid "%d of the %d edges were not found on the solid"
+msgstr "%d / %d kenar katıda bulunamadı"
+
+#: kernel/occtkernel.cpp:924 kernel/occtkernel.cpp:966
+#, c-format
+#, fuzzy
+msgid "%d of the %d faces were not found on the solid"
+msgstr "%d / %d yüz katıda bulunamadı"
+
+#: kernel/occtkernel.cpp:947
+#, fuzzy
+msgid "the draft failed on a face it cannot taper"
+msgstr "eğim, eğemediği bir yüzde başarısız oldu"
+
+#: kernel/occtkernel.cpp:955
+#, fuzzy
+msgid "none of the faces were found on the solid"
+msgstr "yüzlerin hiçbiri katıda bulunamadı"
+
+#: kernel/occtkernel.cpp:962
+#, fuzzy
+msgid "the draft failed; the angle may be too big for the solid"
+msgstr "eğim başarısız oldu; açı katı için fazla büyük olabilir"
+
+#: kernel/occtkernel.cpp:1086
+#, fuzzy
+msgid "the split's plane is gone"
+msgstr "bölmenin düzlemi artık yok"
+
+#: kernel/occtkernel.cpp:1102
+#, fuzzy
+msgid "the solid couldn't be split"
+msgstr "katı bölünemedi"
+
+#: kernel/occtkernel.cpp:1109
+#, fuzzy
+msgid "the cut is too small for a dowel this size"
+msgstr "kesit bu boyutta bir pim için fazla küçük"
+
+#: kernel/occtkernel.cpp:1121
+#, fuzzy
+msgid "the dowel pockets couldn't be cut"
+msgstr "pim yuvaları kesilemedi"
+
+#: kernel/occtkernel.cpp:1165
+#, fuzzy
+msgid "the thread could not be made"
+msgstr "diş oluşturulamadı"
+
+#: kernel/occtkernel.cpp:1172
+#, fuzzy
+msgid "the holes could not be made"
+msgstr "delikler oluşturulamadı"
+
+#: kernel/occtkernel.cpp:1188 kernel/occtkernel.cpp:1326
+#: kernel/occtkernel.cpp:1427
+#, fuzzy
+msgid "the holes could not be cut"
+msgstr "delikler kesilemedi"
+
+#: kernel/occtkernel.cpp:1193
+#, fuzzy
+msgid "the holes miss the solid"
+msgstr "delikler katıyı ıskalıyor"
+
+#: kernel/occtkernel.cpp:1300 kernel/occtkernel.cpp:1328
+#, fuzzy
+msgid "the loft failed"
+msgstr "loft başarısız oldu"
+
+#: kernel/occtkernel.cpp:1311
+#, fuzzy
+msgid ""
+"holes are lofted only when every profile has as many; these are left out"
+msgstr "delikler yalnızca her profilde aynı sayıda varsa loft edilir; bunlar dışarıda bırakıldı"
+
+#: kernel/occtkernel.cpp:1319
+#, fuzzy
+msgid "the holes could not be lofted"
+msgstr "delikler loft edilemedi"
+
+#: kernel/occtkernel.cpp:1337
+#, fuzzy
+msgid "the sweep has no profile or no path"
+msgstr "süpürmenin profili ya da yolu yok"
+
+#: kernel/occtkernel.cpp:1364
+#, fuzzy
+msgid "the path's corners are too tight for that radius; they stay sharp"
+msgstr "yolun köşeleri bu yarıçap için fazla dar; keskin kalıyorlar"
+
+#: kernel/occtkernel.cpp:1395
+#, fuzzy
+msgid "the sweep's path is not connected"
+msgstr "süpürmenin yolu bağlantılı değil"
+
+#: kernel/occtkernel.cpp:1412 kernel/occtkernel.cpp:1429
+#, fuzzy
+msgid "the sweep failed"
+msgstr "süpürme başarısız oldu"
+
+#: kernel/occtkernel.cpp:1415
+#, fuzzy
+msgid "the holes could not be swept"
+msgstr "delikler süpürülemedi"
+
+#: kernel/solvespacekernel.cpp:244
+#, fuzzy
+msgid ""
+"fillets, chamfers, shells, drafts, holes, lofts, sweeps, fit joints and "
+"splits need the Open CASCADE kernel (Preferences, SolveSpace NG) and a solid "
+"that is not a triangle mesh"
+msgstr "kavisler, pahlar, kabuklar, eğimler, delikler, loftlar, süpürmeler, geçme mafsalları ve bölmeler Open CASCADE çekirdeğini (Tercihler, SolveSpace NG) ve üçgen ağ olmayan bir katıyı gerektirir"
 
 #: modify.cpp:254
 msgid "Must be sketching in workplane to create tangent arc."

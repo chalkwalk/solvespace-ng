@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: SolveSpace 3.0\n"
 "Report-Msgid-Bugs-To: phkahler@gmail.com\n"
-"POT-Creation-Date: 2026-10-28 15:14-0700\n"
+"POT-Creation-Date: 2026-10-28 15:24-0700\n"
 "PO-Revision-Date: 2025-02-01 10:31+0900\n"
 "Last-Translator: https://github.com/verylowfreq\n"
 "Language-Team: \n"
@@ -1827,21 +1827,21 @@ msgstr "スイープ"
 msgid "(unnamed)"
 msgstr "(名称未設定)"
 
-#: groupmesh.cpp:700
+#: groupmesh.cpp:708
 msgid "not closed contour, or not all same style!"
 msgstr ""
 "閉じた輪郭でない、もしくは、輪郭を構成する要素のスタイルが同一ではありませ"
 "ん。"
 
-#: groupmesh.cpp:713
+#: groupmesh.cpp:721
 msgid "points not all coplanar!"
 msgstr "点が同一平面上にありません。"
 
-#: groupmesh.cpp:715
+#: groupmesh.cpp:723
 msgid "contour is self-intersecting!"
 msgstr "輪郭線が自己交差しています。"
 
-#: groupmesh.cpp:717
+#: groupmesh.cpp:725
 msgid "zero-length edge!"
 msgstr "長さが 0 のエッジです。"
 
@@ -2041,6 +2041,128 @@ msgstr "%s の位置"
 #, fuzzy, c-format
 msgid "from %s to %s"
 msgstr "%s から %s まで"
+
+#: kernel/occtkernel.cpp:480
+#, fuzzy
+msgid "the fit's clearance couldn't be added to the profile"
+msgstr "はめあいのすきまをプロファイルに追加できませんでした"
+
+#: kernel/occtkernel.cpp:711
+#, c-format
+#, fuzzy
+msgid "%d of the %d edges were not found on the solid"
+msgstr "%d / %d 本のエッジがソリッド上に見つかりません"
+
+#: kernel/occtkernel.cpp:924 kernel/occtkernel.cpp:966
+#, c-format
+#, fuzzy
+msgid "%d of the %d faces were not found on the solid"
+msgstr "%d / %d 枚の面がソリッド上に見つかりません"
+
+#: kernel/occtkernel.cpp:947
+#, fuzzy
+msgid "the draft failed on a face it cannot taper"
+msgstr "抜き勾配を付けられない面で失敗しました"
+
+#: kernel/occtkernel.cpp:955
+#, fuzzy
+msgid "none of the faces were found on the solid"
+msgstr "どの面もソリッド上に見つかりません"
+
+#: kernel/occtkernel.cpp:962
+#, fuzzy
+msgid "the draft failed; the angle may be too big for the solid"
+msgstr "抜き勾配に失敗しました。角度がソリッドに対して大きすぎる可能性があります"
+
+#: kernel/occtkernel.cpp:1086
+#, fuzzy
+msgid "the split's plane is gone"
+msgstr "分割の平面がなくなりました"
+
+#: kernel/occtkernel.cpp:1102
+#, fuzzy
+msgid "the solid couldn't be split"
+msgstr "ソリッドを分割できませんでした"
+
+#: kernel/occtkernel.cpp:1109
+#, fuzzy
+msgid "the cut is too small for a dowel this size"
+msgstr "断面がこの大きさのダボには小さすぎます"
+
+#: kernel/occtkernel.cpp:1121
+#, fuzzy
+msgid "the dowel pockets couldn't be cut"
+msgstr "ダボ穴を切り取れませんでした"
+
+#: kernel/occtkernel.cpp:1165
+#, fuzzy
+msgid "the thread could not be made"
+msgstr "ねじを作れませんでした"
+
+#: kernel/occtkernel.cpp:1172
+#, fuzzy
+msgid "the holes could not be made"
+msgstr "穴を作れませんでした"
+
+#: kernel/occtkernel.cpp:1188 kernel/occtkernel.cpp:1326
+#: kernel/occtkernel.cpp:1427
+#, fuzzy
+msgid "the holes could not be cut"
+msgstr "穴を切り取れませんでした"
+
+#: kernel/occtkernel.cpp:1193
+#, fuzzy
+msgid "the holes miss the solid"
+msgstr "穴がソリッドに当たっていません"
+
+#: kernel/occtkernel.cpp:1300 kernel/occtkernel.cpp:1328
+#, fuzzy
+msgid "the loft failed"
+msgstr "ロフトに失敗しました"
+
+#: kernel/occtkernel.cpp:1311
+#, fuzzy
+msgid ""
+"holes are lofted only when every profile has as many; these are left out"
+msgstr "穴はすべてのプロファイルが同じ数を持つときだけロフトされます。これらは省かれました"
+
+#: kernel/occtkernel.cpp:1319
+#, fuzzy
+msgid "the holes could not be lofted"
+msgstr "穴をロフトできませんでした"
+
+#: kernel/occtkernel.cpp:1337
+#, fuzzy
+msgid "the sweep has no profile or no path"
+msgstr "スイープにプロファイルかパスがありません"
+
+#: kernel/occtkernel.cpp:1364
+#, fuzzy
+msgid "the path's corners are too tight for that radius; they stay sharp"
+msgstr "パスの角がこの半径には急すぎます。角は尖ったままです"
+
+#: kernel/occtkernel.cpp:1395
+#, fuzzy
+msgid "the sweep's path is not connected"
+msgstr "スイープのパスがつながっていません"
+
+#: kernel/occtkernel.cpp:1412 kernel/occtkernel.cpp:1429
+#, fuzzy
+msgid "the sweep failed"
+msgstr "スイープに失敗しました"
+
+#: kernel/occtkernel.cpp:1415
+#, fuzzy
+msgid "the holes could not be swept"
+msgstr "穴をスイープできませんでした"
+
+#: kernel/solvespacekernel.cpp:244
+#, fuzzy
+msgid ""
+"fillets, chamfers, shells, drafts, holes, lofts, sweeps, fit joints and "
+"splits need the Open CASCADE kernel (Preferences, SolveSpace NG) and a solid "
+"that is not a triangle mesh"
+msgstr "フィレット、面取り、シェル、抜き勾配、穴、ロフト、スイープ、はめあいジョイント、分割には Open CASCADE カーネル (設定、SolveSpace NG) と、三角形メッシュではないソリッドが必要です"
 
 #: modify.cpp:254
 msgid "Must be sketching in workplane to create tangent arc."

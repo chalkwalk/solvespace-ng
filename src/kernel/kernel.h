@@ -174,10 +174,26 @@ struct KernelJob {
     std::shared_ptr<const KernelShape> prevShape;
 };
 
+// Why a solid is not as asked (a fillet that failed): a message marked N_() and the numbers
+// its %d conversions take. The kernel runs on a worker, so Text() translates it later, on
+// the main thread.
+struct KernelProblem {
+    std::string message;
+    int         count[2] = {};
+
+    KernelProblem &operator=(const char *m) {
+        message = m;
+        return *this;
+    }
+    bool        empty() const { return message.empty(); }
+    void        clear() { message.clear(); }
+    std::string Text() const;
+};
+
 struct KernelResult {
     Body thisBody; // the group's own solid
     Body running;  // the previous groups' solid combined with it
-    std::string problem; // why the solid is not as asked (a fillet that failed), or empty
+    KernelProblem problem; // or empty
 
     void Clear() {
         thisBody.Clear();

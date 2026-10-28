@@ -9,6 +9,13 @@
 
 namespace SolveSpace {
 
+std::string KernelProblem::Text() const {
+    if(message.empty()) return "";
+    std::string text = _(message.c_str());
+    return message.find("%d") == std::string::npos ? text
+                                                   : ssprintf(text.c_str(), count[0], count[1]);
+}
+
 void Group::AssembleLoops(bool *allClosed,
                           bool *allCoplanar,
                           bool *allNonZeroLen)
@@ -324,8 +331,9 @@ void Group::ApplyKernelResult(KernelResult *result) {
     // If the Boolean failed, then we should note that in the text screen
     // for this group.
     booleanFailed = result->running.booleanFailed;
-    bool problemChanged = featureProblem != result->problem;
-    featureProblem      = std::move(result->problem);
+    std::string problem = result->problem.Text();
+    bool problemChanged = featureProblem != problem;
+    featureProblem      = std::move(problem);
     if(booleanFailed != prevBooleanFailed || problemChanged) {
         SS.ScheduleShowTW();
     }

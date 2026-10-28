@@ -458,7 +458,7 @@ std::shared_ptr<KernelShape> Extrude(const KernelJob &job, FaceNamer *namer) {
 bool IsGoodSolid(const TopoDS_Shape &shape);
 
 // A fit joint's peg or pocket (M5b): the profile extruded, then offset by the clearance.
-std::shared_ptr<KernelShape> FitShape(const KernelJob &job, std::string *problem) {
+std::shared_ptr<KernelShape> FitShape(const KernelJob &job, KernelProblem *problem) {
     auto                      ks = std::make_shared<KernelShape>();
     std::vector<TopoDS_Shape> solids;
     for(SBezierLoopSet &sbls : job.loops->l) {
@@ -477,7 +477,7 @@ std::shared_ptr<KernelShape> FitShape(const KernelJob &job, std::string *problem
             } catch(const Standard_Failure &) {
             }
             if(!offset.IsDone() || !IsGoodSolid(offset.Shape())) {
-                *problem = "the fit's clearance couldn't be added to the profile";
+                *problem = N_("the fit's clearance couldn't be added to the profile");
                 continue;
             }
             solid = offset.Shape();
@@ -680,7 +680,7 @@ bool OnCurves(const TopoDS_Edge &edge, const std::vector<SBezier> &curves) {
 
 // The previous body with the job's edges rounded or bevelled, or null if nothing was;
 // *problem says what went wrong.
-std::shared_ptr<KernelShape> RoundEdges(const KernelJob &job, std::string *problem) {
+std::shared_ptr<KernelShape> RoundEdges(const KernelJob &job, KernelProblem *problem) {
     const KernelShape        &prev   = *job.prevShape;
     bool                      fillet = job.op == KernelJob::Op::FILLET;
     BRepFilletAPI_MakeFillet  makeFillet(prev.shape);
@@ -708,8 +708,9 @@ std::shared_ptr<KernelShape> RoundEdges(const KernelJob &job, std::string *probl
         if(!found) missing++;
     }
     if(missing > 0) {
-        *problem = ssprintf("%d of the %d edges were not found on the solid", missing,
-                            (int)job.edgeCurves.size());
+        *problem = N_("%d of the %d edges were not found on the solid");
+        problem->count[0] = missing;
+        problem->count[1] = (int)job.edgeCurves.size();
     }
     // The picked faces' edges: all, or those with only one picked face beside them.
     if(!job.faceNames.empty()) {
@@ -800,7 +801,7 @@ TopoDS_Shape OffsetSolid(const TopoDS_Shape &solid, double distance,
 // The previous body hollowed to the job's thickness on the job's side of its faces, leaving
 // the job's faces open (none: a sealed void). Each new wall face is named with the inner or
 // outer face entity of the face it was made from (Group::REMAP_SHELL_INNER, _OUTER).
-std::shared_ptr<KernelShape> Shell(const KernelJob &job, FaceNamer *namer, std::string *problem) {
+std::shared_ptr<KernelShape> Shell(const KernelJob &job, FaceNamer *namer, KernelProblem *problem) {
     const KernelShape &prev   = *job.prevShape;
     const char        *failed = "the shell failed; the thickness may be too big for the solid";
     double             t      = job.size;
@@ -920,15 +921,15 @@ std::shared_ptr<KernelShape> Shell(const KernelJob &job, FaceNamer *namer, std::
         return nullptr;
     }
     if(found.size() < job.faceNames.size()) {
-        *problem = ssprintf("%d of the %d faces were not found on the solid",
-                            (int)(job.faceNames.size() - found.size()),
-                            (int)job.faceNames.size());
+        *problem = N_("%d of the %d faces were not found on the solid");
+        problem->count[0] = (int)(job.faceNames.size() - found.size());
+        problem->count[1] = (int)job.faceNames.size();
     }
     return out;
 }
 
 // The previous body with the job's faces tapered; each drafted face is named as the job says.
-std::shared_ptr<KernelShape> Draft(const KernelJob &job, FaceNamer *, std::string *problem) {
+std::shared_ptr<KernelShape> Draft(const KernelJob &job, FaceNamer *, KernelProblem *problem) {
     const KernelShape       &prev = *job.prevShape;
     BRepOffsetAPI_DraftAngle draft(prev.shape);
     std::vector<std::pair<TopoDS_Shape, uint32_t>> drafted;
@@ -943,7 +944,7 @@ std::shared_ptr<KernelShape> Draft(const KernelJob &job, FaceNamer *, std::strin
                 draft.Add(TopoDS::Face(ex.Current()), Dir(df.pull), job.size,
                           gp_Pln(Pnt(df.point), Dir(df.pull)));
                 if(!draft.AddDone()) {
-                    *problem = "the draft failed on a face it cannot taper";
+                    *problem = N_("the draft failed on a face it cannot taper");
                     return nullptr;
                 }
                 drafted.push_back({ ex.Current(), df.name });
@@ -951,19 +952,20 @@ std::shared_ptr<KernelShape> Draft(const KernelJob &job, FaceNamer *, std::strin
             if(!found) missing++;
         }
         if(drafted.empty()) {
-            *problem = "none of the faces were found on the solid";
+            *problem = N_("none of the faces were found on the solid");
             return nullptr;
         }
         draft.Build();
     } catch(const Standard_Failure &) {
     }
     if(!draft.IsDone() || !IsGoodSolid(draft.Shape())) {
-        *problem = "the draft failed; the angle may be too big for the solid";
+        *problem = N_("the draft failed; the angle may be too big for the solid");
         return nullptr;
     }
     if(missing > 0) {
-        *problem = ssprintf("%d of the %d faces were not found on the solid", missing,
-                            (int)job.draftFaces.size());
+        *problem = N_("%d of the %d faces were not found on the solid");
+        problem->count[0] = missing;
+        problem->count[1] = (int)job.draftFaces.size();
     }
     auto out   = std::make_shared<KernelShape>();
     out->shape = draft.Shape();
@@ -1078,10 +1080,10 @@ std::vector<Vector> DowelPoints(const TopoDS_Shape &solid, const gp_Pln &pln, do
 
 // A split's half (M5b): the previous solid on the side splitNormal points to, with pockets for
 // dowels across the cut.
-std::shared_ptr<KernelShape> SplitHalf(const KernelJob &job, std::string *problem) {
+std::shared_ptr<KernelShape> SplitHalf(const KernelJob &job, KernelProblem *problem) {
     const KernelShape &prev = *job.prevShape;
     if(job.splitNormal.Magnitude() < LENGTH_EPS) {
-        *problem = "the split's plane is gone";
+        *problem = N_("the split's plane is gone");
         return nullptr;
     }
     Bnd_Box box;
@@ -1097,14 +1099,14 @@ std::shared_ptr<KernelShape> SplitHalf(const KernelJob &job, std::string *proble
     half.shape = BRepPrimAPI_MakePrism(big, Vec(job.splitNormal.ScaledBy(2 * reach))).Shape();
     auto out   = std::make_shared<KernelShape>();
     if(!Boolean(KernelCombine::INTERSECTION, prev, half, out.get())) {
-        *problem = "the solid couldn't be split";
+        *problem = N_("the solid couldn't be split");
         return nullptr;
     }
     if(job.dowelDiameter <= 0) return out;
     double c = job.dowelClearance, d = job.dowelDiameter;
     std::vector<Vector> at = DowelPoints(prev.shape, pln, reach, d + std::max(c, 0.0));
     if(at.empty()) {
-        *problem = "the cut is too small for a dowel this size";
+        *problem = N_("the cut is too small for a dowel this size");
         return out;
     }
     std::vector<TopoDS_Shape> pockets;
@@ -1116,13 +1118,13 @@ std::shared_ptr<KernelShape> SplitHalf(const KernelJob &job, std::string *proble
     tools.shape = MakeCompound(pockets);
     auto cut    = std::make_shared<KernelShape>();
     if(!Boolean(KernelCombine::DIFFERENCE, *out, tools, cut.get())) {
-        *problem = "the dowel pockets couldn't be cut";
+        *problem = N_("the dowel pockets couldn't be cut");
         return out;
     }
     return cut;
 }
 
-std::shared_ptr<KernelShape> Holes(const KernelJob &job, std::string *problem) {
+std::shared_ptr<KernelShape> Holes(const KernelJob &job, KernelProblem *problem) {
     const KernelShape &prev = *job.prevShape;
     const HoleSpec    &spec = job.hole;
     Bnd_Box            box;
@@ -1160,14 +1162,14 @@ std::shared_ptr<KernelShape> Holes(const KernelJob &job, std::string *problem) {
                     Dir(h.dir), bore, spec.Major(), spec.pitch,
                     threadLength + (seat > 0 ? 0 : spec.pitch));
                 if(groove.IsNull()) {
-                    *problem = "the thread could not be made";
+                    *problem = N_("the thread could not be made");
                     return nullptr;
                 }
                 tools.Append(groove);
             }
         }
     } catch(const Standard_Failure &) {
-        *problem = "the holes could not be made";
+        *problem = N_("the holes could not be made");
         return nullptr;
     }
     if(tools.IsEmpty()) return nullptr;
@@ -1183,12 +1185,12 @@ std::shared_ptr<KernelShape> Holes(const KernelJob &job, std::string *problem) {
     cut.SetUseOBB(true);
     cut.Build();
     if(!cut.IsDone() || cut.HasErrors() || !IsGoodSolid(cut.Shape())) {
-        *problem = "the holes could not be cut";
+        *problem = N_("the holes could not be cut");
         return nullptr;
     }
     cut.SimplifyResult();
     if(Volume(cut.Shape()) >= Volume(prev.shape) * (1 - 1e-12)) {
-        *problem = "the holes miss the solid";
+        *problem = N_("the holes miss the solid");
         return nullptr;
     }
     auto out   = std::make_shared<KernelShape>();
@@ -1285,7 +1287,7 @@ std::vector<std::vector<const std::vector<SBezier> *>> HoleChains(const KernelJo
     return chains;
 }
 
-std::shared_ptr<KernelShape> Loft(const KernelJob &job, std::string *problem) {
+std::shared_ptr<KernelShape> Loft(const KernelJob &job, KernelProblem *problem) {
     if(job.sections.size() < 2) return nullptr;
     auto ks = std::make_shared<KernelShape>();
     try {
@@ -1295,7 +1297,7 @@ std::shared_ptr<KernelShape> Loft(const KernelJob &job, std::string *problem) {
         }
         loft.Build();
         if(!loft.IsDone() || !IsGoodSolid(loft.Shape())) {
-            *problem = "the loft failed";
+            *problem = N_("the loft failed");
             return nullptr;
         }
         ks->shape = loft.Shape();
@@ -1306,7 +1308,7 @@ std::shared_ptr<KernelShape> Loft(const KernelJob &job, std::string *problem) {
         for(const auto &holes : job.sectionHoles) anyHoles = anyHoles || !holes.empty();
         std::vector<std::vector<const std::vector<SBezier> *>> chains = HoleChains(job);
         if(anyHoles && chains.empty()) {
-            *problem = "holes are lofted only when every profile has as many; these are left out";
+            *problem = N_("holes are lofted only when every profile has as many; these are left out");
         }
         std::vector<TopoDS_Shape> cutters;
         for(const auto &chain : chains) {
@@ -1314,25 +1316,25 @@ std::shared_ptr<KernelShape> Loft(const KernelJob &job, std::string *problem) {
             for(const std::vector<SBezier> *loop : chain) hole.AddWire(SectionWire(*loop));
             hole.Build();
             if(!hole.IsDone() || !IsGoodSolid(hole.Shape())) {
-                *problem = "the holes could not be lofted";
+                *problem = N_("the holes could not be lofted");
                 return ks;
             }
             TopoDS_Shape solid = hole.Shape();
             Orient(&solid);
             cutters.push_back(solid);
         }
-        if(!CutHoles(cutters, ks.get())) *problem = "the holes could not be cut";
+        if(!CutHoles(cutters, ks.get())) *problem = N_("the holes could not be cut");
     } catch(const Standard_Failure &) {
-        *problem = "the loft failed";
+        *problem = N_("the loft failed");
         return nullptr;
     }
     return ks;
 }
 
 // A profile swept along the job's path (pieces in order, end to end).
-std::shared_ptr<KernelShape> Sweep(const KernelJob &job, std::string *problem) {
+std::shared_ptr<KernelShape> Sweep(const KernelJob &job, KernelProblem *problem) {
     if(job.sections.empty() || job.path.empty()) {
-        *problem = "the sweep has no profile or no path";
+        *problem = N_("the sweep has no profile or no path");
         return nullptr;
     }
     auto ks = std::make_shared<KernelShape>();
@@ -1359,7 +1361,7 @@ std::shared_ptr<KernelShape> Sweep(const KernelJob &job, std::string *problem) {
                 fits = fits && backStart[i] + backEnd[i] < length - LENGTH_EPS;
             }
             if(!fits) {
-                *problem = "the path's corners are too tight for that radius; they stay sharp";
+                *problem = N_("the path's corners are too tight for that radius; they stay sharp");
                 std::fill(backStart.begin(), backStart.end(), 0);
                 std::fill(backEnd.begin(), backEnd.end(), 0);
             }
@@ -1390,7 +1392,7 @@ std::shared_ptr<KernelShape> Sweep(const KernelJob &job, std::string *problem) {
             spine.Add(BRepBuilderAPI_MakeEdge(curve).Edge());
         }
         if(!spine.IsDone()) {
-            *problem = "the sweep's path is not connected";
+            *problem = N_("the sweep's path is not connected");
             return nullptr;
         }
         // The profile's outer loop, then each hole, swept the same way; the holes are cut.
@@ -1407,10 +1409,10 @@ std::shared_ptr<KernelShape> Sweep(const KernelJob &job, std::string *problem) {
             pipe.Build();
             if(!pipe.IsDone() || !pipe.MakeSolid() || !IsGoodSolid(pipe.Shape())) {
                 if(i == 0) {
-                    *problem = "the sweep failed";
+                    *problem = N_("the sweep failed");
                     return nullptr;
                 }
-                *problem = "the holes could not be swept";
+                *problem = N_("the holes could not be swept");
                 return ks;
             }
             TopoDS_Shape solid = pipe.Shape();
@@ -1422,9 +1424,9 @@ std::shared_ptr<KernelShape> Sweep(const KernelJob &job, std::string *problem) {
                 cutters.push_back(solid);
             }
         }
-        if(!CutHoles(cutters, ks.get())) *problem = "the holes could not be cut";
+        if(!CutHoles(cutters, ks.get())) *problem = N_("the holes could not be cut");
     } catch(const Standard_Failure &) {
-        *problem = "the sweep failed";
+        *problem = N_("the sweep failed");
         return nullptr;
     }
     return ks;

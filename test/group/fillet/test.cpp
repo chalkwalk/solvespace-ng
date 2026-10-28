@@ -35,6 +35,19 @@ TEST_CASE(derived_lines_exist_without_occt) {
     CHECK_TRUE(g->featureProblem.find("Open CASCADE") != std::string::npos);
 }
 
+// The kernel's notes are translated (on the main thread), in the language chosen (#5).
+TEST_CASE(the_kernels_note_follows_the_language) {
+    CHECK_TRUE(SetLocale("de-DE"));
+    CHECK_LOAD("filleted.slvs");
+    std::string problem;
+    for(Group &g : SK.group) {
+        if(g.type == Group::Type::FILLET) problem = g.featureProblem;
+    }
+    CHECK_TRUE(SetLocale("en-US"));
+    CHECK_TRUE(problem.find("CASCADE") != std::string::npos);
+    CHECK_TRUE(problem.find("need the Open CASCADE kernel") == std::string::npos);
+}
+
 #ifdef HAVE_OCCT
 TEST_CASE(fillet_group_is_made_from_selected_edges) {
     CHECK_LOAD("box.slvs");
