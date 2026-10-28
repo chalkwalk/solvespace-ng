@@ -760,6 +760,17 @@ static void DrawJoint(Joint *j, std::function<void()> *run) {
                        }),
                        unit);
         }
+        bool playing = SS.PlayingJoint(hj, dof);
+        if(ImGui::Button((LabelId(playing ? _("stop") : _("play"), "##joint-play") + id).c_str())) {
+            *run = [hj, dof, playing] {
+                if(playing) {
+                    SS.StopJoint();
+                } else {
+                    SS.PlayJoint(hj, dof, GetMilliseconds());
+                }
+            };
+        }
+        ImGui::SameLine();
         if(ImGui::Button((LabelId(_("sweep clearance"), "##joint-sweep") + id).c_str())) {
             *run = [hj, dof] { gSweepText[hj.v] = SS.SweepClearance(hj, 72, dof).text; };
         }

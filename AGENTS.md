@@ -534,6 +534,10 @@ XCAF colours and names, exact hidden-line drawing export (`HLRBRep`).
     "sweep clearance", "design pose" and "delete".
   - **`G` on a face of a jointed part** turns or slides its joint with the mouse; a typed
     value sets the change.
+- **Playing a joint** (added 2026-10-28, #15): "play" beside each motion in Properties runs it
+  back and forth between its limits (else the scrub slider's range), a pass in two seconds, or
+  round at 90° a second for a turn without limits, until "stop" (`PlayJoint`,
+  `StepJointAnimation`). One undo step returns it; a value set any other way stops it.
 - **Clearance sweep** (`SweepClearance`): samples the joint across its range (its limits,
   else a full turn; a slider needs limits). It measures the moving parts against the still
   ones with OCCT's `BRepExtrema_DistShapeShape` on placed B-reps (`KernelMinDistance`),

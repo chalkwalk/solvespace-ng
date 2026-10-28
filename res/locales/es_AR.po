@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: SolveSpace 3.0\n"
 "Report-Msgid-Bugs-To: phkahler@gmail.com\n"
-"POT-Creation-Date: 2026-10-28 15:04-0700\n"
+"POT-Creation-Date: 2026-10-28 15:14-0700\n"
 "PO-Revision-Date: 2021-09-17 \n"
 "Last-Translator: Maxi Vasquez <mvasquez@epet12smandes.edu.ar>\n"
 "Language-Team: AndesFreeDesign\n"
@@ -684,21 +684,21 @@ msgstr ""
 "El tamaño de la página PDF supera los 5080mm x 5080mm; muchos usuarios "
 "pueden rechazar este archivo."
 
-#: file.cpp:49 group.cpp:168
+#: file.cpp:50 group.cpp:168
 msgctxt "group-name"
 msgid "sketch-in-plane"
 msgstr "croquis-en-plano"
 
-#: file.cpp:67
+#: file.cpp:68
 msgctxt "group-name"
 msgid "#references"
 msgstr "#referencias"
 
-#: file.cpp:661
+#: file.cpp:662
 msgid "The file is empty. It may be corrupt."
 msgstr "El archivo esta vacío. Puede estar corrupto."
 
-#: file.cpp:666
+#: file.cpp:667
 msgid ""
 "Unrecognized data in file. This file may be corrupt, or from a newer version "
 "of the program."
@@ -706,18 +706,18 @@ msgstr ""
 "Datos no reconocidos en el archivo. Este archivo puede estar dañado o ser de "
 "una versión más reciente del programa."
 
-#: file.cpp:1007
+#: file.cpp:1008
 msgctxt "title"
 msgid "Missing File"
 msgstr "Archivo perdido"
 
-#: file.cpp:1008
+#: file.cpp:1009
 #, c-format
 msgctxt "dialog"
 msgid "The linked file “%s” is not present."
 msgstr "El archivo vinculado “%s” no esta presente."
 
-#: file.cpp:1010
+#: file.cpp:1011
 msgctxt "dialog"
 msgid ""
 "Do you want to locate it manually?\n"
@@ -730,17 +730,17 @@ msgstr ""
 "Si lo rechaza, cualquier geometría que dependa del archivo faltante se "
 "eliminará permanentemente."
 
-#: file.cpp:1013
+#: file.cpp:1014
 msgctxt "button"
 msgid "&Yes"
 msgstr "&Si"
 
-#: file.cpp:1015
+#: file.cpp:1016
 msgctxt "button"
 msgid "&No"
 msgstr "&No"
 
-#: file.cpp:1017 solvespace.cpp:684
+#: file.cpp:1018 solvespace.cpp:684
 msgctxt "button"
 msgid "&Cancel"
 msgstr "&Cancelar"
@@ -865,7 +865,7 @@ msgstr "Exportar &piezas..."
 msgid "Export Parts &List..."
 msgstr "Exportar &lista de piezas..."
 
-#: graphicswin.cpp:57#, fuzzy
+#: graphicswin.cpp:57
 msgid "Export &Assembly (STEP)..."
 msgstr "Exportar &ensamblaje (STEP)..."
 
@@ -2006,39 +2006,39 @@ msgstr ""
 msgid "Part '%s' already has a joint to move it."
 msgstr "La pieza '%s' ya tiene una unión que la mueve."
 
-#: joint.cpp:434
+#: joint.cpp:488
 #, fuzzy
 msgid "Set the slide's limits first: the sweep runs between them."
 msgstr ""
 "Primero fije los límites de la corredera: el barrido se hace entre ellos."
 
-#: joint.cpp:452
+#: joint.cpp:506
 #, fuzzy
 msgid "The joint moves no solid past another; there is nothing to sweep."
 msgstr ""
 "La unión no mueve ningún sólido más allá de otro; no hay nada que barrer."
 
-#: joint.cpp:489
+#: joint.cpp:543
 #, fuzzy
 msgid "The clearance sweep needs the Open CASCADE kernel's solids."
 msgstr "El barrido de holgura necesita los sólidos del núcleo Open CASCADE."
 
-#: joint.cpp:540
+#: joint.cpp:594
 #, fuzzy, c-format
 msgid "Minimum gap %s mm at %s."
 msgstr "Holgura mínima %s mm en %s."
 
-#: joint.cpp:543
+#: joint.cpp:597
 #, fuzzy
 msgid "The parts touch or overlap"
 msgstr "Las piezas se tocan o se superponen"
 
-#: joint.cpp:548
+#: joint.cpp:602
 #, fuzzy, c-format
 msgid "at %s"
 msgstr "en %s"
 
-#: joint.cpp:549
+#: joint.cpp:603
 #, fuzzy, c-format
 msgid "from %s to %s"
 msgstr "de %s a %s"
@@ -2500,7 +2500,9 @@ msgstr "Se exportaron %d piezas:%s"
 #, fuzzy
 msgid ""
 "The assembly needs the Open CASCADE kernel and a solid to export as STEP."
-msgstr "El ensamblaje necesita el núcleo Open CASCADE y un sólido para exportarse como STEP."
+msgstr ""
+"El ensamblaje necesita el núcleo Open CASCADE y un sólido para exportarse "
+"como STEP."
 
 #: solvespace.cpp:907
 #, c-format
@@ -3133,7 +3135,7 @@ msgstr "Piezas, un archivo cada una..."
 msgid "Parts List (CSV)..."
 msgstr "Lista de piezas (CSV)..."
 
-#: ui/menulayout.cpp:67#, fuzzy
+#: ui/menulayout.cpp:67
 msgid "Assembly (STEP)..."
 msgstr "Ensamblaje (STEP)..."
 
@@ -4863,27 +4865,37 @@ msgstr "desde"
 msgid "to"
 msgstr "hasta"
 
-#: ui/properties.cpp:763
+#: ui/properties.cpp:764
+#, fuzzy
+msgid "play"
+msgstr "reproducir"
+
+#: ui/properties.cpp:764
+#, fuzzy
+msgid "stop"
+msgstr "detener"
+
+#: ui/properties.cpp:774
 #, fuzzy
 msgid "sweep clearance"
 msgstr "barrer holgura"
 
-#: ui/properties.cpp:770
+#: ui/properties.cpp:781
 #, fuzzy
 msgid "design pose"
 msgstr "posición de diseño"
 
-#: ui/properties.cpp:774 ui/properties.cpp:797
+#: ui/properties.cpp:785 ui/properties.cpp:808
 #, fuzzy
 msgid "delete"
 msgstr "eliminar"
 
-#: ui/properties.cpp:781
+#: ui/properties.cpp:792
 #, fuzzy
 msgid "Fit table"
 msgstr "Tabla de ajustes"
 
-#: ui/properties.cpp:782
+#: ui/properties.cpp:793
 #, fuzzy
 msgid ""
 "Clearances for fit joints, tuned to your printer: each side's gap (negative "
@@ -4892,7 +4904,7 @@ msgstr ""
 "Holguras de las uniones de ajuste, ajustadas a su impresora: el juego de "
 "cada lado (las presiones son negativas)."
 
-#: ui/properties.cpp:802
+#: ui/properties.cpp:813
 #, fuzzy
 msgid "add a fit"
 msgstr "agregar un ajuste"

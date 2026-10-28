@@ -422,6 +422,60 @@ static bool MovedBy(const Joint &j, hPart hp) {
     return false;
 }
 
+void SolveSpaceUI::PlayJoint(hJoint hj, int dof, int64_t now) {
+    Joint *j = SK.joint.FindByIdNoOops(hj);
+    if(j == nullptr || dof < 0 || dof >= j->Motions()) return;
+    UndoRemember();
+    jointPlay = { hj, dof, now, j->value[dof], j->value[dof] };
+    if(!jointPlayTimer) jointPlayTimer = Platform::CreateTimer();
+    jointPlayTimer->onTimeout = [this] {
+        StepJointAnimation(GetMilliseconds());
+        if(jointPlay.joint.v != 0) jointPlayTimer->RunAfterNextFrame();
+    };
+    jointPlayTimer->RunAfterNextFrame();
+    ScheduleShowTW();
+}
+
+void SolveSpaceUI::StopJoint() {
+    jointPlay = {};
+    ScheduleShowTW();
+}
+
+bool SolveSpaceUI::PlayingJoint(hJoint hj, int dof) {
+    return jointPlay.joint.v != 0 && jointPlay.joint == hj && jointPlay.dof == dof;
+}
+
+void SolveSpaceUI::StepJointAnimation(int64_t now) {
+    if(jointPlay.joint.v == 0) return;
+    int    dof = jointPlay.dof;
+    Joint *j   = SK.joint.FindByIdNoOops(jointPlay.joint);
+    // Gone, or moved by something else (typed, scrubbed, undone): stop.
+    if(j == nullptr || j->value[dof] != jointPlay.last) {
+        StopJoint();
+        return;
+    }
+    double t = (now - jointPlay.t0) / 1000.0, v;
+    if(j->IsAngle(dof) && !j->limited[dof]) {
+        v = fmod(jointPlay.v0 + 90 * t + 180, 360);
+        if(v < 0) v += 360;
+        v -= 180;
+    } else {
+        // As the scrub slider's range.
+        double lo = j->limited[dof] ? j->lo[dof] : (j->IsAngle(dof) ? -180 : -50);
+        double hi = j->limited[dof] ? j->hi[dof] : (j->IsAngle(dof) ? 180 : 50);
+        double span = hi - lo;
+        if(span <= 0) {
+            StopJoint();
+            return;
+        }
+        // Up from where it was, reflected at each end; from the top it starts down.
+        double x = fmod(std::max(0.0, jointPlay.v0 - lo) + span / 2 * t, 2 * span);
+        v        = lo + (x <= span ? x : 2 * span - x);
+    }
+    SetJointValue(jointPlay.joint, v, /*remember=*/false, dof);
+    jointPlay.last = SK.GetJoint(jointPlay.joint)->value[dof];
+}
+
 SolveSpaceUI::ClearanceSweep SolveSpaceUI::SweepClearance(hJoint hj, int samples, int dof) {
     ClearanceSweep sweep;
     FlushRegeneration();

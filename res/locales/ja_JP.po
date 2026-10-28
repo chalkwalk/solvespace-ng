@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: SolveSpace 3.0\n"
 "Report-Msgid-Bugs-To: phkahler@gmail.com\n"
-"POT-Creation-Date: 2026-10-28 15:04-0700\n"
+"POT-Creation-Date: 2026-10-28 15:14-0700\n"
 "PO-Revision-Date: 2025-02-01 10:31+0900\n"
 "Last-Translator: https://github.com/verylowfreq\n"
 "Language-Team: \n"
@@ -693,23 +693,23 @@ msgstr ""
 "PDFのページ寸法が 200x200 インチを超えています。多くのPDFリーダーでは正常に読"
 "み込めません。"
 
-#: file.cpp:49 group.cpp:168
+#: file.cpp:50 group.cpp:168
 #, fuzzy
 msgctxt "group-name"
 msgid "sketch-in-plane"
 msgstr "平面スケッチ"
 
-#: file.cpp:67
+#: file.cpp:68
 #, fuzzy
 msgctxt "group-name"
 msgid "#references"
 msgstr "#参照"
 
-#: file.cpp:661
+#: file.cpp:662
 msgid "The file is empty. It may be corrupt."
 msgstr "ファイルが空です。ファイルが破損している可能性があります。"
 
-#: file.cpp:666
+#: file.cpp:667
 msgid ""
 "Unrecognized data in file. This file may be corrupt, or from a newer version "
 "of the program."
@@ -717,18 +717,18 @@ msgstr ""
 "ファイルに処理できないデータが含まれています。ファイルが破損しているか、より"
 "新しいバージョンで作成されたファイルの可能性があります。"
 
-#: file.cpp:1007
+#: file.cpp:1008
 msgctxt "title"
 msgid "Missing File"
 msgstr "不明ファイル"
 
-#: file.cpp:1008
+#: file.cpp:1009
 #, c-format
 msgctxt "dialog"
 msgid "The linked file “%s” is not present."
 msgstr "リンクされたファイル \"%s\" が見つかりません。"
 
-#: file.cpp:1010
+#: file.cpp:1011
 msgctxt "dialog"
 msgid ""
 "Do you want to locate it manually?\n"
@@ -740,17 +740,17 @@ msgstr ""
 "\n"
 "キャンセルした場合、不明なファイルに依存しているすべての寸法は削除されます。"
 
-#: file.cpp:1013
+#: file.cpp:1014
 msgctxt "button"
 msgid "&Yes"
 msgstr "はい (&Y)"
 
-#: file.cpp:1015
+#: file.cpp:1016
 msgctxt "button"
 msgid "&No"
 msgstr "いいえ (&N)"
 
-#: file.cpp:1017 solvespace.cpp:684
+#: file.cpp:1018 solvespace.cpp:684
 msgctxt "button"
 msgid "&Cancel"
 msgstr "キャンセル (&C)"
@@ -873,7 +873,7 @@ msgstr "部品をエクスポート... (&P)"
 msgid "Export Parts &List..."
 msgstr "部品表をエクスポート... (&L)"
 
-#: graphicswin.cpp:57#, fuzzy
+#: graphicswin.cpp:57
 msgid "Export &Assembly (STEP)..."
 msgstr "アセンブリをエクスポート (STEP) (&A)..."
 
@@ -2004,40 +2004,40 @@ msgstr ""
 msgid "Part '%s' already has a joint to move it."
 msgstr "部品 '%s' には、既にこれを動かすジョイントがあります。"
 
-#: joint.cpp:434
+#: joint.cpp:488
 #, fuzzy
 msgid "Set the slide's limits first: the sweep runs between them."
 msgstr ""
 "先にスライダーの可動範囲を設定してください: 掃引はその範囲内で行われます。"
 
-#: joint.cpp:452
+#: joint.cpp:506
 #, fuzzy
 msgid "The joint moves no solid past another; there is nothing to sweep."
 msgstr ""
 "このジョイントはソリッド同士を重ねて動かさないため、掃引するものがありませ"
 "ん。"
 
-#: joint.cpp:489
+#: joint.cpp:543
 #, fuzzy
 msgid "The clearance sweep needs the Open CASCADE kernel's solids."
 msgstr "クリアランス掃引には Open CASCADE カーネルのソリッドが必要です。"
 
-#: joint.cpp:540
+#: joint.cpp:594
 #, fuzzy, c-format
 msgid "Minimum gap %s mm at %s."
 msgstr "最小隙間 %s mm、%s の位置。"
 
-#: joint.cpp:543
+#: joint.cpp:597
 #, fuzzy
 msgid "The parts touch or overlap"
 msgstr "部品が接触しているか、重なっています"
 
-#: joint.cpp:548
+#: joint.cpp:602
 #, fuzzy, c-format
 msgid "at %s"
 msgstr "%s の位置"
 
-#: joint.cpp:549
+#: joint.cpp:603
 #, fuzzy, c-format
 msgid "from %s to %s"
 msgstr "%s から %s まで"
@@ -2494,7 +2494,9 @@ msgstr "%d 個の部品を書き出しました:%s"
 #, fuzzy
 msgid ""
 "The assembly needs the Open CASCADE kernel and a solid to export as STEP."
-msgstr "アセンブリを STEP としてエクスポートするには Open CASCADE カーネルとソリッドが必要です。"
+msgstr ""
+"アセンブリを STEP としてエクスポートするには Open CASCADE カーネルとソリッド"
+"が必要です。"
 
 #: solvespace.cpp:907
 #, c-format
@@ -3125,7 +3127,7 @@ msgstr "部品ごとのファイル..."
 msgid "Parts List (CSV)..."
 msgstr "部品表 (CSV)..."
 
-#: ui/menulayout.cpp:67#, fuzzy
+#: ui/menulayout.cpp:67
 msgid "Assembly (STEP)..."
 msgstr "アセンブリ (STEP)..."
 
@@ -4851,27 +4853,37 @@ msgstr "下限"
 msgid "to"
 msgstr "上限"
 
-#: ui/properties.cpp:763
+#: ui/properties.cpp:764
+#, fuzzy
+msgid "play"
+msgstr "再生"
+
+#: ui/properties.cpp:764
+#, fuzzy
+msgid "stop"
+msgstr "停止"
+
+#: ui/properties.cpp:774
 #, fuzzy
 msgid "sweep clearance"
 msgstr "クリアランスを掃引"
 
-#: ui/properties.cpp:770
+#: ui/properties.cpp:781
 #, fuzzy
 msgid "design pose"
 msgstr "設計時の姿勢"
 
-#: ui/properties.cpp:774 ui/properties.cpp:797
+#: ui/properties.cpp:785 ui/properties.cpp:808
 #, fuzzy
 msgid "delete"
 msgstr "削除"
 
-#: ui/properties.cpp:781
+#: ui/properties.cpp:792
 #, fuzzy
 msgid "Fit table"
 msgstr "フィット表"
 
-#: ui/properties.cpp:782
+#: ui/properties.cpp:793
 #, fuzzy
 msgid ""
 "Clearances for fit joints, tuned to your printer: each side's gap (negative "
@@ -4880,7 +4892,7 @@ msgstr ""
 "フィットジョイント用のクリアランス (お使いのプリンターに合わせて調整): 片側ご"
 "との隙間 (マイナスは圧入)。"
 
-#: ui/properties.cpp:802
+#: ui/properties.cpp:813
 #, fuzzy
 msgid "add a fit"
 msgstr "フィットを追加"

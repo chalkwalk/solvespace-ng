@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: SolveSpace 3.1\n"
 "Report-Msgid-Bugs-To: phkahler@gmail.com\n"
-"POT-Creation-Date: 2026-10-28 15:04-0700\n"
+"POT-Creation-Date: 2026-10-28 15:14-0700\n"
 "PO-Revision-Date: 2022-06-19 20:16+0200\n"
 "Last-Translator: Pavel Stržínek <pavel.strzinek@gmail.com>\n"
 "Language-Team: none\n"
@@ -656,21 +656,21 @@ msgstr ""
 "Velikost stránky PDF přesahuje 200 x 200 palců; mnoho prohlížečů může tento "
 "soubor odmítnout."
 
-#: file.cpp:49 group.cpp:168
+#: file.cpp:50 group.cpp:168
 msgctxt "group-name"
 msgid "sketch-in-plane"
 msgstr "náčrt-v-rovině"
 
-#: file.cpp:67
+#: file.cpp:68
 msgctxt "group-name"
 msgid "#references"
 msgstr "#odkazy"
 
-#: file.cpp:661
+#: file.cpp:662
 msgid "The file is empty. It may be corrupt."
 msgstr "Soubor je prázdný. Může být poškozený."
 
-#: file.cpp:666
+#: file.cpp:667
 msgid ""
 "Unrecognized data in file. This file may be corrupt, or from a newer version "
 "of the program."
@@ -678,18 +678,18 @@ msgstr ""
 "Nerozpoznaná data v souboru. Tento soubor může být poškozený nebo pochází z "
 "novější verze programu."
 
-#: file.cpp:1007
+#: file.cpp:1008
 msgctxt "title"
 msgid "Missing File"
 msgstr "Chybějící soubor"
 
-#: file.cpp:1008
+#: file.cpp:1009
 #, c-format
 msgctxt "dialog"
 msgid "The linked file “%s” is not present."
 msgstr "Odkazovaný soubor “%s” není k dispozici."
 
-#: file.cpp:1010
+#: file.cpp:1011
 msgctxt "dialog"
 msgid ""
 "Do you want to locate it manually?\n"
@@ -702,17 +702,17 @@ msgstr ""
 "Pokud odmítneš, všechny geometrie, které závisí na chybějícím souboru, budou "
 "trvale odstraněny."
 
-#: file.cpp:1013
+#: file.cpp:1014
 msgctxt "button"
 msgid "&Yes"
 msgstr "&Ano"
 
-#: file.cpp:1015
+#: file.cpp:1016
 msgctxt "button"
 msgid "&No"
 msgstr "&Ne"
 
-#: file.cpp:1017 solvespace.cpp:684
+#: file.cpp:1018 solvespace.cpp:684
 msgctxt "button"
 msgid "&Cancel"
 msgstr "&Zrušit"
@@ -834,7 +834,7 @@ msgstr "&Exportovat části..."
 msgid "Export Parts &List..."
 msgstr "Exportovat &seznam částí..."
 
-#: graphicswin.cpp:57#, fuzzy
+#: graphicswin.cpp:57
 msgid "Export &Assembly (STEP)..."
 msgstr "Exportovat &sestavu (STEP)..."
 
@@ -1947,37 +1947,37 @@ msgstr "Obě osy nejsou stejná přímka; kloub se otáčí kolem jedné osy."
 msgid "Part '%s' already has a joint to move it."
 msgstr "Část '%s' už má kloub, který ji pohybuje."
 
-#: joint.cpp:434
+#: joint.cpp:488
 #, fuzzy
 msgid "Set the slide's limits first: the sweep runs between them."
 msgstr "Nejprve nastav meze posuvu: prověřování probíhá mezi nimi."
 
-#: joint.cpp:452
+#: joint.cpp:506
 #, fuzzy
 msgid "The joint moves no solid past another; there is nothing to sweep."
 msgstr "Kloub nepřesouvá žádné těleso za jiné; není co prověřit."
 
-#: joint.cpp:489
+#: joint.cpp:543
 #, fuzzy
 msgid "The clearance sweep needs the Open CASCADE kernel's solids."
 msgstr "Prověření vůle vyžaduje tělesa jádra Open CASCADE."
 
-#: joint.cpp:540
+#: joint.cpp:594
 #, fuzzy, c-format
 msgid "Minimum gap %s mm at %s."
 msgstr "Nejmenší mezera %s mm při %s."
 
-#: joint.cpp:543
+#: joint.cpp:597
 #, fuzzy
 msgid "The parts touch or overlap"
 msgstr "Části se dotýkají nebo překrývají"
 
-#: joint.cpp:548
+#: joint.cpp:602
 #, fuzzy, c-format
 msgid "at %s"
 msgstr "při %s"
 
-#: joint.cpp:549
+#: joint.cpp:603
 #, fuzzy, c-format
 msgid "from %s to %s"
 msgstr "od %s do %s"
@@ -2436,7 +2436,9 @@ msgstr "Exportováno částí %d:%s"
 #, fuzzy
 msgid ""
 "The assembly needs the Open CASCADE kernel and a solid to export as STEP."
-msgstr "Sestava potřebuje jádro Open CASCADE a těleso, aby se dala exportovat jako STEP."
+msgstr ""
+"Sestava potřebuje jádro Open CASCADE a těleso, aby se dala exportovat jako "
+"STEP."
 
 #: solvespace.cpp:907
 #, c-format
@@ -3065,7 +3067,7 @@ msgstr "Části, každá v samostatném souboru..."
 msgid "Parts List (CSV)..."
 msgstr "Seznam částí (CSV)..."
 
-#: ui/menulayout.cpp:67#, fuzzy
+#: ui/menulayout.cpp:67
 msgid "Assembly (STEP)..."
 msgstr "Sestava (STEP)..."
 
@@ -4792,27 +4794,37 @@ msgstr "od"
 msgid "to"
 msgstr "do"
 
-#: ui/properties.cpp:763
+#: ui/properties.cpp:764
+#, fuzzy
+msgid "play"
+msgstr "přehrát"
+
+#: ui/properties.cpp:764
+#, fuzzy
+msgid "stop"
+msgstr "zastavit"
+
+#: ui/properties.cpp:774
 #, fuzzy
 msgid "sweep clearance"
 msgstr "prověřit vůli"
 
-#: ui/properties.cpp:770
+#: ui/properties.cpp:781
 #, fuzzy
 msgid "design pose"
 msgstr "návrhová poloha"
 
-#: ui/properties.cpp:774 ui/properties.cpp:797
+#: ui/properties.cpp:785 ui/properties.cpp:808
 #, fuzzy
 msgid "delete"
 msgstr "odstranit"
 
-#: ui/properties.cpp:781
+#: ui/properties.cpp:792
 #, fuzzy
 msgid "Fit table"
 msgstr "Tabulka lícování"
 
-#: ui/properties.cpp:782
+#: ui/properties.cpp:793
 #, fuzzy
 msgid ""
 "Clearances for fit joints, tuned to your printer: each side's gap (negative "
@@ -4821,7 +4833,7 @@ msgstr ""
 "Vůle pro lícované spoje, vyladěné pro tvou tiskárnu: mezera na každé straně "
 "(záporné hodnoty = přesah)."
 
-#: ui/properties.cpp:802
+#: ui/properties.cpp:813
 #, fuzzy
 msgid "add a fit"
 msgstr "přidat lícování"

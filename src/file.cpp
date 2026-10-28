@@ -35,6 +35,7 @@ void SolveSpaceUI::ClearExisting() {
     SK.part.Clear();
     SK.joint.Clear();
     SK.fit.Clear();
+    jointPlay = {}; // a joint playing is gone with its file
 
     SK.entity.Clear();
     SK.param.Clear();

@@ -127,4 +127,50 @@ TEST_CASE(a_swinging_block_reports_where_it_hits) {
     CHECK_TRUE(sweep.collisions.empty());
     CHECK_TRUE(fabs(sweep.gap - 2) < 1e-6);
 }
+// A joint plays through its range (#15): back and forth between its limits, a pass in two
+// seconds; round and round when a turn has none. One undo step returns it; a change from
+// elsewhere stops it.
+TEST_CASE(a_joint_plays_through_its_range) {
+    CHECK_LOAD("box.slvs");
+    SS.SetKernel(KernelKind::OCCT);
+    TopView();
+    Select({ Cap(Group::REMAP_TOP) });
+    Group::MenuGroup(Command::GROUP_WRKPL);
+    hEntity axisA = Circle({ 10, 0, 30 }, 1, /*construction=*/true);
+    Select({ Cap(Group::REMAP_TOP) });
+    SS.NewPart();
+    hEntity axisB = Circle({ 10, 0, 30 }, 1, /*construction=*/true);
+    Rectangle({ 12, 0, 30 }, { 16, 4, 30 });
+    ExtrudeDown(Group::CombineAs::UNION);
+    Select({ axisA, axisB });
+    hJoint hj = SS.MakeJoint(Joint::Type::REVOLUTE);
+    CHECK_TRUE(hj.v != 0);
+    SS.SetJointLimits(hj, true, -60, 0);
+    // From 0, the top of its range, it turns down at 30 degrees a second, then back up.
+    SS.PlayJoint(hj, 0, 1000);
+    CHECK_TRUE(SS.PlayingJoint(hj, 0));
+    SS.StepJointAnimation(1500);
+    CHECK_EQ_EPS(SK.GetJoint(hj)->value[0], -15);
+    SS.StepJointAnimation(3500);
+    CHECK_EQ_EPS(SK.GetJoint(hj)->value[0], -45);
+    // Stopped, it stays; undo returns it to where it was before playing.
+    SS.StopJoint();
+    CHECK_FALSE(SS.PlayingJoint(hj, 0));
+    SS.StepJointAnimation(4000);
+    CHECK_EQ_EPS(SK.GetJoint(hj)->value[0], -45);
+    SS.UndoUndo();
+    CHECK_EQ_EPS(SK.GetJoint(hj)->value[0], 0);
+    // Without limits, round and round: 90 degrees a second, kept within a turn.
+    SS.SetJointLimits(hj, false, 0, 0);
+    SS.PlayJoint(hj, 0, 0);
+    SS.StepJointAnimation(1000);
+    CHECK_EQ_EPS(SK.GetJoint(hj)->value[0], 90);
+    SS.StepJointAnimation(3000);
+    CHECK_EQ_EPS(SK.GetJoint(hj)->value[0], -90);
+    // A value set from elsewhere (typed, scrubbed, undone) stops it.
+    SS.SetJointValue(hj, 10);
+    SS.StepJointAnimation(3500);
+    CHECK_FALSE(SS.PlayingJoint(hj, 0));
+    CHECK_EQ_EPS(SK.GetJoint(hj)->value[0], 10);
+}
 #endif

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: SolveSpace 3.0\n"
 "Report-Msgid-Bugs-To: phkahler@gmail.com\n"
-"POT-Creation-Date: 2026-10-28 15:04-0700\n"
+"POT-Creation-Date: 2026-10-28 15:14-0700\n"
 "PO-Revision-Date: 2022-04-30 16:44+0200\n"
 "Last-Translator: Reini Urban <rurban@cpan.org>\n"
 "Language-Team: none\n"
@@ -689,21 +689,21 @@ msgstr ""
 "Die PDF-Seitengröße überschreitet 200 x 200 Zoll; die Datei kann u.U. in "
 "vielen Programmen nicht geöffnet werden."
 
-#: file.cpp:49 group.cpp:168
+#: file.cpp:50 group.cpp:168
 msgctxt "group-name"
 msgid "sketch-in-plane"
 msgstr "Skizze-in-Ebene"
 
-#: file.cpp:67
+#: file.cpp:68
 msgctxt "group-name"
 msgid "#references"
 msgstr "#Referenzen"
 
-#: file.cpp:661
+#: file.cpp:662
 msgid "The file is empty. It may be corrupt."
 msgstr "Die Datei ist leer. Es kann beschädigt sein."
 
-#: file.cpp:666
+#: file.cpp:667
 msgid ""
 "Unrecognized data in file. This file may be corrupt, or from a newer version "
 "of the program."
@@ -711,18 +711,18 @@ msgstr ""
 "Nicht erkannte Daten in der Datei. Diese Datei könnte beschädigt sein oder "
 "von einer neueren Version des Programms stammen."
 
-#: file.cpp:1007
+#: file.cpp:1008
 msgctxt "title"
 msgid "Missing File"
 msgstr "Fehlende Datei"
 
-#: file.cpp:1008
+#: file.cpp:1009
 #, c-format
 msgctxt "dialog"
 msgid "The linked file “%s” is not present."
 msgstr "Die verlinkte Datei “%s” fehlt."
 
-#: file.cpp:1010
+#: file.cpp:1011
 msgctxt "dialog"
 msgid ""
 "Do you want to locate it manually?\n"
@@ -734,17 +734,17 @@ msgstr ""
 "Falls Sie ablehnen, wird jegliche mit der fehlenden Datei verknüpfte "
 "Geometrie verworfen."
 
-#: file.cpp:1013
+#: file.cpp:1014
 msgctxt "button"
 msgid "&Yes"
 msgstr "&Ja"
 
-#: file.cpp:1015
+#: file.cpp:1016
 msgctxt "button"
 msgid "&No"
 msgstr "&Nein"
 
-#: file.cpp:1017 solvespace.cpp:684
+#: file.cpp:1018 solvespace.cpp:684
 msgctxt "button"
 msgid "&Cancel"
 msgstr "&Abbrechen"
@@ -870,7 +870,7 @@ msgstr "Teile &exportieren…"
 msgid "Export Parts &List..."
 msgstr "Teileliste e&xportieren…"
 
-#: graphicswin.cpp:57#, fuzzy
+#: graphicswin.cpp:57
 msgid "Export &Assembly (STEP)..."
 msgstr "&Baugruppe exportieren (STEP)..."
 
@@ -2015,42 +2015,42 @@ msgstr ""
 msgid "Part '%s' already has a joint to move it."
 msgstr "Teil '%s' hat bereits ein Gelenk, das es bewegt."
 
-#: joint.cpp:434
+#: joint.cpp:488
 #, fuzzy
 msgid "Set the slide's limits first: the sweep runs between them."
 msgstr ""
 "Legen Sie zuerst die Grenzen der Verschiebung fest: der Durchlauf erfolgt "
 "zwischen ihnen."
 
-#: joint.cpp:452
+#: joint.cpp:506
 #, fuzzy
 msgid "The joint moves no solid past another; there is nothing to sweep."
 msgstr ""
 "Das Gelenk bewegt keinen Volumenkörper an einem anderen vorbei; es gibt "
 "nichts zu durchlaufen."
 
-#: joint.cpp:489
+#: joint.cpp:543
 #, fuzzy
 msgid "The clearance sweep needs the Open CASCADE kernel's solids."
 msgstr ""
 "Der Spieldurchlauf benötigt die Volumenkörper des Open-CASCADE-Kernels."
 
-#: joint.cpp:540
+#: joint.cpp:594
 #, fuzzy, c-format
 msgid "Minimum gap %s mm at %s."
 msgstr "Kleinster Spalt %s mm bei %s."
 
-#: joint.cpp:543
+#: joint.cpp:597
 #, fuzzy
 msgid "The parts touch or overlap"
 msgstr "Die Teile berühren sich oder überlappen"
 
-#: joint.cpp:548
+#: joint.cpp:602
 #, fuzzy, c-format
 msgid "at %s"
 msgstr "bei %s"
 
-#: joint.cpp:549
+#: joint.cpp:603
 #, fuzzy, c-format
 msgid "from %s to %s"
 msgstr "von %s bis %s"
@@ -2517,7 +2517,9 @@ msgstr "%d Teile exportiert:%s"
 #, fuzzy
 msgid ""
 "The assembly needs the Open CASCADE kernel and a solid to export as STEP."
-msgstr "Die Baugruppe braucht den Open-CASCADE-Kernel und einen Volumenkörper für den Export als STEP."
+msgstr ""
+"Die Baugruppe braucht den Open-CASCADE-Kernel und einen Volumenkörper für "
+"den Export als STEP."
 
 #: solvespace.cpp:907
 #, c-format
@@ -3155,7 +3157,7 @@ msgstr "Teile, je eine Datei…"
 msgid "Parts List (CSV)..."
 msgstr "Teileliste (CSV)…"
 
-#: ui/menulayout.cpp:67#, fuzzy
+#: ui/menulayout.cpp:67
 msgid "Assembly (STEP)..."
 msgstr "Baugruppe (STEP)..."
 
@@ -4884,27 +4886,37 @@ msgstr "von"
 msgid "to"
 msgstr "bis"
 
-#: ui/properties.cpp:763
+#: ui/properties.cpp:764
+#, fuzzy
+msgid "play"
+msgstr "abspielen"
+
+#: ui/properties.cpp:764
+#, fuzzy
+msgid "stop"
+msgstr "anhalten"
+
+#: ui/properties.cpp:774
 #, fuzzy
 msgid "sweep clearance"
 msgstr "Spiel durchfahren"
 
-#: ui/properties.cpp:770
+#: ui/properties.cpp:781
 #, fuzzy
 msgid "design pose"
 msgstr "Konstruktionspose"
 
-#: ui/properties.cpp:774 ui/properties.cpp:797
+#: ui/properties.cpp:785 ui/properties.cpp:808
 #, fuzzy
 msgid "delete"
 msgstr "Löschen"
 
-#: ui/properties.cpp:781
+#: ui/properties.cpp:792
 #, fuzzy
 msgid "Fit table"
 msgstr "Passungstabelle"
 
-#: ui/properties.cpp:782
+#: ui/properties.cpp:793
 #, fuzzy
 msgid ""
 "Clearances for fit joints, tuned to your printer: each side's gap (negative "
@@ -4913,7 +4925,7 @@ msgstr ""
 "Spiele für Passverbindungen, auf Ihren Drucker abgestimmt: Spalt je Seite "
 "(negative Werte sind Pressungen)."
 
-#: ui/properties.cpp:802
+#: ui/properties.cpp:813
 #, fuzzy
 msgid "add a fit"
 msgstr "Passung hinzufügen"

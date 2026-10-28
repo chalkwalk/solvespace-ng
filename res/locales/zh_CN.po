@@ -20,7 +20,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: SolveSpace 3.2\n"
 "Report-Msgid-Bugs-To: phkahler@gmail.com\n"
-"POT-Creation-Date: 2026-10-28 15:04-0700\n"
+"POT-Creation-Date: 2026-10-28 15:14-0700\n"
 "PO-Revision-Date: 2023-04-30 15:58+0800\n"
 "Last-Translator: liuxilu@live.com\n"
 "Language-Team: none\n"
@@ -649,38 +649,38 @@ msgid ""
 "PDF page size exceeds 200 by 200 inches; many viewers may reject this file."
 msgstr "PDF页面大小超过200x200英寸；许多查看器可能会拒绝此文件。"
 
-#: file.cpp:49 group.cpp:168
+#: file.cpp:50 group.cpp:168
 msgctxt "group-name"
 msgid "sketch-in-plane"
 msgstr "平面草图"
 
-#: file.cpp:67
+#: file.cpp:68
 msgctxt "group-name"
 msgid "#references"
 msgstr "#参考"
 
-#: file.cpp:661
+#: file.cpp:662
 msgid "The file is empty. It may be corrupt."
 msgstr "文件为空，可能已损坏。"
 
-#: file.cpp:666
+#: file.cpp:667
 msgid ""
 "Unrecognized data in file. This file may be corrupt, or from a newer version "
 "of the program."
 msgstr "文件内数据无法识别。该文件可能损坏，或来自新版本程序。"
 
-#: file.cpp:1007
+#: file.cpp:1008
 msgctxt "title"
 msgid "Missing File"
 msgstr "文件丢失"
 
-#: file.cpp:1008
+#: file.cpp:1009
 #, c-format
 msgctxt "dialog"
 msgid "The linked file “%s” is not present."
 msgstr "不存在连接的文件\"%s\"。"
 
-#: file.cpp:1010
+#: file.cpp:1011
 msgctxt "dialog"
 msgid ""
 "Do you want to locate it manually?\n"
@@ -689,17 +689,17 @@ msgid ""
 "permanently removed."
 msgstr "您是否想手动查找？如果拒绝，基于丢失文件的所有几何图形将被永久删除。"
 
-#: file.cpp:1013
+#: file.cpp:1014
 msgctxt "button"
 msgid "&Yes"
 msgstr "是(&Y)"
 
-#: file.cpp:1015
+#: file.cpp:1016
 msgctxt "button"
 msgid "&No"
 msgstr "否(&N)"
 
-#: file.cpp:1017 solvespace.cpp:684
+#: file.cpp:1018 solvespace.cpp:684
 msgctxt "button"
 msgid "&Cancel"
 msgstr "取消(&C)"
@@ -819,7 +819,7 @@ msgstr "导出零件...(&P)"
 msgid "Export Parts &List..."
 msgstr "导出零件表...(&L)"
 
-#: graphicswin.cpp:57#, fuzzy
+#: graphicswin.cpp:57
 msgid "Export &Assembly (STEP)..."
 msgstr "导出装配体 (STEP)(&A)..."
 
@@ -1900,37 +1900,37 @@ msgstr "两条轴线不在同一直线上；关节绕一条轴线转动。"
 msgid "Part '%s' already has a joint to move it."
 msgstr "零件 '%s' 已有用于带动它的关节。"
 
-#: joint.cpp:434
+#: joint.cpp:488
 #, fuzzy
 msgid "Set the slide's limits first: the sweep runs between them."
 msgstr "请先设置滑块的范围：扫描在此范围内进行。"
 
-#: joint.cpp:452
+#: joint.cpp:506
 #, fuzzy
 msgid "The joint moves no solid past another; there is nothing to sweep."
 msgstr "该关节不会使实体相互穿越运动；没有可扫描的内容。"
 
-#: joint.cpp:489
+#: joint.cpp:543
 #, fuzzy
 msgid "The clearance sweep needs the Open CASCADE kernel's solids."
 msgstr "间隙扫描需要 Open CASCADE 内核的实体。"
 
-#: joint.cpp:540
+#: joint.cpp:594
 #, fuzzy, c-format
 msgid "Minimum gap %s mm at %s."
 msgstr "最小间隙 %s mm，位于 %s。"
 
-#: joint.cpp:543
+#: joint.cpp:597
 #, fuzzy
 msgid "The parts touch or overlap"
 msgstr "零件接触或重叠"
 
-#: joint.cpp:548
+#: joint.cpp:602
 #, fuzzy, c-format
 msgid "at %s"
 msgstr "%s 处"
 
-#: joint.cpp:549
+#: joint.cpp:603
 #, fuzzy, c-format
 msgid "from %s to %s"
 msgstr "从 %s 到 %s"
@@ -2987,7 +2987,7 @@ msgstr "零件，每个一个文件..."
 msgid "Parts List (CSV)..."
 msgstr "零件表 (CSV)..."
 
-#: ui/menulayout.cpp:67#, fuzzy
+#: ui/menulayout.cpp:67
 msgid "Assembly (STEP)..."
 msgstr "装配体 (STEP)..."
 
@@ -4710,34 +4710,44 @@ msgstr "下限"
 msgid "to"
 msgstr "上限"
 
-#: ui/properties.cpp:763
+#: ui/properties.cpp:764
+#, fuzzy
+msgid "play"
+msgstr "播放"
+
+#: ui/properties.cpp:764
+#, fuzzy
+msgid "stop"
+msgstr "停止"
+
+#: ui/properties.cpp:774
 #, fuzzy
 msgid "sweep clearance"
 msgstr "扫描间隙"
 
-#: ui/properties.cpp:770
+#: ui/properties.cpp:781
 #, fuzzy
 msgid "design pose"
 msgstr "设计姿态"
 
-#: ui/properties.cpp:774 ui/properties.cpp:797
+#: ui/properties.cpp:785 ui/properties.cpp:808
 #, fuzzy
 msgid "delete"
 msgstr "删除"
 
-#: ui/properties.cpp:781
+#: ui/properties.cpp:792
 #, fuzzy
 msgid "Fit table"
 msgstr "配合表"
 
-#: ui/properties.cpp:782
+#: ui/properties.cpp:793
 #, fuzzy
 msgid ""
 "Clearances for fit joints, tuned to your printer: each side's gap (negative "
 "presses)."
 msgstr "配合关节的间隙，按打印机调整：每侧的间隙（负值为过盈）。"
 
-#: ui/properties.cpp:802
+#: ui/properties.cpp:813
 #, fuzzy
 msgid "add a fit"
 msgstr "添加配合"

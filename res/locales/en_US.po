@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: SolveSpace 3.0\n"
 "Report-Msgid-Bugs-To: phkahler@gmail.com\n"
-"POT-Creation-Date: 2026-10-28 15:04-0700\n"
+"POT-Creation-Date: 2026-10-28 15:14-0700\n"
 "PO-Revision-Date: 2017-01-05 10:30+0000\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -666,21 +666,21 @@ msgid ""
 msgstr ""
 "PDF page size exceeds 200 by 200 inches; many viewers may reject this file."
 
-#: file.cpp:49 group.cpp:168
+#: file.cpp:50 group.cpp:168
 msgctxt "group-name"
 msgid "sketch-in-plane"
 msgstr "sketch-in-plane"
 
-#: file.cpp:67
+#: file.cpp:68
 msgctxt "group-name"
 msgid "#references"
 msgstr "#references"
 
-#: file.cpp:661
+#: file.cpp:662
 msgid "The file is empty. It may be corrupt."
 msgstr "The file is empty. It may be corrupt."
 
-#: file.cpp:666
+#: file.cpp:667
 msgid ""
 "Unrecognized data in file. This file may be corrupt, or from a newer version "
 "of the program."
@@ -688,18 +688,18 @@ msgstr ""
 "Unrecognized data in file. This file may be corrupt, or from a newer version "
 "of the program."
 
-#: file.cpp:1007
+#: file.cpp:1008
 msgctxt "title"
 msgid "Missing File"
 msgstr "Missing File"
 
-#: file.cpp:1008
+#: file.cpp:1009
 #, c-format
 msgctxt "dialog"
 msgid "The linked file “%s” is not present."
 msgstr "The linked file “%s” is not present."
 
-#: file.cpp:1010
+#: file.cpp:1011
 msgctxt "dialog"
 msgid ""
 "Do you want to locate it manually?\n"
@@ -712,17 +712,17 @@ msgstr ""
 "If you decline, any geometry that depends on the missing file will be "
 "permanently removed."
 
-#: file.cpp:1013
+#: file.cpp:1014
 msgctxt "button"
 msgid "&Yes"
 msgstr "&Yes"
 
-#: file.cpp:1015
+#: file.cpp:1016
 msgctxt "button"
 msgid "&No"
 msgstr "&No"
 
-#: file.cpp:1017 solvespace.cpp:684
+#: file.cpp:1018 solvespace.cpp:684
 msgctxt "button"
 msgid "&Cancel"
 msgstr "&Cancel"
@@ -1875,33 +1875,33 @@ msgstr "The two axes aren't the same line; the joint turns about one axis."
 msgid "Part '%s' already has a joint to move it."
 msgstr "Part '%s' already has a joint to move it."
 
-#: joint.cpp:434
+#: joint.cpp:488
 msgid "Set the slide's limits first: the sweep runs between them."
 msgstr "Set the slide's limits first: the sweep runs between them."
 
-#: joint.cpp:452
+#: joint.cpp:506
 msgid "The joint moves no solid past another; there is nothing to sweep."
 msgstr "The joint moves no solid past another; there is nothing to sweep."
 
-#: joint.cpp:489
+#: joint.cpp:543
 msgid "The clearance sweep needs the Open CASCADE kernel's solids."
 msgstr "The clearance sweep needs the Open CASCADE kernel's solids."
 
-#: joint.cpp:540
+#: joint.cpp:594
 #, c-format
 msgid "Minimum gap %s mm at %s."
 msgstr "Minimum gap %s mm at %s."
 
-#: joint.cpp:543
+#: joint.cpp:597
 msgid "The parts touch or overlap"
 msgstr "The parts touch or overlap"
 
-#: joint.cpp:548
+#: joint.cpp:602
 #, c-format
 msgid "at %s"
 msgstr "at %s"
 
-#: joint.cpp:549
+#: joint.cpp:603
 #, c-format
 msgid "from %s to %s"
 msgstr "from %s to %s"
@@ -4333,23 +4333,31 @@ msgstr "from"
 msgid "to"
 msgstr "to"
 
-#: ui/properties.cpp:763
+#: ui/properties.cpp:764
+msgid "play"
+msgstr "play"
+
+#: ui/properties.cpp:764
+msgid "stop"
+msgstr "stop"
+
+#: ui/properties.cpp:774
 msgid "sweep clearance"
 msgstr "sweep clearance"
 
-#: ui/properties.cpp:770
+#: ui/properties.cpp:781
 msgid "design pose"
 msgstr "design pose"
 
-#: ui/properties.cpp:774 ui/properties.cpp:797
+#: ui/properties.cpp:785 ui/properties.cpp:808
 msgid "delete"
 msgstr "delete"
 
-#: ui/properties.cpp:781
+#: ui/properties.cpp:792
 msgid "Fit table"
 msgstr "Fit table"
 
-#: ui/properties.cpp:782
+#: ui/properties.cpp:793
 msgid ""
 "Clearances for fit joints, tuned to your printer: each side's gap (negative "
 "presses)."
@@ -4357,7 +4365,7 @@ msgstr ""
 "Clearances for fit joints, tuned to your printer: each side's gap (negative "
 "presses)."
 
-#: ui/properties.cpp:802
+#: ui/properties.cpp:813
 msgid "add a fit"
 msgstr "add a fit"
 

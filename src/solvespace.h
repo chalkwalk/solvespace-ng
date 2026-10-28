@@ -817,6 +817,21 @@ public:
         std::string text; // the report, or why there is none
     };
     ClearanceSweep SweepClearance(hJoint hj, int samples = 72, int dof = 0);
+    // Plays one of a joint's motions through its range (#15): back and forth between its
+    // limits (else the scrub slider's), a pass in two seconds, or round and round at 90 degrees
+    // a second for a turn without limits. Starting makes one undo step; a value set from
+    // elsewhere stops it. Times are GetMilliseconds()'s; NG steps it every frame.
+    void   PlayJoint(hJoint hj, int dof, int64_t now);
+    void   StopJoint();
+    bool   PlayingJoint(hJoint hj, int dof);
+    void   StepJointAnimation(int64_t now);
+    struct {
+        hJoint  joint;
+        int     dof;
+        int64_t t0;
+        double  v0, last;
+    } jointPlay = {};
+    Platform::TimerRef jointPlayTimer;
     double PartDensity(hPart hp);
     // The parts list (bill of materials): each part with a solid, in part order.
     struct PartRow {
