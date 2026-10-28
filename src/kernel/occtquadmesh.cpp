@@ -9,6 +9,7 @@
 #include "solvespace.h"
 #include "kernel/occtshape.h"
 
+#include <array>
 #include <map>
 
 #include <BRepAdaptor_Curve.hxx>
@@ -278,38 +279,144 @@ struct QuadMesher {
         return true;
     }
 
-    // A simple polygon (uv) as triangles, by clipping ears; false if it won't go.
+    // A simple polygon (uv) as triangles, by clipping ears, the best-shaped first; then made
+    // Delaunay by flipping, and pairs of triangles that make a good quad joined (#13: notched
+    // strips were long slivers). False if it won't go.
     bool EarClip(std::vector<WirePoint> poly) {
         auto cross = [](gp_XY a, gp_XY b, gp_XY c) { return (b - a) ^ (c - b); };
-        double area = 0;
+        double area = 0, size = 0;
+        std::map<int, gp_XY> uv;
         for(size_t i = 0; i < poly.size(); i++) {
             area += poly[i].uv.XY() ^ poly[(i + 1) % poly.size()].uv.XY();
+            size = std::max(size, (poly[i].uv.XY() - poly[0].uv.XY()).Modulus());
+            uv[poly[i].id] = poly[i].uv.XY();
         }
         if(area < 0) std::reverse(poly.begin(), poly.end());
+        double eps = 1e-12 * size * size;
+        // The smallest angle of a triangle, in the face's (u, v).
+        auto worst = [&](gp_XY a, gp_XY b, gp_XY c) {
+            double m = PI;
+            for(int k = 0; k < 3; k++) {
+                gp_XY p = k == 0 ? a : k == 1 ? b : c, q = k == 0 ? b : k == 1 ? c : a,
+                      r = k == 0 ? c : k == 1 ? a : b;
+                gp_Vec2d u(q - p), v(r - p);
+                if(u.Magnitude() < 1e-15 || v.Magnitude() < 1e-15) return 0.0;
+                m = std::min(m, fabs(u.Angle(v)));
+            }
+            return m;
+        };
+        std::vector<std::array<int, 3>> tris;
         while(poly.size() > 3) {
-            bool clipped = false;
-            for(size_t i = 0; i < poly.size() && !clipped; i++) {
+            int    best = -1;
+            double shape = -1;
+            for(size_t i = 0; i < poly.size(); i++) {
                 const WirePoint &a = poly[(i + poly.size() - 1) % poly.size()], &b = poly[i],
                                 &c = poly[(i + 1) % poly.size()];
-                if(cross(a.uv.XY(), b.uv.XY(), c.uv.XY()) <= 1e-14) continue;
+                if(cross(a.uv.XY(), b.uv.XY(), c.uv.XY()) <= eps) continue;
+                // No other point in it, nor on its sides (a point on the cut would leave the
+                // rest touching itself).
                 bool empty = true;
                 for(const WirePoint &p : poly) {
                     if(p.id == a.id || p.id == b.id || p.id == c.id) continue;
                     gp_XY q = p.uv.XY();
-                    if(cross(a.uv.XY(), b.uv.XY(), q) > 0 && cross(b.uv.XY(), c.uv.XY(), q) > 0 &&
-                       cross(c.uv.XY(), a.uv.XY(), q) > 0) {
+                    if(cross(a.uv.XY(), b.uv.XY(), q) >= -eps &&
+                       cross(b.uv.XY(), c.uv.XY(), q) >= -eps &&
+                       cross(c.uv.XY(), a.uv.XY(), q) >= -eps) {
                         empty = false;
                         break;
                     }
                 }
                 if(!empty) continue;
-                AddPoly({ a.id, b.id, c.id });
-                poly.erase(poly.begin() + i);
-                clipped = true;
+                double w = worst(a.uv.XY(), b.uv.XY(), c.uv.XY());
+                if(w > shape) shape = w, best = (int)i;
             }
-            if(!clipped) return false;
+            if(best < 0) return false;
+            size_t i = (size_t)best;
+            tris.push_back({ poly[(i + poly.size() - 1) % poly.size()].id, poly[i].id,
+                             poly[(i + 1) % poly.size()].id });
+            poly.erase(poly.begin() + i);
         }
-        AddPoly({ poly[0].id, poly[1].id, poly[2].id });
+        tris.push_back({ poly[0].id, poly[1].id, poly[2].id });
+
+        // The triangles on each side of an edge (a cut to a hole too: the face goes on there).
+        auto key = [](int a, int b) { return std::make_pair(std::min(a, b), std::max(a, b)); };
+        auto sides = [&]() {
+            std::map<std::pair<int, int>, std::vector<int>> m;
+            for(size_t t = 0; t < tris.size(); t++) {
+                for(int k = 0; k < 3; k++) m[key(tris[t][k], tris[t][(k + 1) % 3])].push_back((int)t);
+            }
+            return m;
+        };
+        // The corner of t that isn't on edge (a, b).
+        auto opposite = [&](int t, int a, int b) {
+            for(int k = 0; k < 3; k++) {
+                if(tris[t][k] != a && tris[t][k] != b) return tris[t][k];
+            }
+            return -1;
+        };
+        auto angleAt = [&](int p, int q, int r) { // at p, in space
+            Vector u = points[q].Minus(points[p]), v = points[r].Minus(points[p]);
+            double d = u.Magnitude() * v.Magnitude();
+            return d < 1e-15 ? 0 : acos(std::max(-1.0, std::min(1.0, u.Dot(v) / d)));
+        };
+        // Flip an edge whose opposite angles add up to more than half a turn, where the four
+        // points make a convex quad in (u, v).
+        for(int pass = 0, flipped = 1; flipped && pass < 100; pass++) {
+            flipped = 0;
+            for(auto &[edge, ts] : sides()) {
+                if(ts.size() != 2) continue;
+                int a = edge.first, b = edge.second;
+                int c = opposite(ts[0], a, b), d = opposite(ts[1], a, b);
+                if(c < 0 || d < 0 || c == d) continue;
+                if(angleAt(c, a, b) + angleAt(d, a, b) <= PI + 1e-9) continue;
+                // a and b must lie on opposite sides of c-d, and c, d of a-b.
+                gp_XY A = uv[a], B = uv[b], C = uv[c], D = uv[d];
+                double ab1 = ((B - A) ^ (C - A)), ab2 = ((B - A) ^ (D - A));
+                double cd1 = ((D - C) ^ (A - C)), cd2 = ((D - C) ^ (B - C));
+                if(!(ab1 * ab2 < 0 && cd1 * cd2 < 0)) continue;
+                if(fabs(cd1) <= eps || fabs(cd2) <= eps) continue;
+                // Every triangle turns anticlockwise in (u, v), as the ears did.
+                tris[ts[0]] = cd1 > 0 ? std::array<int, 3>{ c, d, a } : std::array<int, 3>{ d, c, a };
+                tris[ts[1]] = cd2 > 0 ? std::array<int, 3>{ c, d, b } : std::array<int, 3>{ d, c, b };
+                flipped = 1;
+                break; // the edge map is stale now
+            }
+        }
+
+        // Join pairs into quads, squarest first: every corner within 45 degrees of square.
+        std::vector<std::pair<double, std::pair<int, int>>> pairs;
+        for(auto &[edge, ts] : sides()) {
+            if(ts.size() != 2) continue;
+            int a = edge.first, b = edge.second;
+            int c = opposite(ts[0], a, b), d = opposite(ts[1], a, b);
+            if(c < 0 || d < 0 || c == d) continue;
+            double off = 0;
+            for(double angle : { angleAt(a, c, d), angleAt(c, b, a), angleAt(b, d, c),
+                                 angleAt(d, a, b) }) {
+                off = std::max(off, fabs(angle - PI / 2));
+            }
+            if(off < PI / 4) pairs.push_back({ off, { ts[0], ts[1] } });
+        }
+        std::sort(pairs.begin(), pairs.end());
+        std::vector<bool> used(tris.size());
+        for(const auto &[off, p] : pairs) {
+            auto [s, t] = p;
+            if(used[s] || used[t]) continue;
+            used[s] = used[t] = true;
+            // s's corners, with t's far corner put in on the shared edge.
+            int k = 0;
+            while(k < 3 && std::find(tris[t].begin(), tris[t].end(), tris[s][k]) != tris[t].end())
+                k++;
+            int far = -1;
+            for(int id : tris[t]) {
+                if(std::find(tris[s].begin(), tris[s].end(), id) == tris[s].end()) far = id;
+            }
+            // tris[s][k] is s's own corner; the shared edge runs from k+1 to k+2.
+            AddPoly({ tris[s][k], tris[s][(k + 1) % 3], far, tris[s][(k + 2) % 3] });
+        }
+        for(size_t t = 0; t < tris.size(); t++) {
+            if(!used[t]) AddPoly({ tris[t][0], tris[t][1], tris[t][2] });
+        }
         return true;
     }
 
@@ -513,6 +620,7 @@ bool KernelExportQuadUsd(const std::shared_ptr<const KernelShape> &ks,
         for(size_t k = 0; k < p.size(); k++) {
             int a = p[k], b = p[(k + 1) % p.size()];
             uses[{ std::min(a, b), std::max(a, b) }]++;
+            st.longest = std::max(st.longest, m.points[a].Minus(m.points[b]).Magnitude());
         }
         for(size_t k = 1; k + 1 < p.size(); k++) {
             st.volume += m.points[p[0]].Dot(m.points[p[k]].Cross(m.points[p[k + 1]])) / 6;

@@ -297,6 +297,7 @@ struct QuadMeshStats {
     int    quads = 0, triangles = 0, ngons = 0, vertices = 0, creases = 0;
     int    openEdges = 0; // polygon edges not shared by exactly two polygons
     double volume    = 0;
+    double longest   = 0; // the longest polygon edge
 };
 bool KernelExportQuadUsd(const std::shared_ptr<const KernelShape> &shape,
                          const Platform::Path &filename, double target, QuadMeshStats *stats);

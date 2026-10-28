@@ -41,9 +41,14 @@ Open CASCADE kernel. Tests: `test/kernel/quadmesh`.
   (curved, more than four sides) were n-gons and puckered when subdivided. Since review 6 the
   rounded box's five-sided end faces are rings round a centre fan, and the notched strips are
   ear-clipped triangles: no n-gons (2075 quads, 134 triangles), and it subdivides cleanly.
-  The notched strips' triangles are long slivers (up to the strip's length), which Blender's
-  wireframe overlay draws as spikes. Splitting those strips at the notch into four-sided
-  patches would give quads there.
+  The notched strips' triangles were long slivers (up to the strip's length), which Blender's
+  wireframe overlay draws as spikes. Since 2026-10-28 (#13) the ears are clipped best-shaped
+  first, the triangles are flipped until Delaunay, and pairs that make a near-square quad
+  (every corner within 45 degrees of square) are joined: a strip comes out as quads across it
+  with a few triangles at its turns, no edge much longer than the strip is wide
+  (`a_notched_face_has_no_slivers`: an L with arms 4 wide, no edge 6 long). Ear clipping
+  also stopped getting stuck where cut points lie on a straight edge (a point on an ear's
+  cut now blocks the ear), which used to leave such faces n-gons.
 
 The local Blender is a distro build without USD support. The check loaded the file with a
 small parser and set the `crease_edge` attribute itself. Official Blender builds import USD,

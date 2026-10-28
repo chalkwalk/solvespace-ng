@@ -3,6 +3,10 @@
 // (u, v) flow, n-gons on the rest, shared edge points (watertight), and creases on the sharp
 // edges for Catmull-Clark subdivision.
 #include "solvespace.h"
+#include "kernel/occtshape.h" // windows.h before the OCCT headers
+#include <BRepBuilderAPI_MakeFace.hxx>
+#include <BRepBuilderAPI_MakePolygon.hxx>
+#include <BRepPrimAPI_MakePrism.hxx>
 
 #include "harness.h"
 
@@ -170,5 +174,29 @@ TEST_CASE(other_faces_are_rings_and_a_centre_fan) {
     CHECK_TRUE(st.triangles > 0);
     CHECK_TRUE(st.quads > 10 * st.triangles);
     CHECK_TRUE(st.openEdges == 0);
+    remove(path.raw.c_str());
+}
+
+TEST_CASE(a_notched_face_has_no_slivers) {
+    // An L, 4 thick with arms 4 wide: its caps can't be seen whole from their centre, so they
+    // were ear-clipped into slivers as long as an arm. Now their triangles are made Delaunay
+    // and paired into quads, so no edge is much longer than the strip is wide.
+    BRepBuilderAPI_MakePolygon outline;
+    for(gp_Pnt p : { gp_Pnt(0, 0, 0), gp_Pnt(40, 0, 0), gp_Pnt(40, 4, 0), gp_Pnt(4, 4, 0),
+                     gp_Pnt(4, 40, 0), gp_Pnt(0, 40, 0) }) {
+        outline.Add(p);
+    }
+    outline.Close();
+    TopoDS_Face face = BRepBuilderAPI_MakeFace(outline.Wire(), /*onlyPlane=*/true);
+    auto        ks   = std::make_shared<KernelShape>();
+    ks->shape        = BRepPrimAPI_MakePrism(face, gp_Vec(0, 0, 4)).Shape();
+    Platform::Path path = helper->GetAssetPath(__FILE__, "notchedL.usda", "out");
+    QuadMeshStats  st;
+    CHECK_TRUE(KernelExportQuadUsd(ks, path, /*target=*/2, &st));
+    CHECK_TRUE(st.openEdges == 0);
+    CHECK_TRUE(st.ngons == 0);
+    CHECK_TRUE(fabs(st.volume - 4 * (40 * 4 + 36 * 4)) < 1e-6);
+    CHECK_TRUE(st.longest < 6);
+    CHECK_TRUE(st.quads > 4 * st.triangles);
     remove(path.raw.c_str());
 }
