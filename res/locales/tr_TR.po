@@ -1,3 +1,23 @@
+# Turkish translations for SolveSpace package.
+# Copyright (C) 2017 the SolveSpace authors
+# This file is distributed under the same license as the SolveSpace package.
+# SPDX-FileCopyrightText: 2022, 2025 Mustafa Halil GÖRENTAŞ <halil.mustafa@gmail.com>
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: SolveSpace 3.1\n"
+"Report-Msgid-Bugs-To: phkahler@gmail.com\n"
+"POT-Creation-Date: 2026-10-28 15:04-0700\n"
+"PO-Revision-Date: 2025-01-29 21:16+0300\n"
+"Last-Translator: mustafa halil <halil.mustafa@gmail.com>\n"
+"Language-Team: Turkish <kde-l10n-tr@kde.org>\n"
+"Language: tr_TR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Lokalize 23.08.5\n"
+
 #: clipboard.cpp:317
 #, fuzzy
 msgid ""
@@ -840,533 +860,537 @@ msgstr "Parçaları &Dışa Aktar..."
 msgid "Export Parts &List..."
 msgstr "Parça &Listesini Dışa Aktar..."
 
-#: graphicswin.cpp:57
+#: graphicswin.cpp:57#, fuzzy
+msgid "Export &Assembly (STEP)..."
+msgstr "&Montajı dışa aktar (STEP)..."
+
+#: graphicswin.cpp:58
 msgid "Export &Surfaces..."
 msgstr "Y&üzeyleri dışa aktar..."
 
-#: graphicswin.cpp:58
+#: graphicswin.cpp:59
 msgid "Im&port..."
 msgstr "&İçe Aktar..."
 
-#: graphicswin.cpp:61
+#: graphicswin.cpp:62
 msgid "E&xit"
 msgstr "&Çıkış"
 
-#: graphicswin.cpp:64
+#: graphicswin.cpp:65
 msgid "&Edit"
 msgstr "D&üzen"
 
-#: graphicswin.cpp:65
+#: graphicswin.cpp:66
 msgid "&Undo"
 msgstr "&Geri al"
 
-#: graphicswin.cpp:66
+#: graphicswin.cpp:67
 msgid "&Redo"
 msgstr "&Yinele"
 
-#: graphicswin.cpp:67
+#: graphicswin.cpp:68
 msgid "Re&generate All"
 msgstr "Tümünü Yeniden &Oluştur"
 
-#: graphicswin.cpp:69
+#: graphicswin.cpp:70
 msgid "Snap Selection to &Grid"
 msgstr "Seçimi &Izgaraya Tuttur"
 
-#: graphicswin.cpp:70
+#: graphicswin.cpp:71
 msgid "Rotate Imported &90°"
 msgstr "İçe Aktarılanları &90° Döndür"
 
-#: graphicswin.cpp:72
+#: graphicswin.cpp:73
 msgid "Cu&t"
 msgstr "&Kes"
 
-#: graphicswin.cpp:73
+#: graphicswin.cpp:74
 msgid "&Copy"
 msgstr "K&opyala"
 
-#: graphicswin.cpp:74
+#: graphicswin.cpp:75
 msgid "&Paste"
 msgstr "Y&apıştır"
 
-#: graphicswin.cpp:75
+#: graphicswin.cpp:76
 msgid "Paste &Transformed..."
 msgstr "&Dönüştürerek Yapıştır..."
 
-#: graphicswin.cpp:76
+#: graphicswin.cpp:77
 msgid "&Delete"
 msgstr "&Sil"
 
-#: graphicswin.cpp:78
+#: graphicswin.cpp:79
 msgid "Select &Edge Chain"
 msgstr "Kenar &Zincirini Seç"
 
-#: graphicswin.cpp:79
+#: graphicswin.cpp:80
 msgid "Select &All"
 msgstr "&Tümünü Seç"
 
-#: graphicswin.cpp:80
+#: graphicswin.cpp:81
 msgid "&Unselect All"
 msgstr "Tüm Seçimi &Kaldır"
 
-#: graphicswin.cpp:82
+#: graphicswin.cpp:83
 msgid "&Line Styles..."
 msgstr "&Çizgi Biçimi..."
 
-#: graphicswin.cpp:83
+#: graphicswin.cpp:84
 msgid "&View Projection..."
 msgstr "&Projeksiyonu Görüntüle..."
 
-#: graphicswin.cpp:85
+#: graphicswin.cpp:86
 msgid "Con&figuration..."
 msgstr "Y&apılandır..."
 
-#: graphicswin.cpp:88
+#: graphicswin.cpp:89
 msgid "&View"
 msgstr "&Görünüm"
 
-#: graphicswin.cpp:89
+#: graphicswin.cpp:90
 msgid "Zoom &In"
 msgstr "&Yakınlaş"
 
-#: graphicswin.cpp:90
+#: graphicswin.cpp:91
 msgid "Zoom &Out"
 msgstr "&Uzaklaş"
 
-#: graphicswin.cpp:91
+#: graphicswin.cpp:92
 msgid "Zoom To &Fit"
 msgstr "&Sığacak Şekilde Yakınlaş"
 
-#: graphicswin.cpp:93
+#: graphicswin.cpp:94
 msgid "Align View to &Workplane"
 msgstr "Görünümü &Çalışma Düzlemine Hizala"
 
-#: graphicswin.cpp:94
+#: graphicswin.cpp:95
 msgid "Nearest &Ortho View"
 msgstr "En Yakın &Dik Görünüm"
 
-#: graphicswin.cpp:95
+#: graphicswin.cpp:96
 msgid "Nearest &Isometric View"
 msgstr "En Yakın &İzometrik Görünüm"
 
-#: graphicswin.cpp:96
+#: graphicswin.cpp:97
 msgid "&Center View At Point"
 msgstr "&Noktayı Merkezde Görüntüle"
 
-#: graphicswin.cpp:98
+#: graphicswin.cpp:99
 msgid "Show Snap &Grid"
 msgstr "Yakalama &Izgarasını Göster"
 
-#: graphicswin.cpp:99 ui/menulayout.cpp:98
+#: graphicswin.cpp:100 ui/menulayout.cpp:99
 msgid "Darken Inactive Solids"
 msgstr "Aktif Olmayan Katıları &Koyulaştır"
 
-#: graphicswin.cpp:100
+#: graphicswin.cpp:101
 msgid "Use &Perspective Projection"
 msgstr "&Perspektif Projeksiyonu Kullan"
 
-#: graphicswin.cpp:101
+#: graphicswin.cpp:102
 msgid "Show E&xploded View"
 msgstr "Pat&latılmış Görünümü Göster"
 
-#: graphicswin.cpp:102
+#: graphicswin.cpp:103
 msgid "Dimension &Units"
 msgstr "Ölçü &Birimleri"
 
-#: graphicswin.cpp:103
+#: graphicswin.cpp:104
 msgid "Dimensions in &Millimeters"
 msgstr "&Milimetre cinsinden ölçü"
 
-#: graphicswin.cpp:104
+#: graphicswin.cpp:105
 msgid "Dimensions in M&eters"
 msgstr "M&etre cinsinden ölçü"
 
-#: graphicswin.cpp:105
+#: graphicswin.cpp:106
 msgid "Dimensions in &Inches"
 msgstr "&İnç cinsinden ölçü"
 
-#: graphicswin.cpp:106
+#: graphicswin.cpp:107
 msgid "Dimensions in &Feet and Inches"
 msgstr "&Fit ve İnç cinsinden ölçü"
 
-#: graphicswin.cpp:108
+#: graphicswin.cpp:109
 msgid "Show &Toolbar"
 msgstr "&Araç Çubuğunu Göster"
 
-#: graphicswin.cpp:109
+#: graphicswin.cpp:110
 msgid "Show Property Bro&wser"
 msgstr "&Özellik Penceresini Göster"
 
-#: graphicswin.cpp:111
+#: graphicswin.cpp:112
 msgid "&Full Screen"
 msgstr "&Tam Ekran"
 
-#: graphicswin.cpp:113
+#: graphicswin.cpp:114
 msgid "&New Group"
 msgstr "Yeni &Grup"
 
-#: graphicswin.cpp:114
+#: graphicswin.cpp:115
 #, fuzzy
 msgid "New &Part"
 msgstr "Yeni &Parça"
 
-#: graphicswin.cpp:115
+#: graphicswin.cpp:116
 #, fuzzy
 msgid "&Revolute Joint"
 msgstr "&Döner Mafsal"
 
-#: graphicswin.cpp:116
+#: graphicswin.cpp:117
 #, fuzzy
 msgid "S&lider Joint"
 msgstr "Kay&malı Mafsal"
 
-#: graphicswin.cpp:117
+#: graphicswin.cpp:118
 #, fuzzy
 msgid "C&ylindrical Joint"
 msgstr "&Silindirik Mafsal"
 
-#: graphicswin.cpp:118
+#: graphicswin.cpp:119
 #, fuzzy
 msgid "Pla&nar Joint"
 msgstr "&Düzlemsel Mafsal"
 
-#: graphicswin.cpp:119
+#: graphicswin.cpp:120
 #, fuzzy
 msgid "&Ball Joint"
 msgstr "&Küresel Mafsal"
 
-#: graphicswin.cpp:120
+#: graphicswin.cpp:121
 #, fuzzy
 msgid "&Gear Coupling"
 msgstr "&Dişli Bağlantısı"
 
-#: graphicswin.cpp:121
+#: graphicswin.cpp:122
 #, fuzzy
 msgid "&Fit Joint"
 msgstr "&Geçme Bağlantısı"
 
-#: graphicswin.cpp:122
+#: graphicswin.cpp:123
 #, fuzzy
 msgid "Spli&t Part"
 msgstr "Parçayı B&öl"
 
-#: graphicswin.cpp:124
+#: graphicswin.cpp:125
 msgid "Sketch In &3d"
 msgstr "&3d'de Çizim Yap"
 
-#: graphicswin.cpp:125
+#: graphicswin.cpp:126
 msgid "Sketch In New &Workplane"
 msgstr "&Yeni Çalışma Düzleminde Çizim Yap"
 
-#: graphicswin.cpp:127
+#: graphicswin.cpp:128
 msgid "Step &Translating"
 msgstr "&Doğrusal Kopya"
 
-#: graphicswin.cpp:128
+#: graphicswin.cpp:129
 msgid "Step &Rotating"
 msgstr "D&airesel Kopya"
 
-#: graphicswin.cpp:130
+#: graphicswin.cpp:131
 msgid "E&xtrude"
 msgstr "&Uzatarak Katıla"
 
-#: graphicswin.cpp:131
+#: graphicswin.cpp:132
 #, fuzzy
 msgid "Extrude as a &Cut"
 msgstr "Uzatarak &Kes"
 
-#: graphicswin.cpp:132
+#: graphicswin.cpp:133
 msgid "&Helix"
 msgstr "&Helis"
 
-#: graphicswin.cpp:133
+#: graphicswin.cpp:134
 msgid "&Lathe"
 msgstr "&Tam döndürerek katıla"
 
-#: graphicswin.cpp:134
+#: graphicswin.cpp:135
 msgid "Re&volve"
 msgstr "&Kısmen döndürerek katıla"
 
-#: graphicswin.cpp:136
+#: graphicswin.cpp:137
 #, fuzzy
 msgid "&Fillet Edges"
 msgstr "Kenarları &Yuvarla"
 
-#: graphicswin.cpp:137
+#: graphicswin.cpp:138
 #, fuzzy
 msgid "&Chamfer Edges"
 msgstr "Kenarlara &Pah Kır"
 
-#: graphicswin.cpp:138
+#: graphicswin.cpp:139
 #, fuzzy
 msgid "S&hell"
 msgstr "&Kabuklaştır"
 
-#: graphicswin.cpp:139
+#: graphicswin.cpp:140
 #, fuzzy
 msgid "&Draft Faces"
 msgstr "Yüzeylere &Eğim Ver"
 
-#: graphicswin.cpp:140
+#: graphicswin.cpp:141
 #, fuzzy
 msgid "H&ole"
 msgstr "&Delik"
 
-#: graphicswin.cpp:141
+#: graphicswin.cpp:142
 #, fuzzy
 msgid "Lo&ft"
 msgstr "&Harmanla"
 
-#: graphicswin.cpp:142
+#: graphicswin.cpp:143
 #, fuzzy
 msgid "S&weep"
 msgstr "Yol &Boyunca Süpür"
 
-#: graphicswin.cpp:144
+#: graphicswin.cpp:145
 msgid "Link / Assemble..."
 msgstr "Bağla / Montajla..."
 
-#: graphicswin.cpp:145 ui/menulayout.cpp:136
+#: graphicswin.cpp:146 ui/menulayout.cpp:137
 msgid "Link Recent"
 msgstr "Son Erişilenden Bağla"
 
-#: graphicswin.cpp:147
+#: graphicswin.cpp:148
 msgid "&Sketch"
 msgstr "&Çizim"
 
-#: graphicswin.cpp:148
+#: graphicswin.cpp:149
 msgid "In &Workplane"
 msgstr "Ç&alışma Düzleminde"
 
-#: graphicswin.cpp:149
+#: graphicswin.cpp:150
 msgid "Anywhere In &3d"
 msgstr "&3d'de Herhangi Bir Yerde"
 
-#: graphicswin.cpp:151
+#: graphicswin.cpp:152
 msgid "Datum &Point"
 msgstr "Referasn &Noktası"
 
-#: graphicswin.cpp:152
+#: graphicswin.cpp:153
 msgid "Wor&kplane"
 msgstr "Ça&lışma Düzlemi"
 
-#: graphicswin.cpp:154
+#: graphicswin.cpp:155
 msgid "Line &Segment"
 msgstr "Ç&izgi"
 
-#: graphicswin.cpp:155
+#: graphicswin.cpp:156
 msgid "C&onstruction Line Segment"
 msgstr "&Yardımcı Çizgi"
 
-#: graphicswin.cpp:156
+#: graphicswin.cpp:157
 msgid "&Rectangle"
 msgstr "&Dikdörtgen"
 
-#: graphicswin.cpp:157
+#: graphicswin.cpp:158
 msgid "&Circle"
 msgstr "D&aire"
 
-#: graphicswin.cpp:158
+#: graphicswin.cpp:159
 msgid "&Arc of a Circle"
 msgstr "Çember &Yayı"
 
-#: graphicswin.cpp:159
+#: graphicswin.cpp:160
 msgid "&Bezier Cubic Spline"
 msgstr "Bezier Kübik &Eğri"
 
-#: graphicswin.cpp:161
+#: graphicswin.cpp:162
 msgid "&Text in TrueType Font"
 msgstr "TrueType Yazı Tipinde &Metin"
 
-#: graphicswin.cpp:162
+#: graphicswin.cpp:163
 msgid "I&mage"
 msgstr "&Resim / Görüntü"
 
-#: graphicswin.cpp:164
+#: graphicswin.cpp:165
 msgid "To&ggle Construction"
 msgstr "Yap&ıyı Değiştir"
 
-#: graphicswin.cpp:165
+#: graphicswin.cpp:166
 msgid "Ta&ngent Arc at Point"
 msgstr "&Yuvarlat (Radyus)"
 
-#: graphicswin.cpp:166
+#: graphicswin.cpp:167
 msgid "Split Curves at &Intersection"
 msgstr "Eğrileri Kesişim Yerinden &Böl"
 
-#: graphicswin.cpp:168
+#: graphicswin.cpp:169
 msgid "&Constrain"
 msgstr "&Kısıtla"
 
-#: graphicswin.cpp:169
+#: graphicswin.cpp:170
 msgid "&Distance / Diameter"
 msgstr "&Mesafe / Çap"
 
-#: graphicswin.cpp:170
+#: graphicswin.cpp:171
 msgid "Re&ference Dimension"
 msgstr "&Referans Ölçü"
 
-#: graphicswin.cpp:171
+#: graphicswin.cpp:172
 msgid "A&ngle / Equal Angle"
 msgstr "&Açı / Eşit Açı"
 
-#: graphicswin.cpp:172
+#: graphicswin.cpp:173
 msgid "Reference An&gle"
 msgstr "Referans A&çı"
 
-#: graphicswin.cpp:173
+#: graphicswin.cpp:174
 msgid "Other S&upplementary Angle"
 msgstr "Diğer &Bütünler Açı"
 
-#: graphicswin.cpp:174
+#: graphicswin.cpp:175
 msgid "Toggle R&eference Dim"
 msgstr "Ölçüyü Re&ferans Yap / Yapma"
 
-#: graphicswin.cpp:176
+#: graphicswin.cpp:177
 msgid "&Horizontal"
 msgstr "&Yatay"
 
-#: graphicswin.cpp:177
+#: graphicswin.cpp:178
 msgid "&Vertical"
 msgstr "&Dikey"
 
-#: graphicswin.cpp:179
+#: graphicswin.cpp:180
 msgid "&On Point / Curve / Plane"
 msgstr "&Noktada / Eğride / Düzlemde"
 
-#: graphicswin.cpp:180
+#: graphicswin.cpp:181
 msgid "E&qual Length / Radius"
 msgstr "&Eşit Uzunluk / Yarıçap"
 
-#: graphicswin.cpp:181
+#: graphicswin.cpp:182
 msgid "Length / Arc Ra&tio"
 msgstr "&Uzunluk / Yay Oranı"
 
-#: graphicswin.cpp:182
+#: graphicswin.cpp:183
 msgid "Length / Arc Diff&erence"
 msgstr "Uzunluk / Yay &Farkı"
 
-#: graphicswin.cpp:183
+#: graphicswin.cpp:184
 msgid "At &Midpoint"
 msgstr "&Orta Noktada"
 
-#: graphicswin.cpp:184
+#: graphicswin.cpp:185
 msgid "S&ymmetric"
 msgstr "&Simetrik"
 
-#: graphicswin.cpp:185
+#: graphicswin.cpp:186
 msgid "Para&llel / Tangent"
 msgstr "&Paralel / Teğet"
 
-#: graphicswin.cpp:186
+#: graphicswin.cpp:187
 msgid "&Perpendicular"
 msgstr "D&ik"
 
-#: graphicswin.cpp:187
+#: graphicswin.cpp:188
 msgid "Same Orient&ation"
 msgstr "Aynı &Yön"
 
-#: graphicswin.cpp:188
+#: graphicswin.cpp:189
 msgid "Lock Point Where &Dragged"
 msgstr "Sürüklendiği Yerde Noktayı &Kilitle"
 
-#: graphicswin.cpp:190 ui/menulayout.cpp:167 ui/selectionmodel.cpp:54
+#: graphicswin.cpp:191 ui/menulayout.cpp:168 ui/selectionmodel.cpp:54
 #: ui/selectionmodel.cpp:311
 msgid "Comment"
 msgstr "Y&orum"
 
-#: graphicswin.cpp:192
+#: graphicswin.cpp:193
 msgid "&Analyze"
 msgstr "&Analiz"
 
-#: graphicswin.cpp:193
+#: graphicswin.cpp:194
 msgid "Measure &Volume"
 msgstr "&Hacmi Hesapla"
 
-#: graphicswin.cpp:194
+#: graphicswin.cpp:195
 msgid "Measure A&rea"
 msgstr "&Alanı Hesapla"
 
-#: graphicswin.cpp:195
+#: graphicswin.cpp:196
 msgid "Measure &Perimeter"
 msgstr "&Çevre Uzunluğunu Hesapla"
 
-#: graphicswin.cpp:196
+#: graphicswin.cpp:197
 msgid "Show &Interfering Parts"
 msgstr "&Engelleyici Parçaları Göster"
 
-#: graphicswin.cpp:197
+#: graphicswin.cpp:198
 msgid "Show &Naked Edges"
 msgstr "A&çık Kenarları Göster"
 
-#: graphicswin.cpp:198
+#: graphicswin.cpp:199
 msgid "Show &Center of Mass"
 msgstr "&Kütle Merkezini Göster"
 
-#: graphicswin.cpp:199
+#: graphicswin.cpp:200
 #, fuzzy
 msgid "&Mass Properties"
 msgstr "Kütle &Özellikleri"
 
-#: graphicswin.cpp:200
+#: graphicswin.cpp:201
 #, fuzzy
 msgid "&Parts List"
 msgstr "Parça &Listesi"
 
-#: graphicswin.cpp:201
+#: graphicswin.cpp:202
 #, fuzzy
 msgid "&Design Pose"
 msgstr "Tasarım &Konumu"
 
-#: graphicswin.cpp:203
+#: graphicswin.cpp:204
 msgid "Show &Underconstrained Points"
 msgstr "Kı&sıtlanmamış Noktaları Göster"
 
-#: graphicswin.cpp:205
+#: graphicswin.cpp:206
 msgid "&Trace Point"
 msgstr "&İzlenecek Nokta"
 
-#: graphicswin.cpp:206
+#: graphicswin.cpp:207
 msgid "&Stop Tracing..."
 msgstr "&İzlemeyi Durdur..."
 
-#: graphicswin.cpp:207
+#: graphicswin.cpp:208
 msgid "Step &Dimension..."
 msgstr "Adım &Ölçüsünü Ayarla..."
 
-#: graphicswin.cpp:209
+#: graphicswin.cpp:210
 msgid "&Help"
 msgstr "&Yardım"
 
-#: graphicswin.cpp:210
+#: graphicswin.cpp:211
 msgid "&Language"
 msgstr "&Dil"
 
-#: graphicswin.cpp:211
+#: graphicswin.cpp:212
 msgid "&Website / Manual"
 msgstr "&Web sitesi / Kılavuz"
 
-#: graphicswin.cpp:212
+#: graphicswin.cpp:213
 msgid "&Go to GitHub commit"
 msgstr "GitHub Commitlere git"
 
-#: graphicswin.cpp:214
+#: graphicswin.cpp:215
 msgid "&About"
 msgstr "&Hakkında"
 
-#: graphicswin.cpp:418
+#: graphicswin.cpp:419
 msgid "(no recent files)"
 msgstr "(son dosyalar yok)"
 
-#: graphicswin.cpp:426
+#: graphicswin.cpp:427
 #, c-format
 msgid "File '%s' does not exist."
 msgstr "'%s' dosyası mevcut değil."
 
-#: graphicswin.cpp:835
+#: graphicswin.cpp:836
 msgid "No workplane is active, so the grid will not appear."
 msgstr "Etkin çalışma düzlemi yok, bu nedenle ızgara görünmeyecektir."
 
-#: graphicswin.cpp:850
+#: graphicswin.cpp:851
 msgid ""
 "The perspective factor is set to zero, so the view will always be a parallel "
 "projection.\n"
@@ -1380,16 +1404,16 @@ msgstr ""
 "Perspektif bir projeksiyon için, yapılandırma ekranındaki perspektif "
 "katsayısını değiştirin. 0.3 civarında bir değer normaldir."
 
-#: graphicswin.cpp:940
+#: graphicswin.cpp:941
 msgid ""
 "Select a point; this point will become the center of the view on screen."
 msgstr "Bir nokta seçin; bu nokta ekrandaki görüntünün merkezi olacaktır."
 
-#: graphicswin.cpp:1245
+#: graphicswin.cpp:1246
 msgid "No additional entities share endpoints with the selected entities."
 msgstr "Hiçbir ek öğe, seçili öğeler ile uç noktaları paylaşmıyor."
 
-#: graphicswin.cpp:1263
+#: graphicswin.cpp:1264
 msgid ""
 "To use this command, select a point or other entity from an linked part, or "
 "make a link group the active group."
@@ -1397,7 +1421,7 @@ msgstr ""
 "Bu komutu kullanmak için, bağlantılı bir parçadan bir nokta veya başka bir "
 "öğe seçin veya bir bağlantı grubunu etkin grup haline getirin."
 
-#: graphicswin.cpp:1286
+#: graphicswin.cpp:1287
 msgid ""
 "No workplane is active. Activate a workplane (with Sketch -> In Workplane) "
 "to define the plane for the snap grid."
@@ -1406,7 +1430,7 @@ msgstr ""
 "tanımlamak için bir çalışma düzlemini (Çizim -> Çalışma Düzleminde ile) "
 "etkinleştirin."
 
-#: graphicswin.cpp:1293
+#: graphicswin.cpp:1294
 msgid ""
 "Can't snap these items to grid; select points, text comments, or constraints "
 "with a label. To snap a line, select its endpoints."
@@ -1414,13 +1438,13 @@ msgstr ""
 "Bu öğeler ızgaraya tutturulamıyor; etiketli noktaları, metin yorumlarını "
 "veya kısıtlamaları seçin. Bir çizgiyi tutturmak için uç noktalarını seçin."
 
-#: graphicswin.cpp:1378
+#: graphicswin.cpp:1379
 msgid "No workplane selected. Activating default workplane for this group."
 msgstr ""
 "Çalışma düzlemi seçilmedi. Bu grup için varsayılan çalışma düzlemi "
 "etkinleştiriliyor."
 
-#: graphicswin.cpp:1381
+#: graphicswin.cpp:1382
 msgid ""
 "No workplane is selected, and the active group does not have a default "
 "workplane. Try selecting a workplane, or activating a sketch-in-new-"
@@ -1430,7 +1454,7 @@ msgstr ""
 "düzlemi yok. Bir çalışma düzlemi seçmeyi veya bir yeni çalışma düzleminde "
 "çizim grubunu etkinleştirmeyi deneyin."
 
-#: graphicswin.cpp:1402
+#: graphicswin.cpp:1403
 msgid ""
 "Bad selection for tangent arc at point. Select a single point, or select "
 "nothing to set up arc parameters."
@@ -1438,47 +1462,47 @@ msgstr ""
 "Noktada teğet yay (radyus) oluşturmak için hatalı seçim. Tek bir nokta seçin "
 "veya yay parametrelerini ayarlamak için hiçbir şey seçmeyin."
 
-#: graphicswin.cpp:1413
+#: graphicswin.cpp:1414
 msgid "click point on arc (draws anti-clockwise)"
 msgstr "yayın ilk noktası için tıklayın (saat yönünün tersine çizilir)"
 
-#: graphicswin.cpp:1414
+#: graphicswin.cpp:1415
 msgid "click to place datum point"
 msgstr "referans noktayı yerleştirmek için tıklayın"
 
-#: graphicswin.cpp:1415
+#: graphicswin.cpp:1416
 msgid "click first point of line segment"
 msgstr "çizgi parçasının ilk noktası için tıklayın"
 
-#: graphicswin.cpp:1417
+#: graphicswin.cpp:1418
 msgid "click first point of construction line segment"
 msgstr "yardımcı çizginin ilk noktası için tıklayın"
 
-#: graphicswin.cpp:1418
+#: graphicswin.cpp:1419
 msgid "click first point of cubic segment"
 msgstr "kübik eğri parçanın ilk noktası için tıklayın"
 
-#: graphicswin.cpp:1419
+#: graphicswin.cpp:1420
 msgid "click center of circle"
 msgstr "dairenin merkez konumu için tıklayın"
 
-#: graphicswin.cpp:1420
+#: graphicswin.cpp:1421
 msgid "click origin of workplane"
 msgstr "çalışma düzleminin merkez konumu için tıklayın"
 
-#: graphicswin.cpp:1421
+#: graphicswin.cpp:1422
 msgid "click one corner of rectangle"
 msgstr "dikdörtgenin bir köşe noktası için tıklayın"
 
-#: graphicswin.cpp:1422
+#: graphicswin.cpp:1423
 msgid "click top left of text"
 msgstr "metnin sol üst köşe konumu için tıklayın"
 
-#: graphicswin.cpp:1428
+#: graphicswin.cpp:1429
 msgid "click top left of image"
 msgstr "görüntünün sol üst köşe konumu için tıklayın"
 
-#: graphicswin.cpp:1454
+#: graphicswin.cpp:1455
 msgid ""
 "No entities are selected. Select entities before trying to toggle their "
 "construction state."
@@ -2063,7 +2087,7 @@ msgstr "Grup Bilgisi"
 msgid "Style Info"
 msgstr "Biçim Bİlgisi"
 
-#: mouse.cpp:701 ui/menulayout.cpp:77
+#: mouse.cpp:701 ui/menulayout.cpp:78
 msgid "Select Edge Chain"
 msgstr "Kenar Zinciri Seç"
 
@@ -2075,7 +2099,7 @@ msgstr "Referans Ölçüyü Değiştir"
 msgid "Other Supplementary Angle"
 msgstr "Diğer Bütünler Açı"
 
-#: mouse.cpp:718 ui/menulayout.cpp:78
+#: mouse.cpp:718 ui/menulayout.cpp:79
 msgid "Snap to Grid"
 msgstr "Izgaraya Tuttur"
 
@@ -2091,7 +2115,7 @@ msgstr "Eğri Noktası Ekle"
 msgid "Cannot add spline point: maximum number of points reached."
 msgstr "Eğri noktası eklenemiyor: en fazla nokta sayısına ulaşıldı."
 
-#: mouse.cpp:791 ui/menulayout.cpp:147
+#: mouse.cpp:791 ui/menulayout.cpp:148
 msgid "Toggle Construction"
 msgstr "Yapıyı değiştir"
 
@@ -2099,31 +2123,31 @@ msgstr "Yapıyı değiştir"
 msgid "Delete Point-Coincident Constraint"
 msgstr "Çakışık-Nokta Kısıtlamasını Sil"
 
-#: mouse.cpp:825 ui/menulayout.cpp:71
+#: mouse.cpp:825 ui/menulayout.cpp:72
 msgid "Cut"
 msgstr "Kes"
 
-#: mouse.cpp:827 ui/menulayout.cpp:71
+#: mouse.cpp:827 ui/menulayout.cpp:72
 msgid "Copy"
 msgstr "Kopyala"
 
-#: mouse.cpp:831 ui/menulayout.cpp:76
+#: mouse.cpp:831 ui/menulayout.cpp:77
 msgid "Select All"
 msgstr "Tümünü Seç"
 
-#: mouse.cpp:836 ui/menulayout.cpp:72
+#: mouse.cpp:836 ui/menulayout.cpp:73
 msgid "Paste"
 msgstr "Yapıştır"
 
-#: mouse.cpp:838 ui/menulayout.cpp:73
+#: mouse.cpp:838 ui/menulayout.cpp:74
 msgid "Paste Transformed..."
 msgstr "Dönüştürerek Yapıştır..."
 
-#: mouse.cpp:843 ui/menulayout.cpp:74 ui/outliner.cpp:140
+#: mouse.cpp:843 ui/menulayout.cpp:75 ui/outliner.cpp:140
 msgid "Delete"
 msgstr "Sil"
 
-#: mouse.cpp:846 ui/menulayout.cpp:76
+#: mouse.cpp:846 ui/menulayout.cpp:77
 msgid "Unselect All"
 msgstr "Tüm Seçimi Kaldır"
 
@@ -2131,7 +2155,7 @@ msgstr "Tüm Seçimi Kaldır"
 msgid "Unselect Hovered"
 msgstr "Üzerine Gelinen Seçimi Kaldır"
 
-#: mouse.cpp:862 ui/menulayout.cpp:85
+#: mouse.cpp:862 ui/menulayout.cpp:86
 msgid "Zoom to Fit"
 msgstr "Sığdırmak için Yakınlaştır"
 
@@ -2257,6 +2281,7 @@ msgid "Quad mesh for Blender, with creases (USD)"
 msgstr "Blender için dörtgen ağ, keskin kenarlarla (USD)"
 
 #: platform/gui.cpp:110 platform/gui.cpp:117 platform/gui.cpp:124
+#: solvespace.cpp:850
 msgctxt "file-type"
 msgid "STEP file"
 msgstr "STEP dosyası"
@@ -2302,8 +2327,9 @@ msgid "Comma-separated values"
 msgstr "Virgülle ayrılmış değerler (CSV)"
 
 #: platform/guisdl.cpp:614
+#, fuzzy
 msgid "Save as"
-msgstr ""
+msgstr "Farklı kaydet"
 
 #: preferences.cpp:77 styleedit.cpp:90 textscreens.cpp:776
 msgid "Bad format: specify color as r, g, b"
@@ -2446,7 +2472,13 @@ msgstr "STEP dosyası, parça başına bir"
 msgid "Exported %d parts:%s"
 msgstr "%d parça dışa aktarıldı:%s"
 
-#: solvespace.cpp:893
+#: solvespace.cpp:856
+#, fuzzy
+msgid ""
+"The assembly needs the Open CASCADE kernel and a solid to export as STEP."
+msgstr "Montajın STEP olarak dışa aktarılması için Open CASCADE çekirdeği ve bir katı gerekir."
+
+#: solvespace.cpp:907
 #, c-format
 msgid ""
 "Can't identify file type from file extension of filename '%s'; try .dxf "
@@ -2455,19 +2487,19 @@ msgstr ""
 "'%s' dosya adının dosya uzantısından dosya türü belirlenemiyor; .dxf "
 "veya .dwg'yi deneyin."
 
-#: solvespace.cpp:945
+#: solvespace.cpp:959
 msgid "Constraint must have a label, and must not be a reference dimension."
 msgstr "Kısıtlamanın bir etiketi olmalı ve bir referans ölçüsü olmamalıdır."
 
-#: solvespace.cpp:949
+#: solvespace.cpp:963
 msgid "Bad selection for step dimension; select a constraint."
 msgstr "Adım ölçüsü ayarlamak için hatalı seçim; bir kısıtlama seçin."
 
-#: solvespace.cpp:973
+#: solvespace.cpp:987
 msgid "The assembly does not interfere, good."
 msgstr "Montajda engel oluşturan parça yok, iyi."
 
-#: solvespace.cpp:1005
+#: solvespace.cpp:1019
 #, c-format
 msgid ""
 "The volume of the solid model is:\n"
@@ -2478,7 +2510,7 @@ msgstr ""
 "\n"
 "    % s"
 
-#: solvespace.cpp:1015
+#: solvespace.cpp:1029
 #, c-format
 msgid ""
 "\n"
@@ -2491,7 +2523,7 @@ msgstr ""
 "\n"
 "    %s"
 
-#: solvespace.cpp:1020 solvespace.cpp:1365
+#: solvespace.cpp:1034 solvespace.cpp:1379
 msgid ""
 "\n"
 "\n"
@@ -2503,7 +2535,7 @@ msgstr ""
 "Kavisli (Eğri) yüzeyler üçgenler olarak yaklaştırılmıştır.\n"
 "Bu, genel olarak yaklaşık 1% hataya neden olur."
 
-#: solvespace.cpp:1035
+#: solvespace.cpp:1049
 #, c-format
 msgid ""
 "The surface area of the selected faces is:\n"
@@ -2520,7 +2552,7 @@ msgstr ""
 "Eğriler, doğrusal parçalı olarak yaklaştırılmıştır.\n"
 "Bu, genel olarak yaklaşık 1%% hataya neden olur."
 
-#: solvespace.cpp:1044
+#: solvespace.cpp:1058
 msgid ""
 "This group does not contain a correctly-formed 2d closed area. It is open, "
 "not coplanar, or self-intersecting."
@@ -2528,7 +2560,7 @@ msgstr ""
 "Bu grup, doğru biçimlendirilmiş 2d kapalı alan içermiyor. Açık, eş-düzlemli "
 "değil veya kendisiyle kesişiyor."
 
-#: solvespace.cpp:1056
+#: solvespace.cpp:1070
 #, c-format
 msgid ""
 "The area of the region sketched in this group is:\n"
@@ -2545,7 +2577,7 @@ msgstr ""
 "Eğriler, doğrusal parçalı olarak yaklaştırılmıştır.\n"
 "Bu, genel olarak yaklaşık 1%% hataya neden olur."
 
-#: solvespace.cpp:1076
+#: solvespace.cpp:1090
 #, c-format
 msgid ""
 "The total length of the selected entities is:\n"
@@ -2562,38 +2594,38 @@ msgstr ""
 "Eğriler, parçalı doğrusal olarak yaklaştırıldı.\n"
 "Bu, genel olarak yaklaşık 1%% hataya neden olur."
 
-#: solvespace.cpp:1082
+#: solvespace.cpp:1096
 msgid "Bad selection for perimeter; select line segments, arcs, and curves."
 msgstr ""
 "Çevre uzunluğunu hesabı için hatalı seçim; çizgi parçalarını, yayları ve "
 "eğrileri seçin."
 
-#: solvespace.cpp:1098
+#: solvespace.cpp:1112
 msgid "Bad selection for trace; select a single point."
 msgstr "Nokta izleme işlemi için hatalı seçim; tek bir nokta seçin."
 
-#: solvespace.cpp:1125
+#: solvespace.cpp:1139
 #, c-format
 msgid "Couldn't write to '%s'"
 msgstr "\"%s\" öğesine yazılamadı"
 
-#: solvespace.cpp:1155
+#: solvespace.cpp:1169
 msgid "The mesh is self-intersecting (NOT okay, invalid)."
 msgstr "Ağ (Kafes) kendisiyle kesişiyor (İyi DEĞİL, geçersiz)."
 
-#: solvespace.cpp:1156
+#: solvespace.cpp:1170
 msgid "The mesh is not self-intersecting (okay, valid)."
 msgstr "Ağ (Kafes) kendisi ile kesişmiyor (iyi, geçerli)."
 
-#: solvespace.cpp:1158
+#: solvespace.cpp:1172
 msgid "The mesh has naked edges (NOT okay, invalid)."
 msgstr "Ağın (Kafesin) açık kenarları var (iyi DEĞİL, geçersiz)."
 
-#: solvespace.cpp:1159
+#: solvespace.cpp:1173
 msgid "The mesh is watertight (okay, valid)."
 msgstr "Ağ (Kafes) çok sıkı (iyi, geçerli)"
 
-#: solvespace.cpp:1162
+#: solvespace.cpp:1176
 #, c-format
 msgid ""
 "\n"
@@ -2604,7 +2636,7 @@ msgstr ""
 "\n"
 "Model, %d yüzeyden %d üçgen içeriyor."
 
-#: solvespace.cpp:1166
+#: solvespace.cpp:1180
 #, c-format
 msgid ""
 "%s\n"
@@ -2619,7 +2651,7 @@ msgstr ""
 "\n"
 "Sıfır sorunlu kenar, iyi.%s"
 
-#: solvespace.cpp:1169
+#: solvespace.cpp:1183
 #, c-format
 msgid ""
 "%s\n"
@@ -2634,7 +2666,7 @@ msgstr ""
 "\n"
 "%d sorunlu kenar, kötü.%s"
 
-#: solvespace.cpp:1182
+#: solvespace.cpp:1196
 #, c-format
 msgid ""
 "This is SolveSpace version %s.\n"
@@ -2663,12 +2695,12 @@ msgstr ""
 "\n"
 "© 2008-% d Jonathan Westhues ve diğer yazarlar.\n"
 
-#: solvespace.cpp:1351
+#: solvespace.cpp:1365
 #, fuzzy
 msgid "There is no solid in the active group."
 msgstr "Etkin grupta katı yok."
 
-#: solvespace.cpp:1359
+#: solvespace.cpp:1373
 #, fuzzy, c-format
 msgid ""
 "Volume:  %s\n"
@@ -2681,22 +2713,22 @@ msgstr ""
 "Kütle:  %s (%s)\n"
 "Kütle merkezi:  (%s, %s, %s)"
 
-#: solvespace.cpp:1404
+#: solvespace.cpp:1418
 #, fuzzy
 msgid "A part's name can't be empty."
 msgstr "Parçanın adı boş olamaz."
 
-#: solvespace.cpp:1490
+#: solvespace.cpp:1504
 #, fuzzy
 msgid "No part has a solid yet."
 msgstr "Henüz hiçbir parçanın katısı yok."
 
-#: solvespace.cpp:1494
+#: solvespace.cpp:1508
 #, fuzzy, c-format
 msgid "%s%s:  %s, %s, %.2f g;  %s x %s x %s\n"
 msgstr "%s%s:  %s, %s, %.2f g;  %s x %s x %s\n"
 
-#: solvespace.cpp:1501
+#: solvespace.cpp:1515
 #, fuzzy, c-format
 msgid ""
 "\n"
@@ -2705,7 +2737,7 @@ msgstr ""
 "\n"
 "%d parça, toplam %.2f g."
 
-#: solvespace.cpp:1603
+#: solvespace.cpp:1617
 #, fuzzy
 msgid ""
 "Parts export as STL, 3MF or STEP; choose a .stl, .3mf or .step file name."
@@ -2713,7 +2745,7 @@ msgstr ""
 "Parçalar STL, 3MF ya da STEP olarak dışa aktarılır; bir .stl, .3mf ya "
 "da .step dosya adı seçin."
 
-#: solvespace.cpp:1638
+#: solvespace.cpp:1652
 #, fuzzy, c-format
 msgid "STEP needs the Open CASCADE kernel; part '%s' was not written."
 msgstr "STEP, Open CASCADE çekirdeğini gerektirir; '%s' parçası yazılmadı."
@@ -2897,2365 +2929,2902 @@ msgstr "Görünümü etkin çalışma düzlemine hizala"
 #: ui/drawtool.cpp:27 ui/properties.cpp:706 ui/properties.cpp:708
 #: ui/properties.cpp:709 ui/selectionmodel.cpp:437 ui/selectionmodel.cpp:447
 #: ui/stylespanel.cpp:116
+#, fuzzy
 msgid "angle"
-msgstr ""
+msgstr "açı"
 
 #: ui/drawtool.cpp:27 ui/drawtool.cpp:28 ui/properties.cpp:176
 #: ui/selectionmodel.cpp:159
+#, fuzzy
 msgid "length"
-msgstr ""
+msgstr "uzunluk"
 
 #: ui/drawtool.cpp:30 ui/properties.cpp:174 ui/properties.cpp:382
 #: ui/selectionmodel.cpp:186 ui/selectionmodel.cpp:195
 #: ui/selectionmodel.cpp:390
+#, fuzzy
 msgid "diameter"
-msgstr ""
+msgstr "çap"
 
 #: ui/drawtool.cpp:31 ui/prefspanel.cpp:103 ui/stylespanel.cpp:109
+#, fuzzy
 msgid "height"
-msgstr ""
+msgstr "yükseklik"
 
 #: ui/drawtool.cpp:31 ui/prefspanel.cpp:102 ui/stylespanel.cpp:75
+#, fuzzy
 msgid "width"
-msgstr ""
+msgstr "genişlik"
 
-#: ui/drawtool.cpp:82 ui/menulayout.cpp:144 ui/ngui.cpp:153
+#: ui/drawtool.cpp:82 ui/menulayout.cpp:145 ui/ngui.cpp:153
 #: ui/selectionmodel.cpp:193
+#, fuzzy
 msgid "Circle"
-msgstr ""
+msgstr "Daire"
 
-#: ui/drawtool.cpp:82 ui/menulayout.cpp:142 ui/ngui.cpp:151
+#: ui/drawtool.cpp:82 ui/menulayout.cpp:143 ui/ngui.cpp:151
+#, fuzzy
 msgid "Line"
-msgstr ""
+msgstr "Çizgi"
 
-#: ui/drawtool.cpp:82 ui/menulayout.cpp:144 ui/ngui.cpp:152
+#: ui/drawtool.cpp:82 ui/menulayout.cpp:145 ui/ngui.cpp:152
+#, fuzzy
 msgid "Rectangle"
-msgstr ""
+msgstr "Dikdörtgen"
 
 #: ui/drawtool.cpp:93
+#, fuzzy
 msgid "Remove last segment"
-msgstr ""
+msgstr "Son parçayı kaldır"
 
 #: ui/drawtool.cpp:93 ui/drawtool.cpp:96
+#, fuzzy
 msgid "Value"
-msgstr ""
+msgstr "Değer"
 
 #: ui/drawtool.cpp:94
+#, fuzzy
 msgid "Finish"
-msgstr ""
+msgstr "Bitir"
 
 #: ui/drawtool.cpp:96
+#, fuzzy
 msgid "Apply"
-msgstr ""
+msgstr "Uygula"
 
 #: ui/drawtool.cpp:96
+#, fuzzy
 msgid "Next field"
-msgstr ""
+msgstr "Sonraki alan"
 
 #: ui/drawtool.cpp:97
+#, fuzzy
 msgid "Clear / cancel"
-msgstr ""
+msgstr "Temizle / iptal"
 
-#: ui/grabtool.cpp:46 ui/menulayout.cpp:78 ui/statusmodel.cpp:49
+#: ui/grabtool.cpp:46 ui/menulayout.cpp:79 ui/statusmodel.cpp:49
+#, fuzzy
 msgid "Grab"
-msgstr ""
+msgstr "Taşı"
 
 #: ui/grabtool.cpp:51
+#, fuzzy
 msgid "(lock an axis to use a typed distance)"
-msgstr ""
+msgstr "(yazılan mesafe için bir ekseni kilitleyin)"
 
 #: ui/grabtool.cpp:57
+#, fuzzy
 msgid "Axis"
-msgstr ""
+msgstr "Eksen"
 
 #: ui/grabtool.cpp:57 ui/selectionmodel.cpp:17
+#, fuzzy
 msgid "Distance"
-msgstr ""
+msgstr "Mesafe"
 
 #: ui/grabtool.cpp:58 ui/statusmodel.cpp:35 ui/statusmodel.cpp:37
+#, fuzzy
 msgid "Cancel"
-msgstr ""
+msgstr "İptal"
 
 #: ui/grabtool.cpp:58
+#, fuzzy
 msgid "Confirm"
-msgstr ""
+msgstr "Onayla"
 
 #: ui/menulayout.cpp:55
+#, fuzzy
 msgid "File"
-msgstr ""
+msgstr "Dosya"
 
 #: ui/menulayout.cpp:56
+#, fuzzy
 msgid "New"
-msgstr ""
+msgstr "Yeni"
 
 #: ui/menulayout.cpp:56
+#, fuzzy
 msgid "Open..."
-msgstr ""
+msgstr "Aç..."
 
 #: ui/menulayout.cpp:57
+#, fuzzy
 msgid "Open Recent"
-msgstr ""
+msgstr "Son açılanlar"
 
 #: ui/menulayout.cpp:58
+#, fuzzy
 msgid "Save"
-msgstr ""
+msgstr "Kaydet"
 
 #: ui/menulayout.cpp:58
+#, fuzzy
 msgid "Save As..."
-msgstr ""
+msgstr "Farklı kaydet..."
 
 #: ui/menulayout.cpp:59
+#, fuzzy
 msgid "Import..."
-msgstr ""
+msgstr "İçe aktar..."
 
 #: ui/menulayout.cpp:60 ui/prefspanel.cpp:156
+#, fuzzy
 msgid "Export"
-msgstr ""
+msgstr "Dışa aktar"
 
 #: ui/menulayout.cpp:61
+#, fuzzy
 msgid "2D View..."
-msgstr ""
+msgstr "2B görünüm..."
 
-#: ui/menulayout.cpp:61 ui/menulayout.cpp:146
+#: ui/menulayout.cpp:61 ui/menulayout.cpp:147
+#, fuzzy
 msgid "Image..."
-msgstr ""
+msgstr "Görüntü..."
 
 #: ui/menulayout.cpp:62
+#, fuzzy
 msgid "2D Section..."
-msgstr ""
+msgstr "2B kesit..."
 
 #: ui/menulayout.cpp:63
+#, fuzzy
 msgid "3D Wireframe..."
-msgstr ""
+msgstr "3B tel kafes..."
 
 #: ui/menulayout.cpp:64
+#, fuzzy
 msgid "Triangle Mesh..."
-msgstr ""
+msgstr "Üçgen ağ..."
 
 #: ui/menulayout.cpp:65
+#, fuzzy
 msgid "Parts, One File Each..."
-msgstr ""
+msgstr "Parçalar, her biri ayrı dosyada..."
 
 #: ui/menulayout.cpp:66
+#, fuzzy
 msgid "Parts List (CSV)..."
-msgstr ""
+msgstr "Parça listesi (CSV)..."
 
-#: ui/menulayout.cpp:67
-msgid "Surfaces..."
-msgstr ""
+#: ui/menulayout.cpp:67#, fuzzy
+msgid "Assembly (STEP)..."
+msgstr "Montaj (STEP)..."
 
 #: ui/menulayout.cpp:68
-msgid "Quit"
-msgstr ""
+#, fuzzy
+msgid "Surfaces..."
+msgstr "Yüzeyler..."
 
 #: ui/menulayout.cpp:69
+#, fuzzy
+msgid "Quit"
+msgstr "Çık"
+
+#: ui/menulayout.cpp:70
+#, fuzzy
 msgid "Edit"
-msgstr ""
+msgstr "Düzen"
 
-#: ui/menulayout.cpp:70
+#: ui/menulayout.cpp:71
+#, fuzzy
 msgid "Redo"
-msgstr ""
+msgstr "Yinele"
 
-#: ui/menulayout.cpp:70
+#: ui/menulayout.cpp:71
+#, fuzzy
 msgid "Undo"
-msgstr ""
-
-#: ui/menulayout.cpp:79
-msgid "Rotate Imported 90°"
-msgstr ""
+msgstr "Geri al"
 
 #: ui/menulayout.cpp:80
-msgid "Regenerate All"
-msgstr ""
+#, fuzzy
+msgid "Rotate Imported 90°"
+msgstr "İçe aktarılanı 90° döndür"
 
 #: ui/menulayout.cpp:81
-msgid "Line Styles..."
-msgstr ""
+#, fuzzy
+msgid "Regenerate All"
+msgstr "Tümünü yeniden oluştur"
 
 #: ui/menulayout.cpp:82
+#, fuzzy
+msgid "Line Styles..."
+msgstr "Çizgi stilleri..."
+
+#: ui/menulayout.cpp:83
+#, fuzzy
 msgid "Preferences..."
-msgstr ""
+msgstr "Tercihler..."
 
-#: ui/menulayout.cpp:83 ui/ngui.cpp:170 ui/panels.cpp:173
+#: ui/menulayout.cpp:84 ui/ngui.cpp:170 ui/panels.cpp:173
+#, fuzzy
 msgid "View"
-msgstr ""
+msgstr "Görünüm"
 
-#: ui/menulayout.cpp:84
+#: ui/menulayout.cpp:85
+#, fuzzy
 msgid "Zoom In"
-msgstr ""
+msgstr "Yakınlaştır"
 
-#: ui/menulayout.cpp:84
+#: ui/menulayout.cpp:85
+#, fuzzy
 msgid "Zoom Out"
-msgstr ""
-
-#: ui/menulayout.cpp:86
-msgid "Frame Selection"
-msgstr ""
+msgstr "Uzaklaştır"
 
 #: ui/menulayout.cpp:87
-msgid "Center View at Point"
-msgstr ""
+#, fuzzy
+msgid "Frame Selection"
+msgstr "Seçimi çerçevele"
 
 #: ui/menulayout.cpp:88
+#, fuzzy
+msgid "Center View at Point"
+msgstr "Noktayı görünümün merkezine al"
+
+#: ui/menulayout.cpp:89
+#, fuzzy
 msgid "Standard Views"
-msgstr ""
+msgstr "Standart görünümler"
 
-#: ui/menulayout.cpp:89 ui/ngui.cpp:174 ui/viewcubemodel.cpp:18
+#: ui/menulayout.cpp:90 ui/ngui.cpp:174 ui/viewcubemodel.cpp:18
+#, fuzzy
 msgid "Back"
-msgstr ""
+msgstr "Arka"
 
-#: ui/menulayout.cpp:89 ui/ngui.cpp:172 ui/viewcubemodel.cpp:17
+#: ui/menulayout.cpp:90 ui/ngui.cpp:172 ui/viewcubemodel.cpp:17
+#, fuzzy
 msgid "Front"
-msgstr ""
+msgstr "Ön"
 
-#: ui/menulayout.cpp:90 ui/ngui.cpp:173 ui/viewcubemodel.cpp:20
+#: ui/menulayout.cpp:91 ui/ngui.cpp:173 ui/viewcubemodel.cpp:20
+#, fuzzy
 msgid "Left"
-msgstr ""
+msgstr "Sol"
 
-#: ui/menulayout.cpp:90 ui/ngui.cpp:171 ui/viewcubemodel.cpp:19
+#: ui/menulayout.cpp:91 ui/ngui.cpp:171 ui/viewcubemodel.cpp:19
+#, fuzzy
 msgid "Right"
-msgstr ""
+msgstr "Sağ"
 
-#: ui/menulayout.cpp:91 ui/ngui.cpp:173 ui/viewcubemodel.cpp:22
+#: ui/menulayout.cpp:92 ui/ngui.cpp:173 ui/viewcubemodel.cpp:22
+#, fuzzy
 msgid "Bottom"
-msgstr ""
+msgstr "Alt"
 
-#: ui/menulayout.cpp:91 ui/ngui.cpp:171 ui/viewcubemodel.cpp:21
+#: ui/menulayout.cpp:92 ui/ngui.cpp:171 ui/viewcubemodel.cpp:21
+#, fuzzy
 msgid "Top"
-msgstr ""
-
-#: ui/menulayout.cpp:92
-msgid "Nearest Isometric"
-msgstr ""
+msgstr "Üst"
 
 #: ui/menulayout.cpp:93
-msgid "Nearest Orthographic"
-msgstr ""
+#, fuzzy
+msgid "Nearest Isometric"
+msgstr "En yakın izometrik"
 
 #: ui/menulayout.cpp:94
-msgid "Align to Workplane"
-msgstr ""
+#, fuzzy
+msgid "Nearest Orthographic"
+msgstr "En yakın dik görünüm"
 
-#: ui/menulayout.cpp:96
-msgid "Perspective"
-msgstr ""
+#: ui/menulayout.cpp:95
+#, fuzzy
+msgid "Align to Workplane"
+msgstr "Çalışma düzlemine hizala"
 
 #: ui/menulayout.cpp:97
+#, fuzzy
+msgid "Perspective"
+msgstr "Perspektif"
+
+#: ui/menulayout.cpp:98
+#, fuzzy
 msgid "Exploded View"
-msgstr ""
+msgstr "Patlatılmış görünüm"
 
-#: ui/menulayout.cpp:99
+#: ui/menulayout.cpp:100
+#, fuzzy
 msgid "Snap Grid"
-msgstr ""
+msgstr "Yakalama ızgarası"
 
-#: ui/menulayout.cpp:99
+#: ui/menulayout.cpp:100
+#, fuzzy
 msgid "Units"
-msgstr ""
+msgstr "Birimler"
 
-#: ui/menulayout.cpp:100 ui/panels.cpp:196
+#: ui/menulayout.cpp:101 ui/panels.cpp:196
+#, fuzzy
 msgid "Outliner"
-msgstr ""
+msgstr "Nesne listesi"
 
-#: ui/menulayout.cpp:101 ui/panels.cpp:150
+#: ui/menulayout.cpp:102 ui/panels.cpp:150
+#, fuzzy
 msgid "Properties"
-msgstr ""
+msgstr "Özellikler"
 
-#: ui/menulayout.cpp:102 ui/panels.cpp:156
+#: ui/menulayout.cpp:103 ui/panels.cpp:156
+#, fuzzy
 msgid "Problems"
-msgstr ""
-
-#: ui/menulayout.cpp:103
-msgid "Tool Shelf"
-msgstr ""
+msgstr "Sorunlar"
 
 #: ui/menulayout.cpp:104
-msgid "Menu Bar"
-msgstr ""
+#, fuzzy
+msgid "Tool Shelf"
+msgstr "Araç rafı"
 
 #: ui/menulayout.cpp:105
+#, fuzzy
+msgid "Menu Bar"
+msgstr "Menü çubuğu"
+
+#: ui/menulayout.cpp:106
+#, fuzzy
 msgid "Command Palette..."
-msgstr ""
-
-#: ui/menulayout.cpp:106
-msgid "Hide Group"
-msgstr ""
-
-#: ui/menulayout.cpp:106
-msgid "Isolate Group"
-msgstr ""
+msgstr "Komut paleti..."
 
 #: ui/menulayout.cpp:107
-msgid "Show All Groups"
-msgstr ""
+#, fuzzy
+msgid "Hide Group"
+msgstr "Grubu gizle"
+
+#: ui/menulayout.cpp:107
+#, fuzzy
+msgid "Isolate Group"
+msgstr "Grubu izole et"
 
 #: ui/menulayout.cpp:108
-msgid "View Settings..."
-msgstr ""
+#, fuzzy
+msgid "Show All Groups"
+msgstr "Tüm grupları göster"
 
 #: ui/menulayout.cpp:109
-msgid "Light Theme"
-msgstr ""
+#, fuzzy
+msgid "View Settings..."
+msgstr "Görünüm ayarları..."
 
 #: ui/menulayout.cpp:110
-msgid "Full Screen"
-msgstr ""
+#, fuzzy
+msgid "Light Theme"
+msgstr "Açık tema"
 
 #: ui/menulayout.cpp:111
+#, fuzzy
+msgid "Full Screen"
+msgstr "Tam ekran"
+
+#: ui/menulayout.cpp:112
+#, fuzzy
 msgid "New Group"
-msgstr ""
+msgstr "Yeni grup"
 
-#: ui/menulayout.cpp:112
+#: ui/menulayout.cpp:113
+#, fuzzy
 msgid "New Part"
-msgstr ""
+msgstr "Yeni parça"
 
-#: ui/menulayout.cpp:112
+#: ui/menulayout.cpp:113
+#, fuzzy
 msgid "Split Part"
-msgstr ""
+msgstr "Parçayı böl"
 
-#: ui/menulayout.cpp:113 ui/outliner.cpp:155
+#: ui/menulayout.cpp:114 ui/outliner.cpp:155
+#, fuzzy
 msgid "Joints"
-msgstr ""
-
-#: ui/menulayout.cpp:114
-msgid "Revolute Joint"
-msgstr ""
+msgstr "Mafsallar"
 
 #: ui/menulayout.cpp:115
-msgid "Slider Joint"
-msgstr ""
+#, fuzzy
+msgid "Revolute Joint"
+msgstr "Döner mafsal"
 
 #: ui/menulayout.cpp:116
-msgid "Cylindrical Joint"
-msgstr ""
+#, fuzzy
+msgid "Slider Joint"
+msgstr "Kaymalı mafsal"
 
 #: ui/menulayout.cpp:117
-msgid "Planar Joint"
-msgstr ""
+#, fuzzy
+msgid "Cylindrical Joint"
+msgstr "Silindirik mafsal"
 
 #: ui/menulayout.cpp:118
-msgid "Ball Joint"
-msgstr ""
+#, fuzzy
+msgid "Planar Joint"
+msgstr "Düzlemsel mafsal"
 
 #: ui/menulayout.cpp:119
-msgid "Gear Coupling"
-msgstr ""
+#, fuzzy
+msgid "Ball Joint"
+msgstr "Küresel mafsal"
 
 #: ui/menulayout.cpp:120
-msgid "Fit Joint"
-msgstr ""
+#, fuzzy
+msgid "Gear Coupling"
+msgstr "Dişli bağlantısı"
 
 #: ui/menulayout.cpp:121
-msgid "Sketch in 3D"
-msgstr ""
+#, fuzzy
+msgid "Fit Joint"
+msgstr "Geçme bağlantısı"
 
 #: ui/menulayout.cpp:122
-msgid "Sketch in New Workplane"
-msgstr ""
+#, fuzzy
+msgid "Sketch in 3D"
+msgstr "3B'de çizim"
 
 #: ui/menulayout.cpp:123
-msgid "Extrude"
-msgstr ""
+#, fuzzy
+msgid "Sketch in New Workplane"
+msgstr "Yeni çalışma düzleminde çizim"
 
 #: ui/menulayout.cpp:124
-msgid "Extrude as a Cut"
-msgstr ""
+#, fuzzy
+msgid "Extrude"
+msgstr "Uzat"
 
 #: ui/menulayout.cpp:125
+#, fuzzy
+msgid "Extrude as a Cut"
+msgstr "Uzatarak kes"
+
+#: ui/menulayout.cpp:126
+#, fuzzy
 msgid "Revolve"
-msgstr ""
-
-#: ui/menulayout.cpp:126
-msgid "Helix"
-msgstr ""
-
-#: ui/menulayout.cpp:126
-msgid "Lathe"
-msgstr ""
+msgstr "Döndür"
 
 #: ui/menulayout.cpp:127
-msgid "Fillet Edges"
-msgstr ""
+#, fuzzy
+msgid "Helix"
+msgstr "Helis"
+
+#: ui/menulayout.cpp:127
+#, fuzzy
+msgid "Lathe"
+msgstr "Torna"
 
 #: ui/menulayout.cpp:128
+#, fuzzy
+msgid "Fillet Edges"
+msgstr "Kenarları yuvarla"
+
+#: ui/menulayout.cpp:129
+#, fuzzy
 msgid "Chamfer Edges"
-msgstr ""
+msgstr "Kenarlara pah kır"
 
-#: ui/menulayout.cpp:129
+#: ui/menulayout.cpp:130
+#, fuzzy
 msgid "Draft Faces"
-msgstr ""
+msgstr "Yüzeylere eğim ver"
 
-#: ui/menulayout.cpp:129
+#: ui/menulayout.cpp:130
+#, fuzzy
 msgid "Shell"
-msgstr ""
-
-#: ui/menulayout.cpp:130
-msgid "Hole"
-msgstr ""
-
-#: ui/menulayout.cpp:130
-msgid "Loft"
-msgstr ""
+msgstr "Kabuklaştır"
 
 #: ui/menulayout.cpp:131
-msgid "Sweep"
-msgstr ""
+#, fuzzy
+msgid "Hole"
+msgstr "Delik"
 
-#: ui/menulayout.cpp:133
-msgid "Linear Pattern"
-msgstr ""
+#: ui/menulayout.cpp:131
+#, fuzzy
+msgid "Loft"
+msgstr "Harmanla"
+
+#: ui/menulayout.cpp:132
+#, fuzzy
+msgid "Sweep"
+msgstr "Süpür"
 
 #: ui/menulayout.cpp:134
-msgid "Circular Pattern"
-msgstr ""
+#, fuzzy
+msgid "Linear Pattern"
+msgstr "Doğrusal örüntü"
 
 #: ui/menulayout.cpp:135
+#, fuzzy
+msgid "Circular Pattern"
+msgstr "Dairesel örüntü"
+
+#: ui/menulayout.cpp:136
+#, fuzzy
 msgid "Link Part..."
-msgstr ""
+msgstr "Parça bağla..."
 
-#: ui/menulayout.cpp:137 ui/statusmodel.cpp:50
+#: ui/menulayout.cpp:138 ui/statusmodel.cpp:50
+#, fuzzy
 msgid "Sketch"
-msgstr ""
-
-#: ui/menulayout.cpp:138
-msgid "In Workplane"
-msgstr ""
+msgstr "Çizim"
 
 #: ui/menulayout.cpp:139
+#, fuzzy
+msgid "In Workplane"
+msgstr "Çalışma düzleminde"
+
+#: ui/menulayout.cpp:140
+#, fuzzy
 msgid "Anywhere in 3D"
-msgstr ""
+msgstr "3B'de serbest"
 
-#: ui/menulayout.cpp:141 ui/ngui.cpp:155 ui/selectionmodel.cpp:130
+#: ui/menulayout.cpp:142 ui/ngui.cpp:155 ui/selectionmodel.cpp:130
+#, fuzzy
 msgid "Point"
-msgstr ""
+msgstr "Nokta"
 
-#: ui/menulayout.cpp:141 ui/ngui.cpp:156 ui/selectionmodel.cpp:147
+#: ui/menulayout.cpp:142 ui/ngui.cpp:156 ui/selectionmodel.cpp:147
+#, fuzzy
 msgid "Workplane"
-msgstr ""
+msgstr "Çalışma düzlemi"
 
-#: ui/menulayout.cpp:143
+#: ui/menulayout.cpp:144
+#, fuzzy
 msgid "Construction Line"
-msgstr ""
+msgstr "Yapı çizgisi"
 
-#: ui/menulayout.cpp:145 ui/ngui.cpp:153
+#: ui/menulayout.cpp:146 ui/ngui.cpp:153
+#, fuzzy
 msgid "Arc"
-msgstr ""
+msgstr "Yay"
 
-#: ui/menulayout.cpp:145 ui/ngui.cpp:154
+#: ui/menulayout.cpp:146 ui/ngui.cpp:154
+#, fuzzy
 msgid "Spline"
-msgstr ""
+msgstr "Eğri (spline)"
 
-#: ui/menulayout.cpp:146 ui/ngui.cpp:155
+#: ui/menulayout.cpp:147 ui/ngui.cpp:155
+#, fuzzy
 msgid "Text"
-msgstr ""
-
-#: ui/menulayout.cpp:148
-msgid "Tangent Arc at Point"
-msgstr ""
+msgstr "Metin"
 
 #: ui/menulayout.cpp:149
+#, fuzzy
+msgid "Tangent Arc at Point"
+msgstr "Noktada teğet yay"
+
+#: ui/menulayout.cpp:150
+#, fuzzy
 msgid "Split at Intersections"
-msgstr ""
+msgstr "Kesişimlerde böl"
 
-#: ui/menulayout.cpp:150 ui/ngui.cpp:167 ui/statusmodel.cpp:47
+#: ui/menulayout.cpp:151 ui/ngui.cpp:167 ui/statusmodel.cpp:47
+#, fuzzy
 msgid "Constrain"
-msgstr ""
-
-#: ui/menulayout.cpp:151
-msgid "Distance / Diameter"
-msgstr ""
+msgstr "Kısıtla"
 
 #: ui/menulayout.cpp:152
-msgid "Reference Dimension"
-msgstr ""
+#, fuzzy
+msgid "Distance / Diameter"
+msgstr "Mesafe / çap"
 
 #: ui/menulayout.cpp:153
-msgid "Angle / Equal Angle"
-msgstr ""
+#, fuzzy
+msgid "Reference Dimension"
+msgstr "Referans kotu"
 
 #: ui/menulayout.cpp:154
-msgid "Reference Angle"
-msgstr ""
+#, fuzzy
+msgid "Angle / Equal Angle"
+msgstr "Açı / eşit açı"
 
 #: ui/menulayout.cpp:155
-msgid "Supplementary Angle"
-msgstr ""
+#, fuzzy
+msgid "Reference Angle"
+msgstr "Referans açı"
 
 #: ui/menulayout.cpp:156
+#, fuzzy
+msgid "Supplementary Angle"
+msgstr "Bütünler açı"
+
+#: ui/menulayout.cpp:157
+#, fuzzy
 msgid "Toggle Reference"
-msgstr ""
+msgstr "Referansı değiştir"
 
-#: ui/menulayout.cpp:157 ui/selectionmodel.cpp:39
+#: ui/menulayout.cpp:158 ui/selectionmodel.cpp:39
+#, fuzzy
 msgid "Horizontal"
-msgstr ""
+msgstr "Yatay"
 
-#: ui/menulayout.cpp:157 ui/selectionmodel.cpp:40
+#: ui/menulayout.cpp:158 ui/selectionmodel.cpp:40
+#, fuzzy
 msgid "Vertical"
-msgstr ""
-
-#: ui/menulayout.cpp:158
-msgid "On Point / Curve / Plane"
-msgstr ""
+msgstr "Dikey"
 
 #: ui/menulayout.cpp:159
-msgid "Equal Length / Radius"
-msgstr ""
+#, fuzzy
+msgid "On Point / Curve / Plane"
+msgstr "Nokta / eğri / düzlem üzerinde"
 
 #: ui/menulayout.cpp:160
-msgid "Length / Arc Ratio"
-msgstr ""
+#, fuzzy
+msgid "Equal Length / Radius"
+msgstr "Eşit uzunluk / yarıçap"
 
 #: ui/menulayout.cpp:161
+#, fuzzy
+msgid "Length / Arc Ratio"
+msgstr "Uzunluk / yay oranı"
+
+#: ui/menulayout.cpp:162
+#, fuzzy
 msgid "Length / Arc Difference"
-msgstr ""
+msgstr "Uzunluk / yay farkı"
 
-#: ui/menulayout.cpp:162 ui/selectionmodel.cpp:38
+#: ui/menulayout.cpp:163 ui/selectionmodel.cpp:38
+#, fuzzy
 msgid "Midpoint"
-msgstr ""
+msgstr "Orta nokta"
 
-#: ui/menulayout.cpp:162 ui/selectionmodel.cpp:34
+#: ui/menulayout.cpp:163 ui/selectionmodel.cpp:34
+#, fuzzy
 msgid "Symmetric"
-msgstr ""
+msgstr "Simetrik"
 
-#: ui/menulayout.cpp:163
+#: ui/menulayout.cpp:164
+#, fuzzy
 msgid "Parallel / Tangent"
-msgstr ""
+msgstr "Paralel / teğet"
 
-#: ui/menulayout.cpp:164 ui/selectionmodel.cpp:49
+#: ui/menulayout.cpp:165 ui/selectionmodel.cpp:49
+#, fuzzy
 msgid "Perpendicular"
-msgstr ""
-
-#: ui/menulayout.cpp:165
-msgid "Same Orientation"
-msgstr ""
+msgstr "Dik"
 
 #: ui/menulayout.cpp:166
+#, fuzzy
+msgid "Same Orientation"
+msgstr "Aynı yönelim"
+
+#: ui/menulayout.cpp:167
+#, fuzzy
 msgid "Lock Point Where Dragged"
-msgstr ""
+msgstr "Sürüklenen noktayı kilitle"
 
-#: ui/menulayout.cpp:168
+#: ui/menulayout.cpp:169
+#, fuzzy
 msgid "Inspect"
-msgstr ""
-
-#: ui/menulayout.cpp:169
-msgid "Measure Area"
-msgstr ""
-
-#: ui/menulayout.cpp:169
-msgid "Measure Volume"
-msgstr ""
+msgstr "İncele"
 
 #: ui/menulayout.cpp:170
-msgid "Measure Perimeter"
-msgstr ""
+#, fuzzy
+msgid "Measure Area"
+msgstr "Alanı ölç"
+
+#: ui/menulayout.cpp:170
+#, fuzzy
+msgid "Measure Volume"
+msgstr "Hacmi ölç"
 
 #: ui/menulayout.cpp:171
-msgid "Interfering Parts"
-msgstr ""
+#, fuzzy
+msgid "Measure Perimeter"
+msgstr "Çevreyi ölç"
 
 #: ui/menulayout.cpp:172
-msgid "Naked Edges"
-msgstr ""
+#, fuzzy
+msgid "Interfering Parts"
+msgstr "Çakışan parçalar"
 
 #: ui/menulayout.cpp:173
-msgid "Center of Mass"
-msgstr ""
+#, fuzzy
+msgid "Naked Edges"
+msgstr "Açık kenarlar"
 
 #: ui/menulayout.cpp:174
-msgid "Mass Properties..."
-msgstr ""
+#, fuzzy
+msgid "Center of Mass"
+msgstr "Kütle merkezi"
 
 #: ui/menulayout.cpp:175
-msgid "Parts List..."
-msgstr ""
-
-#: ui/menulayout.cpp:176 ui/ngui.cpp:188
-msgid "Design Pose"
-msgstr ""
+#, fuzzy
+msgid "Mass Properties..."
+msgstr "Kütle özellikleri..."
 
 #: ui/menulayout.cpp:176
-msgid "Fit Table..."
-msgstr ""
+#, fuzzy
+msgid "Parts List..."
+msgstr "Parça listesi..."
 
-#: ui/menulayout.cpp:178
-msgid "Underconstrained Points"
-msgstr ""
+#: ui/menulayout.cpp:177 ui/ngui.cpp:188
+#, fuzzy
+msgid "Design Pose"
+msgstr "Tasarım duruşu"
+
+#: ui/menulayout.cpp:177
+#, fuzzy
+msgid "Fit Table..."
+msgstr "Geçme tablosu..."
 
 #: ui/menulayout.cpp:179
-msgid "Trace Point"
-msgstr ""
+#, fuzzy
+msgid "Underconstrained Points"
+msgstr "Eksik kısıtlı noktalar"
 
 #: ui/menulayout.cpp:180
-msgid "Stop Tracing..."
-msgstr ""
+#, fuzzy
+msgid "Trace Point"
+msgstr "Noktayı izle"
 
 #: ui/menulayout.cpp:181
-msgid "Step Dimension..."
-msgstr ""
+#, fuzzy
+msgid "Stop Tracing..."
+msgstr "İzlemeyi durdur..."
 
 #: ui/menulayout.cpp:182
+#, fuzzy
+msgid "Step Dimension..."
+msgstr "Adım kotu..."
+
+#: ui/menulayout.cpp:183
+#, fuzzy
 msgid "Help"
-msgstr ""
+msgstr "Yardım"
 
-#: ui/menulayout.cpp:183 ui/panels.cpp:144
+#: ui/menulayout.cpp:184 ui/panels.cpp:144
+#, fuzzy
 msgid "Keyboard Shortcuts"
-msgstr ""
+msgstr "Klavye kısayolları"
 
-#: ui/menulayout.cpp:184
+#: ui/menulayout.cpp:185
+#, fuzzy
 msgid "GitHub Commit"
-msgstr ""
+msgstr "GitHub işlemesi"
 
-#: ui/menulayout.cpp:184
+#: ui/menulayout.cpp:185
+#, fuzzy
 msgid "Website / Manual"
-msgstr ""
+msgstr "Web sitesi / kılavuz"
 
-#: ui/menulayout.cpp:185 ui/prefspanel.cpp:163
+#: ui/menulayout.cpp:186 ui/prefspanel.cpp:163
+#, fuzzy
 msgid "About"
-msgstr ""
+msgstr "Hakkında"
 
 #: ui/ngui.cpp:150 ui/statusmodel.cpp:46
+#, fuzzy
 msgid "Add"
-msgstr ""
+msgstr "Ekle"
 
 #: ui/ngui.cpp:172
+#, fuzzy
 msgid "Isometric"
-msgstr ""
+msgstr "İzometrik"
 
 #: ui/ngui.cpp:174
+#, fuzzy
 msgid "Frame Selected"
-msgstr ""
+msgstr "Seçileni çerçevele"
 
 #: ui/ngui.cpp:175
+#, fuzzy
 msgid "Grid"
-msgstr ""
+msgstr "Izgara"
 
 #: ui/ngui.cpp:182 ui/properties.cpp:686
+#, fuzzy
 msgid "Joint"
-msgstr ""
+msgstr "Mafsal"
 
 #: ui/ngui.cpp:183
+#, fuzzy
 msgid "Revolute"
-msgstr ""
+msgstr "Döner"
 
 #: ui/ngui.cpp:184
+#, fuzzy
 msgid "Slider"
-msgstr ""
+msgstr "Kaymalı"
 
 #: ui/ngui.cpp:185
+#, fuzzy
 msgid "Cylindrical"
-msgstr ""
+msgstr "Silindirik"
 
 #: ui/ngui.cpp:186
+#, fuzzy
 msgid "Planar"
-msgstr ""
+msgstr "Düzlemsel"
 
 #: ui/ngui.cpp:187
+#, fuzzy
 msgid "Ball"
-msgstr ""
+msgstr "Küresel"
 
 #: ui/ngui.cpp:187
+#, fuzzy
 msgid "Gear"
-msgstr ""
+msgstr "Dişli"
 
 #: ui/ngui.cpp:188
+#, fuzzy
 msgid "Fit"
-msgstr ""
+msgstr "Geçme"
 
 #: ui/outliner.cpp:49 ui/properties.cpp:271
+#, fuzzy
 msgid "Group"
-msgstr ""
+msgstr "Grup"
 
 #: ui/outliner.cpp:132
+#, fuzzy
 msgid "Rename"
-msgstr ""
+msgstr "Yeniden adlandır"
 
 #: ui/outliner.cpp:137
+#, fuzzy
 msgid "Isolate"
-msgstr ""
+msgstr "İzole et"
 
 #: ui/outlinermodel.cpp:60
+#, fuzzy
 msgid "Origin"
-msgstr ""
+msgstr "Başlangıç"
 
 #: ui/outlinermodel.cpp:83
+#, fuzzy
 msgid "Skeleton"
-msgstr ""
+msgstr "İskelet"
 
 #: ui/palettewidget.cpp:47
+#, fuzzy
 msgid "Type a command..."
-msgstr ""
+msgstr "Komut yazın..."
 
 #: ui/panels.cpp:135
+#, fuzzy
 msgid "Tools"
-msgstr ""
+msgstr "Araçlar"
 
 #: ui/panels.cpp:162
+#, fuzzy
 msgid "Preferences"
-msgstr ""
+msgstr "Tercihler"
 
 #: ui/panels.cpp:168
+#, fuzzy
 msgid "Styles"
-msgstr ""
+msgstr "Stiller"
 
 #: ui/panels.cpp:178
+#, fuzzy
 msgid "Paste Transformed"
-msgstr ""
+msgstr "Dönüştürülmüş yapıştır"
 
 #: ui/panels.cpp:184
+#, fuzzy
 msgid "Step Dimension"
-msgstr ""
+msgstr "Adım kotu"
 
 #: ui/panels.cpp:190
+#, fuzzy
 msgid "Tangent Arc"
-msgstr ""
+msgstr "Teğet yay"
 
 #: ui/prefspanel.cpp:30
+#, fuzzy
 msgid "model colours"
-msgstr ""
+msgstr "model renkleri"
 
 #: ui/prefspanel.cpp:41
+#, fuzzy
 msgid "chord tolerance (%)"
-msgstr ""
+msgstr "kiriş toleransı (%)"
 
 #: ui/prefspanel.cpp:42
-#, c-format
+#, fuzzy, c-format
 msgid "%g mm, %d triangles"
-msgstr ""
+msgstr "%g mm, %d üçgen"
 
 #: ui/prefspanel.cpp:44 ui/prefspanel.cpp:72
+#, fuzzy
 msgid "max piecewise linear segments"
-msgstr ""
+msgstr "en fazla doğrusal parça sayısı"
 
 #: ui/prefspanel.cpp:45
+#, fuzzy
 msgid "snap grid spacing"
-msgstr ""
+msgstr "yakalama ızgarası aralığı"
 
 #: ui/prefspanel.cpp:46
+#, fuzzy
 msgid "digits after the decimal point (distances)"
-msgstr ""
+msgstr "mesafelerde ondalık basamak sayısı"
 
 #: ui/prefspanel.cpp:48 ui/prefspanel.cpp:51
-#, c-format
+#, fuzzy, c-format
 msgid "e.g. %s"
-msgstr ""
+msgstr "örn. %s"
 
 #: ui/prefspanel.cpp:49
+#, fuzzy
 msgid "digits after the decimal point (angles)"
-msgstr ""
+msgstr "açılarda ondalık basamak sayısı"
 
 #: ui/prefspanel.cpp:52
+#, fuzzy
 msgid "use SI prefixes for distances"
-msgstr ""
+msgstr "mesafeler için SI önekleri kullan"
 
 #: ui/prefspanel.cpp:53
+#, fuzzy
 msgid "draw triangle back faces in red"
-msgstr ""
+msgstr "üçgenlerin arka yüzlerini kırmızı çiz"
 
 #: ui/prefspanel.cpp:54
+#, fuzzy
 msgid "check sketch for closed contour"
-msgstr ""
+msgstr "çizimde kapalı kontur denetle"
 
 #: ui/prefspanel.cpp:55
+#, fuzzy
 msgid "show areas of closed contours"
-msgstr ""
+msgstr "kapalı konturların alanlarını göster"
 
 #: ui/prefspanel.cpp:56
+#, fuzzy
 msgid "enable automatic line constraints"
-msgstr ""
+msgstr "otomatik çizgi kısıtlarını etkinleştir"
 
 #: ui/prefspanel.cpp:57
+#, fuzzy
 msgid "edit newly added dimensions"
-msgstr ""
+msgstr "yeni eklenen kotaları düzenle"
 
 #: ui/prefspanel.cpp:58
+#, fuzzy
 msgid "arc default is diameter"
-msgstr ""
+msgstr "yayın varsayılanı çaptır"
 
 #: ui/prefspanel.cpp:59
+#, fuzzy
 msgid "display the full path in the title bar"
-msgstr ""
+msgstr "başlık çubuğunda tam yolu göster"
 
 #: ui/prefspanel.cpp:63
+#, fuzzy
 msgid "use camera mouse navigation"
-msgstr ""
+msgstr "kamera tarzı fare gezinmesini kullan"
 
 #: ui/prefspanel.cpp:64
+#, fuzzy
 msgid "use turntable mouse navigation"
-msgstr ""
+msgstr "döner tabla tarzı fare gezinmesini kullan"
 
 #: ui/prefspanel.cpp:65
+#, fuzzy
 msgid "animation speed (ms; 0 to disable)"
-msgstr ""
+msgstr "canlandırma hızı (ms; kapatmak için 0)"
 
 #: ui/prefspanel.cpp:70
+#, fuzzy
 msgid "chord tolerance (mm)"
-msgstr ""
+msgstr "kiriş toleransı (mm)"
 
 #: ui/prefspanel.cpp:74
+#, fuzzy
 msgid "scale factor 1: (1:1 = mm, 1:25.4 = inch)"
-msgstr ""
+msgstr "ölçek 1: (1:1 = mm, 1:25.4 = inç)"
 
 #: ui/prefspanel.cpp:76
+#, fuzzy
 msgid "cutter radius offset (0 = none)"
-msgstr ""
+msgstr "kesici yarıçap kayması (0 = yok)"
 
 #: ui/prefspanel.cpp:77
+#, fuzzy
 msgid "export shaded 2d triangles"
-msgstr ""
+msgstr "gölgeli 2B üçgenleri dışa aktar"
 
 #: ui/prefspanel.cpp:79
+#, fuzzy
 msgid "curves as piecewise linear (the cutter radius is not zero)"
-msgstr ""
+msgstr "eğriler doğrusal parçalar halinde (kesici yarıçapı sıfır değilse)"
 
 #: ui/prefspanel.cpp:81
+#, fuzzy
 msgid "export curves as piecewise linear"
-msgstr ""
+msgstr "eğrileri doğrusal parçalar halinde dışa aktar"
 
 #: ui/prefspanel.cpp:83
+#, fuzzy
 msgid "fix white exported lines"
-msgstr ""
+msgstr "beyaz dışa aktarılan çizgileri düzelt"
 
 #: ui/prefspanel.cpp:84
+#, fuzzy
 msgid "export background color"
-msgstr ""
+msgstr "dışa aktarma arka plan rengi"
 
 #: ui/prefspanel.cpp:85
+#, fuzzy
 msgid "lay parts flat on export"
-msgstr ""
+msgstr "dışa aktarırken parçaları yatır"
 
 #: ui/prefspanel.cpp:87
+#, fuzzy
 msgid "canvas size"
-msgstr ""
+msgstr "tuval boyutu"
 
 #: ui/prefspanel.cpp:89
+#, fuzzy
 msgid "fixed"
-msgstr ""
+msgstr "sabit"
 
 #: ui/prefspanel.cpp:93
+#, fuzzy
 msgid "auto (margins)"
-msgstr ""
+msgstr "otomatik (kenar boşlukları)"
 
 #: ui/prefspanel.cpp:97 ui/stylespanel.cpp:121
+#, fuzzy
 msgid "left"
-msgstr ""
+msgstr "sol"
 
 #: ui/prefspanel.cpp:98 ui/stylespanel.cpp:125
+#, fuzzy
 msgid "right"
-msgstr ""
+msgstr "sağ"
 
 #: ui/prefspanel.cpp:99 ui/stylespanel.cpp:126
+#, fuzzy
 msgid "bottom"
-msgstr ""
+msgstr "alt"
 
 #: ui/prefspanel.cpp:100 ui/stylespanel.cpp:130
+#, fuzzy
 msgid "top"
-msgstr ""
+msgstr "üst"
 
 #: ui/prefspanel.cpp:104
+#, fuzzy
 msgid "offset x"
-msgstr ""
+msgstr "x kayması"
 
 #: ui/prefspanel.cpp:105
+#, fuzzy
 msgid "offset y"
-msgstr ""
+msgstr "y kayması"
 
 #: ui/prefspanel.cpp:108
+#, fuzzy
 msgid "g code"
-msgstr ""
+msgstr "G kodu"
 
 #: ui/prefspanel.cpp:109 ui/properties.cpp:117
+#, fuzzy
 msgid "depth"
-msgstr ""
+msgstr "derinlik"
 
 #: ui/prefspanel.cpp:110
+#, fuzzy
 msgid "passes"
-msgstr ""
+msgstr "geçiş"
 
 #: ui/prefspanel.cpp:111
+#, fuzzy
 msgid "feed"
-msgstr ""
+msgstr "ilerleme"
 
 #: ui/prefspanel.cpp:112
+#, fuzzy
 msgid "plunge feed"
-msgstr ""
+msgstr "dalma ilerlemesi"
 
 #: ui/prefspanel.cpp:117
+#, fuzzy
 msgid "dark theme"
-msgstr ""
+msgstr "koyu tema"
 
 #: ui/prefspanel.cpp:119
+#, fuzzy
 msgid "light theme"
-msgstr ""
+msgstr "açık tema"
 
 #: ui/prefspanel.cpp:122
+#, fuzzy
 msgid "classic keys"
-msgstr ""
+msgstr "klasik tuşlar"
 
 #: ui/prefspanel.cpp:122
+#, fuzzy
 msgid "modern keys"
-msgstr ""
+msgstr "modern tuşlar"
 
 #: ui/prefspanel.cpp:133
+#, fuzzy
 msgid "colour constraints by state"
-msgstr ""
+msgstr "kısıtları duruma göre renklendir"
 
 #: ui/prefspanel.cpp:135
+#, fuzzy
 msgid "material for mass properties"
-msgstr ""
+msgstr "kütle özellikleri için malzeme"
 
 #: ui/prefspanel.cpp:146
+#, fuzzy
 msgid "density (g/cm³)"
-msgstr ""
+msgstr "yoğunluk (g/cm³)"
 
 #: ui/prefspanel.cpp:154
+#, fuzzy
 msgid "Display"
-msgstr ""
+msgstr "Görüntü"
 
 #: ui/prefspanel.cpp:155
+#, fuzzy
 msgid "Navigation"
-msgstr ""
+msgstr "Gezinme"
 
 #: ui/prefspanel.cpp:157
+#, fuzzy
 msgid "Solver and files"
-msgstr ""
+msgstr "Çözücü ve dosyalar"
 
 #: ui/prefspanel.cpp:158
+#, fuzzy
 msgid "redundant constraint timeout (ms)"
-msgstr ""
+msgstr "fazla kısıt zaman aşımı (ms)"
 
 #: ui/prefspanel.cpp:160
+#, fuzzy
 msgid "autosave interval (minutes)"
-msgstr ""
+msgstr "otomatik kaydetme aralığı (dakika)"
 
 #: ui/prefspanel.cpp:166
-#, c-format
+#, fuzzy, c-format
 msgid "gl vendor   %s"
-msgstr ""
+msgstr "gl üretici   %s"
 
 #: ui/prefspanel.cpp:167
-#, c-format
+#, fuzzy, c-format
 msgid "gl renderer %s"
-msgstr ""
+msgstr "gl renderer %s"
 
 #: ui/prefspanel.cpp:168
-#, c-format
+#, fuzzy, c-format
 msgid "gl version  %s"
-msgstr ""
+msgstr "gl sürüm    %s"
 
 #: ui/problems.cpp:49
+#, fuzzy
 msgid "No problems."
-msgstr ""
+msgstr "Sorun yok."
 
 #: ui/problems.cpp:63
+#, fuzzy
 msgid "select all"
-msgstr ""
+msgstr "tümünü seç"
 
 #: ui/problems.cpp:80
+#, fuzzy
 msgid "Some were left out: the search timed out."
-msgstr ""
+msgstr "Bazıları atlandı: arama zaman aşımına uğradı."
 
 #: ui/problems.cpp:82 ui/properties.cpp:532
+#, fuzzy
 msgid "allow redundant constraints"
-msgstr ""
+msgstr "fazla kısıtlara izin ver"
 
 #: ui/problems.cpp:85
+#, fuzzy
 msgid "force to triangle mesh"
-msgstr ""
+msgstr "üçgen ağa zorla"
 
 #: ui/problemsmodel.cpp:19 ui/problemsmodel.cpp:24
+#, fuzzy
 msgid "unsolvable constraints"
-msgstr ""
+msgstr "çözülemeyen kısıtlar"
 
 #: ui/problemsmodel.cpp:20
+#, fuzzy
 msgid "These constraints are incompatible. Edit > Undo may fix it."
-msgstr ""
+msgstr "Bu kısıtlar çelişiyor. Düzenle > Geri al ile düzelebilir."
 
 #: ui/problemsmodel.cpp:25
+#, fuzzy
 msgid "These constraints are unsatisfied. Edit > Undo may fix it."
-msgstr ""
+msgstr "Bu kısıtlar sağlanmıyor. Düzenle > Geri al ile düzelebilir."
 
 #: ui/problemsmodel.cpp:29
+#, fuzzy
 msgid "redundant constraints"
-msgstr ""
+msgstr "fazla kısıtlar"
 
 #: ui/problemsmodel.cpp:30
+#, fuzzy
 msgid ""
 "Remove any one of these to fix it, or allow redundant constraints in this "
 "group."
 msgstr ""
+"Düzeltmek için bunlardan birini kaldırın ya da bu grupta fazla kısıtlara "
+"izin verin."
 
 #: ui/problemsmodel.cpp:36
+#, fuzzy
 msgid "too many unknowns in a single group"
-msgstr ""
+msgstr "tek bir grupta çok fazla bilinmeyen"
 
 #: ui/problemsmodel.cpp:37
+#, fuzzy
 msgid "Split the sketch into more groups."
-msgstr ""
+msgstr "Çizimi daha fazla gruba bölün."
 
 #: ui/problemsmodel.cpp:61
+#, fuzzy
 msgid "not closed contour, or not all same style"
-msgstr ""
+msgstr "kontur kapalı değil ya da hepsi aynı stilde değil"
 
 #: ui/problemsmodel.cpp:62
+#, fuzzy
 msgid "points not all coplanar"
-msgstr ""
+msgstr "noktalar aynı düzlemde değil"
 
 #: ui/problemsmodel.cpp:63
+#, fuzzy
 msgid "contour is self-intersecting"
-msgstr ""
+msgstr "kontur kendini kesiyor"
 
 #: ui/problemsmodel.cpp:64
+#, fuzzy
 msgid "zero-length edge"
-msgstr ""
+msgstr "sıfır uzunluklu kenar"
 
 #: ui/problemsmodel.cpp:67
+#, fuzzy
 msgid "The sketch shows where."
-msgstr ""
+msgstr "Çizim, nerede olduğunu gösterir."
 
 #: ui/problemsmodel.cpp:68
-#, c-format
+#, fuzzy, c-format
 msgid "In %s."
-msgstr ""
+msgstr "%s içinde."
 
 #: ui/problemsmodel.cpp:83
+#, fuzzy
 msgid "the Boolean operation failed"
-msgstr ""
+msgstr "Boole işlemi başarısız oldu"
 
 #: ui/problemsmodel.cpp:84
+#, fuzzy
 msgid "Forcing NURBS surfaces to a triangle mesh may fix it."
-msgstr ""
+msgstr "NURBS yüzeylerini üçgen ağa zorlamak sorunu çözebilir."
 
 #: ui/properties.cpp:83
-#, c-format
+#, fuzzy, c-format
 msgid "a dowel's pocket; the other is in %s"
-msgstr ""
+msgstr "bir pimin yuvası; diğeri %s içinde"
 
 #: ui/properties.cpp:85
-#, c-format
+#, fuzzy, c-format
 msgid "the pocket; the peg is on %s"
-msgstr ""
+msgstr "yuva; pim %s üzerinde"
 
 #: ui/properties.cpp:87
-#, c-format
+#, fuzzy, c-format
 msgid "the peg; the pocket is in %s"
-msgstr ""
+msgstr "pim; yuva %s içinde"
 
 #: ui/properties.cpp:90 ui/properties.cpp:178
+#, fuzzy
 msgid "fit"
-msgstr ""
+msgstr "geçme"
 
 #: ui/properties.cpp:100
+#, fuzzy
 msgid "fit table"
-msgstr ""
+msgstr "geçme tablosu"
 
 #: ui/properties.cpp:103 ui/selectionmodel.cpp:254 ui/selectionmodel.cpp:258
+#, fuzzy
 msgid "style"
-msgstr ""
+msgstr "stil"
 
 #: ui/properties.cpp:104
+#, fuzzy
 msgid "peg and pocket"
-msgstr ""
+msgstr "pim ve yuva"
 
 #: ui/properties.cpp:110
+#, fuzzy
 msgid "dowel (a pocket in each)"
-msgstr ""
+msgstr "pim (her birinde yuva)"
 
 #: ui/properties.cpp:117
+#, fuzzy
 msgid "dowel length"
-msgstr ""
+msgstr "pim uzunluğu"
 
 #: ui/properties.cpp:126
+#, fuzzy
 msgid "other way"
-msgstr ""
+msgstr "diğer yön"
 
 #: ui/properties.cpp:145
-#, c-format
+#, fuzzy, c-format
 msgid "%s; the other half is %s"
-msgstr ""
+msgstr "%s; diğer yarısı %s"
 
 #: ui/properties.cpp:146
+#, fuzzy
 msgid "the half behind"
-msgstr ""
+msgstr "arkadaki yarı"
 
 #: ui/properties.cpp:146
+#, fuzzy
 msgid "the half in front"
-msgstr ""
+msgstr "önündeki yarı"
 
 #: ui/properties.cpp:152
+#, fuzzy
 msgid "swap the halves"
-msgstr ""
+msgstr "yarıları değiştir"
 
 #: ui/properties.cpp:158
+#, fuzzy
 msgid "dowels across the cut"
-msgstr ""
+msgstr "kesim boyunca pimler"
 
 #: ui/properties.cpp:198
+#, fuzzy
 msgid "sketch in 3d"
-msgstr ""
+msgstr "3B'de çizim"
 
 #: ui/properties.cpp:199
+#, fuzzy
 msgid "sketch in new workplane"
-msgstr ""
+msgstr "yeni çalışma düzleminde çizim"
 
 #: ui/properties.cpp:200
+#, fuzzy
 msgid "extrude plane sketch"
-msgstr ""
+msgstr "düz çizimi uzat"
 
 #: ui/properties.cpp:201
+#, fuzzy
 msgid "lathe plane sketch"
-msgstr ""
+msgstr "düz çizimi torna et"
 
 #: ui/properties.cpp:202
+#, fuzzy
 msgid "revolve original sketch"
-msgstr ""
+msgstr "özgün çizimi döndür"
 
 #: ui/properties.cpp:203
+#, fuzzy
 msgid "create helical extrusion"
-msgstr ""
+msgstr "helisel uzatma oluştur"
 
 #: ui/properties.cpp:204
+#, fuzzy
 msgid "rotate original sketch"
-msgstr ""
+msgstr "özgün çizimi döndür"
 
 #: ui/properties.cpp:205
+#, fuzzy
 msgid "translate original sketch"
-msgstr ""
+msgstr "özgün çizimi öteleme"
 
 #: ui/properties.cpp:206
+#, fuzzy
 msgid "link geometry from file"
-msgstr ""
+msgstr "geometriyi dosyadan bağla"
 
 #: ui/properties.cpp:207
+#, fuzzy
 msgid "round edges"
-msgstr ""
+msgstr "kenarları yuvarla"
 
 #: ui/properties.cpp:208
+#, fuzzy
 msgid "bevel edges"
-msgstr ""
+msgstr "kenarları pahla"
 
 #: ui/properties.cpp:209
+#, fuzzy
 msgid "hollow the solid"
-msgstr ""
+msgstr "katıyı oyarak boşalt"
 
 #: ui/properties.cpp:210
+#, fuzzy
 msgid "taper faces"
-msgstr ""
+msgstr "yüzeylere eğim ver"
 
 #: ui/properties.cpp:211
+#, fuzzy
 msgid "drill holes"
-msgstr ""
+msgstr "delikleri aç"
 
 #: ui/properties.cpp:212
+#, fuzzy
 msgid "loft through profiles"
-msgstr ""
+msgstr "profillerden harmanla"
 
 #: ui/properties.cpp:213
+#, fuzzy
 msgid "sweep a profile along a path"
-msgstr ""
+msgstr "bir profili yol boyunca süpür"
 
 #: ui/properties.cpp:214
+#, fuzzy
 msgid "fit joint"
-msgstr ""
+msgstr "geçme bağlantısı"
 
 #: ui/properties.cpp:215
+#, fuzzy
 msgid "split the part"
-msgstr ""
-
-# Turkish translations for SolveSpace package.
-# Copyright (C) 2017 the SolveSpace authors
-# This file is distributed under the same license as the SolveSpace package.
-# SPDX-FileCopyrightText: 2022, 2025 Mustafa Halil GÖRENTAŞ <halil.mustafa@gmail.com>
-#
-#: ui/properties.cpp:217
-msgid ""
-msgstr ""
-"Project-Id-Version: SolveSpace 3.1\n"
-"Report-Msgid-Bugs-To: phkahler@gmail.com\n"
-"POT-Creation-Date: 2026-10-28 14:58-0700\n"
-"PO-Revision-Date: 2025-01-29 21:16+0300\n"
-"Last-Translator: mustafa halil <halil.mustafa@gmail.com>\n"
-"Language-Team: Turkish <kde-l10n-tr@kde.org>\n"
-"Language: tr_TR\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 23.08.5\n"
+msgstr "parçayı böl"
 
 #: ui/properties.cpp:223
+#, fuzzy
 msgid "(gone)"
-msgstr ""
+msgstr "(yok)"
 
 #: ui/properties.cpp:224
+#, fuzzy
 msgid "curve"
-msgstr ""
+msgstr "eğri"
 
 #: ui/properties.cpp:226
+#, fuzzy
 msgid "face"
-msgstr ""
+msgstr "yüzey"
 
 #: ui/properties.cpp:228 ui/selectionmodel.cpp:388 ui/selectionmodel.cpp:398
 #: ui/selectionmodel.cpp:420
+#, fuzzy
 msgid "point"
-msgstr ""
+msgstr "nokta"
 
 #: ui/properties.cpp:230
+#, fuzzy
 msgid "line"
-msgstr ""
+msgstr "çizgi"
 
 #: ui/properties.cpp:232
+#, fuzzy
 msgid "arc"
-msgstr ""
+msgstr "yay"
 
 #: ui/properties.cpp:234
+#, fuzzy
 msgid "circle"
-msgstr ""
+msgstr "daire"
 
 #: ui/properties.cpp:237
-#, c-format
+#, fuzzy, c-format
 msgid "%s in %s"
-msgstr ""
+msgstr "%s, %s içinde"
 
 #: ui/properties.cpp:280
+#, fuzzy
 msgid "part"
-msgstr ""
+msgstr "parça"
 
 #: ui/properties.cpp:293
+#, fuzzy
 msgid "own part"
-msgstr ""
+msgstr "kendi parçası"
 
 #: ui/properties.cpp:300
+#, fuzzy
 msgid "material"
-msgstr ""
+msgstr "malzeme"
 
 #: ui/properties.cpp:301
+#, fuzzy
 msgid "default"
-msgstr ""
+msgstr "varsayılan"
 
 #: ui/properties.cpp:318
+#, fuzzy
 msgid "one-sided"
-msgstr ""
+msgstr "tek taraflı"
 
 #: ui/properties.cpp:320
+#, fuzzy
 msgid "two-sided"
-msgstr ""
+msgstr "çift taraflı"
 
 #: ui/properties.cpp:323
+#, fuzzy
 msgid "skewed"
-msgstr ""
+msgstr "eğik"
 
 #: ui/properties.cpp:328
+#, fuzzy
 msgid "start with original"
-msgstr ""
+msgstr "özgün ile başla"
 
 #: ui/properties.cpp:331
+#, fuzzy
 msgid "start with copy #1"
-msgstr ""
+msgstr "1 numaralı kopya ile başla"
 
 #: ui/properties.cpp:334 ui/toolpanels.cpp:97
+#, fuzzy
 msgid "repeat (times)"
-msgstr ""
+msgstr "tekrarla (kez)"
 
 #: ui/properties.cpp:341
+#, fuzzy
 msgid "scaled by"
-msgstr ""
+msgstr "ölçek oranı"
 
 #: ui/properties.cpp:347
+#, fuzzy
 msgid "pitch (length per turn)"
-msgstr ""
+msgstr "adım (tur başına uzunluk)"
 
 #: ui/properties.cpp:355
+#, fuzzy
 msgid "fixed pitch"
-msgstr ""
+msgstr "sabit adım"
 
 #: ui/properties.cpp:370
+#, fuzzy
 msgid "plain"
-msgstr ""
+msgstr "düz"
 
 #: ui/properties.cpp:372
+#, fuzzy
 msgid "counterbore"
-msgstr ""
+msgstr "havşa"
 
 #: ui/properties.cpp:374
+#, fuzzy
 msgid "countersink"
-msgstr ""
+msgstr "gömme"
 
 #: ui/properties.cpp:379
+#, fuzzy
 msgid "thread (M4, M4x0.5 or none)"
-msgstr ""
+msgstr "diş (M4, M4x0.5 ya da yok)"
 
 #: ui/properties.cpp:384
+#, fuzzy
 msgid "depth (blank: through all)"
-msgstr ""
+msgstr "derinlik (boş: tamamen)"
 
 #: ui/properties.cpp:387
+#, fuzzy
 msgid "counterbore diameter"
-msgstr ""
+msgstr "havşa çapı"
 
 #: ui/properties.cpp:388
+#, fuzzy
 msgid "countersink diameter"
-msgstr ""
+msgstr "gömme çapı"
 
 #: ui/properties.cpp:392
+#, fuzzy
 msgid "counterbore depth"
-msgstr ""
+msgstr "havşa derinliği"
 
 #: ui/properties.cpp:395
+#, fuzzy
 msgid "countersink angle (degrees)"
-msgstr ""
+msgstr "gömme açısı (derece)"
 
 #: ui/properties.cpp:398
+#, fuzzy
 msgid "print clearance (added to every diameter)"
-msgstr ""
+msgstr "baskı boşluğu (her çapa eklenir)"
 
 #: ui/properties.cpp:401
+#, fuzzy
 msgid "drill the other way"
-msgstr ""
+msgstr "deliği diğer yönde aç"
 
 #: ui/properties.cpp:408
+#, fuzzy
 msgid "hole centres"
-msgstr ""
+msgstr "delik merkezleri"
 
 #: ui/properties.cpp:421 ui/selectionmodel.cpp:187 ui/selectionmodel.cpp:196
 #: ui/selectionmodel.cpp:391 ui/toolpanels.cpp:147
+#, fuzzy
 msgid "radius"
-msgstr ""
+msgstr "yarıçap"
 
 #: ui/properties.cpp:422 ui/properties.cpp:707 ui/properties.cpp:708
 #: ui/selectionmodel.cpp:316 ui/selectionmodel.cpp:379
 #: ui/selectionmodel.cpp:392 ui/selectionmodel.cpp:401
 #: ui/selectionmodel.cpp:454
+#, fuzzy
 msgid "distance"
-msgstr ""
+msgstr "mesafe"
 
 #: ui/properties.cpp:423
+#, fuzzy
 msgid "wall thickness"
-msgstr ""
+msgstr "duvar kalınlığı"
 
 #: ui/properties.cpp:424
+#, fuzzy
 msgid "angle (degrees)"
-msgstr ""
+msgstr "açı (derece)"
 
 #: ui/properties.cpp:437
+#, fuzzy
 msgid "hold this size (a dimension)"
-msgstr ""
+msgstr "bu boyutu sabitle (kota)"
 
 #: ui/properties.cpp:445
+#, fuzzy
 msgid "inside"
-msgstr ""
+msgstr "iç"
 
 #: ui/properties.cpp:447
+#, fuzzy
 msgid "outside"
-msgstr ""
+msgstr "dış"
 
 #: ui/properties.cpp:449
+#, fuzzy
 msgid "both sides"
-msgstr ""
+msgstr "iki taraf"
 
 #: ui/properties.cpp:452
+#, fuzzy
 msgid "edges"
-msgstr ""
+msgstr "kenarlar"
 
 #: ui/properties.cpp:454 ui/properties.cpp:464
+#, fuzzy
 msgid "faces"
-msgstr ""
+msgstr "yüzeyler"
 
 #: ui/properties.cpp:456
+#, fuzzy
 msgid "only the outline of these faces"
-msgstr ""
+msgstr "yalnızca bu yüzeylerin dış hattı"
 
 #: ui/properties.cpp:461
+#, fuzzy
 msgid "faces left open"
-msgstr ""
+msgstr "açık bırakılan yüzeyler"
 
 #: ui/properties.cpp:461
+#, fuzzy
 msgid "no face open (a sealed hollow)"
-msgstr ""
+msgstr "açık yüzey yok (kapalı boşluk)"
 
 #: ui/properties.cpp:470
+#, fuzzy
 msgid "profiles, in order"
-msgstr ""
+msgstr "profiller, sırayla"
 
 #: ui/properties.cpp:472
+#, fuzzy
 msgid "profile, then the path"
-msgstr ""
+msgstr "profil, sonra yol"
 
 #: ui/properties.cpp:473
+#, fuzzy
 msgid "round the path's corners (radius; 0: sharp)"
-msgstr ""
+msgstr "yolun köşelerini yuvarla (yarıçap; 0: keskin)"
 
 #: ui/properties.cpp:495
+#, fuzzy
 msgid "solid model as"
-msgstr ""
+msgstr "katı model olarak"
 
 #: ui/properties.cpp:500
+#, fuzzy
 msgid "union"
-msgstr ""
+msgstr "birleşim"
 
 #: ui/properties.cpp:502
+#, fuzzy
 msgid "assemble"
-msgstr ""
+msgstr "birleştir"
 
 #: ui/properties.cpp:503
+#, fuzzy
 msgid "difference"
-msgstr ""
+msgstr "fark"
 
 #: ui/properties.cpp:505
+#, fuzzy
 msgid "intersection"
-msgstr ""
+msgstr "kesişim"
 
 #: ui/properties.cpp:509
+#, fuzzy
 msgid "color"
-msgstr ""
+msgstr "renk"
 
 #: ui/properties.cpp:514
+#, fuzzy
 msgid "opacity"
-msgstr ""
+msgstr "saydamlık"
 
 #: ui/properties.cpp:518
+#, fuzzy
 msgid "suppress this group's solid model"
-msgstr ""
+msgstr "bu grubun katı modelini bastır"
 
 #: ui/properties.cpp:523
+#, fuzzy
 msgid "show entities from this group"
-msgstr ""
+msgstr "bu gruptan varlıkları göster"
 
 #: ui/properties.cpp:525
+#, fuzzy
 msgid "force NURBS surfaces to triangle mesh"
-msgstr ""
+msgstr "NURBS yüzeylerini üçgen ağa zorla"
 
 #: ui/properties.cpp:528
+#, fuzzy
 msgid "(model already forced to triangle mesh)"
-msgstr ""
+msgstr "(model zaten üçgen ağa zorlanmış)"
 
 #: ui/properties.cpp:530
+#, fuzzy
 msgid "relax constraints and dimensions"
-msgstr ""
+msgstr "kısıtları ve kotları gevşet"
 
 #: ui/properties.cpp:534
+#, fuzzy
 msgid "suppress dof calculation"
-msgstr ""
+msgstr "DOF hesabını bastır"
 
 #: ui/properties.cpp:536
+#, fuzzy
 msgid "treat all dimensions as reference"
-msgstr ""
+msgstr "tüm kotları referans olarak işle"
 
 #: ui/properties.cpp:540
+#, fuzzy
 msgid ""
 "The Boolean operation failed. It may be possible to fix the problem by "
 "choosing 'force NURBS surfaces to triangle mesh'."
 msgstr ""
+"Boole işlemi başarısız oldu. 'NURBS yüzeylerini üçgen ağa zorla' seçeneğini "
+"işaretleyerek sorunu çözmeyi deneyebilirsiniz."
 
 #: ui/properties.cpp:549
-#, c-format
+#, fuzzy, c-format
 msgid "Requests (%d)"
-msgstr ""
+msgstr "İstekler (%d)"
 
 #: ui/properties.cpp:562
-#, c-format
+#, fuzzy, c-format
 msgid "Constraints (%d, %d DOF)"
-msgstr ""
+msgstr "Kısıtlar (%d, %d DOF)"
 
 #: ui/properties.cpp:615
+#, fuzzy
 msgid "Selection"
-msgstr ""
+msgstr "Seçim"
 
 #: ui/properties.cpp:627
+#, fuzzy
 msgid "reference"
-msgstr ""
+msgstr "referans"
 
 #: ui/properties.cpp:632
+#, fuzzy
 msgid "use radius"
-msgstr ""
+msgstr "yarıçapı kullan"
 
 #: ui/properties.cpp:640 ui/selectionmodel.cpp:221 ui/stylespanel.cpp:108
+#, fuzzy
 msgid "text"
-msgstr ""
+msgstr "metin"
 
 #: ui/properties.cpp:644
+#, fuzzy
 msgid "apply kerning"
-msgstr ""
+msgstr "kerning uygula"
 
 #: ui/properties.cpp:674
+#, fuzzy
 msgid "remove assigned style"
-msgstr ""
+msgstr "atanmış stili kaldır"
 
 #: ui/properties.cpp:677
+#, fuzzy
 msgid "unselect all"
-msgstr ""
+msgstr "tüm seçimleri kaldır"
 
 #: ui/properties.cpp:688
+#, fuzzy
 msgid "cylindrical"
-msgstr ""
+msgstr "silindirik"
 
 #: ui/properties.cpp:688
+#, fuzzy
 msgid "revolute"
-msgstr ""
+msgstr "döner"
 
 #: ui/properties.cpp:688
+#, fuzzy
 msgid "slider"
-msgstr ""
+msgstr "kaymalı"
 
 #: ui/properties.cpp:689
+#, fuzzy
 msgid "ball"
-msgstr ""
+msgstr "küresel"
 
 #: ui/properties.cpp:689
+#, fuzzy
 msgid "gear coupling"
-msgstr ""
+msgstr "dişli bağlantısı"
 
 #: ui/properties.cpp:689
+#, fuzzy
 msgid "planar"
-msgstr ""
+msgstr "düzlemsel"
 
 #: ui/properties.cpp:692
-#, c-format
+#, fuzzy, c-format
 msgid "%s: %s drives %s"
-msgstr ""
+msgstr "%s: %s, %s'i yönlendiriyor"
 
 #: ui/properties.cpp:696
+#, fuzzy
 msgid "ratio"
-msgstr ""
+msgstr "oran"
 
 #: ui/properties.cpp:701
-#, c-format
+#, fuzzy, c-format
 msgid "%s: %s holds %s"
-msgstr ""
+msgstr "%s: %s, %s'i tutuyor"
 
 #: ui/properties.cpp:709
+#, fuzzy
 msgid "along u"
-msgstr ""
+msgstr "u boyunca"
 
 #: ui/properties.cpp:709
+#, fuzzy
 msgid "along v"
-msgstr ""
+msgstr "v boyunca"
 
 #: ui/properties.cpp:710
+#, fuzzy
 msgid "about x"
-msgstr ""
+msgstr "x etrafında"
 
 #: ui/properties.cpp:710
+#, fuzzy
 msgid "about y"
-msgstr ""
+msgstr "y etrafında"
 
 #: ui/properties.cpp:710
+#, fuzzy
 msgid "about z"
-msgstr ""
+msgstr "z etrafında"
 
 #: ui/properties.cpp:744
+#, fuzzy
 msgid "limits"
-msgstr ""
+msgstr "sınırlar"
 
 #: ui/properties.cpp:750 ui/selectionmodel.cpp:157 ui/selectionmodel.cpp:377
+#, fuzzy
 msgid "from"
-msgstr ""
+msgstr "başlangıç"
 
 #: ui/properties.cpp:756 ui/selectionmodel.cpp:158 ui/selectionmodel.cpp:378
+#, fuzzy
 msgid "to"
-msgstr ""
+msgstr "bitiş"
 
 #: ui/properties.cpp:763
+#, fuzzy
 msgid "sweep clearance"
-msgstr ""
+msgstr "boşluk taraması"
 
 #: ui/properties.cpp:770
+#, fuzzy
 msgid "design pose"
-msgstr ""
+msgstr "tasarım duruşu"
 
 #: ui/properties.cpp:774 ui/properties.cpp:797
+#, fuzzy
 msgid "delete"
-msgstr ""
+msgstr "sil"
 
 #: ui/properties.cpp:781
+#, fuzzy
 msgid "Fit table"
-msgstr ""
+msgstr "Geçme tablosu"
 
 #: ui/properties.cpp:782
+#, fuzzy
 msgid ""
 "Clearances for fit joints, tuned to your printer: each side's gap (negative "
 "presses)."
 msgstr ""
+"Yazıcınıza göre ayarlanmış geçme bağlantısı boşlukları: her yan için boşluk "
+"(negatif değerler geçme/sıkı oturma anlamına gelir)."
 
 #: ui/properties.cpp:802
+#, fuzzy
 msgid "add a fit"
-msgstr ""
+msgstr "geçme ekle"
 
 #: ui/selectionmodel.cpp:16
+#, fuzzy
 msgid "Coincident"
-msgstr ""
+msgstr "Çakışan"
 
 #: ui/selectionmodel.cpp:18
+#, fuzzy
 msgid "Point to line distance"
-msgstr ""
+msgstr "noktadan doğruya uzaklık"
 
 #: ui/selectionmodel.cpp:19
+#, fuzzy
 msgid "Point to plane distance"
-msgstr ""
+msgstr "noktadan düzleme uzaklık"
 
 #: ui/selectionmodel.cpp:20
+#, fuzzy
 msgid "Point to face distance"
-msgstr ""
+msgstr "noktadan yüzeye uzaklık"
 
 #: ui/selectionmodel.cpp:21
+#, fuzzy
 msgid "Projected distance"
-msgstr ""
+msgstr "izdüşüm mesafesi"
 
 #: ui/selectionmodel.cpp:22
+#, fuzzy
 msgid "Point in plane"
-msgstr ""
+msgstr "düzlemde nokta"
 
 #: ui/selectionmodel.cpp:23
+#, fuzzy
 msgid "Point on line"
-msgstr ""
+msgstr "doğru üzerinde nokta"
 
 #: ui/selectionmodel.cpp:24
+#, fuzzy
 msgid "Point on face"
-msgstr ""
+msgstr "yüzey üzerinde nokta"
 
 #: ui/selectionmodel.cpp:25
+#, fuzzy
 msgid "Equal length"
-msgstr ""
+msgstr "eşit uzunluk"
 
 #: ui/selectionmodel.cpp:26
+#, fuzzy
 msgid "Equal length and distance"
-msgstr ""
+msgstr "eşit uzunluk ve mesafe"
 
 #: ui/selectionmodel.cpp:27
+#, fuzzy
 msgid "Equal distances"
-msgstr ""
+msgstr "eşit mesafeler"
 
 #: ui/selectionmodel.cpp:28
+#, fuzzy
 msgid "Length ratio"
-msgstr ""
+msgstr "uzunluk oranı"
 
 #: ui/selectionmodel.cpp:29
+#, fuzzy
 msgid "Arc length ratio"
-msgstr ""
+msgstr "yay uzunluğu oranı"
 
 #: ui/selectionmodel.cpp:30
+#, fuzzy
 msgid "Arc to line length ratio"
-msgstr ""
+msgstr "yay / doğru uzunluk oranı"
 
 #: ui/selectionmodel.cpp:31
+#, fuzzy
 msgid "Length difference"
-msgstr ""
+msgstr "uzunluk farkı"
 
 #: ui/selectionmodel.cpp:32
+#, fuzzy
 msgid "Arc length difference"
-msgstr ""
+msgstr "yay uzunluğu farkı"
 
 #: ui/selectionmodel.cpp:33
+#, fuzzy
 msgid "Arc to line length difference"
-msgstr ""
+msgstr "yay / doğru uzunluk farkı"
 
 #: ui/selectionmodel.cpp:35
+#, fuzzy
 msgid "Symmetric horizontally"
-msgstr ""
+msgstr "yatayda simetrik"
 
 #: ui/selectionmodel.cpp:36
+#, fuzzy
 msgid "Symmetric vertically"
-msgstr ""
+msgstr "dikeyde simetrik"
 
 #: ui/selectionmodel.cpp:37
+#, fuzzy
 msgid "Symmetric about line"
-msgstr ""
+msgstr "doğruya göre simetrik"
 
 #: ui/selectionmodel.cpp:41
+#, fuzzy
 msgid "Diameter"
-msgstr ""
+msgstr "Çap"
 
 #: ui/selectionmodel.cpp:42
+#, fuzzy
 msgid "Point on circle"
-msgstr ""
+msgstr "Daire üzerinde nokta"
 
 #: ui/selectionmodel.cpp:43
+#, fuzzy
 msgid "Same orientation"
-msgstr ""
+msgstr "Aynı yönelim"
 
 #: ui/selectionmodel.cpp:44
+#, fuzzy
 msgid "Angle"
-msgstr ""
+msgstr "Açı"
 
 #: ui/selectionmodel.cpp:45
+#, fuzzy
 msgid "Parallel"
-msgstr ""
+msgstr "Paralel"
 
 #: ui/selectionmodel.cpp:46 ui/selectionmodel.cpp:47 ui/selectionmodel.cpp:48
+#, fuzzy
 msgid "Tangent"
-msgstr ""
+msgstr "Teğet"
 
 #: ui/selectionmodel.cpp:50
+#, fuzzy
 msgid "Equal radius"
-msgstr ""
+msgstr "Eşit yarıçap"
 
 #: ui/selectionmodel.cpp:51
+#, fuzzy
 msgid "Equal angle"
-msgstr ""
+msgstr "Eşit açı"
 
 #: ui/selectionmodel.cpp:52
+#, fuzzy
 msgid "Equal line and arc length"
-msgstr ""
+msgstr "Eşit doğru ve yay uzunluğu"
 
 #: ui/selectionmodel.cpp:53
+#, fuzzy
 msgid "Lock"
-msgstr ""
+msgstr "Kilit"
 
 #: ui/selectionmodel.cpp:66 ui/selectionmodel.cpp:339
+#, fuzzy
 msgid "Constraint"
-msgstr ""
+msgstr "Kısıt"
 
 #: ui/selectionmodel.cpp:113 ui/selectionmodel.cpp:114
 #: ui/selectionmodel.cpp:248 ui/selectionmodel.cpp:345
 #: ui/selectionmodel.cpp:427
+#, fuzzy
 msgid "workplane"
-msgstr ""
+msgstr "çalışma düzlemi"
 
 #: ui/selectionmodel.cpp:131
+#, fuzzy
 msgid "at"
-msgstr ""
+msgstr "konum"
 
 #: ui/selectionmodel.cpp:140
+#, fuzzy
 msgid "Normal / coordinate system"
-msgstr ""
+msgstr "Normal / koordinat sistemi"
 
 #: ui/selectionmodel.cpp:141 ui/selectionmodel.cpp:149
 #: ui/selectionmodel.cpp:208
+#, fuzzy
 msgid "normal"
-msgstr ""
+msgstr "normal"
 
 #: ui/selectionmodel.cpp:142
+#, fuzzy
 msgid "u"
-msgstr ""
+msgstr "u"
 
 #: ui/selectionmodel.cpp:143
+#, fuzzy
 msgid "v"
-msgstr ""
+msgstr "v"
 
 #: ui/selectionmodel.cpp:148
+#, fuzzy
 msgid "origin"
-msgstr ""
+msgstr "başlangıç noktası"
 
 #: ui/selectionmodel.cpp:156
+#, fuzzy
 msgid "Line segment"
-msgstr ""
+msgstr "Doğru parçası"
 
 #: ui/selectionmodel.cpp:166
+#, fuzzy
 msgid "Periodic C2 cubic spline"
-msgstr ""
+msgstr "Periyodik C2 kübik eğri"
 
 #: ui/selectionmodel.cpp:169
+#, fuzzy
 msgid "Interpolating C2 cubic spline"
-msgstr ""
+msgstr "Enterpolasyonlu C2 kübik eğri"
 
 #: ui/selectionmodel.cpp:172
+#, fuzzy
 msgid "Cubic Bézier curve"
-msgstr ""
+msgstr "Kübik Bézier eğrisi"
 
 #: ui/selectionmodel.cpp:182
+#, fuzzy
 msgid "Arc of a circle"
-msgstr ""
+msgstr "Daire yayı"
 
 #: ui/selectionmodel.cpp:183 ui/selectionmodel.cpp:194
 #: ui/selectionmodel.cpp:389 ui/stylespanel.cpp:123
+#, fuzzy
 msgid "center"
-msgstr ""
+msgstr "merkez"
 
 #: ui/selectionmodel.cpp:184
+#, fuzzy
 msgid "endpoints"
-msgstr ""
+msgstr "uç noktalar"
 
 #: ui/selectionmodel.cpp:188
+#, fuzzy
 msgid "arc length"
-msgstr ""
+msgstr "yay uzunluğu"
 
 #: ui/selectionmodel.cpp:197
+#, fuzzy
 msgid "circumference"
-msgstr ""
+msgstr "çevre"
 
 #: ui/selectionmodel.cpp:207
+#, fuzzy
 msgid "Plane face"
-msgstr ""
+msgstr "Düzlemsel yüzey"
 
 #: ui/selectionmodel.cpp:209
+#, fuzzy
 msgid "through"
-msgstr ""
+msgstr "geçen"
 
 #: ui/selectionmodel.cpp:213
+#, fuzzy
 msgid "TrueType font text"
-msgstr ""
+msgstr "TrueType yazı tipi metni"
 
 #: ui/selectionmodel.cpp:214
+#, fuzzy
 msgid "font"
-msgstr ""
+msgstr "yazı tipi"
 
 #: ui/selectionmodel.cpp:227
+#, fuzzy
 msgid "Image"
-msgstr ""
+msgstr "Görüntü"
 
 #: ui/selectionmodel.cpp:228
+#, fuzzy
 msgid "file"
-msgstr ""
+msgstr "dosya"
 
 #: ui/selectionmodel.cpp:232
+#, fuzzy
 msgid "Entity"
-msgstr ""
+msgstr "Varlık"
 
 #: ui/selectionmodel.cpp:239 ui/selectionmodel.cpp:241
+#, fuzzy
 msgid "sketch entity"
-msgstr ""
+msgstr "çizim varlığı"
 
 #: ui/selectionmodel.cpp:244
+#, fuzzy
 msgid "group"
-msgstr ""
+msgstr "grup"
 
 #: ui/selectionmodel.cpp:248
+#, fuzzy
 msgid "none (free in 3d)"
-msgstr ""
+msgstr "yok (3B'de serbest)"
 
 #: ui/selectionmodel.cpp:258
+#, fuzzy
 msgid "none"
-msgstr ""
+msgstr "yok"
 
 #: ui/selectionmodel.cpp:261
+#, fuzzy
 msgid "construction"
-msgstr ""
+msgstr "yapı"
 
 #: ui/selectionmodel.cpp:261
+#, fuzzy
 msgid "yes"
-msgstr ""
+msgstr "evet"
 
 #: ui/selectionmodel.cpp:281
+#, fuzzy
 msgid "constrained by"
-msgstr ""
+msgstr "kısıtlanan"
 
 #: ui/selectionmodel.cpp:281
+#, fuzzy
 msgid "measured by"
-msgstr ""
+msgstr "ölçülen"
 
 #: ui/selectionmodel.cpp:299
-#, c-format
+#, fuzzy, c-format
 msgid "plane%c normal"
-msgstr ""
+msgstr "düzlem %c normali"
 
 #: ui/selectionmodel.cpp:300
-#, c-format
+#, fuzzy, c-format
 msgid "plane%c thru"
-msgstr ""
+msgstr "düzlem %c geçen"
 
 #: ui/selectionmodel.cpp:315
+#, fuzzy
 msgid "attached to"
-msgstr ""
+msgstr "bağlı olduğu"
 
 #: ui/selectionmodel.cpp:317 ui/selectionmodel.cpp:380
+#, fuzzy
 msgid "offset (x, y, z)"
-msgstr ""
+msgstr "ötelenme (x, y, z)"
 
 #: ui/selectionmodel.cpp:320 ui/statusmodel.cpp:48
+#, fuzzy
 msgid "Dimension"
-msgstr ""
+msgstr "Kota"
 
 #: ui/selectionmodel.cpp:320
+#, fuzzy
 msgid "Reference"
-msgstr ""
+msgstr "Referans"
 
 #: ui/selectionmodel.cpp:341
+#, fuzzy
 msgid "type"
-msgstr ""
+msgstr "tür"
 
 #: ui/selectionmodel.cpp:345
+#, fuzzy
 msgid "none (not projected)"
-msgstr ""
+msgstr "yok (yansıtılmıyor)"
 
 #: ui/selectionmodel.cpp:352
+#, fuzzy
 msgid "constrains"
-msgstr ""
+msgstr "kısıtlar"
 
 #: ui/selectionmodel.cpp:352
+#, fuzzy
 msgid "measures"
-msgstr ""
+msgstr "ölçer"
 
 #: ui/selectionmodel.cpp:376
+#, fuzzy
 msgid "Two points"
-msgstr ""
+msgstr "İki nokta"
 
 #: ui/selectionmodel.cpp:386
+#, fuzzy
 msgid "Point and a circle"
-msgstr ""
+msgstr "Nokta ve daire"
 
 #: ui/selectionmodel.cpp:387
+#, fuzzy
 msgid "Point and an arc"
-msgstr ""
+msgstr "Nokta ve yay"
 
 #: ui/selectionmodel.cpp:397
+#, fuzzy
 msgid "A point and a plane face"
-msgstr ""
+msgstr "Bir nokta ve düzlemsel yüzey"
 
 #: ui/selectionmodel.cpp:399
+#, fuzzy
 msgid "plane normal"
-msgstr ""
+msgstr "düzlem normali"
 
 #: ui/selectionmodel.cpp:400
+#, fuzzy
 msgid "plane through"
-msgstr ""
+msgstr "düzlemden geçen"
 
 #: ui/selectionmodel.cpp:406
+#, fuzzy
 msgid "Two points and a vector"
-msgstr ""
+msgstr "İki nokta ve bir vektör"
 
 #: ui/selectionmodel.cpp:407
+#, fuzzy
 msgid "point A"
-msgstr ""
+msgstr "A noktası"
 
 #: ui/selectionmodel.cpp:408
+#, fuzzy
 msgid "point B"
-msgstr ""
+msgstr "B noktası"
 
 #: ui/selectionmodel.cpp:409
+#, fuzzy
 msgid "vector"
-msgstr ""
+msgstr "vektör"
 
 #: ui/selectionmodel.cpp:410
+#, fuzzy
 msgid "projected distance"
-msgstr ""
+msgstr "izdüşüm mesafesi"
 
 #: ui/selectionmodel.cpp:417
+#, fuzzy
 msgid "Line segment and point"
-msgstr ""
+msgstr "Doğru parçası ve nokta"
 
 #: ui/selectionmodel.cpp:418
+#, fuzzy
 msgid "line through"
-msgstr ""
+msgstr "doğru geçen"
 
 #: ui/selectionmodel.cpp:421
+#, fuzzy
 msgid "distance to line"
-msgstr ""
+msgstr "doğruya uzaklık"
 
 #: ui/selectionmodel.cpp:434
+#, fuzzy
 msgid "Two vectors"
-msgstr ""
+msgstr "İki vektör"
 
 #: ui/selectionmodel.cpp:435
+#, fuzzy
 msgid "vector A"
-msgstr ""
+msgstr "A vektörü"
 
 #: ui/selectionmodel.cpp:436
+#, fuzzy
 msgid "vector B"
-msgstr ""
+msgstr "B vektörü"
 
 #: ui/selectionmodel.cpp:437 ui/selectionmodel.cpp:447
-#, c-format
+#, fuzzy, c-format
 msgid "%.2f degrees"
-msgstr ""
+msgstr "%.2f derece"
 
 #: ui/selectionmodel.cpp:440 ui/selectionmodel.cpp:450
-#, c-format
+#, fuzzy, c-format
 msgid "%.2f (mod 180)"
-msgstr ""
+msgstr "%.2f (mod 180)"
 
 #: ui/selectionmodel.cpp:440 ui/selectionmodel.cpp:450
+#, fuzzy
 msgid "or"
-msgstr ""
+msgstr "veya"
 
 #: ui/selectionmodel.cpp:442
+#, fuzzy
 msgid "Two plane faces"
-msgstr ""
+msgstr "İki düzlemsel yüzey"
 
 #: ui/selectionmodel.cpp:457
+#, fuzzy
 msgid "Three plane faces"
-msgstr ""
+msgstr "Üç düzlemsel yüzey"
 
 #: ui/selectionmodel.cpp:462
-#, c-format
+#, fuzzy, c-format
 msgid "%d item"
-msgstr ""
+msgstr "%d öğe"
 
 #: ui/selectionmodel.cpp:462
-#, c-format
+#, fuzzy, c-format
 msgid "%d items"
-msgstr ""
+msgstr "%d öğe"
 
 #: ui/shortcuts.cpp:21
+#, fuzzy
 msgid "filter"
-msgstr ""
+msgstr "süzgeç"
 
 #: ui/statusmodel.cpp:35 ui/statusmodel.cpp:43
+#, fuzzy
 msgid "Hold"
-msgstr ""
+msgstr "Basılı tut"
 
 #: ui/statusmodel.cpp:41
+#, fuzzy
 msgid "2 fingers"
-msgstr ""
+msgstr "2 parmak"
 
 #: ui/statusmodel.cpp:41
+#, fuzzy
 msgid "Pan, zoom"
-msgstr ""
+msgstr "Kaydır, yakınlaştır"
 
 #: ui/statusmodel.cpp:42
+#, fuzzy
 msgid "Orbit"
-msgstr ""
+msgstr "Döndür"
 
 #: ui/statusmodel.cpp:43
+#, fuzzy
 msgid "Menu"
-msgstr ""
+msgstr "Menü"
 
 #: ui/statusmodel.cpp:45
+#, fuzzy
 msgid "Commands"
-msgstr ""
+msgstr "Komutlar"
 
 #: ui/statusmodel.cpp:51
+#, fuzzy
 msgid "Views"
-msgstr ""
+msgstr "Görünümler"
 
 #: ui/statusmodel.cpp:57
+#, fuzzy
 msgid "Solved"
-msgstr ""
+msgstr "Çözüldü"
 
 #: ui/statusmodel.cpp:58
+#, fuzzy
 msgid "Redundant"
-msgstr ""
+msgstr "Fazla"
 
 #: ui/statusmodel.cpp:60
+#, fuzzy
 msgid "Didn't converge"
-msgstr ""
+msgstr "Yakınsamadı"
 
 #: ui/statusmodel.cpp:61
+#, fuzzy
 msgid "Too many unknowns"
-msgstr ""
+msgstr "Çok fazla bilinmeyen"
 
 #: ui/stylespanel.cpp:56
+#, fuzzy
 msgid "Style"
-msgstr ""
+msgstr "Stil"
 
 #: ui/stylespanel.cpp:58
+#, fuzzy
 msgid "name"
-msgstr ""
+msgstr "ad"
 
 #: ui/stylespanel.cpp:59
+#, fuzzy
 msgid "delete style"
-msgstr ""
+msgstr "stili sil"
 
 #: ui/stylespanel.cpp:69
+#, fuzzy
 msgid "line stroke"
-msgstr ""
+msgstr "çizgi vuruşu"
 
 #: ui/stylespanel.cpp:72
+#, fuzzy
 msgid "stroke color"
-msgstr ""
+msgstr "vuruş rengi"
 
 #: ui/stylespanel.cpp:76
+#, fuzzy
 msgid "stipple width"
-msgstr ""
+msgstr "noktalı çizgi genişliği"
 
 #: ui/stylespanel.cpp:78 ui/stylespanel.cpp:111
+#, fuzzy
 msgid "pixels"
-msgstr ""
+msgstr "piksel"
 
 #: ui/stylespanel.cpp:84 ui/stylespanel.cpp:132
+#, fuzzy
 msgid "in pixels"
-msgstr ""
+msgstr "piksel cinsinden"
 
 #: ui/stylespanel.cpp:86
+#, fuzzy
 msgid "continuous"
-msgstr ""
+msgstr "sürekli"
 
 #: ui/stylespanel.cpp:86
+#, fuzzy
 msgid "dash"
-msgstr ""
+msgstr "kesikli"
 
 #: ui/stylespanel.cpp:86
+#, fuzzy
 msgid "short dash"
-msgstr ""
+msgstr "kısa kesikli"
 
 #: ui/stylespanel.cpp:87
+#, fuzzy
 msgid "dash dot"
-msgstr ""
+msgstr "çizgi-nokta"
 
 #: ui/stylespanel.cpp:87
+#, fuzzy
 msgid "dash dot dot"
-msgstr ""
+msgstr "çizgi-nokta-nokta"
 
 #: ui/stylespanel.cpp:87
+#, fuzzy
 msgid "long dash"
-msgstr ""
+msgstr "uzun kesikli"
 
 #: ui/stylespanel.cpp:88
+#, fuzzy
 msgid "dot"
-msgstr ""
+msgstr "nokta"
 
 #: ui/stylespanel.cpp:88
+#, fuzzy
 msgid "freehand"
-msgstr ""
+msgstr "serbest el"
 
 #: ui/stylespanel.cpp:88
+#, fuzzy
 msgid "zigzag"
-msgstr ""
+msgstr "zikzak"
 
 #: ui/stylespanel.cpp:89
+#, fuzzy
 msgid "stipple type"
-msgstr ""
+msgstr "noktalama türü"
 
 #: ui/stylespanel.cpp:99
+#, fuzzy
 msgid "contour fill"
-msgstr ""
+msgstr "kontur dolgusu"
 
 #: ui/stylespanel.cpp:100
+#, fuzzy
 msgid "fill color"
-msgstr ""
+msgstr "dolgu rengi"
 
 #: ui/stylespanel.cpp:105
+#, fuzzy
 msgid "contours are filled"
-msgstr ""
+msgstr "konturlar dolu"
 
 #: ui/stylespanel.cpp:120
+#, fuzzy
 msgid "comment alignment"
-msgstr ""
+msgstr "açıklama hizalaması"
 
 #: ui/stylespanel.cpp:128
+#, fuzzy
 msgid "middle"
-msgstr ""
+msgstr "orta"
 
 #: ui/stylespanel.cpp:136
+#, fuzzy
 msgid "show these objects on screen"
-msgstr ""
+msgstr "bu nesneleri ekranda göster"
 
 #: ui/stylespanel.cpp:137
+#, fuzzy
 msgid "export these objects"
-msgstr ""
+msgstr "bu nesneleri dışa aktar"
 
 #: ui/stylespanel.cpp:140
+#, fuzzy
 msgid "assign the selection to this style"
-msgstr ""
+msgstr "seçimi bu stile ata"
 
 #: ui/stylespanel.cpp:143
+#, fuzzy
 msgid "Or right-click lines and curves on the drawing."
-msgstr ""
+msgstr "Ya da çizimdeki çizgilere ve eğrilere sağ tıklayın."
 
 #: ui/stylespanel.cpp:161
+#, fuzzy
 msgid "create a new custom style"
-msgstr ""
+msgstr "yeni özel stil oluştur"
 
 #: ui/stylespanel.cpp:165
+#, fuzzy
 msgid "load factory defaults"
-msgstr ""
+msgstr "fabrika varsayılanlarını yükle"
 
 #: ui/stylespanel.cpp:170
+#, fuzzy
 msgid "background color"
-msgstr ""
+msgstr "arka plan rengi"
 
 #: ui/toolpanels.cpp:47
-#, c-format
+#, fuzzy, c-format
 msgid "scale (px per %s)"
-msgstr ""
+msgstr "ölçek (piksel / %s)"
 
 #: ui/toolpanels.cpp:50
+#, fuzzy
 msgid "set to full scale"
-msgstr ""
+msgstr "tam ölçeğe ayarla"
 
 #: ui/toolpanels.cpp:53
+#, fuzzy
 msgid "origin (the centre of the screen)"
-msgstr ""
+msgstr "başlangıç noktası (ekran merkezi)"
 
 #: ui/toolpanels.cpp:56
+#, fuzzy
 msgid "projection: right"
-msgstr ""
+msgstr "izdüşüm: sağ"
 
 #: ui/toolpanels.cpp:59
+#, fuzzy
 msgid "projection: up"
-msgstr ""
+msgstr "izdüşüm: yukarı"
 
 #: ui/toolpanels.cpp:62
-#, c-format
+#, fuzzy, c-format
 msgid "out (%.3f, %.3f, %.3f)"
-msgstr ""
+msgstr "dışarı (%.3f, %.3f, %.3f)"
 
 #: ui/toolpanels.cpp:64
+#, fuzzy
 msgid "perspective factor (0 for parallel)"
-msgstr ""
+msgstr "perspektif çarpanı (paralel için 0)"
 
 #: ui/toolpanels.cpp:67
-#, c-format
+#, fuzzy, c-format
 msgid "light %d direction"
-msgstr ""
+msgstr "%d numaralı ışığın yönü"
 
 #: ui/toolpanels.cpp:70
-#, c-format
+#, fuzzy, c-format
 msgid "light %d intensity"
-msgstr ""
+msgstr "%d numaralı ışığın şiddeti"
 
 #: ui/toolpanels.cpp:74
+#, fuzzy
 msgid "ambient lighting"
-msgstr ""
+msgstr "ortam aydınlatması"
 
 #: ui/toolpanels.cpp:75
+#, fuzzy
 msgid "explode distance"
-msgstr ""
+msgstr "patlatma mesafesi"
 
 #: ui/toolpanels.cpp:99
+#, fuzzy
 msgid "rotate (degrees)"
-msgstr ""
+msgstr "döndür (derece)"
 
 #: ui/toolpanels.cpp:101
+#, fuzzy
 msgid "about point"
-msgstr ""
+msgstr "nokta etrafında"
 
 #: ui/toolpanels.cpp:102 ui/toolpanels.cpp:107
-#, c-format
+#, fuzzy, c-format
 msgid "%s"
-msgstr ""
+msgstr "%s"
 
 #: ui/toolpanels.cpp:103
+#, fuzzy
 msgid "use the selected point"
-msgstr ""
+msgstr "seçili noktayı kullan"
 
 #: ui/toolpanels.cpp:106
+#, fuzzy
 msgid "translate"
-msgstr ""
+msgstr "öteleme"
 
 #: ui/toolpanels.cpp:108
+#, fuzzy
 msgid "use the two selected points"
-msgstr ""
+msgstr "seçili iki noktayı kullan"
 
 #: ui/toolpanels.cpp:111
+#, fuzzy
 msgid "scale"
-msgstr ""
+msgstr "ölçek"
 
 #: ui/toolpanels.cpp:113
+#, fuzzy
 msgid "mirror"
-msgstr ""
+msgstr "aynala"
 
 #: ui/toolpanels.cpp:116
+#, fuzzy
 msgid "paste transformed now"
-msgstr ""
+msgstr "şimdi dönüştürülmüş yapıştır"
 
 #: ui/toolpanels.cpp:130
-#, c-format
+#, fuzzy, c-format
 msgid "start %s"
-msgstr ""
+msgstr "%s başlat"
 
 #: ui/toolpanels.cpp:131
+#, fuzzy
 msgid "finish"
-msgstr ""
+msgstr "bitir"
 
 #: ui/toolpanels.cpp:132
+#, fuzzy
 msgid "steps"
-msgstr ""
+msgstr "adımlar"
 
 #: ui/toolpanels.cpp:133
+#, fuzzy
 msgid "step dimension now"
-msgstr ""
+msgstr "şimdi adım kotu"
 
 #: ui/toolpanels.cpp:143
+#, fuzzy
 msgid "choose radius automatically"
-msgstr ""
+msgstr "yarıçapı otomatik seç"
 
 #: ui/toolpanels.cpp:151
+#, fuzzy
 msgid "modify original entities"
-msgstr ""
+msgstr "özgün öğeleri değiştir"
 
 #: ui/toolpanels.cpp:154
+#, fuzzy
 msgid ""
 "To make a tangent arc at a point, select the point and choose Sketch > "
 "Tangent Arc at Point."
 msgstr ""
+"Bir noktada teğet yay oluşturmak için noktayı seçin ve Çizim > Noktada teğet "
+"yay seçeneğini belirleyin."
 
 #: ui/uiactions.cpp:13
+#, fuzzy
 msgid "View › Command Palette"
-msgstr ""
+msgstr "Görünüm › Komut paleti"
 
 #: ui/uiactions.cpp:14
+#, fuzzy
 msgid "View › Toggle Menu Bar"
-msgstr ""
+msgstr "Görünüm › Menü çubuğunu aç/kapat"
 
 #: ui/uiactions.cpp:15
+#, fuzzy
 msgid "View › Toggle Theme"
-msgstr ""
+msgstr "Görünüm › Temayı değiştir"
 
 #: ui/uiactions.cpp:16
+#, fuzzy
 msgid "View › Outliner"
-msgstr ""
+msgstr "Görünüm › Nesne listesi"
 
 #: ui/uiactions.cpp:17
+#, fuzzy
 msgid "View › Properties"
-msgstr ""
+msgstr "Görünüm › Özellikler"
 
 #: ui/uiactions.cpp:18
+#, fuzzy
 msgid "View › Problems"
-msgstr ""
+msgstr "Görünüm › Sorunlar"
 
 #: ui/uiactions.cpp:19
+#, fuzzy
 msgid "View › Front"
-msgstr ""
+msgstr "Görünüm › Ön"
 
 #: ui/uiactions.cpp:20
+#, fuzzy
 msgid "View › Back"
-msgstr ""
+msgstr "Görünüm › Arka"
 
 #: ui/uiactions.cpp:21
+#, fuzzy
 msgid "View › Right"
-msgstr ""
+msgstr "Görünüm › Sağ"
 
 #: ui/uiactions.cpp:22
+#, fuzzy
 msgid "View › Left"
-msgstr ""
+msgstr "Görünüm › Sol"
 
 #: ui/uiactions.cpp:23
+#, fuzzy
 msgid "View › Top"
-msgstr ""
+msgstr "Görünüm › Üst"
 
 #: ui/uiactions.cpp:24
+#, fuzzy
 msgid "View › Bottom"
-msgstr ""
+msgstr "Görünüm › Alt"
 
 #: ui/uiactions.cpp:25
+#, fuzzy
 msgid "View › Frame Selected"
-msgstr ""
+msgstr "Görünüm › Seçileni çerçevele"
 
 #: ui/uiactions.cpp:26
+#, fuzzy
 msgid "View › Hide Group"
-msgstr ""
+msgstr "Görünüm › Grubu gizle"
 
 #: ui/uiactions.cpp:27
+#, fuzzy
 msgid "View › Show All Groups"
-msgstr ""
+msgstr "Görünüm › Tüm grupları göster"
 
 #: ui/uiactions.cpp:28
+#, fuzzy
 msgid "View › Isolate Group"
-msgstr ""
+msgstr "Görünüm › Grubu izole et"
 
 #: ui/uiactions.cpp:29
+#, fuzzy
 msgid "Sketch › Enter/Exit Sketch"
-msgstr ""
+msgstr "Çizim › Çizime gir/çık"
 
 #: ui/uiactions.cpp:30
+#, fuzzy
 msgid "Edit › Grab"
-msgstr ""
+msgstr "Düzen › Taşı"
 
 #: ui/uiactions.cpp:31
+#, fuzzy
 msgid "Constrain › Smart Dimension"
-msgstr ""
+msgstr "Kısıtla › Akıllı kot"
 
 #: ui/uiactions.cpp:32
+#, fuzzy
 msgid "Sketch › Add… (pie)"
-msgstr ""
+msgstr "Çizim › Ekle… (dairesel menü)"
 
 #: ui/uiactions.cpp:33
+#, fuzzy
 msgid "Constrain › Constrain… (pie)"
-msgstr ""
+msgstr "Kısıtla › Kısıtla… (dairesel menü)"
 
 #: ui/uiactions.cpp:34
+#, fuzzy
 msgid "View › Views… (pie)"
-msgstr ""
+msgstr "Görünüm › Görünümler… (dairesel menü)"
 
 #: ui/uiactions.cpp:35
+#, fuzzy
 msgid "Help › Keyboard Shortcuts"
-msgstr ""
+msgstr "Yardım › Klavye kısayolları"
 
 #: ui/uiactions.cpp:36
+#, fuzzy
 msgid "Inspect › Fit Table"
-msgstr ""
+msgstr "İncele › Geçme tablosu"
 
 #: ui/uiactions.cpp:37
+#, fuzzy
 msgid "New Group › Joints… (pie)"
-msgstr ""
+msgstr "Yeni grup › Mafsallar… (dairesel menü)"
 
 #: util.cpp:172
 msgctxt "title"

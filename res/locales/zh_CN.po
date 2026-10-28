@@ -1,3 +1,35 @@
+# Chinese translations for SolveSpace package.
+# Copyright (C) 2020 the PACKAGE authors
+# This file is distributed under the same license as the SolveSpace package.
+# <lomatus@163.com>, 2020.
+# <liuxilu@live.com>, 2023.
+# <lomatus@163.com>, 2025.
+#
+# 译词一致性
+# mesh网格 grid格线
+# text文本 comment备注
+# vertical竖直 perpendicular垂直
+# Rotate旋转 Lathe转圈 Revolve扫略
+# solid实心体 object对象 entity物件
+# plane点线面/平面 face/surface表面 plane_faces平表面
+#
+# 约束的选择错误。此约束可用于：A与(B和C)
+# 一点/工作面 一条线段 一个表面 一个以上
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: SolveSpace 3.2\n"
+"Report-Msgid-Bugs-To: phkahler@gmail.com\n"
+"POT-Creation-Date: 2026-10-28 15:04-0700\n"
+"PO-Revision-Date: 2023-04-30 15:58+0800\n"
+"Last-Translator: liuxilu@live.com\n"
+"Language-Team: none\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.4.2\n"
+
 #: clipboard.cpp:317
 msgid ""
 "Cut, paste, and copy work only in a workplane.\n"
@@ -787,533 +819,537 @@ msgstr "导出零件...(&P)"
 msgid "Export Parts &List..."
 msgstr "导出零件表...(&L)"
 
-#: graphicswin.cpp:57
+#: graphicswin.cpp:57#, fuzzy
+msgid "Export &Assembly (STEP)..."
+msgstr "导出装配体 (STEP)(&A)..."
+
+#: graphicswin.cpp:58
 msgid "Export &Surfaces..."
 msgstr "导出表面...(&S)"
 
-#: graphicswin.cpp:58
+#: graphicswin.cpp:59
 msgid "Im&port..."
 msgstr "导入...(&P)"
 
-#: graphicswin.cpp:61
+#: graphicswin.cpp:62
 msgid "E&xit"
 msgstr "退出(&E)"
 
-#: graphicswin.cpp:64
+#: graphicswin.cpp:65
 msgid "&Edit"
 msgstr "编辑(&E)"
 
-#: graphicswin.cpp:65
+#: graphicswin.cpp:66
 msgid "&Undo"
 msgstr "撤销(&U)"
 
-#: graphicswin.cpp:66
+#: graphicswin.cpp:67
 msgid "&Redo"
 msgstr "重做(&R)"
 
-#: graphicswin.cpp:67
+#: graphicswin.cpp:68
 msgid "Re&generate All"
 msgstr "全部重新生成(&G)"
 
-#: graphicswin.cpp:69
+#: graphicswin.cpp:70
 msgid "Snap Selection to &Grid"
 msgstr "吸附所选到格线(&G)"
 
-#: graphicswin.cpp:70
+#: graphicswin.cpp:71
 msgid "Rotate Imported &90°"
 msgstr "导入的模型旋转90°(&9)"
 
-#: graphicswin.cpp:72
+#: graphicswin.cpp:73
 msgid "Cu&t"
 msgstr "剪切(&T)"
 
-#: graphicswin.cpp:73
+#: graphicswin.cpp:74
 msgid "&Copy"
 msgstr "复制(&C)"
 
-#: graphicswin.cpp:74
+#: graphicswin.cpp:75
 msgid "&Paste"
 msgstr "粘贴(&P)"
 
-#: graphicswin.cpp:75
+#: graphicswin.cpp:76
 msgid "Paste &Transformed..."
 msgstr "粘贴并变换...(&T)"
 
-#: graphicswin.cpp:76
+#: graphicswin.cpp:77
 msgid "&Delete"
 msgstr "删除(&D)"
 
-#: graphicswin.cpp:78
+#: graphicswin.cpp:79
 msgid "Select &Edge Chain"
 msgstr "选择相连边(&E)"
 
-#: graphicswin.cpp:79
+#: graphicswin.cpp:80
 msgid "Select &All"
 msgstr "全选(&A)"
 
-#: graphicswin.cpp:80
+#: graphicswin.cpp:81
 msgid "&Unselect All"
 msgstr "全不选(&U)"
 
-#: graphicswin.cpp:82
+#: graphicswin.cpp:83
 msgid "&Line Styles..."
 msgstr "线的样式...(&L)"
 
-#: graphicswin.cpp:83
+#: graphicswin.cpp:84
 msgid "&View Projection..."
 msgstr "投影视图...(&V)"
 
-#: graphicswin.cpp:85
+#: graphicswin.cpp:86
 msgid "Con&figuration..."
 msgstr "配置...(&F)"
 
-#: graphicswin.cpp:88
+#: graphicswin.cpp:89
 msgid "&View"
 msgstr "查看(&V)"
 
-#: graphicswin.cpp:89
+#: graphicswin.cpp:90
 msgid "Zoom &In"
 msgstr "放大(&I)"
 
-#: graphicswin.cpp:90
+#: graphicswin.cpp:91
 msgid "Zoom &Out"
 msgstr "缩小(&O)"
 
-#: graphicswin.cpp:91
+#: graphicswin.cpp:92
 msgid "Zoom To &Fit"
 msgstr "适合窗口(&F)"
 
-#: graphicswin.cpp:93
+#: graphicswin.cpp:94
 msgid "Align View to &Workplane"
 msgstr "视图对齐至工作面(&W)"
 
-#: graphicswin.cpp:94
+#: graphicswin.cpp:95
 msgid "Nearest &Ortho View"
 msgstr "最接近的正交视图(&O)"
 
-#: graphicswin.cpp:95
+#: graphicswin.cpp:96
 msgid "Nearest &Isometric View"
 msgstr "最接近的等轴视图(&I)"
 
-#: graphicswin.cpp:96
+#: graphicswin.cpp:97
 msgid "&Center View At Point"
 msgstr "视图中心置于点(&C)"
 
-#: graphicswin.cpp:98
+#: graphicswin.cpp:99
 msgid "Show Snap &Grid"
 msgstr "显示吸附格线(&G)"
 
-#: graphicswin.cpp:99 ui/menulayout.cpp:98
+#: graphicswin.cpp:100 ui/menulayout.cpp:99
 msgid "Darken Inactive Solids"
 msgstr "非活动实心体变暗"
 
-#: graphicswin.cpp:100
+#: graphicswin.cpp:101
 msgid "Use &Perspective Projection"
 msgstr "使用透视投影(&P)"
 
-#: graphicswin.cpp:101
+#: graphicswin.cpp:102
 msgid "Show E&xploded View"
 msgstr "显示爆炸视图(&E)"
 
-#: graphicswin.cpp:102
+#: graphicswin.cpp:103
 msgid "Dimension &Units"
 msgstr "尺寸单位(&U)"
 
-#: graphicswin.cpp:103
+#: graphicswin.cpp:104
 msgid "Dimensions in &Millimeters"
 msgstr "毫米(&M)"
 
-#: graphicswin.cpp:104
+#: graphicswin.cpp:105
 msgid "Dimensions in M&eters"
 msgstr "米(&E)"
 
-#: graphicswin.cpp:105
+#: graphicswin.cpp:106
 msgid "Dimensions in &Inches"
 msgstr "英寸(&I)"
 
-#: graphicswin.cpp:106
+#: graphicswin.cpp:107
 msgid "Dimensions in &Feet and Inches"
 msgstr "英尺和英寸(&F)"
 
-#: graphicswin.cpp:108
+#: graphicswin.cpp:109
 msgid "Show &Toolbar"
 msgstr "显示工具栏(&T)"
 
-#: graphicswin.cpp:109
+#: graphicswin.cpp:110
 msgid "Show Property Bro&wser"
 msgstr "显示属性浏览器(&W)"
 
-#: graphicswin.cpp:111
+#: graphicswin.cpp:112
 msgid "&Full Screen"
 msgstr "全屏(&F)"
 
-#: graphicswin.cpp:113
+#: graphicswin.cpp:114
 msgid "&New Group"
 msgstr "新建组(&N)"
 
-#: graphicswin.cpp:114
+#: graphicswin.cpp:115
 #, fuzzy
 msgid "New &Part"
 msgstr "新建零件(&P)"
 
-#: graphicswin.cpp:115
+#: graphicswin.cpp:116
 #, fuzzy
 msgid "&Revolute Joint"
 msgstr "旋转关节(&R)"
 
-#: graphicswin.cpp:116
+#: graphicswin.cpp:117
 #, fuzzy
 msgid "S&lider Joint"
 msgstr "滑块关节(&L)"
 
-#: graphicswin.cpp:117
+#: graphicswin.cpp:118
 #, fuzzy
 msgid "C&ylindrical Joint"
 msgstr "圆柱关节(&Y)"
 
-#: graphicswin.cpp:118
+#: graphicswin.cpp:119
 #, fuzzy
 msgid "Pla&nar Joint"
 msgstr "平面关节(&N)"
 
-#: graphicswin.cpp:119
+#: graphicswin.cpp:120
 #, fuzzy
 msgid "&Ball Joint"
 msgstr "球关节(&B)"
 
-#: graphicswin.cpp:120
+#: graphicswin.cpp:121
 #, fuzzy
 msgid "&Gear Coupling"
 msgstr "齿轮耦合(&G)"
 
-#: graphicswin.cpp:121
+#: graphicswin.cpp:122
 #, fuzzy
 msgid "&Fit Joint"
 msgstr "配合关节(&F)"
 
-#: graphicswin.cpp:122
+#: graphicswin.cpp:123
 #, fuzzy
 msgid "Spli&t Part"
 msgstr "拆分零件(&T)"
 
-#: graphicswin.cpp:124
+#: graphicswin.cpp:125
 msgid "Sketch In &3d"
 msgstr "在三维空间绘制(&3)"
 
-#: graphicswin.cpp:125
+#: graphicswin.cpp:126
 msgid "Sketch In New &Workplane"
 msgstr "在新工作面绘制(&W)"
 
-#: graphicswin.cpp:127
+#: graphicswin.cpp:128
 msgid "Step &Translating"
 msgstr "步进平移(&T)"
 
-#: graphicswin.cpp:128
+#: graphicswin.cpp:129
 msgid "Step &Rotating"
 msgstr "步进旋转(&R)"
 
-#: graphicswin.cpp:130
+#: graphicswin.cpp:131
 msgid "E&xtrude"
 msgstr "挤出(&E)"
 
-#: graphicswin.cpp:131
+#: graphicswin.cpp:132
 #, fuzzy
 msgid "Extrude as a &Cut"
 msgstr "挤出切除(&C)"
 
-#: graphicswin.cpp:132
+#: graphicswin.cpp:133
 msgid "&Helix"
 msgstr "螺旋(&H)"
 
-#: graphicswin.cpp:133
+#: graphicswin.cpp:134
 msgid "&Lathe"
 msgstr "转圈(&L)"
 
-#: graphicswin.cpp:134
+#: graphicswin.cpp:135
 msgid "Re&volve"
 msgstr "扫略(&V)"
 
-#: graphicswin.cpp:136
+#: graphicswin.cpp:137
 #, fuzzy
 msgid "&Fillet Edges"
 msgstr "圆角边(&F)"
 
-#: graphicswin.cpp:137
+#: graphicswin.cpp:138
 #, fuzzy
 msgid "&Chamfer Edges"
 msgstr "倒角边(&C)"
 
-#: graphicswin.cpp:138
+#: graphicswin.cpp:139
 #, fuzzy
 msgid "S&hell"
 msgstr "抽壳(&H)"
 
-#: graphicswin.cpp:139
+#: graphicswin.cpp:140
 #, fuzzy
 msgid "&Draft Faces"
 msgstr "拔模面(&D)"
 
-#: graphicswin.cpp:140
+#: graphicswin.cpp:141
 #, fuzzy
 msgid "H&ole"
 msgstr "孔(&O)"
 
-#: graphicswin.cpp:141
+#: graphicswin.cpp:142
 #, fuzzy
 msgid "Lo&ft"
 msgstr "放样(&F)"
 
-#: graphicswin.cpp:142
+#: graphicswin.cpp:143
 #, fuzzy
 msgid "S&weep"
 msgstr "扫掠(&W)"
 
-#: graphicswin.cpp:144
+#: graphicswin.cpp:145
 msgid "Link / Assemble..."
 msgstr "连接/装配..."
 
-#: graphicswin.cpp:145 ui/menulayout.cpp:136
+#: graphicswin.cpp:146 ui/menulayout.cpp:137
 msgid "Link Recent"
 msgstr "连接最近文件"
 
-#: graphicswin.cpp:147
+#: graphicswin.cpp:148
 msgid "&Sketch"
 msgstr "绘图(&S)"
 
-#: graphicswin.cpp:148
+#: graphicswin.cpp:149
 msgid "In &Workplane"
 msgstr "在工作面内(&W)"
 
-#: graphicswin.cpp:149
+#: graphicswin.cpp:150
 msgid "Anywhere In &3d"
 msgstr "在三维空间(&3)"
 
-#: graphicswin.cpp:151
+#: graphicswin.cpp:152
 msgid "Datum &Point"
 msgstr "基准点(&P)"
 
-#: graphicswin.cpp:152
+#: graphicswin.cpp:153
 msgid "Wor&kplane"
 msgstr "工作面(&k)"
 
-#: graphicswin.cpp:154
+#: graphicswin.cpp:155
 msgid "Line &Segment"
 msgstr "线段(&S)"
 
-#: graphicswin.cpp:155
+#: graphicswin.cpp:156
 msgid "C&onstruction Line Segment"
 msgstr "构造线线段(&C)"
 
-#: graphicswin.cpp:156
+#: graphicswin.cpp:157
 msgid "&Rectangle"
 msgstr "矩形(&R)"
 
-#: graphicswin.cpp:157
+#: graphicswin.cpp:158
 msgid "&Circle"
 msgstr "圆(&C)"
 
-#: graphicswin.cpp:158
+#: graphicswin.cpp:159
 msgid "&Arc of a Circle"
 msgstr "圆弧(&A)"
 
-#: graphicswin.cpp:159
+#: graphicswin.cpp:160
 msgid "&Bezier Cubic Spline"
 msgstr "三次贝塞尔样条(&B)"
 
-#: graphicswin.cpp:161
+#: graphicswin.cpp:162
 msgid "&Text in TrueType Font"
 msgstr "TrueType字体文本(&T)"
 
-#: graphicswin.cpp:162
+#: graphicswin.cpp:163
 msgid "I&mage"
 msgstr "图片(&m)"
 
-#: graphicswin.cpp:164
+#: graphicswin.cpp:165
 msgid "To&ggle Construction"
 msgstr "切换构造线(&G)"
 
-#: graphicswin.cpp:165
+#: graphicswin.cpp:166
 msgid "Ta&ngent Arc at Point"
 msgstr "点处创建内切弧(&n)"
 
-#: graphicswin.cpp:166
+#: graphicswin.cpp:167
 msgid "Split Curves at &Intersection"
 msgstr "交点处拆分曲线(&I)"
 
-#: graphicswin.cpp:168
+#: graphicswin.cpp:169
 msgid "&Constrain"
 msgstr "约束(&C)"
 
-#: graphicswin.cpp:169
+#: graphicswin.cpp:170
 msgid "&Distance / Diameter"
 msgstr "距离/直径(&D)"
 
-#: graphicswin.cpp:170
+#: graphicswin.cpp:171
 msgid "Re&ference Dimension"
 msgstr "参考尺寸(&F)"
 
-#: graphicswin.cpp:171
+#: graphicswin.cpp:172
 msgid "A&ngle / Equal Angle"
 msgstr "角度(&N)"
 
-#: graphicswin.cpp:172
+#: graphicswin.cpp:173
 msgid "Reference An&gle"
 msgstr "参考角度(&G)"
 
-#: graphicswin.cpp:173
+#: graphicswin.cpp:174
 msgid "Other S&upplementary Angle"
 msgstr "补角(&U)"
 
-#: graphicswin.cpp:174
+#: graphicswin.cpp:175
 msgid "Toggle R&eference Dim"
 msgstr "切换参考尺寸(&E)"
 
-#: graphicswin.cpp:176
+#: graphicswin.cpp:177
 msgid "&Horizontal"
 msgstr "水平(&H)"
 
-#: graphicswin.cpp:177
+#: graphicswin.cpp:178
 msgid "&Vertical"
 msgstr "竖直(&V)"
 
-#: graphicswin.cpp:179
+#: graphicswin.cpp:180
 msgid "&On Point / Curve / Plane"
 msgstr "在点/线/面上(&O)"
 
-#: graphicswin.cpp:180
+#: graphicswin.cpp:181
 msgid "E&qual Length / Radius"
 msgstr "长度/半径/角度相等(&Q)"
 
-#: graphicswin.cpp:181
+#: graphicswin.cpp:182
 msgid "Length / Arc Ra&tio"
 msgstr "(弧)长比例(&T)"
 
-#: graphicswin.cpp:182
+#: graphicswin.cpp:183
 msgid "Length / Arc Diff&erence"
 msgstr "(弧)长之差(&E)"
 
-#: graphicswin.cpp:183
+#: graphicswin.cpp:184
 msgid "At &Midpoint"
 msgstr "中点(&M)"
 
-#: graphicswin.cpp:184
+#: graphicswin.cpp:185
 msgid "S&ymmetric"
 msgstr "对称(&Y)"
 
-#: graphicswin.cpp:185
+#: graphicswin.cpp:186
 msgid "Para&llel / Tangent"
 msgstr "平行/相切(&L)"
 
-#: graphicswin.cpp:186
+#: graphicswin.cpp:187
 msgid "&Perpendicular"
 msgstr "垂直(&P)"
 
-#: graphicswin.cpp:187
+#: graphicswin.cpp:188
 msgid "Same Orient&ation"
 msgstr "同向(&A)"
 
-#: graphicswin.cpp:188
+#: graphicswin.cpp:189
 msgid "Lock Point Where &Dragged"
 msgstr "定位后锁定点(&D)"
 
-#: graphicswin.cpp:190 ui/menulayout.cpp:167 ui/selectionmodel.cpp:54
+#: graphicswin.cpp:191 ui/menulayout.cpp:168 ui/selectionmodel.cpp:54
 #: ui/selectionmodel.cpp:311
 msgid "Comment"
 msgstr "备注"
 
-#: graphicswin.cpp:192
+#: graphicswin.cpp:193
 msgid "&Analyze"
 msgstr "分析(&A)"
 
-#: graphicswin.cpp:193
+#: graphicswin.cpp:194
 msgid "Measure &Volume"
 msgstr "测量体积(&V)"
 
-#: graphicswin.cpp:194
+#: graphicswin.cpp:195
 msgid "Measure A&rea"
 msgstr "测量面积(&R)"
 
-#: graphicswin.cpp:195
+#: graphicswin.cpp:196
 msgid "Measure &Perimeter"
 msgstr "测量周长(&P)"
 
-#: graphicswin.cpp:196
+#: graphicswin.cpp:197
 msgid "Show &Interfering Parts"
 msgstr "显示干涉部件(&I)"
 
-#: graphicswin.cpp:197
+#: graphicswin.cpp:198
 msgid "Show &Naked Edges"
 msgstr "显示裸露边(&N)"
 
-#: graphicswin.cpp:198
+#: graphicswin.cpp:199
 msgid "Show &Center of Mass"
 msgstr "显示质心(&C)"
 
-#: graphicswin.cpp:199
+#: graphicswin.cpp:200
 #, fuzzy
 msgid "&Mass Properties"
 msgstr "质量属性(&M)"
 
-#: graphicswin.cpp:200
+#: graphicswin.cpp:201
 #, fuzzy
 msgid "&Parts List"
 msgstr "零件表(&P)"
 
-#: graphicswin.cpp:201
+#: graphicswin.cpp:202
 #, fuzzy
 msgid "&Design Pose"
 msgstr "设计姿态(&D)"
 
-#: graphicswin.cpp:203
+#: graphicswin.cpp:204
 msgid "Show &Underconstrained Points"
 msgstr "显示欠约束的点(&U)"
 
-#: graphicswin.cpp:205
+#: graphicswin.cpp:206
 msgid "&Trace Point"
 msgstr "跟踪点(&T)"
 
-#: graphicswin.cpp:206
+#: graphicswin.cpp:207
 msgid "&Stop Tracing..."
 msgstr "停止跟踪...(&S)"
 
-#: graphicswin.cpp:207
+#: graphicswin.cpp:208
 msgid "Step &Dimension..."
 msgstr "尺寸步进...(&D)"
 
-#: graphicswin.cpp:209
+#: graphicswin.cpp:210
 msgid "&Help"
 msgstr "帮助(&H)"
 
-#: graphicswin.cpp:210
+#: graphicswin.cpp:211
 msgid "&Language"
 msgstr "语言(&L)"
 
-#: graphicswin.cpp:211
+#: graphicswin.cpp:212
 msgid "&Website / Manual"
 msgstr "网站/手册(&W)"
 
-#: graphicswin.cpp:212
+#: graphicswin.cpp:213
 msgid "&Go to GitHub commit"
 msgstr "转到Github commit(&G)"
 
-#: graphicswin.cpp:214
+#: graphicswin.cpp:215
 msgid "&About"
 msgstr "关于(&A)"
 
-#: graphicswin.cpp:418
+#: graphicswin.cpp:419
 msgid "(no recent files)"
 msgstr "(无最近文件)"
 
-#: graphicswin.cpp:426
+#: graphicswin.cpp:427
 #, c-format
 msgid "File '%s' does not exist."
 msgstr "不存在文件\"%s\"。"
 
-#: graphicswin.cpp:835
+#: graphicswin.cpp:836
 msgid "No workplane is active, so the grid will not appear."
 msgstr "没有活动工作面，因此无法显示格线。"
 
-#: graphicswin.cpp:850
+#: graphicswin.cpp:851
 msgid ""
 "The perspective factor is set to zero, so the view will always be a parallel "
 "projection.\n"
@@ -1325,23 +1361,23 @@ msgstr ""
 "\n"
 "要使用透视投影，请在配置界面中修改透视因数。典型值大概是0.3。"
 
-#: graphicswin.cpp:940
+#: graphicswin.cpp:941
 msgid ""
 "Select a point; this point will become the center of the view on screen."
 msgstr "选择一点; 此点将成为屏幕上视图的中心。"
 
-#: graphicswin.cpp:1245
+#: graphicswin.cpp:1246
 msgid "No additional entities share endpoints with the selected entities."
 msgstr "所选物件不与其他物件有共同端点。"
 
-#: graphicswin.cpp:1263
+#: graphicswin.cpp:1264
 msgid ""
 "To use this command, select a point or other entity from an linked part, or "
 "make a link group the active group."
 msgstr ""
 "使用此命令时，选择连接来的部件上一点或其他成分，或将一个连接组设为活动组。"
 
-#: graphicswin.cpp:1286
+#: graphicswin.cpp:1287
 msgid ""
 "No workplane is active. Activate a workplane (with Sketch -> In Workplane) "
 "to define the plane for the snap grid."
@@ -1349,7 +1385,7 @@ msgstr ""
 "无活动工作面。激活一个工作面（用\"绘图 -> 在工作面内\"）以定义吸附格线所在的"
 "平面。"
 
-#: graphicswin.cpp:1293
+#: graphicswin.cpp:1294
 msgid ""
 "Can't snap these items to grid; select points, text comments, or constraints "
 "with a label. To snap a line, select its endpoints."
@@ -1357,11 +1393,11 @@ msgstr ""
 "不能吸附这些项目到格线；选择点、文本备注、有尺寸的约束。要吸附线请选择其端"
 "点。"
 
-#: graphicswin.cpp:1378
+#: graphicswin.cpp:1379
 msgid "No workplane selected. Activating default workplane for this group."
 msgstr "未选择工作面。将激活该组的默认工作面。"
 
-#: graphicswin.cpp:1381
+#: graphicswin.cpp:1382
 msgid ""
 "No workplane is selected, and the active group does not have a default "
 "workplane. Try selecting a workplane, or activating a sketch-in-new-"
@@ -1370,53 +1406,53 @@ msgstr ""
 "未选择工作面，且活动组没有默认工作面。请选择一个工作面，或激活一个\"平面草图"
 "\"组。"
 
-#: graphicswin.cpp:1402
+#: graphicswin.cpp:1403
 msgid ""
 "Bad selection for tangent arc at point. Select a single point, or select "
 "nothing to set up arc parameters."
 msgstr "\"点处创建内切弧\"的选择错误。选择单个点，或什么都不选来设置参数。"
 
-#: graphicswin.cpp:1413
+#: graphicswin.cpp:1414
 msgid "click point on arc (draws anti-clockwise)"
 msgstr "点击弧上的点（逆时针绘制）"
 
-#: graphicswin.cpp:1414
+#: graphicswin.cpp:1415
 msgid "click to place datum point"
 msgstr "点击放置基准点"
 
-#: graphicswin.cpp:1415
+#: graphicswin.cpp:1416
 msgid "click first point of line segment"
 msgstr "点击线段的起点"
 
-#: graphicswin.cpp:1417
+#: graphicswin.cpp:1418
 msgid "click first point of construction line segment"
 msgstr "点击构造线的起点"
 
-#: graphicswin.cpp:1418
+#: graphicswin.cpp:1419
 msgid "click first point of cubic segment"
 msgstr "点击三次曲线段的起点"
 
-#: graphicswin.cpp:1419
+#: graphicswin.cpp:1420
 msgid "click center of circle"
 msgstr "点击圆心"
 
-#: graphicswin.cpp:1420
+#: graphicswin.cpp:1421
 msgid "click origin of workplane"
 msgstr "点击工作面原点"
 
-#: graphicswin.cpp:1421
+#: graphicswin.cpp:1422
 msgid "click one corner of rectangle"
 msgstr "点击矩形的一个角"
 
-#: graphicswin.cpp:1422
+#: graphicswin.cpp:1423
 msgid "click top left of text"
 msgstr "点击文本左上角"
 
-#: graphicswin.cpp:1428
+#: graphicswin.cpp:1429
 msgid "click top left of image"
 msgstr "点击图片左上角"
 
-#: graphicswin.cpp:1454
+#: graphicswin.cpp:1455
 msgid ""
 "No entities are selected. Select entities before trying to toggle their "
 "construction state."
@@ -1957,7 +1993,7 @@ msgstr "组信息"
 msgid "Style Info"
 msgstr "样式信息"
 
-#: mouse.cpp:701 ui/menulayout.cpp:77
+#: mouse.cpp:701 ui/menulayout.cpp:78
 msgid "Select Edge Chain"
 msgstr "选择相连边"
 
@@ -1969,7 +2005,7 @@ msgstr "切换参考尺寸"
 msgid "Other Supplementary Angle"
 msgstr "补角"
 
-#: mouse.cpp:718 ui/menulayout.cpp:78
+#: mouse.cpp:718 ui/menulayout.cpp:79
 msgid "Snap to Grid"
 msgstr "吸附至格线"
 
@@ -1985,7 +2021,7 @@ msgstr "增加样条点"
 msgid "Cannot add spline point: maximum number of points reached."
 msgstr "无法增加样条点：超过点数限制。"
 
-#: mouse.cpp:791 ui/menulayout.cpp:147
+#: mouse.cpp:791 ui/menulayout.cpp:148
 msgid "Toggle Construction"
 msgstr "切换构造线"
 
@@ -1993,31 +2029,31 @@ msgstr "切换构造线"
 msgid "Delete Point-Coincident Constraint"
 msgstr "删除点点重合约束"
 
-#: mouse.cpp:825 ui/menulayout.cpp:71
+#: mouse.cpp:825 ui/menulayout.cpp:72
 msgid "Cut"
 msgstr "剪切"
 
-#: mouse.cpp:827 ui/menulayout.cpp:71
+#: mouse.cpp:827 ui/menulayout.cpp:72
 msgid "Copy"
 msgstr "复制"
 
-#: mouse.cpp:831 ui/menulayout.cpp:76
+#: mouse.cpp:831 ui/menulayout.cpp:77
 msgid "Select All"
 msgstr "全选"
 
-#: mouse.cpp:836 ui/menulayout.cpp:72
+#: mouse.cpp:836 ui/menulayout.cpp:73
 msgid "Paste"
 msgstr "粘贴"
 
-#: mouse.cpp:838 ui/menulayout.cpp:73
+#: mouse.cpp:838 ui/menulayout.cpp:74
 msgid "Paste Transformed..."
 msgstr "粘贴并变换..."
 
-#: mouse.cpp:843 ui/menulayout.cpp:74 ui/outliner.cpp:140
+#: mouse.cpp:843 ui/menulayout.cpp:75 ui/outliner.cpp:140
 msgid "Delete"
 msgstr "删除"
 
-#: mouse.cpp:846 ui/menulayout.cpp:76
+#: mouse.cpp:846 ui/menulayout.cpp:77
 msgid "Unselect All"
 msgstr "全不选"
 
@@ -2025,7 +2061,7 @@ msgstr "全不选"
 msgid "Unselect Hovered"
 msgstr "光标下的不选"
 
-#: mouse.cpp:862 ui/menulayout.cpp:85
+#: mouse.cpp:862 ui/menulayout.cpp:86
 msgid "Zoom to Fit"
 msgstr "适合窗口"
 
@@ -2141,6 +2177,7 @@ msgid "Quad mesh for Blender, with creases (USD)"
 msgstr "用于 Blender 的四边形网格，带折痕 (USD)"
 
 #: platform/gui.cpp:110 platform/gui.cpp:117 platform/gui.cpp:124
+#: solvespace.cpp:850
 msgctxt "file-type"
 msgid "STEP file"
 msgstr "STEP文件"
@@ -2186,8 +2223,9 @@ msgid "Comma-separated values"
 msgstr "逗号分隔数据"
 
 #: platform/guisdl.cpp:614
+#, fuzzy
 msgid "Save as"
-msgstr ""
+msgstr "另存为"
 
 #: preferences.cpp:77 styleedit.cpp:90 textscreens.cpp:776
 msgid "Bad format: specify color as r, g, b"
@@ -2330,26 +2368,32 @@ msgstr "STEP 文件，每个零件一个"
 msgid "Exported %d parts:%s"
 msgstr "已导出 %d 个零件:%s"
 
-#: solvespace.cpp:893
+#: solvespace.cpp:856
+#, fuzzy
+msgid ""
+"The assembly needs the Open CASCADE kernel and a solid to export as STEP."
+msgstr "装配体需要 Open CASCADE 内核和实体才能导出为 STEP。"
+
+#: solvespace.cpp:907
 #, c-format
 msgid ""
 "Can't identify file type from file extension of filename '%s'; try .dxf "
 "or .dwg."
 msgstr "无法从'%s'的文件扩展名识别文件类型，请尝试.dxf或.dwg。"
 
-#: solvespace.cpp:945
+#: solvespace.cpp:959
 msgid "Constraint must have a label, and must not be a reference dimension."
 msgstr "约束必须有尺寸，且不能是参考尺寸。"
 
-#: solvespace.cpp:949
+#: solvespace.cpp:963
 msgid "Bad selection for step dimension; select a constraint."
 msgstr "尺寸步进选择错误，请选择约束。"
 
-#: solvespace.cpp:973
+#: solvespace.cpp:987
 msgid "The assembly does not interfere, good."
 msgstr "装配无干涉，好。"
 
-#: solvespace.cpp:1005
+#: solvespace.cpp:1019
 #, c-format
 msgid ""
 "The volume of the solid model is:\n"
@@ -2360,7 +2404,7 @@ msgstr ""
 "\n"
 "    %s"
 
-#: solvespace.cpp:1015
+#: solvespace.cpp:1029
 #, c-format
 msgid ""
 "\n"
@@ -2373,7 +2417,7 @@ msgstr ""
 "\n"
 "    %s"
 
-#: solvespace.cpp:1020 solvespace.cpp:1365
+#: solvespace.cpp:1034 solvespace.cpp:1379
 msgid ""
 "\n"
 "\n"
@@ -2384,7 +2428,7 @@ msgstr ""
 "\n"
 "曲面已近似为三角形。这会引入误差，通常约为1%。"
 
-#: solvespace.cpp:1035
+#: solvespace.cpp:1049
 #, c-format
 msgid ""
 "The surface area of the selected faces is:\n"
@@ -2400,13 +2444,13 @@ msgstr ""
 "\n"
 "曲线已近似为线性分段。这会引入误差，通常约为1%%。"
 
-#: solvespace.cpp:1044
+#: solvespace.cpp:1058
 msgid ""
 "This group does not contain a correctly-formed 2d closed area. It is open, "
 "not coplanar, or self-intersecting."
 msgstr "此组不包含正确形式的二维封闭区域。它可能是开放的，或不共面，或自相交。"
 
-#: solvespace.cpp:1056
+#: solvespace.cpp:1070
 #, c-format
 msgid ""
 "The area of the region sketched in this group is:\n"
@@ -2422,7 +2466,7 @@ msgstr ""
 "\n"
 "曲线已近似为线性分段。这会引入误差，通常约为1%%。"
 
-#: solvespace.cpp:1076
+#: solvespace.cpp:1090
 #, c-format
 msgid ""
 "The total length of the selected entities is:\n"
@@ -2438,36 +2482,36 @@ msgstr ""
 "\n"
 "曲线已近似为线性分段。这会引入误差，通常约为1%%。"
 
-#: solvespace.cpp:1082
+#: solvespace.cpp:1096
 msgid "Bad selection for perimeter; select line segments, arcs, and curves."
 msgstr "周长选择错误；请选择线段、弧线、曲线。"
 
-#: solvespace.cpp:1098
+#: solvespace.cpp:1112
 msgid "Bad selection for trace; select a single point."
 msgstr "跟踪选择不当；请选择单个点。"
 
-#: solvespace.cpp:1125
+#: solvespace.cpp:1139
 #, c-format
 msgid "Couldn't write to '%s'"
 msgstr "无法写入'%s'"
 
-#: solvespace.cpp:1155
+#: solvespace.cpp:1169
 msgid "The mesh is self-intersecting (NOT okay, invalid)."
 msgstr "网格是自相交的（不行，无效）"
 
-#: solvespace.cpp:1156
+#: solvespace.cpp:1170
 msgid "The mesh is not self-intersecting (okay, valid)."
 msgstr "网格不是自相交的（行，有效）"
 
-#: solvespace.cpp:1158
+#: solvespace.cpp:1172
 msgid "The mesh has naked edges (NOT okay, invalid)."
 msgstr "网格有裸露边（不行，无效）"
 
-#: solvespace.cpp:1159
+#: solvespace.cpp:1173
 msgid "The mesh is watertight (okay, valid)."
 msgstr "网格是水密的（行，有效）"
 
-#: solvespace.cpp:1162
+#: solvespace.cpp:1176
 #, c-format
 msgid ""
 "\n"
@@ -2478,7 +2522,7 @@ msgstr ""
 "\n"
 "该模型包含%d个表面上的%d个三角形。"
 
-#: solvespace.cpp:1166
+#: solvespace.cpp:1180
 #, c-format
 msgid ""
 "%s\n"
@@ -2493,7 +2537,7 @@ msgstr ""
 "\n"
 "没有问题边，好。%s"
 
-#: solvespace.cpp:1169
+#: solvespace.cpp:1183
 #, c-format
 msgid ""
 "%s\n"
@@ -2508,7 +2552,7 @@ msgstr ""
 "\n"
 "%d条边有问题，不好。%s"
 
-#: solvespace.cpp:1182
+#: solvespace.cpp:1196
 #, c-format
 msgid ""
 "This is SolveSpace version %s.\n"
@@ -2538,12 +2582,12 @@ msgstr ""
 "\n"
 "© 2008-%d Jonathan Westhues等作者\n"
 
-#: solvespace.cpp:1351
+#: solvespace.cpp:1365
 #, fuzzy
 msgid "There is no solid in the active group."
 msgstr "活动组中没有实体。"
 
-#: solvespace.cpp:1359
+#: solvespace.cpp:1373
 #, fuzzy, c-format
 msgid ""
 "Volume:  %s\n"
@@ -2556,22 +2600,22 @@ msgstr ""
 "质量:  %s (%s)\n"
 "质心:  (%s, %s, %s)"
 
-#: solvespace.cpp:1404
+#: solvespace.cpp:1418
 #, fuzzy
 msgid "A part's name can't be empty."
 msgstr "零件名称不能为空。"
 
-#: solvespace.cpp:1490
+#: solvespace.cpp:1504
 #, fuzzy
 msgid "No part has a solid yet."
 msgstr "还没有零件具有实体。"
 
-#: solvespace.cpp:1494
+#: solvespace.cpp:1508
 #, fuzzy, c-format
 msgid "%s%s:  %s, %s, %.2f g;  %s x %s x %s\n"
 msgstr "%s%s:  %s，%s，%.2f g;  %s x %s x %s\n"
 
-#: solvespace.cpp:1501
+#: solvespace.cpp:1515
 #, fuzzy, c-format
 msgid ""
 "\n"
@@ -2580,13 +2624,13 @@ msgstr ""
 "\n"
 "共 %d 个零件，合计 %.2f g。"
 
-#: solvespace.cpp:1603
+#: solvespace.cpp:1617
 #, fuzzy
 msgid ""
 "Parts export as STL, 3MF or STEP; choose a .stl, .3mf or .step file name."
 msgstr "零件可导出为 STL、3MF 或 STEP；请选择 .stl、.3mf 或 .step 文件名。"
 
-#: solvespace.cpp:1638
+#: solvespace.cpp:1652
 #, fuzzy, c-format
 msgid "STEP needs the Open CASCADE kernel; part '%s' was not written."
 msgstr "STEP 需要 Open CASCADE 内核；零件 '%s' 未写入。"
@@ -2765,2377 +2809,2894 @@ msgstr "视图对齐至工作面"
 #: ui/drawtool.cpp:27 ui/properties.cpp:706 ui/properties.cpp:708
 #: ui/properties.cpp:709 ui/selectionmodel.cpp:437 ui/selectionmodel.cpp:447
 #: ui/stylespanel.cpp:116
+#, fuzzy
 msgid "angle"
-msgstr ""
+msgstr "角度"
 
 #: ui/drawtool.cpp:27 ui/drawtool.cpp:28 ui/properties.cpp:176
 #: ui/selectionmodel.cpp:159
+#, fuzzy
 msgid "length"
-msgstr ""
+msgstr "长度"
 
 #: ui/drawtool.cpp:30 ui/properties.cpp:174 ui/properties.cpp:382
 #: ui/selectionmodel.cpp:186 ui/selectionmodel.cpp:195
 #: ui/selectionmodel.cpp:390
+#, fuzzy
 msgid "diameter"
-msgstr ""
+msgstr "直径"
 
 #: ui/drawtool.cpp:31 ui/prefspanel.cpp:103 ui/stylespanel.cpp:109
+#, fuzzy
 msgid "height"
-msgstr ""
+msgstr "高度"
 
 #: ui/drawtool.cpp:31 ui/prefspanel.cpp:102 ui/stylespanel.cpp:75
+#, fuzzy
 msgid "width"
-msgstr ""
+msgstr "宽度"
 
-#: ui/drawtool.cpp:82 ui/menulayout.cpp:144 ui/ngui.cpp:153
+#: ui/drawtool.cpp:82 ui/menulayout.cpp:145 ui/ngui.cpp:153
 #: ui/selectionmodel.cpp:193
+#, fuzzy
 msgid "Circle"
-msgstr ""
+msgstr "圆"
 
-#: ui/drawtool.cpp:82 ui/menulayout.cpp:142 ui/ngui.cpp:151
+#: ui/drawtool.cpp:82 ui/menulayout.cpp:143 ui/ngui.cpp:151
+#, fuzzy
 msgid "Line"
-msgstr ""
+msgstr "直线"
 
-#: ui/drawtool.cpp:82 ui/menulayout.cpp:144 ui/ngui.cpp:152
+#: ui/drawtool.cpp:82 ui/menulayout.cpp:145 ui/ngui.cpp:152
+#, fuzzy
 msgid "Rectangle"
-msgstr ""
+msgstr "矩形"
 
 #: ui/drawtool.cpp:93
+#, fuzzy
 msgid "Remove last segment"
-msgstr ""
+msgstr "删除最后一段"
 
 #: ui/drawtool.cpp:93 ui/drawtool.cpp:96
+#, fuzzy
 msgid "Value"
-msgstr ""
+msgstr "数值"
 
 #: ui/drawtool.cpp:94
+#, fuzzy
 msgid "Finish"
-msgstr ""
+msgstr "完成"
 
 #: ui/drawtool.cpp:96
+#, fuzzy
 msgid "Apply"
-msgstr ""
+msgstr "应用"
 
 #: ui/drawtool.cpp:96
+#, fuzzy
 msgid "Next field"
-msgstr ""
+msgstr "下一项"
 
 #: ui/drawtool.cpp:97
+#, fuzzy
 msgid "Clear / cancel"
-msgstr ""
+msgstr "清除 / 取消"
 
-#: ui/grabtool.cpp:46 ui/menulayout.cpp:78 ui/statusmodel.cpp:49
+#: ui/grabtool.cpp:46 ui/menulayout.cpp:79 ui/statusmodel.cpp:49
+#, fuzzy
 msgid "Grab"
-msgstr ""
+msgstr "抓取"
 
 #: ui/grabtool.cpp:51
+#, fuzzy
 msgid "(lock an axis to use a typed distance)"
-msgstr ""
+msgstr "(锁定一个轴以使用输入的距离)"
 
 #: ui/grabtool.cpp:57
+#, fuzzy
 msgid "Axis"
-msgstr ""
+msgstr "轴"
 
 #: ui/grabtool.cpp:57 ui/selectionmodel.cpp:17
+#, fuzzy
 msgid "Distance"
-msgstr ""
+msgstr "距离"
 
 #: ui/grabtool.cpp:58 ui/statusmodel.cpp:35 ui/statusmodel.cpp:37
+#, fuzzy
 msgid "Cancel"
-msgstr ""
+msgstr "取消"
 
 #: ui/grabtool.cpp:58
+#, fuzzy
 msgid "Confirm"
-msgstr ""
+msgstr "确认"
 
 #: ui/menulayout.cpp:55
+#, fuzzy
 msgid "File"
-msgstr ""
+msgstr "文件"
 
 #: ui/menulayout.cpp:56
+#, fuzzy
 msgid "New"
-msgstr ""
+msgstr "新建"
 
 #: ui/menulayout.cpp:56
+#, fuzzy
 msgid "Open..."
-msgstr ""
+msgstr "打开..."
 
 #: ui/menulayout.cpp:57
+#, fuzzy
 msgid "Open Recent"
-msgstr ""
+msgstr "最近打开的文件"
 
 #: ui/menulayout.cpp:58
+#, fuzzy
 msgid "Save"
-msgstr ""
+msgstr "保存"
 
 #: ui/menulayout.cpp:58
+#, fuzzy
 msgid "Save As..."
-msgstr ""
+msgstr "另存为..."
 
 #: ui/menulayout.cpp:59
+#, fuzzy
 msgid "Import..."
-msgstr ""
+msgstr "导入..."
 
 #: ui/menulayout.cpp:60 ui/prefspanel.cpp:156
+#, fuzzy
 msgid "Export"
-msgstr ""
+msgstr "导出"
 
 #: ui/menulayout.cpp:61
+#, fuzzy
 msgid "2D View..."
-msgstr ""
+msgstr "2D 视图..."
 
-#: ui/menulayout.cpp:61 ui/menulayout.cpp:146
+#: ui/menulayout.cpp:61 ui/menulayout.cpp:147
+#, fuzzy
 msgid "Image..."
-msgstr ""
+msgstr "图像..."
 
 #: ui/menulayout.cpp:62
+#, fuzzy
 msgid "2D Section..."
-msgstr ""
+msgstr "2D 截面..."
 
 #: ui/menulayout.cpp:63
+#, fuzzy
 msgid "3D Wireframe..."
-msgstr ""
+msgstr "3D 线框..."
 
 #: ui/menulayout.cpp:64
+#, fuzzy
 msgid "Triangle Mesh..."
-msgstr ""
+msgstr "三角网格..."
 
 #: ui/menulayout.cpp:65
+#, fuzzy
 msgid "Parts, One File Each..."
-msgstr ""
+msgstr "零件，每个一个文件..."
 
 #: ui/menulayout.cpp:66
+#, fuzzy
 msgid "Parts List (CSV)..."
-msgstr ""
+msgstr "零件表 (CSV)..."
 
-#: ui/menulayout.cpp:67
-msgid "Surfaces..."
-msgstr ""
+#: ui/menulayout.cpp:67#, fuzzy
+msgid "Assembly (STEP)..."
+msgstr "装配体 (STEP)..."
 
 #: ui/menulayout.cpp:68
-msgid "Quit"
-msgstr ""
+#, fuzzy
+msgid "Surfaces..."
+msgstr "曲面..."
 
 #: ui/menulayout.cpp:69
+#, fuzzy
+msgid "Quit"
+msgstr "退出"
+
+#: ui/menulayout.cpp:70
+#, fuzzy
 msgid "Edit"
-msgstr ""
+msgstr "编辑"
 
-#: ui/menulayout.cpp:70
+#: ui/menulayout.cpp:71
+#, fuzzy
 msgid "Redo"
-msgstr ""
+msgstr "重做"
 
-#: ui/menulayout.cpp:70
+#: ui/menulayout.cpp:71
+#, fuzzy
 msgid "Undo"
-msgstr ""
-
-#: ui/menulayout.cpp:79
-msgid "Rotate Imported 90°"
-msgstr ""
+msgstr "撤销"
 
 #: ui/menulayout.cpp:80
-msgid "Regenerate All"
-msgstr ""
+#, fuzzy
+msgid "Rotate Imported 90°"
+msgstr "将导入的零件旋转 90°"
 
 #: ui/menulayout.cpp:81
-msgid "Line Styles..."
-msgstr ""
+#, fuzzy
+msgid "Regenerate All"
+msgstr "全部重新生成"
 
 #: ui/menulayout.cpp:82
+#, fuzzy
+msgid "Line Styles..."
+msgstr "线的样式..."
+
+#: ui/menulayout.cpp:83
+#, fuzzy
 msgid "Preferences..."
-msgstr ""
+msgstr "首选项..."
 
-#: ui/menulayout.cpp:83 ui/ngui.cpp:170 ui/panels.cpp:173
+#: ui/menulayout.cpp:84 ui/ngui.cpp:170 ui/panels.cpp:173
+#, fuzzy
 msgid "View"
-msgstr ""
+msgstr "查看"
 
-#: ui/menulayout.cpp:84
+#: ui/menulayout.cpp:85
+#, fuzzy
 msgid "Zoom In"
-msgstr ""
+msgstr "放大"
 
-#: ui/menulayout.cpp:84
+#: ui/menulayout.cpp:85
+#, fuzzy
 msgid "Zoom Out"
-msgstr ""
-
-#: ui/menulayout.cpp:86
-msgid "Frame Selection"
-msgstr ""
+msgstr "缩小"
 
 #: ui/menulayout.cpp:87
-msgid "Center View at Point"
-msgstr ""
+#, fuzzy
+msgid "Frame Selection"
+msgstr "框选显示所选"
 
 #: ui/menulayout.cpp:88
+#, fuzzy
+msgid "Center View at Point"
+msgstr "视图中心置于点"
+
+#: ui/menulayout.cpp:89
+#, fuzzy
 msgid "Standard Views"
-msgstr ""
+msgstr "标准视图"
 
-#: ui/menulayout.cpp:89 ui/ngui.cpp:174 ui/viewcubemodel.cpp:18
+#: ui/menulayout.cpp:90 ui/ngui.cpp:174 ui/viewcubemodel.cpp:18
+#, fuzzy
 msgid "Back"
-msgstr ""
+msgstr "后视"
 
-#: ui/menulayout.cpp:89 ui/ngui.cpp:172 ui/viewcubemodel.cpp:17
+#: ui/menulayout.cpp:90 ui/ngui.cpp:172 ui/viewcubemodel.cpp:17
+#, fuzzy
 msgid "Front"
-msgstr ""
+msgstr "前视"
 
-#: ui/menulayout.cpp:90 ui/ngui.cpp:173 ui/viewcubemodel.cpp:20
+#: ui/menulayout.cpp:91 ui/ngui.cpp:173 ui/viewcubemodel.cpp:20
+#, fuzzy
 msgid "Left"
-msgstr ""
+msgstr "左视"
 
-#: ui/menulayout.cpp:90 ui/ngui.cpp:171 ui/viewcubemodel.cpp:19
+#: ui/menulayout.cpp:91 ui/ngui.cpp:171 ui/viewcubemodel.cpp:19
+#, fuzzy
 msgid "Right"
-msgstr ""
+msgstr "右视"
 
-#: ui/menulayout.cpp:91 ui/ngui.cpp:173 ui/viewcubemodel.cpp:22
+#: ui/menulayout.cpp:92 ui/ngui.cpp:173 ui/viewcubemodel.cpp:22
+#, fuzzy
 msgid "Bottom"
-msgstr ""
+msgstr "仰视"
 
-#: ui/menulayout.cpp:91 ui/ngui.cpp:171 ui/viewcubemodel.cpp:21
+#: ui/menulayout.cpp:92 ui/ngui.cpp:171 ui/viewcubemodel.cpp:21
+#, fuzzy
 msgid "Top"
-msgstr ""
-
-#: ui/menulayout.cpp:92
-msgid "Nearest Isometric"
-msgstr ""
+msgstr "俯视"
 
 #: ui/menulayout.cpp:93
-msgid "Nearest Orthographic"
-msgstr ""
+#, fuzzy
+msgid "Nearest Isometric"
+msgstr "最近的等轴测"
 
 #: ui/menulayout.cpp:94
-msgid "Align to Workplane"
-msgstr ""
+#, fuzzy
+msgid "Nearest Orthographic"
+msgstr "最近的正交视图"
 
-#: ui/menulayout.cpp:96
-msgid "Perspective"
-msgstr ""
+#: ui/menulayout.cpp:95
+#, fuzzy
+msgid "Align to Workplane"
+msgstr "对齐到工作面"
 
 #: ui/menulayout.cpp:97
+#, fuzzy
+msgid "Perspective"
+msgstr "透视"
+
+#: ui/menulayout.cpp:98
+#, fuzzy
 msgid "Exploded View"
-msgstr ""
+msgstr "爆炸视图"
 
-#: ui/menulayout.cpp:99
+#: ui/menulayout.cpp:100
+#, fuzzy
 msgid "Snap Grid"
-msgstr ""
+msgstr "吸附网格"
 
-#: ui/menulayout.cpp:99
+#: ui/menulayout.cpp:100
+#, fuzzy
 msgid "Units"
-msgstr ""
+msgstr "单位"
 
-#: ui/menulayout.cpp:100 ui/panels.cpp:196
+#: ui/menulayout.cpp:101 ui/panels.cpp:196
+#, fuzzy
 msgid "Outliner"
-msgstr ""
+msgstr "大纲"
 
-#: ui/menulayout.cpp:101 ui/panels.cpp:150
+#: ui/menulayout.cpp:102 ui/panels.cpp:150
+#, fuzzy
 msgid "Properties"
-msgstr ""
+msgstr "属性"
 
-#: ui/menulayout.cpp:102 ui/panels.cpp:156
+#: ui/menulayout.cpp:103 ui/panels.cpp:156
+#, fuzzy
 msgid "Problems"
-msgstr ""
-
-#: ui/menulayout.cpp:103
-msgid "Tool Shelf"
-msgstr ""
+msgstr "问题"
 
 #: ui/menulayout.cpp:104
-msgid "Menu Bar"
-msgstr ""
+#, fuzzy
+msgid "Tool Shelf"
+msgstr "工具栏"
 
 #: ui/menulayout.cpp:105
+#, fuzzy
+msgid "Menu Bar"
+msgstr "菜单栏"
+
+#: ui/menulayout.cpp:106
+#, fuzzy
 msgid "Command Palette..."
-msgstr ""
-
-#: ui/menulayout.cpp:106
-msgid "Hide Group"
-msgstr ""
-
-#: ui/menulayout.cpp:106
-msgid "Isolate Group"
-msgstr ""
+msgstr "命令面板..."
 
 #: ui/menulayout.cpp:107
-msgid "Show All Groups"
-msgstr ""
+#, fuzzy
+msgid "Hide Group"
+msgstr "隐藏组"
+
+#: ui/menulayout.cpp:107
+#, fuzzy
+msgid "Isolate Group"
+msgstr "单独显示组"
 
 #: ui/menulayout.cpp:108
-msgid "View Settings..."
-msgstr ""
+#, fuzzy
+msgid "Show All Groups"
+msgstr "显示所有组"
 
 #: ui/menulayout.cpp:109
-msgid "Light Theme"
-msgstr ""
+#, fuzzy
+msgid "View Settings..."
+msgstr "视图设置..."
 
 #: ui/menulayout.cpp:110
-msgid "Full Screen"
-msgstr ""
+#, fuzzy
+msgid "Light Theme"
+msgstr "浅色主题"
 
 #: ui/menulayout.cpp:111
+#, fuzzy
+msgid "Full Screen"
+msgstr "全屏"
+
+#: ui/menulayout.cpp:112
+#, fuzzy
 msgid "New Group"
-msgstr ""
+msgstr "新建组"
 
-#: ui/menulayout.cpp:112
+#: ui/menulayout.cpp:113
+#, fuzzy
 msgid "New Part"
-msgstr ""
+msgstr "新建零件"
 
-#: ui/menulayout.cpp:112
+#: ui/menulayout.cpp:113
+#, fuzzy
 msgid "Split Part"
-msgstr ""
+msgstr "拆分零件"
 
-#: ui/menulayout.cpp:113 ui/outliner.cpp:155
+#: ui/menulayout.cpp:114 ui/outliner.cpp:155
+#, fuzzy
 msgid "Joints"
-msgstr ""
-
-#: ui/menulayout.cpp:114
-msgid "Revolute Joint"
-msgstr ""
+msgstr "关节"
 
 #: ui/menulayout.cpp:115
-msgid "Slider Joint"
-msgstr ""
+#, fuzzy
+msgid "Revolute Joint"
+msgstr "旋转关节"
 
 #: ui/menulayout.cpp:116
-msgid "Cylindrical Joint"
-msgstr ""
+#, fuzzy
+msgid "Slider Joint"
+msgstr "滑块关节"
 
 #: ui/menulayout.cpp:117
-msgid "Planar Joint"
-msgstr ""
+#, fuzzy
+msgid "Cylindrical Joint"
+msgstr "圆柱关节"
 
 #: ui/menulayout.cpp:118
-msgid "Ball Joint"
-msgstr ""
+#, fuzzy
+msgid "Planar Joint"
+msgstr "平面关节"
 
 #: ui/menulayout.cpp:119
-msgid "Gear Coupling"
-msgstr ""
+#, fuzzy
+msgid "Ball Joint"
+msgstr "球关节"
 
 #: ui/menulayout.cpp:120
-msgid "Fit Joint"
-msgstr ""
+#, fuzzy
+msgid "Gear Coupling"
+msgstr "齿轮耦合"
 
 #: ui/menulayout.cpp:121
-msgid "Sketch in 3D"
-msgstr ""
+#, fuzzy
+msgid "Fit Joint"
+msgstr "配合关节"
 
 #: ui/menulayout.cpp:122
-msgid "Sketch in New Workplane"
-msgstr ""
+#, fuzzy
+msgid "Sketch in 3D"
+msgstr "在三维空间绘制"
 
 #: ui/menulayout.cpp:123
-msgid "Extrude"
-msgstr ""
+#, fuzzy
+msgid "Sketch in New Workplane"
+msgstr "在新工作面绘制"
 
 #: ui/menulayout.cpp:124
-msgid "Extrude as a Cut"
-msgstr ""
+#, fuzzy
+msgid "Extrude"
+msgstr "挤出"
 
 #: ui/menulayout.cpp:125
+#, fuzzy
+msgid "Extrude as a Cut"
+msgstr "挤出切除"
+
+#: ui/menulayout.cpp:126
+#, fuzzy
 msgid "Revolve"
-msgstr ""
-
-#: ui/menulayout.cpp:126
-msgid "Helix"
-msgstr ""
-
-#: ui/menulayout.cpp:126
-msgid "Lathe"
-msgstr ""
+msgstr "旋转"
 
 #: ui/menulayout.cpp:127
-msgid "Fillet Edges"
-msgstr ""
+#, fuzzy
+msgid "Helix"
+msgstr "螺旋"
+
+#: ui/menulayout.cpp:127
+#, fuzzy
+msgid "Lathe"
+msgstr "转圈"
 
 #: ui/menulayout.cpp:128
+#, fuzzy
+msgid "Fillet Edges"
+msgstr "圆角边"
+
+#: ui/menulayout.cpp:129
+#, fuzzy
 msgid "Chamfer Edges"
-msgstr ""
+msgstr "倒角边"
 
-#: ui/menulayout.cpp:129
+#: ui/menulayout.cpp:130
+#, fuzzy
 msgid "Draft Faces"
-msgstr ""
+msgstr "拔模面"
 
-#: ui/menulayout.cpp:129
+#: ui/menulayout.cpp:130
+#, fuzzy
 msgid "Shell"
-msgstr ""
-
-#: ui/menulayout.cpp:130
-msgid "Hole"
-msgstr ""
-
-#: ui/menulayout.cpp:130
-msgid "Loft"
-msgstr ""
+msgstr "抽壳"
 
 #: ui/menulayout.cpp:131
-msgid "Sweep"
-msgstr ""
+#, fuzzy
+msgid "Hole"
+msgstr "孔"
 
-#: ui/menulayout.cpp:133
-msgid "Linear Pattern"
-msgstr ""
+#: ui/menulayout.cpp:131
+#, fuzzy
+msgid "Loft"
+msgstr "放样"
+
+#: ui/menulayout.cpp:132
+#, fuzzy
+msgid "Sweep"
+msgstr "扫掠"
 
 #: ui/menulayout.cpp:134
-msgid "Circular Pattern"
-msgstr ""
+#, fuzzy
+msgid "Linear Pattern"
+msgstr "线性阵列"
 
 #: ui/menulayout.cpp:135
+#, fuzzy
+msgid "Circular Pattern"
+msgstr "环形阵列"
+
+#: ui/menulayout.cpp:136
+#, fuzzy
 msgid "Link Part..."
-msgstr ""
+msgstr "链接零件..."
 
-#: ui/menulayout.cpp:137 ui/statusmodel.cpp:50
+#: ui/menulayout.cpp:138 ui/statusmodel.cpp:50
+#, fuzzy
 msgid "Sketch"
-msgstr ""
-
-#: ui/menulayout.cpp:138
-msgid "In Workplane"
-msgstr ""
+msgstr "绘图"
 
 #: ui/menulayout.cpp:139
+#, fuzzy
+msgid "In Workplane"
+msgstr "在工作面内"
+
+#: ui/menulayout.cpp:140
+#, fuzzy
 msgid "Anywhere in 3D"
-msgstr ""
+msgstr "三维空间中任意位置"
 
-#: ui/menulayout.cpp:141 ui/ngui.cpp:155 ui/selectionmodel.cpp:130
+#: ui/menulayout.cpp:142 ui/ngui.cpp:155 ui/selectionmodel.cpp:130
+#, fuzzy
 msgid "Point"
-msgstr ""
+msgstr "点"
 
-#: ui/menulayout.cpp:141 ui/ngui.cpp:156 ui/selectionmodel.cpp:147
+#: ui/menulayout.cpp:142 ui/ngui.cpp:156 ui/selectionmodel.cpp:147
+#, fuzzy
 msgid "Workplane"
-msgstr ""
+msgstr "工作面"
 
-#: ui/menulayout.cpp:143
+#: ui/menulayout.cpp:144
+#, fuzzy
 msgid "Construction Line"
-msgstr ""
+msgstr "辅助线"
 
-#: ui/menulayout.cpp:145 ui/ngui.cpp:153
+#: ui/menulayout.cpp:146 ui/ngui.cpp:153
+#, fuzzy
 msgid "Arc"
-msgstr ""
+msgstr "圆弧"
 
-#: ui/menulayout.cpp:145 ui/ngui.cpp:154
+#: ui/menulayout.cpp:146 ui/ngui.cpp:154
+#, fuzzy
 msgid "Spline"
-msgstr ""
+msgstr "样条曲线"
 
-#: ui/menulayout.cpp:146 ui/ngui.cpp:155
+#: ui/menulayout.cpp:147 ui/ngui.cpp:155
+#, fuzzy
 msgid "Text"
-msgstr ""
-
-#: ui/menulayout.cpp:148
-msgid "Tangent Arc at Point"
-msgstr ""
+msgstr "文本"
 
 #: ui/menulayout.cpp:149
+#, fuzzy
+msgid "Tangent Arc at Point"
+msgstr "点处相切圆弧"
+
+#: ui/menulayout.cpp:150
+#, fuzzy
 msgid "Split at Intersections"
-msgstr ""
+msgstr "在交点处拆分"
 
-#: ui/menulayout.cpp:150 ui/ngui.cpp:167 ui/statusmodel.cpp:47
+#: ui/menulayout.cpp:151 ui/ngui.cpp:167 ui/statusmodel.cpp:47
+#, fuzzy
 msgid "Constrain"
-msgstr ""
-
-#: ui/menulayout.cpp:151
-msgid "Distance / Diameter"
-msgstr ""
+msgstr "约束"
 
 #: ui/menulayout.cpp:152
-msgid "Reference Dimension"
-msgstr ""
+#, fuzzy
+msgid "Distance / Diameter"
+msgstr "距离 / 直径"
 
 #: ui/menulayout.cpp:153
-msgid "Angle / Equal Angle"
-msgstr ""
+#, fuzzy
+msgid "Reference Dimension"
+msgstr "参考尺寸"
 
 #: ui/menulayout.cpp:154
-msgid "Reference Angle"
-msgstr ""
+#, fuzzy
+msgid "Angle / Equal Angle"
+msgstr "角度 / 等角"
 
 #: ui/menulayout.cpp:155
-msgid "Supplementary Angle"
-msgstr ""
+#, fuzzy
+msgid "Reference Angle"
+msgstr "参考角度"
 
 #: ui/menulayout.cpp:156
+#, fuzzy
+msgid "Supplementary Angle"
+msgstr "补角"
+
+#: ui/menulayout.cpp:157
+#, fuzzy
 msgid "Toggle Reference"
-msgstr ""
+msgstr "切换参考"
 
-#: ui/menulayout.cpp:157 ui/selectionmodel.cpp:39
+#: ui/menulayout.cpp:158 ui/selectionmodel.cpp:39
+#, fuzzy
 msgid "Horizontal"
-msgstr ""
+msgstr "水平"
 
-#: ui/menulayout.cpp:157 ui/selectionmodel.cpp:40
+#: ui/menulayout.cpp:158 ui/selectionmodel.cpp:40
+#, fuzzy
 msgid "Vertical"
-msgstr ""
-
-#: ui/menulayout.cpp:158
-msgid "On Point / Curve / Plane"
-msgstr ""
+msgstr "竖直"
 
 #: ui/menulayout.cpp:159
-msgid "Equal Length / Radius"
-msgstr ""
+#, fuzzy
+msgid "On Point / Curve / Plane"
+msgstr "在点 / 曲线 / 平面上"
 
 #: ui/menulayout.cpp:160
-msgid "Length / Arc Ratio"
-msgstr ""
+#, fuzzy
+msgid "Equal Length / Radius"
+msgstr "等长 / 等半径"
 
 #: ui/menulayout.cpp:161
+#, fuzzy
+msgid "Length / Arc Ratio"
+msgstr "长度 / 圆弧长度比"
+
+#: ui/menulayout.cpp:162
+#, fuzzy
 msgid "Length / Arc Difference"
-msgstr ""
+msgstr "长度 / 圆弧长度差"
 
-#: ui/menulayout.cpp:162 ui/selectionmodel.cpp:38
+#: ui/menulayout.cpp:163 ui/selectionmodel.cpp:38
+#, fuzzy
 msgid "Midpoint"
-msgstr ""
+msgstr "中点"
 
-#: ui/menulayout.cpp:162 ui/selectionmodel.cpp:34
+#: ui/menulayout.cpp:163 ui/selectionmodel.cpp:34
+#, fuzzy
 msgid "Symmetric"
-msgstr ""
+msgstr "对称"
 
-#: ui/menulayout.cpp:163
+#: ui/menulayout.cpp:164
+#, fuzzy
 msgid "Parallel / Tangent"
-msgstr ""
+msgstr "平行 / 相切"
 
-#: ui/menulayout.cpp:164 ui/selectionmodel.cpp:49
+#: ui/menulayout.cpp:165 ui/selectionmodel.cpp:49
+#, fuzzy
 msgid "Perpendicular"
-msgstr ""
-
-#: ui/menulayout.cpp:165
-msgid "Same Orientation"
-msgstr ""
+msgstr "垂直"
 
 #: ui/menulayout.cpp:166
+#, fuzzy
+msgid "Same Orientation"
+msgstr "方向相同"
+
+#: ui/menulayout.cpp:167
+#, fuzzy
 msgid "Lock Point Where Dragged"
-msgstr ""
+msgstr "拖动处锁定点"
 
-#: ui/menulayout.cpp:168
+#: ui/menulayout.cpp:169
+#, fuzzy
 msgid "Inspect"
-msgstr ""
-
-#: ui/menulayout.cpp:169
-msgid "Measure Area"
-msgstr ""
-
-#: ui/menulayout.cpp:169
-msgid "Measure Volume"
-msgstr ""
+msgstr "检查"
 
 #: ui/menulayout.cpp:170
-msgid "Measure Perimeter"
-msgstr ""
+#, fuzzy
+msgid "Measure Area"
+msgstr "测量面积"
+
+#: ui/menulayout.cpp:170
+#, fuzzy
+msgid "Measure Volume"
+msgstr "测量体积"
 
 #: ui/menulayout.cpp:171
-msgid "Interfering Parts"
-msgstr ""
+#, fuzzy
+msgid "Measure Perimeter"
+msgstr "测量周长"
 
 #: ui/menulayout.cpp:172
-msgid "Naked Edges"
-msgstr ""
+#, fuzzy
+msgid "Interfering Parts"
+msgstr "干涉零件"
 
 #: ui/menulayout.cpp:173
-msgid "Center of Mass"
-msgstr ""
+#, fuzzy
+msgid "Naked Edges"
+msgstr "开放边"
 
 #: ui/menulayout.cpp:174
-msgid "Mass Properties..."
-msgstr ""
+#, fuzzy
+msgid "Center of Mass"
+msgstr "质心"
 
 #: ui/menulayout.cpp:175
-msgid "Parts List..."
-msgstr ""
-
-#: ui/menulayout.cpp:176 ui/ngui.cpp:188
-msgid "Design Pose"
-msgstr ""
+#, fuzzy
+msgid "Mass Properties..."
+msgstr "质量属性..."
 
 #: ui/menulayout.cpp:176
-msgid "Fit Table..."
-msgstr ""
+#, fuzzy
+msgid "Parts List..."
+msgstr "零件表..."
 
-#: ui/menulayout.cpp:178
-msgid "Underconstrained Points"
-msgstr ""
+#: ui/menulayout.cpp:177 ui/ngui.cpp:188
+#, fuzzy
+msgid "Design Pose"
+msgstr "设计姿态"
+
+#: ui/menulayout.cpp:177
+#, fuzzy
+msgid "Fit Table..."
+msgstr "配合表..."
 
 #: ui/menulayout.cpp:179
-msgid "Trace Point"
-msgstr ""
+#, fuzzy
+msgid "Underconstrained Points"
+msgstr "欠约束的点"
 
 #: ui/menulayout.cpp:180
-msgid "Stop Tracing..."
-msgstr ""
+#, fuzzy
+msgid "Trace Point"
+msgstr "跟踪点"
 
 #: ui/menulayout.cpp:181
-msgid "Step Dimension..."
-msgstr ""
+#, fuzzy
+msgid "Stop Tracing..."
+msgstr "停止跟踪..."
 
 #: ui/menulayout.cpp:182
+#, fuzzy
+msgid "Step Dimension..."
+msgstr "尺寸步进..."
+
+#: ui/menulayout.cpp:183
+#, fuzzy
 msgid "Help"
-msgstr ""
+msgstr "帮助"
 
-#: ui/menulayout.cpp:183 ui/panels.cpp:144
+#: ui/menulayout.cpp:184 ui/panels.cpp:144
+#, fuzzy
 msgid "Keyboard Shortcuts"
-msgstr ""
+msgstr "键盘快捷键"
 
-#: ui/menulayout.cpp:184
+#: ui/menulayout.cpp:185
+#, fuzzy
 msgid "GitHub Commit"
-msgstr ""
+msgstr "GitHub 提交"
 
-#: ui/menulayout.cpp:184
+#: ui/menulayout.cpp:185
+#, fuzzy
 msgid "Website / Manual"
-msgstr ""
+msgstr "网站 / 手册"
 
-#: ui/menulayout.cpp:185 ui/prefspanel.cpp:163
+#: ui/menulayout.cpp:186 ui/prefspanel.cpp:163
+#, fuzzy
 msgid "About"
-msgstr ""
+msgstr "关于"
 
 #: ui/ngui.cpp:150 ui/statusmodel.cpp:46
+#, fuzzy
 msgid "Add"
-msgstr ""
+msgstr "添加"
 
 #: ui/ngui.cpp:172
+#, fuzzy
 msgid "Isometric"
-msgstr ""
+msgstr "等轴测"
 
 #: ui/ngui.cpp:174
+#, fuzzy
 msgid "Frame Selected"
-msgstr ""
+msgstr "框选显示所选"
 
 #: ui/ngui.cpp:175
+#, fuzzy
 msgid "Grid"
-msgstr ""
+msgstr "网格"
 
 #: ui/ngui.cpp:182 ui/properties.cpp:686
+#, fuzzy
 msgid "Joint"
-msgstr ""
+msgstr "关节"
 
 #: ui/ngui.cpp:183
+#, fuzzy
 msgid "Revolute"
-msgstr ""
+msgstr "旋转"
 
 #: ui/ngui.cpp:184
+#, fuzzy
 msgid "Slider"
-msgstr ""
+msgstr "滑块"
 
 #: ui/ngui.cpp:185
+#, fuzzy
 msgid "Cylindrical"
-msgstr ""
+msgstr "圆柱"
 
 #: ui/ngui.cpp:186
+#, fuzzy
 msgid "Planar"
-msgstr ""
+msgstr "平面"
 
 #: ui/ngui.cpp:187
+#, fuzzy
 msgid "Ball"
-msgstr ""
+msgstr "球"
 
 #: ui/ngui.cpp:187
+#, fuzzy
 msgid "Gear"
-msgstr ""
+msgstr "齿轮"
 
 #: ui/ngui.cpp:188
+#, fuzzy
 msgid "Fit"
-msgstr ""
+msgstr "配合"
 
 #: ui/outliner.cpp:49 ui/properties.cpp:271
+#, fuzzy
 msgid "Group"
-msgstr ""
+msgstr "组"
 
 #: ui/outliner.cpp:132
+#, fuzzy
 msgid "Rename"
-msgstr ""
+msgstr "重命名"
 
 #: ui/outliner.cpp:137
+#, fuzzy
 msgid "Isolate"
-msgstr ""
+msgstr "单独显示"
 
 #: ui/outlinermodel.cpp:60
+#, fuzzy
 msgid "Origin"
-msgstr ""
+msgstr "原点"
 
 #: ui/outlinermodel.cpp:83
+#, fuzzy
 msgid "Skeleton"
-msgstr ""
+msgstr "骨架"
 
 #: ui/palettewidget.cpp:47
+#, fuzzy
 msgid "Type a command..."
-msgstr ""
+msgstr "输入命令..."
 
 #: ui/panels.cpp:135
+#, fuzzy
 msgid "Tools"
-msgstr ""
+msgstr "工具"
 
 #: ui/panels.cpp:162
+#, fuzzy
 msgid "Preferences"
-msgstr ""
+msgstr "首选项"
 
 #: ui/panels.cpp:168
+#, fuzzy
 msgid "Styles"
-msgstr ""
+msgstr "样式"
 
 #: ui/panels.cpp:178
+#, fuzzy
 msgid "Paste Transformed"
-msgstr ""
+msgstr "变换后粘贴"
 
 #: ui/panels.cpp:184
+#, fuzzy
 msgid "Step Dimension"
-msgstr ""
+msgstr "尺寸步进"
 
 #: ui/panels.cpp:190
+#, fuzzy
 msgid "Tangent Arc"
-msgstr ""
+msgstr "相切圆弧"
 
 #: ui/prefspanel.cpp:30
+#, fuzzy
 msgid "model colours"
-msgstr ""
+msgstr "模型颜色"
 
 #: ui/prefspanel.cpp:41
+#, fuzzy
 msgid "chord tolerance (%)"
-msgstr ""
+msgstr "弦公差 (%)"
 
 #: ui/prefspanel.cpp:42
-#, c-format
+#, fuzzy, c-format
 msgid "%g mm, %d triangles"
-msgstr ""
+msgstr "%g mm，%d 个三角形"
 
 #: ui/prefspanel.cpp:44 ui/prefspanel.cpp:72
+#, fuzzy
 msgid "max piecewise linear segments"
-msgstr ""
+msgstr "分段线性的最大段数"
 
 #: ui/prefspanel.cpp:45
+#, fuzzy
 msgid "snap grid spacing"
-msgstr ""
+msgstr "吸附网格间距"
 
 #: ui/prefspanel.cpp:46
+#, fuzzy
 msgid "digits after the decimal point (distances)"
-msgstr ""
+msgstr "小数位数（距离）"
 
 #: ui/prefspanel.cpp:48 ui/prefspanel.cpp:51
-#, c-format
+#, fuzzy, c-format
 msgid "e.g. %s"
-msgstr ""
+msgstr "例如 %s"
 
 #: ui/prefspanel.cpp:49
+#, fuzzy
 msgid "digits after the decimal point (angles)"
-msgstr ""
+msgstr "小数位数（角度）"
 
 #: ui/prefspanel.cpp:52
+#, fuzzy
 msgid "use SI prefixes for distances"
-msgstr ""
+msgstr "距离使用 SI 前缀"
 
 #: ui/prefspanel.cpp:53
+#, fuzzy
 msgid "draw triangle back faces in red"
-msgstr ""
+msgstr "以红色绘制三角形背面"
 
 #: ui/prefspanel.cpp:54
+#, fuzzy
 msgid "check sketch for closed contour"
-msgstr ""
+msgstr "检查草图的闭合轮廓"
 
 #: ui/prefspanel.cpp:55
+#, fuzzy
 msgid "show areas of closed contours"
-msgstr ""
+msgstr "显示闭合轮廓的面积"
 
 #: ui/prefspanel.cpp:56
+#, fuzzy
 msgid "enable automatic line constraints"
-msgstr ""
+msgstr "启用自动直线约束"
 
 #: ui/prefspanel.cpp:57
+#, fuzzy
 msgid "edit newly added dimensions"
-msgstr ""
+msgstr "编辑新添加的尺寸"
 
 #: ui/prefspanel.cpp:58
+#, fuzzy
 msgid "arc default is diameter"
-msgstr ""
+msgstr "圆弧默认标注直径"
 
 #: ui/prefspanel.cpp:59
+#, fuzzy
 msgid "display the full path in the title bar"
-msgstr ""
+msgstr "在标题栏显示完整路径"
 
 #: ui/prefspanel.cpp:63
+#, fuzzy
 msgid "use camera mouse navigation"
-msgstr ""
+msgstr "使用相机式鼠标导航"
 
 #: ui/prefspanel.cpp:64
+#, fuzzy
 msgid "use turntable mouse navigation"
-msgstr ""
+msgstr "使用转台式鼠标导航"
 
 #: ui/prefspanel.cpp:65
+#, fuzzy
 msgid "animation speed (ms; 0 to disable)"
-msgstr ""
+msgstr "动画速度（毫秒；0 为关闭）"
 
 #: ui/prefspanel.cpp:70
+#, fuzzy
 msgid "chord tolerance (mm)"
-msgstr ""
+msgstr "弦公差 (mm)"
 
 #: ui/prefspanel.cpp:74
+#, fuzzy
 msgid "scale factor 1: (1:1 = mm, 1:25.4 = inch)"
-msgstr ""
+msgstr "比例 1:（1:1 = mm，1:25.4 = 英寸）"
 
 #: ui/prefspanel.cpp:76
+#, fuzzy
 msgid "cutter radius offset (0 = none)"
-msgstr ""
+msgstr "刀具半径偏移（0 = 无）"
 
 #: ui/prefspanel.cpp:77
+#, fuzzy
 msgid "export shaded 2d triangles"
-msgstr ""
+msgstr "导出带阴影的 2D 三角形"
 
 #: ui/prefspanel.cpp:79
+#, fuzzy
 msgid "curves as piecewise linear (the cutter radius is not zero)"
-msgstr ""
+msgstr "曲线按分段线性处理（刀具半径不为零）"
 
 #: ui/prefspanel.cpp:81
+#, fuzzy
 msgid "export curves as piecewise linear"
-msgstr ""
+msgstr "导出时曲线按分段线性处理"
 
 #: ui/prefspanel.cpp:83
+#, fuzzy
 msgid "fix white exported lines"
-msgstr ""
+msgstr "修正导出的白色线条"
 
 #: ui/prefspanel.cpp:84
+#, fuzzy
 msgid "export background color"
-msgstr ""
+msgstr "导出背景色"
 
 #: ui/prefspanel.cpp:85
+#, fuzzy
 msgid "lay parts flat on export"
-msgstr ""
+msgstr "导出时将零件平放"
 
 #: ui/prefspanel.cpp:87
+#, fuzzy
 msgid "canvas size"
-msgstr ""
+msgstr "画布尺寸"
 
 #: ui/prefspanel.cpp:89
+#, fuzzy
 msgid "fixed"
-msgstr ""
+msgstr "固定"
 
 #: ui/prefspanel.cpp:93
+#, fuzzy
 msgid "auto (margins)"
-msgstr ""
+msgstr "自动（边距）"
 
 #: ui/prefspanel.cpp:97 ui/stylespanel.cpp:121
+#, fuzzy
 msgid "left"
-msgstr ""
+msgstr "左"
 
 #: ui/prefspanel.cpp:98 ui/stylespanel.cpp:125
+#, fuzzy
 msgid "right"
-msgstr ""
+msgstr "右"
 
 #: ui/prefspanel.cpp:99 ui/stylespanel.cpp:126
+#, fuzzy
 msgid "bottom"
-msgstr ""
+msgstr "下"
 
 #: ui/prefspanel.cpp:100 ui/stylespanel.cpp:130
+#, fuzzy
 msgid "top"
-msgstr ""
+msgstr "上"
 
 #: ui/prefspanel.cpp:104
+#, fuzzy
 msgid "offset x"
-msgstr ""
+msgstr "X 偏移"
 
 #: ui/prefspanel.cpp:105
+#, fuzzy
 msgid "offset y"
-msgstr ""
+msgstr "Y 偏移"
 
 #: ui/prefspanel.cpp:108
+#, fuzzy
 msgid "g code"
-msgstr ""
+msgstr "G 代码"
 
 #: ui/prefspanel.cpp:109 ui/properties.cpp:117
+#, fuzzy
 msgid "depth"
-msgstr ""
+msgstr "深度"
 
 #: ui/prefspanel.cpp:110
+#, fuzzy
 msgid "passes"
-msgstr ""
+msgstr "次数"
 
 #: ui/prefspanel.cpp:111
+#, fuzzy
 msgid "feed"
-msgstr ""
+msgstr "进给"
 
 #: ui/prefspanel.cpp:112
+#, fuzzy
 msgid "plunge feed"
-msgstr ""
+msgstr "下刀进给"
 
 #: ui/prefspanel.cpp:117
+#, fuzzy
 msgid "dark theme"
-msgstr ""
+msgstr "深色主题"
 
 #: ui/prefspanel.cpp:119
+#, fuzzy
 msgid "light theme"
-msgstr ""
+msgstr "浅色主题"
 
 #: ui/prefspanel.cpp:122
+#, fuzzy
 msgid "classic keys"
-msgstr ""
+msgstr "经典快捷键"
 
 #: ui/prefspanel.cpp:122
+#, fuzzy
 msgid "modern keys"
-msgstr ""
+msgstr "现代快捷键"
 
 #: ui/prefspanel.cpp:133
+#, fuzzy
 msgid "colour constraints by state"
-msgstr ""
+msgstr "按状态为约束着色"
 
 #: ui/prefspanel.cpp:135
+#, fuzzy
 msgid "material for mass properties"
-msgstr ""
+msgstr "质量属性的材料"
 
 #: ui/prefspanel.cpp:146
+#, fuzzy
 msgid "density (g/cm³)"
-msgstr ""
+msgstr "密度 (g/cm³)"
 
 #: ui/prefspanel.cpp:154
+#, fuzzy
 msgid "Display"
-msgstr ""
+msgstr "显示"
 
 #: ui/prefspanel.cpp:155
+#, fuzzy
 msgid "Navigation"
-msgstr ""
+msgstr "导航"
 
 #: ui/prefspanel.cpp:157
+#, fuzzy
 msgid "Solver and files"
-msgstr ""
+msgstr "求解器与文件"
 
 #: ui/prefspanel.cpp:158
+#, fuzzy
 msgid "redundant constraint timeout (ms)"
-msgstr ""
+msgstr "冗余约束超时 (毫秒)"
 
 #: ui/prefspanel.cpp:160
+#, fuzzy
 msgid "autosave interval (minutes)"
-msgstr ""
+msgstr "自动保存间隔（分钟）"
 
 #: ui/prefspanel.cpp:166
-#, c-format
+#, fuzzy, c-format
 msgid "gl vendor   %s"
-msgstr ""
+msgstr "GL 厂商   %s"
 
 #: ui/prefspanel.cpp:167
-#, c-format
+#, fuzzy, c-format
 msgid "gl renderer %s"
-msgstr ""
+msgstr "GL 渲染器 %s"
 
 #: ui/prefspanel.cpp:168
-#, c-format
+#, fuzzy, c-format
 msgid "gl version  %s"
-msgstr ""
+msgstr "GL 版本  %s"
 
 #: ui/problems.cpp:49
+#, fuzzy
 msgid "No problems."
-msgstr ""
+msgstr "没有问题。"
 
 #: ui/problems.cpp:63
+#, fuzzy
 msgid "select all"
-msgstr ""
+msgstr "全选"
 
 #: ui/problems.cpp:80
+#, fuzzy
 msgid "Some were left out: the search timed out."
-msgstr ""
+msgstr "部分结果被省略：搜索超时。"
 
 #: ui/problems.cpp:82 ui/properties.cpp:532
+#, fuzzy
 msgid "allow redundant constraints"
-msgstr ""
+msgstr "允许冗余约束"
 
 #: ui/problems.cpp:85
+#, fuzzy
 msgid "force to triangle mesh"
-msgstr ""
+msgstr "强制转为三角网格"
 
 #: ui/problemsmodel.cpp:19 ui/problemsmodel.cpp:24
+#, fuzzy
 msgid "unsolvable constraints"
-msgstr ""
+msgstr "无法求解的约束"
 
 #: ui/problemsmodel.cpp:20
+#, fuzzy
 msgid "These constraints are incompatible. Edit > Undo may fix it."
-msgstr ""
+msgstr "这些约束互相冲突。编辑 > 撤销 可能会解决问题。"
 
 #: ui/problemsmodel.cpp:25
+#, fuzzy
 msgid "These constraints are unsatisfied. Edit > Undo may fix it."
-msgstr ""
+msgstr "这些约束未被满足。编辑 > 撤销 可能会解决问题。"
 
 #: ui/problemsmodel.cpp:29
+#, fuzzy
 msgid "redundant constraints"
-msgstr ""
+msgstr "冗余约束"
 
 #: ui/problemsmodel.cpp:30
+#, fuzzy
 msgid ""
 "Remove any one of these to fix it, or allow redundant constraints in this "
 "group."
-msgstr ""
+msgstr "删除其中任意一个即可解决，或允许此组中的冗余约束。"
 
 #: ui/problemsmodel.cpp:36
+#, fuzzy
 msgid "too many unknowns in a single group"
-msgstr ""
+msgstr "单个组中的未知数过多"
 
 #: ui/problemsmodel.cpp:37
+#, fuzzy
 msgid "Split the sketch into more groups."
-msgstr ""
+msgstr "请将草图拆分为更多的组。"
 
 #: ui/problemsmodel.cpp:61
+#, fuzzy
 msgid "not closed contour, or not all same style"
-msgstr ""
+msgstr "轮廓未闭合，或样式不完全相同"
 
 #: ui/problemsmodel.cpp:62
+#, fuzzy
 msgid "points not all coplanar"
-msgstr ""
+msgstr "点不全在同一平面上"
 
 #: ui/problemsmodel.cpp:63
+#, fuzzy
 msgid "contour is self-intersecting"
-msgstr ""
+msgstr "轮廓自相交"
 
 #: ui/problemsmodel.cpp:64
+#, fuzzy
 msgid "zero-length edge"
-msgstr ""
+msgstr "长度为零的边"
 
 #: ui/problemsmodel.cpp:67
+#, fuzzy
 msgid "The sketch shows where."
-msgstr ""
+msgstr "草图中会显示位置。"
 
 #: ui/problemsmodel.cpp:68
-#, c-format
+#, fuzzy, c-format
 msgid "In %s."
-msgstr ""
+msgstr "位于 %s。"
 
 #: ui/problemsmodel.cpp:83
+#, fuzzy
 msgid "the Boolean operation failed"
-msgstr ""
+msgstr "布尔运算失败"
 
 #: ui/problemsmodel.cpp:84
+#, fuzzy
 msgid "Forcing NURBS surfaces to a triangle mesh may fix it."
-msgstr ""
+msgstr "将 NURBS 曲面强制转为三角网格可能会解决问题。"
 
 #: ui/properties.cpp:83
-#, c-format
+#, fuzzy, c-format
 msgid "a dowel's pocket; the other is in %s"
-msgstr ""
+msgstr "定位销的凹槽；另一个位于 %s"
 
 #: ui/properties.cpp:85
-#, c-format
+#, fuzzy, c-format
 msgid "the pocket; the peg is on %s"
-msgstr ""
+msgstr "凹槽；凸台位于 %s"
 
 #: ui/properties.cpp:87
-#, c-format
+#, fuzzy, c-format
 msgid "the peg; the pocket is in %s"
-msgstr ""
+msgstr "凸台；凹槽位于 %s"
 
 #: ui/properties.cpp:90 ui/properties.cpp:178
+#, fuzzy
 msgid "fit"
-msgstr ""
+msgstr "配合"
 
 #: ui/properties.cpp:100
+#, fuzzy
 msgid "fit table"
-msgstr ""
+msgstr "配合表"
 
 #: ui/properties.cpp:103 ui/selectionmodel.cpp:254 ui/selectionmodel.cpp:258
+#, fuzzy
 msgid "style"
-msgstr ""
+msgstr "样式"
 
 #: ui/properties.cpp:104
+#, fuzzy
 msgid "peg and pocket"
-msgstr ""
+msgstr "凸台与凹槽"
 
 #: ui/properties.cpp:110
+#, fuzzy
 msgid "dowel (a pocket in each)"
-msgstr ""
+msgstr "定位销（每侧一个凹槽）"
 
 #: ui/properties.cpp:117
+#, fuzzy
 msgid "dowel length"
-msgstr ""
+msgstr "定位销长度"
 
 #: ui/properties.cpp:126
+#, fuzzy
 msgid "other way"
-msgstr ""
+msgstr "反向"
 
 #: ui/properties.cpp:145
-#, c-format
+#, fuzzy, c-format
 msgid "%s; the other half is %s"
-msgstr ""
+msgstr "%s；另一半是 %s"
 
 #: ui/properties.cpp:146
+#, fuzzy
 msgid "the half behind"
-msgstr ""
+msgstr "后方的一半"
 
 #: ui/properties.cpp:146
+#, fuzzy
 msgid "the half in front"
-msgstr ""
+msgstr "前方的一半"
 
 #: ui/properties.cpp:152
+#, fuzzy
 msgid "swap the halves"
-msgstr ""
+msgstr "交换两半"
 
 #: ui/properties.cpp:158
+#, fuzzy
 msgid "dowels across the cut"
-msgstr ""
+msgstr "横跨切口的定位销"
 
 #: ui/properties.cpp:198
+#, fuzzy
 msgid "sketch in 3d"
-msgstr ""
+msgstr "三维绘图"
 
 #: ui/properties.cpp:199
+#, fuzzy
 msgid "sketch in new workplane"
-msgstr ""
+msgstr "在新工作面绘图"
 
 #: ui/properties.cpp:200
+#, fuzzy
 msgid "extrude plane sketch"
-msgstr ""
+msgstr "挤出平面草图"
 
 #: ui/properties.cpp:201
+#, fuzzy
 msgid "lathe plane sketch"
-msgstr ""
+msgstr "转圈平面草图"
 
 #: ui/properties.cpp:202
+#, fuzzy
 msgid "revolve original sketch"
-msgstr ""
+msgstr "旋转原始草图"
 
 #: ui/properties.cpp:203
+#, fuzzy
 msgid "create helical extrusion"
-msgstr ""
+msgstr "创建螺旋挤出"
 
 #: ui/properties.cpp:204
+#, fuzzy
 msgid "rotate original sketch"
-msgstr ""
+msgstr "旋转原始草图"
 
 #: ui/properties.cpp:205
+#, fuzzy
 msgid "translate original sketch"
-msgstr ""
+msgstr "平移原始草图"
 
 #: ui/properties.cpp:206
+#, fuzzy
 msgid "link geometry from file"
-msgstr ""
+msgstr "从文件链接几何体"
 
 #: ui/properties.cpp:207
+#, fuzzy
 msgid "round edges"
-msgstr ""
+msgstr "圆角边"
 
 #: ui/properties.cpp:208
+#, fuzzy
 msgid "bevel edges"
-msgstr ""
+msgstr "倒角边"
 
 #: ui/properties.cpp:209
+#, fuzzy
 msgid "hollow the solid"
-msgstr ""
+msgstr "抽空实体"
 
 #: ui/properties.cpp:210
+#, fuzzy
 msgid "taper faces"
-msgstr ""
+msgstr "面拔模"
 
 #: ui/properties.cpp:211
+#, fuzzy
 msgid "drill holes"
-msgstr ""
+msgstr "钻孔"
 
 #: ui/properties.cpp:212
+#, fuzzy
 msgid "loft through profiles"
-msgstr ""
+msgstr "穿过轮廓放样"
 
 #: ui/properties.cpp:213
+#, fuzzy
 msgid "sweep a profile along a path"
-msgstr ""
+msgstr "沿路径扫掠轮廓"
 
 #: ui/properties.cpp:214
+#, fuzzy
 msgid "fit joint"
-msgstr ""
+msgstr "配合关节"
 
 #: ui/properties.cpp:215
+#, fuzzy
 msgid "split the part"
-msgstr ""
-
-# Chinese translations for SolveSpace package.
-# Copyright (C) 2020 the PACKAGE authors
-# This file is distributed under the same license as the SolveSpace package.
-# <lomatus@163.com>, 2020.
-# <liuxilu@live.com>, 2023.
-# <lomatus@163.com>, 2025.
-#
-# 译词一致性
-# mesh网格 grid格线
-# text文本 comment备注
-# vertical竖直 perpendicular垂直
-# Rotate旋转 Lathe转圈 Revolve扫略
-# solid实心体 object对象 entity物件
-# plane点线面/平面 face/surface表面 plane_faces平表面
-#
-# 约束的选择错误。此约束可用于：A与(B和C)
-# 一点/工作面 一条线段 一个表面 一个以上
-#
-#: ui/properties.cpp:217
-msgid ""
-msgstr ""
-"Project-Id-Version: SolveSpace 3.2\n"
-"Report-Msgid-Bugs-To: phkahler@gmail.com\n"
-"POT-Creation-Date: 2026-10-28 14:58-0700\n"
-"PO-Revision-Date: 2023-04-30 15:58+0800\n"
-"Last-Translator: liuxilu@live.com\n"
-"Language-Team: none\n"
-"Language: zh_CN\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.4.2\n"
+msgstr "拆分零件"
 
 #: ui/properties.cpp:223
+#, fuzzy
 msgid "(gone)"
-msgstr ""
+msgstr "（已删除）"
 
 #: ui/properties.cpp:224
+#, fuzzy
 msgid "curve"
-msgstr ""
+msgstr "曲线"
 
 #: ui/properties.cpp:226
+#, fuzzy
 msgid "face"
-msgstr ""
+msgstr "面"
 
 #: ui/properties.cpp:228 ui/selectionmodel.cpp:388 ui/selectionmodel.cpp:398
 #: ui/selectionmodel.cpp:420
+#, fuzzy
 msgid "point"
-msgstr ""
+msgstr "点"
 
 #: ui/properties.cpp:230
+#, fuzzy
 msgid "line"
-msgstr ""
+msgstr "直线"
 
 #: ui/properties.cpp:232
+#, fuzzy
 msgid "arc"
-msgstr ""
+msgstr "圆弧"
 
 #: ui/properties.cpp:234
+#, fuzzy
 msgid "circle"
-msgstr ""
+msgstr "圆"
 
 #: ui/properties.cpp:237
-#, c-format
+#, fuzzy, c-format
 msgid "%s in %s"
-msgstr ""
+msgstr "%s（位于 %s）"
 
 #: ui/properties.cpp:280
+#, fuzzy
 msgid "part"
-msgstr ""
+msgstr "零件"
 
 #: ui/properties.cpp:293
+#, fuzzy
 msgid "own part"
-msgstr ""
+msgstr "独立零件"
 
 #: ui/properties.cpp:300
+#, fuzzy
 msgid "material"
-msgstr ""
+msgstr "材料"
 
 #: ui/properties.cpp:301
+#, fuzzy
 msgid "default"
-msgstr ""
+msgstr "默认"
 
 #: ui/properties.cpp:318
+#, fuzzy
 msgid "one-sided"
-msgstr ""
+msgstr "单侧"
 
 #: ui/properties.cpp:320
+#, fuzzy
 msgid "two-sided"
-msgstr ""
+msgstr "双侧"
 
 #: ui/properties.cpp:323
+#, fuzzy
 msgid "skewed"
-msgstr ""
+msgstr "倾斜"
 
 #: ui/properties.cpp:328
+#, fuzzy
 msgid "start with original"
-msgstr ""
+msgstr "从原始开始"
 
 #: ui/properties.cpp:331
+#, fuzzy
 msgid "start with copy #1"
-msgstr ""
+msgstr "从副本 #1 开始"
 
 #: ui/properties.cpp:334 ui/toolpanels.cpp:97
+#, fuzzy
 msgid "repeat (times)"
-msgstr ""
+msgstr "重复（次数）"
 
 #: ui/properties.cpp:341
+#, fuzzy
 msgid "scaled by"
-msgstr ""
+msgstr "缩放比例"
 
 #: ui/properties.cpp:347
+#, fuzzy
 msgid "pitch (length per turn)"
-msgstr ""
+msgstr "螺距（每圈长度）"
 
 #: ui/properties.cpp:355
+#, fuzzy
 msgid "fixed pitch"
-msgstr ""
+msgstr "固定螺距"
 
 #: ui/properties.cpp:370
+#, fuzzy
 msgid "plain"
-msgstr ""
+msgstr "普通"
 
 #: ui/properties.cpp:372
+#, fuzzy
 msgid "counterbore"
-msgstr ""
+msgstr "沉孔"
 
 #: ui/properties.cpp:374
+#, fuzzy
 msgid "countersink"
-msgstr ""
+msgstr "埋头孔"
 
 #: ui/properties.cpp:379
+#, fuzzy
 msgid "thread (M4, M4x0.5 or none)"
-msgstr ""
+msgstr "螺纹（M4、M4x0.5 或无）"
 
 #: ui/properties.cpp:384
+#, fuzzy
 msgid "depth (blank: through all)"
-msgstr ""
+msgstr "深度（留空：贯穿）"
 
 #: ui/properties.cpp:387
+#, fuzzy
 msgid "counterbore diameter"
-msgstr ""
+msgstr "沉孔直径"
 
 #: ui/properties.cpp:388
+#, fuzzy
 msgid "countersink diameter"
-msgstr ""
+msgstr "埋头孔直径"
 
 #: ui/properties.cpp:392
+#, fuzzy
 msgid "counterbore depth"
-msgstr ""
+msgstr "沉孔深度"
 
 #: ui/properties.cpp:395
+#, fuzzy
 msgid "countersink angle (degrees)"
-msgstr ""
+msgstr "埋头孔角度（度）"
 
 #: ui/properties.cpp:398
+#, fuzzy
 msgid "print clearance (added to every diameter)"
-msgstr ""
+msgstr "打印间隙（加到每个直径上）"
 
 #: ui/properties.cpp:401
+#, fuzzy
 msgid "drill the other way"
-msgstr ""
+msgstr "反向钻孔"
 
 #: ui/properties.cpp:408
+#, fuzzy
 msgid "hole centres"
-msgstr ""
+msgstr "孔中心"
 
 #: ui/properties.cpp:421 ui/selectionmodel.cpp:187 ui/selectionmodel.cpp:196
 #: ui/selectionmodel.cpp:391 ui/toolpanels.cpp:147
+#, fuzzy
 msgid "radius"
-msgstr ""
+msgstr "半径"
 
 #: ui/properties.cpp:422 ui/properties.cpp:707 ui/properties.cpp:708
 #: ui/selectionmodel.cpp:316 ui/selectionmodel.cpp:379
 #: ui/selectionmodel.cpp:392 ui/selectionmodel.cpp:401
 #: ui/selectionmodel.cpp:454
+#, fuzzy
 msgid "distance"
-msgstr ""
+msgstr "距离"
 
 #: ui/properties.cpp:423
+#, fuzzy
 msgid "wall thickness"
-msgstr ""
+msgstr "壁厚"
 
 #: ui/properties.cpp:424
+#, fuzzy
 msgid "angle (degrees)"
-msgstr ""
+msgstr "角度（度）"
 
 #: ui/properties.cpp:437
+#, fuzzy
 msgid "hold this size (a dimension)"
-msgstr ""
+msgstr "保持此尺寸（作为标注）"
 
 #: ui/properties.cpp:445
+#, fuzzy
 msgid "inside"
-msgstr ""
+msgstr "内侧"
 
 #: ui/properties.cpp:447
+#, fuzzy
 msgid "outside"
-msgstr ""
+msgstr "外侧"
 
 #: ui/properties.cpp:449
+#, fuzzy
 msgid "both sides"
-msgstr ""
+msgstr "两侧"
 
 #: ui/properties.cpp:452
+#, fuzzy
 msgid "edges"
-msgstr ""
+msgstr "边"
 
 #: ui/properties.cpp:454 ui/properties.cpp:464
+#, fuzzy
 msgid "faces"
-msgstr ""
+msgstr "面"
 
 #: ui/properties.cpp:456
+#, fuzzy
 msgid "only the outline of these faces"
-msgstr ""
+msgstr "仅这些面的轮廓"
 
 #: ui/properties.cpp:461
+#, fuzzy
 msgid "faces left open"
-msgstr ""
+msgstr "保持开放的面"
 
 #: ui/properties.cpp:461
+#, fuzzy
 msgid "no face open (a sealed hollow)"
-msgstr ""
+msgstr "无开放面（封闭的空腔）"
 
 #: ui/properties.cpp:470
+#, fuzzy
 msgid "profiles, in order"
-msgstr ""
+msgstr "轮廓（按顺序）"
 
 #: ui/properties.cpp:472
+#, fuzzy
 msgid "profile, then the path"
-msgstr ""
+msgstr "轮廓，然后是路径"
 
 #: ui/properties.cpp:473
+#, fuzzy
 msgid "round the path's corners (radius; 0: sharp)"
-msgstr ""
+msgstr "路径拐角圆角（半径；0：尖角）"
 
 #: ui/properties.cpp:495
+#, fuzzy
 msgid "solid model as"
-msgstr ""
+msgstr "实体模型方式"
 
 #: ui/properties.cpp:500
+#, fuzzy
 msgid "union"
-msgstr ""
+msgstr "并集"
 
 #: ui/properties.cpp:502
+#, fuzzy
 msgid "assemble"
-msgstr ""
+msgstr "装配"
 
 #: ui/properties.cpp:503
+#, fuzzy
 msgid "difference"
-msgstr ""
+msgstr "差集"
 
 #: ui/properties.cpp:505
+#, fuzzy
 msgid "intersection"
-msgstr ""
+msgstr "交集"
 
 #: ui/properties.cpp:509
+#, fuzzy
 msgid "color"
-msgstr ""
+msgstr "颜色"
 
 #: ui/properties.cpp:514
+#, fuzzy
 msgid "opacity"
-msgstr ""
+msgstr "不透明度"
 
 #: ui/properties.cpp:518
+#, fuzzy
 msgid "suppress this group's solid model"
-msgstr ""
+msgstr "抑制此组的实体模型"
 
 #: ui/properties.cpp:523
+#, fuzzy
 msgid "show entities from this group"
-msgstr ""
+msgstr "显示此组的图元"
 
 #: ui/properties.cpp:525
+#, fuzzy
 msgid "force NURBS surfaces to triangle mesh"
-msgstr ""
+msgstr "将 NURBS 曲面强制转为三角网格"
 
 #: ui/properties.cpp:528
+#, fuzzy
 msgid "(model already forced to triangle mesh)"
-msgstr ""
+msgstr "（模型已强制转为三角网格）"
 
 #: ui/properties.cpp:530
+#, fuzzy
 msgid "relax constraints and dimensions"
-msgstr ""
+msgstr "放宽约束与尺寸"
 
 #: ui/properties.cpp:534
+#, fuzzy
 msgid "suppress dof calculation"
-msgstr ""
+msgstr "抑制自由度计算"
 
 #: ui/properties.cpp:536
+#, fuzzy
 msgid "treat all dimensions as reference"
-msgstr ""
+msgstr "将所有尺寸视为参考"
 
 #: ui/properties.cpp:540
+#, fuzzy
 msgid ""
 "The Boolean operation failed. It may be possible to fix the problem by "
 "choosing 'force NURBS surfaces to triangle mesh'."
-msgstr ""
+msgstr "布尔运算失败。选择“将 NURBS 曲面强制转为三角网格”可能会解决问题。"
 
 #: ui/properties.cpp:549
-#, c-format
+#, fuzzy, c-format
 msgid "Requests (%d)"
-msgstr ""
+msgstr "请求 (%d)"
 
 #: ui/properties.cpp:562
-#, c-format
+#, fuzzy, c-format
 msgid "Constraints (%d, %d DOF)"
-msgstr ""
+msgstr "约束 (%d，%d 自由度)"
 
 #: ui/properties.cpp:615
+#, fuzzy
 msgid "Selection"
-msgstr ""
+msgstr "选择"
 
 #: ui/properties.cpp:627
+#, fuzzy
 msgid "reference"
-msgstr ""
+msgstr "参考"
 
 #: ui/properties.cpp:632
+#, fuzzy
 msgid "use radius"
-msgstr ""
+msgstr "使用半径"
 
 #: ui/properties.cpp:640 ui/selectionmodel.cpp:221 ui/stylespanel.cpp:108
+#, fuzzy
 msgid "text"
-msgstr ""
+msgstr "文本"
 
 #: ui/properties.cpp:644
+#, fuzzy
 msgid "apply kerning"
-msgstr ""
+msgstr "应用字距调整"
 
 #: ui/properties.cpp:674
+#, fuzzy
 msgid "remove assigned style"
-msgstr ""
+msgstr "移除已指定的样式"
 
 #: ui/properties.cpp:677
+#, fuzzy
 msgid "unselect all"
-msgstr ""
+msgstr "取消全选"
 
 #: ui/properties.cpp:688
+#, fuzzy
 msgid "cylindrical"
-msgstr ""
+msgstr "圆柱"
 
 #: ui/properties.cpp:688
+#, fuzzy
 msgid "revolute"
-msgstr ""
+msgstr "旋转"
 
 #: ui/properties.cpp:688
+#, fuzzy
 msgid "slider"
-msgstr ""
+msgstr "滑块"
 
 #: ui/properties.cpp:689
+#, fuzzy
 msgid "ball"
-msgstr ""
+msgstr "球"
 
 #: ui/properties.cpp:689
+#, fuzzy
 msgid "gear coupling"
-msgstr ""
+msgstr "齿轮耦合"
 
 #: ui/properties.cpp:689
+#, fuzzy
 msgid "planar"
-msgstr ""
+msgstr "平面"
 
 #: ui/properties.cpp:692
-#, c-format
+#, fuzzy, c-format
 msgid "%s: %s drives %s"
-msgstr ""
+msgstr "%s：%s 驱动 %s"
 
 #: ui/properties.cpp:696
+#, fuzzy
 msgid "ratio"
-msgstr ""
+msgstr "比值"
 
 #: ui/properties.cpp:701
-#, c-format
+#, fuzzy, c-format
 msgid "%s: %s holds %s"
-msgstr ""
+msgstr "%s：%s 保持 %s"
 
 #: ui/properties.cpp:709
+#, fuzzy
 msgid "along u"
-msgstr ""
+msgstr "沿 u"
 
 #: ui/properties.cpp:709
+#, fuzzy
 msgid "along v"
-msgstr ""
+msgstr "沿 v"
 
 #: ui/properties.cpp:710
+#, fuzzy
 msgid "about x"
-msgstr ""
+msgstr "绕 x"
 
 #: ui/properties.cpp:710
+#, fuzzy
 msgid "about y"
-msgstr ""
+msgstr "绕 y"
 
 #: ui/properties.cpp:710
+#, fuzzy
 msgid "about z"
-msgstr ""
+msgstr "绕 z"
 
 #: ui/properties.cpp:744
+#, fuzzy
 msgid "limits"
-msgstr ""
+msgstr "范围"
 
 #: ui/properties.cpp:750 ui/selectionmodel.cpp:157 ui/selectionmodel.cpp:377
+#, fuzzy
 msgid "from"
-msgstr ""
+msgstr "下限"
 
 #: ui/properties.cpp:756 ui/selectionmodel.cpp:158 ui/selectionmodel.cpp:378
+#, fuzzy
 msgid "to"
-msgstr ""
+msgstr "上限"
 
 #: ui/properties.cpp:763
+#, fuzzy
 msgid "sweep clearance"
-msgstr ""
+msgstr "扫描间隙"
 
 #: ui/properties.cpp:770
+#, fuzzy
 msgid "design pose"
-msgstr ""
+msgstr "设计姿态"
 
 #: ui/properties.cpp:774 ui/properties.cpp:797
+#, fuzzy
 msgid "delete"
-msgstr ""
+msgstr "删除"
 
 #: ui/properties.cpp:781
+#, fuzzy
 msgid "Fit table"
-msgstr ""
+msgstr "配合表"
 
 #: ui/properties.cpp:782
+#, fuzzy
 msgid ""
 "Clearances for fit joints, tuned to your printer: each side's gap (negative "
 "presses)."
-msgstr ""
+msgstr "配合关节的间隙，按打印机调整：每侧的间隙（负值为过盈）。"
 
 #: ui/properties.cpp:802
+#, fuzzy
 msgid "add a fit"
-msgstr ""
+msgstr "添加配合"
 
 #: ui/selectionmodel.cpp:16
+#, fuzzy
 msgid "Coincident"
-msgstr ""
+msgstr "重合"
 
 #: ui/selectionmodel.cpp:18
+#, fuzzy
 msgid "Point to line distance"
-msgstr ""
+msgstr "点到直线的距离"
 
 #: ui/selectionmodel.cpp:19
+#, fuzzy
 msgid "Point to plane distance"
-msgstr ""
+msgstr "点到平面的距离"
 
 #: ui/selectionmodel.cpp:20
+#, fuzzy
 msgid "Point to face distance"
-msgstr ""
+msgstr "点到面的距离"
 
 #: ui/selectionmodel.cpp:21
+#, fuzzy
 msgid "Projected distance"
-msgstr ""
+msgstr "投影距离"
 
 #: ui/selectionmodel.cpp:22
+#, fuzzy
 msgid "Point in plane"
-msgstr ""
+msgstr "点在平面内"
 
 #: ui/selectionmodel.cpp:23
+#, fuzzy
 msgid "Point on line"
-msgstr ""
+msgstr "点在直线上"
 
 #: ui/selectionmodel.cpp:24
+#, fuzzy
 msgid "Point on face"
-msgstr ""
+msgstr "点在面上"
 
 #: ui/selectionmodel.cpp:25
+#, fuzzy
 msgid "Equal length"
-msgstr ""
+msgstr "等长"
 
 #: ui/selectionmodel.cpp:26
+#, fuzzy
 msgid "Equal length and distance"
-msgstr ""
+msgstr "等长且等距"
 
 #: ui/selectionmodel.cpp:27
+#, fuzzy
 msgid "Equal distances"
-msgstr ""
+msgstr "等距"
 
 #: ui/selectionmodel.cpp:28
+#, fuzzy
 msgid "Length ratio"
-msgstr ""
+msgstr "长度比"
 
 #: ui/selectionmodel.cpp:29
+#, fuzzy
 msgid "Arc length ratio"
-msgstr ""
+msgstr "圆弧长度比"
 
 #: ui/selectionmodel.cpp:30
+#, fuzzy
 msgid "Arc to line length ratio"
-msgstr ""
+msgstr "圆弧与直线长度比"
 
 #: ui/selectionmodel.cpp:31
+#, fuzzy
 msgid "Length difference"
-msgstr ""
+msgstr "长度差"
 
 #: ui/selectionmodel.cpp:32
+#, fuzzy
 msgid "Arc length difference"
-msgstr ""
+msgstr "圆弧长度差"
 
 #: ui/selectionmodel.cpp:33
+#, fuzzy
 msgid "Arc to line length difference"
-msgstr ""
+msgstr "圆弧与直线长度差"
 
 #: ui/selectionmodel.cpp:35
+#, fuzzy
 msgid "Symmetric horizontally"
-msgstr ""
+msgstr "水平对称"
 
 #: ui/selectionmodel.cpp:36
+#, fuzzy
 msgid "Symmetric vertically"
-msgstr ""
+msgstr "竖直对称"
 
 #: ui/selectionmodel.cpp:37
+#, fuzzy
 msgid "Symmetric about line"
-msgstr ""
+msgstr "关于直线对称"
 
 #: ui/selectionmodel.cpp:41
+#, fuzzy
 msgid "Diameter"
-msgstr ""
+msgstr "直径"
 
 #: ui/selectionmodel.cpp:42
+#, fuzzy
 msgid "Point on circle"
-msgstr ""
+msgstr "点在圆上"
 
 #: ui/selectionmodel.cpp:43
+#, fuzzy
 msgid "Same orientation"
-msgstr ""
+msgstr "方向相同"
 
 #: ui/selectionmodel.cpp:44
+#, fuzzy
 msgid "Angle"
-msgstr ""
+msgstr "角度"
 
 #: ui/selectionmodel.cpp:45
+#, fuzzy
 msgid "Parallel"
-msgstr ""
+msgstr "平行"
 
 #: ui/selectionmodel.cpp:46 ui/selectionmodel.cpp:47 ui/selectionmodel.cpp:48
+#, fuzzy
 msgid "Tangent"
-msgstr ""
+msgstr "相切"
 
 #: ui/selectionmodel.cpp:50
+#, fuzzy
 msgid "Equal radius"
-msgstr ""
+msgstr "等半径"
 
 #: ui/selectionmodel.cpp:51
+#, fuzzy
 msgid "Equal angle"
-msgstr ""
+msgstr "等角"
 
 #: ui/selectionmodel.cpp:52
+#, fuzzy
 msgid "Equal line and arc length"
-msgstr ""
+msgstr "直线与圆弧等长"
 
 #: ui/selectionmodel.cpp:53
+#, fuzzy
 msgid "Lock"
-msgstr ""
+msgstr "锁定"
 
 #: ui/selectionmodel.cpp:66 ui/selectionmodel.cpp:339
+#, fuzzy
 msgid "Constraint"
-msgstr ""
+msgstr "约束"
 
 #: ui/selectionmodel.cpp:113 ui/selectionmodel.cpp:114
 #: ui/selectionmodel.cpp:248 ui/selectionmodel.cpp:345
 #: ui/selectionmodel.cpp:427
+#, fuzzy
 msgid "workplane"
-msgstr ""
+msgstr "工作面"
 
 #: ui/selectionmodel.cpp:131
+#, fuzzy
 msgid "at"
-msgstr ""
+msgstr "位于"
 
 #: ui/selectionmodel.cpp:140
+#, fuzzy
 msgid "Normal / coordinate system"
-msgstr ""
+msgstr "法线 / 坐标系"
 
 #: ui/selectionmodel.cpp:141 ui/selectionmodel.cpp:149
 #: ui/selectionmodel.cpp:208
+#, fuzzy
 msgid "normal"
-msgstr ""
+msgstr "法线"
 
 #: ui/selectionmodel.cpp:142
+#, fuzzy
 msgid "u"
-msgstr ""
+msgstr "u"
 
 #: ui/selectionmodel.cpp:143
+#, fuzzy
 msgid "v"
-msgstr ""
+msgstr "v"
 
 #: ui/selectionmodel.cpp:148
+#, fuzzy
 msgid "origin"
-msgstr ""
+msgstr "原点"
 
 #: ui/selectionmodel.cpp:156
+#, fuzzy
 msgid "Line segment"
-msgstr ""
+msgstr "线段"
 
 #: ui/selectionmodel.cpp:166
+#, fuzzy
 msgid "Periodic C2 cubic spline"
-msgstr ""
+msgstr "周期 C2 三次样条"
 
 #: ui/selectionmodel.cpp:169
+#, fuzzy
 msgid "Interpolating C2 cubic spline"
-msgstr ""
+msgstr "插值 C2 三次样条"
 
 #: ui/selectionmodel.cpp:172
+#, fuzzy
 msgid "Cubic Bézier curve"
-msgstr ""
+msgstr "三次贝塞尔曲线"
 
 #: ui/selectionmodel.cpp:182
+#, fuzzy
 msgid "Arc of a circle"
-msgstr ""
+msgstr "圆弧"
 
 #: ui/selectionmodel.cpp:183 ui/selectionmodel.cpp:194
 #: ui/selectionmodel.cpp:389 ui/stylespanel.cpp:123
+#, fuzzy
 msgid "center"
-msgstr ""
+msgstr "圆心"
 
 #: ui/selectionmodel.cpp:184
+#, fuzzy
 msgid "endpoints"
-msgstr ""
+msgstr "端点"
 
 #: ui/selectionmodel.cpp:188
+#, fuzzy
 msgid "arc length"
-msgstr ""
+msgstr "圆弧长度"
 
 #: ui/selectionmodel.cpp:197
+#, fuzzy
 msgid "circumference"
-msgstr ""
+msgstr "周长"
 
 #: ui/selectionmodel.cpp:207
+#, fuzzy
 msgid "Plane face"
-msgstr ""
+msgstr "平面"
 
 #: ui/selectionmodel.cpp:209
+#, fuzzy
 msgid "through"
-msgstr ""
+msgstr "经过"
 
 #: ui/selectionmodel.cpp:213
+#, fuzzy
 msgid "TrueType font text"
-msgstr ""
+msgstr "TrueType 字体文本"
 
 #: ui/selectionmodel.cpp:214
+#, fuzzy
 msgid "font"
-msgstr ""
+msgstr "字体"
 
 #: ui/selectionmodel.cpp:227
+#, fuzzy
 msgid "Image"
-msgstr ""
+msgstr "图像"
 
 #: ui/selectionmodel.cpp:228
+#, fuzzy
 msgid "file"
-msgstr ""
+msgstr "文件"
 
 #: ui/selectionmodel.cpp:232
+#, fuzzy
 msgid "Entity"
-msgstr ""
+msgstr "图元"
 
 #: ui/selectionmodel.cpp:239 ui/selectionmodel.cpp:241
+#, fuzzy
 msgid "sketch entity"
-msgstr ""
+msgstr "草图图元"
 
 #: ui/selectionmodel.cpp:244
+#, fuzzy
 msgid "group"
-msgstr ""
+msgstr "组"
 
 #: ui/selectionmodel.cpp:248
+#, fuzzy
 msgid "none (free in 3d)"
-msgstr ""
+msgstr "无（三维中自由）"
 
 #: ui/selectionmodel.cpp:258
+#, fuzzy
 msgid "none"
-msgstr ""
+msgstr "无"
 
 #: ui/selectionmodel.cpp:261
+#, fuzzy
 msgid "construction"
-msgstr ""
+msgstr "辅助"
 
 #: ui/selectionmodel.cpp:261
+#, fuzzy
 msgid "yes"
-msgstr ""
+msgstr "是"
 
 #: ui/selectionmodel.cpp:281
+#, fuzzy
 msgid "constrained by"
-msgstr ""
+msgstr "约束于"
 
 #: ui/selectionmodel.cpp:281
+#, fuzzy
 msgid "measured by"
-msgstr ""
+msgstr "测量于"
 
 #: ui/selectionmodel.cpp:299
-#, c-format
+#, fuzzy, c-format
 msgid "plane%c normal"
-msgstr ""
+msgstr "平面%c 法线"
 
 #: ui/selectionmodel.cpp:300
-#, c-format
+#, fuzzy, c-format
 msgid "plane%c thru"
-msgstr ""
+msgstr "平面%c 经过"
 
 #: ui/selectionmodel.cpp:315
+#, fuzzy
 msgid "attached to"
-msgstr ""
+msgstr "附着于"
 
 #: ui/selectionmodel.cpp:317 ui/selectionmodel.cpp:380
+#, fuzzy
 msgid "offset (x, y, z)"
-msgstr ""
+msgstr "偏移 (x, y, z)"
 
 #: ui/selectionmodel.cpp:320 ui/statusmodel.cpp:48
+#, fuzzy
 msgid "Dimension"
-msgstr ""
+msgstr "尺寸"
 
 #: ui/selectionmodel.cpp:320
+#, fuzzy
 msgid "Reference"
-msgstr ""
+msgstr "参考"
 
 #: ui/selectionmodel.cpp:341
+#, fuzzy
 msgid "type"
-msgstr ""
+msgstr "类型"
 
 #: ui/selectionmodel.cpp:345
+#, fuzzy
 msgid "none (not projected)"
-msgstr ""
+msgstr "无（不投影）"
 
 #: ui/selectionmodel.cpp:352
+#, fuzzy
 msgid "constrains"
-msgstr ""
+msgstr "约束"
 
 #: ui/selectionmodel.cpp:352
+#, fuzzy
 msgid "measures"
-msgstr ""
+msgstr "测量"
 
 #: ui/selectionmodel.cpp:376
+#, fuzzy
 msgid "Two points"
-msgstr ""
+msgstr "两点"
 
 #: ui/selectionmodel.cpp:386
+#, fuzzy
 msgid "Point and a circle"
-msgstr ""
+msgstr "点与圆"
 
 #: ui/selectionmodel.cpp:387
+#, fuzzy
 msgid "Point and an arc"
-msgstr ""
+msgstr "点与圆弧"
 
 #: ui/selectionmodel.cpp:397
+#, fuzzy
 msgid "A point and a plane face"
-msgstr ""
+msgstr "一点与一个平面"
 
 #: ui/selectionmodel.cpp:399
+#, fuzzy
 msgid "plane normal"
-msgstr ""
+msgstr "平面法线"
 
 #: ui/selectionmodel.cpp:400
+#, fuzzy
 msgid "plane through"
-msgstr ""
+msgstr "平面经过"
 
 #: ui/selectionmodel.cpp:406
+#, fuzzy
 msgid "Two points and a vector"
-msgstr ""
+msgstr "两点与一个向量"
 
 #: ui/selectionmodel.cpp:407
+#, fuzzy
 msgid "point A"
-msgstr ""
+msgstr "点 A"
 
 #: ui/selectionmodel.cpp:408
+#, fuzzy
 msgid "point B"
-msgstr ""
+msgstr "点 B"
 
 #: ui/selectionmodel.cpp:409
+#, fuzzy
 msgid "vector"
-msgstr ""
+msgstr "向量"
 
 #: ui/selectionmodel.cpp:410
+#, fuzzy
 msgid "projected distance"
-msgstr ""
+msgstr "投影距离"
 
 #: ui/selectionmodel.cpp:417
+#, fuzzy
 msgid "Line segment and point"
-msgstr ""
+msgstr "线段与点"
 
 #: ui/selectionmodel.cpp:418
+#, fuzzy
 msgid "line through"
-msgstr ""
+msgstr "直线经过"
 
 #: ui/selectionmodel.cpp:421
+#, fuzzy
 msgid "distance to line"
-msgstr ""
+msgstr "到直线的距离"
 
 #: ui/selectionmodel.cpp:434
+#, fuzzy
 msgid "Two vectors"
-msgstr ""
+msgstr "两个向量"
 
 #: ui/selectionmodel.cpp:435
+#, fuzzy
 msgid "vector A"
-msgstr ""
+msgstr "向量 A"
 
 #: ui/selectionmodel.cpp:436
+#, fuzzy
 msgid "vector B"
-msgstr ""
+msgstr "向量 B"
 
 #: ui/selectionmodel.cpp:437 ui/selectionmodel.cpp:447
-#, c-format
+#, fuzzy, c-format
 msgid "%.2f degrees"
-msgstr ""
+msgstr "%.2f 度"
 
 #: ui/selectionmodel.cpp:440 ui/selectionmodel.cpp:450
-#, c-format
+#, fuzzy, c-format
 msgid "%.2f (mod 180)"
-msgstr ""
+msgstr "%.2f（模 180）"
 
 #: ui/selectionmodel.cpp:440 ui/selectionmodel.cpp:450
+#, fuzzy
 msgid "or"
-msgstr ""
+msgstr "或"
 
 #: ui/selectionmodel.cpp:442
+#, fuzzy
 msgid "Two plane faces"
-msgstr ""
+msgstr "两个平面"
 
 #: ui/selectionmodel.cpp:457
+#, fuzzy
 msgid "Three plane faces"
-msgstr ""
+msgstr "三个平面"
 
 #: ui/selectionmodel.cpp:462
-#, c-format
+#, fuzzy, c-format
 msgid "%d item"
-msgstr ""
+msgstr "%d 项"
 
 #: ui/selectionmodel.cpp:462
-#, c-format
+#, fuzzy, c-format
 msgid "%d items"
-msgstr ""
+msgstr "%d 项"
 
 #: ui/shortcuts.cpp:21
+#, fuzzy
 msgid "filter"
-msgstr ""
+msgstr "筛选"
 
 #: ui/statusmodel.cpp:35 ui/statusmodel.cpp:43
+#, fuzzy
 msgid "Hold"
-msgstr ""
+msgstr "按住"
 
 #: ui/statusmodel.cpp:41
+#, fuzzy
 msgid "2 fingers"
-msgstr ""
+msgstr "双指"
 
 #: ui/statusmodel.cpp:41
+#, fuzzy
 msgid "Pan, zoom"
-msgstr ""
+msgstr "平移、缩放"
 
 #: ui/statusmodel.cpp:42
+#, fuzzy
 msgid "Orbit"
-msgstr ""
+msgstr "环绕"
 
 #: ui/statusmodel.cpp:43
+#, fuzzy
 msgid "Menu"
-msgstr ""
+msgstr "菜单"
 
 #: ui/statusmodel.cpp:45
+#, fuzzy
 msgid "Commands"
-msgstr ""
+msgstr "命令"
 
 #: ui/statusmodel.cpp:51
+#, fuzzy
 msgid "Views"
-msgstr ""
+msgstr "视图"
 
 #: ui/statusmodel.cpp:57
+#, fuzzy
 msgid "Solved"
-msgstr ""
+msgstr "已求解"
 
 #: ui/statusmodel.cpp:58
+#, fuzzy
 msgid "Redundant"
-msgstr ""
+msgstr "冗余"
 
 #: ui/statusmodel.cpp:60
+#, fuzzy
 msgid "Didn't converge"
-msgstr ""
+msgstr "未收敛"
 
 #: ui/statusmodel.cpp:61
+#, fuzzy
 msgid "Too many unknowns"
-msgstr ""
+msgstr "未知数过多"
 
 #: ui/stylespanel.cpp:56
+#, fuzzy
 msgid "Style"
-msgstr ""
+msgstr "样式"
 
 #: ui/stylespanel.cpp:58
+#, fuzzy
 msgid "name"
-msgstr ""
+msgstr "名称"
 
 #: ui/stylespanel.cpp:59
+#, fuzzy
 msgid "delete style"
-msgstr ""
+msgstr "删除样式"
 
 #: ui/stylespanel.cpp:69
+#, fuzzy
 msgid "line stroke"
-msgstr ""
+msgstr "线条"
 
 #: ui/stylespanel.cpp:72
+#, fuzzy
 msgid "stroke color"
-msgstr ""
+msgstr "线条颜色"
 
 #: ui/stylespanel.cpp:76
+#, fuzzy
 msgid "stipple width"
-msgstr ""
+msgstr "点划线宽度"
 
 #: ui/stylespanel.cpp:78 ui/stylespanel.cpp:111
+#, fuzzy
 msgid "pixels"
-msgstr ""
+msgstr "像素"
 
 #: ui/stylespanel.cpp:84 ui/stylespanel.cpp:132
+#, fuzzy
 msgid "in pixels"
-msgstr ""
+msgstr "以像素计"
 
 #: ui/stylespanel.cpp:86
+#, fuzzy
 msgid "continuous"
-msgstr ""
+msgstr "实线"
 
 #: ui/stylespanel.cpp:86
+#, fuzzy
 msgid "dash"
-msgstr ""
+msgstr "虚线"
 
 #: ui/stylespanel.cpp:86
+#, fuzzy
 msgid "short dash"
-msgstr ""
+msgstr "短虚线"
 
 #: ui/stylespanel.cpp:87
+#, fuzzy
 msgid "dash dot"
-msgstr ""
+msgstr "点划线"
 
 #: ui/stylespanel.cpp:87
+#, fuzzy
 msgid "dash dot dot"
-msgstr ""
+msgstr "双点划线"
 
 #: ui/stylespanel.cpp:87
+#, fuzzy
 msgid "long dash"
-msgstr ""
+msgstr "长虚线"
 
 #: ui/stylespanel.cpp:88
+#, fuzzy
 msgid "dot"
-msgstr ""
+msgstr "点线"
 
 #: ui/stylespanel.cpp:88
+#, fuzzy
 msgid "freehand"
-msgstr ""
+msgstr "手绘"
 
 #: ui/stylespanel.cpp:88
+#, fuzzy
 msgid "zigzag"
-msgstr ""
+msgstr "锯齿"
 
 #: ui/stylespanel.cpp:89
+#, fuzzy
 msgid "stipple type"
-msgstr ""
+msgstr "点划线类型"
 
 #: ui/stylespanel.cpp:99
+#, fuzzy
 msgid "contour fill"
-msgstr ""
+msgstr "轮廓填充"
 
 #: ui/stylespanel.cpp:100
+#, fuzzy
 msgid "fill color"
-msgstr ""
+msgstr "填充颜色"
 
 #: ui/stylespanel.cpp:105
+#, fuzzy
 msgid "contours are filled"
-msgstr ""
+msgstr "填充轮廓"
 
 #: ui/stylespanel.cpp:120
+#, fuzzy
 msgid "comment alignment"
-msgstr ""
+msgstr "注释对齐"
 
 #: ui/stylespanel.cpp:128
+#, fuzzy
 msgid "middle"
-msgstr ""
+msgstr "居中"
 
 #: ui/stylespanel.cpp:136
+#, fuzzy
 msgid "show these objects on screen"
-msgstr ""
+msgstr "在屏幕上显示这些对象"
 
 #: ui/stylespanel.cpp:137
+#, fuzzy
 msgid "export these objects"
-msgstr ""
+msgstr "导出这些对象"
 
 #: ui/stylespanel.cpp:140
+#, fuzzy
 msgid "assign the selection to this style"
-msgstr ""
+msgstr "将所选内容指定到此样式"
 
 #: ui/stylespanel.cpp:143
+#, fuzzy
 msgid "Or right-click lines and curves on the drawing."
-msgstr ""
+msgstr "或在图纸上右键单击线条和曲线。"
 
 #: ui/stylespanel.cpp:161
+#, fuzzy
 msgid "create a new custom style"
-msgstr ""
+msgstr "创建新的自定义样式"
 
 #: ui/stylespanel.cpp:165
+#, fuzzy
 msgid "load factory defaults"
-msgstr ""
+msgstr "恢复出厂默认值"
 
 #: ui/stylespanel.cpp:170
+#, fuzzy
 msgid "background color"
-msgstr ""
+msgstr "背景颜色"
 
 #: ui/toolpanels.cpp:47
-#, c-format
+#, fuzzy, c-format
 msgid "scale (px per %s)"
-msgstr ""
+msgstr "比例（每 %s 像素数）"
 
 #: ui/toolpanels.cpp:50
+#, fuzzy
 msgid "set to full scale"
-msgstr ""
+msgstr "设为实际大小"
 
 #: ui/toolpanels.cpp:53
+#, fuzzy
 msgid "origin (the centre of the screen)"
-msgstr ""
+msgstr "原点（屏幕中心）"
 
 #: ui/toolpanels.cpp:56
+#, fuzzy
 msgid "projection: right"
-msgstr ""
+msgstr "投影：右"
 
 #: ui/toolpanels.cpp:59
+#, fuzzy
 msgid "projection: up"
-msgstr ""
+msgstr "投影：上"
 
 #: ui/toolpanels.cpp:62
-#, c-format
+#, fuzzy, c-format
 msgid "out (%.3f, %.3f, %.3f)"
-msgstr ""
+msgstr "朝外 (%.3f, %.3f, %.3f)"
 
 #: ui/toolpanels.cpp:64
+#, fuzzy
 msgid "perspective factor (0 for parallel)"
-msgstr ""
+msgstr "透视系数（0 为平行投影）"
 
 #: ui/toolpanels.cpp:67
-#, c-format
+#, fuzzy, c-format
 msgid "light %d direction"
-msgstr ""
+msgstr "光源 %d 方向"
 
 #: ui/toolpanels.cpp:70
-#, c-format
+#, fuzzy, c-format
 msgid "light %d intensity"
-msgstr ""
+msgstr "光源 %d 强度"
 
 #: ui/toolpanels.cpp:74
+#, fuzzy
 msgid "ambient lighting"
-msgstr ""
+msgstr "环境光"
 
 #: ui/toolpanels.cpp:75
+#, fuzzy
 msgid "explode distance"
-msgstr ""
+msgstr "爆炸距离"
 
 #: ui/toolpanels.cpp:99
+#, fuzzy
 msgid "rotate (degrees)"
-msgstr ""
+msgstr "旋转（度）"
 
 #: ui/toolpanels.cpp:101
+#, fuzzy
 msgid "about point"
-msgstr ""
+msgstr "绕点"
 
 #: ui/toolpanels.cpp:102 ui/toolpanels.cpp:107
-#, c-format
+#, fuzzy, c-format
 msgid "%s"
-msgstr ""
+msgstr "%s"
 
 #: ui/toolpanels.cpp:103
+#, fuzzy
 msgid "use the selected point"
-msgstr ""
+msgstr "使用所选点"
 
 #: ui/toolpanels.cpp:106
+#, fuzzy
 msgid "translate"
-msgstr ""
+msgstr "平移"
 
 #: ui/toolpanels.cpp:108
+#, fuzzy
 msgid "use the two selected points"
-msgstr ""
+msgstr "使用所选的两个点"
 
 #: ui/toolpanels.cpp:111
+#, fuzzy
 msgid "scale"
-msgstr ""
+msgstr "缩放"
 
 #: ui/toolpanels.cpp:113
+#, fuzzy
 msgid "mirror"
-msgstr ""
+msgstr "镜像"
 
 #: ui/toolpanels.cpp:116
+#, fuzzy
 msgid "paste transformed now"
-msgstr ""
+msgstr "立即变换并粘贴"
 
 #: ui/toolpanels.cpp:130
-#, c-format
+#, fuzzy, c-format
 msgid "start %s"
-msgstr ""
+msgstr "起点 %s"
 
 #: ui/toolpanels.cpp:131
+#, fuzzy
 msgid "finish"
-msgstr ""
+msgstr "终点"
 
 #: ui/toolpanels.cpp:132
+#, fuzzy
 msgid "steps"
-msgstr ""
+msgstr "步数"
 
 #: ui/toolpanels.cpp:133
+#, fuzzy
 msgid "step dimension now"
-msgstr ""
+msgstr "立即尺寸步进"
 
 #: ui/toolpanels.cpp:143
+#, fuzzy
 msgid "choose radius automatically"
-msgstr ""
+msgstr "自动选择半径"
 
 #: ui/toolpanels.cpp:151
+#, fuzzy
 msgid "modify original entities"
-msgstr ""
+msgstr "修改原始图元"
 
 #: ui/toolpanels.cpp:154
+#, fuzzy
 msgid ""
 "To make a tangent arc at a point, select the point and choose Sketch > "
 "Tangent Arc at Point."
-msgstr ""
+msgstr "要在一点处作相切圆弧，请选择该点，然后选择 绘图 > 点处相切圆弧。"
 
 #: ui/uiactions.cpp:13
+#, fuzzy
 msgid "View › Command Palette"
-msgstr ""
+msgstr "查看 › 命令面板"
 
 #: ui/uiactions.cpp:14
+#, fuzzy
 msgid "View › Toggle Menu Bar"
-msgstr ""
+msgstr "查看 › 切换菜单栏"
 
 #: ui/uiactions.cpp:15
+#, fuzzy
 msgid "View › Toggle Theme"
-msgstr ""
+msgstr "查看 › 切换主题"
 
 #: ui/uiactions.cpp:16
+#, fuzzy
 msgid "View › Outliner"
-msgstr ""
+msgstr "查看 › 大纲"
 
 #: ui/uiactions.cpp:17
+#, fuzzy
 msgid "View › Properties"
-msgstr ""
+msgstr "查看 › 属性"
 
 #: ui/uiactions.cpp:18
+#, fuzzy
 msgid "View › Problems"
-msgstr ""
+msgstr "查看 › 问题"
 
 #: ui/uiactions.cpp:19
+#, fuzzy
 msgid "View › Front"
-msgstr ""
+msgstr "查看 › 前视"
 
 #: ui/uiactions.cpp:20
+#, fuzzy
 msgid "View › Back"
-msgstr ""
+msgstr "查看 › 后视"
 
 #: ui/uiactions.cpp:21
+#, fuzzy
 msgid "View › Right"
-msgstr ""
+msgstr "查看 › 右视"
 
 #: ui/uiactions.cpp:22
+#, fuzzy
 msgid "View › Left"
-msgstr ""
+msgstr "查看 › 左视"
 
 #: ui/uiactions.cpp:23
+#, fuzzy
 msgid "View › Top"
-msgstr ""
+msgstr "查看 › 俯视"
 
 #: ui/uiactions.cpp:24
+#, fuzzy
 msgid "View › Bottom"
-msgstr ""
+msgstr "查看 › 仰视"
 
 #: ui/uiactions.cpp:25
+#, fuzzy
 msgid "View › Frame Selected"
-msgstr ""
+msgstr "查看 › 框选显示所选"
 
 #: ui/uiactions.cpp:26
+#, fuzzy
 msgid "View › Hide Group"
-msgstr ""
+msgstr "查看 › 隐藏组"
 
 #: ui/uiactions.cpp:27
+#, fuzzy
 msgid "View › Show All Groups"
-msgstr ""
+msgstr "查看 › 显示所有组"
 
 #: ui/uiactions.cpp:28
+#, fuzzy
 msgid "View › Isolate Group"
-msgstr ""
+msgstr "查看 › 单独显示组"
 
 #: ui/uiactions.cpp:29
+#, fuzzy
 msgid "Sketch › Enter/Exit Sketch"
-msgstr ""
+msgstr "绘图 › 进入/退出草图"
 
 #: ui/uiactions.cpp:30
+#, fuzzy
 msgid "Edit › Grab"
-msgstr ""
+msgstr "编辑 › 抓取"
 
 #: ui/uiactions.cpp:31
+#, fuzzy
 msgid "Constrain › Smart Dimension"
-msgstr ""
+msgstr "约束 › 智能尺寸"
 
 #: ui/uiactions.cpp:32
+#, fuzzy
 msgid "Sketch › Add… (pie)"
-msgstr ""
+msgstr "绘图 › 添加…（饼状菜单）"
 
 #: ui/uiactions.cpp:33
+#, fuzzy
 msgid "Constrain › Constrain… (pie)"
-msgstr ""
+msgstr "约束 › 约束…（饼状菜单）"
 
 #: ui/uiactions.cpp:34
+#, fuzzy
 msgid "View › Views… (pie)"
-msgstr ""
+msgstr "查看 › 视图…（饼状菜单）"
 
 #: ui/uiactions.cpp:35
+#, fuzzy
 msgid "Help › Keyboard Shortcuts"
-msgstr ""
+msgstr "帮助 › 键盘快捷键"
 
 #: ui/uiactions.cpp:36
+#, fuzzy
 msgid "Inspect › Fit Table"
-msgstr ""
+msgstr "检查 › 配合表"
 
 #: ui/uiactions.cpp:37
+#, fuzzy
 msgid "New Group › Joints… (pie)"
-msgstr ""
+msgstr "新建组 › 关节…（饼状菜单）"
 
 #: util.cpp:172
 msgctxt "title"

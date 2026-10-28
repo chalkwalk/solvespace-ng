@@ -1,3 +1,22 @@
+# English translations for SolveSpace package.
+# Copyright (C) 2017 the SolveSpace authors
+# This file is distributed under the same license as the SolveSpace package.
+# Automatically generated, 2017.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: SolveSpace 3.0\n"
+"Report-Msgid-Bugs-To: phkahler@gmail.com\n"
+"POT-Creation-Date: 2026-10-28 15:04-0700\n"
+"PO-Revision-Date: 2017-01-05 10:30+0000\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: en_US\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
 #: clipboard.cpp:317
 msgid ""
 "Cut, paste, and copy work only in a workplane.\n"
@@ -814,512 +833,516 @@ msgid "Export Parts &List..."
 msgstr "Export Parts &List..."
 
 #: graphicswin.cpp:57
+msgid "Export &Assembly (STEP)..."
+msgstr "Export &Assembly (STEP)..."
+
+#: graphicswin.cpp:58
 msgid "Export &Surfaces..."
 msgstr "Export &Surfaces..."
 
-#: graphicswin.cpp:58
+#: graphicswin.cpp:59
 msgid "Im&port..."
 msgstr "Im&port..."
 
-#: graphicswin.cpp:61
+#: graphicswin.cpp:62
 msgid "E&xit"
 msgstr "E&xit"
 
-#: graphicswin.cpp:64
+#: graphicswin.cpp:65
 msgid "&Edit"
 msgstr "&Edit"
 
-#: graphicswin.cpp:65
+#: graphicswin.cpp:66
 msgid "&Undo"
 msgstr "&Undo"
 
-#: graphicswin.cpp:66
+#: graphicswin.cpp:67
 msgid "&Redo"
 msgstr "&Redo"
 
-#: graphicswin.cpp:67
+#: graphicswin.cpp:68
 msgid "Re&generate All"
 msgstr "Re&generate All"
 
-#: graphicswin.cpp:69
+#: graphicswin.cpp:70
 msgid "Snap Selection to &Grid"
 msgstr "Snap Selection to &Grid"
 
-#: graphicswin.cpp:70
+#: graphicswin.cpp:71
 msgid "Rotate Imported &90°"
 msgstr "Rotate Imported &90°"
 
-#: graphicswin.cpp:72
+#: graphicswin.cpp:73
 msgid "Cu&t"
 msgstr "Cu&t"
 
-#: graphicswin.cpp:73
+#: graphicswin.cpp:74
 msgid "&Copy"
 msgstr "&Copy"
 
-#: graphicswin.cpp:74
+#: graphicswin.cpp:75
 msgid "&Paste"
 msgstr "&Paste"
 
-#: graphicswin.cpp:75
+#: graphicswin.cpp:76
 msgid "Paste &Transformed..."
 msgstr "Paste &Transformed..."
 
-#: graphicswin.cpp:76
+#: graphicswin.cpp:77
 msgid "&Delete"
 msgstr "&Delete"
 
-#: graphicswin.cpp:78
+#: graphicswin.cpp:79
 msgid "Select &Edge Chain"
 msgstr "Select &Edge Chain"
 
-#: graphicswin.cpp:79
+#: graphicswin.cpp:80
 msgid "Select &All"
 msgstr "Select &All"
 
-#: graphicswin.cpp:80
+#: graphicswin.cpp:81
 msgid "&Unselect All"
 msgstr "&Unselect All"
 
-#: graphicswin.cpp:82
+#: graphicswin.cpp:83
 msgid "&Line Styles..."
 msgstr "&Line Styles..."
 
-#: graphicswin.cpp:83
+#: graphicswin.cpp:84
 msgid "&View Projection..."
 msgstr "&View Projection..."
 
-#: graphicswin.cpp:85
+#: graphicswin.cpp:86
 msgid "Con&figuration..."
 msgstr "Con&figuration..."
 
-#: graphicswin.cpp:88
+#: graphicswin.cpp:89
 msgid "&View"
 msgstr "&View"
 
-#: graphicswin.cpp:89
+#: graphicswin.cpp:90
 msgid "Zoom &In"
 msgstr "Zoom &In"
 
-#: graphicswin.cpp:90
+#: graphicswin.cpp:91
 msgid "Zoom &Out"
 msgstr "Zoom &Out"
 
-#: graphicswin.cpp:91
+#: graphicswin.cpp:92
 msgid "Zoom To &Fit"
 msgstr "Zoom To &Fit"
 
-#: graphicswin.cpp:93
+#: graphicswin.cpp:94
 msgid "Align View to &Workplane"
 msgstr "Align View to &Workplane"
 
-#: graphicswin.cpp:94
+#: graphicswin.cpp:95
 msgid "Nearest &Ortho View"
 msgstr "Nearest &Ortho View"
 
-#: graphicswin.cpp:95
+#: graphicswin.cpp:96
 msgid "Nearest &Isometric View"
 msgstr "Nearest &Isometric View"
 
-#: graphicswin.cpp:96
+#: graphicswin.cpp:97
 msgid "&Center View At Point"
 msgstr "&Center View At Point"
 
-#: graphicswin.cpp:98
+#: graphicswin.cpp:99
 msgid "Show Snap &Grid"
 msgstr "Show Snap &Grid"
 
-#: graphicswin.cpp:99 ui/menulayout.cpp:98
+#: graphicswin.cpp:100 ui/menulayout.cpp:99
 msgid "Darken Inactive Solids"
 msgstr "Darken Inactive Solids"
 
-#: graphicswin.cpp:100
+#: graphicswin.cpp:101
 msgid "Use &Perspective Projection"
 msgstr "Use &Perspective Projection"
 
-#: graphicswin.cpp:101
+#: graphicswin.cpp:102
 msgid "Show E&xploded View"
 msgstr "Show E&xploded View"
 
-#: graphicswin.cpp:102
+#: graphicswin.cpp:103
 msgid "Dimension &Units"
 msgstr "Dimension &Units"
 
-#: graphicswin.cpp:103
+#: graphicswin.cpp:104
 msgid "Dimensions in &Millimeters"
 msgstr "Dimensions in &Millimeters"
 
-#: graphicswin.cpp:104
+#: graphicswin.cpp:105
 msgid "Dimensions in M&eters"
 msgstr "Dimensions in M&eters"
 
-#: graphicswin.cpp:105
+#: graphicswin.cpp:106
 msgid "Dimensions in &Inches"
 msgstr "Dimensions in &Inches"
 
-#: graphicswin.cpp:106
+#: graphicswin.cpp:107
 msgid "Dimensions in &Feet and Inches"
 msgstr "Dimensions in &Feet and Inches"
 
-#: graphicswin.cpp:108
+#: graphicswin.cpp:109
 msgid "Show &Toolbar"
 msgstr "Show &Toolbar"
 
-#: graphicswin.cpp:109
+#: graphicswin.cpp:110
 msgid "Show Property Bro&wser"
 msgstr "Show Property Bro&wser"
 
-#: graphicswin.cpp:111
+#: graphicswin.cpp:112
 msgid "&Full Screen"
 msgstr "&Full Screen"
 
-#: graphicswin.cpp:113
+#: graphicswin.cpp:114
 msgid "&New Group"
 msgstr "&New Group"
 
-#: graphicswin.cpp:114
+#: graphicswin.cpp:115
 msgid "New &Part"
 msgstr "New &Part"
 
-#: graphicswin.cpp:115
+#: graphicswin.cpp:116
 msgid "&Revolute Joint"
 msgstr "&Revolute Joint"
 
-#: graphicswin.cpp:116
+#: graphicswin.cpp:117
 msgid "S&lider Joint"
 msgstr "S&lider Joint"
 
-#: graphicswin.cpp:117
+#: graphicswin.cpp:118
 msgid "C&ylindrical Joint"
 msgstr "C&ylindrical Joint"
 
-#: graphicswin.cpp:118
+#: graphicswin.cpp:119
 msgid "Pla&nar Joint"
 msgstr "Pla&nar Joint"
 
-#: graphicswin.cpp:119
+#: graphicswin.cpp:120
 msgid "&Ball Joint"
 msgstr "&Ball Joint"
 
-#: graphicswin.cpp:120
+#: graphicswin.cpp:121
 msgid "&Gear Coupling"
 msgstr "&Gear Coupling"
 
-#: graphicswin.cpp:121
+#: graphicswin.cpp:122
 msgid "&Fit Joint"
 msgstr "&Fit Joint"
 
-#: graphicswin.cpp:122
+#: graphicswin.cpp:123
 msgid "Spli&t Part"
 msgstr "Spli&t Part"
 
-#: graphicswin.cpp:124
+#: graphicswin.cpp:125
 msgid "Sketch In &3d"
 msgstr "Sketch In &3d"
 
-#: graphicswin.cpp:125
+#: graphicswin.cpp:126
 msgid "Sketch In New &Workplane"
 msgstr "Sketch In New &Workplane"
 
-#: graphicswin.cpp:127
+#: graphicswin.cpp:128
 msgid "Step &Translating"
 msgstr "Step &Translating"
 
-#: graphicswin.cpp:128
+#: graphicswin.cpp:129
 msgid "Step &Rotating"
 msgstr "Step &Rotating"
 
-#: graphicswin.cpp:130
+#: graphicswin.cpp:131
 msgid "E&xtrude"
 msgstr "E&xtrude"
 
-#: graphicswin.cpp:131
+#: graphicswin.cpp:132
 msgid "Extrude as a &Cut"
 msgstr "Extrude as a &Cut"
 
-#: graphicswin.cpp:132
+#: graphicswin.cpp:133
 msgid "&Helix"
 msgstr "&Helix"
 
-#: graphicswin.cpp:133
+#: graphicswin.cpp:134
 msgid "&Lathe"
 msgstr "&Lathe"
 
-#: graphicswin.cpp:134
+#: graphicswin.cpp:135
 msgid "Re&volve"
 msgstr "Re&volve"
 
-#: graphicswin.cpp:136
+#: graphicswin.cpp:137
 msgid "&Fillet Edges"
 msgstr "&Fillet Edges"
 
-#: graphicswin.cpp:137
+#: graphicswin.cpp:138
 msgid "&Chamfer Edges"
 msgstr "&Chamfer Edges"
 
-#: graphicswin.cpp:138
+#: graphicswin.cpp:139
 msgid "S&hell"
 msgstr "S&hell"
 
-#: graphicswin.cpp:139
+#: graphicswin.cpp:140
 msgid "&Draft Faces"
 msgstr "&Draft Faces"
 
-#: graphicswin.cpp:140
+#: graphicswin.cpp:141
 msgid "H&ole"
 msgstr "H&ole"
 
-#: graphicswin.cpp:141
+#: graphicswin.cpp:142
 msgid "Lo&ft"
 msgstr "Lo&ft"
 
-#: graphicswin.cpp:142
+#: graphicswin.cpp:143
 msgid "S&weep"
 msgstr "S&weep"
 
-#: graphicswin.cpp:144
+#: graphicswin.cpp:145
 msgid "Link / Assemble..."
 msgstr "Link / Assemble..."
 
-#: graphicswin.cpp:145 ui/menulayout.cpp:136
+#: graphicswin.cpp:146 ui/menulayout.cpp:137
 msgid "Link Recent"
 msgstr "Link Recent"
 
-#: graphicswin.cpp:147
+#: graphicswin.cpp:148
 msgid "&Sketch"
 msgstr "&Sketch"
 
-#: graphicswin.cpp:148
+#: graphicswin.cpp:149
 msgid "In &Workplane"
 msgstr "In &Workplane"
 
-#: graphicswin.cpp:149
+#: graphicswin.cpp:150
 msgid "Anywhere In &3d"
 msgstr "Anywhere In &3d"
 
-#: graphicswin.cpp:151
+#: graphicswin.cpp:152
 msgid "Datum &Point"
 msgstr "Datum &Point"
 
-#: graphicswin.cpp:152
+#: graphicswin.cpp:153
 msgid "Wor&kplane"
 msgstr "Wor&kplane"
 
-#: graphicswin.cpp:154
+#: graphicswin.cpp:155
 msgid "Line &Segment"
 msgstr "Line &Segment"
 
-#: graphicswin.cpp:155
+#: graphicswin.cpp:156
 msgid "C&onstruction Line Segment"
 msgstr "C&onstruction Line Segment"
 
-#: graphicswin.cpp:156
+#: graphicswin.cpp:157
 msgid "&Rectangle"
 msgstr "&Rectangle"
 
-#: graphicswin.cpp:157
+#: graphicswin.cpp:158
 msgid "&Circle"
 msgstr "&Circle"
 
-#: graphicswin.cpp:158
+#: graphicswin.cpp:159
 msgid "&Arc of a Circle"
 msgstr "&Arc of a Circle"
 
-#: graphicswin.cpp:159
+#: graphicswin.cpp:160
 msgid "&Bezier Cubic Spline"
 msgstr "&Bezier Cubic Spline"
 
-#: graphicswin.cpp:161
+#: graphicswin.cpp:162
 msgid "&Text in TrueType Font"
 msgstr "&Text in TrueType Font"
 
-#: graphicswin.cpp:162
+#: graphicswin.cpp:163
 msgid "I&mage"
 msgstr "I&mage"
 
-#: graphicswin.cpp:164
+#: graphicswin.cpp:165
 msgid "To&ggle Construction"
 msgstr "To&ggle Construction"
 
-#: graphicswin.cpp:165
+#: graphicswin.cpp:166
 msgid "Ta&ngent Arc at Point"
 msgstr "Ta&ngent Arc at Point"
 
-#: graphicswin.cpp:166
+#: graphicswin.cpp:167
 msgid "Split Curves at &Intersection"
 msgstr "Split Curves at &Intersection"
 
-#: graphicswin.cpp:168
+#: graphicswin.cpp:169
 msgid "&Constrain"
 msgstr "&Constrain"
 
-#: graphicswin.cpp:169
+#: graphicswin.cpp:170
 msgid "&Distance / Diameter"
 msgstr "&Distance / Diameter"
 
-#: graphicswin.cpp:170
+#: graphicswin.cpp:171
 msgid "Re&ference Dimension"
 msgstr "Re&ference Dimension"
 
-#: graphicswin.cpp:171
+#: graphicswin.cpp:172
 msgid "A&ngle / Equal Angle"
 msgstr "A&ngle / Equal Angle"
 
-#: graphicswin.cpp:172
+#: graphicswin.cpp:173
 msgid "Reference An&gle"
 msgstr "Reference An&gle"
 
-#: graphicswin.cpp:173
+#: graphicswin.cpp:174
 msgid "Other S&upplementary Angle"
 msgstr "Other S&upplementary Angle"
 
-#: graphicswin.cpp:174
+#: graphicswin.cpp:175
 msgid "Toggle R&eference Dim"
 msgstr "Toggle R&eference Dim"
 
-#: graphicswin.cpp:176
+#: graphicswin.cpp:177
 msgid "&Horizontal"
 msgstr "&Horizontal"
 
-#: graphicswin.cpp:177
+#: graphicswin.cpp:178
 msgid "&Vertical"
 msgstr "&Vertical"
 
-#: graphicswin.cpp:179
+#: graphicswin.cpp:180
 msgid "&On Point / Curve / Plane"
 msgstr "&On Point / Curve / Plane"
 
-#: graphicswin.cpp:180
+#: graphicswin.cpp:181
 msgid "E&qual Length / Radius"
 msgstr "E&qual Length / Radius"
 
-#: graphicswin.cpp:181
+#: graphicswin.cpp:182
 msgid "Length / Arc Ra&tio"
 msgstr "Length / Arc Ra&tio"
 
-#: graphicswin.cpp:182
+#: graphicswin.cpp:183
 msgid "Length / Arc Diff&erence"
 msgstr "Length / Arc Diff&erence"
 
-#: graphicswin.cpp:183
+#: graphicswin.cpp:184
 msgid "At &Midpoint"
 msgstr "At &Midpoint"
 
-#: graphicswin.cpp:184
+#: graphicswin.cpp:185
 msgid "S&ymmetric"
 msgstr "S&ymmetric"
 
-#: graphicswin.cpp:185
+#: graphicswin.cpp:186
 msgid "Para&llel / Tangent"
 msgstr "Para&llel / Tangent"
 
-#: graphicswin.cpp:186
+#: graphicswin.cpp:187
 msgid "&Perpendicular"
 msgstr "&Perpendicular"
 
-#: graphicswin.cpp:187
+#: graphicswin.cpp:188
 msgid "Same Orient&ation"
 msgstr "Same Orient&ation"
 
-#: graphicswin.cpp:188
+#: graphicswin.cpp:189
 msgid "Lock Point Where &Dragged"
 msgstr "Lock Point Where &Dragged"
 
-#: graphicswin.cpp:190 ui/menulayout.cpp:167 ui/selectionmodel.cpp:54
+#: graphicswin.cpp:191 ui/menulayout.cpp:168 ui/selectionmodel.cpp:54
 #: ui/selectionmodel.cpp:311
 msgid "Comment"
 msgstr "Comment"
 
-#: graphicswin.cpp:192
+#: graphicswin.cpp:193
 msgid "&Analyze"
 msgstr "&Analyze"
 
-#: graphicswin.cpp:193
+#: graphicswin.cpp:194
 msgid "Measure &Volume"
 msgstr "Measure &Volume"
 
-#: graphicswin.cpp:194
+#: graphicswin.cpp:195
 msgid "Measure A&rea"
 msgstr "Measure A&rea"
 
-#: graphicswin.cpp:195
+#: graphicswin.cpp:196
 msgid "Measure &Perimeter"
 msgstr "Measure &Perimeter"
 
-#: graphicswin.cpp:196
+#: graphicswin.cpp:197
 msgid "Show &Interfering Parts"
 msgstr "Show &Interfering Parts"
 
-#: graphicswin.cpp:197
+#: graphicswin.cpp:198
 msgid "Show &Naked Edges"
 msgstr "Show &Naked Edges"
 
-#: graphicswin.cpp:198
+#: graphicswin.cpp:199
 msgid "Show &Center of Mass"
 msgstr "Show &Center of Mass"
 
-#: graphicswin.cpp:199
+#: graphicswin.cpp:200
 msgid "&Mass Properties"
 msgstr "&Mass Properties"
 
-#: graphicswin.cpp:200
+#: graphicswin.cpp:201
 msgid "&Parts List"
 msgstr "&Parts List"
 
-#: graphicswin.cpp:201
+#: graphicswin.cpp:202
 msgid "&Design Pose"
 msgstr "&Design Pose"
 
-#: graphicswin.cpp:203
+#: graphicswin.cpp:204
 msgid "Show &Underconstrained Points"
 msgstr "Show &Underconstrained Points"
 
-#: graphicswin.cpp:205
+#: graphicswin.cpp:206
 msgid "&Trace Point"
 msgstr "&Trace Point"
 
-#: graphicswin.cpp:206
+#: graphicswin.cpp:207
 msgid "&Stop Tracing..."
 msgstr "&Stop Tracing..."
 
-#: graphicswin.cpp:207
+#: graphicswin.cpp:208
 msgid "Step &Dimension..."
 msgstr "Step &Dimension..."
 
-#: graphicswin.cpp:209
+#: graphicswin.cpp:210
 msgid "&Help"
 msgstr "&Help"
 
-#: graphicswin.cpp:210
+#: graphicswin.cpp:211
 msgid "&Language"
 msgstr "&Language"
 
-#: graphicswin.cpp:211
+#: graphicswin.cpp:212
 msgid "&Website / Manual"
 msgstr "&Website / Manual"
 
-#: graphicswin.cpp:212
+#: graphicswin.cpp:213
 msgid "&Go to GitHub commit"
 msgstr "&Go to GitHub commit"
 
-#: graphicswin.cpp:214
+#: graphicswin.cpp:215
 msgid "&About"
 msgstr "&About"
 
-#: graphicswin.cpp:418
+#: graphicswin.cpp:419
 msgid "(no recent files)"
 msgstr "(no recent files)"
 
-#: graphicswin.cpp:426
+#: graphicswin.cpp:427
 #, c-format
 msgid "File '%s' does not exist."
 msgstr "File '%s' does not exist."
 
-#: graphicswin.cpp:835
+#: graphicswin.cpp:836
 msgid "No workplane is active, so the grid will not appear."
 msgstr "No workplane is active, so the grid will not appear."
 
-#: graphicswin.cpp:850
+#: graphicswin.cpp:851
 msgid ""
 "The perspective factor is set to zero, so the view will always be a parallel "
 "projection.\n"
@@ -1333,17 +1356,17 @@ msgstr ""
 "For a perspective projection, modify the perspective factor in the "
 "configuration screen. A value around 0.3 is typical."
 
-#: graphicswin.cpp:940
+#: graphicswin.cpp:941
 msgid ""
 "Select a point; this point will become the center of the view on screen."
 msgstr ""
 "Select a point; this point will become the center of the view on screen."
 
-#: graphicswin.cpp:1245
+#: graphicswin.cpp:1246
 msgid "No additional entities share endpoints with the selected entities."
 msgstr "No additional entities share endpoints with the selected entities."
 
-#: graphicswin.cpp:1263
+#: graphicswin.cpp:1264
 msgid ""
 "To use this command, select a point or other entity from an linked part, or "
 "make a link group the active group."
@@ -1351,7 +1374,7 @@ msgstr ""
 "To use this command, select a point or other entity from an linked part, or "
 "make a link group the active group."
 
-#: graphicswin.cpp:1286
+#: graphicswin.cpp:1287
 msgid ""
 "No workplane is active. Activate a workplane (with Sketch -> In Workplane) "
 "to define the plane for the snap grid."
@@ -1359,7 +1382,7 @@ msgstr ""
 "No workplane is active. Activate a workplane (with Sketch -> In Workplane) "
 "to define the plane for the snap grid."
 
-#: graphicswin.cpp:1293
+#: graphicswin.cpp:1294
 msgid ""
 "Can't snap these items to grid; select points, text comments, or constraints "
 "with a label. To snap a line, select its endpoints."
@@ -1367,11 +1390,11 @@ msgstr ""
 "Can't snap these items to grid; select points, text comments, or constraints "
 "with a label. To snap a line, select its endpoints."
 
-#: graphicswin.cpp:1378
+#: graphicswin.cpp:1379
 msgid "No workplane selected. Activating default workplane for this group."
 msgstr "No workplane selected. Activating default workplane for this group."
 
-#: graphicswin.cpp:1381
+#: graphicswin.cpp:1382
 msgid ""
 "No workplane is selected, and the active group does not have a default "
 "workplane. Try selecting a workplane, or activating a sketch-in-new-"
@@ -1381,7 +1404,7 @@ msgstr ""
 "workplane. Try selecting a workplane, or activating a sketch-in-new-"
 "workplane group."
 
-#: graphicswin.cpp:1402
+#: graphicswin.cpp:1403
 msgid ""
 "Bad selection for tangent arc at point. Select a single point, or select "
 "nothing to set up arc parameters."
@@ -1389,47 +1412,47 @@ msgstr ""
 "Bad selection for tangent arc at point. Select a single point, or select "
 "nothing to set up arc parameters."
 
-#: graphicswin.cpp:1413
+#: graphicswin.cpp:1414
 msgid "click point on arc (draws anti-clockwise)"
 msgstr "click point on arc (draws anti-clockwise)"
 
-#: graphicswin.cpp:1414
+#: graphicswin.cpp:1415
 msgid "click to place datum point"
 msgstr "click to place datum point"
 
-#: graphicswin.cpp:1415
+#: graphicswin.cpp:1416
 msgid "click first point of line segment"
 msgstr "click first point of line segment"
 
-#: graphicswin.cpp:1417
+#: graphicswin.cpp:1418
 msgid "click first point of construction line segment"
 msgstr "click first point of construction line segment"
 
-#: graphicswin.cpp:1418
+#: graphicswin.cpp:1419
 msgid "click first point of cubic segment"
 msgstr "click first point of cubic segment"
 
-#: graphicswin.cpp:1419
+#: graphicswin.cpp:1420
 msgid "click center of circle"
 msgstr "click center of circle"
 
-#: graphicswin.cpp:1420
+#: graphicswin.cpp:1421
 msgid "click origin of workplane"
 msgstr "click origin of workplane"
 
-#: graphicswin.cpp:1421
+#: graphicswin.cpp:1422
 msgid "click one corner of rectangle"
 msgstr "click one corner of rectangle"
 
-#: graphicswin.cpp:1422
+#: graphicswin.cpp:1423
 msgid "click top left of text"
 msgstr "click top left of text"
 
-#: graphicswin.cpp:1428
+#: graphicswin.cpp:1429
 msgid "click top left of image"
 msgstr "click top left of image"
 
-#: graphicswin.cpp:1454
+#: graphicswin.cpp:1455
 msgid ""
 "No entities are selected. Select entities before trying to toggle their "
 "construction state."
@@ -1947,7 +1970,7 @@ msgstr "Group Info"
 msgid "Style Info"
 msgstr "Style Info"
 
-#: mouse.cpp:701 ui/menulayout.cpp:77
+#: mouse.cpp:701 ui/menulayout.cpp:78
 msgid "Select Edge Chain"
 msgstr "Select Edge Chain"
 
@@ -1959,7 +1982,7 @@ msgstr "Toggle Reference Dimension"
 msgid "Other Supplementary Angle"
 msgstr "Other Supplementary Angle"
 
-#: mouse.cpp:718 ui/menulayout.cpp:78
+#: mouse.cpp:718 ui/menulayout.cpp:79
 msgid "Snap to Grid"
 msgstr "Snap to Grid"
 
@@ -1975,7 +1998,7 @@ msgstr "Add Spline Point"
 msgid "Cannot add spline point: maximum number of points reached."
 msgstr "Cannot add spline point: maximum number of points reached."
 
-#: mouse.cpp:791 ui/menulayout.cpp:147
+#: mouse.cpp:791 ui/menulayout.cpp:148
 msgid "Toggle Construction"
 msgstr "Toggle Construction"
 
@@ -1983,31 +2006,31 @@ msgstr "Toggle Construction"
 msgid "Delete Point-Coincident Constraint"
 msgstr "Delete Point-Coincident Constraint"
 
-#: mouse.cpp:825 ui/menulayout.cpp:71
+#: mouse.cpp:825 ui/menulayout.cpp:72
 msgid "Cut"
 msgstr "Cut"
 
-#: mouse.cpp:827 ui/menulayout.cpp:71
+#: mouse.cpp:827 ui/menulayout.cpp:72
 msgid "Copy"
 msgstr "Copy"
 
-#: mouse.cpp:831 ui/menulayout.cpp:76
+#: mouse.cpp:831 ui/menulayout.cpp:77
 msgid "Select All"
 msgstr "Select All"
 
-#: mouse.cpp:836 ui/menulayout.cpp:72
+#: mouse.cpp:836 ui/menulayout.cpp:73
 msgid "Paste"
 msgstr "Paste"
 
-#: mouse.cpp:838 ui/menulayout.cpp:73
+#: mouse.cpp:838 ui/menulayout.cpp:74
 msgid "Paste Transformed..."
 msgstr "Paste Transformed..."
 
-#: mouse.cpp:843 ui/menulayout.cpp:74 ui/outliner.cpp:140
+#: mouse.cpp:843 ui/menulayout.cpp:75 ui/outliner.cpp:140
 msgid "Delete"
 msgstr "Delete"
 
-#: mouse.cpp:846 ui/menulayout.cpp:76
+#: mouse.cpp:846 ui/menulayout.cpp:77
 msgid "Unselect All"
 msgstr "Unselect All"
 
@@ -2015,7 +2038,7 @@ msgstr "Unselect All"
 msgid "Unselect Hovered"
 msgstr "Unselect Hovered"
 
-#: mouse.cpp:862 ui/menulayout.cpp:85
+#: mouse.cpp:862 ui/menulayout.cpp:86
 msgid "Zoom to Fit"
 msgstr "Zoom to Fit"
 
@@ -2138,6 +2161,7 @@ msgid "Quad mesh for Blender, with creases (USD)"
 msgstr "Quad mesh for Blender, with creases (USD)"
 
 #: platform/gui.cpp:110 platform/gui.cpp:117 platform/gui.cpp:124
+#: solvespace.cpp:850
 msgctxt "file-type"
 msgid "STEP file"
 msgstr "STEP file"
@@ -2323,7 +2347,13 @@ msgstr "STEP file, one per part"
 msgid "Exported %d parts:%s"
 msgstr "Exported %d parts:%s"
 
-#: solvespace.cpp:893
+#: solvespace.cpp:856
+msgid ""
+"The assembly needs the Open CASCADE kernel and a solid to export as STEP."
+msgstr ""
+"The assembly needs the Open CASCADE kernel and a solid to export as STEP."
+
+#: solvespace.cpp:907
 #, c-format
 msgid ""
 "Can't identify file type from file extension of filename '%s'; try .dxf "
@@ -2332,19 +2362,19 @@ msgstr ""
 "Can't identify file type from file extension of filename '%s'; try .dxf "
 "or .dwg."
 
-#: solvespace.cpp:945
+#: solvespace.cpp:959
 msgid "Constraint must have a label, and must not be a reference dimension."
 msgstr "Constraint must have a label, and must not be a reference dimension."
 
-#: solvespace.cpp:949
+#: solvespace.cpp:963
 msgid "Bad selection for step dimension; select a constraint."
 msgstr "Bad selection for step dimension; select a constraint."
 
-#: solvespace.cpp:973
+#: solvespace.cpp:987
 msgid "The assembly does not interfere, good."
 msgstr "The assembly does not interfere, good."
 
-#: solvespace.cpp:1005
+#: solvespace.cpp:1019
 #, c-format
 msgid ""
 "The volume of the solid model is:\n"
@@ -2355,7 +2385,7 @@ msgstr ""
 "\n"
 "    %s"
 
-#: solvespace.cpp:1015
+#: solvespace.cpp:1029
 #, c-format
 msgid ""
 "\n"
@@ -2368,7 +2398,7 @@ msgstr ""
 "\n"
 "    %s"
 
-#: solvespace.cpp:1020 solvespace.cpp:1365
+#: solvespace.cpp:1034 solvespace.cpp:1379
 msgid ""
 "\n"
 "\n"
@@ -2380,7 +2410,7 @@ msgstr ""
 "Curved surfaces have been approximated as triangles.\n"
 "This introduces error, typically of around 1%."
 
-#: solvespace.cpp:1035
+#: solvespace.cpp:1049
 #, c-format
 msgid ""
 "The surface area of the selected faces is:\n"
@@ -2397,7 +2427,7 @@ msgstr ""
 "Curves have been approximated as piecewise linear.\n"
 "This introduces error, typically of around 1%%."
 
-#: solvespace.cpp:1044
+#: solvespace.cpp:1058
 msgid ""
 "This group does not contain a correctly-formed 2d closed area. It is open, "
 "not coplanar, or self-intersecting."
@@ -2405,7 +2435,7 @@ msgstr ""
 "This group does not contain a correctly-formed 2d closed area. It is open, "
 "not coplanar, or self-intersecting."
 
-#: solvespace.cpp:1056
+#: solvespace.cpp:1070
 #, c-format
 msgid ""
 "The area of the region sketched in this group is:\n"
@@ -2422,7 +2452,7 @@ msgstr ""
 "Curves have been approximated as piecewise linear.\n"
 "This introduces error, typically of around 1%%."
 
-#: solvespace.cpp:1076
+#: solvespace.cpp:1090
 #, c-format
 msgid ""
 "The total length of the selected entities is:\n"
@@ -2439,36 +2469,36 @@ msgstr ""
 "Curves have been approximated as piecewise linear.\n"
 "This introduces error, typically of around 1%%."
 
-#: solvespace.cpp:1082
+#: solvespace.cpp:1096
 msgid "Bad selection for perimeter; select line segments, arcs, and curves."
 msgstr "Bad selection for perimeter; select line segments, arcs, and curves."
 
-#: solvespace.cpp:1098
+#: solvespace.cpp:1112
 msgid "Bad selection for trace; select a single point."
 msgstr "Bad selection for trace; select a single point."
 
-#: solvespace.cpp:1125
+#: solvespace.cpp:1139
 #, c-format
 msgid "Couldn't write to '%s'"
 msgstr "Couldn't write to '%s'"
 
-#: solvespace.cpp:1155
+#: solvespace.cpp:1169
 msgid "The mesh is self-intersecting (NOT okay, invalid)."
 msgstr "The mesh is self-intersecting (NOT okay, invalid)."
 
-#: solvespace.cpp:1156
+#: solvespace.cpp:1170
 msgid "The mesh is not self-intersecting (okay, valid)."
 msgstr "The mesh is not self-intersecting (okay, valid)."
 
-#: solvespace.cpp:1158
+#: solvespace.cpp:1172
 msgid "The mesh has naked edges (NOT okay, invalid)."
 msgstr "The mesh has naked edges (NOT okay, invalid)."
 
-#: solvespace.cpp:1159
+#: solvespace.cpp:1173
 msgid "The mesh is watertight (okay, valid)."
 msgstr "The mesh is watertight (okay, valid)."
 
-#: solvespace.cpp:1162
+#: solvespace.cpp:1176
 #, c-format
 msgid ""
 "\n"
@@ -2479,7 +2509,7 @@ msgstr ""
 "\n"
 "The model contains %d triangles, from %d surfaces."
 
-#: solvespace.cpp:1166
+#: solvespace.cpp:1180
 #, c-format
 msgid ""
 "%s\n"
@@ -2494,7 +2524,7 @@ msgstr ""
 "\n"
 "Zero problematic edges, good.%s"
 
-#: solvespace.cpp:1169
+#: solvespace.cpp:1183
 #, c-format
 msgid ""
 "%s\n"
@@ -2509,7 +2539,7 @@ msgstr ""
 "\n"
 "%d problematic edges, bad.%s"
 
-#: solvespace.cpp:1182
+#: solvespace.cpp:1196
 #, c-format
 msgid ""
 "This is SolveSpace version %s.\n"
@@ -2538,11 +2568,11 @@ msgstr ""
 "\n"
 "© 2008-%d Jonathan Westhues and other authors.\n"
 
-#: solvespace.cpp:1351
+#: solvespace.cpp:1365
 msgid "There is no solid in the active group."
 msgstr "There is no solid in the active group."
 
-#: solvespace.cpp:1359
+#: solvespace.cpp:1373
 #, c-format
 msgid ""
 "Volume:  %s\n"
@@ -2555,20 +2585,20 @@ msgstr ""
 "Mass:  %s (%s)\n"
 "Center of mass:  (%s, %s, %s)"
 
-#: solvespace.cpp:1404
+#: solvespace.cpp:1418
 msgid "A part's name can't be empty."
 msgstr "A part's name can't be empty."
 
-#: solvespace.cpp:1490
+#: solvespace.cpp:1504
 msgid "No part has a solid yet."
 msgstr "No part has a solid yet."
 
-#: solvespace.cpp:1494
+#: solvespace.cpp:1508
 #, c-format
 msgid "%s%s:  %s, %s, %.2f g;  %s x %s x %s\n"
 msgstr "%s%s:  %s, %s, %.2f g;  %s x %s x %s\n"
 
-#: solvespace.cpp:1501
+#: solvespace.cpp:1515
 #, c-format
 msgid ""
 "\n"
@@ -2577,13 +2607,13 @@ msgstr ""
 "\n"
 "%d parts, %.2f g in all."
 
-#: solvespace.cpp:1603
+#: solvespace.cpp:1617
 msgid ""
 "Parts export as STL, 3MF or STEP; choose a .stl, .3mf or .step file name."
 msgstr ""
 "Parts export as STL, 3MF or STEP; choose a .stl, .3mf or .step file name."
 
-#: solvespace.cpp:1638
+#: solvespace.cpp:1652
 #, c-format
 msgid "STEP needs the Open CASCADE kernel; part '%s' was not written."
 msgstr "STEP needs the Open CASCADE kernel; part '%s' was not written."
@@ -2782,16 +2812,16 @@ msgstr "height"
 msgid "width"
 msgstr "width"
 
-#: ui/drawtool.cpp:82 ui/menulayout.cpp:144 ui/ngui.cpp:153
+#: ui/drawtool.cpp:82 ui/menulayout.cpp:145 ui/ngui.cpp:153
 #: ui/selectionmodel.cpp:193
 msgid "Circle"
 msgstr "Circle"
 
-#: ui/drawtool.cpp:82 ui/menulayout.cpp:142 ui/ngui.cpp:151
+#: ui/drawtool.cpp:82 ui/menulayout.cpp:143 ui/ngui.cpp:151
 msgid "Line"
 msgstr "Line"
 
-#: ui/drawtool.cpp:82 ui/menulayout.cpp:144 ui/ngui.cpp:152
+#: ui/drawtool.cpp:82 ui/menulayout.cpp:145 ui/ngui.cpp:152
 msgid "Rectangle"
 msgstr "Rectangle"
 
@@ -2819,7 +2849,7 @@ msgstr "Next field"
 msgid "Clear / cancel"
 msgstr "Clear / cancel"
 
-#: ui/grabtool.cpp:46 ui/menulayout.cpp:78 ui/statusmodel.cpp:49
+#: ui/grabtool.cpp:46 ui/menulayout.cpp:79 ui/statusmodel.cpp:49
 msgid "Grab"
 msgstr "Grab"
 
@@ -2879,7 +2909,7 @@ msgstr "Export"
 msgid "2D View..."
 msgstr "2D View..."
 
-#: ui/menulayout.cpp:61 ui/menulayout.cpp:146
+#: ui/menulayout.cpp:61 ui/menulayout.cpp:147
 msgid "Image..."
 msgstr "Image..."
 
@@ -2904,474 +2934,478 @@ msgid "Parts List (CSV)..."
 msgstr "Parts List (CSV)..."
 
 #: ui/menulayout.cpp:67
+msgid "Assembly (STEP)..."
+msgstr "Assembly (STEP)..."
+
+#: ui/menulayout.cpp:68
 msgid "Surfaces..."
 msgstr "Surfaces..."
 
-#: ui/menulayout.cpp:68
+#: ui/menulayout.cpp:69
 msgid "Quit"
 msgstr "Quit"
 
-#: ui/menulayout.cpp:69
+#: ui/menulayout.cpp:70
 msgid "Edit"
 msgstr "Edit"
 
-#: ui/menulayout.cpp:70
+#: ui/menulayout.cpp:71
 msgid "Redo"
 msgstr "Redo"
 
-#: ui/menulayout.cpp:70
+#: ui/menulayout.cpp:71
 msgid "Undo"
 msgstr "Undo"
 
-#: ui/menulayout.cpp:79
+#: ui/menulayout.cpp:80
 msgid "Rotate Imported 90°"
 msgstr "Rotate Imported 90°"
 
-#: ui/menulayout.cpp:80
+#: ui/menulayout.cpp:81
 msgid "Regenerate All"
 msgstr "Regenerate All"
 
-#: ui/menulayout.cpp:81
+#: ui/menulayout.cpp:82
 msgid "Line Styles..."
 msgstr "Line Styles..."
 
-#: ui/menulayout.cpp:82
+#: ui/menulayout.cpp:83
 msgid "Preferences..."
 msgstr "Preferences..."
 
-#: ui/menulayout.cpp:83 ui/ngui.cpp:170 ui/panels.cpp:173
+#: ui/menulayout.cpp:84 ui/ngui.cpp:170 ui/panels.cpp:173
 msgid "View"
 msgstr "View"
 
-#: ui/menulayout.cpp:84
+#: ui/menulayout.cpp:85
 msgid "Zoom In"
 msgstr "Zoom In"
 
-#: ui/menulayout.cpp:84
+#: ui/menulayout.cpp:85
 msgid "Zoom Out"
 msgstr "Zoom Out"
 
-#: ui/menulayout.cpp:86
+#: ui/menulayout.cpp:87
 msgid "Frame Selection"
 msgstr "Frame Selection"
 
-#: ui/menulayout.cpp:87
+#: ui/menulayout.cpp:88
 msgid "Center View at Point"
 msgstr "Center View at Point"
 
-#: ui/menulayout.cpp:88
+#: ui/menulayout.cpp:89
 msgid "Standard Views"
 msgstr "Standard Views"
 
-#: ui/menulayout.cpp:89 ui/ngui.cpp:174 ui/viewcubemodel.cpp:18
+#: ui/menulayout.cpp:90 ui/ngui.cpp:174 ui/viewcubemodel.cpp:18
 msgid "Back"
 msgstr "Back"
 
-#: ui/menulayout.cpp:89 ui/ngui.cpp:172 ui/viewcubemodel.cpp:17
+#: ui/menulayout.cpp:90 ui/ngui.cpp:172 ui/viewcubemodel.cpp:17
 msgid "Front"
 msgstr "Front"
 
-#: ui/menulayout.cpp:90 ui/ngui.cpp:173 ui/viewcubemodel.cpp:20
+#: ui/menulayout.cpp:91 ui/ngui.cpp:173 ui/viewcubemodel.cpp:20
 msgid "Left"
 msgstr "Left"
 
-#: ui/menulayout.cpp:90 ui/ngui.cpp:171 ui/viewcubemodel.cpp:19
+#: ui/menulayout.cpp:91 ui/ngui.cpp:171 ui/viewcubemodel.cpp:19
 msgid "Right"
 msgstr "Right"
 
-#: ui/menulayout.cpp:91 ui/ngui.cpp:173 ui/viewcubemodel.cpp:22
+#: ui/menulayout.cpp:92 ui/ngui.cpp:173 ui/viewcubemodel.cpp:22
 msgid "Bottom"
 msgstr "Bottom"
 
-#: ui/menulayout.cpp:91 ui/ngui.cpp:171 ui/viewcubemodel.cpp:21
+#: ui/menulayout.cpp:92 ui/ngui.cpp:171 ui/viewcubemodel.cpp:21
 msgid "Top"
 msgstr "Top"
 
-#: ui/menulayout.cpp:92
+#: ui/menulayout.cpp:93
 msgid "Nearest Isometric"
 msgstr "Nearest Isometric"
 
-#: ui/menulayout.cpp:93
+#: ui/menulayout.cpp:94
 msgid "Nearest Orthographic"
 msgstr "Nearest Orthographic"
 
-#: ui/menulayout.cpp:94
+#: ui/menulayout.cpp:95
 msgid "Align to Workplane"
 msgstr "Align to Workplane"
 
-#: ui/menulayout.cpp:96
+#: ui/menulayout.cpp:97
 msgid "Perspective"
 msgstr "Perspective"
 
-#: ui/menulayout.cpp:97
+#: ui/menulayout.cpp:98
 msgid "Exploded View"
 msgstr "Exploded View"
 
-#: ui/menulayout.cpp:99
+#: ui/menulayout.cpp:100
 msgid "Snap Grid"
 msgstr "Snap Grid"
 
-#: ui/menulayout.cpp:99
+#: ui/menulayout.cpp:100
 msgid "Units"
 msgstr "Units"
 
-#: ui/menulayout.cpp:100 ui/panels.cpp:196
+#: ui/menulayout.cpp:101 ui/panels.cpp:196
 msgid "Outliner"
 msgstr "Outliner"
 
-#: ui/menulayout.cpp:101 ui/panels.cpp:150
+#: ui/menulayout.cpp:102 ui/panels.cpp:150
 msgid "Properties"
 msgstr "Properties"
 
-#: ui/menulayout.cpp:102 ui/panels.cpp:156
+#: ui/menulayout.cpp:103 ui/panels.cpp:156
 msgid "Problems"
 msgstr "Problems"
 
-#: ui/menulayout.cpp:103
+#: ui/menulayout.cpp:104
 msgid "Tool Shelf"
 msgstr "Tool Shelf"
 
-#: ui/menulayout.cpp:104
+#: ui/menulayout.cpp:105
 msgid "Menu Bar"
 msgstr "Menu Bar"
 
-#: ui/menulayout.cpp:105
+#: ui/menulayout.cpp:106
 msgid "Command Palette..."
 msgstr "Command Palette..."
 
-#: ui/menulayout.cpp:106
+#: ui/menulayout.cpp:107
 msgid "Hide Group"
 msgstr "Hide Group"
 
-#: ui/menulayout.cpp:106
+#: ui/menulayout.cpp:107
 msgid "Isolate Group"
 msgstr "Isolate Group"
 
-#: ui/menulayout.cpp:107
+#: ui/menulayout.cpp:108
 msgid "Show All Groups"
 msgstr "Show All Groups"
 
-#: ui/menulayout.cpp:108
+#: ui/menulayout.cpp:109
 msgid "View Settings..."
 msgstr "View Settings..."
 
-#: ui/menulayout.cpp:109
+#: ui/menulayout.cpp:110
 msgid "Light Theme"
 msgstr "Light Theme"
 
-#: ui/menulayout.cpp:110
+#: ui/menulayout.cpp:111
 msgid "Full Screen"
 msgstr "Full Screen"
 
-#: ui/menulayout.cpp:111
+#: ui/menulayout.cpp:112
 msgid "New Group"
 msgstr "New Group"
 
-#: ui/menulayout.cpp:112
+#: ui/menulayout.cpp:113
 msgid "New Part"
 msgstr "New Part"
 
-#: ui/menulayout.cpp:112
+#: ui/menulayout.cpp:113
 msgid "Split Part"
 msgstr "Split Part"
 
-#: ui/menulayout.cpp:113 ui/outliner.cpp:155
+#: ui/menulayout.cpp:114 ui/outliner.cpp:155
 msgid "Joints"
 msgstr "Joints"
 
-#: ui/menulayout.cpp:114
+#: ui/menulayout.cpp:115
 msgid "Revolute Joint"
 msgstr "Revolute Joint"
 
-#: ui/menulayout.cpp:115
+#: ui/menulayout.cpp:116
 msgid "Slider Joint"
 msgstr "Slider Joint"
 
-#: ui/menulayout.cpp:116
+#: ui/menulayout.cpp:117
 msgid "Cylindrical Joint"
 msgstr "Cylindrical Joint"
 
-#: ui/menulayout.cpp:117
+#: ui/menulayout.cpp:118
 msgid "Planar Joint"
 msgstr "Planar Joint"
 
-#: ui/menulayout.cpp:118
+#: ui/menulayout.cpp:119
 msgid "Ball Joint"
 msgstr "Ball Joint"
 
-#: ui/menulayout.cpp:119
+#: ui/menulayout.cpp:120
 msgid "Gear Coupling"
 msgstr "Gear Coupling"
 
-#: ui/menulayout.cpp:120
+#: ui/menulayout.cpp:121
 msgid "Fit Joint"
 msgstr "Fit Joint"
 
-#: ui/menulayout.cpp:121
+#: ui/menulayout.cpp:122
 msgid "Sketch in 3D"
 msgstr "Sketch in 3D"
 
-#: ui/menulayout.cpp:122
+#: ui/menulayout.cpp:123
 msgid "Sketch in New Workplane"
 msgstr "Sketch in New Workplane"
 
-#: ui/menulayout.cpp:123
+#: ui/menulayout.cpp:124
 msgid "Extrude"
 msgstr "Extrude"
 
-#: ui/menulayout.cpp:124
+#: ui/menulayout.cpp:125
 msgid "Extrude as a Cut"
 msgstr "Extrude as a Cut"
 
-#: ui/menulayout.cpp:125
+#: ui/menulayout.cpp:126
 msgid "Revolve"
 msgstr "Revolve"
 
-#: ui/menulayout.cpp:126
+#: ui/menulayout.cpp:127
 msgid "Helix"
 msgstr "Helix"
 
-#: ui/menulayout.cpp:126
+#: ui/menulayout.cpp:127
 msgid "Lathe"
 msgstr "Lathe"
 
-#: ui/menulayout.cpp:127
+#: ui/menulayout.cpp:128
 msgid "Fillet Edges"
 msgstr "Fillet Edges"
 
-#: ui/menulayout.cpp:128
+#: ui/menulayout.cpp:129
 msgid "Chamfer Edges"
 msgstr "Chamfer Edges"
 
-#: ui/menulayout.cpp:129
+#: ui/menulayout.cpp:130
 msgid "Draft Faces"
 msgstr "Draft Faces"
 
-#: ui/menulayout.cpp:129
+#: ui/menulayout.cpp:130
 msgid "Shell"
 msgstr "Shell"
 
-#: ui/menulayout.cpp:130
+#: ui/menulayout.cpp:131
 msgid "Hole"
 msgstr "Hole"
 
-#: ui/menulayout.cpp:130
+#: ui/menulayout.cpp:131
 msgid "Loft"
 msgstr "Loft"
 
-#: ui/menulayout.cpp:131
+#: ui/menulayout.cpp:132
 msgid "Sweep"
 msgstr "Sweep"
 
-#: ui/menulayout.cpp:133
+#: ui/menulayout.cpp:134
 msgid "Linear Pattern"
 msgstr "Linear Pattern"
 
-#: ui/menulayout.cpp:134
+#: ui/menulayout.cpp:135
 msgid "Circular Pattern"
 msgstr "Circular Pattern"
 
-#: ui/menulayout.cpp:135
+#: ui/menulayout.cpp:136
 msgid "Link Part..."
 msgstr "Link Part..."
 
-#: ui/menulayout.cpp:137 ui/statusmodel.cpp:50
+#: ui/menulayout.cpp:138 ui/statusmodel.cpp:50
 msgid "Sketch"
 msgstr "Sketch"
 
-#: ui/menulayout.cpp:138
+#: ui/menulayout.cpp:139
 msgid "In Workplane"
 msgstr "In Workplane"
 
-#: ui/menulayout.cpp:139
+#: ui/menulayout.cpp:140
 msgid "Anywhere in 3D"
 msgstr "Anywhere in 3D"
 
-#: ui/menulayout.cpp:141 ui/ngui.cpp:155 ui/selectionmodel.cpp:130
+#: ui/menulayout.cpp:142 ui/ngui.cpp:155 ui/selectionmodel.cpp:130
 msgid "Point"
 msgstr "Point"
 
-#: ui/menulayout.cpp:141 ui/ngui.cpp:156 ui/selectionmodel.cpp:147
+#: ui/menulayout.cpp:142 ui/ngui.cpp:156 ui/selectionmodel.cpp:147
 msgid "Workplane"
 msgstr "Workplane"
 
-#: ui/menulayout.cpp:143
+#: ui/menulayout.cpp:144
 msgid "Construction Line"
 msgstr "Construction Line"
 
-#: ui/menulayout.cpp:145 ui/ngui.cpp:153
+#: ui/menulayout.cpp:146 ui/ngui.cpp:153
 msgid "Arc"
 msgstr "Arc"
 
-#: ui/menulayout.cpp:145 ui/ngui.cpp:154
+#: ui/menulayout.cpp:146 ui/ngui.cpp:154
 msgid "Spline"
 msgstr "Spline"
 
-#: ui/menulayout.cpp:146 ui/ngui.cpp:155
+#: ui/menulayout.cpp:147 ui/ngui.cpp:155
 msgid "Text"
 msgstr "Text"
 
-#: ui/menulayout.cpp:148
+#: ui/menulayout.cpp:149
 msgid "Tangent Arc at Point"
 msgstr "Tangent Arc at Point"
 
-#: ui/menulayout.cpp:149
+#: ui/menulayout.cpp:150
 msgid "Split at Intersections"
 msgstr "Split at Intersections"
 
-#: ui/menulayout.cpp:150 ui/ngui.cpp:167 ui/statusmodel.cpp:47
+#: ui/menulayout.cpp:151 ui/ngui.cpp:167 ui/statusmodel.cpp:47
 msgid "Constrain"
 msgstr "Constrain"
 
-#: ui/menulayout.cpp:151
+#: ui/menulayout.cpp:152
 msgid "Distance / Diameter"
 msgstr "Distance / Diameter"
 
-#: ui/menulayout.cpp:152
+#: ui/menulayout.cpp:153
 msgid "Reference Dimension"
 msgstr "Reference Dimension"
 
-#: ui/menulayout.cpp:153
+#: ui/menulayout.cpp:154
 msgid "Angle / Equal Angle"
 msgstr "Angle / Equal Angle"
 
-#: ui/menulayout.cpp:154
+#: ui/menulayout.cpp:155
 msgid "Reference Angle"
 msgstr "Reference Angle"
 
-#: ui/menulayout.cpp:155
+#: ui/menulayout.cpp:156
 msgid "Supplementary Angle"
 msgstr "Supplementary Angle"
 
-#: ui/menulayout.cpp:156
+#: ui/menulayout.cpp:157
 msgid "Toggle Reference"
 msgstr "Toggle Reference"
 
-#: ui/menulayout.cpp:157 ui/selectionmodel.cpp:39
+#: ui/menulayout.cpp:158 ui/selectionmodel.cpp:39
 msgid "Horizontal"
 msgstr "Horizontal"
 
-#: ui/menulayout.cpp:157 ui/selectionmodel.cpp:40
+#: ui/menulayout.cpp:158 ui/selectionmodel.cpp:40
 msgid "Vertical"
 msgstr "Vertical"
 
-#: ui/menulayout.cpp:158
+#: ui/menulayout.cpp:159
 msgid "On Point / Curve / Plane"
 msgstr "On Point / Curve / Plane"
 
-#: ui/menulayout.cpp:159
+#: ui/menulayout.cpp:160
 msgid "Equal Length / Radius"
 msgstr "Equal Length / Radius"
 
-#: ui/menulayout.cpp:160
+#: ui/menulayout.cpp:161
 msgid "Length / Arc Ratio"
 msgstr "Length / Arc Ratio"
 
-#: ui/menulayout.cpp:161
+#: ui/menulayout.cpp:162
 msgid "Length / Arc Difference"
 msgstr "Length / Arc Difference"
 
-#: ui/menulayout.cpp:162 ui/selectionmodel.cpp:38
+#: ui/menulayout.cpp:163 ui/selectionmodel.cpp:38
 msgid "Midpoint"
 msgstr "Midpoint"
 
-#: ui/menulayout.cpp:162 ui/selectionmodel.cpp:34
+#: ui/menulayout.cpp:163 ui/selectionmodel.cpp:34
 msgid "Symmetric"
 msgstr "Symmetric"
 
-#: ui/menulayout.cpp:163
+#: ui/menulayout.cpp:164
 msgid "Parallel / Tangent"
 msgstr "Parallel / Tangent"
 
-#: ui/menulayout.cpp:164 ui/selectionmodel.cpp:49
+#: ui/menulayout.cpp:165 ui/selectionmodel.cpp:49
 msgid "Perpendicular"
 msgstr "Perpendicular"
 
-#: ui/menulayout.cpp:165
+#: ui/menulayout.cpp:166
 msgid "Same Orientation"
 msgstr "Same Orientation"
 
-#: ui/menulayout.cpp:166
+#: ui/menulayout.cpp:167
 msgid "Lock Point Where Dragged"
 msgstr "Lock Point Where Dragged"
 
-#: ui/menulayout.cpp:168
+#: ui/menulayout.cpp:169
 msgid "Inspect"
 msgstr "Inspect"
 
-#: ui/menulayout.cpp:169
+#: ui/menulayout.cpp:170
 msgid "Measure Area"
 msgstr "Measure Area"
 
-#: ui/menulayout.cpp:169
+#: ui/menulayout.cpp:170
 msgid "Measure Volume"
 msgstr "Measure Volume"
 
-#: ui/menulayout.cpp:170
+#: ui/menulayout.cpp:171
 msgid "Measure Perimeter"
 msgstr "Measure Perimeter"
 
-#: ui/menulayout.cpp:171
+#: ui/menulayout.cpp:172
 msgid "Interfering Parts"
 msgstr "Interfering Parts"
 
-#: ui/menulayout.cpp:172
+#: ui/menulayout.cpp:173
 msgid "Naked Edges"
 msgstr "Naked Edges"
 
-#: ui/menulayout.cpp:173
+#: ui/menulayout.cpp:174
 msgid "Center of Mass"
 msgstr "Center of Mass"
 
-#: ui/menulayout.cpp:174
+#: ui/menulayout.cpp:175
 msgid "Mass Properties..."
 msgstr "Mass Properties..."
 
-#: ui/menulayout.cpp:175
+#: ui/menulayout.cpp:176
 msgid "Parts List..."
 msgstr "Parts List..."
 
-#: ui/menulayout.cpp:176 ui/ngui.cpp:188
+#: ui/menulayout.cpp:177 ui/ngui.cpp:188
 msgid "Design Pose"
 msgstr "Design Pose"
 
-#: ui/menulayout.cpp:176
+#: ui/menulayout.cpp:177
 msgid "Fit Table..."
 msgstr "Fit Table..."
 
-#: ui/menulayout.cpp:178
+#: ui/menulayout.cpp:179
 msgid "Underconstrained Points"
 msgstr "Underconstrained Points"
 
-#: ui/menulayout.cpp:179
+#: ui/menulayout.cpp:180
 msgid "Trace Point"
 msgstr "Trace Point"
 
-#: ui/menulayout.cpp:180
+#: ui/menulayout.cpp:181
 msgid "Stop Tracing..."
 msgstr "Stop Tracing..."
 
-#: ui/menulayout.cpp:181
+#: ui/menulayout.cpp:182
 msgid "Step Dimension..."
 msgstr "Step Dimension..."
 
-#: ui/menulayout.cpp:182
+#: ui/menulayout.cpp:183
 msgid "Help"
 msgstr "Help"
 
-#: ui/menulayout.cpp:183 ui/panels.cpp:144
+#: ui/menulayout.cpp:184 ui/panels.cpp:144
 msgid "Keyboard Shortcuts"
 msgstr "Keyboard Shortcuts"
 
-#: ui/menulayout.cpp:184
+#: ui/menulayout.cpp:185
 msgid "GitHub Commit"
 msgstr "GitHub Commit"
 
-#: ui/menulayout.cpp:184
+#: ui/menulayout.cpp:185
 msgid "Website / Manual"
 msgstr "Website / Manual"
 
-#: ui/menulayout.cpp:185 ui/prefspanel.cpp:163
+#: ui/menulayout.cpp:186 ui/prefspanel.cpp:163
 msgid "About"
 msgstr "About"
 
@@ -3924,26 +3958,6 @@ msgstr "fit joint"
 #: ui/properties.cpp:215
 msgid "split the part"
 msgstr "split the part"
-
-# English translations for SolveSpace package.
-# Copyright (C) 2017 the SolveSpace authors
-# This file is distributed under the same license as the SolveSpace package.
-# Automatically generated, 2017.
-#
-#: ui/properties.cpp:217
-msgid ""
-msgstr ""
-"Project-Id-Version: SolveSpace 3.0\n"
-"Report-Msgid-Bugs-To: phkahler@gmail.com\n"
-"POT-Creation-Date: 2026-10-28 14:58-0700\n"
-"PO-Revision-Date: 2017-01-05 10:30+0000\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
-"Language: en_US\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: ui/properties.cpp:223
 msgid "(gone)"

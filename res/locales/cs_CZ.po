@@ -1,3 +1,21 @@
+# Czech translations for SolveSpace package.
+# Copyright (C) 2022 the SolveSpace authors
+# This file is distributed under the same license as the SolveSpace package.
+# Pavel Stržínek <pavel.strzinek@gmail.com>, 2022
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: SolveSpace 3.1\n"
+"Report-Msgid-Bugs-To: phkahler@gmail.com\n"
+"POT-Creation-Date: 2026-10-28 15:04-0700\n"
+"PO-Revision-Date: 2022-06-19 20:16+0200\n"
+"Last-Translator: Pavel Stržínek <pavel.strzinek@gmail.com>\n"
+"Language-Team: none\n"
+"Language: cs_CZ\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
 #: clipboard.cpp:317
 msgid ""
 "Cut, paste, and copy work only in a workplane.\n"
@@ -816,533 +834,537 @@ msgstr "&Exportovat části..."
 msgid "Export Parts &List..."
 msgstr "Exportovat &seznam částí..."
 
-#: graphicswin.cpp:57
+#: graphicswin.cpp:57#, fuzzy
+msgid "Export &Assembly (STEP)..."
+msgstr "Exportovat &sestavu (STEP)..."
+
+#: graphicswin.cpp:58
 msgid "Export &Surfaces..."
 msgstr "Exportovat &povrchy..."
 
-#: graphicswin.cpp:58
+#: graphicswin.cpp:59
 msgid "Im&port..."
 msgstr "&Importovat..."
 
-#: graphicswin.cpp:61
+#: graphicswin.cpp:62
 msgid "E&xit"
 msgstr "U&končit"
 
-#: graphicswin.cpp:64
+#: graphicswin.cpp:65
 msgid "&Edit"
 msgstr "Up&ravit"
 
-#: graphicswin.cpp:65
+#: graphicswin.cpp:66
 msgid "&Undo"
 msgstr "&Zpět"
 
-#: graphicswin.cpp:66
+#: graphicswin.cpp:67
 msgid "&Redo"
 msgstr "Z&novu"
 
-#: graphicswin.cpp:67
+#: graphicswin.cpp:68
 msgid "Re&generate All"
 msgstr "Znovu vše &generovat"
 
-#: graphicswin.cpp:69
+#: graphicswin.cpp:70
 msgid "Snap Selection to &Grid"
 msgstr "Přichytit výběr k &mřížce"
 
-#: graphicswin.cpp:70
+#: graphicswin.cpp:71
 msgid "Rotate Imported &90°"
 msgstr "Otočit importované o &90°"
 
-#: graphicswin.cpp:72
+#: graphicswin.cpp:73
 msgid "Cu&t"
 msgstr "Vyjmou&t"
 
-#: graphicswin.cpp:73
+#: graphicswin.cpp:74
 msgid "&Copy"
 msgstr "&Kopírovat"
 
-#: graphicswin.cpp:74
+#: graphicswin.cpp:75
 msgid "&Paste"
 msgstr "V&ložit"
 
-#: graphicswin.cpp:75
+#: graphicswin.cpp:76
 msgid "Paste &Transformed..."
 msgstr "Vložit &transformované..."
 
-#: graphicswin.cpp:76
+#: graphicswin.cpp:77
 msgid "&Delete"
 msgstr "O&dstranit"
 
-#: graphicswin.cpp:78
+#: graphicswin.cpp:79
 msgid "Select &Edge Chain"
 msgstr "Vybrat ř&etězec hran"
 
-#: graphicswin.cpp:79
+#: graphicswin.cpp:80
 msgid "Select &All"
 msgstr "Vybr&at vše"
 
-#: graphicswin.cpp:80
+#: graphicswin.cpp:81
 msgid "&Unselect All"
 msgstr "Zr&ušit výběr všeho"
 
-#: graphicswin.cpp:82
+#: graphicswin.cpp:83
 msgid "&Line Styles..."
 msgstr "Sty&ly čar..."
 
-#: graphicswin.cpp:83
+#: graphicswin.cpp:84
 msgid "&View Projection..."
 msgstr "&Projekční pohled..."
 
-#: graphicswin.cpp:85
+#: graphicswin.cpp:86
 msgid "Con&figuration..."
 msgstr "Nastave&ní..."
 
-#: graphicswin.cpp:88
+#: graphicswin.cpp:89
 msgid "&View"
 msgstr "&Zobrazení"
 
-#: graphicswin.cpp:89
+#: graphicswin.cpp:90
 msgid "Zoom &In"
 msgstr "Přiblíž&it"
 
-#: graphicswin.cpp:90
+#: graphicswin.cpp:91
 msgid "Zoom &Out"
 msgstr "&Oddálit"
 
-#: graphicswin.cpp:91
+#: graphicswin.cpp:92
 msgid "Zoom To &Fit"
 msgstr "Přiblížit na &míru"
 
-#: graphicswin.cpp:93
+#: graphicswin.cpp:94
 msgid "Align View to &Workplane"
 msgstr "Zarovnat pohled na pracovní rovinu"
 
-#: graphicswin.cpp:94
+#: graphicswin.cpp:95
 msgid "Nearest &Ortho View"
 msgstr "Nejbližší &ortogonální pohled"
 
-#: graphicswin.cpp:95
+#: graphicswin.cpp:96
 msgid "Nearest &Isometric View"
 msgstr "Nejbližší &izometrický pohled"
 
-#: graphicswin.cpp:96
+#: graphicswin.cpp:97
 msgid "&Center View At Point"
 msgstr "&Pohled na střed v bodě"
 
-#: graphicswin.cpp:98
+#: graphicswin.cpp:99
 msgid "Show Snap &Grid"
 msgstr "Zobrazit mřížku přichy&cení"
 
-#: graphicswin.cpp:99 ui/menulayout.cpp:98
+#: graphicswin.cpp:100 ui/menulayout.cpp:99
 msgid "Darken Inactive Solids"
 msgstr "Ztmavit neaktivní tělesa"
 
-#: graphicswin.cpp:100
+#: graphicswin.cpp:101
 msgid "Use &Perspective Projection"
 msgstr "Použít &perspektivní projekci"
 
-#: graphicswin.cpp:101
+#: graphicswin.cpp:102
 msgid "Show E&xploded View"
 msgstr "Zobrazit &rozbalený pohled"
 
-#: graphicswin.cpp:102
+#: graphicswin.cpp:103
 msgid "Dimension &Units"
 msgstr "&Jednotky rozměru"
 
-#: graphicswin.cpp:103
+#: graphicswin.cpp:104
 msgid "Dimensions in &Millimeters"
 msgstr "Rozměry v &milimetrech"
 
-#: graphicswin.cpp:104
+#: graphicswin.cpp:105
 msgid "Dimensions in M&eters"
 msgstr "Rozměry v m&etrech"
 
-#: graphicswin.cpp:105
+#: graphicswin.cpp:106
 msgid "Dimensions in &Inches"
 msgstr "Rozměry v &palcích"
 
-#: graphicswin.cpp:106
+#: graphicswin.cpp:107
 msgid "Dimensions in &Feet and Inches"
 msgstr "Rozměry ve &stopách a palcích"
 
-#: graphicswin.cpp:108
+#: graphicswin.cpp:109
 msgid "Show &Toolbar"
 msgstr "Zobrazit panel &nástrojů"
 
-#: graphicswin.cpp:109
+#: graphicswin.cpp:110
 msgid "Show Property Bro&wser"
 msgstr "Zobrazit &parametry"
 
-#: graphicswin.cpp:111
+#: graphicswin.cpp:112
 msgid "&Full Screen"
 msgstr "Na &celou obrazovku"
 
-#: graphicswin.cpp:113
+#: graphicswin.cpp:114
 msgid "&New Group"
 msgstr "&Nová skupina"
 
-#: graphicswin.cpp:114
+#: graphicswin.cpp:115
 #, fuzzy
 msgid "New &Part"
 msgstr "Nová &část"
 
-#: graphicswin.cpp:115
+#: graphicswin.cpp:116
 #, fuzzy
 msgid "&Revolute Joint"
 msgstr "&Rotační kloub"
 
-#: graphicswin.cpp:116
+#: graphicswin.cpp:117
 #, fuzzy
 msgid "S&lider Joint"
 msgstr "Po&suvný kloub"
 
-#: graphicswin.cpp:117
+#: graphicswin.cpp:118
 #, fuzzy
 msgid "C&ylindrical Joint"
 msgstr "&Válcový kloub"
 
-#: graphicswin.cpp:118
+#: graphicswin.cpp:119
 #, fuzzy
 msgid "Pla&nar Joint"
 msgstr "Rovinný k&loub"
 
-#: graphicswin.cpp:119
+#: graphicswin.cpp:120
 #, fuzzy
 msgid "&Ball Joint"
 msgstr "&Kulový kloub"
 
-#: graphicswin.cpp:120
+#: graphicswin.cpp:121
 #, fuzzy
 msgid "&Gear Coupling"
 msgstr "&Ozubené spojení"
 
-#: graphicswin.cpp:121
+#: graphicswin.cpp:122
 #, fuzzy
 msgid "&Fit Joint"
 msgstr "&Lícovaný spoj"
 
-#: graphicswin.cpp:122
+#: graphicswin.cpp:123
 #, fuzzy
 msgid "Spli&t Part"
 msgstr "Roz&dělit část"
 
-#: graphicswin.cpp:124
+#: graphicswin.cpp:125
 msgid "Sketch In &3d"
 msgstr "Náčrt ve &3D"
 
-#: graphicswin.cpp:125
+#: graphicswin.cpp:126
 msgid "Sketch In New &Workplane"
 msgstr "Náčrt v nové pracovní &rovině"
 
-#: graphicswin.cpp:127
+#: graphicswin.cpp:128
 msgid "Step &Translating"
 msgstr "Krokový &posun"
 
-#: graphicswin.cpp:128
+#: graphicswin.cpp:129
 msgid "Step &Rotating"
 msgstr "Krokové &otočení"
 
-#: graphicswin.cpp:130
+#: graphicswin.cpp:131
 msgid "E&xtrude"
 msgstr "Extruze (e&xtrude)"
 
-#: graphicswin.cpp:131
+#: graphicswin.cpp:132
 #, fuzzy
 msgid "Extrude as a &Cut"
 msgstr "Extruze jako &řez"
 
-#: graphicswin.cpp:132
+#: graphicswin.cpp:133
 msgid "&Helix"
 msgstr "Šroubovice (&helix)"
 
-#: graphicswin.cpp:133
+#: graphicswin.cpp:134
 msgid "&Lathe"
 msgstr "Plná rotace (&lathe)"
 
-#: graphicswin.cpp:134
+#: graphicswin.cpp:135
 msgid "Re&volve"
 msgstr "Volná rotace (re&volve)"
 
-#: graphicswin.cpp:136
+#: graphicswin.cpp:137
 #, fuzzy
 msgid "&Fillet Edges"
 msgstr "&Zaoblit hrany"
 
-#: graphicswin.cpp:137
+#: graphicswin.cpp:138
 #, fuzzy
 msgid "&Chamfer Edges"
 msgstr "&Sražit hrany"
 
-#: graphicswin.cpp:138
+#: graphicswin.cpp:139
 #, fuzzy
 msgid "S&hell"
 msgstr "Skoř&epina"
 
-#: graphicswin.cpp:139
+#: graphicswin.cpp:140
 #, fuzzy
 msgid "&Draft Faces"
 msgstr "&Úkosit plochy"
 
-#: graphicswin.cpp:140
+#: graphicswin.cpp:141
 #, fuzzy
 msgid "H&ole"
 msgstr "D&íra"
 
-#: graphicswin.cpp:141
+#: graphicswin.cpp:142
 #, fuzzy
 msgid "Lo&ft"
 msgstr "Lof&ting"
 
-#: graphicswin.cpp:142
+#: graphicswin.cpp:143
 #, fuzzy
 msgid "S&weep"
 msgstr "Ta&žení po křivce"
 
-#: graphicswin.cpp:144
+#: graphicswin.cpp:145
 msgid "Link / Assemble..."
 msgstr "Odkaz / Sestavení..."
 
-#: graphicswin.cpp:145 ui/menulayout.cpp:136
+#: graphicswin.cpp:146 ui/menulayout.cpp:137
 msgid "Link Recent"
 msgstr "Odkaz na nedávný"
 
-#: graphicswin.cpp:147
+#: graphicswin.cpp:148
 msgid "&Sketch"
 msgstr "&Náčrt"
 
-#: graphicswin.cpp:148
+#: graphicswin.cpp:149
 msgid "In &Workplane"
 msgstr "V &pracovní rovině"
 
-#: graphicswin.cpp:149
+#: graphicswin.cpp:150
 msgid "Anywhere In &3d"
 msgstr "Kdekoliv ve &3D"
 
-#: graphicswin.cpp:151
+#: graphicswin.cpp:152
 msgid "Datum &Point"
 msgstr "Vztažný &Bod"
 
-#: graphicswin.cpp:152
+#: graphicswin.cpp:153
 msgid "Wor&kplane"
 msgstr "&Pracovní rovina"
 
-#: graphicswin.cpp:154
+#: graphicswin.cpp:155
 msgid "Line &Segment"
 msgstr "Úsečka"
 
-#: graphicswin.cpp:155
+#: graphicswin.cpp:156
 msgid "C&onstruction Line Segment"
 msgstr "Konstrukční úsečka"
 
-#: graphicswin.cpp:156
+#: graphicswin.cpp:157
 msgid "&Rectangle"
 msgstr "&Obdélník"
 
-#: graphicswin.cpp:157
+#: graphicswin.cpp:158
 msgid "&Circle"
 msgstr "&Kružnice"
 
-#: graphicswin.cpp:158
+#: graphicswin.cpp:159
 msgid "&Arc of a Circle"
 msgstr "&Oblouk kružnice"
 
-#: graphicswin.cpp:159
+#: graphicswin.cpp:160
 msgid "&Bezier Cubic Spline"
 msgstr "&Bézierův kubický splajn"
 
-#: graphicswin.cpp:161
+#: graphicswin.cpp:162
 msgid "&Text in TrueType Font"
 msgstr "&Text v písmu TrueType"
 
-#: graphicswin.cpp:162
+#: graphicswin.cpp:163
 msgid "I&mage"
 msgstr "&Obrázek"
 
-#: graphicswin.cpp:164
+#: graphicswin.cpp:165
 msgid "To&ggle Construction"
 msgstr "Přepnout &konstrukci"
 
-#: graphicswin.cpp:165
+#: graphicswin.cpp:166
 msgid "Ta&ngent Arc at Point"
 msgstr "Tečný &oblouk v bodě"
 
-#: graphicswin.cpp:166
+#: graphicswin.cpp:167
 msgid "Split Curves at &Intersection"
 msgstr "Rozdělit kř&ivky v průsečíku"
 
-#: graphicswin.cpp:168
+#: graphicswin.cpp:169
 msgid "&Constrain"
 msgstr "Ome&zení"
 
-#: graphicswin.cpp:169
+#: graphicswin.cpp:170
 msgid "&Distance / Diameter"
 msgstr "&Vzdálenost / průměr"
 
-#: graphicswin.cpp:170
+#: graphicswin.cpp:171
 msgid "Re&ference Dimension"
 msgstr "Re&ferenční rozměr"
 
-#: graphicswin.cpp:171
+#: graphicswin.cpp:172
 msgid "A&ngle / Equal Angle"
 msgstr "Úhe&l / shodný úhel"
 
-#: graphicswin.cpp:172
+#: graphicswin.cpp:173
 msgid "Reference An&gle"
 msgstr "Refe&renční úhel"
 
-#: graphicswin.cpp:173
+#: graphicswin.cpp:174
 msgid "Other S&upplementary Angle"
 msgstr "Další doplňkový úh&el"
 
-#: graphicswin.cpp:174
+#: graphicswin.cpp:175
 msgid "Toggle R&eference Dim"
 msgstr "Přepnout r&eferenční rozměr"
 
-#: graphicswin.cpp:176
+#: graphicswin.cpp:177
 msgid "&Horizontal"
 msgstr "&Horizontála"
 
-#: graphicswin.cpp:177
+#: graphicswin.cpp:178
 msgid "&Vertical"
 msgstr "&Vertikála"
 
-#: graphicswin.cpp:179
+#: graphicswin.cpp:180
 msgid "&On Point / Curve / Plane"
 msgstr "&Na bodě / křivce / ploše"
 
-#: graphicswin.cpp:180
+#: graphicswin.cpp:181
 msgid "E&qual Length / Radius"
 msgstr "Shodná dél&ka / poloměr"
 
-#: graphicswin.cpp:181
+#: graphicswin.cpp:182
 msgid "Length / Arc Ra&tio"
 msgstr "Poměr délky / oblo&uku"
 
-#: graphicswin.cpp:182
+#: graphicswin.cpp:183
 msgid "Length / Arc Diff&erence"
 msgstr "Rozdíl &délky / oblouku"
 
-#: graphicswin.cpp:183
+#: graphicswin.cpp:184
 msgid "At &Midpoint"
 msgstr "Ve středové&m bodě"
 
-#: graphicswin.cpp:184
+#: graphicswin.cpp:185
 msgid "S&ymmetric"
 msgstr "S&ymetrie"
 
-#: graphicswin.cpp:185
+#: graphicswin.cpp:186
 msgid "Para&llel / Tangent"
 msgstr "Rovno&běžnost / tečna"
 
-#: graphicswin.cpp:186
+#: graphicswin.cpp:187
 msgid "&Perpendicular"
 msgstr "&Kolmost"
 
-#: graphicswin.cpp:187
+#: graphicswin.cpp:188
 msgid "Same Orient&ation"
 msgstr "Shodná orient&ace"
 
-#: graphicswin.cpp:188
+#: graphicswin.cpp:189
 msgid "Lock Point Where &Dragged"
 msgstr "Uzamčení v místě pře&tažení"
 
-#: graphicswin.cpp:190 ui/menulayout.cpp:167 ui/selectionmodel.cpp:54
+#: graphicswin.cpp:191 ui/menulayout.cpp:168 ui/selectionmodel.cpp:54
 #: ui/selectionmodel.cpp:311
 msgid "Comment"
 msgstr "Komentář"
 
-#: graphicswin.cpp:192
+#: graphicswin.cpp:193
 msgid "&Analyze"
 msgstr "&Analyzovat"
 
-#: graphicswin.cpp:193
+#: graphicswin.cpp:194
 msgid "Measure &Volume"
 msgstr "Měření &objemu"
 
-#: graphicswin.cpp:194
+#: graphicswin.cpp:195
 msgid "Measure A&rea"
 msgstr "Měření &plochy"
 
-#: graphicswin.cpp:195
+#: graphicswin.cpp:196
 msgid "Measure &Perimeter"
 msgstr "Měření ob&vodu"
 
-#: graphicswin.cpp:196
+#: graphicswin.cpp:197
 msgid "Show &Interfering Parts"
 msgstr "Zobrazit kol&idující části"
 
-#: graphicswin.cpp:197
+#: graphicswin.cpp:198
 msgid "Show &Naked Edges"
 msgstr "Zobrazit ob&nažené hrany"
 
-#: graphicswin.cpp:198
+#: graphicswin.cpp:199
 msgid "Show &Center of Mass"
 msgstr "Zobrazit &těžiště"
 
-#: graphicswin.cpp:199
+#: graphicswin.cpp:200
 #, fuzzy
 msgid "&Mass Properties"
 msgstr "&Hmotnostní vlastnosti"
 
-#: graphicswin.cpp:200
+#: graphicswin.cpp:201
 #, fuzzy
 msgid "&Parts List"
 msgstr "&Seznam částí"
 
-#: graphicswin.cpp:201
+#: graphicswin.cpp:202
 #, fuzzy
 msgid "&Design Pose"
 msgstr "&Návrhová poloha"
 
-#: graphicswin.cpp:203
+#: graphicswin.cpp:204
 msgid "Show &Underconstrained Points"
 msgstr "Zobrazit &nedostatečně omezené body"
 
-#: graphicswin.cpp:205
+#: graphicswin.cpp:206
 msgid "&Trace Point"
 msgstr "&Trasovat bod"
 
-#: graphicswin.cpp:206
+#: graphicswin.cpp:207
 msgid "&Stop Tracing..."
 msgstr "&Zastavit trasování..."
 
-#: graphicswin.cpp:207
+#: graphicswin.cpp:208
 msgid "Step &Dimension..."
 msgstr "&Rozměr kroku..."
 
-#: graphicswin.cpp:209
+#: graphicswin.cpp:210
 msgid "&Help"
 msgstr "&Nápověda"
 
-#: graphicswin.cpp:210
+#: graphicswin.cpp:211
 msgid "&Language"
 msgstr "&Jazyk"
 
-#: graphicswin.cpp:211
+#: graphicswin.cpp:212
 msgid "&Website / Manual"
 msgstr "&Web / Manuál"
 
-#: graphicswin.cpp:212
+#: graphicswin.cpp:213
 msgid "&Go to GitHub commit"
 msgstr "Revize na &GitHubu"
 
-#: graphicswin.cpp:214
+#: graphicswin.cpp:215
 msgid "&About"
 msgstr "O &aplikaci"
 
-#: graphicswin.cpp:418
+#: graphicswin.cpp:419
 msgid "(no recent files)"
 msgstr "(žádné nedávné soubory)"
 
-#: graphicswin.cpp:426
+#: graphicswin.cpp:427
 #, c-format
 msgid "File '%s' does not exist."
 msgstr "Soubor '%s' neexistuje."
 
-#: graphicswin.cpp:835
+#: graphicswin.cpp:836
 msgid "No workplane is active, so the grid will not appear."
 msgstr "Žádná pracovní rovina není aktivní, proto nebude mřížka zobrazena."
 
-#: graphicswin.cpp:850
+#: graphicswin.cpp:851
 msgid ""
 "The perspective factor is set to zero, so the view will always be a parallel "
 "projection.\n"
@@ -1356,16 +1378,16 @@ msgstr ""
 "Pro perspektivní projekci uprav faktor perspektivy v konfigurační obrazovce. "
 "Typická hodnota je kolem 0,3."
 
-#: graphicswin.cpp:940
+#: graphicswin.cpp:941
 msgid ""
 "Select a point; this point will become the center of the view on screen."
 msgstr "Vyber bod; tento bod se stane středem pohledu na obrazovce."
 
-#: graphicswin.cpp:1245
+#: graphicswin.cpp:1246
 msgid "No additional entities share endpoints with the selected entities."
 msgstr "Žádné další entity nesdílejí koncové body s vybranými entitami."
 
-#: graphicswin.cpp:1263
+#: graphicswin.cpp:1264
 msgid ""
 "To use this command, select a point or other entity from an linked part, or "
 "make a link group the active group."
@@ -1373,7 +1395,7 @@ msgstr ""
 "Chceš-li použít tento příkaz, vyber bod nebo jinou entitu z propojené části "
 "nebo vyber skupinu propojení jako aktivní skupinu."
 
-#: graphicswin.cpp:1286
+#: graphicswin.cpp:1287
 msgid ""
 "No workplane is active. Activate a workplane (with Sketch -> In Workplane) "
 "to define the plane for the snap grid."
@@ -1381,7 +1403,7 @@ msgstr ""
 "Žádná pracovní rovina není aktivní. Aktivuj pracovní rovinu (pomocí Náčrt -> "
 "V pracovní rovině) pro nastavení roviny přichytávání na mřížku."
 
-#: graphicswin.cpp:1293
+#: graphicswin.cpp:1294
 msgid ""
 "Can't snap these items to grid; select points, text comments, or constraints "
 "with a label. To snap a line, select its endpoints."
@@ -1389,13 +1411,13 @@ msgstr ""
 "Tyto položky nelze přichytit k mřížce; vyber body, textové komentáře nebo "
 "omezení se štítkem. Chceš-li přichytit úsečku, vyber její koncové body."
 
-#: graphicswin.cpp:1378
+#: graphicswin.cpp:1379
 msgid "No workplane selected. Activating default workplane for this group."
 msgstr ""
 "Není vybrána žádná pracovní rovina. Aktivuji výchozí pracovní rovinu pro "
 "tuto skupinu."
 
-#: graphicswin.cpp:1381
+#: graphicswin.cpp:1382
 msgid ""
 "No workplane is selected, and the active group does not have a default "
 "workplane. Try selecting a workplane, or activating a sketch-in-new-"
@@ -1405,7 +1427,7 @@ msgstr ""
 "rovinu přiřazenu. Zkus vybrat pracovní rovinu nebo aktivovat skupinu náčrt-v-"
 "rovině."
 
-#: graphicswin.cpp:1402
+#: graphicswin.cpp:1403
 msgid ""
 "Bad selection for tangent arc at point. Select a single point, or select "
 "nothing to set up arc parameters."
@@ -1413,47 +1435,47 @@ msgstr ""
 "Chybný výběr tečného oblouku v bodě. Vyber jeden bod nebo výběr zruš pro "
 "nastavení parametrů oblouku."
 
-#: graphicswin.cpp:1413
+#: graphicswin.cpp:1414
 msgid "click point on arc (draws anti-clockwise)"
 msgstr "klikni na bod oblouku (kresleno proti směru hodinových ručiček)"
 
-#: graphicswin.cpp:1414
+#: graphicswin.cpp:1415
 msgid "click to place datum point"
 msgstr "klikni pro umístění vztažného bodu"
 
-#: graphicswin.cpp:1415
+#: graphicswin.cpp:1416
 msgid "click first point of line segment"
 msgstr "klikni na první bod úsečky"
 
-#: graphicswin.cpp:1417
+#: graphicswin.cpp:1418
 msgid "click first point of construction line segment"
 msgstr "klikni na první bod konstrukční úsečky"
 
-#: graphicswin.cpp:1418
+#: graphicswin.cpp:1419
 msgid "click first point of cubic segment"
 msgstr "klikni na první bod segmentu splajnu"
 
-#: graphicswin.cpp:1419
+#: graphicswin.cpp:1420
 msgid "click center of circle"
 msgstr "klikni na střed kružnice"
 
-#: graphicswin.cpp:1420
+#: graphicswin.cpp:1421
 msgid "click origin of workplane"
 msgstr "klikni na počátek pracovní roviny"
 
-#: graphicswin.cpp:1421
+#: graphicswin.cpp:1422
 msgid "click one corner of rectangle"
 msgstr "klikni na jeden roh obdélníku"
 
-#: graphicswin.cpp:1422
+#: graphicswin.cpp:1423
 msgid "click top left of text"
 msgstr "klikni na levý horní roh textu"
 
-#: graphicswin.cpp:1428
+#: graphicswin.cpp:1429
 msgid "click top left of image"
 msgstr "klikni na levý horní roh obrázku"
 
-#: graphicswin.cpp:1454
+#: graphicswin.cpp:1455
 msgid ""
 "No entities are selected. Select entities before trying to toggle their "
 "construction state."
@@ -2025,7 +2047,7 @@ msgstr "Info o skupině"
 msgid "Style Info"
 msgstr "Info o stylu"
 
-#: mouse.cpp:701 ui/menulayout.cpp:77
+#: mouse.cpp:701 ui/menulayout.cpp:78
 msgid "Select Edge Chain"
 msgstr "Vybrat řetězec hran"
 
@@ -2037,7 +2059,7 @@ msgstr "Přepnout referenční rozměr"
 msgid "Other Supplementary Angle"
 msgstr "Další doplňkový úhel"
 
-#: mouse.cpp:718 ui/menulayout.cpp:78
+#: mouse.cpp:718 ui/menulayout.cpp:79
 msgid "Snap to Grid"
 msgstr "Přichytit k mřížce"
 
@@ -2053,7 +2075,7 @@ msgstr "Přidat bod splajnu"
 msgid "Cannot add spline point: maximum number of points reached."
 msgstr "Nelze přidat bod splajnu: bylo dosaženo maximálního počtu bodů."
 
-#: mouse.cpp:791 ui/menulayout.cpp:147
+#: mouse.cpp:791 ui/menulayout.cpp:148
 msgid "Toggle Construction"
 msgstr "Přepnout konstrukci"
 
@@ -2061,31 +2083,31 @@ msgstr "Přepnout konstrukci"
 msgid "Delete Point-Coincident Constraint"
 msgstr "Odstranit omezení kolidujícího bodu"
 
-#: mouse.cpp:825 ui/menulayout.cpp:71
+#: mouse.cpp:825 ui/menulayout.cpp:72
 msgid "Cut"
 msgstr "Vyjmout"
 
-#: mouse.cpp:827 ui/menulayout.cpp:71
+#: mouse.cpp:827 ui/menulayout.cpp:72
 msgid "Copy"
 msgstr "Kopírovat"
 
-#: mouse.cpp:831 ui/menulayout.cpp:76
+#: mouse.cpp:831 ui/menulayout.cpp:77
 msgid "Select All"
 msgstr "Vybrat vše"
 
-#: mouse.cpp:836 ui/menulayout.cpp:72
+#: mouse.cpp:836 ui/menulayout.cpp:73
 msgid "Paste"
 msgstr "Vložit"
 
-#: mouse.cpp:838 ui/menulayout.cpp:73
+#: mouse.cpp:838 ui/menulayout.cpp:74
 msgid "Paste Transformed..."
 msgstr "Vložit transformované..."
 
-#: mouse.cpp:843 ui/menulayout.cpp:74 ui/outliner.cpp:140
+#: mouse.cpp:843 ui/menulayout.cpp:75 ui/outliner.cpp:140
 msgid "Delete"
 msgstr "Odstranit"
 
-#: mouse.cpp:846 ui/menulayout.cpp:76
+#: mouse.cpp:846 ui/menulayout.cpp:77
 msgid "Unselect All"
 msgstr "Zrušit výběr všeho"
 
@@ -2093,7 +2115,7 @@ msgstr "Zrušit výběr všeho"
 msgid "Unselect Hovered"
 msgstr "Zrušit výběr při najetí"
 
-#: mouse.cpp:862 ui/menulayout.cpp:85
+#: mouse.cpp:862 ui/menulayout.cpp:86
 msgid "Zoom to Fit"
 msgstr "Přiblížit na míru"
 
@@ -2219,6 +2241,7 @@ msgid "Quad mesh for Blender, with creases (USD)"
 msgstr "Čtyřúhelníková síť pro Blender s hranami (USD)"
 
 #: platform/gui.cpp:110 platform/gui.cpp:117 platform/gui.cpp:124
+#: solvespace.cpp:850
 msgctxt "file-type"
 msgid "STEP file"
 msgstr "STEP soubor"
@@ -2264,8 +2287,9 @@ msgid "Comma-separated values"
 msgstr "CSV soubor"
 
 #: platform/guisdl.cpp:614
+#, fuzzy
 msgid "Save as"
-msgstr ""
+msgstr "Uložit jako"
 
 #: preferences.cpp:77 styleedit.cpp:90 textscreens.cpp:776
 msgid "Bad format: specify color as r, g, b"
@@ -2408,7 +2432,13 @@ msgstr "Soubor STEP, jeden na část"
 msgid "Exported %d parts:%s"
 msgstr "Exportováno částí %d:%s"
 
-#: solvespace.cpp:893
+#: solvespace.cpp:856
+#, fuzzy
+msgid ""
+"The assembly needs the Open CASCADE kernel and a solid to export as STEP."
+msgstr "Sestava potřebuje jádro Open CASCADE a těleso, aby se dala exportovat jako STEP."
+
+#: solvespace.cpp:907
 #, c-format
 msgid ""
 "Can't identify file type from file extension of filename '%s'; try .dxf "
@@ -2417,19 +2447,19 @@ msgstr ""
 "Nelze určit typ souboru podle přípony názvu souboru '%s'; zkus .dxf "
 "nebo .dwg."
 
-#: solvespace.cpp:945
+#: solvespace.cpp:959
 msgid "Constraint must have a label, and must not be a reference dimension."
 msgstr "Omezení musí mít popisek a nesmí být referenčním rozměrem."
 
-#: solvespace.cpp:949
+#: solvespace.cpp:963
 msgid "Bad selection for step dimension; select a constraint."
 msgstr "Chybný výběr rozměru kroku; vyber omezení."
 
-#: solvespace.cpp:973
+#: solvespace.cpp:987
 msgid "The assembly does not interfere, good."
 msgstr "V pořádku, sestava se nepřekrývá."
 
-#: solvespace.cpp:1005
+#: solvespace.cpp:1019
 #, c-format
 msgid ""
 "The volume of the solid model is:\n"
@@ -2440,7 +2470,7 @@ msgstr ""
 "\n"
 "    %s"
 
-#: solvespace.cpp:1015
+#: solvespace.cpp:1029
 #, c-format
 msgid ""
 "\n"
@@ -2453,7 +2483,7 @@ msgstr ""
 "\n"
 "    %s"
 
-#: solvespace.cpp:1020 solvespace.cpp:1365
+#: solvespace.cpp:1034 solvespace.cpp:1379
 msgid ""
 "\n"
 "\n"
@@ -2465,7 +2495,7 @@ msgstr ""
 "Zakřivené plochy byly aproximovány jako trojúhelníky.\n"
 "To přináší chybu, obvykle kolem 1%%."
 
-#: solvespace.cpp:1035
+#: solvespace.cpp:1049
 #, c-format
 msgid ""
 "The surface area of the selected faces is:\n"
@@ -2482,7 +2512,7 @@ msgstr ""
 "Křivky byly aproximovány jako po částech lineární.\n"
 "To přináší chybu, obvykle kolem 1%%."
 
-#: solvespace.cpp:1044
+#: solvespace.cpp:1058
 msgid ""
 "This group does not contain a correctly-formed 2d closed area. It is open, "
 "not coplanar, or self-intersecting."
@@ -2490,7 +2520,7 @@ msgstr ""
 "Tato skupina neobsahuje správně vytvořenou uzavřenou 2D oblast. Je otevřená, "
 "není koplanární ani se neprotíná."
 
-#: solvespace.cpp:1056
+#: solvespace.cpp:1070
 #, c-format
 msgid ""
 "The area of the region sketched in this group is:\n"
@@ -2507,7 +2537,7 @@ msgstr ""
 "Křivky byly aproximovány jako po částech lineární.\n"
 "To přináší chybu, obvykle kolem 1%%."
 
-#: solvespace.cpp:1076
+#: solvespace.cpp:1090
 #, c-format
 msgid ""
 "The total length of the selected entities is:\n"
@@ -2524,36 +2554,36 @@ msgstr ""
 "Křivky byly aproximovány jako po částech lineární.\n"
 "To přináší chybu, obvykle kolem 1%%."
 
-#: solvespace.cpp:1082
+#: solvespace.cpp:1096
 msgid "Bad selection for perimeter; select line segments, arcs, and curves."
 msgstr "Chybný výběr obvodu; vyber úsečky, oblouky a křivky."
 
-#: solvespace.cpp:1098
+#: solvespace.cpp:1112
 msgid "Bad selection for trace; select a single point."
 msgstr "Chybný výběr pro trasování; vyber jeden bod."
 
-#: solvespace.cpp:1125
+#: solvespace.cpp:1139
 #, c-format
 msgid "Couldn't write to '%s'"
 msgstr "Nelze zapisovat do '%s'"
 
-#: solvespace.cpp:1155
+#: solvespace.cpp:1169
 msgid "The mesh is self-intersecting (NOT okay, invalid)."
 msgstr "Síť se sama protíná (NENÍ v pořádku, je neplatná)."
 
-#: solvespace.cpp:1156
+#: solvespace.cpp:1170
 msgid "The mesh is not self-intersecting (okay, valid)."
 msgstr "Síť se sama neprotíná (je v pořádku, je platná)."
 
-#: solvespace.cpp:1158
+#: solvespace.cpp:1172
 msgid "The mesh has naked edges (NOT okay, invalid)."
 msgstr "Síť má obnažené hrany (NENÍ v pořádku, je neplatná)."
 
-#: solvespace.cpp:1159
+#: solvespace.cpp:1173
 msgid "The mesh is watertight (okay, valid)."
 msgstr "Síť je vodotěsná (je v pořádku, je platná)."
 
-#: solvespace.cpp:1162
+#: solvespace.cpp:1176
 #, c-format
 msgid ""
 "\n"
@@ -2564,7 +2594,7 @@ msgstr ""
 "\n"
 "Model obsahuje %d trojúhelníků z %d povrchů."
 
-#: solvespace.cpp:1166
+#: solvespace.cpp:1180
 #, c-format
 msgid ""
 "%s\n"
@@ -2579,7 +2609,7 @@ msgstr ""
 "\n"
 "Žádné problematické hrany, v pořádku.%s"
 
-#: solvespace.cpp:1169
+#: solvespace.cpp:1183
 #, c-format
 msgid ""
 "%s\n"
@@ -2594,7 +2624,7 @@ msgstr ""
 "\n"
 "Chyba, počet problematických hran: %d.%s"
 
-#: solvespace.cpp:1182
+#: solvespace.cpp:1196
 #, c-format
 msgid ""
 "This is SolveSpace version %s.\n"
@@ -2623,12 +2653,12 @@ msgstr ""
 "\n"
 "© 2008-%d Jonathan Westhues a další autoři.\n"
 
-#: solvespace.cpp:1351
+#: solvespace.cpp:1365
 #, fuzzy
 msgid "There is no solid in the active group."
 msgstr "V aktivní skupině není žádné těleso."
 
-#: solvespace.cpp:1359
+#: solvespace.cpp:1373
 #, fuzzy, c-format
 msgid ""
 "Volume:  %s\n"
@@ -2641,22 +2671,22 @@ msgstr ""
 "Hmotnost:  %s (%s)\n"
 "Těžiště:  (%s, %s, %s)"
 
-#: solvespace.cpp:1404
+#: solvespace.cpp:1418
 #, fuzzy
 msgid "A part's name can't be empty."
 msgstr "Název části nesmí být prázdný."
 
-#: solvespace.cpp:1490
+#: solvespace.cpp:1504
 #, fuzzy
 msgid "No part has a solid yet."
 msgstr "Žádná část zatím nemá těleso."
 
-#: solvespace.cpp:1494
+#: solvespace.cpp:1508
 #, fuzzy, c-format
 msgid "%s%s:  %s, %s, %.2f g;  %s x %s x %s\n"
 msgstr "%s%s:  %s, %s, %.2f g;  %s x %s x %s\n"
 
-#: solvespace.cpp:1501
+#: solvespace.cpp:1515
 #, fuzzy, c-format
 msgid ""
 "\n"
@@ -2665,7 +2695,7 @@ msgstr ""
 "\n"
 "%d částí, %.2f g celkem."
 
-#: solvespace.cpp:1603
+#: solvespace.cpp:1617
 #, fuzzy
 msgid ""
 "Parts export as STL, 3MF or STEP; choose a .stl, .3mf or .step file name."
@@ -2673,7 +2703,7 @@ msgstr ""
 "Části se exportují jako STL, 3MF nebo STEP; zvol název souboru .stl, .3mf "
 "nebo .step."
 
-#: solvespace.cpp:1638
+#: solvespace.cpp:1652
 #, fuzzy, c-format
 msgid "STEP needs the Open CASCADE kernel; part '%s' was not written."
 msgstr "STEP vyžaduje jádro Open CASCADE; část '%s' nebyla zapsána."
@@ -2857,2363 +2887,2902 @@ msgstr "Zarovnat pohled na aktivní pracovní rovinu"
 #: ui/drawtool.cpp:27 ui/properties.cpp:706 ui/properties.cpp:708
 #: ui/properties.cpp:709 ui/selectionmodel.cpp:437 ui/selectionmodel.cpp:447
 #: ui/stylespanel.cpp:116
+#, fuzzy
 msgid "angle"
-msgstr ""
+msgstr "úhel"
 
 #: ui/drawtool.cpp:27 ui/drawtool.cpp:28 ui/properties.cpp:176
 #: ui/selectionmodel.cpp:159
+#, fuzzy
 msgid "length"
-msgstr ""
+msgstr "délka"
 
 #: ui/drawtool.cpp:30 ui/properties.cpp:174 ui/properties.cpp:382
 #: ui/selectionmodel.cpp:186 ui/selectionmodel.cpp:195
 #: ui/selectionmodel.cpp:390
+#, fuzzy
 msgid "diameter"
-msgstr ""
+msgstr "průměr"
 
 #: ui/drawtool.cpp:31 ui/prefspanel.cpp:103 ui/stylespanel.cpp:109
+#, fuzzy
 msgid "height"
-msgstr ""
+msgstr "výška"
 
 #: ui/drawtool.cpp:31 ui/prefspanel.cpp:102 ui/stylespanel.cpp:75
+#, fuzzy
 msgid "width"
-msgstr ""
+msgstr "šířka"
 
-#: ui/drawtool.cpp:82 ui/menulayout.cpp:144 ui/ngui.cpp:153
+#: ui/drawtool.cpp:82 ui/menulayout.cpp:145 ui/ngui.cpp:153
 #: ui/selectionmodel.cpp:193
+#, fuzzy
 msgid "Circle"
-msgstr ""
+msgstr "Kružnice"
 
-#: ui/drawtool.cpp:82 ui/menulayout.cpp:142 ui/ngui.cpp:151
+#: ui/drawtool.cpp:82 ui/menulayout.cpp:143 ui/ngui.cpp:151
+#, fuzzy
 msgid "Line"
-msgstr ""
+msgstr "Úsečka"
 
-#: ui/drawtool.cpp:82 ui/menulayout.cpp:144 ui/ngui.cpp:152
+#: ui/drawtool.cpp:82 ui/menulayout.cpp:145 ui/ngui.cpp:152
+#, fuzzy
 msgid "Rectangle"
-msgstr ""
+msgstr "Obdélník"
 
 #: ui/drawtool.cpp:93
+#, fuzzy
 msgid "Remove last segment"
-msgstr ""
+msgstr "Odebrat poslední úsečku"
 
 #: ui/drawtool.cpp:93 ui/drawtool.cpp:96
+#, fuzzy
 msgid "Value"
-msgstr ""
+msgstr "Hodnota"
 
 #: ui/drawtool.cpp:94
+#, fuzzy
 msgid "Finish"
-msgstr ""
+msgstr "Dokončit"
 
 #: ui/drawtool.cpp:96
+#, fuzzy
 msgid "Apply"
-msgstr ""
+msgstr "Použít"
 
 #: ui/drawtool.cpp:96
+#, fuzzy
 msgid "Next field"
-msgstr ""
+msgstr "Další pole"
 
 #: ui/drawtool.cpp:97
+#, fuzzy
 msgid "Clear / cancel"
-msgstr ""
+msgstr "Vymazat / zrušit"
 
-#: ui/grabtool.cpp:46 ui/menulayout.cpp:78 ui/statusmodel.cpp:49
+#: ui/grabtool.cpp:46 ui/menulayout.cpp:79 ui/statusmodel.cpp:49
+#, fuzzy
 msgid "Grab"
-msgstr ""
+msgstr "Přesun"
 
 #: ui/grabtool.cpp:51
+#, fuzzy
 msgid "(lock an axis to use a typed distance)"
-msgstr ""
+msgstr "(pro zadanou vzdálenost zamkni osu)"
 
 #: ui/grabtool.cpp:57
+#, fuzzy
 msgid "Axis"
-msgstr ""
+msgstr "Osa"
 
 #: ui/grabtool.cpp:57 ui/selectionmodel.cpp:17
+#, fuzzy
 msgid "Distance"
-msgstr ""
+msgstr "Vzdálenost"
 
 #: ui/grabtool.cpp:58 ui/statusmodel.cpp:35 ui/statusmodel.cpp:37
+#, fuzzy
 msgid "Cancel"
-msgstr ""
+msgstr "Zrušit"
 
 #: ui/grabtool.cpp:58
+#, fuzzy
 msgid "Confirm"
-msgstr ""
+msgstr "Potvrdit"
 
 #: ui/menulayout.cpp:55
+#, fuzzy
 msgid "File"
-msgstr ""
+msgstr "Soubor"
 
 #: ui/menulayout.cpp:56
+#, fuzzy
 msgid "New"
-msgstr ""
+msgstr "Nový"
 
 #: ui/menulayout.cpp:56
+#, fuzzy
 msgid "Open..."
-msgstr ""
+msgstr "Otevřít..."
 
 #: ui/menulayout.cpp:57
+#, fuzzy
 msgid "Open Recent"
-msgstr ""
+msgstr "Otevřít nedávné"
 
 #: ui/menulayout.cpp:58
+#, fuzzy
 msgid "Save"
-msgstr ""
+msgstr "Uložit"
 
 #: ui/menulayout.cpp:58
+#, fuzzy
 msgid "Save As..."
-msgstr ""
+msgstr "Uložit jako..."
 
 #: ui/menulayout.cpp:59
+#, fuzzy
 msgid "Import..."
-msgstr ""
+msgstr "Importovat..."
 
 #: ui/menulayout.cpp:60 ui/prefspanel.cpp:156
+#, fuzzy
 msgid "Export"
-msgstr ""
+msgstr "Exportovat"
 
 #: ui/menulayout.cpp:61
+#, fuzzy
 msgid "2D View..."
-msgstr ""
+msgstr "2D pohled..."
 
-#: ui/menulayout.cpp:61 ui/menulayout.cpp:146
+#: ui/menulayout.cpp:61 ui/menulayout.cpp:147
+#, fuzzy
 msgid "Image..."
-msgstr ""
+msgstr "Obrázek..."
 
 #: ui/menulayout.cpp:62
+#, fuzzy
 msgid "2D Section..."
-msgstr ""
+msgstr "2D řez..."
 
 #: ui/menulayout.cpp:63
+#, fuzzy
 msgid "3D Wireframe..."
-msgstr ""
+msgstr "3D drátový model..."
 
 #: ui/menulayout.cpp:64
+#, fuzzy
 msgid "Triangle Mesh..."
-msgstr ""
+msgstr "Trojúhelníková síť..."
 
 #: ui/menulayout.cpp:65
+#, fuzzy
 msgid "Parts, One File Each..."
-msgstr ""
+msgstr "Části, každá v samostatném souboru..."
 
 #: ui/menulayout.cpp:66
+#, fuzzy
 msgid "Parts List (CSV)..."
-msgstr ""
+msgstr "Seznam částí (CSV)..."
 
-#: ui/menulayout.cpp:67
-msgid "Surfaces..."
-msgstr ""
+#: ui/menulayout.cpp:67#, fuzzy
+msgid "Assembly (STEP)..."
+msgstr "Sestava (STEP)..."
 
 #: ui/menulayout.cpp:68
-msgid "Quit"
-msgstr ""
+#, fuzzy
+msgid "Surfaces..."
+msgstr "Plochy..."
 
 #: ui/menulayout.cpp:69
+#, fuzzy
+msgid "Quit"
+msgstr "Ukončit"
+
+#: ui/menulayout.cpp:70
+#, fuzzy
 msgid "Edit"
-msgstr ""
+msgstr "Úpravy"
 
-#: ui/menulayout.cpp:70
+#: ui/menulayout.cpp:71
+#, fuzzy
 msgid "Redo"
-msgstr ""
+msgstr "Znovu"
 
-#: ui/menulayout.cpp:70
+#: ui/menulayout.cpp:71
+#, fuzzy
 msgid "Undo"
-msgstr ""
-
-#: ui/menulayout.cpp:79
-msgid "Rotate Imported 90°"
-msgstr ""
+msgstr "Zpět"
 
 #: ui/menulayout.cpp:80
-msgid "Regenerate All"
-msgstr ""
+#, fuzzy
+msgid "Rotate Imported 90°"
+msgstr "Otočit importovaný o 90°"
 
 #: ui/menulayout.cpp:81
-msgid "Line Styles..."
-msgstr ""
+#, fuzzy
+msgid "Regenerate All"
+msgstr "Přepočítat vše"
 
 #: ui/menulayout.cpp:82
+#, fuzzy
+msgid "Line Styles..."
+msgstr "Styly čar..."
+
+#: ui/menulayout.cpp:83
+#, fuzzy
 msgid "Preferences..."
-msgstr ""
+msgstr "Předvolby..."
 
-#: ui/menulayout.cpp:83 ui/ngui.cpp:170 ui/panels.cpp:173
+#: ui/menulayout.cpp:84 ui/ngui.cpp:170 ui/panels.cpp:173
+#, fuzzy
 msgid "View"
-msgstr ""
+msgstr "Zobrazení"
 
-#: ui/menulayout.cpp:84
+#: ui/menulayout.cpp:85
+#, fuzzy
 msgid "Zoom In"
-msgstr ""
+msgstr "Přiblížit"
 
-#: ui/menulayout.cpp:84
+#: ui/menulayout.cpp:85
+#, fuzzy
 msgid "Zoom Out"
-msgstr ""
-
-#: ui/menulayout.cpp:86
-msgid "Frame Selection"
-msgstr ""
+msgstr "Oddálit"
 
 #: ui/menulayout.cpp:87
-msgid "Center View at Point"
-msgstr ""
+#, fuzzy
+msgid "Frame Selection"
+msgstr "Zarámovat výběr"
 
 #: ui/menulayout.cpp:88
+#, fuzzy
+msgid "Center View at Point"
+msgstr "Vycentrovat pohled na bod"
+
+#: ui/menulayout.cpp:89
+#, fuzzy
 msgid "Standard Views"
-msgstr ""
+msgstr "Standardní pohledy"
 
-#: ui/menulayout.cpp:89 ui/ngui.cpp:174 ui/viewcubemodel.cpp:18
+#: ui/menulayout.cpp:90 ui/ngui.cpp:174 ui/viewcubemodel.cpp:18
+#, fuzzy
 msgid "Back"
-msgstr ""
+msgstr "Zezadu"
 
-#: ui/menulayout.cpp:89 ui/ngui.cpp:172 ui/viewcubemodel.cpp:17
+#: ui/menulayout.cpp:90 ui/ngui.cpp:172 ui/viewcubemodel.cpp:17
+#, fuzzy
 msgid "Front"
-msgstr ""
+msgstr "Zepředu"
 
-#: ui/menulayout.cpp:90 ui/ngui.cpp:173 ui/viewcubemodel.cpp:20
+#: ui/menulayout.cpp:91 ui/ngui.cpp:173 ui/viewcubemodel.cpp:20
+#, fuzzy
 msgid "Left"
-msgstr ""
+msgstr "Zleva"
 
-#: ui/menulayout.cpp:90 ui/ngui.cpp:171 ui/viewcubemodel.cpp:19
+#: ui/menulayout.cpp:91 ui/ngui.cpp:171 ui/viewcubemodel.cpp:19
+#, fuzzy
 msgid "Right"
-msgstr ""
+msgstr "Zprava"
 
-#: ui/menulayout.cpp:91 ui/ngui.cpp:173 ui/viewcubemodel.cpp:22
+#: ui/menulayout.cpp:92 ui/ngui.cpp:173 ui/viewcubemodel.cpp:22
+#, fuzzy
 msgid "Bottom"
-msgstr ""
+msgstr "Zdola"
 
-#: ui/menulayout.cpp:91 ui/ngui.cpp:171 ui/viewcubemodel.cpp:21
+#: ui/menulayout.cpp:92 ui/ngui.cpp:171 ui/viewcubemodel.cpp:21
+#, fuzzy
 msgid "Top"
-msgstr ""
-
-#: ui/menulayout.cpp:92
-msgid "Nearest Isometric"
-msgstr ""
+msgstr "Shora"
 
 #: ui/menulayout.cpp:93
-msgid "Nearest Orthographic"
-msgstr ""
+#, fuzzy
+msgid "Nearest Isometric"
+msgstr "Nejbližší izometrie"
 
 #: ui/menulayout.cpp:94
-msgid "Align to Workplane"
-msgstr ""
+#, fuzzy
+msgid "Nearest Orthographic"
+msgstr "Nejbližší kolmý pohled"
 
-#: ui/menulayout.cpp:96
-msgid "Perspective"
-msgstr ""
+#: ui/menulayout.cpp:95
+#, fuzzy
+msgid "Align to Workplane"
+msgstr "Zarovnat k pracovní rovině"
 
 #: ui/menulayout.cpp:97
+#, fuzzy
+msgid "Perspective"
+msgstr "Perspektiva"
+
+#: ui/menulayout.cpp:98
+#, fuzzy
 msgid "Exploded View"
-msgstr ""
+msgstr "Rozložený pohled"
 
-#: ui/menulayout.cpp:99
+#: ui/menulayout.cpp:100
+#, fuzzy
 msgid "Snap Grid"
-msgstr ""
+msgstr "Přichytávací mřížka"
 
-#: ui/menulayout.cpp:99
+#: ui/menulayout.cpp:100
+#, fuzzy
 msgid "Units"
-msgstr ""
+msgstr "Jednotky"
 
-#: ui/menulayout.cpp:100 ui/panels.cpp:196
+#: ui/menulayout.cpp:101 ui/panels.cpp:196
+#, fuzzy
 msgid "Outliner"
-msgstr ""
+msgstr "Přehled"
 
-#: ui/menulayout.cpp:101 ui/panels.cpp:150
+#: ui/menulayout.cpp:102 ui/panels.cpp:150
+#, fuzzy
 msgid "Properties"
-msgstr ""
+msgstr "Vlastnosti"
 
-#: ui/menulayout.cpp:102 ui/panels.cpp:156
+#: ui/menulayout.cpp:103 ui/panels.cpp:156
+#, fuzzy
 msgid "Problems"
-msgstr ""
-
-#: ui/menulayout.cpp:103
-msgid "Tool Shelf"
-msgstr ""
+msgstr "Problémy"
 
 #: ui/menulayout.cpp:104
-msgid "Menu Bar"
-msgstr ""
+#, fuzzy
+msgid "Tool Shelf"
+msgstr "Panel nástrojů"
 
 #: ui/menulayout.cpp:105
+#, fuzzy
+msgid "Menu Bar"
+msgstr "Lišta nabídek"
+
+#: ui/menulayout.cpp:106
+#, fuzzy
 msgid "Command Palette..."
-msgstr ""
-
-#: ui/menulayout.cpp:106
-msgid "Hide Group"
-msgstr ""
-
-#: ui/menulayout.cpp:106
-msgid "Isolate Group"
-msgstr ""
+msgstr "Paleta příkazů..."
 
 #: ui/menulayout.cpp:107
-msgid "Show All Groups"
-msgstr ""
+#, fuzzy
+msgid "Hide Group"
+msgstr "Skrýt skupinu"
+
+#: ui/menulayout.cpp:107
+#, fuzzy
+msgid "Isolate Group"
+msgstr "Izolovat skupinu"
 
 #: ui/menulayout.cpp:108
-msgid "View Settings..."
-msgstr ""
+#, fuzzy
+msgid "Show All Groups"
+msgstr "Zobrazit všechny skupiny"
 
 #: ui/menulayout.cpp:109
-msgid "Light Theme"
-msgstr ""
+#, fuzzy
+msgid "View Settings..."
+msgstr "Nastavení zobrazení..."
 
 #: ui/menulayout.cpp:110
-msgid "Full Screen"
-msgstr ""
+#, fuzzy
+msgid "Light Theme"
+msgstr "Světlý motiv"
 
 #: ui/menulayout.cpp:111
+#, fuzzy
+msgid "Full Screen"
+msgstr "Celá obrazovka"
+
+#: ui/menulayout.cpp:112
+#, fuzzy
 msgid "New Group"
-msgstr ""
+msgstr "Nová skupina"
 
-#: ui/menulayout.cpp:112
+#: ui/menulayout.cpp:113
+#, fuzzy
 msgid "New Part"
-msgstr ""
+msgstr "Nová část"
 
-#: ui/menulayout.cpp:112
+#: ui/menulayout.cpp:113
+#, fuzzy
 msgid "Split Part"
-msgstr ""
+msgstr "Rozdělit část"
 
-#: ui/menulayout.cpp:113 ui/outliner.cpp:155
+#: ui/menulayout.cpp:114 ui/outliner.cpp:155
+#, fuzzy
 msgid "Joints"
-msgstr ""
-
-#: ui/menulayout.cpp:114
-msgid "Revolute Joint"
-msgstr ""
+msgstr "Klouby"
 
 #: ui/menulayout.cpp:115
-msgid "Slider Joint"
-msgstr ""
+#, fuzzy
+msgid "Revolute Joint"
+msgstr "Rotační kloub"
 
 #: ui/menulayout.cpp:116
-msgid "Cylindrical Joint"
-msgstr ""
+#, fuzzy
+msgid "Slider Joint"
+msgstr "Posuvný kloub"
 
 #: ui/menulayout.cpp:117
-msgid "Planar Joint"
-msgstr ""
+#, fuzzy
+msgid "Cylindrical Joint"
+msgstr "Válcový kloub"
 
 #: ui/menulayout.cpp:118
-msgid "Ball Joint"
-msgstr ""
+#, fuzzy
+msgid "Planar Joint"
+msgstr "Rovinný kloub"
 
 #: ui/menulayout.cpp:119
-msgid "Gear Coupling"
-msgstr ""
+#, fuzzy
+msgid "Ball Joint"
+msgstr "Kulový kloub"
 
 #: ui/menulayout.cpp:120
-msgid "Fit Joint"
-msgstr ""
+#, fuzzy
+msgid "Gear Coupling"
+msgstr "Ozubené spojení"
 
 #: ui/menulayout.cpp:121
-msgid "Sketch in 3D"
-msgstr ""
+#, fuzzy
+msgid "Fit Joint"
+msgstr "Lícovaný spoj"
 
 #: ui/menulayout.cpp:122
-msgid "Sketch in New Workplane"
-msgstr ""
+#, fuzzy
+msgid "Sketch in 3D"
+msgstr "Náčrt ve 3D"
 
 #: ui/menulayout.cpp:123
-msgid "Extrude"
-msgstr ""
+#, fuzzy
+msgid "Sketch in New Workplane"
+msgstr "Náčrt v nové pracovní rovině"
 
 #: ui/menulayout.cpp:124
-msgid "Extrude as a Cut"
-msgstr ""
+#, fuzzy
+msgid "Extrude"
+msgstr "Extruze"
 
 #: ui/menulayout.cpp:125
+#, fuzzy
+msgid "Extrude as a Cut"
+msgstr "Extruze jako řez"
+
+#: ui/menulayout.cpp:126
+#, fuzzy
 msgid "Revolve"
-msgstr ""
-
-#: ui/menulayout.cpp:126
-msgid "Helix"
-msgstr ""
-
-#: ui/menulayout.cpp:126
-msgid "Lathe"
-msgstr ""
+msgstr "Rotace"
 
 #: ui/menulayout.cpp:127
-msgid "Fillet Edges"
-msgstr ""
+#, fuzzy
+msgid "Helix"
+msgstr "Šroubovice"
+
+#: ui/menulayout.cpp:127
+#, fuzzy
+msgid "Lathe"
+msgstr "Soustružení"
 
 #: ui/menulayout.cpp:128
+#, fuzzy
+msgid "Fillet Edges"
+msgstr "Zaoblit hrany"
+
+#: ui/menulayout.cpp:129
+#, fuzzy
 msgid "Chamfer Edges"
-msgstr ""
+msgstr "Sražit hrany"
 
-#: ui/menulayout.cpp:129
+#: ui/menulayout.cpp:130
+#, fuzzy
 msgid "Draft Faces"
-msgstr ""
+msgstr "Úkosit plochy"
 
-#: ui/menulayout.cpp:129
+#: ui/menulayout.cpp:130
+#, fuzzy
 msgid "Shell"
-msgstr ""
-
-#: ui/menulayout.cpp:130
-msgid "Hole"
-msgstr ""
-
-#: ui/menulayout.cpp:130
-msgid "Loft"
-msgstr ""
+msgstr "Skořepina"
 
 #: ui/menulayout.cpp:131
-msgid "Sweep"
-msgstr ""
+#, fuzzy
+msgid "Hole"
+msgstr "Díra"
 
-#: ui/menulayout.cpp:133
-msgid "Linear Pattern"
-msgstr ""
+#: ui/menulayout.cpp:131
+#, fuzzy
+msgid "Loft"
+msgstr "Lofting"
+
+#: ui/menulayout.cpp:132
+#, fuzzy
+msgid "Sweep"
+msgstr "Tažení"
 
 #: ui/menulayout.cpp:134
-msgid "Circular Pattern"
-msgstr ""
+#, fuzzy
+msgid "Linear Pattern"
+msgstr "Lineární pole"
 
 #: ui/menulayout.cpp:135
+#, fuzzy
+msgid "Circular Pattern"
+msgstr "Kruhové pole"
+
+#: ui/menulayout.cpp:136
+#, fuzzy
 msgid "Link Part..."
-msgstr ""
+msgstr "Propojit část..."
 
-#: ui/menulayout.cpp:137 ui/statusmodel.cpp:50
+#: ui/menulayout.cpp:138 ui/statusmodel.cpp:50
+#, fuzzy
 msgid "Sketch"
-msgstr ""
-
-#: ui/menulayout.cpp:138
-msgid "In Workplane"
-msgstr ""
+msgstr "Náčrt"
 
 #: ui/menulayout.cpp:139
+#, fuzzy
+msgid "In Workplane"
+msgstr "V pracovní rovině"
+
+#: ui/menulayout.cpp:140
+#, fuzzy
 msgid "Anywhere in 3D"
-msgstr ""
+msgstr "Kdekoli ve 3D"
 
-#: ui/menulayout.cpp:141 ui/ngui.cpp:155 ui/selectionmodel.cpp:130
+#: ui/menulayout.cpp:142 ui/ngui.cpp:155 ui/selectionmodel.cpp:130
+#, fuzzy
 msgid "Point"
-msgstr ""
+msgstr "Bod"
 
-#: ui/menulayout.cpp:141 ui/ngui.cpp:156 ui/selectionmodel.cpp:147
+#: ui/menulayout.cpp:142 ui/ngui.cpp:156 ui/selectionmodel.cpp:147
+#, fuzzy
 msgid "Workplane"
-msgstr ""
+msgstr "Pracovní rovina"
 
-#: ui/menulayout.cpp:143
+#: ui/menulayout.cpp:144
+#, fuzzy
 msgid "Construction Line"
-msgstr ""
+msgstr "Pomocná úsečka"
 
-#: ui/menulayout.cpp:145 ui/ngui.cpp:153
+#: ui/menulayout.cpp:146 ui/ngui.cpp:153
+#, fuzzy
 msgid "Arc"
-msgstr ""
+msgstr "Oblouk"
 
-#: ui/menulayout.cpp:145 ui/ngui.cpp:154
+#: ui/menulayout.cpp:146 ui/ngui.cpp:154
+#, fuzzy
 msgid "Spline"
-msgstr ""
+msgstr "Splajn"
 
-#: ui/menulayout.cpp:146 ui/ngui.cpp:155
+#: ui/menulayout.cpp:147 ui/ngui.cpp:155
+#, fuzzy
 msgid "Text"
-msgstr ""
-
-#: ui/menulayout.cpp:148
-msgid "Tangent Arc at Point"
-msgstr ""
+msgstr "Text"
 
 #: ui/menulayout.cpp:149
+#, fuzzy
+msgid "Tangent Arc at Point"
+msgstr "Tečný oblouk v bodě"
+
+#: ui/menulayout.cpp:150
+#, fuzzy
 msgid "Split at Intersections"
-msgstr ""
+msgstr "Rozdělit v průsečících"
 
-#: ui/menulayout.cpp:150 ui/ngui.cpp:167 ui/statusmodel.cpp:47
+#: ui/menulayout.cpp:151 ui/ngui.cpp:167 ui/statusmodel.cpp:47
+#, fuzzy
 msgid "Constrain"
-msgstr ""
-
-#: ui/menulayout.cpp:151
-msgid "Distance / Diameter"
-msgstr ""
+msgstr "Omezení"
 
 #: ui/menulayout.cpp:152
-msgid "Reference Dimension"
-msgstr ""
+#, fuzzy
+msgid "Distance / Diameter"
+msgstr "Vzdálenost / průměr"
 
 #: ui/menulayout.cpp:153
-msgid "Angle / Equal Angle"
-msgstr ""
+#, fuzzy
+msgid "Reference Dimension"
+msgstr "Referenční kóta"
 
 #: ui/menulayout.cpp:154
-msgid "Reference Angle"
-msgstr ""
+#, fuzzy
+msgid "Angle / Equal Angle"
+msgstr "Úhel / stejný úhel"
 
 #: ui/menulayout.cpp:155
-msgid "Supplementary Angle"
-msgstr ""
+#, fuzzy
+msgid "Reference Angle"
+msgstr "Referenční úhel"
 
 #: ui/menulayout.cpp:156
+#, fuzzy
+msgid "Supplementary Angle"
+msgstr "Doplňkový úhel"
+
+#: ui/menulayout.cpp:157
+#, fuzzy
 msgid "Toggle Reference"
-msgstr ""
+msgstr "Přepnout referenci"
 
-#: ui/menulayout.cpp:157 ui/selectionmodel.cpp:39
+#: ui/menulayout.cpp:158 ui/selectionmodel.cpp:39
+#, fuzzy
 msgid "Horizontal"
-msgstr ""
+msgstr "Vodorovně"
 
-#: ui/menulayout.cpp:157 ui/selectionmodel.cpp:40
+#: ui/menulayout.cpp:158 ui/selectionmodel.cpp:40
+#, fuzzy
 msgid "Vertical"
-msgstr ""
-
-#: ui/menulayout.cpp:158
-msgid "On Point / Curve / Plane"
-msgstr ""
+msgstr "Svisle"
 
 #: ui/menulayout.cpp:159
-msgid "Equal Length / Radius"
-msgstr ""
+#, fuzzy
+msgid "On Point / Curve / Plane"
+msgstr "Na bodu / křivce / rovině"
 
 #: ui/menulayout.cpp:160
-msgid "Length / Arc Ratio"
-msgstr ""
+#, fuzzy
+msgid "Equal Length / Radius"
+msgstr "Stejná délka / poloměr"
 
 #: ui/menulayout.cpp:161
+#, fuzzy
+msgid "Length / Arc Ratio"
+msgstr "Poměr délky / oblouku"
+
+#: ui/menulayout.cpp:162
+#, fuzzy
 msgid "Length / Arc Difference"
-msgstr ""
+msgstr "Rozdíl délky / oblouku"
 
-#: ui/menulayout.cpp:162 ui/selectionmodel.cpp:38
+#: ui/menulayout.cpp:163 ui/selectionmodel.cpp:38
+#, fuzzy
 msgid "Midpoint"
-msgstr ""
+msgstr "Střed"
 
-#: ui/menulayout.cpp:162 ui/selectionmodel.cpp:34
+#: ui/menulayout.cpp:163 ui/selectionmodel.cpp:34
+#, fuzzy
 msgid "Symmetric"
-msgstr ""
+msgstr "Souměrně"
 
-#: ui/menulayout.cpp:163
+#: ui/menulayout.cpp:164
+#, fuzzy
 msgid "Parallel / Tangent"
-msgstr ""
+msgstr "Rovnoběžně / tečně"
 
-#: ui/menulayout.cpp:164 ui/selectionmodel.cpp:49
+#: ui/menulayout.cpp:165 ui/selectionmodel.cpp:49
+#, fuzzy
 msgid "Perpendicular"
-msgstr ""
-
-#: ui/menulayout.cpp:165
-msgid "Same Orientation"
-msgstr ""
+msgstr "Kolmo"
 
 #: ui/menulayout.cpp:166
+#, fuzzy
+msgid "Same Orientation"
+msgstr "Stejná orientace"
+
+#: ui/menulayout.cpp:167
+#, fuzzy
 msgid "Lock Point Where Dragged"
-msgstr ""
+msgstr "Zamknout bod v místě tažení"
 
-#: ui/menulayout.cpp:168
+#: ui/menulayout.cpp:169
+#, fuzzy
 msgid "Inspect"
-msgstr ""
-
-#: ui/menulayout.cpp:169
-msgid "Measure Area"
-msgstr ""
-
-#: ui/menulayout.cpp:169
-msgid "Measure Volume"
-msgstr ""
+msgstr "Kontrola"
 
 #: ui/menulayout.cpp:170
-msgid "Measure Perimeter"
-msgstr ""
+#, fuzzy
+msgid "Measure Area"
+msgstr "Změřit plochu"
+
+#: ui/menulayout.cpp:170
+#, fuzzy
+msgid "Measure Volume"
+msgstr "Změřit objem"
 
 #: ui/menulayout.cpp:171
-msgid "Interfering Parts"
-msgstr ""
+#, fuzzy
+msgid "Measure Perimeter"
+msgstr "Změřit obvod"
 
 #: ui/menulayout.cpp:172
-msgid "Naked Edges"
-msgstr ""
+#, fuzzy
+msgid "Interfering Parts"
+msgstr "Kolidující části"
 
 #: ui/menulayout.cpp:173
-msgid "Center of Mass"
-msgstr ""
+#, fuzzy
+msgid "Naked Edges"
+msgstr "Otevřené hrany"
 
 #: ui/menulayout.cpp:174
-msgid "Mass Properties..."
-msgstr ""
+#, fuzzy
+msgid "Center of Mass"
+msgstr "Těžiště"
 
 #: ui/menulayout.cpp:175
-msgid "Parts List..."
-msgstr ""
-
-#: ui/menulayout.cpp:176 ui/ngui.cpp:188
-msgid "Design Pose"
-msgstr ""
+#, fuzzy
+msgid "Mass Properties..."
+msgstr "Hmotnostní vlastnosti..."
 
 #: ui/menulayout.cpp:176
-msgid "Fit Table..."
-msgstr ""
+#, fuzzy
+msgid "Parts List..."
+msgstr "Seznam částí..."
 
-#: ui/menulayout.cpp:178
-msgid "Underconstrained Points"
-msgstr ""
+#: ui/menulayout.cpp:177 ui/ngui.cpp:188
+#, fuzzy
+msgid "Design Pose"
+msgstr "Návrhová poloha"
+
+#: ui/menulayout.cpp:177
+#, fuzzy
+msgid "Fit Table..."
+msgstr "Tabulka lícování..."
 
 #: ui/menulayout.cpp:179
-msgid "Trace Point"
-msgstr ""
+#, fuzzy
+msgid "Underconstrained Points"
+msgstr "Nedourčené body"
 
 #: ui/menulayout.cpp:180
-msgid "Stop Tracing..."
-msgstr ""
+#, fuzzy
+msgid "Trace Point"
+msgstr "Trasovat bod"
 
 #: ui/menulayout.cpp:181
-msgid "Step Dimension..."
-msgstr ""
+#, fuzzy
+msgid "Stop Tracing..."
+msgstr "Ukončit trasování..."
 
 #: ui/menulayout.cpp:182
+#, fuzzy
+msgid "Step Dimension..."
+msgstr "Krokovat kótu..."
+
+#: ui/menulayout.cpp:183
+#, fuzzy
 msgid "Help"
-msgstr ""
+msgstr "Nápověda"
 
-#: ui/menulayout.cpp:183 ui/panels.cpp:144
+#: ui/menulayout.cpp:184 ui/panels.cpp:144
+#, fuzzy
 msgid "Keyboard Shortcuts"
-msgstr ""
+msgstr "Klávesové zkratky"
 
-#: ui/menulayout.cpp:184
+#: ui/menulayout.cpp:185
+#, fuzzy
 msgid "GitHub Commit"
-msgstr ""
+msgstr "Commit na GitHubu"
 
-#: ui/menulayout.cpp:184
+#: ui/menulayout.cpp:185
+#, fuzzy
 msgid "Website / Manual"
-msgstr ""
+msgstr "Web / příručka"
 
-#: ui/menulayout.cpp:185 ui/prefspanel.cpp:163
+#: ui/menulayout.cpp:186 ui/prefspanel.cpp:163
+#, fuzzy
 msgid "About"
-msgstr ""
+msgstr "O programu"
 
 #: ui/ngui.cpp:150 ui/statusmodel.cpp:46
+#, fuzzy
 msgid "Add"
-msgstr ""
+msgstr "Přidat"
 
 #: ui/ngui.cpp:172
+#, fuzzy
 msgid "Isometric"
-msgstr ""
+msgstr "Izometrie"
 
 #: ui/ngui.cpp:174
+#, fuzzy
 msgid "Frame Selected"
-msgstr ""
+msgstr "Zarámovat výběr"
 
 #: ui/ngui.cpp:175
+#, fuzzy
 msgid "Grid"
-msgstr ""
+msgstr "Mřížka"
 
 #: ui/ngui.cpp:182 ui/properties.cpp:686
+#, fuzzy
 msgid "Joint"
-msgstr ""
+msgstr "Kloub"
 
 #: ui/ngui.cpp:183
+#, fuzzy
 msgid "Revolute"
-msgstr ""
+msgstr "Rotační"
 
 #: ui/ngui.cpp:184
+#, fuzzy
 msgid "Slider"
-msgstr ""
+msgstr "Posuvný"
 
 #: ui/ngui.cpp:185
+#, fuzzy
 msgid "Cylindrical"
-msgstr ""
+msgstr "Válcový"
 
 #: ui/ngui.cpp:186
+#, fuzzy
 msgid "Planar"
-msgstr ""
+msgstr "Rovinný"
 
 #: ui/ngui.cpp:187
+#, fuzzy
 msgid "Ball"
-msgstr ""
+msgstr "Kulový"
 
 #: ui/ngui.cpp:187
+#, fuzzy
 msgid "Gear"
-msgstr ""
+msgstr "Ozubené"
 
 #: ui/ngui.cpp:188
+#, fuzzy
 msgid "Fit"
-msgstr ""
+msgstr "Lícování"
 
 #: ui/outliner.cpp:49 ui/properties.cpp:271
+#, fuzzy
 msgid "Group"
-msgstr ""
+msgstr "Skupina"
 
 #: ui/outliner.cpp:132
+#, fuzzy
 msgid "Rename"
-msgstr ""
+msgstr "Přejmenovat"
 
 #: ui/outliner.cpp:137
+#, fuzzy
 msgid "Isolate"
-msgstr ""
+msgstr "Izolovat"
 
 #: ui/outlinermodel.cpp:60
+#, fuzzy
 msgid "Origin"
-msgstr ""
+msgstr "Počátek"
 
 #: ui/outlinermodel.cpp:83
+#, fuzzy
 msgid "Skeleton"
-msgstr ""
+msgstr "Kostra"
 
 #: ui/palettewidget.cpp:47
+#, fuzzy
 msgid "Type a command..."
-msgstr ""
+msgstr "Zadej příkaz..."
 
 #: ui/panels.cpp:135
+#, fuzzy
 msgid "Tools"
-msgstr ""
+msgstr "Nástroje"
 
 #: ui/panels.cpp:162
+#, fuzzy
 msgid "Preferences"
-msgstr ""
+msgstr "Předvolby"
 
 #: ui/panels.cpp:168
+#, fuzzy
 msgid "Styles"
-msgstr ""
+msgstr "Styly"
 
 #: ui/panels.cpp:178
+#, fuzzy
 msgid "Paste Transformed"
-msgstr ""
+msgstr "Vložit transformovaně"
 
 #: ui/panels.cpp:184
+#, fuzzy
 msgid "Step Dimension"
-msgstr ""
+msgstr "Krokovat kótu"
 
 #: ui/panels.cpp:190
+#, fuzzy
 msgid "Tangent Arc"
-msgstr ""
+msgstr "Tečný oblouk"
 
 #: ui/prefspanel.cpp:30
+#, fuzzy
 msgid "model colours"
-msgstr ""
+msgstr "barvy modelu"
 
 #: ui/prefspanel.cpp:41
+#, fuzzy
 msgid "chord tolerance (%)"
-msgstr ""
+msgstr "tolerance tětivy (%)"
 
 #: ui/prefspanel.cpp:42
-#, c-format
+#, fuzzy, c-format
 msgid "%g mm, %d triangles"
-msgstr ""
+msgstr "%g mm, %d trojúhelníků"
 
 #: ui/prefspanel.cpp:44 ui/prefspanel.cpp:72
+#, fuzzy
 msgid "max piecewise linear segments"
-msgstr ""
+msgstr "nejvyšší počet lomených úseků"
 
 #: ui/prefspanel.cpp:45
+#, fuzzy
 msgid "snap grid spacing"
-msgstr ""
+msgstr "rozestup přichytávací mřížky"
 
 #: ui/prefspanel.cpp:46
+#, fuzzy
 msgid "digits after the decimal point (distances)"
-msgstr ""
+msgstr "desetinná místa (vzdálenosti)"
 
 #: ui/prefspanel.cpp:48 ui/prefspanel.cpp:51
-#, c-format
+#, fuzzy, c-format
 msgid "e.g. %s"
-msgstr ""
+msgstr "např. %s"
 
 #: ui/prefspanel.cpp:49
+#, fuzzy
 msgid "digits after the decimal point (angles)"
-msgstr ""
+msgstr "desetinná místa (úhly)"
 
 #: ui/prefspanel.cpp:52
+#, fuzzy
 msgid "use SI prefixes for distances"
-msgstr ""
+msgstr "použít předpony SI pro vzdálenosti"
 
 #: ui/prefspanel.cpp:53
+#, fuzzy
 msgid "draw triangle back faces in red"
-msgstr ""
+msgstr "zadní strany trojúhelníků kresli červeně"
 
 #: ui/prefspanel.cpp:54
+#, fuzzy
 msgid "check sketch for closed contour"
-msgstr ""
+msgstr "kontrolovat náčrt na uzavřený obrys"
 
 #: ui/prefspanel.cpp:55
+#, fuzzy
 msgid "show areas of closed contours"
-msgstr ""
+msgstr "zobrazit plochy uzavřených obrysů"
 
 #: ui/prefspanel.cpp:56
+#, fuzzy
 msgid "enable automatic line constraints"
-msgstr ""
+msgstr "zapnout automatická omezení čar"
 
 #: ui/prefspanel.cpp:57
+#, fuzzy
 msgid "edit newly added dimensions"
-msgstr ""
+msgstr "upravit nově přidané kóty"
 
 #: ui/prefspanel.cpp:58
+#, fuzzy
 msgid "arc default is diameter"
-msgstr ""
+msgstr "výchozí u oblouku je průměr"
 
 #: ui/prefspanel.cpp:59
+#, fuzzy
 msgid "display the full path in the title bar"
-msgstr ""
+msgstr "zobrazit celou cestu v záhlaví okna"
 
 #: ui/prefspanel.cpp:63
+#, fuzzy
 msgid "use camera mouse navigation"
-msgstr ""
+msgstr "použít navigaci myší jako u kamery"
 
 #: ui/prefspanel.cpp:64
+#, fuzzy
 msgid "use turntable mouse navigation"
-msgstr ""
+msgstr "použít navigaci myší jako u otočného stolu"
 
 #: ui/prefspanel.cpp:65
+#, fuzzy
 msgid "animation speed (ms; 0 to disable)"
-msgstr ""
+msgstr "rychlost animace (ms; 0 vypne)"
 
 #: ui/prefspanel.cpp:70
+#, fuzzy
 msgid "chord tolerance (mm)"
-msgstr ""
+msgstr "tolerance tětivy (mm)"
 
 #: ui/prefspanel.cpp:74
+#, fuzzy
 msgid "scale factor 1: (1:1 = mm, 1:25.4 = inch)"
-msgstr ""
+msgstr "měřítko 1: (1:1 = mm, 1:25.4 = palec)"
 
 #: ui/prefspanel.cpp:76
+#, fuzzy
 msgid "cutter radius offset (0 = none)"
-msgstr ""
+msgstr "odsazení poloměru nástroje (0 = žádné)"
 
 #: ui/prefspanel.cpp:77
+#, fuzzy
 msgid "export shaded 2d triangles"
-msgstr ""
+msgstr "exportovat stínované 2D trojúhelníky"
 
 #: ui/prefspanel.cpp:79
+#, fuzzy
 msgid "curves as piecewise linear (the cutter radius is not zero)"
-msgstr ""
+msgstr "křivky jako lomené úsečky (poloměr nástroje není nula)"
 
 #: ui/prefspanel.cpp:81
+#, fuzzy
 msgid "export curves as piecewise linear"
-msgstr ""
+msgstr "exportovat křivky jako lomené úsečky"
 
 #: ui/prefspanel.cpp:83
+#, fuzzy
 msgid "fix white exported lines"
-msgstr ""
+msgstr "opravit bílé exportované čáry"
 
 #: ui/prefspanel.cpp:84
+#, fuzzy
 msgid "export background color"
-msgstr ""
+msgstr "barva pozadí exportu"
 
 #: ui/prefspanel.cpp:85
+#, fuzzy
 msgid "lay parts flat on export"
-msgstr ""
+msgstr "při exportu položit části naplocho"
 
 #: ui/prefspanel.cpp:87
+#, fuzzy
 msgid "canvas size"
-msgstr ""
+msgstr "velikost plátna"
 
 #: ui/prefspanel.cpp:89
+#, fuzzy
 msgid "fixed"
-msgstr ""
+msgstr "pevná"
 
 #: ui/prefspanel.cpp:93
+#, fuzzy
 msgid "auto (margins)"
-msgstr ""
+msgstr "automatická (okraje)"
 
 #: ui/prefspanel.cpp:97 ui/stylespanel.cpp:121
+#, fuzzy
 msgid "left"
-msgstr ""
+msgstr "vlevo"
 
 #: ui/prefspanel.cpp:98 ui/stylespanel.cpp:125
+#, fuzzy
 msgid "right"
-msgstr ""
+msgstr "vpravo"
 
 #: ui/prefspanel.cpp:99 ui/stylespanel.cpp:126
+#, fuzzy
 msgid "bottom"
-msgstr ""
+msgstr "dole"
 
 #: ui/prefspanel.cpp:100 ui/stylespanel.cpp:130
+#, fuzzy
 msgid "top"
-msgstr ""
+msgstr "nahoře"
 
 #: ui/prefspanel.cpp:104
+#, fuzzy
 msgid "offset x"
-msgstr ""
+msgstr "posun x"
 
 #: ui/prefspanel.cpp:105
+#, fuzzy
 msgid "offset y"
-msgstr ""
+msgstr "posun y"
 
 #: ui/prefspanel.cpp:108
+#, fuzzy
 msgid "g code"
-msgstr ""
+msgstr "G-kód"
 
 #: ui/prefspanel.cpp:109 ui/properties.cpp:117
+#, fuzzy
 msgid "depth"
-msgstr ""
+msgstr "hloubka"
 
 #: ui/prefspanel.cpp:110
+#, fuzzy
 msgid "passes"
-msgstr ""
+msgstr "průchody"
 
 #: ui/prefspanel.cpp:111
+#, fuzzy
 msgid "feed"
-msgstr ""
+msgstr "posuv"
 
 #: ui/prefspanel.cpp:112
+#, fuzzy
 msgid "plunge feed"
-msgstr ""
+msgstr "posuv zanořování"
 
 #: ui/prefspanel.cpp:117
+#, fuzzy
 msgid "dark theme"
-msgstr ""
+msgstr "tmavý motiv"
 
 #: ui/prefspanel.cpp:119
+#, fuzzy
 msgid "light theme"
-msgstr ""
+msgstr "světlý motiv"
 
 #: ui/prefspanel.cpp:122
+#, fuzzy
 msgid "classic keys"
-msgstr ""
+msgstr "klasické klávesy"
 
 #: ui/prefspanel.cpp:122
+#, fuzzy
 msgid "modern keys"
-msgstr ""
+msgstr "moderní klávesy"
 
 #: ui/prefspanel.cpp:133
+#, fuzzy
 msgid "colour constraints by state"
-msgstr ""
+msgstr "barvy omezení podle stavu"
 
 #: ui/prefspanel.cpp:135
+#, fuzzy
 msgid "material for mass properties"
-msgstr ""
+msgstr "materiál pro hmotnostní vlastnosti"
 
 #: ui/prefspanel.cpp:146
+#, fuzzy
 msgid "density (g/cm³)"
-msgstr ""
+msgstr "hustota (g/cm³)"
 
 #: ui/prefspanel.cpp:154
+#, fuzzy
 msgid "Display"
-msgstr ""
+msgstr "Zobrazení"
 
 #: ui/prefspanel.cpp:155
+#, fuzzy
 msgid "Navigation"
-msgstr ""
+msgstr "Navigace"
 
 #: ui/prefspanel.cpp:157
+#, fuzzy
 msgid "Solver and files"
-msgstr ""
+msgstr "Řešič a soubory"
 
 #: ui/prefspanel.cpp:158
+#, fuzzy
 msgid "redundant constraint timeout (ms)"
-msgstr ""
+msgstr "časový limit nadbytečných omezení (ms)"
 
 #: ui/prefspanel.cpp:160
+#, fuzzy
 msgid "autosave interval (minutes)"
-msgstr ""
+msgstr "interval automatického ukládání (minuty)"
 
 #: ui/prefspanel.cpp:166
-#, c-format
+#, fuzzy, c-format
 msgid "gl vendor   %s"
-msgstr ""
+msgstr "gl výrobce   %s"
 
 #: ui/prefspanel.cpp:167
-#, c-format
+#, fuzzy, c-format
 msgid "gl renderer %s"
-msgstr ""
+msgstr "gl renderer %s"
 
 #: ui/prefspanel.cpp:168
-#, c-format
+#, fuzzy, c-format
 msgid "gl version  %s"
-msgstr ""
+msgstr "gl verze  %s"
 
 #: ui/problems.cpp:49
+#, fuzzy
 msgid "No problems."
-msgstr ""
+msgstr "Žádné problémy."
 
 #: ui/problems.cpp:63
+#, fuzzy
 msgid "select all"
-msgstr ""
+msgstr "vybrat vše"
 
 #: ui/problems.cpp:80
+#, fuzzy
 msgid "Some were left out: the search timed out."
-msgstr ""
+msgstr "Některé byly vynechány: hledání vypršelo."
 
 #: ui/problems.cpp:82 ui/properties.cpp:532
+#, fuzzy
 msgid "allow redundant constraints"
-msgstr ""
+msgstr "povolit nadbytečná omezení"
 
 #: ui/problems.cpp:85
+#, fuzzy
 msgid "force to triangle mesh"
-msgstr ""
+msgstr "vynutit trojúhelníkovou síť"
 
 #: ui/problemsmodel.cpp:19 ui/problemsmodel.cpp:24
+#, fuzzy
 msgid "unsolvable constraints"
-msgstr ""
+msgstr "neřešitelná omezení"
 
 #: ui/problemsmodel.cpp:20
+#, fuzzy
 msgid "These constraints are incompatible. Edit > Undo may fix it."
-msgstr ""
+msgstr "Tato omezení si odporují. Pomoci může Úpravy > Zpět."
 
 #: ui/problemsmodel.cpp:25
+#, fuzzy
 msgid "These constraints are unsatisfied. Edit > Undo may fix it."
-msgstr ""
+msgstr "Tato omezení nejsou splněna. Pomoci může Úpravy > Zpět."
 
 #: ui/problemsmodel.cpp:29
+#, fuzzy
 msgid "redundant constraints"
-msgstr ""
+msgstr "nadbytečná omezení"
 
 #: ui/problemsmodel.cpp:30
+#, fuzzy
 msgid ""
 "Remove any one of these to fix it, or allow redundant constraints in this "
 "group."
 msgstr ""
+"K opravě odstraň kterékoli z nich, nebo v této skupině povol nadbytečná "
+"omezení."
 
 #: ui/problemsmodel.cpp:36
+#, fuzzy
 msgid "too many unknowns in a single group"
-msgstr ""
+msgstr "příliš mnoho neznámých v jedné skupině"
 
 #: ui/problemsmodel.cpp:37
+#, fuzzy
 msgid "Split the sketch into more groups."
-msgstr ""
+msgstr "Rozděl náčrt do více skupin."
 
 #: ui/problemsmodel.cpp:61
+#, fuzzy
 msgid "not closed contour, or not all same style"
-msgstr ""
+msgstr "obrys není uzavřen, nebo nejsou všechny stejného stylu"
 
 #: ui/problemsmodel.cpp:62
+#, fuzzy
 msgid "points not all coplanar"
-msgstr ""
+msgstr "body neleží v jedné rovině"
 
 #: ui/problemsmodel.cpp:63
+#, fuzzy
 msgid "contour is self-intersecting"
-msgstr ""
+msgstr "obrys se protíná sám se sebou"
 
 #: ui/problemsmodel.cpp:64
+#, fuzzy
 msgid "zero-length edge"
-msgstr ""
+msgstr "hrana nulové délky"
 
 #: ui/problemsmodel.cpp:67
+#, fuzzy
 msgid "The sketch shows where."
-msgstr ""
+msgstr "Náčrt ukazuje, kde."
 
 #: ui/problemsmodel.cpp:68
-#, c-format
+#, fuzzy, c-format
 msgid "In %s."
-msgstr ""
+msgstr "V %s."
 
 #: ui/problemsmodel.cpp:83
+#, fuzzy
 msgid "the Boolean operation failed"
-msgstr ""
+msgstr "booleovská operace selhala"
 
 #: ui/problemsmodel.cpp:84
+#, fuzzy
 msgid "Forcing NURBS surfaces to a triangle mesh may fix it."
-msgstr ""
+msgstr "Pomoci může vynucení NURBS ploch na trojúhelníkovou síť."
 
 #: ui/properties.cpp:83
-#, c-format
+#, fuzzy, c-format
 msgid "a dowel's pocket; the other is in %s"
-msgstr ""
+msgstr "kapsa kolíku; druhá je v %s"
 
 #: ui/properties.cpp:85
-#, c-format
+#, fuzzy, c-format
 msgid "the pocket; the peg is on %s"
-msgstr ""
+msgstr "kapsa; kolík je na %s"
 
 #: ui/properties.cpp:87
-#, c-format
+#, fuzzy, c-format
 msgid "the peg; the pocket is in %s"
-msgstr ""
+msgstr "kolík; kapsa je v %s"
 
 #: ui/properties.cpp:90 ui/properties.cpp:178
+#, fuzzy
 msgid "fit"
-msgstr ""
+msgstr "lícování"
 
 #: ui/properties.cpp:100
+#, fuzzy
 msgid "fit table"
-msgstr ""
+msgstr "tabulka lícování"
 
 #: ui/properties.cpp:103 ui/selectionmodel.cpp:254 ui/selectionmodel.cpp:258
+#, fuzzy
 msgid "style"
-msgstr ""
+msgstr "styl"
 
 #: ui/properties.cpp:104
+#, fuzzy
 msgid "peg and pocket"
-msgstr ""
+msgstr "kolík a kapsa"
 
 #: ui/properties.cpp:110
+#, fuzzy
 msgid "dowel (a pocket in each)"
-msgstr ""
+msgstr "kolík (kapsa v každé)"
 
 #: ui/properties.cpp:117
+#, fuzzy
 msgid "dowel length"
-msgstr ""
+msgstr "délka kolíku"
 
 #: ui/properties.cpp:126
+#, fuzzy
 msgid "other way"
-msgstr ""
+msgstr "opačným směrem"
 
 #: ui/properties.cpp:145
-#, c-format
+#, fuzzy, c-format
 msgid "%s; the other half is %s"
-msgstr ""
+msgstr "%s; druhá polovina je %s"
 
 #: ui/properties.cpp:146
+#, fuzzy
 msgid "the half behind"
-msgstr ""
+msgstr "polovina za rovinou"
 
 #: ui/properties.cpp:146
+#, fuzzy
 msgid "the half in front"
-msgstr ""
+msgstr "polovina před rovinou"
 
 #: ui/properties.cpp:152
+#, fuzzy
 msgid "swap the halves"
-msgstr ""
+msgstr "prohodit poloviny"
 
 #: ui/properties.cpp:158
+#, fuzzy
 msgid "dowels across the cut"
-msgstr ""
+msgstr "kolíky přes řez"
 
 #: ui/properties.cpp:198
+#, fuzzy
 msgid "sketch in 3d"
-msgstr ""
+msgstr "náčrt ve 3D"
 
 #: ui/properties.cpp:199
+#, fuzzy
 msgid "sketch in new workplane"
-msgstr ""
+msgstr "náčrt v nové pracovní rovině"
 
 #: ui/properties.cpp:200
+#, fuzzy
 msgid "extrude plane sketch"
-msgstr ""
+msgstr "extrudovat rovinný náčrt"
 
 #: ui/properties.cpp:201
+#, fuzzy
 msgid "lathe plane sketch"
-msgstr ""
+msgstr "soustružit rovinný náčrt"
 
 #: ui/properties.cpp:202
+#, fuzzy
 msgid "revolve original sketch"
-msgstr ""
+msgstr "rotovat původní náčrt"
 
 #: ui/properties.cpp:203
+#, fuzzy
 msgid "create helical extrusion"
-msgstr ""
+msgstr "vytvořit šroubovou extruzi"
 
 #: ui/properties.cpp:204
+#, fuzzy
 msgid "rotate original sketch"
-msgstr ""
+msgstr "otočit původní náčrt"
 
 #: ui/properties.cpp:205
+#, fuzzy
 msgid "translate original sketch"
-msgstr ""
+msgstr "posunout původní náčrt"
 
 #: ui/properties.cpp:206
+#, fuzzy
 msgid "link geometry from file"
-msgstr ""
+msgstr "propojit geometrii ze souboru"
 
 #: ui/properties.cpp:207
+#, fuzzy
 msgid "round edges"
-msgstr ""
+msgstr "zaoblit hrany"
 
 #: ui/properties.cpp:208
+#, fuzzy
 msgid "bevel edges"
-msgstr ""
+msgstr "sražit hrany"
 
 #: ui/properties.cpp:209
+#, fuzzy
 msgid "hollow the solid"
-msgstr ""
+msgstr "vydlabat těleso"
 
 #: ui/properties.cpp:210
+#, fuzzy
 msgid "taper faces"
-msgstr ""
+msgstr "úkosit plochy"
 
 #: ui/properties.cpp:211
+#, fuzzy
 msgid "drill holes"
-msgstr ""
+msgstr "vyvrtat díry"
 
 #: ui/properties.cpp:212
+#, fuzzy
 msgid "loft through profiles"
-msgstr ""
+msgstr "lofting přes profily"
 
 #: ui/properties.cpp:213
+#, fuzzy
 msgid "sweep a profile along a path"
-msgstr ""
+msgstr "tažení profilu po dráze"
 
 #: ui/properties.cpp:214
+#, fuzzy
 msgid "fit joint"
-msgstr ""
+msgstr "lícovaný spoj"
 
 #: ui/properties.cpp:215
+#, fuzzy
 msgid "split the part"
-msgstr ""
-
-# Czech translations for SolveSpace package.
-# Copyright (C) 2022 the SolveSpace authors
-# This file is distributed under the same license as the SolveSpace package.
-# Pavel Stržínek <pavel.strzinek@gmail.com>, 2022
-#
-#: ui/properties.cpp:217
-msgid ""
-msgstr ""
-"Project-Id-Version: SolveSpace 3.1\n"
-"Report-Msgid-Bugs-To: phkahler@gmail.com\n"
-"POT-Creation-Date: 2026-10-28 14:58-0700\n"
-"PO-Revision-Date: 2022-06-19 20:16+0200\n"
-"Last-Translator: Pavel Stržínek <pavel.strzinek@gmail.com>\n"
-"Language-Team: none\n"
-"Language: cs_CZ\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
+msgstr "rozdělit část"
 
 #: ui/properties.cpp:223
+#, fuzzy
 msgid "(gone)"
-msgstr ""
+msgstr "(chybí)"
 
 #: ui/properties.cpp:224
+#, fuzzy
 msgid "curve"
-msgstr ""
+msgstr "křivka"
 
 #: ui/properties.cpp:226
+#, fuzzy
 msgid "face"
-msgstr ""
+msgstr "plocha"
 
 #: ui/properties.cpp:228 ui/selectionmodel.cpp:388 ui/selectionmodel.cpp:398
 #: ui/selectionmodel.cpp:420
+#, fuzzy
 msgid "point"
-msgstr ""
+msgstr "bod"
 
 #: ui/properties.cpp:230
+#, fuzzy
 msgid "line"
-msgstr ""
+msgstr "úsečka"
 
 #: ui/properties.cpp:232
+#, fuzzy
 msgid "arc"
-msgstr ""
+msgstr "oblouk"
 
 #: ui/properties.cpp:234
+#, fuzzy
 msgid "circle"
-msgstr ""
+msgstr "kružnice"
 
 #: ui/properties.cpp:237
-#, c-format
+#, fuzzy, c-format
 msgid "%s in %s"
-msgstr ""
+msgstr "%s v %s"
 
 #: ui/properties.cpp:280
+#, fuzzy
 msgid "part"
-msgstr ""
+msgstr "část"
 
 #: ui/properties.cpp:293
+#, fuzzy
 msgid "own part"
-msgstr ""
+msgstr "vlastní část"
 
 #: ui/properties.cpp:300
+#, fuzzy
 msgid "material"
-msgstr ""
+msgstr "materiál"
 
 #: ui/properties.cpp:301
+#, fuzzy
 msgid "default"
-msgstr ""
+msgstr "výchozí"
 
 #: ui/properties.cpp:318
+#, fuzzy
 msgid "one-sided"
-msgstr ""
+msgstr "jednostranný"
 
 #: ui/properties.cpp:320
+#, fuzzy
 msgid "two-sided"
-msgstr ""
+msgstr "oboustranný"
 
 #: ui/properties.cpp:323
+#, fuzzy
 msgid "skewed"
-msgstr ""
+msgstr "zkosený"
 
 #: ui/properties.cpp:328
+#, fuzzy
 msgid "start with original"
-msgstr ""
+msgstr "začít s původním"
 
 #: ui/properties.cpp:331
+#, fuzzy
 msgid "start with copy #1"
-msgstr ""
+msgstr "začít s kopií č. 1"
 
 #: ui/properties.cpp:334 ui/toolpanels.cpp:97
+#, fuzzy
 msgid "repeat (times)"
-msgstr ""
+msgstr "opakovat (počet)"
 
 #: ui/properties.cpp:341
+#, fuzzy
 msgid "scaled by"
-msgstr ""
+msgstr "zvětšeno o"
 
 #: ui/properties.cpp:347
+#, fuzzy
 msgid "pitch (length per turn)"
-msgstr ""
+msgstr "stoupání (délka na otáčku)"
 
 #: ui/properties.cpp:355
+#, fuzzy
 msgid "fixed pitch"
-msgstr ""
+msgstr "pevné stoupání"
 
 #: ui/properties.cpp:370
+#, fuzzy
 msgid "plain"
-msgstr ""
+msgstr "prostá"
 
 #: ui/properties.cpp:372
+#, fuzzy
 msgid "counterbore"
-msgstr ""
+msgstr "zahloubení"
 
 #: ui/properties.cpp:374
+#, fuzzy
 msgid "countersink"
-msgstr ""
+msgstr "záhlubení"
 
 #: ui/properties.cpp:379
+#, fuzzy
 msgid "thread (M4, M4x0.5 or none)"
-msgstr ""
+msgstr "závit (M4, M4x0.5 nebo žádný)"
 
 #: ui/properties.cpp:384
+#, fuzzy
 msgid "depth (blank: through all)"
-msgstr ""
+msgstr "hloubka (prázdné: skrz vše)"
 
 #: ui/properties.cpp:387
+#, fuzzy
 msgid "counterbore diameter"
-msgstr ""
+msgstr "průměr zahloubení"
 
 #: ui/properties.cpp:388
+#, fuzzy
 msgid "countersink diameter"
-msgstr ""
+msgstr "průměr záhlubení"
 
 #: ui/properties.cpp:392
+#, fuzzy
 msgid "counterbore depth"
-msgstr ""
+msgstr "hloubka zahloubení"
 
 #: ui/properties.cpp:395
+#, fuzzy
 msgid "countersink angle (degrees)"
-msgstr ""
+msgstr "úhel záhlubení (stupně)"
 
 #: ui/properties.cpp:398
+#, fuzzy
 msgid "print clearance (added to every diameter)"
-msgstr ""
+msgstr "tisková vůle (přičtena ke každému průměru)"
 
 #: ui/properties.cpp:401
+#, fuzzy
 msgid "drill the other way"
-msgstr ""
+msgstr "vrtat opačným směrem"
 
 #: ui/properties.cpp:408
+#, fuzzy
 msgid "hole centres"
-msgstr ""
+msgstr "středy děr"
 
 #: ui/properties.cpp:421 ui/selectionmodel.cpp:187 ui/selectionmodel.cpp:196
 #: ui/selectionmodel.cpp:391 ui/toolpanels.cpp:147
+#, fuzzy
 msgid "radius"
-msgstr ""
+msgstr "poloměr"
 
 #: ui/properties.cpp:422 ui/properties.cpp:707 ui/properties.cpp:708
 #: ui/selectionmodel.cpp:316 ui/selectionmodel.cpp:379
 #: ui/selectionmodel.cpp:392 ui/selectionmodel.cpp:401
 #: ui/selectionmodel.cpp:454
+#, fuzzy
 msgid "distance"
-msgstr ""
+msgstr "vzdálenost"
 
 #: ui/properties.cpp:423
+#, fuzzy
 msgid "wall thickness"
-msgstr ""
+msgstr "tloušťka stěny"
 
 #: ui/properties.cpp:424
+#, fuzzy
 msgid "angle (degrees)"
-msgstr ""
+msgstr "úhel (stupně)"
 
 #: ui/properties.cpp:437
+#, fuzzy
 msgid "hold this size (a dimension)"
-msgstr ""
+msgstr "zachovat tuto velikost (kóta)"
 
 #: ui/properties.cpp:445
+#, fuzzy
 msgid "inside"
-msgstr ""
+msgstr "uvnitř"
 
 #: ui/properties.cpp:447
+#, fuzzy
 msgid "outside"
-msgstr ""
+msgstr "vně"
 
 #: ui/properties.cpp:449
+#, fuzzy
 msgid "both sides"
-msgstr ""
+msgstr "oběma stranami"
 
 #: ui/properties.cpp:452
+#, fuzzy
 msgid "edges"
-msgstr ""
+msgstr "hrany"
 
 #: ui/properties.cpp:454 ui/properties.cpp:464
+#, fuzzy
 msgid "faces"
-msgstr ""
+msgstr "plochy"
 
 #: ui/properties.cpp:456
+#, fuzzy
 msgid "only the outline of these faces"
-msgstr ""
+msgstr "jen obrys těchto ploch"
 
 #: ui/properties.cpp:461
+#, fuzzy
 msgid "faces left open"
-msgstr ""
+msgstr "plochy ponechané otevřené"
 
 #: ui/properties.cpp:461
+#, fuzzy
 msgid "no face open (a sealed hollow)"
-msgstr ""
+msgstr "žádná plocha otevřená (uzavřená dutina)"
 
 #: ui/properties.cpp:470
+#, fuzzy
 msgid "profiles, in order"
-msgstr ""
+msgstr "profily v pořadí"
 
 #: ui/properties.cpp:472
+#, fuzzy
 msgid "profile, then the path"
-msgstr ""
+msgstr "profil, pak dráha"
 
 #: ui/properties.cpp:473
+#, fuzzy
 msgid "round the path's corners (radius; 0: sharp)"
-msgstr ""
+msgstr "zaoblit rohy dráhy (poloměr; 0: ostré)"
 
 #: ui/properties.cpp:495
+#, fuzzy
 msgid "solid model as"
-msgstr ""
+msgstr "těleso jako"
 
 #: ui/properties.cpp:500
+#, fuzzy
 msgid "union"
-msgstr ""
+msgstr "sjednocení"
 
 #: ui/properties.cpp:502
+#, fuzzy
 msgid "assemble"
-msgstr ""
+msgstr "sestavit"
 
 #: ui/properties.cpp:503
+#, fuzzy
 msgid "difference"
-msgstr ""
+msgstr "rozdíl"
 
 #: ui/properties.cpp:505
+#, fuzzy
 msgid "intersection"
-msgstr ""
+msgstr "průnik"
 
 #: ui/properties.cpp:509
+#, fuzzy
 msgid "color"
-msgstr ""
+msgstr "barva"
 
 #: ui/properties.cpp:514
+#, fuzzy
 msgid "opacity"
-msgstr ""
+msgstr "průhlednost"
 
 #: ui/properties.cpp:518
+#, fuzzy
 msgid "suppress this group's solid model"
-msgstr ""
+msgstr "potlačit těleso této skupiny"
 
 #: ui/properties.cpp:523
+#, fuzzy
 msgid "show entities from this group"
-msgstr ""
+msgstr "zobrazit entity z této skupiny"
 
 #: ui/properties.cpp:525
+#, fuzzy
 msgid "force NURBS surfaces to triangle mesh"
-msgstr ""
+msgstr "vynutit trojúhelníkovou síť u NURBS ploch"
 
 #: ui/properties.cpp:528
+#, fuzzy
 msgid "(model already forced to triangle mesh)"
-msgstr ""
+msgstr "(model je už vynucen na trojúhelníkovou síť)"
 
 #: ui/properties.cpp:530
+#, fuzzy
 msgid "relax constraints and dimensions"
-msgstr ""
+msgstr "uvolnit omezení a kóty"
 
 #: ui/properties.cpp:534
+#, fuzzy
 msgid "suppress dof calculation"
-msgstr ""
+msgstr "potlačit výpočet DOF"
 
 #: ui/properties.cpp:536
+#, fuzzy
 msgid "treat all dimensions as reference"
-msgstr ""
+msgstr "všechny kóty brát jako referenční"
 
 #: ui/properties.cpp:540
+#, fuzzy
 msgid ""
 "The Boolean operation failed. It may be possible to fix the problem by "
 "choosing 'force NURBS surfaces to triangle mesh'."
 msgstr ""
+"Booleovská operace selhala. Problém může pomoci vyřešit volba „vynutit "
+"trojúhelníkovou síť u NURBS ploch“."
 
 #: ui/properties.cpp:549
-#, c-format
+#, fuzzy, c-format
 msgid "Requests (%d)"
-msgstr ""
+msgstr "Požadavky (%d)"
 
 #: ui/properties.cpp:562
-#, c-format
+#, fuzzy, c-format
 msgid "Constraints (%d, %d DOF)"
-msgstr ""
+msgstr "Omezení (%d, %d DOF)"
 
 #: ui/properties.cpp:615
+#, fuzzy
 msgid "Selection"
-msgstr ""
+msgstr "Výběr"
 
 #: ui/properties.cpp:627
+#, fuzzy
 msgid "reference"
-msgstr ""
+msgstr "referenční"
 
 #: ui/properties.cpp:632
+#, fuzzy
 msgid "use radius"
-msgstr ""
+msgstr "použít poloměr"
 
 #: ui/properties.cpp:640 ui/selectionmodel.cpp:221 ui/stylespanel.cpp:108
+#, fuzzy
 msgid "text"
-msgstr ""
+msgstr "text"
 
 #: ui/properties.cpp:644
+#, fuzzy
 msgid "apply kerning"
-msgstr ""
+msgstr "použít kerning"
 
 #: ui/properties.cpp:674
+#, fuzzy
 msgid "remove assigned style"
-msgstr ""
+msgstr "odebrat přiřazený styl"
 
 #: ui/properties.cpp:677
+#, fuzzy
 msgid "unselect all"
-msgstr ""
+msgstr "zrušit výběr všeho"
 
 #: ui/properties.cpp:688
+#, fuzzy
 msgid "cylindrical"
-msgstr ""
+msgstr "válcový"
 
 #: ui/properties.cpp:688
+#, fuzzy
 msgid "revolute"
-msgstr ""
+msgstr "rotační"
 
 #: ui/properties.cpp:688
+#, fuzzy
 msgid "slider"
-msgstr ""
+msgstr "posuvný"
 
 #: ui/properties.cpp:689
+#, fuzzy
 msgid "ball"
-msgstr ""
+msgstr "kulový"
 
 #: ui/properties.cpp:689
+#, fuzzy
 msgid "gear coupling"
-msgstr ""
+msgstr "ozubené spojení"
 
 #: ui/properties.cpp:689
+#, fuzzy
 msgid "planar"
-msgstr ""
+msgstr "rovinný"
 
 #: ui/properties.cpp:692
-#, c-format
+#, fuzzy, c-format
 msgid "%s: %s drives %s"
-msgstr ""
+msgstr "%s: %s řídí %s"
 
 #: ui/properties.cpp:696
+#, fuzzy
 msgid "ratio"
-msgstr ""
+msgstr "poměr"
 
 #: ui/properties.cpp:701
-#, c-format
+#, fuzzy, c-format
 msgid "%s: %s holds %s"
-msgstr ""
+msgstr "%s: %s drží %s"
 
 #: ui/properties.cpp:709
+#, fuzzy
 msgid "along u"
-msgstr ""
+msgstr "podél u"
 
 #: ui/properties.cpp:709
+#, fuzzy
 msgid "along v"
-msgstr ""
+msgstr "podél v"
 
 #: ui/properties.cpp:710
+#, fuzzy
 msgid "about x"
-msgstr ""
+msgstr "kolem x"
 
 #: ui/properties.cpp:710
+#, fuzzy
 msgid "about y"
-msgstr ""
+msgstr "kolem y"
 
 #: ui/properties.cpp:710
+#, fuzzy
 msgid "about z"
-msgstr ""
+msgstr "kolem z"
 
 #: ui/properties.cpp:744
+#, fuzzy
 msgid "limits"
-msgstr ""
+msgstr "meze"
 
 #: ui/properties.cpp:750 ui/selectionmodel.cpp:157 ui/selectionmodel.cpp:377
+#, fuzzy
 msgid "from"
-msgstr ""
+msgstr "od"
 
 #: ui/properties.cpp:756 ui/selectionmodel.cpp:158 ui/selectionmodel.cpp:378
+#, fuzzy
 msgid "to"
-msgstr ""
+msgstr "do"
 
 #: ui/properties.cpp:763
+#, fuzzy
 msgid "sweep clearance"
-msgstr ""
+msgstr "prověřit vůli"
 
 #: ui/properties.cpp:770
+#, fuzzy
 msgid "design pose"
-msgstr ""
+msgstr "návrhová poloha"
 
 #: ui/properties.cpp:774 ui/properties.cpp:797
+#, fuzzy
 msgid "delete"
-msgstr ""
+msgstr "odstranit"
 
 #: ui/properties.cpp:781
+#, fuzzy
 msgid "Fit table"
-msgstr ""
+msgstr "Tabulka lícování"
 
 #: ui/properties.cpp:782
+#, fuzzy
 msgid ""
 "Clearances for fit joints, tuned to your printer: each side's gap (negative "
 "presses)."
 msgstr ""
+"Vůle pro lícované spoje, vyladěné pro tvou tiskárnu: mezera na každé straně "
+"(záporné hodnoty = přesah)."
 
 #: ui/properties.cpp:802
+#, fuzzy
 msgid "add a fit"
-msgstr ""
+msgstr "přidat lícování"
 
 #: ui/selectionmodel.cpp:16
+#, fuzzy
 msgid "Coincident"
-msgstr ""
+msgstr "Kolidující"
 
 #: ui/selectionmodel.cpp:18
+#, fuzzy
 msgid "Point to line distance"
-msgstr ""
+msgstr "vzdálenost bodu od úsečky"
 
 #: ui/selectionmodel.cpp:19
+#, fuzzy
 msgid "Point to plane distance"
-msgstr ""
+msgstr "vzdálenost bodu od roviny"
 
 #: ui/selectionmodel.cpp:20
+#, fuzzy
 msgid "Point to face distance"
-msgstr ""
+msgstr "vzdálenost bodu od plochy"
 
 #: ui/selectionmodel.cpp:21
+#, fuzzy
 msgid "Projected distance"
-msgstr ""
+msgstr "promítnutá vzdálenost"
 
 #: ui/selectionmodel.cpp:22
+#, fuzzy
 msgid "Point in plane"
-msgstr ""
+msgstr "bod v rovině"
 
 #: ui/selectionmodel.cpp:23
+#, fuzzy
 msgid "Point on line"
-msgstr ""
+msgstr "bod na přímce"
 
 #: ui/selectionmodel.cpp:24
+#, fuzzy
 msgid "Point on face"
-msgstr ""
+msgstr "bod na ploše"
 
 #: ui/selectionmodel.cpp:25
+#, fuzzy
 msgid "Equal length"
-msgstr ""
+msgstr "stejná délka"
 
 #: ui/selectionmodel.cpp:26
+#, fuzzy
 msgid "Equal length and distance"
-msgstr ""
+msgstr "stejná délka a vzdálenost"
 
 #: ui/selectionmodel.cpp:27
+#, fuzzy
 msgid "Equal distances"
-msgstr ""
+msgstr "stejné vzdálenosti"
 
 #: ui/selectionmodel.cpp:28
+#, fuzzy
 msgid "Length ratio"
-msgstr ""
+msgstr "poměr délek"
 
 #: ui/selectionmodel.cpp:29
+#, fuzzy
 msgid "Arc length ratio"
-msgstr ""
+msgstr "poměr délek oblouků"
 
 #: ui/selectionmodel.cpp:30
+#, fuzzy
 msgid "Arc to line length ratio"
-msgstr ""
+msgstr "poměr oblouku a úsečky"
 
 #: ui/selectionmodel.cpp:31
+#, fuzzy
 msgid "Length difference"
-msgstr ""
+msgstr "rozdíl délek"
 
 #: ui/selectionmodel.cpp:32
+#, fuzzy
 msgid "Arc length difference"
-msgstr ""
+msgstr "rozdíl délek oblouků"
 
 #: ui/selectionmodel.cpp:33
+#, fuzzy
 msgid "Arc to line length difference"
-msgstr ""
+msgstr "rozdíl oblouku a úsečky"
 
 #: ui/selectionmodel.cpp:35
+#, fuzzy
 msgid "Symmetric horizontally"
-msgstr ""
+msgstr "souměrně vodorovně"
 
 #: ui/selectionmodel.cpp:36
+#, fuzzy
 msgid "Symmetric vertically"
-msgstr ""
+msgstr "souměrně svisle"
 
 #: ui/selectionmodel.cpp:37
+#, fuzzy
 msgid "Symmetric about line"
-msgstr ""
+msgstr "souměrně podle přímky"
 
 #: ui/selectionmodel.cpp:41
+#, fuzzy
 msgid "Diameter"
-msgstr ""
+msgstr "Průměr"
 
 #: ui/selectionmodel.cpp:42
+#, fuzzy
 msgid "Point on circle"
-msgstr ""
+msgstr "Bod na kružnici"
 
 #: ui/selectionmodel.cpp:43
+#, fuzzy
 msgid "Same orientation"
-msgstr ""
+msgstr "Stejná orientace"
 
 #: ui/selectionmodel.cpp:44
+#, fuzzy
 msgid "Angle"
-msgstr ""
+msgstr "Úhel"
 
 #: ui/selectionmodel.cpp:45
+#, fuzzy
 msgid "Parallel"
-msgstr ""
+msgstr "Rovnoběžně"
 
 #: ui/selectionmodel.cpp:46 ui/selectionmodel.cpp:47 ui/selectionmodel.cpp:48
+#, fuzzy
 msgid "Tangent"
-msgstr ""
+msgstr "Tečně"
 
 #: ui/selectionmodel.cpp:50
+#, fuzzy
 msgid "Equal radius"
-msgstr ""
+msgstr "Stejný poloměr"
 
 #: ui/selectionmodel.cpp:51
+#, fuzzy
 msgid "Equal angle"
-msgstr ""
+msgstr "Stejný úhel"
 
 #: ui/selectionmodel.cpp:52
+#, fuzzy
 msgid "Equal line and arc length"
-msgstr ""
+msgstr "Stejná délka úsečky a oblouku"
 
 #: ui/selectionmodel.cpp:53
+#, fuzzy
 msgid "Lock"
-msgstr ""
+msgstr "Zámek"
 
 #: ui/selectionmodel.cpp:66 ui/selectionmodel.cpp:339
+#, fuzzy
 msgid "Constraint"
-msgstr ""
+msgstr "Omezení"
 
 #: ui/selectionmodel.cpp:113 ui/selectionmodel.cpp:114
 #: ui/selectionmodel.cpp:248 ui/selectionmodel.cpp:345
 #: ui/selectionmodel.cpp:427
+#, fuzzy
 msgid "workplane"
-msgstr ""
+msgstr "pracovní rovina"
 
 #: ui/selectionmodel.cpp:131
+#, fuzzy
 msgid "at"
-msgstr ""
+msgstr "v"
 
 #: ui/selectionmodel.cpp:140
+#, fuzzy
 msgid "Normal / coordinate system"
-msgstr ""
+msgstr "Normála / souřadný systém"
 
 #: ui/selectionmodel.cpp:141 ui/selectionmodel.cpp:149
 #: ui/selectionmodel.cpp:208
+#, fuzzy
 msgid "normal"
-msgstr ""
+msgstr "normála"
 
 #: ui/selectionmodel.cpp:142
+#, fuzzy
 msgid "u"
-msgstr ""
+msgstr "u"
 
 #: ui/selectionmodel.cpp:143
+#, fuzzy
 msgid "v"
-msgstr ""
+msgstr "v"
 
 #: ui/selectionmodel.cpp:148
+#, fuzzy
 msgid "origin"
-msgstr ""
+msgstr "počátek"
 
 #: ui/selectionmodel.cpp:156
+#, fuzzy
 msgid "Line segment"
-msgstr ""
+msgstr "Úsečka"
 
 #: ui/selectionmodel.cpp:166
+#, fuzzy
 msgid "Periodic C2 cubic spline"
-msgstr ""
+msgstr "Periodický kubický splajn C2"
 
 #: ui/selectionmodel.cpp:169
+#, fuzzy
 msgid "Interpolating C2 cubic spline"
-msgstr ""
+msgstr "Interpolační kubický splajn C2"
 
 #: ui/selectionmodel.cpp:172
+#, fuzzy
 msgid "Cubic Bézier curve"
-msgstr ""
+msgstr "Kubická Bézierova křivka"
 
 #: ui/selectionmodel.cpp:182
+#, fuzzy
 msgid "Arc of a circle"
-msgstr ""
+msgstr "Oblouk kružnice"
 
 #: ui/selectionmodel.cpp:183 ui/selectionmodel.cpp:194
 #: ui/selectionmodel.cpp:389 ui/stylespanel.cpp:123
+#, fuzzy
 msgid "center"
-msgstr ""
+msgstr "střed"
 
 #: ui/selectionmodel.cpp:184
+#, fuzzy
 msgid "endpoints"
-msgstr ""
+msgstr "koncové body"
 
 #: ui/selectionmodel.cpp:188
+#, fuzzy
 msgid "arc length"
-msgstr ""
+msgstr "délka oblouku"
 
 #: ui/selectionmodel.cpp:197
+#, fuzzy
 msgid "circumference"
-msgstr ""
+msgstr "obvod"
 
 #: ui/selectionmodel.cpp:207
+#, fuzzy
 msgid "Plane face"
-msgstr ""
+msgstr "Rovinná plocha"
 
 #: ui/selectionmodel.cpp:209
+#, fuzzy
 msgid "through"
-msgstr ""
+msgstr "procházející"
 
 #: ui/selectionmodel.cpp:213
+#, fuzzy
 msgid "TrueType font text"
-msgstr ""
+msgstr "text v písmu TrueType"
 
 #: ui/selectionmodel.cpp:214
+#, fuzzy
 msgid "font"
-msgstr ""
+msgstr "písmo"
 
 #: ui/selectionmodel.cpp:227
+#, fuzzy
 msgid "Image"
-msgstr ""
+msgstr "Obrázek"
 
 #: ui/selectionmodel.cpp:228
+#, fuzzy
 msgid "file"
-msgstr ""
+msgstr "soubor"
 
 #: ui/selectionmodel.cpp:232
+#, fuzzy
 msgid "Entity"
-msgstr ""
+msgstr "Entita"
 
 #: ui/selectionmodel.cpp:239 ui/selectionmodel.cpp:241
+#, fuzzy
 msgid "sketch entity"
-msgstr ""
+msgstr "entita náčrtu"
 
 #: ui/selectionmodel.cpp:244
+#, fuzzy
 msgid "group"
-msgstr ""
+msgstr "skupina"
 
 #: ui/selectionmodel.cpp:248
+#, fuzzy
 msgid "none (free in 3d)"
-msgstr ""
+msgstr "žádná (volná ve 3D)"
 
 #: ui/selectionmodel.cpp:258
+#, fuzzy
 msgid "none"
-msgstr ""
+msgstr "žádná"
 
 #: ui/selectionmodel.cpp:261
+#, fuzzy
 msgid "construction"
-msgstr ""
+msgstr "pomocná"
 
 #: ui/selectionmodel.cpp:261
+#, fuzzy
 msgid "yes"
-msgstr ""
+msgstr "ano"
 
 #: ui/selectionmodel.cpp:281
+#, fuzzy
 msgid "constrained by"
-msgstr ""
+msgstr "omezena"
 
 #: ui/selectionmodel.cpp:281
+#, fuzzy
 msgid "measured by"
-msgstr ""
+msgstr "měřena"
 
 #: ui/selectionmodel.cpp:299
-#, c-format
+#, fuzzy, c-format
 msgid "plane%c normal"
-msgstr ""
+msgstr "normála roviny %c"
 
 #: ui/selectionmodel.cpp:300
-#, c-format
+#, fuzzy, c-format
 msgid "plane%c thru"
-msgstr ""
+msgstr "rovina %c prochází"
 
 #: ui/selectionmodel.cpp:315
+#, fuzzy
 msgid "attached to"
-msgstr ""
+msgstr "připojeno k"
 
 #: ui/selectionmodel.cpp:317 ui/selectionmodel.cpp:380
+#, fuzzy
 msgid "offset (x, y, z)"
-msgstr ""
+msgstr "posun (x, y, z)"
 
 #: ui/selectionmodel.cpp:320 ui/statusmodel.cpp:48
+#, fuzzy
 msgid "Dimension"
-msgstr ""
+msgstr "Kóta"
 
 #: ui/selectionmodel.cpp:320
+#, fuzzy
 msgid "Reference"
-msgstr ""
+msgstr "Referenční"
 
 #: ui/selectionmodel.cpp:341
+#, fuzzy
 msgid "type"
-msgstr ""
+msgstr "typ"
 
 #: ui/selectionmodel.cpp:345
+#, fuzzy
 msgid "none (not projected)"
-msgstr ""
+msgstr "žádná (nepromítá se)"
 
 #: ui/selectionmodel.cpp:352
+#, fuzzy
 msgid "constrains"
-msgstr ""
+msgstr "omezuje"
 
 #: ui/selectionmodel.cpp:352
+#, fuzzy
 msgid "measures"
-msgstr ""
+msgstr "měří"
 
 #: ui/selectionmodel.cpp:376
+#, fuzzy
 msgid "Two points"
-msgstr ""
+msgstr "Dva body"
 
 #: ui/selectionmodel.cpp:386
+#, fuzzy
 msgid "Point and a circle"
-msgstr ""
+msgstr "Bod a kružnice"
 
 #: ui/selectionmodel.cpp:387
+#, fuzzy
 msgid "Point and an arc"
-msgstr ""
+msgstr "Bod a oblouk"
 
 #: ui/selectionmodel.cpp:397
+#, fuzzy
 msgid "A point and a plane face"
-msgstr ""
+msgstr "Bod a rovinná plocha"
 
 #: ui/selectionmodel.cpp:399
+#, fuzzy
 msgid "plane normal"
-msgstr ""
+msgstr "normála roviny"
 
 #: ui/selectionmodel.cpp:400
+#, fuzzy
 msgid "plane through"
-msgstr ""
+msgstr "rovina procházející"
 
 #: ui/selectionmodel.cpp:406
+#, fuzzy
 msgid "Two points and a vector"
-msgstr ""
+msgstr "Dva body a vektor"
 
 #: ui/selectionmodel.cpp:407
+#, fuzzy
 msgid "point A"
-msgstr ""
+msgstr "bod A"
 
 #: ui/selectionmodel.cpp:408
+#, fuzzy
 msgid "point B"
-msgstr ""
+msgstr "bod B"
 
 #: ui/selectionmodel.cpp:409
+#, fuzzy
 msgid "vector"
-msgstr ""
+msgstr "vektor"
 
 #: ui/selectionmodel.cpp:410
+#, fuzzy
 msgid "projected distance"
-msgstr ""
+msgstr "promítnutá vzdálenost"
 
 #: ui/selectionmodel.cpp:417
+#, fuzzy
 msgid "Line segment and point"
-msgstr ""
+msgstr "Úsečka a bod"
 
 #: ui/selectionmodel.cpp:418
+#, fuzzy
 msgid "line through"
-msgstr ""
+msgstr "přímka procházející"
 
 #: ui/selectionmodel.cpp:421
+#, fuzzy
 msgid "distance to line"
-msgstr ""
+msgstr "vzdálenost od přímky"
 
 #: ui/selectionmodel.cpp:434
+#, fuzzy
 msgid "Two vectors"
-msgstr ""
+msgstr "Dva vektory"
 
 #: ui/selectionmodel.cpp:435
+#, fuzzy
 msgid "vector A"
-msgstr ""
+msgstr "vektor A"
 
 #: ui/selectionmodel.cpp:436
+#, fuzzy
 msgid "vector B"
-msgstr ""
+msgstr "vektor B"
 
 #: ui/selectionmodel.cpp:437 ui/selectionmodel.cpp:447
-#, c-format
+#, fuzzy, c-format
 msgid "%.2f degrees"
-msgstr ""
+msgstr "%.2f stupňů"
 
 #: ui/selectionmodel.cpp:440 ui/selectionmodel.cpp:450
-#, c-format
+#, fuzzy, c-format
 msgid "%.2f (mod 180)"
-msgstr ""
+msgstr "%.2f (mod 180)"
 
 #: ui/selectionmodel.cpp:440 ui/selectionmodel.cpp:450
+#, fuzzy
 msgid "or"
-msgstr ""
+msgstr "nebo"
 
 #: ui/selectionmodel.cpp:442
+#, fuzzy
 msgid "Two plane faces"
-msgstr ""
+msgstr "Dvě rovinné plochy"
 
 #: ui/selectionmodel.cpp:457
+#, fuzzy
 msgid "Three plane faces"
-msgstr ""
+msgstr "Tři rovinné plochy"
 
 #: ui/selectionmodel.cpp:462
-#, c-format
+#, fuzzy, c-format
 msgid "%d item"
-msgstr ""
+msgstr "%d položka"
 
 #: ui/selectionmodel.cpp:462
-#, c-format
+#, fuzzy, c-format
 msgid "%d items"
-msgstr ""
+msgstr "%d položek"
 
 #: ui/shortcuts.cpp:21
+#, fuzzy
 msgid "filter"
-msgstr ""
+msgstr "filtr"
 
 #: ui/statusmodel.cpp:35 ui/statusmodel.cpp:43
+#, fuzzy
 msgid "Hold"
-msgstr ""
+msgstr "Podržet"
 
 #: ui/statusmodel.cpp:41
+#, fuzzy
 msgid "2 fingers"
-msgstr ""
+msgstr "2 prsty"
 
 #: ui/statusmodel.cpp:41
+#, fuzzy
 msgid "Pan, zoom"
-msgstr ""
+msgstr "posun, zoom"
 
 #: ui/statusmodel.cpp:42
+#, fuzzy
 msgid "Orbit"
-msgstr ""
+msgstr "otáčet"
 
 #: ui/statusmodel.cpp:43
+#, fuzzy
 msgid "Menu"
-msgstr ""
+msgstr "Nabídka"
 
 #: ui/statusmodel.cpp:45
+#, fuzzy
 msgid "Commands"
-msgstr ""
+msgstr "Příkazy"
 
 #: ui/statusmodel.cpp:51
+#, fuzzy
 msgid "Views"
-msgstr ""
+msgstr "Pohledy"
 
 #: ui/statusmodel.cpp:57
+#, fuzzy
 msgid "Solved"
-msgstr ""
+msgstr "Vyřešeno"
 
 #: ui/statusmodel.cpp:58
+#, fuzzy
 msgid "Redundant"
-msgstr ""
+msgstr "Nadbytečné"
 
 #: ui/statusmodel.cpp:60
+#, fuzzy
 msgid "Didn't converge"
-msgstr ""
+msgstr "Nekonverguje"
 
 #: ui/statusmodel.cpp:61
+#, fuzzy
 msgid "Too many unknowns"
-msgstr ""
+msgstr "Příliš mnoho neznámých"
 
 #: ui/stylespanel.cpp:56
+#, fuzzy
 msgid "Style"
-msgstr ""
+msgstr "Styl"
 
 #: ui/stylespanel.cpp:58
+#, fuzzy
 msgid "name"
-msgstr ""
+msgstr "název"
 
 #: ui/stylespanel.cpp:59
+#, fuzzy
 msgid "delete style"
-msgstr ""
+msgstr "smazat styl"
 
 #: ui/stylespanel.cpp:69
+#, fuzzy
 msgid "line stroke"
-msgstr ""
+msgstr "tah čáry"
 
 #: ui/stylespanel.cpp:72
+#, fuzzy
 msgid "stroke color"
-msgstr ""
+msgstr "barva tahu"
 
 #: ui/stylespanel.cpp:76
+#, fuzzy
 msgid "stipple width"
-msgstr ""
+msgstr "šířka tečkování"
 
 #: ui/stylespanel.cpp:78 ui/stylespanel.cpp:111
+#, fuzzy
 msgid "pixels"
-msgstr ""
+msgstr "pixely"
 
 #: ui/stylespanel.cpp:84 ui/stylespanel.cpp:132
+#, fuzzy
 msgid "in pixels"
-msgstr ""
+msgstr "v pixelech"
 
 #: ui/stylespanel.cpp:86
+#, fuzzy
 msgid "continuous"
-msgstr ""
+msgstr "plná"
 
 #: ui/stylespanel.cpp:86
+#, fuzzy
 msgid "dash"
-msgstr ""
+msgstr "čárkovaná"
 
 #: ui/stylespanel.cpp:86
+#, fuzzy
 msgid "short dash"
-msgstr ""
+msgstr "krátká čárkovaná"
 
 #: ui/stylespanel.cpp:87
+#, fuzzy
 msgid "dash dot"
-msgstr ""
+msgstr "čerchovaná"
 
 #: ui/stylespanel.cpp:87
+#, fuzzy
 msgid "dash dot dot"
-msgstr ""
+msgstr "dvojitě čerchovaná"
 
 #: ui/stylespanel.cpp:87
+#, fuzzy
 msgid "long dash"
-msgstr ""
+msgstr "dlouhá čárkovaná"
 
 #: ui/stylespanel.cpp:88
+#, fuzzy
 msgid "dot"
-msgstr ""
+msgstr "tečkovaná"
 
 #: ui/stylespanel.cpp:88
+#, fuzzy
 msgid "freehand"
-msgstr ""
+msgstr "volná"
 
 #: ui/stylespanel.cpp:88
+#, fuzzy
 msgid "zigzag"
-msgstr ""
+msgstr "klikatá"
 
 #: ui/stylespanel.cpp:89
+#, fuzzy
 msgid "stipple type"
-msgstr ""
+msgstr "typ tečkování"
 
 #: ui/stylespanel.cpp:99
+#, fuzzy
 msgid "contour fill"
-msgstr ""
+msgstr "výplň obrysu"
 
 #: ui/stylespanel.cpp:100
+#, fuzzy
 msgid "fill color"
-msgstr ""
+msgstr "barva výplně"
 
 #: ui/stylespanel.cpp:105
+#, fuzzy
 msgid "contours are filled"
-msgstr ""
+msgstr "obrysy jsou vyplněné"
 
 #: ui/stylespanel.cpp:120
+#, fuzzy
 msgid "comment alignment"
-msgstr ""
+msgstr "zarovnání poznámky"
 
 #: ui/stylespanel.cpp:128
+#, fuzzy
 msgid "middle"
-msgstr ""
+msgstr "střed"
 
 #: ui/stylespanel.cpp:136
+#, fuzzy
 msgid "show these objects on screen"
-msgstr ""
+msgstr "zobrazit tyto objekty na obrazovce"
 
 #: ui/stylespanel.cpp:137
+#, fuzzy
 msgid "export these objects"
-msgstr ""
+msgstr "exportovat tyto objekty"
 
 #: ui/stylespanel.cpp:140
+#, fuzzy
 msgid "assign the selection to this style"
-msgstr ""
+msgstr "přiřadit výběr k tomuto stylu"
 
 #: ui/stylespanel.cpp:143
+#, fuzzy
 msgid "Or right-click lines and curves on the drawing."
-msgstr ""
+msgstr "Nebo klikni pravým tlačítkem na čáry a křivky ve výkresu."
 
 #: ui/stylespanel.cpp:161
+#, fuzzy
 msgid "create a new custom style"
-msgstr ""
+msgstr "vytvořit nový vlastní styl"
 
 #: ui/stylespanel.cpp:165
+#, fuzzy
 msgid "load factory defaults"
-msgstr ""
+msgstr "načíst výchozí tovární nastavení"
 
 #: ui/stylespanel.cpp:170
+#, fuzzy
 msgid "background color"
-msgstr ""
+msgstr "barva pozadí"
 
 #: ui/toolpanels.cpp:47
-#, c-format
+#, fuzzy, c-format
 msgid "scale (px per %s)"
-msgstr ""
+msgstr "měřítko (px na %s)"
 
 #: ui/toolpanels.cpp:50
+#, fuzzy
 msgid "set to full scale"
-msgstr ""
+msgstr "nastavit na plné měřítko"
 
 #: ui/toolpanels.cpp:53
+#, fuzzy
 msgid "origin (the centre of the screen)"
-msgstr ""
+msgstr "počátek (střed obrazovky)"
 
 #: ui/toolpanels.cpp:56
+#, fuzzy
 msgid "projection: right"
-msgstr ""
+msgstr "promítání: vpravo"
 
 #: ui/toolpanels.cpp:59
+#, fuzzy
 msgid "projection: up"
-msgstr ""
+msgstr "promítání: nahoru"
 
 #: ui/toolpanels.cpp:62
-#, c-format
+#, fuzzy, c-format
 msgid "out (%.3f, %.3f, %.3f)"
-msgstr ""
+msgstr "ven (%.3f, %.3f, %.3f)"
 
 #: ui/toolpanels.cpp:64
+#, fuzzy
 msgid "perspective factor (0 for parallel)"
-msgstr ""
+msgstr "faktor perspektivy (0 pro rovnoběžné)"
 
 #: ui/toolpanels.cpp:67
-#, c-format
+#, fuzzy, c-format
 msgid "light %d direction"
-msgstr ""
+msgstr "směr světla %d"
 
 #: ui/toolpanels.cpp:70
-#, c-format
+#, fuzzy, c-format
 msgid "light %d intensity"
-msgstr ""
+msgstr "intenzita světla %d"
 
 #: ui/toolpanels.cpp:74
+#, fuzzy
 msgid "ambient lighting"
-msgstr ""
+msgstr "ambientní osvětlení"
 
 #: ui/toolpanels.cpp:75
+#, fuzzy
 msgid "explode distance"
-msgstr ""
+msgstr "vzdálenost rozložení"
 
 #: ui/toolpanels.cpp:99
+#, fuzzy
 msgid "rotate (degrees)"
-msgstr ""
+msgstr "otočit (stupně)"
 
 #: ui/toolpanels.cpp:101
+#, fuzzy
 msgid "about point"
-msgstr ""
+msgstr "kolem bodu"
 
 #: ui/toolpanels.cpp:102 ui/toolpanels.cpp:107
-#, c-format
+#, fuzzy, c-format
 msgid "%s"
-msgstr ""
+msgstr "%s"
 
 #: ui/toolpanels.cpp:103
+#, fuzzy
 msgid "use the selected point"
-msgstr ""
+msgstr "použít vybraný bod"
 
 #: ui/toolpanels.cpp:106
+#, fuzzy
 msgid "translate"
-msgstr ""
+msgstr "posunout"
 
 #: ui/toolpanels.cpp:108
+#, fuzzy
 msgid "use the two selected points"
-msgstr ""
+msgstr "použít dva vybrané body"
 
 #: ui/toolpanels.cpp:111
+#, fuzzy
 msgid "scale"
-msgstr ""
+msgstr "měřítko"
 
 #: ui/toolpanels.cpp:113
+#, fuzzy
 msgid "mirror"
-msgstr ""
+msgstr "zrcadlit"
 
 #: ui/toolpanels.cpp:116
+#, fuzzy
 msgid "paste transformed now"
-msgstr ""
+msgstr "vložit transformovaně"
 
 #: ui/toolpanels.cpp:130
-#, c-format
+#, fuzzy, c-format
 msgid "start %s"
-msgstr ""
+msgstr "začátek %s"
 
 #: ui/toolpanels.cpp:131
+#, fuzzy
 msgid "finish"
-msgstr ""
+msgstr "dokončit"
 
 #: ui/toolpanels.cpp:132
+#, fuzzy
 msgid "steps"
-msgstr ""
+msgstr "kroky"
 
 #: ui/toolpanels.cpp:133
+#, fuzzy
 msgid "step dimension now"
-msgstr ""
+msgstr "krokovat kótu"
 
 #: ui/toolpanels.cpp:143
+#, fuzzy
 msgid "choose radius automatically"
-msgstr ""
+msgstr "vybrat poloměr automaticky"
 
 #: ui/toolpanels.cpp:151
+#, fuzzy
 msgid "modify original entities"
-msgstr ""
+msgstr "upravit původní entity"
 
 #: ui/toolpanels.cpp:154
+#, fuzzy
 msgid ""
 "To make a tangent arc at a point, select the point and choose Sketch > "
 "Tangent Arc at Point."
 msgstr ""
+"Tečný oblouk v bodě vytvoříš tak, že vybereš bod a zvolíš Náčrt > Tečný "
+"oblouk v bodě."
 
 #: ui/uiactions.cpp:13
+#, fuzzy
 msgid "View › Command Palette"
-msgstr ""
+msgstr "Zobrazení › Paleta příkazů"
 
 #: ui/uiactions.cpp:14
+#, fuzzy
 msgid "View › Toggle Menu Bar"
-msgstr ""
+msgstr "Zobrazení › Přepnout lištu nabídek"
 
 #: ui/uiactions.cpp:15
+#, fuzzy
 msgid "View › Toggle Theme"
-msgstr ""
+msgstr "Zobrazení › Přepnout motiv"
 
 #: ui/uiactions.cpp:16
+#, fuzzy
 msgid "View › Outliner"
-msgstr ""
+msgstr "Zobrazení › Přehled"
 
 #: ui/uiactions.cpp:17
+#, fuzzy
 msgid "View › Properties"
-msgstr ""
+msgstr "Zobrazení › Vlastnosti"
 
 #: ui/uiactions.cpp:18
+#, fuzzy
 msgid "View › Problems"
-msgstr ""
+msgstr "Zobrazení › Problémy"
 
 #: ui/uiactions.cpp:19
+#, fuzzy
 msgid "View › Front"
-msgstr ""
+msgstr "Zobrazení › Zepředu"
 
 #: ui/uiactions.cpp:20
+#, fuzzy
 msgid "View › Back"
-msgstr ""
+msgstr "Zobrazení › Zezadu"
 
 #: ui/uiactions.cpp:21
+#, fuzzy
 msgid "View › Right"
-msgstr ""
+msgstr "Zobrazení › Zprava"
 
 #: ui/uiactions.cpp:22
+#, fuzzy
 msgid "View › Left"
-msgstr ""
+msgstr "Zobrazení › Zleva"
 
 #: ui/uiactions.cpp:23
+#, fuzzy
 msgid "View › Top"
-msgstr ""
+msgstr "Zobrazení › Shora"
 
 #: ui/uiactions.cpp:24
+#, fuzzy
 msgid "View › Bottom"
-msgstr ""
+msgstr "Zobrazení › Zdola"
 
 #: ui/uiactions.cpp:25
+#, fuzzy
 msgid "View › Frame Selected"
-msgstr ""
+msgstr "Zobrazení › Zarámovat výběr"
 
 #: ui/uiactions.cpp:26
+#, fuzzy
 msgid "View › Hide Group"
-msgstr ""
+msgstr "Zobrazení › Skrýt skupinu"
 
 #: ui/uiactions.cpp:27
+#, fuzzy
 msgid "View › Show All Groups"
-msgstr ""
+msgstr "Zobrazení › Zobrazit všechny skupiny"
 
 #: ui/uiactions.cpp:28
+#, fuzzy
 msgid "View › Isolate Group"
-msgstr ""
+msgstr "Zobrazení › Izolovat skupinu"
 
 #: ui/uiactions.cpp:29
+#, fuzzy
 msgid "Sketch › Enter/Exit Sketch"
-msgstr ""
+msgstr "Náčrt › Vstoup do náčrtu / ukonči"
 
 #: ui/uiactions.cpp:30
+#, fuzzy
 msgid "Edit › Grab"
-msgstr ""
+msgstr "Úpravy › Přesun"
 
 #: ui/uiactions.cpp:31
+#, fuzzy
 msgid "Constrain › Smart Dimension"
-msgstr ""
+msgstr "Omezení › Chytrá kóta"
 
 #: ui/uiactions.cpp:32
+#, fuzzy
 msgid "Sketch › Add… (pie)"
-msgstr ""
+msgstr "Náčrt › Přidat… (nabídka)"
 
 #: ui/uiactions.cpp:33
+#, fuzzy
 msgid "Constrain › Constrain… (pie)"
-msgstr ""
+msgstr "Omezení › Omezit… (nabídka)"
 
 #: ui/uiactions.cpp:34
+#, fuzzy
 msgid "View › Views… (pie)"
-msgstr ""
+msgstr "Zobrazení › Pohledy… (nabídka)"
 
 #: ui/uiactions.cpp:35
+#, fuzzy
 msgid "Help › Keyboard Shortcuts"
-msgstr ""
+msgstr "Nápověda › Klávesové zkratky"
 
 #: ui/uiactions.cpp:36
+#, fuzzy
 msgid "Inspect › Fit Table"
-msgstr ""
+msgstr "Kontrola › Tabulka lícování"
 
 #: ui/uiactions.cpp:37
+#, fuzzy
 msgid "New Group › Joints… (pie)"
-msgstr ""
+msgstr "Nová skupina › Klouby… (nabídka)"
 
 #: util.cpp:172
 msgctxt "title"

@@ -1,3 +1,22 @@
+# German translations for the SolveSpace package.
+# Copyright (C) 2018 the SolveSpace authors
+# This file is distributed under the same license as the SolveSpace package.
+# Guido Hoss <netstuff@peakfox.com>, 2018. #zanata
+msgid ""
+msgstr ""
+"Project-Id-Version: SolveSpace 3.0\n"
+"Report-Msgid-Bugs-To: phkahler@gmail.com\n"
+"POT-Creation-Date: 2026-10-28 15:04-0700\n"
+"PO-Revision-Date: 2022-04-30 16:44+0200\n"
+"Last-Translator: Reini Urban <rurban@cpan.org>\n"
+"Language-Team: none\n"
+"Language: de\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.4.2\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
 #: clipboard.cpp:317
 msgid ""
 "Cut, paste, and copy work only in a workplane.\n"
@@ -851,534 +870,538 @@ msgstr "Teile &exportieren…"
 msgid "Export Parts &List..."
 msgstr "Teileliste e&xportieren…"
 
-#: graphicswin.cpp:57
+#: graphicswin.cpp:57#, fuzzy
+msgid "Export &Assembly (STEP)..."
+msgstr "&Baugruppe exportieren (STEP)..."
+
+#: graphicswin.cpp:58
 msgid "Export &Surfaces..."
 msgstr "Exportiere Oberflächen…"
 
-#: graphicswin.cpp:58
+#: graphicswin.cpp:59
 msgid "Im&port..."
 msgstr "Im&portiere…"
 
-#: graphicswin.cpp:61
+#: graphicswin.cpp:62
 msgid "E&xit"
 msgstr "Beenden"
 
-#: graphicswin.cpp:64
+#: graphicswin.cpp:65
 msgid "&Edit"
 msgstr "&Bearbeiten"
 
-#: graphicswin.cpp:65
+#: graphicswin.cpp:66
 msgid "&Undo"
 msgstr "&Rückgängig machen"
 
-#: graphicswin.cpp:66
+#: graphicswin.cpp:67
 msgid "&Redo"
 msgstr "&Wiederholen"
 
-#: graphicswin.cpp:67
+#: graphicswin.cpp:68
 msgid "Re&generate All"
 msgstr "Alles &neu zeichnen"
 
-#: graphicswin.cpp:69
+#: graphicswin.cpp:70
 msgid "Snap Selection to &Grid"
 msgstr "Auswahl auf &Raster ausrichten"
 
-#: graphicswin.cpp:70
+#: graphicswin.cpp:71
 msgid "Rotate Imported &90°"
 msgstr "Importierte Objekte &90° drehen"
 
-#: graphicswin.cpp:72
+#: graphicswin.cpp:73
 msgid "Cu&t"
 msgstr "Ausschneiden"
 
-#: graphicswin.cpp:73
+#: graphicswin.cpp:74
 msgid "&Copy"
 msgstr "Kopieren"
 
-#: graphicswin.cpp:74
+#: graphicswin.cpp:75
 msgid "&Paste"
 msgstr "Einfügen"
 
-#: graphicswin.cpp:75
+#: graphicswin.cpp:76
 msgid "Paste &Transformed..."
 msgstr "&Transformiert einfügen…"
 
-#: graphicswin.cpp:76
+#: graphicswin.cpp:77
 msgid "&Delete"
 msgstr "&Löschen"
 
-#: graphicswin.cpp:78
+#: graphicswin.cpp:79
 msgid "Select &Edge Chain"
 msgstr "&Kantenverlauf auswählen"
 
-#: graphicswin.cpp:79
+#: graphicswin.cpp:80
 msgid "Select &All"
 msgstr "&Alle auswählen"
 
-#: graphicswin.cpp:80
+#: graphicswin.cpp:81
 msgid "&Unselect All"
 msgstr "Alle &deselektieren"
 
-#: graphicswin.cpp:82
+#: graphicswin.cpp:83
 msgid "&Line Styles..."
 msgstr "&Linien Stile..."
 
-#: graphicswin.cpp:83
+#: graphicswin.cpp:84
 msgid "&View Projection..."
 msgstr "An&sichts Projektion..."
 
-#: graphicswin.cpp:85
+#: graphicswin.cpp:86
 msgid "Con&figuration..."
 msgstr "&Einstellungen..."
 
-#: graphicswin.cpp:88
+#: graphicswin.cpp:89
 msgid "&View"
 msgstr "Ansicht"
 
-#: graphicswin.cpp:89
+#: graphicswin.cpp:90
 msgid "Zoom &In"
 msgstr "Zoom größer"
 
-#: graphicswin.cpp:90
+#: graphicswin.cpp:91
 msgid "Zoom &Out"
 msgstr "Zoom kleiner"
 
-#: graphicswin.cpp:91
+#: graphicswin.cpp:92
 msgid "Zoom To &Fit"
 msgstr "Zoom anpassen"
 
-#: graphicswin.cpp:93
+#: graphicswin.cpp:94
 msgid "Align View to &Workplane"
 msgstr "Ansicht auf Arbeitsebene ausrichten"
 
-#: graphicswin.cpp:94
+#: graphicswin.cpp:95
 msgid "Nearest &Ortho View"
 msgstr "Nächste Ortho-Ansicht"
 
-#: graphicswin.cpp:95
+#: graphicswin.cpp:96
 msgid "Nearest &Isometric View"
 msgstr "Nächste isometrische Ansicht"
 
-#: graphicswin.cpp:96
+#: graphicswin.cpp:97
 msgid "&Center View At Point"
 msgstr "Ansicht auf Punkt zentrieren"
 
-#: graphicswin.cpp:98
+#: graphicswin.cpp:99
 msgid "Show Snap &Grid"
 msgstr "Arbeitsraster anzeigen"
 
-#: graphicswin.cpp:99 ui/menulayout.cpp:98
+#: graphicswin.cpp:100 ui/menulayout.cpp:99
 msgid "Darken Inactive Solids"
 msgstr "Dunklere inaktive Festkörper"
 
-#: graphicswin.cpp:100
+#: graphicswin.cpp:101
 msgid "Use &Perspective Projection"
 msgstr "Perspektivische Projektion"
 
-#: graphicswin.cpp:101
+#: graphicswin.cpp:102
 msgid "Show E&xploded View"
 msgstr "Zeige e&xplodierte Ansicht"
 
-#: graphicswin.cpp:102
+#: graphicswin.cpp:103
 msgid "Dimension &Units"
 msgstr "Maßeinheit"
 
-#: graphicswin.cpp:103
+#: graphicswin.cpp:104
 msgid "Dimensions in &Millimeters"
 msgstr "Maße in Millimeter"
 
-#: graphicswin.cpp:104
+#: graphicswin.cpp:105
 msgid "Dimensions in M&eters"
 msgstr "Masse in M&etern"
 
-#: graphicswin.cpp:105
+#: graphicswin.cpp:106
 msgid "Dimensions in &Inches"
 msgstr "Maße in Zoll"
 
-#: graphicswin.cpp:106
+#: graphicswin.cpp:107
 msgid "Dimensions in &Feet and Inches"
 msgstr "Maße in &Fuß und Inch"
 
-#: graphicswin.cpp:108
+#: graphicswin.cpp:109
 msgid "Show &Toolbar"
 msgstr "Werkzeugleiste anzeigen"
 
-#: graphicswin.cpp:109
+#: graphicswin.cpp:110
 msgid "Show Property Bro&wser"
 msgstr "Attributbrowser anzeigen"
 
-#: graphicswin.cpp:111
+#: graphicswin.cpp:112
 msgid "&Full Screen"
 msgstr "Vollbildschirm"
 
-#: graphicswin.cpp:113
+#: graphicswin.cpp:114
 msgid "&New Group"
 msgstr "Neue Gruppe"
 
-#: graphicswin.cpp:114
+#: graphicswin.cpp:115
 #, fuzzy
 msgid "New &Part"
 msgstr "Neues &Teil"
 
-#: graphicswin.cpp:115
+#: graphicswin.cpp:116
 #, fuzzy
 msgid "&Revolute Joint"
 msgstr "&Drehgelenk"
 
-#: graphicswin.cpp:116
+#: graphicswin.cpp:117
 #, fuzzy
 msgid "S&lider Joint"
 msgstr "S&chiebegelenk"
 
-#: graphicswin.cpp:117
+#: graphicswin.cpp:118
 #, fuzzy
 msgid "C&ylindrical Joint"
 msgstr "Zylin&drisches Gelenk"
 
-#: graphicswin.cpp:118
+#: graphicswin.cpp:119
 #, fuzzy
 msgid "Pla&nar Joint"
 msgstr "Eb&enes Gelenk"
 
-#: graphicswin.cpp:119
+#: graphicswin.cpp:120
 #, fuzzy
 msgid "&Ball Joint"
 msgstr "&Kugelgelenk"
 
-#: graphicswin.cpp:120
+#: graphicswin.cpp:121
 #, fuzzy
 msgid "&Gear Coupling"
 msgstr "&Zahnradkopplung"
 
-#: graphicswin.cpp:121
+#: graphicswin.cpp:122
 #, fuzzy
 msgid "&Fit Joint"
 msgstr "&Passungsverbindung"
 
-#: graphicswin.cpp:122
+#: graphicswin.cpp:123
 #, fuzzy
 msgid "Spli&t Part"
 msgstr "Teil &teilen"
 
-#: graphicswin.cpp:124
+#: graphicswin.cpp:125
 msgid "Sketch In &3d"
 msgstr "In 3D skizzieren"
 
-#: graphicswin.cpp:125
+#: graphicswin.cpp:126
 msgid "Sketch In New &Workplane"
 msgstr "In neuer Arbeitsebene skizzieren"
 
-#: graphicswin.cpp:127
+#: graphicswin.cpp:128
 msgid "Step &Translating"
 msgstr "Kopieren und verschieben"
 
-#: graphicswin.cpp:128
+#: graphicswin.cpp:129
 msgid "Step &Rotating"
 msgstr "Kopieren und drehen"
 
-#: graphicswin.cpp:130
+#: graphicswin.cpp:131
 msgid "E&xtrude"
 msgstr "E&xtrudieren"
 
-#: graphicswin.cpp:131
+#: graphicswin.cpp:132
 #, fuzzy
 msgid "Extrude as a &Cut"
 msgstr "Als &Ausschnitt extrudieren"
 
-#: graphicswin.cpp:132
+#: graphicswin.cpp:133
 msgid "&Helix"
 msgstr "&Helix"
 
-#: graphicswin.cpp:133
+#: graphicswin.cpp:134
 msgid "&Lathe"
 msgstr "R&otieren"
 
-#: graphicswin.cpp:134
+#: graphicswin.cpp:135
 msgid "Re&volve"
 msgstr "D&rehen"
 
-#: graphicswin.cpp:136
+#: graphicswin.cpp:137
 #, fuzzy
 msgid "&Fillet Edges"
 msgstr "Kanten &verrunden"
 
-#: graphicswin.cpp:137
+#: graphicswin.cpp:138
 #, fuzzy
 msgid "&Chamfer Edges"
 msgstr "Kanten &fasen"
 
-#: graphicswin.cpp:138
+#: graphicswin.cpp:139
 #, fuzzy
 msgid "S&hell"
 msgstr "&Schale"
 
-#: graphicswin.cpp:139
+#: graphicswin.cpp:140
 #, fuzzy
 msgid "&Draft Faces"
 msgstr "Flächen mit &Formschräge"
 
-#: graphicswin.cpp:140
+#: graphicswin.cpp:141
 #, fuzzy
 msgid "H&ole"
 msgstr "&Bohrung"
 
-#: graphicswin.cpp:141
+#: graphicswin.cpp:142
 #, fuzzy
 msgid "Lo&ft"
 msgstr "L&oft"
 
-#: graphicswin.cpp:142
+#: graphicswin.cpp:143
 #, fuzzy
 msgid "S&weep"
 msgstr "S&weep"
 
-#: graphicswin.cpp:144
+#: graphicswin.cpp:145
 msgid "Link / Assemble..."
 msgstr "Verknüpfen / Zusammensetzen..."
 
-#: graphicswin.cpp:145 ui/menulayout.cpp:136
+#: graphicswin.cpp:146 ui/menulayout.cpp:137
 msgid "Link Recent"
 msgstr "Letzte verknüpfen"
 
-#: graphicswin.cpp:147
+#: graphicswin.cpp:148
 msgid "&Sketch"
 msgstr "&Skizze"
 
-#: graphicswin.cpp:148
+#: graphicswin.cpp:149
 msgid "In &Workplane"
 msgstr "In Arbeitsebene"
 
-#: graphicswin.cpp:149
+#: graphicswin.cpp:150
 msgid "Anywhere In &3d"
 msgstr "Im 3D-Raum"
 
-#: graphicswin.cpp:151
+#: graphicswin.cpp:152
 msgid "Datum &Point"
 msgstr "Bezugspunkt"
 
-#: graphicswin.cpp:152
+#: graphicswin.cpp:153
 msgid "Wor&kplane"
 msgstr "Arbeits&ebene"
 
-#: graphicswin.cpp:154
+#: graphicswin.cpp:155
 msgid "Line &Segment"
 msgstr "&Linie"
 
-#: graphicswin.cpp:155
+#: graphicswin.cpp:156
 msgid "C&onstruction Line Segment"
 msgstr "K&onstruktionslinie"
 
-#: graphicswin.cpp:156
+#: graphicswin.cpp:157
 msgid "&Rectangle"
 msgstr "&Rechteck"
 
-#: graphicswin.cpp:157
+#: graphicswin.cpp:158
 msgid "&Circle"
 msgstr "&Kreis"
 
-#: graphicswin.cpp:158
+#: graphicswin.cpp:159
 msgid "&Arc of a Circle"
 msgstr "Kreisbogen"
 
-#: graphicswin.cpp:159
+#: graphicswin.cpp:160
 msgid "&Bezier Cubic Spline"
 msgstr "Kubischer &Bezier-Spline"
 
-#: graphicswin.cpp:161
+#: graphicswin.cpp:162
 msgid "&Text in TrueType Font"
 msgstr "&Text in Truetype-Font"
 
-#: graphicswin.cpp:162
+#: graphicswin.cpp:163
 msgid "I&mage"
 msgstr "B&ild"
 
-#: graphicswin.cpp:164
+#: graphicswin.cpp:165
 msgid "To&ggle Construction"
 msgstr "Konstruktionselement an/aus"
 
-#: graphicswin.cpp:165
+#: graphicswin.cpp:166
 msgid "Ta&ngent Arc at Point"
 msgstr "Bogentangente an Punkt"
 
-#: graphicswin.cpp:166
+#: graphicswin.cpp:167
 msgid "Split Curves at &Intersection"
 msgstr "Kurven im Schnittpunkt trennen"
 
-#: graphicswin.cpp:168
+#: graphicswin.cpp:169
 msgid "&Constrain"
 msgstr "&Einschränkung"
 
-#: graphicswin.cpp:169
+#: graphicswin.cpp:170
 msgid "&Distance / Diameter"
 msgstr "Abstand / Durchmesser"
 
-#: graphicswin.cpp:170
+#: graphicswin.cpp:171
 msgid "Re&ference Dimension"
 msgstr "Referenzangabe"
 
-#: graphicswin.cpp:171
+#: graphicswin.cpp:172
 msgid "A&ngle / Equal Angle"
 msgstr "Winkel / Gleicher Winkel"
 
-#: graphicswin.cpp:172
+#: graphicswin.cpp:173
 msgid "Reference An&gle"
 msgstr "Referenzwinkel"
 
-#: graphicswin.cpp:173
+#: graphicswin.cpp:174
 msgid "Other S&upplementary Angle"
 msgstr "Komplementärwinkel"
 
-#: graphicswin.cpp:174
+#: graphicswin.cpp:175
 msgid "Toggle R&eference Dim"
 msgstr "Referenzangabe ein/aus"
 
-#: graphicswin.cpp:176
+#: graphicswin.cpp:177
 msgid "&Horizontal"
 msgstr "Horizontal"
 
-#: graphicswin.cpp:177
+#: graphicswin.cpp:178
 msgid "&Vertical"
 msgstr "&Vertikal"
 
-#: graphicswin.cpp:179
+#: graphicswin.cpp:180
 msgid "&On Point / Curve / Plane"
 msgstr "Auf Punkt / Kurve / Ebene"
 
-#: graphicswin.cpp:180
+#: graphicswin.cpp:181
 msgid "E&qual Length / Radius"
 msgstr "Gleicher Abstand / Radius"
 
-#: graphicswin.cpp:181
+#: graphicswin.cpp:182
 msgid "Length / Arc Ra&tio"
 msgstr "Länge / Bogen Verhäl&tnis"
 
-#: graphicswin.cpp:182
+#: graphicswin.cpp:183
 msgid "Length / Arc Diff&erence"
 msgstr "Länge / Bogen Diff&erenz"
 
-#: graphicswin.cpp:183
+#: graphicswin.cpp:184
 msgid "At &Midpoint"
 msgstr "Auf &Mittelpunkt"
 
-#: graphicswin.cpp:184
+#: graphicswin.cpp:185
 msgid "S&ymmetric"
 msgstr "Symmetrisch"
 
-#: graphicswin.cpp:185
+#: graphicswin.cpp:186
 msgid "Para&llel / Tangent"
 msgstr "Paral&llel / Tangente"
 
-#: graphicswin.cpp:186
+#: graphicswin.cpp:187
 msgid "&Perpendicular"
 msgstr "Rechtwinklig"
 
-#: graphicswin.cpp:187
+#: graphicswin.cpp:188
 msgid "Same Orient&ation"
 msgstr "Gleiche Orientierung"
 
-#: graphicswin.cpp:188
+#: graphicswin.cpp:189
 msgid "Lock Point Where &Dragged"
 msgstr "Punkt an Position fixieren"
 
-#: graphicswin.cpp:190 ui/menulayout.cpp:167 ui/selectionmodel.cpp:54
+#: graphicswin.cpp:191 ui/menulayout.cpp:168 ui/selectionmodel.cpp:54
 #: ui/selectionmodel.cpp:311
 msgid "Comment"
 msgstr "Kommentar"
 
-#: graphicswin.cpp:192
+#: graphicswin.cpp:193
 msgid "&Analyze"
 msgstr "&Analyse"
 
-#: graphicswin.cpp:193
+#: graphicswin.cpp:194
 msgid "Measure &Volume"
 msgstr "&Volumen bestimmen"
 
-#: graphicswin.cpp:194
+#: graphicswin.cpp:195
 msgid "Measure A&rea"
 msgstr "Fläche bestimmen"
 
-#: graphicswin.cpp:195
+#: graphicswin.cpp:196
 msgid "Measure &Perimeter"
 msgstr "Umfang bestimmen"
 
-#: graphicswin.cpp:196
+#: graphicswin.cpp:197
 msgid "Show &Interfering Parts"
 msgstr "Überlagernde Teile anzeigen"
 
-#: graphicswin.cpp:197
+#: graphicswin.cpp:198
 msgid "Show &Naked Edges"
 msgstr "Freiliegende Kanten anzeigen"
 
-#: graphicswin.cpp:198
+#: graphicswin.cpp:199
 msgid "Show &Center of Mass"
 msgstr "Massenmittelpunkt anzeigen"
 
-#: graphicswin.cpp:199
+#: graphicswin.cpp:200
 #, fuzzy
 msgid "&Mass Properties"
 msgstr "&Masseneigenschaften"
 
-#: graphicswin.cpp:200
+#: graphicswin.cpp:201
 #, fuzzy
 msgid "&Parts List"
 msgstr "&Teileliste"
 
-#: graphicswin.cpp:201
+#: graphicswin.cpp:202
 #, fuzzy
 msgid "&Design Pose"
 msgstr "&Entwurfslage"
 
-#: graphicswin.cpp:203
+#: graphicswin.cpp:204
 msgid "Show &Underconstrained Points"
 msgstr "&Unterbeschränkte Punkte anzeigen"
 
-#: graphicswin.cpp:205
+#: graphicswin.cpp:206
 msgid "&Trace Point"
 msgstr "Punkt nachzeichnen"
 
-#: graphicswin.cpp:206
+#: graphicswin.cpp:207
 msgid "&Stop Tracing..."
 msgstr "Nachzeichnen beenden..."
 
-#: graphicswin.cpp:207
+#: graphicswin.cpp:208
 msgid "Step &Dimension..."
 msgstr "Schrittgröße…"
 
-#: graphicswin.cpp:209
+#: graphicswin.cpp:210
 msgid "&Help"
 msgstr "&Hilfe"
 
-#: graphicswin.cpp:210
+#: graphicswin.cpp:211
 msgid "&Language"
 msgstr "Sprache"
 
-#: graphicswin.cpp:211
+#: graphicswin.cpp:212
 msgid "&Website / Manual"
 msgstr "&Website / Anleitung"
 
-#: graphicswin.cpp:212
+#: graphicswin.cpp:213
 msgid "&Go to GitHub commit"
 msgstr "&Gehe zu GitHub commit"
 
-#: graphicswin.cpp:214
+#: graphicswin.cpp:215
 msgid "&About"
 msgstr "Über"
 
-#: graphicswin.cpp:418
+#: graphicswin.cpp:419
 msgid "(no recent files)"
 msgstr "(keine vorhergehenden Dateien)"
 
-#: graphicswin.cpp:426
+#: graphicswin.cpp:427
 #, c-format
 msgid "File '%s' does not exist."
 msgstr "Datei '%s' existiert nicht."
 
-#: graphicswin.cpp:835
+#: graphicswin.cpp:836
 msgid "No workplane is active, so the grid will not appear."
 msgstr ""
 "Das Raster wird nicht angezeigt, weil keine Arbeitsebene ausgewählt ist."
 
-#: graphicswin.cpp:850
+#: graphicswin.cpp:851
 msgid ""
 "The perspective factor is set to zero, so the view will always be a parallel "
 "projection.\n"
@@ -1392,20 +1415,20 @@ msgstr ""
 "Ändern Sie den Faktor für die Perspektivprojektion in der "
 "Konfigurationsmaske. Ein typischer Wert ist ca. 0,3."
 
-#: graphicswin.cpp:940
+#: graphicswin.cpp:941
 msgid ""
 "Select a point; this point will become the center of the view on screen."
 msgstr ""
 "Wählen Sie einen Punkt aus; dieser Punkt wird im Mittelpunkt der "
 "Bildschirmansicht sein."
 
-#: graphicswin.cpp:1245
+#: graphicswin.cpp:1246
 msgid "No additional entities share endpoints with the selected entities."
 msgstr ""
 "Die ausgewählten Objekte teilen keine gemeinsamen Endpunkte mit anderen "
 "Objekten."
 
-#: graphicswin.cpp:1263
+#: graphicswin.cpp:1264
 msgid ""
 "To use this command, select a point or other entity from an linked part, or "
 "make a link group the active group."
@@ -1413,7 +1436,7 @@ msgstr ""
 "Für diesen Befehl wählen Sie einen Punkt oder ein anderes Objekt von einem "
 "verknüpften Teil aus, oder aktivieren Sie eine verknüpfte Gruppe."
 
-#: graphicswin.cpp:1286
+#: graphicswin.cpp:1287
 msgid ""
 "No workplane is active. Activate a workplane (with Sketch -> In Workplane) "
 "to define the plane for the snap grid."
@@ -1422,7 +1445,7 @@ msgstr ""
 "(mit Skizze -> In Arbeitsebene), um die Ebene für das Gitterraster zu "
 "definieren."
 
-#: graphicswin.cpp:1293
+#: graphicswin.cpp:1294
 msgid ""
 "Can't snap these items to grid; select points, text comments, or constraints "
 "with a label. To snap a line, select its endpoints."
@@ -1431,13 +1454,13 @@ msgstr ""
 "für Punkte, Textkommentare, oder Einschränkungen mit einer Bezeichnung. Um "
 "eine Linie auf das Raster auszurichten, wählen Sie deren Endpunkte aus."
 
-#: graphicswin.cpp:1378
+#: graphicswin.cpp:1379
 msgid "No workplane selected. Activating default workplane for this group."
 msgstr ""
 "Es wurde keine Arbeitsebene ausgewählt. Die Standard-Arbeitsebene für diese "
 "Gruppe wird aktiviert."
 
-#: graphicswin.cpp:1381
+#: graphicswin.cpp:1382
 msgid ""
 "No workplane is selected, and the active group does not have a default "
 "workplane. Try selecting a workplane, or activating a sketch-in-new-"
@@ -1447,7 +1470,7 @@ msgstr ""
 "standardmäßige Arbeitsebene. Wählen Sie eine Arbeitsebene aus, oder "
 "erstellen Sie eine Gruppe in einer neuen Arbeitsebene."
 
-#: graphicswin.cpp:1402
+#: graphicswin.cpp:1403
 msgid ""
 "Bad selection for tangent arc at point. Select a single point, or select "
 "nothing to set up arc parameters."
@@ -1455,48 +1478,48 @@ msgstr ""
 "Ungültige Auswahl für Bogentangente an Punkt. Wählen Sie einen einzelnen "
 "Punkt. Um die Bogenparameter anzugeben, wählen Sie nichts aus."
 
-#: graphicswin.cpp:1413
+#: graphicswin.cpp:1414
 msgid "click point on arc (draws anti-clockwise)"
 msgstr ""
 "Erstellen Sie einen Punkt auf dem Bogen (zeichnet im Gegenuhrzeigersinn)"
 
-#: graphicswin.cpp:1414
+#: graphicswin.cpp:1415
 msgid "click to place datum point"
 msgstr "Klicken Sie, um einen Bezugspunkt zu platzieren"
 
-#: graphicswin.cpp:1415
+#: graphicswin.cpp:1416
 msgid "click first point of line segment"
 msgstr "Klicken Sie auf den ersten Punkt des Liniensegments"
 
-#: graphicswin.cpp:1417
+#: graphicswin.cpp:1418
 msgid "click first point of construction line segment"
 msgstr "Klicken Sie auf den ersten Punkt der Konstruktionslinie"
 
-#: graphicswin.cpp:1418
+#: graphicswin.cpp:1419
 msgid "click first point of cubic segment"
 msgstr "Klicken Sie auf den ersten Punkt der kubischen Linie"
 
-#: graphicswin.cpp:1419
+#: graphicswin.cpp:1420
 msgid "click center of circle"
 msgstr "Klicken Sie auf den Kreismittelpunkt"
 
-#: graphicswin.cpp:1420
+#: graphicswin.cpp:1421
 msgid "click origin of workplane"
 msgstr "Klicken Sie auf den Ursprungspunkt der Arbeitsebene"
 
-#: graphicswin.cpp:1421
+#: graphicswin.cpp:1422
 msgid "click one corner of rectangle"
 msgstr "Klicken Sie auf eine Ecke des Rechtecks"
 
-#: graphicswin.cpp:1422
+#: graphicswin.cpp:1423
 msgid "click top left of text"
 msgstr "Klicken Sie auf die obere linke Ecke des Texts"
 
-#: graphicswin.cpp:1428
+#: graphicswin.cpp:1429
 msgid "click top left of image"
 msgstr "Klicken Sie auf die obere linke Ecke des Bilds"
 
-#: graphicswin.cpp:1454
+#: graphicswin.cpp:1455
 msgid ""
 "No entities are selected. Select entities before trying to toggle their "
 "construction state."
@@ -2100,7 +2123,7 @@ msgstr "Info zu Gruppe"
 msgid "Style Info"
 msgstr "Info zu Linientyp"
 
-#: mouse.cpp:701 ui/menulayout.cpp:77
+#: mouse.cpp:701 ui/menulayout.cpp:78
 msgid "Select Edge Chain"
 msgstr "Kantenverlauf auswählen"
 
@@ -2112,7 +2135,7 @@ msgstr "Von/zu Referenzangabe wechseln"
 msgid "Other Supplementary Angle"
 msgstr "Anderer Komplementärwinkel"
 
-#: mouse.cpp:718 ui/menulayout.cpp:78
+#: mouse.cpp:718 ui/menulayout.cpp:79
 msgid "Snap to Grid"
 msgstr "Auf Raster ausrichten"
 
@@ -2130,7 +2153,7 @@ msgstr ""
 "Spline-Punkt kann nicht hinzugefügt werden: maximale Anzahl der Punkte "
 "erreicht."
 
-#: mouse.cpp:791 ui/menulayout.cpp:147
+#: mouse.cpp:791 ui/menulayout.cpp:148
 msgid "Toggle Construction"
 msgstr "Konstruktionselement an/aus"
 
@@ -2138,31 +2161,31 @@ msgstr "Konstruktionselement an/aus"
 msgid "Delete Point-Coincident Constraint"
 msgstr "Einschränkung \"Punkte deckungsgleich\" löschen"
 
-#: mouse.cpp:825 ui/menulayout.cpp:71
+#: mouse.cpp:825 ui/menulayout.cpp:72
 msgid "Cut"
 msgstr "Ausschneiden"
 
-#: mouse.cpp:827 ui/menulayout.cpp:71
+#: mouse.cpp:827 ui/menulayout.cpp:72
 msgid "Copy"
 msgstr "Kopieren"
 
-#: mouse.cpp:831 ui/menulayout.cpp:76
+#: mouse.cpp:831 ui/menulayout.cpp:77
 msgid "Select All"
 msgstr "Alle auswählen"
 
-#: mouse.cpp:836 ui/menulayout.cpp:72
+#: mouse.cpp:836 ui/menulayout.cpp:73
 msgid "Paste"
 msgstr "Einfügen"
 
-#: mouse.cpp:838 ui/menulayout.cpp:73
+#: mouse.cpp:838 ui/menulayout.cpp:74
 msgid "Paste Transformed..."
 msgstr "Einfügen und transformieren…"
 
-#: mouse.cpp:843 ui/menulayout.cpp:74 ui/outliner.cpp:140
+#: mouse.cpp:843 ui/menulayout.cpp:75 ui/outliner.cpp:140
 msgid "Delete"
 msgstr "Löschen"
 
-#: mouse.cpp:846 ui/menulayout.cpp:76
+#: mouse.cpp:846 ui/menulayout.cpp:77
 msgid "Unselect All"
 msgstr "Alle deselektieren"
 
@@ -2170,7 +2193,7 @@ msgstr "Alle deselektieren"
 msgid "Unselect Hovered"
 msgstr "Aktive deselektieren"
 
-#: mouse.cpp:862 ui/menulayout.cpp:85
+#: mouse.cpp:862 ui/menulayout.cpp:86
 msgid "Zoom to Fit"
 msgstr "Zoom an Bildschirm anpassen"
 
@@ -2297,6 +2320,7 @@ msgid "Quad mesh for Blender, with creases (USD)"
 msgstr "Quad-Netz für Blender, mit Kanten (USD)"
 
 #: platform/gui.cpp:110 platform/gui.cpp:117 platform/gui.cpp:124
+#: solvespace.cpp:850
 msgctxt "file-type"
 msgid "STEP file"
 msgstr "STEP-Datei"
@@ -2342,8 +2366,9 @@ msgid "Comma-separated values"
 msgstr "Werte durch Komma getrennt (CSV)"
 
 #: platform/guisdl.cpp:614
+#, fuzzy
 msgid "Save as"
-msgstr ""
+msgstr "Speichern unter"
 
 #: preferences.cpp:77 styleedit.cpp:90 textscreens.cpp:776
 msgid "Bad format: specify color as r, g, b"
@@ -2488,7 +2513,13 @@ msgstr "STEP-Datei, eine pro Teil"
 msgid "Exported %d parts:%s"
 msgstr "%d Teile exportiert:%s"
 
-#: solvespace.cpp:893
+#: solvespace.cpp:856
+#, fuzzy
+msgid ""
+"The assembly needs the Open CASCADE kernel and a solid to export as STEP."
+msgstr "Die Baugruppe braucht den Open-CASCADE-Kernel und einen Volumenkörper für den Export als STEP."
+
+#: solvespace.cpp:907
 #, c-format
 msgid ""
 "Can't identify file type from file extension of filename '%s'; try .dxf "
@@ -2497,23 +2528,23 @@ msgstr ""
 "Kann den Dateityp der Datei '%s' nicht auf Grund der Dateierweiterung "
 "erkennen. Versuchen Sie .dxf oder .dwg."
 
-#: solvespace.cpp:945
+#: solvespace.cpp:959
 msgid "Constraint must have a label, and must not be a reference dimension."
 msgstr ""
 "Die Einschränkung muss einen Namen haben, und darf keine "
 "Referenzdimensionierung sein."
 
-#: solvespace.cpp:949
+#: solvespace.cpp:963
 msgid "Bad selection for step dimension; select a constraint."
 msgstr ""
 "Falsche Auswahl für die Schrittdimensionierung. Wählen Sie eine "
 "Einschränkung."
 
-#: solvespace.cpp:973
+#: solvespace.cpp:987
 msgid "The assembly does not interfere, good."
 msgstr "Der Zusammenbau funktioniert, gut."
 
-#: solvespace.cpp:1005
+#: solvespace.cpp:1019
 #, c-format
 msgid ""
 "The volume of the solid model is:\n"
@@ -2524,7 +2555,7 @@ msgstr ""
 "\n"
 "    %s"
 
-#: solvespace.cpp:1015
+#: solvespace.cpp:1029
 #, c-format
 msgid ""
 "\n"
@@ -2537,7 +2568,7 @@ msgstr ""
 "\n"
 "    %s"
 
-#: solvespace.cpp:1020 solvespace.cpp:1365
+#: solvespace.cpp:1034 solvespace.cpp:1379
 msgid ""
 "\n"
 "\n"
@@ -2549,7 +2580,7 @@ msgstr ""
 "Gekrümmte Flächen wurden als Dreiecksnetz angenähert.\n"
 "Das verursacht Fehler, typischerweise um 1%."
 
-#: solvespace.cpp:1035
+#: solvespace.cpp:1049
 #, c-format
 msgid ""
 "The surface area of the selected faces is:\n"
@@ -2566,7 +2597,7 @@ msgstr ""
 "Kurven wurden als gerade Linienstücke angenähert.\n"
 "Das verursacht Fehler, typischerweise um 1%%."
 
-#: solvespace.cpp:1044
+#: solvespace.cpp:1058
 msgid ""
 "This group does not contain a correctly-formed 2d closed area. It is open, "
 "not coplanar, or self-intersecting."
@@ -2574,7 +2605,7 @@ msgstr ""
 "Diese Gruppe beinhaltet keine korrekt geschlossene 2D Fläche. Sie ist offen, "
 "nicht koplanar, oder überschneidet sich selbst."
 
-#: solvespace.cpp:1056
+#: solvespace.cpp:1070
 #, c-format
 msgid ""
 "The area of the region sketched in this group is:\n"
@@ -2591,7 +2622,7 @@ msgstr ""
 "Kurven wurden als gerade Linienstücke angenähert.\n"
 "Das verursacht Fehler, typischerweise um 1%%."
 
-#: solvespace.cpp:1076
+#: solvespace.cpp:1090
 #, c-format
 msgid ""
 "The total length of the selected entities is:\n"
@@ -2608,36 +2639,36 @@ msgstr ""
 "Kurven wurden als gerade Linienstücke angenähert.\n"
 "Das verursacht Fehler, typischerweise um 1%%."
 
-#: solvespace.cpp:1082
+#: solvespace.cpp:1096
 msgid "Bad selection for perimeter; select line segments, arcs, and curves."
 msgstr "Falsche Auswahl für Umfang. Wähle Liniensegmente, Bögen und Kurven."
 
-#: solvespace.cpp:1098
+#: solvespace.cpp:1112
 msgid "Bad selection for trace; select a single point."
 msgstr "Falsche Auswahl für Punkt nachzeichnen. Wähle einen einzelnen Punkt."
 
-#: solvespace.cpp:1125
+#: solvespace.cpp:1139
 #, c-format
 msgid "Couldn't write to '%s'"
 msgstr "Konnte '%s' nicht schreiben"
 
-#: solvespace.cpp:1155
+#: solvespace.cpp:1169
 msgid "The mesh is self-intersecting (NOT okay, invalid)."
 msgstr "Das Netz schneidet sich selbst: Falsch, ungültig."
 
-#: solvespace.cpp:1156
+#: solvespace.cpp:1170
 msgid "The mesh is not self-intersecting (okay, valid)."
 msgstr "Das Netz schneidet sich nicht: Gut, gültig."
 
-#: solvespace.cpp:1158
+#: solvespace.cpp:1172
 msgid "The mesh has naked edges (NOT okay, invalid)."
 msgstr "Das Netz hat lose Kanten: Falsch, ungültig."
 
-#: solvespace.cpp:1159
+#: solvespace.cpp:1173
 msgid "The mesh is watertight (okay, valid)."
 msgstr "Das Netz hat keine lose Kanten: Gut, gültig."
 
-#: solvespace.cpp:1162
+#: solvespace.cpp:1176
 #, c-format
 msgid ""
 "\n"
@@ -2648,7 +2679,7 @@ msgstr ""
 "\n"
 "Das Modell hat %d Dreiecke, von %d Flächen."
 
-#: solvespace.cpp:1166
+#: solvespace.cpp:1180
 #, c-format
 msgid ""
 "%s\n"
@@ -2663,7 +2694,7 @@ msgstr ""
 "\n"
 "Keine problematischen Kanten, gut.%s"
 
-#: solvespace.cpp:1169
+#: solvespace.cpp:1183
 #, c-format
 msgid ""
 "%s\n"
@@ -2678,7 +2709,7 @@ msgstr ""
 "\n"
 "%d problematische Kanten, schlecht.%s"
 
-#: solvespace.cpp:1182
+#: solvespace.cpp:1196
 #, c-format
 msgid ""
 "This is SolveSpace version %s.\n"
@@ -2708,12 +2739,12 @@ msgstr ""
 "\n"
 "© 2008-%d Jonathan Westhues und andere.\n"
 
-#: solvespace.cpp:1351
+#: solvespace.cpp:1365
 #, fuzzy
 msgid "There is no solid in the active group."
 msgstr "Die aktive Gruppe enthält keinen Volumenkörper."
 
-#: solvespace.cpp:1359
+#: solvespace.cpp:1373
 #, fuzzy, c-format
 msgid ""
 "Volume:  %s\n"
@@ -2726,22 +2757,22 @@ msgstr ""
 "Masse:  %s (%s)\n"
 "Schwerpunkt:  (%s, %s, %s)"
 
-#: solvespace.cpp:1404
+#: solvespace.cpp:1418
 #, fuzzy
 msgid "A part's name can't be empty."
 msgstr "Der Name eines Teils darf nicht leer sein."
 
-#: solvespace.cpp:1490
+#: solvespace.cpp:1504
 #, fuzzy
 msgid "No part has a solid yet."
 msgstr "Noch kein Teil hat einen Volumenkörper."
 
-#: solvespace.cpp:1494
+#: solvespace.cpp:1508
 #, fuzzy, c-format
 msgid "%s%s:  %s, %s, %.2f g;  %s x %s x %s\n"
 msgstr "%s%s:  %s, %s, %.2f g;  %s x %s x %s\n"
 
-#: solvespace.cpp:1501
+#: solvespace.cpp:1515
 #, fuzzy, c-format
 msgid ""
 "\n"
@@ -2750,7 +2781,7 @@ msgstr ""
 "\n"
 "%d Teile, %.2f g insgesamt."
 
-#: solvespace.cpp:1603
+#: solvespace.cpp:1617
 #, fuzzy
 msgid ""
 "Parts export as STL, 3MF or STEP; choose a .stl, .3mf or .step file name."
@@ -2758,7 +2789,7 @@ msgstr ""
 "Teile werden als STL, 3MF oder STEP exportiert; wählen Sie einen Dateinamen "
 "mit .stl, .3mf oder .step."
 
-#: solvespace.cpp:1638
+#: solvespace.cpp:1652
 #, fuzzy, c-format
 msgid "STEP needs the Open CASCADE kernel; part '%s' was not written."
 msgstr ""
@@ -2947,2364 +2978,2905 @@ msgstr "Ansicht auf Arbeitsebene ausrichten"
 #: ui/drawtool.cpp:27 ui/properties.cpp:706 ui/properties.cpp:708
 #: ui/properties.cpp:709 ui/selectionmodel.cpp:437 ui/selectionmodel.cpp:447
 #: ui/stylespanel.cpp:116
+#, fuzzy
 msgid "angle"
-msgstr ""
+msgstr "Winkel"
 
 #: ui/drawtool.cpp:27 ui/drawtool.cpp:28 ui/properties.cpp:176
 #: ui/selectionmodel.cpp:159
+#, fuzzy
 msgid "length"
-msgstr ""
+msgstr "Länge"
 
 #: ui/drawtool.cpp:30 ui/properties.cpp:174 ui/properties.cpp:382
 #: ui/selectionmodel.cpp:186 ui/selectionmodel.cpp:195
 #: ui/selectionmodel.cpp:390
+#, fuzzy
 msgid "diameter"
-msgstr ""
+msgstr "Durchmesser"
 
 #: ui/drawtool.cpp:31 ui/prefspanel.cpp:103 ui/stylespanel.cpp:109
+#, fuzzy
 msgid "height"
-msgstr ""
+msgstr "Höhe"
 
 #: ui/drawtool.cpp:31 ui/prefspanel.cpp:102 ui/stylespanel.cpp:75
+#, fuzzy
 msgid "width"
-msgstr ""
+msgstr "Breite"
 
-#: ui/drawtool.cpp:82 ui/menulayout.cpp:144 ui/ngui.cpp:153
+#: ui/drawtool.cpp:82 ui/menulayout.cpp:145 ui/ngui.cpp:153
 #: ui/selectionmodel.cpp:193
+#, fuzzy
 msgid "Circle"
-msgstr ""
+msgstr "Kreis"
 
-#: ui/drawtool.cpp:82 ui/menulayout.cpp:142 ui/ngui.cpp:151
+#: ui/drawtool.cpp:82 ui/menulayout.cpp:143 ui/ngui.cpp:151
+#, fuzzy
 msgid "Line"
-msgstr ""
+msgstr "Linie"
 
-#: ui/drawtool.cpp:82 ui/menulayout.cpp:144 ui/ngui.cpp:152
+#: ui/drawtool.cpp:82 ui/menulayout.cpp:145 ui/ngui.cpp:152
+#, fuzzy
 msgid "Rectangle"
-msgstr ""
+msgstr "Rechteck"
 
 #: ui/drawtool.cpp:93
+#, fuzzy
 msgid "Remove last segment"
-msgstr ""
+msgstr "Letztes Segment entfernen"
 
 #: ui/drawtool.cpp:93 ui/drawtool.cpp:96
+#, fuzzy
 msgid "Value"
-msgstr ""
+msgstr "Wert"
 
 #: ui/drawtool.cpp:94
+#, fuzzy
 msgid "Finish"
-msgstr ""
+msgstr "Fertig"
 
 #: ui/drawtool.cpp:96
+#, fuzzy
 msgid "Apply"
-msgstr ""
+msgstr "Übernehmen"
 
 #: ui/drawtool.cpp:96
+#, fuzzy
 msgid "Next field"
-msgstr ""
+msgstr "Nächstes Feld"
 
 #: ui/drawtool.cpp:97
+#, fuzzy
 msgid "Clear / cancel"
-msgstr ""
+msgstr "Leeren / abbrechen"
 
-#: ui/grabtool.cpp:46 ui/menulayout.cpp:78 ui/statusmodel.cpp:49
+#: ui/grabtool.cpp:46 ui/menulayout.cpp:79 ui/statusmodel.cpp:49
+#, fuzzy
 msgid "Grab"
-msgstr ""
+msgstr "Verschieben"
 
 #: ui/grabtool.cpp:51
+#, fuzzy
 msgid "(lock an axis to use a typed distance)"
-msgstr ""
+msgstr "(eine Achse sperren, um eine eingegebene Strecke zu verwenden)"
 
 #: ui/grabtool.cpp:57
+#, fuzzy
 msgid "Axis"
-msgstr ""
+msgstr "Achse"
 
 #: ui/grabtool.cpp:57 ui/selectionmodel.cpp:17
+#, fuzzy
 msgid "Distance"
-msgstr ""
+msgstr "Abstand"
 
 #: ui/grabtool.cpp:58 ui/statusmodel.cpp:35 ui/statusmodel.cpp:37
+#, fuzzy
 msgid "Cancel"
-msgstr ""
+msgstr "Abbrechen"
 
 #: ui/grabtool.cpp:58
+#, fuzzy
 msgid "Confirm"
-msgstr ""
+msgstr "Bestätigen"
 
 #: ui/menulayout.cpp:55
 msgid "File"
 msgstr "Datei"
 
 #: ui/menulayout.cpp:56
+#, fuzzy
 msgid "New"
-msgstr ""
+msgstr "Neu"
 
 #: ui/menulayout.cpp:56
+#, fuzzy
 msgid "Open..."
-msgstr ""
+msgstr "Öffnen…"
 
 #: ui/menulayout.cpp:57
+#, fuzzy
 msgid "Open Recent"
-msgstr ""
+msgstr "Zuletzt geöffnet"
 
 #: ui/menulayout.cpp:58
+#, fuzzy
 msgid "Save"
-msgstr ""
+msgstr "Speichern"
 
 #: ui/menulayout.cpp:58
+#, fuzzy
 msgid "Save As..."
-msgstr ""
+msgstr "Speichern unter…"
 
 #: ui/menulayout.cpp:59
+#, fuzzy
 msgid "Import..."
-msgstr ""
+msgstr "Importieren…"
 
 #: ui/menulayout.cpp:60 ui/prefspanel.cpp:156
+#, fuzzy
 msgid "Export"
-msgstr ""
+msgstr "Exportieren"
 
 #: ui/menulayout.cpp:61
+#, fuzzy
 msgid "2D View..."
-msgstr ""
+msgstr "2D-Ansicht…"
 
-#: ui/menulayout.cpp:61 ui/menulayout.cpp:146
+#: ui/menulayout.cpp:61 ui/menulayout.cpp:147
+#, fuzzy
 msgid "Image..."
-msgstr ""
+msgstr "Bild…"
 
 #: ui/menulayout.cpp:62
+#, fuzzy
 msgid "2D Section..."
-msgstr ""
+msgstr "2D-Schnitt…"
 
 #: ui/menulayout.cpp:63
+#, fuzzy
 msgid "3D Wireframe..."
-msgstr ""
+msgstr "3D-Drahtmodell…"
 
 #: ui/menulayout.cpp:64
+#, fuzzy
 msgid "Triangle Mesh..."
-msgstr ""
+msgstr "Dreiecksnetz…"
 
 #: ui/menulayout.cpp:65
+#, fuzzy
 msgid "Parts, One File Each..."
-msgstr ""
+msgstr "Teile, je eine Datei…"
 
 #: ui/menulayout.cpp:66
+#, fuzzy
 msgid "Parts List (CSV)..."
-msgstr ""
+msgstr "Teileliste (CSV)…"
 
-#: ui/menulayout.cpp:67
-msgid "Surfaces..."
-msgstr ""
+#: ui/menulayout.cpp:67#, fuzzy
+msgid "Assembly (STEP)..."
+msgstr "Baugruppe (STEP)..."
 
 #: ui/menulayout.cpp:68
-msgid "Quit"
-msgstr ""
+#, fuzzy
+msgid "Surfaces..."
+msgstr "Oberflächen…"
 
 #: ui/menulayout.cpp:69
+#, fuzzy
+msgid "Quit"
+msgstr "Beenden"
+
+#: ui/menulayout.cpp:70
+#, fuzzy
 msgid "Edit"
-msgstr ""
+msgstr "Bearbeiten"
 
-#: ui/menulayout.cpp:70
+#: ui/menulayout.cpp:71
+#, fuzzy
 msgid "Redo"
-msgstr ""
+msgstr "Wiederholen"
 
-#: ui/menulayout.cpp:70
+#: ui/menulayout.cpp:71
+#, fuzzy
 msgid "Undo"
-msgstr ""
-
-#: ui/menulayout.cpp:79
-msgid "Rotate Imported 90°"
-msgstr ""
+msgstr "Rückgängig"
 
 #: ui/menulayout.cpp:80
-msgid "Regenerate All"
-msgstr ""
+#, fuzzy
+msgid "Rotate Imported 90°"
+msgstr "Import um 90° drehen"
 
 #: ui/menulayout.cpp:81
-msgid "Line Styles..."
-msgstr ""
+#, fuzzy
+msgid "Regenerate All"
+msgstr "Alles neu berechnen"
 
 #: ui/menulayout.cpp:82
+#, fuzzy
+msgid "Line Styles..."
+msgstr "Linientypen…"
+
+#: ui/menulayout.cpp:83
+#, fuzzy
 msgid "Preferences..."
-msgstr ""
+msgstr "Einstellungen…"
 
-#: ui/menulayout.cpp:83 ui/ngui.cpp:170 ui/panels.cpp:173
+#: ui/menulayout.cpp:84 ui/ngui.cpp:170 ui/panels.cpp:173
+#, fuzzy
 msgid "View"
-msgstr ""
+msgstr "Ansicht"
 
-#: ui/menulayout.cpp:84
+#: ui/menulayout.cpp:85
+#, fuzzy
 msgid "Zoom In"
-msgstr ""
+msgstr "Vergrößern"
 
-#: ui/menulayout.cpp:84
+#: ui/menulayout.cpp:85
+#, fuzzy
 msgid "Zoom Out"
-msgstr ""
-
-#: ui/menulayout.cpp:86
-msgid "Frame Selection"
-msgstr ""
+msgstr "Verkleinern"
 
 #: ui/menulayout.cpp:87
-msgid "Center View at Point"
-msgstr ""
+#, fuzzy
+msgid "Frame Selection"
+msgstr "Auswahl einpassen"
 
 #: ui/menulayout.cpp:88
+#, fuzzy
+msgid "Center View at Point"
+msgstr "Ansicht auf Punkt zentrieren"
+
+#: ui/menulayout.cpp:89
+#, fuzzy
 msgid "Standard Views"
-msgstr ""
+msgstr "Standardansichten"
 
-#: ui/menulayout.cpp:89 ui/ngui.cpp:174 ui/viewcubemodel.cpp:18
+#: ui/menulayout.cpp:90 ui/ngui.cpp:174 ui/viewcubemodel.cpp:18
+#, fuzzy
 msgid "Back"
-msgstr ""
+msgstr "Hinten"
 
-#: ui/menulayout.cpp:89 ui/ngui.cpp:172 ui/viewcubemodel.cpp:17
+#: ui/menulayout.cpp:90 ui/ngui.cpp:172 ui/viewcubemodel.cpp:17
+#, fuzzy
 msgid "Front"
-msgstr ""
+msgstr "Vorne"
 
-#: ui/menulayout.cpp:90 ui/ngui.cpp:173 ui/viewcubemodel.cpp:20
+#: ui/menulayout.cpp:91 ui/ngui.cpp:173 ui/viewcubemodel.cpp:20
+#, fuzzy
 msgid "Left"
-msgstr ""
+msgstr "Links"
 
-#: ui/menulayout.cpp:90 ui/ngui.cpp:171 ui/viewcubemodel.cpp:19
+#: ui/menulayout.cpp:91 ui/ngui.cpp:171 ui/viewcubemodel.cpp:19
+#, fuzzy
 msgid "Right"
-msgstr ""
+msgstr "Rechts"
 
-#: ui/menulayout.cpp:91 ui/ngui.cpp:173 ui/viewcubemodel.cpp:22
+#: ui/menulayout.cpp:92 ui/ngui.cpp:173 ui/viewcubemodel.cpp:22
+#, fuzzy
 msgid "Bottom"
-msgstr ""
+msgstr "Unten"
 
-#: ui/menulayout.cpp:91 ui/ngui.cpp:171 ui/viewcubemodel.cpp:21
+#: ui/menulayout.cpp:92 ui/ngui.cpp:171 ui/viewcubemodel.cpp:21
+#, fuzzy
 msgid "Top"
-msgstr ""
-
-#: ui/menulayout.cpp:92
-msgid "Nearest Isometric"
-msgstr ""
+msgstr "Oben"
 
 #: ui/menulayout.cpp:93
-msgid "Nearest Orthographic"
-msgstr ""
+#, fuzzy
+msgid "Nearest Isometric"
+msgstr "Nächste Isometrie"
 
 #: ui/menulayout.cpp:94
-msgid "Align to Workplane"
-msgstr ""
+#, fuzzy
+msgid "Nearest Orthographic"
+msgstr "Nächste Orthogonalansicht"
 
-#: ui/menulayout.cpp:96
-msgid "Perspective"
-msgstr ""
+#: ui/menulayout.cpp:95
+#, fuzzy
+msgid "Align to Workplane"
+msgstr "An Arbeitsebene ausrichten"
 
 #: ui/menulayout.cpp:97
+#, fuzzy
+msgid "Perspective"
+msgstr "Perspektive"
+
+#: ui/menulayout.cpp:98
+#, fuzzy
 msgid "Exploded View"
-msgstr ""
+msgstr "Explosionsansicht"
 
-#: ui/menulayout.cpp:99
+#: ui/menulayout.cpp:100
+#, fuzzy
 msgid "Snap Grid"
-msgstr ""
+msgstr "Fangraster"
 
-#: ui/menulayout.cpp:99
+#: ui/menulayout.cpp:100
+#, fuzzy
 msgid "Units"
-msgstr ""
+msgstr "Einheiten"
 
-#: ui/menulayout.cpp:100 ui/panels.cpp:196
+#: ui/menulayout.cpp:101 ui/panels.cpp:196
+#, fuzzy
 msgid "Outliner"
-msgstr ""
+msgstr "Gliederung"
 
-#: ui/menulayout.cpp:101 ui/panels.cpp:150
+#: ui/menulayout.cpp:102 ui/panels.cpp:150
+#, fuzzy
 msgid "Properties"
-msgstr ""
+msgstr "Eigenschaften"
 
-#: ui/menulayout.cpp:102 ui/panels.cpp:156
+#: ui/menulayout.cpp:103 ui/panels.cpp:156
+#, fuzzy
 msgid "Problems"
-msgstr ""
-
-#: ui/menulayout.cpp:103
-msgid "Tool Shelf"
-msgstr ""
+msgstr "Probleme"
 
 #: ui/menulayout.cpp:104
-msgid "Menu Bar"
-msgstr ""
+#, fuzzy
+msgid "Tool Shelf"
+msgstr "Werkzeugleiste"
 
 #: ui/menulayout.cpp:105
+#, fuzzy
+msgid "Menu Bar"
+msgstr "Menüleiste"
+
+#: ui/menulayout.cpp:106
+#, fuzzy
 msgid "Command Palette..."
-msgstr ""
-
-#: ui/menulayout.cpp:106
-msgid "Hide Group"
-msgstr ""
-
-#: ui/menulayout.cpp:106
-msgid "Isolate Group"
-msgstr ""
+msgstr "Befehlspalette…"
 
 #: ui/menulayout.cpp:107
-msgid "Show All Groups"
-msgstr ""
+#, fuzzy
+msgid "Hide Group"
+msgstr "Gruppe ausblenden"
+
+#: ui/menulayout.cpp:107
+#, fuzzy
+msgid "Isolate Group"
+msgstr "Gruppe isolieren"
 
 #: ui/menulayout.cpp:108
-msgid "View Settings..."
-msgstr ""
+#, fuzzy
+msgid "Show All Groups"
+msgstr "Alle Gruppen anzeigen"
 
 #: ui/menulayout.cpp:109
-msgid "Light Theme"
-msgstr ""
+#, fuzzy
+msgid "View Settings..."
+msgstr "Ansichtseinstellungen…"
 
 #: ui/menulayout.cpp:110
-msgid "Full Screen"
-msgstr ""
+#, fuzzy
+msgid "Light Theme"
+msgstr "Helles Design"
 
 #: ui/menulayout.cpp:111
+#, fuzzy
+msgid "Full Screen"
+msgstr "Vollbild"
+
+#: ui/menulayout.cpp:112
+#, fuzzy
 msgid "New Group"
-msgstr ""
+msgstr "Neue Gruppe"
 
-#: ui/menulayout.cpp:112
+#: ui/menulayout.cpp:113
+#, fuzzy
 msgid "New Part"
-msgstr ""
+msgstr "Neues Teil"
 
-#: ui/menulayout.cpp:112
+#: ui/menulayout.cpp:113
+#, fuzzy
 msgid "Split Part"
-msgstr ""
+msgstr "Teil teilen"
 
-#: ui/menulayout.cpp:113 ui/outliner.cpp:155
+#: ui/menulayout.cpp:114 ui/outliner.cpp:155
+#, fuzzy
 msgid "Joints"
-msgstr ""
-
-#: ui/menulayout.cpp:114
-msgid "Revolute Joint"
-msgstr ""
+msgstr "Gelenke"
 
 #: ui/menulayout.cpp:115
-msgid "Slider Joint"
-msgstr ""
+#, fuzzy
+msgid "Revolute Joint"
+msgstr "Drehgelenk"
 
 #: ui/menulayout.cpp:116
-msgid "Cylindrical Joint"
-msgstr ""
+#, fuzzy
+msgid "Slider Joint"
+msgstr "Schubgelenk"
 
 #: ui/menulayout.cpp:117
-msgid "Planar Joint"
-msgstr ""
+#, fuzzy
+msgid "Cylindrical Joint"
+msgstr "Zylindergelenk"
 
 #: ui/menulayout.cpp:118
-msgid "Ball Joint"
-msgstr ""
+#, fuzzy
+msgid "Planar Joint"
+msgstr "Ebenengelenk"
 
 #: ui/menulayout.cpp:119
-msgid "Gear Coupling"
-msgstr ""
+#, fuzzy
+msgid "Ball Joint"
+msgstr "Kugelgelenk"
 
 #: ui/menulayout.cpp:120
-msgid "Fit Joint"
-msgstr ""
+#, fuzzy
+msgid "Gear Coupling"
+msgstr "Zahnradkopplung"
 
 #: ui/menulayout.cpp:121
-msgid "Sketch in 3D"
-msgstr ""
+#, fuzzy
+msgid "Fit Joint"
+msgstr "Passverbindung"
 
 #: ui/menulayout.cpp:122
-msgid "Sketch in New Workplane"
-msgstr ""
+#, fuzzy
+msgid "Sketch in 3D"
+msgstr "In 3D skizzieren"
 
 #: ui/menulayout.cpp:123
-msgid "Extrude"
-msgstr ""
+#, fuzzy
+msgid "Sketch in New Workplane"
+msgstr "In neuer Arbeitsebene skizzieren"
 
 #: ui/menulayout.cpp:124
-msgid "Extrude as a Cut"
-msgstr ""
+#, fuzzy
+msgid "Extrude"
+msgstr "Extrudieren"
 
 #: ui/menulayout.cpp:125
+#, fuzzy
+msgid "Extrude as a Cut"
+msgstr "Als Ausschnitt extrudieren"
+
+#: ui/menulayout.cpp:126
+#, fuzzy
 msgid "Revolve"
-msgstr ""
-
-#: ui/menulayout.cpp:126
-msgid "Helix"
-msgstr ""
-
-#: ui/menulayout.cpp:126
-msgid "Lathe"
-msgstr ""
+msgstr "Rotieren"
 
 #: ui/menulayout.cpp:127
-msgid "Fillet Edges"
-msgstr ""
+#, fuzzy
+msgid "Helix"
+msgstr "Helix"
+
+#: ui/menulayout.cpp:127
+#, fuzzy
+msgid "Lathe"
+msgstr "Drehen"
 
 #: ui/menulayout.cpp:128
+#, fuzzy
+msgid "Fillet Edges"
+msgstr "Kanten verrunden"
+
+#: ui/menulayout.cpp:129
+#, fuzzy
 msgid "Chamfer Edges"
-msgstr ""
+msgstr "Kanten fasen"
 
-#: ui/menulayout.cpp:129
+#: ui/menulayout.cpp:130
+#, fuzzy
 msgid "Draft Faces"
-msgstr ""
+msgstr "Formschräge an Flächen"
 
-#: ui/menulayout.cpp:129
+#: ui/menulayout.cpp:130
+#, fuzzy
 msgid "Shell"
-msgstr ""
-
-#: ui/menulayout.cpp:130
-msgid "Hole"
-msgstr ""
-
-#: ui/menulayout.cpp:130
-msgid "Loft"
-msgstr ""
+msgstr "Schale"
 
 #: ui/menulayout.cpp:131
-msgid "Sweep"
-msgstr ""
+#, fuzzy
+msgid "Hole"
+msgstr "Bohrung"
 
-#: ui/menulayout.cpp:133
-msgid "Linear Pattern"
-msgstr ""
+#: ui/menulayout.cpp:131
+#, fuzzy
+msgid "Loft"
+msgstr "Loft"
+
+#: ui/menulayout.cpp:132
+#, fuzzy
+msgid "Sweep"
+msgstr "Sweep"
 
 #: ui/menulayout.cpp:134
-msgid "Circular Pattern"
-msgstr ""
+#, fuzzy
+msgid "Linear Pattern"
+msgstr "Lineare Anordnung"
 
 #: ui/menulayout.cpp:135
-msgid "Link Part..."
-msgstr ""
+#, fuzzy
+msgid "Circular Pattern"
+msgstr "Kreisförmige Anordnung"
 
-#: ui/menulayout.cpp:137 ui/statusmodel.cpp:50
+#: ui/menulayout.cpp:136
+#, fuzzy
+msgid "Link Part..."
+msgstr "Teil verknüpfen…"
+
+#: ui/menulayout.cpp:138 ui/statusmodel.cpp:50
 msgid "Sketch"
 msgstr "Skizze"
 
-#: ui/menulayout.cpp:138
-msgid "In Workplane"
-msgstr ""
-
 #: ui/menulayout.cpp:139
+#, fuzzy
+msgid "In Workplane"
+msgstr "In Arbeitsebene"
+
+#: ui/menulayout.cpp:140
+#, fuzzy
 msgid "Anywhere in 3D"
-msgstr ""
+msgstr "Irgendwo im 3D-Raum"
 
-#: ui/menulayout.cpp:141 ui/ngui.cpp:155 ui/selectionmodel.cpp:130
+#: ui/menulayout.cpp:142 ui/ngui.cpp:155 ui/selectionmodel.cpp:130
+#, fuzzy
 msgid "Point"
-msgstr ""
+msgstr "Punkt"
 
-#: ui/menulayout.cpp:141 ui/ngui.cpp:156 ui/selectionmodel.cpp:147
+#: ui/menulayout.cpp:142 ui/ngui.cpp:156 ui/selectionmodel.cpp:147
+#, fuzzy
 msgid "Workplane"
-msgstr ""
+msgstr "Arbeitsebene"
 
-#: ui/menulayout.cpp:143
+#: ui/menulayout.cpp:144
+#, fuzzy
 msgid "Construction Line"
-msgstr ""
+msgstr "Hilfslinie"
 
-#: ui/menulayout.cpp:145 ui/ngui.cpp:153
+#: ui/menulayout.cpp:146 ui/ngui.cpp:153
+#, fuzzy
 msgid "Arc"
-msgstr ""
+msgstr "Bogen"
 
-#: ui/menulayout.cpp:145 ui/ngui.cpp:154
+#: ui/menulayout.cpp:146 ui/ngui.cpp:154
+#, fuzzy
 msgid "Spline"
-msgstr ""
+msgstr "Spline"
 
-#: ui/menulayout.cpp:146 ui/ngui.cpp:155
+#: ui/menulayout.cpp:147 ui/ngui.cpp:155
+#, fuzzy
 msgid "Text"
-msgstr ""
-
-#: ui/menulayout.cpp:148
-msgid "Tangent Arc at Point"
-msgstr ""
+msgstr "Text"
 
 #: ui/menulayout.cpp:149
+#, fuzzy
+msgid "Tangent Arc at Point"
+msgstr "Tangentialbogen am Punkt"
+
+#: ui/menulayout.cpp:150
+#, fuzzy
 msgid "Split at Intersections"
-msgstr ""
+msgstr "An Schnittpunkten teilen"
 
-#: ui/menulayout.cpp:150 ui/ngui.cpp:167 ui/statusmodel.cpp:47
+#: ui/menulayout.cpp:151 ui/ngui.cpp:167 ui/statusmodel.cpp:47
+#, fuzzy
 msgid "Constrain"
-msgstr ""
-
-#: ui/menulayout.cpp:151
-msgid "Distance / Diameter"
-msgstr ""
+msgstr "Einschränken"
 
 #: ui/menulayout.cpp:152
-msgid "Reference Dimension"
-msgstr ""
+#, fuzzy
+msgid "Distance / Diameter"
+msgstr "Abstand / Durchmesser"
 
 #: ui/menulayout.cpp:153
-msgid "Angle / Equal Angle"
-msgstr ""
+#, fuzzy
+msgid "Reference Dimension"
+msgstr "Referenzmaß"
 
 #: ui/menulayout.cpp:154
-msgid "Reference Angle"
-msgstr ""
+#, fuzzy
+msgid "Angle / Equal Angle"
+msgstr "Winkel / gleicher Winkel"
 
 #: ui/menulayout.cpp:155
-msgid "Supplementary Angle"
-msgstr ""
+#, fuzzy
+msgid "Reference Angle"
+msgstr "Referenzwinkel"
 
 #: ui/menulayout.cpp:156
+#, fuzzy
+msgid "Supplementary Angle"
+msgstr "Supplementärwinkel"
+
+#: ui/menulayout.cpp:157
+#, fuzzy
 msgid "Toggle Reference"
-msgstr ""
+msgstr "Referenz umschalten"
 
-#: ui/menulayout.cpp:157 ui/selectionmodel.cpp:39
+#: ui/menulayout.cpp:158 ui/selectionmodel.cpp:39
+#, fuzzy
 msgid "Horizontal"
-msgstr ""
+msgstr "Horizontal"
 
-#: ui/menulayout.cpp:157 ui/selectionmodel.cpp:40
+#: ui/menulayout.cpp:158 ui/selectionmodel.cpp:40
+#, fuzzy
 msgid "Vertical"
-msgstr ""
-
-#: ui/menulayout.cpp:158
-msgid "On Point / Curve / Plane"
-msgstr ""
+msgstr "Vertikal"
 
 #: ui/menulayout.cpp:159
-msgid "Equal Length / Radius"
-msgstr ""
+#, fuzzy
+msgid "On Point / Curve / Plane"
+msgstr "Auf Punkt / Kurve / Ebene"
 
 #: ui/menulayout.cpp:160
-msgid "Length / Arc Ratio"
-msgstr ""
+#, fuzzy
+msgid "Equal Length / Radius"
+msgstr "Gleiche Länge / gleicher Radius"
 
 #: ui/menulayout.cpp:161
+#, fuzzy
+msgid "Length / Arc Ratio"
+msgstr "Längen- / Bogenverhältnis"
+
+#: ui/menulayout.cpp:162
+#, fuzzy
 msgid "Length / Arc Difference"
-msgstr ""
+msgstr "Längen- / Bogendifferenz"
 
-#: ui/menulayout.cpp:162 ui/selectionmodel.cpp:38
+#: ui/menulayout.cpp:163 ui/selectionmodel.cpp:38
+#, fuzzy
 msgid "Midpoint"
-msgstr ""
+msgstr "Mittelpunkt"
 
-#: ui/menulayout.cpp:162 ui/selectionmodel.cpp:34
+#: ui/menulayout.cpp:163 ui/selectionmodel.cpp:34
+#, fuzzy
 msgid "Symmetric"
-msgstr ""
+msgstr "Symmetrisch"
 
-#: ui/menulayout.cpp:163
+#: ui/menulayout.cpp:164
+#, fuzzy
 msgid "Parallel / Tangent"
-msgstr ""
+msgstr "Parallel / Tangential"
 
-#: ui/menulayout.cpp:164 ui/selectionmodel.cpp:49
+#: ui/menulayout.cpp:165 ui/selectionmodel.cpp:49
+#, fuzzy
 msgid "Perpendicular"
-msgstr ""
-
-#: ui/menulayout.cpp:165
-msgid "Same Orientation"
-msgstr ""
+msgstr "Senkrecht"
 
 #: ui/menulayout.cpp:166
+#, fuzzy
+msgid "Same Orientation"
+msgstr "Gleiche Ausrichtung"
+
+#: ui/menulayout.cpp:167
+#, fuzzy
 msgid "Lock Point Where Dragged"
-msgstr ""
+msgstr "Punkt an Zugposition fixieren"
 
-#: ui/menulayout.cpp:168
+#: ui/menulayout.cpp:169
+#, fuzzy
 msgid "Inspect"
-msgstr ""
-
-#: ui/menulayout.cpp:169
-msgid "Measure Area"
-msgstr ""
-
-#: ui/menulayout.cpp:169
-msgid "Measure Volume"
-msgstr ""
+msgstr "Prüfen"
 
 #: ui/menulayout.cpp:170
-msgid "Measure Perimeter"
-msgstr ""
+#, fuzzy
+msgid "Measure Area"
+msgstr "Fläche messen"
+
+#: ui/menulayout.cpp:170
+#, fuzzy
+msgid "Measure Volume"
+msgstr "Volumen messen"
 
 #: ui/menulayout.cpp:171
-msgid "Interfering Parts"
-msgstr ""
+#, fuzzy
+msgid "Measure Perimeter"
+msgstr "Umfang messen"
 
 #: ui/menulayout.cpp:172
-msgid "Naked Edges"
-msgstr ""
+#, fuzzy
+msgid "Interfering Parts"
+msgstr "Überlagernde Teile"
 
 #: ui/menulayout.cpp:173
-msgid "Center of Mass"
-msgstr ""
+#, fuzzy
+msgid "Naked Edges"
+msgstr "Freie Kanten"
 
 #: ui/menulayout.cpp:174
-msgid "Mass Properties..."
-msgstr ""
+#, fuzzy
+msgid "Center of Mass"
+msgstr "Massenmittelpunkt"
 
 #: ui/menulayout.cpp:175
-msgid "Parts List..."
-msgstr ""
-
-#: ui/menulayout.cpp:176 ui/ngui.cpp:188
-msgid "Design Pose"
-msgstr ""
+#, fuzzy
+msgid "Mass Properties..."
+msgstr "Masseeigenschaften…"
 
 #: ui/menulayout.cpp:176
-msgid "Fit Table..."
-msgstr ""
+#, fuzzy
+msgid "Parts List..."
+msgstr "Teileliste…"
 
-#: ui/menulayout.cpp:178
-msgid "Underconstrained Points"
-msgstr ""
+#: ui/menulayout.cpp:177 ui/ngui.cpp:188
+#, fuzzy
+msgid "Design Pose"
+msgstr "Konstruktionspose"
+
+#: ui/menulayout.cpp:177
+#, fuzzy
+msgid "Fit Table..."
+msgstr "Passungstabelle…"
 
 #: ui/menulayout.cpp:179
-msgid "Trace Point"
-msgstr ""
+#, fuzzy
+msgid "Underconstrained Points"
+msgstr "Unterbeschränkte Punkte"
 
 #: ui/menulayout.cpp:180
-msgid "Stop Tracing..."
-msgstr ""
+#, fuzzy
+msgid "Trace Point"
+msgstr "Punkt verfolgen"
 
 #: ui/menulayout.cpp:181
-msgid "Step Dimension..."
-msgstr ""
+#, fuzzy
+msgid "Stop Tracing..."
+msgstr "Verfolgung beenden…"
 
 #: ui/menulayout.cpp:182
+#, fuzzy
+msgid "Step Dimension..."
+msgstr "Schrittmaß…"
+
+#: ui/menulayout.cpp:183
 msgid "Help"
 msgstr "Hilfe"
 
-#: ui/menulayout.cpp:183 ui/panels.cpp:144
+#: ui/menulayout.cpp:184 ui/panels.cpp:144
+#, fuzzy
 msgid "Keyboard Shortcuts"
-msgstr ""
+msgstr "Tastenkürzel"
 
-#: ui/menulayout.cpp:184
+#: ui/menulayout.cpp:185
+#, fuzzy
 msgid "GitHub Commit"
-msgstr ""
+msgstr "GitHub-Commit"
 
-#: ui/menulayout.cpp:184
+#: ui/menulayout.cpp:185
+#, fuzzy
 msgid "Website / Manual"
-msgstr ""
+msgstr "Webseite / Handbuch"
 
-#: ui/menulayout.cpp:185 ui/prefspanel.cpp:163
+#: ui/menulayout.cpp:186 ui/prefspanel.cpp:163
+#, fuzzy
 msgid "About"
-msgstr ""
+msgstr "Über"
 
 #: ui/ngui.cpp:150 ui/statusmodel.cpp:46
+#, fuzzy
 msgid "Add"
-msgstr ""
+msgstr "Hinzufügen"
 
 #: ui/ngui.cpp:172
+#, fuzzy
 msgid "Isometric"
-msgstr ""
+msgstr "Isometrisch"
 
 #: ui/ngui.cpp:174
+#, fuzzy
 msgid "Frame Selected"
-msgstr ""
+msgstr "Auswahl einpassen"
 
 #: ui/ngui.cpp:175
+#, fuzzy
 msgid "Grid"
-msgstr ""
+msgstr "Raster"
 
 #: ui/ngui.cpp:182 ui/properties.cpp:686
+#, fuzzy
 msgid "Joint"
-msgstr ""
+msgstr "Gelenk"
 
 #: ui/ngui.cpp:183
+#, fuzzy
 msgid "Revolute"
-msgstr ""
+msgstr "Drehung"
 
 #: ui/ngui.cpp:184
+#, fuzzy
 msgid "Slider"
-msgstr ""
+msgstr "Schub"
 
 #: ui/ngui.cpp:185
+#, fuzzy
 msgid "Cylindrical"
-msgstr ""
+msgstr "Zylindrisch"
 
 #: ui/ngui.cpp:186
+#, fuzzy
 msgid "Planar"
-msgstr ""
+msgstr "Planar"
 
 #: ui/ngui.cpp:187
+#, fuzzy
 msgid "Ball"
-msgstr ""
+msgstr "Kugel"
 
 #: ui/ngui.cpp:187
+#, fuzzy
 msgid "Gear"
-msgstr ""
+msgstr "Zahnrad"
 
 #: ui/ngui.cpp:188
+#, fuzzy
 msgid "Fit"
-msgstr ""
+msgstr "Passung"
 
 #: ui/outliner.cpp:49 ui/properties.cpp:271
+#, fuzzy
 msgid "Group"
-msgstr ""
+msgstr "Gruppe"
 
 #: ui/outliner.cpp:132
+#, fuzzy
 msgid "Rename"
-msgstr ""
+msgstr "Umbenennen"
 
 #: ui/outliner.cpp:137
+#, fuzzy
 msgid "Isolate"
-msgstr ""
+msgstr "Isolieren"
 
 #: ui/outlinermodel.cpp:60
+#, fuzzy
 msgid "Origin"
-msgstr ""
+msgstr "Ursprung"
 
 #: ui/outlinermodel.cpp:83
+#, fuzzy
 msgid "Skeleton"
-msgstr ""
+msgstr "Gerüst"
 
 #: ui/palettewidget.cpp:47
+#, fuzzy
 msgid "Type a command..."
-msgstr ""
+msgstr "Befehl eingeben…"
 
 #: ui/panels.cpp:135
+#, fuzzy
 msgid "Tools"
-msgstr ""
+msgstr "Werkzeuge"
 
 #: ui/panels.cpp:162
+#, fuzzy
 msgid "Preferences"
-msgstr ""
+msgstr "Einstellungen"
 
 #: ui/panels.cpp:168
+#, fuzzy
 msgid "Styles"
-msgstr ""
+msgstr "Stile"
 
 #: ui/panels.cpp:178
+#, fuzzy
 msgid "Paste Transformed"
-msgstr ""
+msgstr "Transformiert einfügen"
 
 #: ui/panels.cpp:184
+#, fuzzy
 msgid "Step Dimension"
-msgstr ""
+msgstr "Schrittmaß"
 
 #: ui/panels.cpp:190
+#, fuzzy
 msgid "Tangent Arc"
-msgstr ""
+msgstr "Tangentialbogen"
 
 #: ui/prefspanel.cpp:30
+#, fuzzy
 msgid "model colours"
-msgstr ""
+msgstr "Modellfarben"
 
 #: ui/prefspanel.cpp:41
+#, fuzzy
 msgid "chord tolerance (%)"
-msgstr ""
+msgstr "Sehnentoleranz (%)"
 
 #: ui/prefspanel.cpp:42
-#, c-format
+#, fuzzy, c-format
 msgid "%g mm, %d triangles"
-msgstr ""
+msgstr "%g mm, %d Dreiecke"
 
 #: ui/prefspanel.cpp:44 ui/prefspanel.cpp:72
+#, fuzzy
 msgid "max piecewise linear segments"
-msgstr ""
+msgstr "max. stückweise lineare Segmente"
 
 #: ui/prefspanel.cpp:45
+#, fuzzy
 msgid "snap grid spacing"
-msgstr ""
+msgstr "Fangraster-Abstand"
 
 #: ui/prefspanel.cpp:46
+#, fuzzy
 msgid "digits after the decimal point (distances)"
-msgstr ""
+msgstr "Nachkommastellen (Abstände)"
 
 #: ui/prefspanel.cpp:48 ui/prefspanel.cpp:51
-#, c-format
+#, fuzzy, c-format
 msgid "e.g. %s"
-msgstr ""
+msgstr "z. B. %s"
 
 #: ui/prefspanel.cpp:49
+#, fuzzy
 msgid "digits after the decimal point (angles)"
-msgstr ""
+msgstr "Nachkommastellen (Winkel)"
 
 #: ui/prefspanel.cpp:52
+#, fuzzy
 msgid "use SI prefixes for distances"
-msgstr ""
+msgstr "SI-Präfixe für Abstände verwenden"
 
 #: ui/prefspanel.cpp:53
+#, fuzzy
 msgid "draw triangle back faces in red"
-msgstr ""
+msgstr "Rückseiten von Dreiecken rot zeichnen"
 
 #: ui/prefspanel.cpp:54
+#, fuzzy
 msgid "check sketch for closed contour"
-msgstr ""
+msgstr "Skizze auf geschlossene Kontur prüfen"
 
 #: ui/prefspanel.cpp:55
+#, fuzzy
 msgid "show areas of closed contours"
-msgstr ""
+msgstr "Flächen geschlossener Konturen anzeigen"
 
 #: ui/prefspanel.cpp:56
+#, fuzzy
 msgid "enable automatic line constraints"
-msgstr ""
+msgstr "Automatische Linieneinschränkungen aktivieren"
 
 #: ui/prefspanel.cpp:57
+#, fuzzy
 msgid "edit newly added dimensions"
-msgstr ""
+msgstr "Neu hinzugefügte Maße bearbeiten"
 
 #: ui/prefspanel.cpp:58
+#, fuzzy
 msgid "arc default is diameter"
-msgstr ""
+msgstr "Standard für Bögen ist der Durchmesser"
 
 #: ui/prefspanel.cpp:59
+#, fuzzy
 msgid "display the full path in the title bar"
-msgstr ""
+msgstr "vollen Pfad in der Titelleiste anzeigen"
 
 #: ui/prefspanel.cpp:63
+#, fuzzy
 msgid "use camera mouse navigation"
-msgstr ""
+msgstr "Kamera-Mausnavigation verwenden"
 
 #: ui/prefspanel.cpp:64
+#, fuzzy
 msgid "use turntable mouse navigation"
-msgstr ""
+msgstr "Drehteller-Mausnavigation verwenden"
 
 #: ui/prefspanel.cpp:65
+#, fuzzy
 msgid "animation speed (ms; 0 to disable)"
-msgstr ""
+msgstr "Animationsgeschwindigkeit (ms; 0 deaktiviert)"
 
 #: ui/prefspanel.cpp:70
+#, fuzzy
 msgid "chord tolerance (mm)"
-msgstr ""
+msgstr "Sehnentoleranz (mm)"
 
 #: ui/prefspanel.cpp:74
+#, fuzzy
 msgid "scale factor 1: (1:1 = mm, 1:25.4 = inch)"
-msgstr ""
+msgstr "Maßstabsfaktor 1: (1:1 = mm, 1:25.4 = Zoll)"
 
 #: ui/prefspanel.cpp:76
+#, fuzzy
 msgid "cutter radius offset (0 = none)"
-msgstr ""
+msgstr "Fräserradius-Versatz (0 = keiner)"
 
 #: ui/prefspanel.cpp:77
+#, fuzzy
 msgid "export shaded 2d triangles"
-msgstr ""
+msgstr "schattierte 2D-Dreiecke exportieren"
 
 #: ui/prefspanel.cpp:79
+#, fuzzy
 msgid "curves as piecewise linear (the cutter radius is not zero)"
-msgstr ""
+msgstr "Kurven als stückweise linear (Fräserradius ungleich null)"
 
 #: ui/prefspanel.cpp:81
+#, fuzzy
 msgid "export curves as piecewise linear"
-msgstr ""
+msgstr "Kurven als stückweise lineare Segmente exportieren"
 
 #: ui/prefspanel.cpp:83
+#, fuzzy
 msgid "fix white exported lines"
-msgstr ""
+msgstr "weiße exportierte Linien korrigieren"
 
 #: ui/prefspanel.cpp:84
+#, fuzzy
 msgid "export background color"
-msgstr ""
+msgstr "Hintergrundfarbe exportieren"
 
 #: ui/prefspanel.cpp:85
+#, fuzzy
 msgid "lay parts flat on export"
-msgstr ""
+msgstr "Teile beim Export flach legen"
 
 #: ui/prefspanel.cpp:87
+#, fuzzy
 msgid "canvas size"
-msgstr ""
+msgstr "Zeichenflächengröße"
 
 #: ui/prefspanel.cpp:89
+#, fuzzy
 msgid "fixed"
-msgstr ""
+msgstr "fest"
 
 #: ui/prefspanel.cpp:93
+#, fuzzy
 msgid "auto (margins)"
-msgstr ""
+msgstr "automatisch (Ränder)"
 
 #: ui/prefspanel.cpp:97 ui/stylespanel.cpp:121
+#, fuzzy
 msgid "left"
-msgstr ""
+msgstr "links"
 
 #: ui/prefspanel.cpp:98 ui/stylespanel.cpp:125
+#, fuzzy
 msgid "right"
-msgstr ""
+msgstr "rechts"
 
 #: ui/prefspanel.cpp:99 ui/stylespanel.cpp:126
+#, fuzzy
 msgid "bottom"
-msgstr ""
+msgstr "unten"
 
 #: ui/prefspanel.cpp:100 ui/stylespanel.cpp:130
+#, fuzzy
 msgid "top"
-msgstr ""
+msgstr "oben"
 
 #: ui/prefspanel.cpp:104
+#, fuzzy
 msgid "offset x"
-msgstr ""
+msgstr "Versatz X"
 
 #: ui/prefspanel.cpp:105
+#, fuzzy
 msgid "offset y"
-msgstr ""
+msgstr "Versatz Y"
 
 #: ui/prefspanel.cpp:108
+#, fuzzy
 msgid "g code"
-msgstr ""
+msgstr "G-Code"
 
 #: ui/prefspanel.cpp:109 ui/properties.cpp:117
+#, fuzzy
 msgid "depth"
-msgstr ""
+msgstr "Tiefe"
 
 #: ui/prefspanel.cpp:110
+#, fuzzy
 msgid "passes"
-msgstr ""
+msgstr "Durchgänge"
 
 #: ui/prefspanel.cpp:111
+#, fuzzy
 msgid "feed"
-msgstr ""
+msgstr "Vorschub"
 
 #: ui/prefspanel.cpp:112
+#, fuzzy
 msgid "plunge feed"
-msgstr ""
+msgstr "Eintauchvorschub"
 
 #: ui/prefspanel.cpp:117
+#, fuzzy
 msgid "dark theme"
-msgstr ""
+msgstr "dunkles Design"
 
 #: ui/prefspanel.cpp:119
+#, fuzzy
 msgid "light theme"
-msgstr ""
+msgstr "helles Design"
 
 #: ui/prefspanel.cpp:122
+#, fuzzy
 msgid "classic keys"
-msgstr ""
+msgstr "klassische Tasten"
 
 #: ui/prefspanel.cpp:122
+#, fuzzy
 msgid "modern keys"
-msgstr ""
+msgstr "moderne Tasten"
 
 #: ui/prefspanel.cpp:133
+#, fuzzy
 msgid "colour constraints by state"
-msgstr ""
+msgstr "Einschränkungen nach Zustand einfärben"
 
 #: ui/prefspanel.cpp:135
+#, fuzzy
 msgid "material for mass properties"
-msgstr ""
+msgstr "Material für Masseeigenschaften"
 
 #: ui/prefspanel.cpp:146
+#, fuzzy
 msgid "density (g/cm³)"
-msgstr ""
+msgstr "Dichte (g/cm³)"
 
 #: ui/prefspanel.cpp:154
+#, fuzzy
 msgid "Display"
-msgstr ""
+msgstr "Anzeige"
 
 #: ui/prefspanel.cpp:155
+#, fuzzy
 msgid "Navigation"
-msgstr ""
+msgstr "Navigation"
 
 #: ui/prefspanel.cpp:157
+#, fuzzy
 msgid "Solver and files"
-msgstr ""
+msgstr "Löser und Dateien"
 
 #: ui/prefspanel.cpp:158
+#, fuzzy
 msgid "redundant constraint timeout (ms)"
-msgstr ""
+msgstr "Zeitlimit für überflüssige Einschränkungen (ms)"
 
 #: ui/prefspanel.cpp:160
+#, fuzzy
 msgid "autosave interval (minutes)"
-msgstr ""
+msgstr "Intervall für automatisches Speichern (Minuten)"
 
 #: ui/prefspanel.cpp:166
-#, c-format
+#, fuzzy, c-format
 msgid "gl vendor   %s"
-msgstr ""
+msgstr "GL-Hersteller   %s"
 
 #: ui/prefspanel.cpp:167
-#, c-format
+#, fuzzy, c-format
 msgid "gl renderer %s"
-msgstr ""
+msgstr "GL-Renderer %s"
 
 #: ui/prefspanel.cpp:168
-#, c-format
+#, fuzzy, c-format
 msgid "gl version  %s"
-msgstr ""
+msgstr "GL-Version  %s"
 
 #: ui/problems.cpp:49
+#, fuzzy
 msgid "No problems."
-msgstr ""
+msgstr "Keine Probleme."
 
 #: ui/problems.cpp:63
+#, fuzzy
 msgid "select all"
-msgstr ""
+msgstr "alle auswählen"
 
 #: ui/problems.cpp:80
+#, fuzzy
 msgid "Some were left out: the search timed out."
-msgstr ""
+msgstr "Einige wurden ausgelassen: Die Suche hat die Zeitgrenze überschritten."
 
 #: ui/problems.cpp:82 ui/properties.cpp:532
+#, fuzzy
 msgid "allow redundant constraints"
-msgstr ""
+msgstr "überflüssige Einschränkungen zulassen"
 
 #: ui/problems.cpp:85
+#, fuzzy
 msgid "force to triangle mesh"
-msgstr ""
+msgstr "Als Dreiecksnetz erzwingen"
 
 #: ui/problemsmodel.cpp:19 ui/problemsmodel.cpp:24
+#, fuzzy
 msgid "unsolvable constraints"
-msgstr ""
+msgstr "nicht lösbare Einschränkungen"
 
 #: ui/problemsmodel.cpp:20
+#, fuzzy
 msgid "These constraints are incompatible. Edit > Undo may fix it."
 msgstr ""
+"Diese Einschränkungen sind unvereinbar. Bearbeiten > Rückgängig kann helfen."
 
 #: ui/problemsmodel.cpp:25
+#, fuzzy
 msgid "These constraints are unsatisfied. Edit > Undo may fix it."
 msgstr ""
+"Diese Einschränkungen sind nicht erfüllt. Bearbeiten > Rückgängig kann "
+"helfen."
 
 #: ui/problemsmodel.cpp:29
+#, fuzzy
 msgid "redundant constraints"
-msgstr ""
+msgstr "überflüssige Einschränkungen"
 
 #: ui/problemsmodel.cpp:30
+#, fuzzy
 msgid ""
 "Remove any one of these to fix it, or allow redundant constraints in this "
 "group."
 msgstr ""
+"Entfernen Sie eine davon, oder lassen Sie überflüssige Einschränkungen in "
+"dieser Gruppe zu."
 
 #: ui/problemsmodel.cpp:36
+#, fuzzy
 msgid "too many unknowns in a single group"
-msgstr ""
+msgstr "zu viele Unbekannte in einer Gruppe"
 
 #: ui/problemsmodel.cpp:37
+#, fuzzy
 msgid "Split the sketch into more groups."
-msgstr ""
+msgstr "Teilen Sie die Skizze in mehrere Gruppen auf."
 
 #: ui/problemsmodel.cpp:61
+#, fuzzy
 msgid "not closed contour, or not all same style"
-msgstr ""
+msgstr "Kontur nicht geschlossen oder nicht alles im selben Stil"
 
 #: ui/problemsmodel.cpp:62
+#, fuzzy
 msgid "points not all coplanar"
-msgstr ""
+msgstr "Punkte nicht alle in einer Ebene"
 
 #: ui/problemsmodel.cpp:63
+#, fuzzy
 msgid "contour is self-intersecting"
-msgstr ""
+msgstr "Kontur schneidet sich selbst"
 
 #: ui/problemsmodel.cpp:64
+#, fuzzy
 msgid "zero-length edge"
-msgstr ""
+msgstr "Kante der Länge null"
 
 #: ui/problemsmodel.cpp:67
+#, fuzzy
 msgid "The sketch shows where."
-msgstr ""
+msgstr "Die Skizze zeigt, wo."
 
 #: ui/problemsmodel.cpp:68
-#, c-format
+#, fuzzy, c-format
 msgid "In %s."
-msgstr ""
+msgstr "In %s."
 
 #: ui/problemsmodel.cpp:83
+#, fuzzy
 msgid "the Boolean operation failed"
-msgstr ""
+msgstr "die Boolesche Operation ist fehlgeschlagen"
 
 #: ui/problemsmodel.cpp:84
+#, fuzzy
 msgid "Forcing NURBS surfaces to a triangle mesh may fix it."
-msgstr ""
+msgstr "Das Umwandeln von NURBS-Flächen in ein Dreiecksnetz kann das beheben."
 
 #: ui/properties.cpp:83
-#, c-format
+#, fuzzy, c-format
 msgid "a dowel's pocket; the other is in %s"
-msgstr ""
+msgstr "eine Dübelbohrung; die andere ist in %s"
 
 #: ui/properties.cpp:85
-#, c-format
+#, fuzzy, c-format
 msgid "the pocket; the peg is on %s"
-msgstr ""
+msgstr "die Bohrung; der Zapfen ist an %s"
 
 #: ui/properties.cpp:87
-#, c-format
+#, fuzzy, c-format
 msgid "the peg; the pocket is in %s"
-msgstr ""
+msgstr "der Zapfen; die Bohrung ist in %s"
 
 #: ui/properties.cpp:90 ui/properties.cpp:178
+#, fuzzy
 msgid "fit"
-msgstr ""
+msgstr "Passung"
 
 #: ui/properties.cpp:100
+#, fuzzy
 msgid "fit table"
-msgstr ""
+msgstr "Passungstabelle"
 
 #: ui/properties.cpp:103 ui/selectionmodel.cpp:254 ui/selectionmodel.cpp:258
+#, fuzzy
 msgid "style"
-msgstr ""
+msgstr "Stil"
 
 #: ui/properties.cpp:104
+#, fuzzy
 msgid "peg and pocket"
-msgstr ""
+msgstr "Zapfen und Bohrung"
 
 #: ui/properties.cpp:110
+#, fuzzy
 msgid "dowel (a pocket in each)"
-msgstr ""
+msgstr "Dübel (je eine Bohrung)"
 
 #: ui/properties.cpp:117
+#, fuzzy
 msgid "dowel length"
-msgstr ""
+msgstr "Dübellänge"
 
 #: ui/properties.cpp:126
+#, fuzzy
 msgid "other way"
-msgstr ""
+msgstr "andere Richtung"
 
 #: ui/properties.cpp:145
-#, c-format
+#, fuzzy, c-format
 msgid "%s; the other half is %s"
-msgstr ""
+msgstr "%s; die andere Hälfte ist %s"
 
 #: ui/properties.cpp:146
+#, fuzzy
 msgid "the half behind"
-msgstr ""
+msgstr "die Hälfte dahinter"
 
 #: ui/properties.cpp:146
+#, fuzzy
 msgid "the half in front"
-msgstr ""
+msgstr "die Hälfte davor"
 
 #: ui/properties.cpp:152
+#, fuzzy
 msgid "swap the halves"
-msgstr ""
+msgstr "Hälften tauschen"
 
 #: ui/properties.cpp:158
+#, fuzzy
 msgid "dowels across the cut"
-msgstr ""
+msgstr "Dübel über die Schnittstelle"
 
 #: ui/properties.cpp:198
+#, fuzzy
 msgid "sketch in 3d"
-msgstr ""
+msgstr "in 3D skizzieren"
 
 #: ui/properties.cpp:199
+#, fuzzy
 msgid "sketch in new workplane"
-msgstr ""
+msgstr "in neuer Arbeitsebene skizzieren"
 
 #: ui/properties.cpp:200
+#, fuzzy
 msgid "extrude plane sketch"
-msgstr ""
+msgstr "Ebenenskizze extrudieren"
 
 #: ui/properties.cpp:201
+#, fuzzy
 msgid "lathe plane sketch"
-msgstr ""
+msgstr "Ebenenskizze drehen"
 
 #: ui/properties.cpp:202
+#, fuzzy
 msgid "revolve original sketch"
-msgstr ""
+msgstr "Originalskizze rotieren"
 
 #: ui/properties.cpp:203
+#, fuzzy
 msgid "create helical extrusion"
-msgstr ""
+msgstr "schraubenförmige Extrusion erzeugen"
 
 #: ui/properties.cpp:204
+#, fuzzy
 msgid "rotate original sketch"
-msgstr ""
+msgstr "Originalskizze drehen"
 
 #: ui/properties.cpp:205
+#, fuzzy
 msgid "translate original sketch"
-msgstr ""
+msgstr "Originalskizze verschieben"
 
 #: ui/properties.cpp:206
+#, fuzzy
 msgid "link geometry from file"
-msgstr ""
+msgstr "Geometrie aus Datei verknüpfen"
 
 #: ui/properties.cpp:207
+#, fuzzy
 msgid "round edges"
-msgstr ""
+msgstr "Kanten verrunden"
 
 #: ui/properties.cpp:208
+#, fuzzy
 msgid "bevel edges"
-msgstr ""
+msgstr "Kanten fasen"
 
 #: ui/properties.cpp:209
+#, fuzzy
 msgid "hollow the solid"
-msgstr ""
+msgstr "Körper aushöhlen"
 
 #: ui/properties.cpp:210
+#, fuzzy
 msgid "taper faces"
-msgstr ""
+msgstr "Flächen abschrägen"
 
 #: ui/properties.cpp:211
+#, fuzzy
 msgid "drill holes"
-msgstr ""
+msgstr "Bohrungen setzen"
 
 #: ui/properties.cpp:212
+#, fuzzy
 msgid "loft through profiles"
-msgstr ""
+msgstr "Loft durch Profile"
 
 #: ui/properties.cpp:213
+#, fuzzy
 msgid "sweep a profile along a path"
-msgstr ""
+msgstr "Profil entlang eines Pfads führen"
 
 #: ui/properties.cpp:214
+#, fuzzy
 msgid "fit joint"
-msgstr ""
+msgstr "Passverbindung"
 
 #: ui/properties.cpp:215
+#, fuzzy
 msgid "split the part"
-msgstr ""
-
-# German translations for the SolveSpace package.
-# Copyright (C) 2018 the SolveSpace authors
-# This file is distributed under the same license as the SolveSpace package.
-# Guido Hoss <netstuff@peakfox.com>, 2018. #zanata
-#: ui/properties.cpp:217
-msgid ""
-msgstr ""
-"Project-Id-Version: SolveSpace 3.0\n"
-"Report-Msgid-Bugs-To: phkahler@gmail.com\n"
-"POT-Creation-Date: 2026-10-28 14:58-0700\n"
-"PO-Revision-Date: 2022-04-30 16:44+0200\n"
-"Last-Translator: Reini Urban <rurban@cpan.org>\n"
-"Language-Team: none\n"
-"Language: de\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.4.2\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+msgstr "Teil teilen"
 
 #: ui/properties.cpp:223
+#, fuzzy
 msgid "(gone)"
-msgstr ""
+msgstr "(entfernt)"
 
 #: ui/properties.cpp:224
+#, fuzzy
 msgid "curve"
-msgstr ""
+msgstr "Kurve"
 
 #: ui/properties.cpp:226
+#, fuzzy
 msgid "face"
-msgstr ""
+msgstr "Fläche"
 
 #: ui/properties.cpp:228 ui/selectionmodel.cpp:388 ui/selectionmodel.cpp:398
 #: ui/selectionmodel.cpp:420
+#, fuzzy
 msgid "point"
-msgstr ""
+msgstr "Punkt"
 
 #: ui/properties.cpp:230
+#, fuzzy
 msgid "line"
-msgstr ""
+msgstr "Linie"
 
 #: ui/properties.cpp:232
+#, fuzzy
 msgid "arc"
-msgstr ""
+msgstr "Bogen"
 
 #: ui/properties.cpp:234
+#, fuzzy
 msgid "circle"
-msgstr ""
+msgstr "Kreis"
 
 #: ui/properties.cpp:237
-#, c-format
+#, fuzzy, c-format
 msgid "%s in %s"
-msgstr ""
+msgstr "%s in %s"
 
 #: ui/properties.cpp:280
+#, fuzzy
 msgid "part"
-msgstr ""
+msgstr "Teil"
 
 #: ui/properties.cpp:293
+#, fuzzy
 msgid "own part"
-msgstr ""
+msgstr "eigenes Teil"
 
 #: ui/properties.cpp:300
+#, fuzzy
 msgid "material"
-msgstr ""
+msgstr "Material"
 
 #: ui/properties.cpp:301
+#, fuzzy
 msgid "default"
-msgstr ""
+msgstr "Standard"
 
 #: ui/properties.cpp:318
+#, fuzzy
 msgid "one-sided"
-msgstr ""
+msgstr "einseitig"
 
 #: ui/properties.cpp:320
+#, fuzzy
 msgid "two-sided"
-msgstr ""
+msgstr "zweiseitig"
 
 #: ui/properties.cpp:323
+#, fuzzy
 msgid "skewed"
-msgstr ""
+msgstr "schräg"
 
 #: ui/properties.cpp:328
+#, fuzzy
 msgid "start with original"
-msgstr ""
+msgstr "mit Original beginnen"
 
 #: ui/properties.cpp:331
+#, fuzzy
 msgid "start with copy #1"
-msgstr ""
+msgstr "mit Kopie Nr. 1 beginnen"
 
 #: ui/properties.cpp:334 ui/toolpanels.cpp:97
+#, fuzzy
 msgid "repeat (times)"
-msgstr ""
+msgstr "Wiederholungen (Anzahl)"
 
 #: ui/properties.cpp:341
+#, fuzzy
 msgid "scaled by"
-msgstr ""
+msgstr "skaliert um"
 
 #: ui/properties.cpp:347
+#, fuzzy
 msgid "pitch (length per turn)"
-msgstr ""
+msgstr "Steigung (Länge je Umdrehung)"
 
 #: ui/properties.cpp:355
+#, fuzzy
 msgid "fixed pitch"
-msgstr ""
+msgstr "feste Steigung"
 
 #: ui/properties.cpp:370
+#, fuzzy
 msgid "plain"
-msgstr ""
+msgstr "einfach"
 
 #: ui/properties.cpp:372
+#, fuzzy
 msgid "counterbore"
-msgstr ""
+msgstr "Zylindersenkung"
 
 #: ui/properties.cpp:374
+#, fuzzy
 msgid "countersink"
-msgstr ""
+msgstr "Kegelsenkung"
 
 #: ui/properties.cpp:379
+#, fuzzy
 msgid "thread (M4, M4x0.5 or none)"
-msgstr ""
+msgstr "Gewinde (M4, M4x0.5 oder keines)"
 
 #: ui/properties.cpp:384
+#, fuzzy
 msgid "depth (blank: through all)"
-msgstr ""
+msgstr "Tiefe (leer: durchgehend)"
 
 #: ui/properties.cpp:387
+#, fuzzy
 msgid "counterbore diameter"
-msgstr ""
+msgstr "Durchmesser der Zylindersenkung"
 
 #: ui/properties.cpp:388
+#, fuzzy
 msgid "countersink diameter"
-msgstr ""
+msgstr "Durchmesser der Kegelsenkung"
 
 #: ui/properties.cpp:392
+#, fuzzy
 msgid "counterbore depth"
-msgstr ""
+msgstr "Tiefe der Zylindersenkung"
 
 #: ui/properties.cpp:395
+#, fuzzy
 msgid "countersink angle (degrees)"
-msgstr ""
+msgstr "Winkel der Kegelsenkung (Grad)"
 
 #: ui/properties.cpp:398
+#, fuzzy
 msgid "print clearance (added to every diameter)"
-msgstr ""
+msgstr "Druckspiel (zu jedem Durchmesser addiert)"
 
 #: ui/properties.cpp:401
+#, fuzzy
 msgid "drill the other way"
-msgstr ""
+msgstr "andere Richtung bohren"
 
 #: ui/properties.cpp:408
+#, fuzzy
 msgid "hole centres"
-msgstr ""
+msgstr "Bohrungsmittelpunkte"
 
 #: ui/properties.cpp:421 ui/selectionmodel.cpp:187 ui/selectionmodel.cpp:196
 #: ui/selectionmodel.cpp:391 ui/toolpanels.cpp:147
+#, fuzzy
 msgid "radius"
-msgstr ""
+msgstr "Radius"
 
 #: ui/properties.cpp:422 ui/properties.cpp:707 ui/properties.cpp:708
 #: ui/selectionmodel.cpp:316 ui/selectionmodel.cpp:379
 #: ui/selectionmodel.cpp:392 ui/selectionmodel.cpp:401
 #: ui/selectionmodel.cpp:454
+#, fuzzy
 msgid "distance"
-msgstr ""
+msgstr "Abstand"
 
 #: ui/properties.cpp:423
+#, fuzzy
 msgid "wall thickness"
-msgstr ""
+msgstr "Wandstärke"
 
 #: ui/properties.cpp:424
+#, fuzzy
 msgid "angle (degrees)"
-msgstr ""
+msgstr "Winkel (Grad)"
 
 #: ui/properties.cpp:437
+#, fuzzy
 msgid "hold this size (a dimension)"
-msgstr ""
+msgstr "diese Größe halten (als Maß)"
 
 #: ui/properties.cpp:445
+#, fuzzy
 msgid "inside"
-msgstr ""
+msgstr "innen"
 
 #: ui/properties.cpp:447
+#, fuzzy
 msgid "outside"
-msgstr ""
+msgstr "außen"
 
 #: ui/properties.cpp:449
+#, fuzzy
 msgid "both sides"
-msgstr ""
+msgstr "beide Seiten"
 
 #: ui/properties.cpp:452
+#, fuzzy
 msgid "edges"
-msgstr ""
+msgstr "Kanten"
 
 #: ui/properties.cpp:454 ui/properties.cpp:464
+#, fuzzy
 msgid "faces"
-msgstr ""
+msgstr "Flächen"
 
 #: ui/properties.cpp:456
+#, fuzzy
 msgid "only the outline of these faces"
-msgstr ""
+msgstr "nur der Umriss dieser Flächen"
 
 #: ui/properties.cpp:461
+#, fuzzy
 msgid "faces left open"
-msgstr ""
+msgstr "offene Flächen"
 
 #: ui/properties.cpp:461
+#, fuzzy
 msgid "no face open (a sealed hollow)"
-msgstr ""
+msgstr "keine offene Fläche (ein geschlossener Hohlkörper)"
 
 #: ui/properties.cpp:470
+#, fuzzy
 msgid "profiles, in order"
-msgstr ""
+msgstr "Profile in Reihenfolge"
 
 #: ui/properties.cpp:472
+#, fuzzy
 msgid "profile, then the path"
-msgstr ""
+msgstr "Profil, dann der Pfad"
 
 #: ui/properties.cpp:473
+#, fuzzy
 msgid "round the path's corners (radius; 0: sharp)"
-msgstr ""
+msgstr "Pfadecken abrunden (Radius; 0: scharf)"
 
 #: ui/properties.cpp:495
+#, fuzzy
 msgid "solid model as"
-msgstr ""
+msgstr "Volumenmodell als"
 
 #: ui/properties.cpp:500
+#, fuzzy
 msgid "union"
-msgstr ""
+msgstr "Vereinigung"
 
 #: ui/properties.cpp:502
+#, fuzzy
 msgid "assemble"
-msgstr ""
+msgstr "zusammenfügen"
 
 #: ui/properties.cpp:503
+#, fuzzy
 msgid "difference"
-msgstr ""
+msgstr "Differenz"
 
 #: ui/properties.cpp:505
+#, fuzzy
 msgid "intersection"
-msgstr ""
+msgstr "Schnittmenge"
 
 #: ui/properties.cpp:509
+#, fuzzy
 msgid "color"
-msgstr ""
+msgstr "Farbe"
 
 #: ui/properties.cpp:514
+#, fuzzy
 msgid "opacity"
-msgstr ""
+msgstr "Deckkraft"
 
 #: ui/properties.cpp:518
+#, fuzzy
 msgid "suppress this group's solid model"
-msgstr ""
+msgstr "Volumenmodell dieser Gruppe unterdrücken"
 
 #: ui/properties.cpp:523
+#, fuzzy
 msgid "show entities from this group"
-msgstr ""
+msgstr "Elemente dieser Gruppe anzeigen"
 
 #: ui/properties.cpp:525
+#, fuzzy
 msgid "force NURBS surfaces to triangle mesh"
-msgstr ""
+msgstr "NURBS-Flächen als Dreiecksnetz erzwingen"
 
 #: ui/properties.cpp:528
+#, fuzzy
 msgid "(model already forced to triangle mesh)"
-msgstr ""
+msgstr "(Modell ist bereits als Dreiecksnetz erzwungen)"
 
 #: ui/properties.cpp:530
+#, fuzzy
 msgid "relax constraints and dimensions"
-msgstr ""
+msgstr "Einschränkungen und Maße lockern"
 
 #: ui/properties.cpp:534
+#, fuzzy
 msgid "suppress dof calculation"
-msgstr ""
+msgstr "Berechnung der Freiheitsgrade unterdrücken"
 
 #: ui/properties.cpp:536
+#, fuzzy
 msgid "treat all dimensions as reference"
-msgstr ""
+msgstr "alle Maße als Referenz behandeln"
 
 #: ui/properties.cpp:540
+#, fuzzy
 msgid ""
 "The Boolean operation failed. It may be possible to fix the problem by "
 "choosing 'force NURBS surfaces to triangle mesh'."
 msgstr ""
+"Die Boolesche Operation ist fehlgeschlagen. Das Problem lässt sich "
+"vielleicht beheben, indem Sie „NURBS-Flächen als Dreiecksnetz erzwingen“ "
+"wählen."
 
 #: ui/properties.cpp:549
-#, c-format
+#, fuzzy, c-format
 msgid "Requests (%d)"
-msgstr ""
+msgstr "Anfragen (%d)"
 
 #: ui/properties.cpp:562
-#, c-format
+#, fuzzy, c-format
 msgid "Constraints (%d, %d DOF)"
-msgstr ""
+msgstr "Einschränkungen (%d, %d DOF)"
 
 #: ui/properties.cpp:615
+#, fuzzy
 msgid "Selection"
-msgstr ""
+msgstr "Auswahl"
 
 #: ui/properties.cpp:627
+#, fuzzy
 msgid "reference"
-msgstr ""
+msgstr "Referenz"
 
 #: ui/properties.cpp:632
+#, fuzzy
 msgid "use radius"
-msgstr ""
+msgstr "Radius verwenden"
 
 #: ui/properties.cpp:640 ui/selectionmodel.cpp:221 ui/stylespanel.cpp:108
+#, fuzzy
 msgid "text"
-msgstr ""
+msgstr "Text"
 
 #: ui/properties.cpp:644
+#, fuzzy
 msgid "apply kerning"
-msgstr ""
+msgstr "Unterschneidung anwenden"
 
 #: ui/properties.cpp:674
+#, fuzzy
 msgid "remove assigned style"
-msgstr ""
+msgstr "zugewiesenen Stil entfernen"
 
 #: ui/properties.cpp:677
+#, fuzzy
 msgid "unselect all"
-msgstr ""
+msgstr "Auswahl aufheben"
 
 #: ui/properties.cpp:688
+#, fuzzy
 msgid "cylindrical"
-msgstr ""
+msgstr "zylindrisch"
 
 #: ui/properties.cpp:688
+#, fuzzy
 msgid "revolute"
-msgstr ""
+msgstr "drehbar"
 
 #: ui/properties.cpp:688
+#, fuzzy
 msgid "slider"
-msgstr ""
+msgstr "verschiebbar"
 
 #: ui/properties.cpp:689
+#, fuzzy
 msgid "ball"
-msgstr ""
+msgstr "Kugel"
 
 #: ui/properties.cpp:689
+#, fuzzy
 msgid "gear coupling"
-msgstr ""
+msgstr "Zahnradkopplung"
 
 #: ui/properties.cpp:689
+#, fuzzy
 msgid "planar"
-msgstr ""
+msgstr "planar"
 
 #: ui/properties.cpp:692
-#, c-format
+#, fuzzy, c-format
 msgid "%s: %s drives %s"
-msgstr ""
+msgstr "%s: %s treibt %s an"
 
 #: ui/properties.cpp:696
+#, fuzzy
 msgid "ratio"
-msgstr ""
+msgstr "Verhältnis"
 
 #: ui/properties.cpp:701
-#, c-format
+#, fuzzy, c-format
 msgid "%s: %s holds %s"
-msgstr ""
+msgstr "%s: %s hält %s"
 
 #: ui/properties.cpp:709
+#, fuzzy
 msgid "along u"
-msgstr ""
+msgstr "entlang u"
 
 #: ui/properties.cpp:709
+#, fuzzy
 msgid "along v"
-msgstr ""
+msgstr "entlang v"
 
 #: ui/properties.cpp:710
+#, fuzzy
 msgid "about x"
-msgstr ""
+msgstr "um x"
 
 #: ui/properties.cpp:710
+#, fuzzy
 msgid "about y"
-msgstr ""
+msgstr "um y"
 
 #: ui/properties.cpp:710
+#, fuzzy
 msgid "about z"
-msgstr ""
+msgstr "um z"
 
 #: ui/properties.cpp:744
+#, fuzzy
 msgid "limits"
-msgstr ""
+msgstr "Grenzen"
 
 #: ui/properties.cpp:750 ui/selectionmodel.cpp:157 ui/selectionmodel.cpp:377
+#, fuzzy
 msgid "from"
-msgstr ""
+msgstr "von"
 
 #: ui/properties.cpp:756 ui/selectionmodel.cpp:158 ui/selectionmodel.cpp:378
+#, fuzzy
 msgid "to"
-msgstr ""
+msgstr "bis"
 
 #: ui/properties.cpp:763
+#, fuzzy
 msgid "sweep clearance"
-msgstr ""
+msgstr "Spiel durchfahren"
 
 #: ui/properties.cpp:770
+#, fuzzy
 msgid "design pose"
-msgstr ""
+msgstr "Konstruktionspose"
 
 #: ui/properties.cpp:774 ui/properties.cpp:797
+#, fuzzy
 msgid "delete"
-msgstr ""
+msgstr "Löschen"
 
 #: ui/properties.cpp:781
+#, fuzzy
 msgid "Fit table"
-msgstr ""
+msgstr "Passungstabelle"
 
 #: ui/properties.cpp:782
+#, fuzzy
 msgid ""
 "Clearances for fit joints, tuned to your printer: each side's gap (negative "
 "presses)."
 msgstr ""
+"Spiele für Passverbindungen, auf Ihren Drucker abgestimmt: Spalt je Seite "
+"(negative Werte sind Pressungen)."
 
 #: ui/properties.cpp:802
+#, fuzzy
 msgid "add a fit"
-msgstr ""
+msgstr "Passung hinzufügen"
 
 #: ui/selectionmodel.cpp:16
+#, fuzzy
 msgid "Coincident"
-msgstr ""
+msgstr "Deckungsgleich"
 
 #: ui/selectionmodel.cpp:18
+#, fuzzy
 msgid "Point to line distance"
-msgstr ""
+msgstr "Punkt-Linie-Abstand"
 
 #: ui/selectionmodel.cpp:19
+#, fuzzy
 msgid "Point to plane distance"
-msgstr ""
+msgstr "Punkt-Ebene-Abstand"
 
 #: ui/selectionmodel.cpp:20
+#, fuzzy
 msgid "Point to face distance"
-msgstr ""
+msgstr "Punkt-Fläche-Abstand"
 
 #: ui/selectionmodel.cpp:21
+#, fuzzy
 msgid "Projected distance"
-msgstr ""
+msgstr "Projizierter Abstand"
 
 #: ui/selectionmodel.cpp:22
+#, fuzzy
 msgid "Point in plane"
-msgstr ""
+msgstr "Punkt in Ebene"
 
 #: ui/selectionmodel.cpp:23
+#, fuzzy
 msgid "Point on line"
-msgstr ""
+msgstr "Punkt auf Linie"
 
 #: ui/selectionmodel.cpp:24
+#, fuzzy
 msgid "Point on face"
-msgstr ""
+msgstr "Punkt auf Fläche"
 
 #: ui/selectionmodel.cpp:25
+#, fuzzy
 msgid "Equal length"
-msgstr ""
+msgstr "Gleiche Länge"
 
 #: ui/selectionmodel.cpp:26
+#, fuzzy
 msgid "Equal length and distance"
-msgstr ""
+msgstr "Gleiche Länge und gleicher Abstand"
 
 #: ui/selectionmodel.cpp:27
+#, fuzzy
 msgid "Equal distances"
-msgstr ""
+msgstr "Gleiche Abstände"
 
 #: ui/selectionmodel.cpp:28
+#, fuzzy
 msgid "Length ratio"
-msgstr ""
+msgstr "Längenverhältnis"
 
 #: ui/selectionmodel.cpp:29
+#, fuzzy
 msgid "Arc length ratio"
-msgstr ""
+msgstr "Bogenlängenverhältnis"
 
 #: ui/selectionmodel.cpp:30
+#, fuzzy
 msgid "Arc to line length ratio"
-msgstr ""
+msgstr "Bogen-Linien-Längenverhältnis"
 
 #: ui/selectionmodel.cpp:31
+#, fuzzy
 msgid "Length difference"
-msgstr ""
+msgstr "Längendifferenz"
 
 #: ui/selectionmodel.cpp:32
+#, fuzzy
 msgid "Arc length difference"
-msgstr ""
+msgstr "Bogenlängendifferenz"
 
 #: ui/selectionmodel.cpp:33
+#, fuzzy
 msgid "Arc to line length difference"
-msgstr ""
+msgstr "Bogen-Linien-Längendifferenz"
 
 #: ui/selectionmodel.cpp:35
+#, fuzzy
 msgid "Symmetric horizontally"
-msgstr ""
+msgstr "Horizontal symmetrisch"
 
 #: ui/selectionmodel.cpp:36
+#, fuzzy
 msgid "Symmetric vertically"
-msgstr ""
+msgstr "Vertikal symmetrisch"
 
 #: ui/selectionmodel.cpp:37
+#, fuzzy
 msgid "Symmetric about line"
-msgstr ""
+msgstr "Symmetrisch zu Linie"
 
 #: ui/selectionmodel.cpp:41
+#, fuzzy
 msgid "Diameter"
-msgstr ""
+msgstr "Durchmesser"
 
 #: ui/selectionmodel.cpp:42
+#, fuzzy
 msgid "Point on circle"
-msgstr ""
+msgstr "Punkt auf Kreis"
 
 #: ui/selectionmodel.cpp:43
+#, fuzzy
 msgid "Same orientation"
-msgstr ""
+msgstr "Gleiche Ausrichtung"
 
 #: ui/selectionmodel.cpp:44
+#, fuzzy
 msgid "Angle"
-msgstr ""
+msgstr "Winkel"
 
 #: ui/selectionmodel.cpp:45
+#, fuzzy
 msgid "Parallel"
-msgstr ""
+msgstr "Parallel"
 
 #: ui/selectionmodel.cpp:46 ui/selectionmodel.cpp:47 ui/selectionmodel.cpp:48
+#, fuzzy
 msgid "Tangent"
-msgstr ""
+msgstr "Tangential"
 
 #: ui/selectionmodel.cpp:50
+#, fuzzy
 msgid "Equal radius"
-msgstr ""
+msgstr "Gleicher Radius"
 
 #: ui/selectionmodel.cpp:51
+#, fuzzy
 msgid "Equal angle"
-msgstr ""
+msgstr "Gleicher Winkel"
 
 #: ui/selectionmodel.cpp:52
+#, fuzzy
 msgid "Equal line and arc length"
-msgstr ""
+msgstr "Gleiche Linien- und Bogenlänge"
 
 #: ui/selectionmodel.cpp:53
+#, fuzzy
 msgid "Lock"
-msgstr ""
+msgstr "Fixieren"
 
 #: ui/selectionmodel.cpp:66 ui/selectionmodel.cpp:339
+#, fuzzy
 msgid "Constraint"
-msgstr ""
+msgstr "Einschränkung"
 
 #: ui/selectionmodel.cpp:113 ui/selectionmodel.cpp:114
 #: ui/selectionmodel.cpp:248 ui/selectionmodel.cpp:345
 #: ui/selectionmodel.cpp:427
+#, fuzzy
 msgid "workplane"
-msgstr ""
+msgstr "Arbeitsebene"
 
 #: ui/selectionmodel.cpp:131
+#, fuzzy
 msgid "at"
-msgstr ""
+msgstr "bei"
 
 #: ui/selectionmodel.cpp:140
+#, fuzzy
 msgid "Normal / coordinate system"
-msgstr ""
+msgstr "Normale / Koordinatensystem"
 
 #: ui/selectionmodel.cpp:141 ui/selectionmodel.cpp:149
 #: ui/selectionmodel.cpp:208
+#, fuzzy
 msgid "normal"
-msgstr ""
+msgstr "Normale"
 
 #: ui/selectionmodel.cpp:142
+#, fuzzy
 msgid "u"
-msgstr ""
+msgstr "u"
 
 #: ui/selectionmodel.cpp:143
+#, fuzzy
 msgid "v"
-msgstr ""
+msgstr "v"
 
 #: ui/selectionmodel.cpp:148
+#, fuzzy
 msgid "origin"
-msgstr ""
+msgstr "Ursprung"
 
 #: ui/selectionmodel.cpp:156
+#, fuzzy
 msgid "Line segment"
-msgstr ""
+msgstr "Liniensegment"
 
 #: ui/selectionmodel.cpp:166
+#, fuzzy
 msgid "Periodic C2 cubic spline"
-msgstr ""
+msgstr "Periodischer kubischer C2-Spline"
 
 #: ui/selectionmodel.cpp:169
+#, fuzzy
 msgid "Interpolating C2 cubic spline"
-msgstr ""
+msgstr "Interpolierender kubischer C2-Spline"
 
 #: ui/selectionmodel.cpp:172
+#, fuzzy
 msgid "Cubic Bézier curve"
-msgstr ""
+msgstr "Kubische Bézier-Kurve"
 
 #: ui/selectionmodel.cpp:182
+#, fuzzy
 msgid "Arc of a circle"
-msgstr ""
+msgstr "Kreisbogen"
 
 #: ui/selectionmodel.cpp:183 ui/selectionmodel.cpp:194
 #: ui/selectionmodel.cpp:389 ui/stylespanel.cpp:123
+#, fuzzy
 msgid "center"
-msgstr ""
+msgstr "Mittelpunkt"
 
 #: ui/selectionmodel.cpp:184
+#, fuzzy
 msgid "endpoints"
-msgstr ""
+msgstr "Endpunkte"
 
 #: ui/selectionmodel.cpp:188
+#, fuzzy
 msgid "arc length"
-msgstr ""
+msgstr "Bogenlänge"
 
 #: ui/selectionmodel.cpp:197
+#, fuzzy
 msgid "circumference"
-msgstr ""
+msgstr "Umfang"
 
 #: ui/selectionmodel.cpp:207
+#, fuzzy
 msgid "Plane face"
-msgstr ""
+msgstr "Ebenenfläche"
 
 #: ui/selectionmodel.cpp:209
+#, fuzzy
 msgid "through"
-msgstr ""
+msgstr "durch"
 
 #: ui/selectionmodel.cpp:213
+#, fuzzy
 msgid "TrueType font text"
-msgstr ""
+msgstr "TrueType-Schrifttext"
 
 #: ui/selectionmodel.cpp:214
+#, fuzzy
 msgid "font"
-msgstr ""
+msgstr "Schrift"
 
 #: ui/selectionmodel.cpp:227
+#, fuzzy
 msgid "Image"
-msgstr ""
+msgstr "Bild"
 
 #: ui/selectionmodel.cpp:228
+#, fuzzy
 msgid "file"
-msgstr ""
+msgstr "Datei"
 
 #: ui/selectionmodel.cpp:232
+#, fuzzy
 msgid "Entity"
-msgstr ""
+msgstr "Element"
 
 #: ui/selectionmodel.cpp:239 ui/selectionmodel.cpp:241
+#, fuzzy
 msgid "sketch entity"
-msgstr ""
+msgstr "Skizzenelement"
 
 #: ui/selectionmodel.cpp:244
+#, fuzzy
 msgid "group"
-msgstr ""
+msgstr "Gruppe"
 
 #: ui/selectionmodel.cpp:248
+#, fuzzy
 msgid "none (free in 3d)"
-msgstr ""
+msgstr "keine (frei im 3D-Raum)"
 
 #: ui/selectionmodel.cpp:258
+#, fuzzy
 msgid "none"
-msgstr ""
+msgstr "keine"
 
 #: ui/selectionmodel.cpp:261
+#, fuzzy
 msgid "construction"
-msgstr ""
+msgstr "Hilfselement"
 
 #: ui/selectionmodel.cpp:261
+#, fuzzy
 msgid "yes"
-msgstr ""
+msgstr "ja"
 
 #: ui/selectionmodel.cpp:281
+#, fuzzy
 msgid "constrained by"
-msgstr ""
+msgstr "eingeschränkt durch"
 
 #: ui/selectionmodel.cpp:281
+#, fuzzy
 msgid "measured by"
-msgstr ""
+msgstr "gemessen durch"
 
 #: ui/selectionmodel.cpp:299
-#, c-format
+#, fuzzy, c-format
 msgid "plane%c normal"
-msgstr ""
+msgstr "Ebene%c Normale"
 
 #: ui/selectionmodel.cpp:300
-#, c-format
+#, fuzzy, c-format
 msgid "plane%c thru"
-msgstr ""
+msgstr "Ebene%c durch"
 
 #: ui/selectionmodel.cpp:315
+#, fuzzy
 msgid "attached to"
-msgstr ""
+msgstr "verbunden mit"
 
 #: ui/selectionmodel.cpp:317 ui/selectionmodel.cpp:380
+#, fuzzy
 msgid "offset (x, y, z)"
-msgstr ""
+msgstr "Versatz (x, y, z)"
 
 #: ui/selectionmodel.cpp:320 ui/statusmodel.cpp:48
+#, fuzzy
 msgid "Dimension"
-msgstr ""
+msgstr "Maß"
 
 #: ui/selectionmodel.cpp:320
+#, fuzzy
 msgid "Reference"
-msgstr ""
+msgstr "Referenz"
 
 #: ui/selectionmodel.cpp:341
+#, fuzzy
 msgid "type"
-msgstr ""
+msgstr "Typ"
 
 #: ui/selectionmodel.cpp:345
+#, fuzzy
 msgid "none (not projected)"
-msgstr ""
+msgstr "keine (nicht projiziert)"
 
 #: ui/selectionmodel.cpp:352
+#, fuzzy
 msgid "constrains"
-msgstr ""
+msgstr "schränkt ein"
 
 #: ui/selectionmodel.cpp:352
+#, fuzzy
 msgid "measures"
-msgstr ""
+msgstr "misst"
 
 #: ui/selectionmodel.cpp:376
+#, fuzzy
 msgid "Two points"
-msgstr ""
+msgstr "Zwei Punkte"
 
 #: ui/selectionmodel.cpp:386
+#, fuzzy
 msgid "Point and a circle"
-msgstr ""
+msgstr "Punkt und ein Kreis"
 
 #: ui/selectionmodel.cpp:387
+#, fuzzy
 msgid "Point and an arc"
-msgstr ""
+msgstr "Punkt und ein Bogen"
 
 #: ui/selectionmodel.cpp:397
+#, fuzzy
 msgid "A point and a plane face"
-msgstr ""
+msgstr "Ein Punkt und eine Ebenenfläche"
 
 #: ui/selectionmodel.cpp:399
+#, fuzzy
 msgid "plane normal"
-msgstr ""
+msgstr "Normale der Ebene"
 
 #: ui/selectionmodel.cpp:400
+#, fuzzy
 msgid "plane through"
-msgstr ""
+msgstr "Ebene durch"
 
 #: ui/selectionmodel.cpp:406
+#, fuzzy
 msgid "Two points and a vector"
-msgstr ""
+msgstr "Zwei Punkte und ein Vektor"
 
 #: ui/selectionmodel.cpp:407
+#, fuzzy
 msgid "point A"
-msgstr ""
+msgstr "Punkt A"
 
 #: ui/selectionmodel.cpp:408
+#, fuzzy
 msgid "point B"
-msgstr ""
+msgstr "Punkt B"
 
 #: ui/selectionmodel.cpp:409
+#, fuzzy
 msgid "vector"
-msgstr ""
+msgstr "Vektor"
 
 #: ui/selectionmodel.cpp:410
+#, fuzzy
 msgid "projected distance"
-msgstr ""
+msgstr "projizierter Abstand"
 
 #: ui/selectionmodel.cpp:417
+#, fuzzy
 msgid "Line segment and point"
-msgstr ""
+msgstr "Liniensegment und Punkt"
 
 #: ui/selectionmodel.cpp:418
+#, fuzzy
 msgid "line through"
-msgstr ""
+msgstr "Linie durch"
 
 #: ui/selectionmodel.cpp:421
+#, fuzzy
 msgid "distance to line"
-msgstr ""
+msgstr "Abstand zur Linie"
 
 #: ui/selectionmodel.cpp:434
+#, fuzzy
 msgid "Two vectors"
-msgstr ""
+msgstr "Zwei Vektoren"
 
 #: ui/selectionmodel.cpp:435
+#, fuzzy
 msgid "vector A"
-msgstr ""
+msgstr "Vektor A"
 
 #: ui/selectionmodel.cpp:436
+#, fuzzy
 msgid "vector B"
-msgstr ""
+msgstr "Vektor B"
 
 #: ui/selectionmodel.cpp:437 ui/selectionmodel.cpp:447
-#, c-format
+#, fuzzy, c-format
 msgid "%.2f degrees"
-msgstr ""
+msgstr "%.2f Grad"
 
 #: ui/selectionmodel.cpp:440 ui/selectionmodel.cpp:450
-#, c-format
+#, fuzzy, c-format
 msgid "%.2f (mod 180)"
-msgstr ""
+msgstr "%.2f (mod 180)"
 
 #: ui/selectionmodel.cpp:440 ui/selectionmodel.cpp:450
+#, fuzzy
 msgid "or"
-msgstr ""
+msgstr "oder"
 
 #: ui/selectionmodel.cpp:442
+#, fuzzy
 msgid "Two plane faces"
-msgstr ""
+msgstr "Zwei Ebenenflächen"
 
 #: ui/selectionmodel.cpp:457
+#, fuzzy
 msgid "Three plane faces"
-msgstr ""
+msgstr "Drei Ebenenflächen"
 
 #: ui/selectionmodel.cpp:462
-#, c-format
+#, fuzzy, c-format
 msgid "%d item"
-msgstr ""
+msgstr "%d Element"
 
 #: ui/selectionmodel.cpp:462
-#, c-format
+#, fuzzy, c-format
 msgid "%d items"
-msgstr ""
+msgstr "%d Elemente"
 
 #: ui/shortcuts.cpp:21
+#, fuzzy
 msgid "filter"
-msgstr ""
+msgstr "Filter"
 
 #: ui/statusmodel.cpp:35 ui/statusmodel.cpp:43
+#, fuzzy
 msgid "Hold"
-msgstr ""
+msgstr "Halten"
 
 #: ui/statusmodel.cpp:41
+#, fuzzy
 msgid "2 fingers"
-msgstr ""
+msgstr "2 Finger"
 
 #: ui/statusmodel.cpp:41
+#, fuzzy
 msgid "Pan, zoom"
-msgstr ""
+msgstr "Verschieben, Zoomen"
 
 #: ui/statusmodel.cpp:42
+#, fuzzy
 msgid "Orbit"
-msgstr ""
+msgstr "Orbit"
 
 #: ui/statusmodel.cpp:43
+#, fuzzy
 msgid "Menu"
-msgstr ""
+msgstr "Menü"
 
 #: ui/statusmodel.cpp:45
+#, fuzzy
 msgid "Commands"
-msgstr ""
+msgstr "Befehle"
 
 #: ui/statusmodel.cpp:51
+#, fuzzy
 msgid "Views"
-msgstr ""
+msgstr "Ansichten"
 
 #: ui/statusmodel.cpp:57
+#, fuzzy
 msgid "Solved"
-msgstr ""
+msgstr "Gelöst"
 
 #: ui/statusmodel.cpp:58
+#, fuzzy
 msgid "Redundant"
-msgstr ""
+msgstr "Überflüssig"
 
 #: ui/statusmodel.cpp:60
+#, fuzzy
 msgid "Didn't converge"
-msgstr ""
+msgstr "Nicht konvergiert"
 
 #: ui/statusmodel.cpp:61
+#, fuzzy
 msgid "Too many unknowns"
-msgstr ""
+msgstr "Zu viele Unbekannte"
 
 #: ui/stylespanel.cpp:56
+#, fuzzy
 msgid "Style"
-msgstr ""
+msgstr "Stil"
 
 #: ui/stylespanel.cpp:58
+#, fuzzy
 msgid "name"
-msgstr ""
+msgstr "Name"
 
 #: ui/stylespanel.cpp:59
+#, fuzzy
 msgid "delete style"
-msgstr ""
+msgstr "Stil löschen"
 
 #: ui/stylespanel.cpp:69
+#, fuzzy
 msgid "line stroke"
-msgstr ""
+msgstr "Linienstrich"
 
 #: ui/stylespanel.cpp:72
+#, fuzzy
 msgid "stroke color"
-msgstr ""
+msgstr "Strichfarbe"
 
 #: ui/stylespanel.cpp:76
+#, fuzzy
 msgid "stipple width"
-msgstr ""
+msgstr "Strichelbreite"
 
 #: ui/stylespanel.cpp:78 ui/stylespanel.cpp:111
+#, fuzzy
 msgid "pixels"
-msgstr ""
+msgstr "Pixel"
 
 #: ui/stylespanel.cpp:84 ui/stylespanel.cpp:132
+#, fuzzy
 msgid "in pixels"
-msgstr ""
+msgstr "in Pixeln"
 
 #: ui/stylespanel.cpp:86
+#, fuzzy
 msgid "continuous"
-msgstr ""
+msgstr "durchgehend"
 
 #: ui/stylespanel.cpp:86
+#, fuzzy
 msgid "dash"
-msgstr ""
+msgstr "Strich"
 
 #: ui/stylespanel.cpp:86
+#, fuzzy
 msgid "short dash"
-msgstr ""
+msgstr "kurzer Strich"
 
 #: ui/stylespanel.cpp:87
+#, fuzzy
 msgid "dash dot"
-msgstr ""
+msgstr "Strich-Punkt"
 
 #: ui/stylespanel.cpp:87
+#, fuzzy
 msgid "dash dot dot"
-msgstr ""
+msgstr "Strich-Punkt-Punkt"
 
 #: ui/stylespanel.cpp:87
+#, fuzzy
 msgid "long dash"
-msgstr ""
+msgstr "langer Strich"
 
 #: ui/stylespanel.cpp:88
+#, fuzzy
 msgid "dot"
-msgstr ""
+msgstr "Punkt"
 
 #: ui/stylespanel.cpp:88
+#, fuzzy
 msgid "freehand"
-msgstr ""
+msgstr "Freihand"
 
 #: ui/stylespanel.cpp:88
+#, fuzzy
 msgid "zigzag"
-msgstr ""
+msgstr "Zickzack"
 
 #: ui/stylespanel.cpp:89
+#, fuzzy
 msgid "stipple type"
-msgstr ""
+msgstr "Strichelart"
 
 #: ui/stylespanel.cpp:99
+#, fuzzy
 msgid "contour fill"
-msgstr ""
+msgstr "Konturfüllung"
 
 #: ui/stylespanel.cpp:100
+#, fuzzy
 msgid "fill color"
-msgstr ""
+msgstr "Füllfarbe"
 
 #: ui/stylespanel.cpp:105
+#, fuzzy
 msgid "contours are filled"
-msgstr ""
+msgstr "Konturen sind gefüllt"
 
 #: ui/stylespanel.cpp:120
+#, fuzzy
 msgid "comment alignment"
-msgstr ""
+msgstr "Ausrichtung des Kommentars"
 
 #: ui/stylespanel.cpp:128
+#, fuzzy
 msgid "middle"
-msgstr ""
+msgstr "Mitte"
 
 #: ui/stylespanel.cpp:136
+#, fuzzy
 msgid "show these objects on screen"
-msgstr ""
+msgstr "diese Objekte auf dem Bildschirm anzeigen"
 
 #: ui/stylespanel.cpp:137
+#, fuzzy
 msgid "export these objects"
-msgstr ""
+msgstr "diese Objekte exportieren"
 
 #: ui/stylespanel.cpp:140
+#, fuzzy
 msgid "assign the selection to this style"
-msgstr ""
+msgstr "Auswahl diesem Stil zuweisen"
 
 #: ui/stylespanel.cpp:143
+#, fuzzy
 msgid "Or right-click lines and curves on the drawing."
 msgstr ""
+"Oder klicken Sie Linien und Kurven in der Zeichnung mit der rechten "
+"Maustaste an."
 
 #: ui/stylespanel.cpp:161
+#, fuzzy
 msgid "create a new custom style"
-msgstr ""
+msgstr "neuen eigenen Stil erstellen"
 
 #: ui/stylespanel.cpp:165
+#, fuzzy
 msgid "load factory defaults"
-msgstr ""
+msgstr "Werkseinstellungen laden"
 
 #: ui/stylespanel.cpp:170
+#, fuzzy
 msgid "background color"
-msgstr ""
+msgstr "Hintergrundfarbe"
 
 #: ui/toolpanels.cpp:47
-#, c-format
+#, fuzzy, c-format
 msgid "scale (px per %s)"
-msgstr ""
+msgstr "Maßstab (px pro %s)"
 
 #: ui/toolpanels.cpp:50
+#, fuzzy
 msgid "set to full scale"
-msgstr ""
+msgstr "auf vollen Maßstab setzen"
 
 #: ui/toolpanels.cpp:53
+#, fuzzy
 msgid "origin (the centre of the screen)"
-msgstr ""
+msgstr "Ursprung (Bildschirmmitte)"
 
 #: ui/toolpanels.cpp:56
+#, fuzzy
 msgid "projection: right"
-msgstr ""
+msgstr "Projektion: rechts"
 
 #: ui/toolpanels.cpp:59
+#, fuzzy
 msgid "projection: up"
-msgstr ""
+msgstr "Projektion: oben"
 
 #: ui/toolpanels.cpp:62
-#, c-format
+#, fuzzy, c-format
 msgid "out (%.3f, %.3f, %.3f)"
-msgstr ""
+msgstr "aus (%.3f, %.3f, %.3f)"
 
 #: ui/toolpanels.cpp:64
+#, fuzzy
 msgid "perspective factor (0 for parallel)"
-msgstr ""
+msgstr "Perspektivfaktor (0 für parallel)"
 
 #: ui/toolpanels.cpp:67
-#, c-format
+#, fuzzy, c-format
 msgid "light %d direction"
-msgstr ""
+msgstr "Richtung Licht %d"
 
 #: ui/toolpanels.cpp:70
-#, c-format
+#, fuzzy, c-format
 msgid "light %d intensity"
-msgstr ""
+msgstr "Intensität Licht %d"
 
 #: ui/toolpanels.cpp:74
+#, fuzzy
 msgid "ambient lighting"
-msgstr ""
+msgstr "Umgebungslicht"
 
 #: ui/toolpanels.cpp:75
+#, fuzzy
 msgid "explode distance"
-msgstr ""
+msgstr "Explosionsabstand"
 
 #: ui/toolpanels.cpp:99
+#, fuzzy
 msgid "rotate (degrees)"
-msgstr ""
+msgstr "Drehen (Grad)"
 
 #: ui/toolpanels.cpp:101
+#, fuzzy
 msgid "about point"
-msgstr ""
+msgstr "um Punkt"
 
 #: ui/toolpanels.cpp:102 ui/toolpanels.cpp:107
-#, c-format
+#, fuzzy, c-format
 msgid "%s"
-msgstr ""
+msgstr "%s"
 
 #: ui/toolpanels.cpp:103
+#, fuzzy
 msgid "use the selected point"
-msgstr ""
+msgstr "ausgewählten Punkt verwenden"
 
 #: ui/toolpanels.cpp:106
+#, fuzzy
 msgid "translate"
-msgstr ""
+msgstr "Verschieben"
 
 #: ui/toolpanels.cpp:108
+#, fuzzy
 msgid "use the two selected points"
-msgstr ""
+msgstr "die beiden ausgewählten Punkte verwenden"
 
 #: ui/toolpanels.cpp:111
+#, fuzzy
 msgid "scale"
-msgstr ""
+msgstr "Skalieren"
 
 #: ui/toolpanels.cpp:113
+#, fuzzy
 msgid "mirror"
-msgstr ""
+msgstr "Spiegeln"
 
 #: ui/toolpanels.cpp:116
+#, fuzzy
 msgid "paste transformed now"
-msgstr ""
+msgstr "jetzt transformiert einfügen"
 
 #: ui/toolpanels.cpp:130
-#, c-format
+#, fuzzy, c-format
 msgid "start %s"
-msgstr ""
+msgstr "Start %s"
 
 #: ui/toolpanels.cpp:131
+#, fuzzy
 msgid "finish"
-msgstr ""
+msgstr "Fertig"
 
 #: ui/toolpanels.cpp:132
+#, fuzzy
 msgid "steps"
-msgstr ""
+msgstr "Schritte"
 
 #: ui/toolpanels.cpp:133
+#, fuzzy
 msgid "step dimension now"
-msgstr ""
+msgstr "Schrittmaß jetzt"
 
 #: ui/toolpanels.cpp:143
+#, fuzzy
 msgid "choose radius automatically"
-msgstr ""
+msgstr "Radius automatisch wählen"
 
 #: ui/toolpanels.cpp:151
+#, fuzzy
 msgid "modify original entities"
-msgstr ""
+msgstr "Originalelemente ändern"
 
 #: ui/toolpanels.cpp:154
+#, fuzzy
 msgid ""
 "To make a tangent arc at a point, select the point and choose Sketch > "
 "Tangent Arc at Point."
 msgstr ""
+"Um einen Tangentialbogen an einem Punkt zu erstellen, wählen Sie den Punkt "
+"und dann Skizze > Tangentialbogen am Punkt."
 
 #: ui/uiactions.cpp:13
+#, fuzzy
 msgid "View › Command Palette"
-msgstr ""
+msgstr "Ansicht › Befehlspalette"
 
 #: ui/uiactions.cpp:14
+#, fuzzy
 msgid "View › Toggle Menu Bar"
-msgstr ""
+msgstr "Ansicht › Menüleiste ein-/ausblenden"
 
 #: ui/uiactions.cpp:15
+#, fuzzy
 msgid "View › Toggle Theme"
-msgstr ""
+msgstr "Ansicht › Design umschalten"
 
 #: ui/uiactions.cpp:16
+#, fuzzy
 msgid "View › Outliner"
-msgstr ""
+msgstr "Ansicht › Gliederung"
 
 #: ui/uiactions.cpp:17
+#, fuzzy
 msgid "View › Properties"
-msgstr ""
+msgstr "Ansicht › Eigenschaften"
 
 #: ui/uiactions.cpp:18
+#, fuzzy
 msgid "View › Problems"
-msgstr ""
+msgstr "Ansicht › Probleme"
 
 #: ui/uiactions.cpp:19
+#, fuzzy
 msgid "View › Front"
-msgstr ""
+msgstr "Ansicht › Vorne"
 
 #: ui/uiactions.cpp:20
+#, fuzzy
 msgid "View › Back"
-msgstr ""
+msgstr "Ansicht › Hinten"
 
 #: ui/uiactions.cpp:21
+#, fuzzy
 msgid "View › Right"
-msgstr ""
+msgstr "Ansicht › Rechts"
 
 #: ui/uiactions.cpp:22
+#, fuzzy
 msgid "View › Left"
-msgstr ""
+msgstr "Ansicht › Links"
 
 #: ui/uiactions.cpp:23
+#, fuzzy
 msgid "View › Top"
-msgstr ""
+msgstr "Ansicht › Oben"
 
 #: ui/uiactions.cpp:24
+#, fuzzy
 msgid "View › Bottom"
-msgstr ""
+msgstr "Ansicht › Unten"
 
 #: ui/uiactions.cpp:25
+#, fuzzy
 msgid "View › Frame Selected"
-msgstr ""
+msgstr "Ansicht › Auswahl einpassen"
 
 #: ui/uiactions.cpp:26
+#, fuzzy
 msgid "View › Hide Group"
-msgstr ""
+msgstr "Ansicht › Gruppe ausblenden"
 
 #: ui/uiactions.cpp:27
+#, fuzzy
 msgid "View › Show All Groups"
-msgstr ""
+msgstr "Ansicht › Alle Gruppen anzeigen"
 
 #: ui/uiactions.cpp:28
+#, fuzzy
 msgid "View › Isolate Group"
-msgstr ""
+msgstr "Ansicht › Gruppe isolieren"
 
 #: ui/uiactions.cpp:29
+#, fuzzy
 msgid "Sketch › Enter/Exit Sketch"
-msgstr ""
+msgstr "Skizze › Skizze betreten/verlassen"
 
 #: ui/uiactions.cpp:30
+#, fuzzy
 msgid "Edit › Grab"
-msgstr ""
+msgstr "Bearbeiten › Verschieben"
 
 #: ui/uiactions.cpp:31
+#, fuzzy
 msgid "Constrain › Smart Dimension"
-msgstr ""
+msgstr "Einschränken › Intelligentes Maß"
 
 #: ui/uiactions.cpp:32
+#, fuzzy
 msgid "Sketch › Add… (pie)"
-msgstr ""
+msgstr "Skizze › Hinzufügen… (Menükreis)"
 
 #: ui/uiactions.cpp:33
+#, fuzzy
 msgid "Constrain › Constrain… (pie)"
-msgstr ""
+msgstr "Einschränken › Einschränken… (Menükreis)"
 
 #: ui/uiactions.cpp:34
+#, fuzzy
 msgid "View › Views… (pie)"
-msgstr ""
+msgstr "Ansicht › Ansichten… (Menükreis)"
 
 #: ui/uiactions.cpp:35
+#, fuzzy
 msgid "Help › Keyboard Shortcuts"
-msgstr ""
+msgstr "Hilfe › Tastenkürzel"
 
 #: ui/uiactions.cpp:36
+#, fuzzy
 msgid "Inspect › Fit Table"
-msgstr ""
+msgstr "Prüfen › Passungstabelle"
 
 #: ui/uiactions.cpp:37
+#, fuzzy
 msgid "New Group › Joints… (pie)"
-msgstr ""
+msgstr "Neue Gruppe › Gelenke… (Menükreis)"
 
 #: util.cpp:172
 msgctxt "title"

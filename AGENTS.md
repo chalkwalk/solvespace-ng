@@ -501,6 +501,9 @@ XCAF colours and names, exact hidden-line drawing export (`HLRBRep`).
   in their colours (`src/export3mf.cpp`: a stored zip, no new dependency).
 - **Lay flat** (Preferences, off): STL and 3MF parts are turned onto their largest flat
   face, standing on z = 0, and set side by side in a 3MF (`SolveSpaceUI::LayFlat`).
+- **Whole assembly as STEP** (added 2026-10-28, #16): File ▸ Export ▸ Assembly (STEP)
+  (`export-assembly`, `ExportAssemblyStep`) writes every part's B-rep in the design pose into
+  one file, each a product named after its part. Colours (XCAF) are still to come.
 - **Linked files are parts:** Link Part starts a part named after the file. An older file's
   link keeps its part, and Properties offers "own part" (`MoveToNewPart`).
 - **Skeleton:** with parts, the Outliner heads the sketches before the first solid
@@ -752,6 +755,13 @@ macOS and Emscripten builds.
   `src/commandnames.cpp`). Headless code paths have null windows/menu items: guard them.
   Not headless-safe yet (null FileDialog/Window under `guinone.cpp`): `open`, `save`, `save-as`,
   `import`, all `export-*`, `group-link`, `image`, `exit`, `zoom-in`, `zoom-out`, `full-screen`.
+- Translations (2026-10-28, #5): every string NG shows goes through the table. Mark labels in
+  tables with `N_()` and translate them where they are shown with `_()`, so Help ▸ Language
+  applies at once; an ImGui label that is also an id is `LabelId(_("text"), "##id")`
+  (`ui/fields.h`). `make translate_solvespace` regenerates `res/messages.pot` and merges it
+  into every locale (it reads `src/ui/`, `guisdl.cpp` and `platform/sdl/` too). New strings
+  in the other languages are machine translations flagged fuzzy for a translator's review;
+  the app reads fuzzy entries.
 - NG UI actions (`ui.*`) are listed in `src/ui/uiactions.cpp`; core-backed ones are bound in
   `src/ui/coreactions.cpp` and implemented as `GraphicsWindow` methods so tests can call them.
   Modal tools (pie, grab, typed drawing) see chords before the keymap via `KeyRouter::modal`;
