@@ -53,6 +53,9 @@
 #include <Interface_Static.hxx>
 #include <STEPControl_Reader.hxx>
 #include <STEPControl_Writer.hxx>
+#include <StepBasic_Product.hxx>
+#include <StepData_StepModel.hxx>
+#include <TCollection_HAsciiString.hxx>
 #include <GProp_GProps.hxx>
 #include <GProp_PrincipalProps.hxx>
 #include <BRepClass_FaceClassifier.hxx>
@@ -1517,6 +1520,37 @@ bool KernelExportStep(const std::shared_ptr<const KernelShape> &ks,
     STEPControl_Writer writer;
     Interface_Static::SetCVal("write.step.unit", "MM");
     if(writer.Transfer(shape, STEPControl_AsIs) != IFSelect_RetDone) return false;
+    return writer.Write(filename.raw.c_str()) == IFSelect_RetDone;
+}
+
+bool KernelExportStepBodies(const std::vector<KernelStepBody> &bodies,
+                            const Platform::Path &filename, double scale) {
+    STEPControl_Writer writer;
+    Interface_Static::SetCVal("write.step.unit", "MM");
+    int transferred = 0;
+    for(const KernelStepBody &b : bodies) {
+        if(IsEmpty(b.shape)) continue;
+        TopoDS_Shape shape = b.shape->shape;
+        if(scale != 1) {
+            gp_Trsf trsf;
+            trsf.SetScale(gp_Pnt(0, 0, 0), scale);
+            shape = BRepBuilderAPI_Transform(shape, trsf, /*copy=*/true).Shape();
+        }
+        if(writer.Transfer(shape, STEPControl_AsIs) != IFSelect_RetDone) return false;
+        transferred++;
+        // Each transfer makes a product of its own; name the new one after its body.
+        Handle(StepData_StepModel) model = writer.Model();
+        for(int i = model->NbEntities(); i >= 1; i--) {
+            Handle(StepBasic_Product) product =
+                Handle(StepBasic_Product)::DownCast(model->Value(i));
+            if(product.IsNull()) continue;
+            Handle(TCollection_HAsciiString) name = new TCollection_HAsciiString(b.name.c_str());
+            product->SetId(name);
+            product->SetName(name);
+            break;
+        }
+    }
+    if(transferred == 0) return false;
     return writer.Write(filename.raw.c_str()) == IFSelect_RetDone;
 }
 

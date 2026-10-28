@@ -208,6 +208,17 @@ bool KernelAvailable(KernelKind kind);
 bool KernelExportStep(const std::shared_ptr<const KernelShape> &shape,
                       const Platform::Path &filename, double scale);
 
+// A named B-rep for KernelExportStepBodies.
+struct KernelStepBody {
+    std::string                         name;
+    std::shared_ptr<const KernelShape> shape;
+};
+
+// Writes B-reps into one STEP file, each its own product with its name, scaled by scale;
+// false if none has a B-rep or writing failed.
+bool KernelExportStepBodies(const std::vector<KernelStepBody> &bodies,
+                            const Platform::Path &filename, double scale);
+
 // One of the two faces at a straight edge of a B-rep: its name (a face entity's handle, or 0)
 // and the direction from the edge into the face, perpendicular to the edge.
 struct KernelEdgeFace {

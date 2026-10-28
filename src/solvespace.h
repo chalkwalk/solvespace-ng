@@ -833,6 +833,9 @@ public:
     // A .3mf name writes one file, an object per part. With exportLayFlat, meshes are laid on
     // their largest flat face (LayFlat), and a 3MF's objects set side by side.
     std::vector<Platform::Path> ExportParts(const Platform::Path &filename);
+    // The whole assembly as one STEP file, a body per part in the design pose; false without
+    // B-reps (SolveSpace's kernel) or if writing failed.
+    bool ExportAssemblyStep(const Platform::Path &filename);
     static void LayFlat(SMesh *m);
     // A STEP file's B-rep and its tessellation, for a linked group; false if it can't be read
     // (or there is no Open CASCADE).

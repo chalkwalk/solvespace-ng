@@ -55,9 +55,8 @@ StlInfo ReadStl(const Platform::Path &path) {
     return info;
 }
 
-}
-
-TEST_CASE(an_enclosure_and_lid_export_as_two_printable_parts) {
+// The enclosure (the box hollowed, its top open) and its lid, a part sketched on its top.
+void MakeEnclosureAndLid(Test::Helper *helper) {
     CHECK_LOAD("box.slvs");
     SS.SetKernel(KernelKind::OCCT);
     // The enclosure: the box hollowed, its top open, walls 1.5.
@@ -85,7 +84,13 @@ TEST_CASE(an_enclosure_and_lid_export_as_two_printable_parts) {
     SK.GetParam(e->h.param(1))->val = 0;
     SK.GetParam(e->h.param(2))->val = 1;
     SS.GenerateAll(SolveSpaceUI::Generate::ALL);
+}
 
+}
+
+TEST_CASE(an_enclosure_and_lid_export_as_two_printable_parts) {
+    MakeEnclosureAndLid(helper);
+    CHECK_TRUE(SS.PartOrder().size() == 2);
     Platform::Path base = helper->GetAssetPath(__FILE__, "case.stl", "out");
     std::vector<Platform::Path> written = SS.ExportParts(base);
     CHECK_TRUE(written.size() == 2);
@@ -104,5 +109,24 @@ TEST_CASE(an_enclosure_and_lid_export_as_two_printable_parts) {
     written = SS.ExportParts(base);
     CHECK_TRUE(written.size() == 2);
     for(const Platform::Path &w : written) remove(w.raw.c_str());
+}
+
+// The whole assembly in one STEP file: a body per part, each a product named after its part.
+TEST_CASE(the_assembly_exports_as_one_step_with_a_body_per_part) {
+    MakeEnclosureAndLid(helper);
+    CHECK_TRUE(SS.PartOrder().size() == 2);
+    Platform::Path path = helper->GetAssetPath(__FILE__, "assembly.step", "out");
+    CHECK_TRUE(SS.ExportAssemblyStep(path));
+    std::string step;
+    CHECK_TRUE(Platform::ReadFile(path, &step));
+    remove(path.raw.c_str());
+    int bodies = 0;
+    for(size_t at = step.find("MANIFOLD_SOLID_BREP"); at != std::string::npos;
+        at = step.find("MANIFOLD_SOLID_BREP", at + 1)) {
+        bodies++;
+    }
+    CHECK_TRUE(bodies == 2);
+    CHECK_TRUE(step.find("PRODUCT('enclosure'") != std::string::npos);
+    CHECK_TRUE(step.find("PRODUCT('lid'") != std::string::npos);
 }
 #endif

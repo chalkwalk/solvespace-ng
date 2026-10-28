@@ -845,6 +845,20 @@ void SolveSpaceUI::MenuFile(Command id) {
             break;
         }
 
+        case Command::EXPORT_ASSEMBLY: {
+            Platform::FileDialogRef dialog = Platform::CreateSaveFileDialog(SS.GW.window);
+            dialog->AddFilters({ { CN_("file-type", "STEP file"), { "step", "stp" } } });
+            dialog->ThawChoices(settings, "ExportAssembly");
+            dialog->SuggestFilename(SS.saveFile);
+            if(!dialog->RunModal()) break;
+            dialog->FreezeChoices(settings, "ExportAssembly");
+            if(!SS.ExportAssemblyStep(dialog->GetFilename())) {
+                Error(_("The assembly needs the Open CASCADE kernel and a solid to export as "
+                        "STEP."));
+            }
+            break;
+        }
+
         case Command::EXPORT_MESH: {
             Platform::FileDialogRef dialog = Platform::CreateSaveFileDialog(SS.GW.window);
             dialog->AddFilters(Platform::MeshFileFilters);
@@ -1665,6 +1679,16 @@ std::vector<Platform::Path> SolveSpaceUI::ExportParts(const Platform::Path &file
         for(SMesh &m : meshes) m.Clear();
     }
     return written;
+}
+
+bool SolveSpaceUI::ExportAssemblyStep(const Platform::Path &filename) {
+    FlushRegeneration();
+    std::vector<KernelStepBody> bodies;
+    for(hPart hp : PartOrder()) {
+        Group *g = PartSolid(hp);
+        if(g != nullptr && g->runningShape) bodies.push_back({ PartName(hp), g->runningShape });
+    }
+    return KernelExportStepBodies(bodies, filename, 1.0 / exportScale);
 }
 
 } // namespace SolveSpace

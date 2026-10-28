@@ -64,6 +64,7 @@ const std::vector<Top> &Layout() {
                 C(Command::EXPORT_MESH, N_("Triangle Mesh...")),
                 C(Command::EXPORT_PARTS, N_("Parts, One File Each...")),
                 C(Command::EXPORT_PARTS_LIST, N_("Parts List (CSV)...")),
+                C(Command::EXPORT_ASSEMBLY, N_("Assembly (STEP)...")),
                 C(Command::EXPORT_SURFACES, N_("Surfaces...")) }),
             Sep(), C(Command::EXIT, N_("Quit")) } },
         { N_("Edit"), {

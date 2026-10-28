@@ -344,6 +344,11 @@ bool KernelExportStep(const std::shared_ptr<const KernelShape> &, const Platform
     return false;
 }
 
+bool KernelExportStepBodies(const std::vector<KernelStepBody> &, const Platform::Path &,
+                            double) {
+    return false;
+}
+
 KernelEdgeFacesResult KernelEdgeFaces(const std::shared_ptr<const KernelShape> &, Vector, Vector,
                                       KernelEdgeFace[2]) {
     return KernelEdgeFacesResult::NOT_FOUND;

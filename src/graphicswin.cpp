@@ -54,6 +54,7 @@ const MenuEntry Menu[] = {
 { 1, N_("Export Triangle &Mesh..."),    Command::EXPORT_MESH,      0,       KN, mFile  },
 { 1, N_("Export &Parts..."),            Command::EXPORT_PARTS,     0,       KN, mFile  },
 { 1, N_("Export Parts &List..."),       Command::EXPORT_PARTS_LIST, 0,      KN, mFile  },
+{ 1, N_("Export &Assembly (STEP)..."),  Command::EXPORT_ASSEMBLY,  0,       KN, mFile  },
 { 1, N_("Export &Surfaces..."),         Command::EXPORT_SURFACES,  0,       KN, mFile  },
 { 1, N_("Im&port..."),                  Command::IMPORT,           0,       KN, mFile  },
 #ifndef __APPLE__
