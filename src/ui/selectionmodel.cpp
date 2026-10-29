@@ -368,7 +368,18 @@ SelectionModel BuildSelection() {
     m.empty = m.count == 0;
     if(m.empty) return m;
 
-    if(gs.n == 1 && (gs.points == 1 || gs.entities == 1)) {
+    const GraphicsWindow::Selection &first = SS.GW.selection[0];
+    if(m.count == 1 && first.solidEdge != 0) {
+        // An edge no entity describes (#6): its length, from the outlines drawn.
+        double length = 0;
+        if(Group *g = SK.group.FindByIdNoOops(first.solidEdgeGroup)) {
+            for(const SOutline &so : g->ShownOutlines().l) {
+                if(so.edge == first.solidEdge) length += so.b.Minus(so.a).Magnitude();
+            }
+        }
+        m.title = _("Edge of the solid");
+        m.rows.push_back(Value(_("length"), Len(length)));
+    } else if(gs.n == 1 && (gs.points == 1 || gs.entities == 1)) {
         DescribeEntity(SK.GetEntity(gs.points == 1 ? gs.point[0] : gs.entity[0]), &m);
     } else if(gs.n == 2 && gs.points == 2) {
         Vector p0 = SK.GetEntity(gs.point[0])->PointGetNum();

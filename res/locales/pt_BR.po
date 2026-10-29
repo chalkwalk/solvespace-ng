@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: SolveSpace 3.1\n"
 "Report-Msgid-Bugs-To: phkahler@gmail.com\n"
-"POT-Creation-Date: 2026-10-28 15:53-0700\n"
+"POT-Creation-Date: 2026-10-28 19:21-0700\n"
 "PO-Revision-Date: 2026-10-16 21:30-0300\n"
 "Last-Translator: Altemir José Coelho <altemirjosecoelho@gmail.com>\n"
 "Language-Team: Brazilian Portuguese\n"
@@ -693,11 +693,11 @@ msgctxt "group-name"
 msgid "#references"
 msgstr "#referências"
 
-#: file.cpp:662
+#: file.cpp:693
 msgid "The file is empty. It may be corrupt."
 msgstr "O arquivo está vazio. Ele pode estar corrompido."
 
-#: file.cpp:667
+#: file.cpp:698
 msgid ""
 "Unrecognized data in file. This file may be corrupt, or from a newer version "
 "of the program."
@@ -705,18 +705,18 @@ msgstr ""
 "Dados não reconhecidos no arquivo. Este arquivo pode estar corrompido ou ser "
 "de uma versão mais recente do programa."
 
-#: file.cpp:1008
+#: file.cpp:1039
 msgctxt "title"
 msgid "Missing File"
 msgstr "Arquivo ausente"
 
-#: file.cpp:1009
+#: file.cpp:1040
 #, c-format
 msgctxt "dialog"
 msgid "The linked file “%s” is not present."
 msgstr "O arquivo vinculado “%s” não está presente."
 
-#: file.cpp:1011
+#: file.cpp:1042
 msgctxt "dialog"
 msgid ""
 "Do you want to locate it manually?\n"
@@ -729,17 +729,17 @@ msgstr ""
 "Se recusar, toda geometria que depende do arquivo ausente será removida "
 "permanentemente."
 
-#: file.cpp:1014
+#: file.cpp:1045
 msgctxt "button"
 msgid "&Yes"
 msgstr "&Sim"
 
-#: file.cpp:1016
+#: file.cpp:1047
 msgctxt "button"
 msgid "&No"
 msgstr "&Não"
 
-#: file.cpp:1018 solvespace.cpp:684
+#: file.cpp:1049 solvespace.cpp:684
 msgctxt "button"
 msgid "&Cancel"
 msgstr "&Cancelar"
@@ -1651,7 +1651,7 @@ msgctxt "group-name"
 msgid "translate"
 msgstr "translação"
 
-#: group.cpp:448
+#: group.cpp:468
 #, fuzzy, c-format
 msgid ""
 "Bad selection for a new %s group. Select edges of the solid (the lines and "
@@ -1662,17 +1662,17 @@ msgstr ""
 "linhas e curvas que uma extrusão, torno, revolução, hélice ou padrão gera), "
 "ou faces, para todas as suas arestas."
 
-#: group.cpp:451
+#: group.cpp:471
 #, fuzzy
 msgid "chamfer"
 msgstr "chanfro"
 
-#: group.cpp:451
+#: group.cpp:471
 #, fuzzy
 msgid "fillet"
 msgstr "arredondamento"
 
-#: group.cpp:456
+#: group.cpp:476
 #, fuzzy
 msgid ""
 "Fillets and chamfers need the Open CASCADE kernel, which this build lacks."
@@ -1680,19 +1680,19 @@ msgstr ""
 "Arredondamentos e chanfros precisam do kernel Open CASCADE, que esta versão "
 "não tem."
 
-#: group.cpp:462
+#: group.cpp:482
 #, fuzzy
 msgctxt "group-name"
 msgid "chamfer"
 msgstr "chanfro"
 
-#: group.cpp:462
+#: group.cpp:482
 #, fuzzy
 msgctxt "group-name"
 msgid "fillet"
 msgstr "arredondamento"
 
-#: group.cpp:470
+#: group.cpp:490
 #, fuzzy
 msgid ""
 "Bad selection for a new shell group. Select the faces of the solid to leave "
@@ -1701,23 +1701,23 @@ msgstr ""
 "Seleção incorreta para um novo grupo de casca. Selecione as faces do sólido "
 "que devem ficar abertas, ou nada para uma casca fechada."
 
-#: group.cpp:477
+#: group.cpp:497
 #, fuzzy
 msgid "Shells need the Open CASCADE kernel, which this build lacks."
 msgstr "Cascas precisam do kernel Open CASCADE, que esta versão não tem."
 
-#: group.cpp:483
+#: group.cpp:503
 #, fuzzy
 msgid "There is no solid to make a shell of."
 msgstr "Não há sólido para fazer uma casca."
 
-#: group.cpp:501
+#: group.cpp:521
 #, fuzzy
 msgctxt "group-name"
 msgid "shell"
 msgstr "casca"
 
-#: group.cpp:517
+#: group.cpp:537
 #, fuzzy
 msgid ""
 "Bad selection for a new draft group. Select side faces of an extrusion; they "
@@ -1727,19 +1727,19 @@ msgstr ""
 "laterais de uma extrusão; elas se inclinam em torno do plano do esboço, ao "
 "longo da sua direção."
 
-#: group.cpp:522
+#: group.cpp:542
 #, fuzzy
 msgid "Drafts need the Open CASCADE kernel, which this build lacks."
 msgstr ""
 "As inclinações precisam do kernel Open CASCADE, que esta versão não tem."
 
-#: group.cpp:527
+#: group.cpp:547
 #, fuzzy
 msgctxt "group-name"
 msgid "draft"
 msgstr "inclinação"
 
-#: group.cpp:541
+#: group.cpp:561
 #, fuzzy
 msgid ""
 "Bad selection for a new hole group. Select the hole centres: points in a "
@@ -1750,18 +1750,18 @@ msgstr ""
 "furos: pontos em um plano de trabalho, como um esboço sobre uma face. Os "
 "furos entram na face, contra a normal do plano de trabalho."
 
-#: group.cpp:547
+#: group.cpp:567
 #, fuzzy
 msgid "Holes need the Open CASCADE kernel, which this build lacks."
 msgstr "Os furos precisam do kernel Open CASCADE, que esta versão não tem."
 
-#: group.cpp:555
+#: group.cpp:575
 #, fuzzy
 msgctxt "group-name"
 msgid "hole"
 msgstr "furo"
 
-#: group.cpp:573
+#: group.cpp:593
 #, fuzzy
 msgid ""
 "Bad selection for a new loft group. Select a curve of each profile, in "
@@ -1771,19 +1771,19 @@ msgstr ""
 "cada perfil, em ordem: duas ou mais formas fechadas, cada uma em seu próprio "
 "esboço."
 
-#: group.cpp:578
+#: group.cpp:598
 #, fuzzy
 msgid "Lofts need the Open CASCADE kernel, which this build lacks."
 msgstr ""
 "As transições precisam do kernel Open CASCADE, que esta versão não tem."
 
-#: group.cpp:582
+#: group.cpp:602
 #, fuzzy
 msgctxt "group-name"
 msgid "loft"
 msgstr "transição"
 
-#: group.cpp:604
+#: group.cpp:624
 #, fuzzy
 msgid ""
 "Bad selection for a new sweep group. Select a curve of the profile (a closed "
@@ -1794,35 +1794,35 @@ msgstr ""
 "curva do perfil (uma forma fechada em um esboço) e depois as curvas da "
 "trajetória, conectadas uma à outra, em outro esboço."
 
-#: group.cpp:610
+#: group.cpp:630
 #, fuzzy
 msgid "Sweeps need the Open CASCADE kernel, which this build lacks."
 msgstr ""
 "As varreduras precisam do kernel Open CASCADE, que esta versão não tem."
 
-#: group.cpp:615
+#: group.cpp:635
 #, fuzzy
 msgctxt "group-name"
 msgid "sweep"
 msgstr "varredura"
 
-#: group.cpp:736
+#: group.cpp:756
 msgid "(unnamed)"
 msgstr "(sem nome)"
 
-#: groupmesh.cpp:714
+#: groupmesh.cpp:715
 msgid "not closed contour, or not all same style!"
 msgstr "contorno não fechado, ou nem todos com o mesmo estilo!"
 
-#: groupmesh.cpp:727
+#: groupmesh.cpp:728
 msgid "points not all coplanar!"
 msgstr "os pontos não são todos coplanares!"
 
-#: groupmesh.cpp:729
+#: groupmesh.cpp:730
 msgid "contour is self-intersecting!"
 msgstr "o contorno se autointersecta!"
 
-#: groupmesh.cpp:731
+#: groupmesh.cpp:732
 msgid "zero-length edge!"
 msgstr "aresta de comprimento zero!"
 
@@ -2029,79 +2029,79 @@ msgstr "de %s até %s"
 msgid "the fit's clearance couldn't be added to the profile"
 msgstr "não foi possível adicionar a folga do ajuste ao perfil"
 
-#: kernel/occtkernel.cpp:711
+#: kernel/occtkernel.cpp:770
 #, fuzzy, c-format
 msgid "%d of the %d edges were not found on the solid"
 msgstr "%d das %d arestas não foram encontradas no sólido"
 
-#: kernel/occtkernel.cpp:924 kernel/occtkernel.cpp:966
+#: kernel/occtkernel.cpp:983 kernel/occtkernel.cpp:1025
 #, fuzzy, c-format
 msgid "%d of the %d faces were not found on the solid"
 msgstr "%d das %d faces não foram encontradas no sólido"
 
-#: kernel/occtkernel.cpp:947
+#: kernel/occtkernel.cpp:1006
 #, fuzzy
 msgid "the draft failed on a face it cannot taper"
 msgstr "o ângulo de saída falhou numa face que não pode inclinar"
 
-#: kernel/occtkernel.cpp:955
+#: kernel/occtkernel.cpp:1014
 #, fuzzy
 msgid "none of the faces were found on the solid"
 msgstr "nenhuma das faces foi encontrada no sólido"
 
-#: kernel/occtkernel.cpp:962
+#: kernel/occtkernel.cpp:1021
 #, fuzzy
 msgid "the draft failed; the angle may be too big for the solid"
 msgstr ""
 "o ângulo de saída falhou; o ângulo pode ser grande demais para o sólido"
 
-#: kernel/occtkernel.cpp:1086
+#: kernel/occtkernel.cpp:1145
 #, fuzzy
 msgid "the split's plane is gone"
 msgstr "o plano da divisão não existe mais"
 
-#: kernel/occtkernel.cpp:1102
+#: kernel/occtkernel.cpp:1161
 #, fuzzy
 msgid "the solid couldn't be split"
 msgstr "não foi possível dividir o sólido"
 
-#: kernel/occtkernel.cpp:1109
+#: kernel/occtkernel.cpp:1168
 #, fuzzy
 msgid "the cut is too small for a dowel this size"
 msgstr "o corte é pequeno demais para um pino deste tamanho"
 
-#: kernel/occtkernel.cpp:1121
+#: kernel/occtkernel.cpp:1180
 #, fuzzy
 msgid "the dowel pockets couldn't be cut"
 msgstr "não foi possível cortar os alojamentos dos pinos"
 
-#: kernel/occtkernel.cpp:1165
+#: kernel/occtkernel.cpp:1224
 #, fuzzy
 msgid "the thread could not be made"
 msgstr "não foi possível fazer a rosca"
 
-#: kernel/occtkernel.cpp:1172
+#: kernel/occtkernel.cpp:1231
 #, fuzzy
 msgid "the holes could not be made"
 msgstr "não foi possível fazer os furos"
 
-#: kernel/occtkernel.cpp:1188 kernel/occtkernel.cpp:1326
-#: kernel/occtkernel.cpp:1427
+#: kernel/occtkernel.cpp:1247 kernel/occtkernel.cpp:1385
+#: kernel/occtkernel.cpp:1486
 #, fuzzy
 msgid "the holes could not be cut"
 msgstr "não foi possível cortar os furos"
 
-#: kernel/occtkernel.cpp:1193
+#: kernel/occtkernel.cpp:1252
 #, fuzzy
 msgid "the holes miss the solid"
 msgstr "os furos não atingem o sólido"
 
-#: kernel/occtkernel.cpp:1300 kernel/occtkernel.cpp:1328
+#: kernel/occtkernel.cpp:1359 kernel/occtkernel.cpp:1387
 #, fuzzy
 msgid "the loft failed"
 msgstr "o loft falhou"
 
-#: kernel/occtkernel.cpp:1311
+#: kernel/occtkernel.cpp:1370
 #, fuzzy
 msgid ""
 "holes are lofted only when every profile has as many; these are left out"
@@ -2109,33 +2109,33 @@ msgstr ""
 "os furos só entram no loft se cada perfil tiver a mesma quantidade; estes "
 "ficam de fora"
 
-#: kernel/occtkernel.cpp:1319
+#: kernel/occtkernel.cpp:1378
 #, fuzzy
 msgid "the holes could not be lofted"
 msgstr "não foi possível fazer o loft dos furos"
 
-#: kernel/occtkernel.cpp:1337
+#: kernel/occtkernel.cpp:1396
 #, fuzzy
 msgid "the sweep has no profile or no path"
 msgstr "a varredura não tem perfil ou não tem caminho"
 
-#: kernel/occtkernel.cpp:1364
+#: kernel/occtkernel.cpp:1423
 #, fuzzy
 msgid "the path's corners are too tight for that radius; they stay sharp"
 msgstr ""
 "os cantos do caminho são apertados demais para esse raio; continuam vivos"
 
-#: kernel/occtkernel.cpp:1395
+#: kernel/occtkernel.cpp:1454
 #, fuzzy
 msgid "the sweep's path is not connected"
 msgstr "o caminho da varredura não é contínuo"
 
-#: kernel/occtkernel.cpp:1412 kernel/occtkernel.cpp:1429
+#: kernel/occtkernel.cpp:1471 kernel/occtkernel.cpp:1488
 #, fuzzy
 msgid "the sweep failed"
 msgstr "a varredura falhou"
 
-#: kernel/occtkernel.cpp:1415
+#: kernel/occtkernel.cpp:1474
 #, fuzzy
 msgid "the holes could not be swept"
 msgstr "não foi possível varrer os furos"
@@ -3061,21 +3061,21 @@ msgid "Align view to active workplane"
 msgstr "Alinhar vista ao plano de trabalho ativo"
 
 #: ui/drawtool.cpp:27 ui/properties.cpp:706 ui/properties.cpp:708
-#: ui/properties.cpp:709 ui/selectionmodel.cpp:437 ui/selectionmodel.cpp:447
+#: ui/properties.cpp:709 ui/selectionmodel.cpp:448 ui/selectionmodel.cpp:458
 #: ui/stylespanel.cpp:116
 #, fuzzy
 msgid "angle"
 msgstr "ângulo"
 
 #: ui/drawtool.cpp:27 ui/drawtool.cpp:28 ui/properties.cpp:176
-#: ui/selectionmodel.cpp:159
+#: ui/selectionmodel.cpp:159 ui/selectionmodel.cpp:381
 #, fuzzy
 msgid "length"
 msgstr "comprimento"
 
 #: ui/drawtool.cpp:30 ui/properties.cpp:174 ui/properties.cpp:382
 #: ui/selectionmodel.cpp:186 ui/selectionmodel.cpp:195
-#: ui/selectionmodel.cpp:390
+#: ui/selectionmodel.cpp:401
 #, fuzzy
 msgid "diameter"
 msgstr "diâmetro"
@@ -4346,14 +4346,12 @@ msgstr ""
 "Forçar as superfícies NURBS para uma malha de triângulos pode resolver."
 
 #: ui/problemsmodel.cpp:101
-#, c-format
-#, fuzzy
+#, fuzzy, c-format
 msgid "%d edge has no lines to constrain"
 msgstr "%d aresta não tem linhas para restringir"
 
 #: ui/problemsmodel.cpp:102
-#, c-format
-#, fuzzy
+#, fuzzy, c-format
 msgid "%d edges have no lines to constrain"
 msgstr "%d arestas não têm linhas para restringir"
 
@@ -4362,7 +4360,29 @@ msgstr "%d arestas não têm linhas para restringir"
 msgid ""
 "It is curved, or a face beside it is: what it makes has no closed form, so "
 "it can be snapped to but not constrained."
-msgstr "Ela é curva, ou uma face vizinha é: o que ela produz não tem forma fechada, então dá para encaixar nela, mas não restringi-la."
+msgstr ""
+"Ela é curva, ou uma face vizinha é: o que ela produz não tem forma fechada, "
+"então dá para encaixar nela, mas não restringi-la."
+
+#: ui/problemsmodel.cpp:115
+#, c-format
+#, fuzzy
+msgid "%d edge is held by where it is"
+msgstr "%d aresta é mantida pela sua posição"
+
+#: ui/problemsmodel.cpp:116
+#, c-format
+#, fuzzy
+msgid "%d edges are held by where they are"
+msgstr "%d arestas são mantidas pela sua posição"
+
+#: ui/problemsmodel.cpp:117
+#, fuzzy
+msgid ""
+"No sketch or feature line describes it, so it is found again by its place: "
+"if the model changes there it may be lost, and nothing can be constrained to "
+"it."
+msgstr "Nenhuma linha de esboço ou de recurso a descreve, então ela é reencontrada pelo seu lugar: se o modelo mudar ali ela pode se perder, e nada pode ser restringido a ela."
 
 #: ui/properties.cpp:83
 #, fuzzy, c-format
@@ -4544,8 +4564,8 @@ msgstr "curva"
 msgid "face"
 msgstr "face"
 
-#: ui/properties.cpp:228 ui/selectionmodel.cpp:388 ui/selectionmodel.cpp:398
-#: ui/selectionmodel.cpp:420
+#: ui/properties.cpp:228 ui/selectionmodel.cpp:399 ui/selectionmodel.cpp:409
+#: ui/selectionmodel.cpp:431
 #, fuzzy
 msgid "point"
 msgstr "ponto"
@@ -4696,15 +4716,15 @@ msgid "hole centres"
 msgstr "centros dos furos"
 
 #: ui/properties.cpp:421 ui/selectionmodel.cpp:187 ui/selectionmodel.cpp:196
-#: ui/selectionmodel.cpp:391 ui/toolpanels.cpp:147
+#: ui/selectionmodel.cpp:402 ui/toolpanels.cpp:147
 #, fuzzy
 msgid "radius"
 msgstr "raio"
 
 #: ui/properties.cpp:422 ui/properties.cpp:707 ui/properties.cpp:708
-#: ui/selectionmodel.cpp:316 ui/selectionmodel.cpp:379
-#: ui/selectionmodel.cpp:392 ui/selectionmodel.cpp:401
-#: ui/selectionmodel.cpp:454
+#: ui/selectionmodel.cpp:316 ui/selectionmodel.cpp:390
+#: ui/selectionmodel.cpp:403 ui/selectionmodel.cpp:412
+#: ui/selectionmodel.cpp:465
 #, fuzzy
 msgid "distance"
 msgstr "distância"
@@ -4978,12 +4998,12 @@ msgstr "em torno de z"
 msgid "limits"
 msgstr "limites"
 
-#: ui/properties.cpp:750 ui/selectionmodel.cpp:157 ui/selectionmodel.cpp:377
+#: ui/properties.cpp:750 ui/selectionmodel.cpp:157 ui/selectionmodel.cpp:388
 #, fuzzy
 msgid "from"
 msgstr "de"
 
-#: ui/properties.cpp:756 ui/selectionmodel.cpp:158 ui/selectionmodel.cpp:378
+#: ui/properties.cpp:756 ui/selectionmodel.cpp:158 ui/selectionmodel.cpp:389
 #, fuzzy
 msgid "to"
 msgstr "até"
@@ -5189,7 +5209,7 @@ msgstr "Restrição"
 
 #: ui/selectionmodel.cpp:113 ui/selectionmodel.cpp:114
 #: ui/selectionmodel.cpp:248 ui/selectionmodel.cpp:345
-#: ui/selectionmodel.cpp:427
+#: ui/selectionmodel.cpp:438
 #, fuzzy
 msgid "workplane"
 msgstr "plano de trabalho"
@@ -5251,7 +5271,7 @@ msgid "Arc of a circle"
 msgstr "Arco de círculo"
 
 #: ui/selectionmodel.cpp:183 ui/selectionmodel.cpp:194
-#: ui/selectionmodel.cpp:389 ui/stylespanel.cpp:123
+#: ui/selectionmodel.cpp:400 ui/stylespanel.cpp:123
 #, fuzzy
 msgid "center"
 msgstr "centro"
@@ -5361,7 +5381,7 @@ msgstr "plano %c através de"
 msgid "attached to"
 msgstr "preso a"
 
-#: ui/selectionmodel.cpp:317 ui/selectionmodel.cpp:380
+#: ui/selectionmodel.cpp:317 ui/selectionmodel.cpp:391
 #, fuzzy
 msgid "offset (x, y, z)"
 msgstr "deslocamento (x, y, z)"
@@ -5396,122 +5416,127 @@ msgstr "restringe"
 msgid "measures"
 msgstr "mede"
 
-#: ui/selectionmodel.cpp:376
+#: ui/selectionmodel.cpp:380
+#, fuzzy
+msgid "Edge of the solid"
+msgstr "Aresta do sólido"
+
+#: ui/selectionmodel.cpp:387
 #, fuzzy
 msgid "Two points"
 msgstr "Dois pontos"
 
-#: ui/selectionmodel.cpp:386
+#: ui/selectionmodel.cpp:397
 #, fuzzy
 msgid "Point and a circle"
 msgstr "Ponto e um círculo"
 
-#: ui/selectionmodel.cpp:387
+#: ui/selectionmodel.cpp:398
 #, fuzzy
 msgid "Point and an arc"
 msgstr "Ponto e um arco"
 
-#: ui/selectionmodel.cpp:397
+#: ui/selectionmodel.cpp:408
 #, fuzzy
 msgid "A point and a plane face"
 msgstr "Um ponto e uma face plana"
 
-#: ui/selectionmodel.cpp:399
+#: ui/selectionmodel.cpp:410
 #, fuzzy
 msgid "plane normal"
 msgstr "normal do plano"
 
-#: ui/selectionmodel.cpp:400
+#: ui/selectionmodel.cpp:411
 #, fuzzy
 msgid "plane through"
 msgstr "plano através de"
 
-#: ui/selectionmodel.cpp:406
+#: ui/selectionmodel.cpp:417
 #, fuzzy
 msgid "Two points and a vector"
 msgstr "Dois pontos e um vetor"
 
-#: ui/selectionmodel.cpp:407
+#: ui/selectionmodel.cpp:418
 #, fuzzy
 msgid "point A"
 msgstr "ponto A"
 
-#: ui/selectionmodel.cpp:408
+#: ui/selectionmodel.cpp:419
 #, fuzzy
 msgid "point B"
 msgstr "ponto B"
 
-#: ui/selectionmodel.cpp:409
+#: ui/selectionmodel.cpp:420
 #, fuzzy
 msgid "vector"
 msgstr "vetor"
 
-#: ui/selectionmodel.cpp:410
+#: ui/selectionmodel.cpp:421
 #, fuzzy
 msgid "projected distance"
 msgstr "distância projetada"
 
-#: ui/selectionmodel.cpp:417
+#: ui/selectionmodel.cpp:428
 #, fuzzy
 msgid "Line segment and point"
 msgstr "Segmento de linha e ponto"
 
-#: ui/selectionmodel.cpp:418
+#: ui/selectionmodel.cpp:429
 #, fuzzy
 msgid "line through"
 msgstr "linha através de"
 
-#: ui/selectionmodel.cpp:421
+#: ui/selectionmodel.cpp:432
 #, fuzzy
 msgid "distance to line"
 msgstr "distância até a linha"
 
-#: ui/selectionmodel.cpp:434
+#: ui/selectionmodel.cpp:445
 #, fuzzy
 msgid "Two vectors"
 msgstr "Dois vetores"
 
-#: ui/selectionmodel.cpp:435
+#: ui/selectionmodel.cpp:446
 #, fuzzy
 msgid "vector A"
 msgstr "vetor A"
 
-#: ui/selectionmodel.cpp:436
+#: ui/selectionmodel.cpp:447
 #, fuzzy
 msgid "vector B"
 msgstr "vetor B"
 
-#: ui/selectionmodel.cpp:437 ui/selectionmodel.cpp:447
+#: ui/selectionmodel.cpp:448 ui/selectionmodel.cpp:458
 #, fuzzy, c-format
 msgid "%.2f degrees"
 msgstr "%.2f graus"
 
-#: ui/selectionmodel.cpp:440 ui/selectionmodel.cpp:450
+#: ui/selectionmodel.cpp:451 ui/selectionmodel.cpp:461
 #, fuzzy, c-format
 msgid "%.2f (mod 180)"
 msgstr "%.2f (mód. 180)"
 
-#: ui/selectionmodel.cpp:440 ui/selectionmodel.cpp:450
+#: ui/selectionmodel.cpp:451 ui/selectionmodel.cpp:461
 #, fuzzy
 msgid "or"
 msgstr "ou"
 
-#: ui/selectionmodel.cpp:442
+#: ui/selectionmodel.cpp:453
 #, fuzzy
 msgid "Two plane faces"
 msgstr "Duas faces planas"
 
-#: ui/selectionmodel.cpp:457
+#: ui/selectionmodel.cpp:468
 #, fuzzy
 msgid "Three plane faces"
 msgstr "Três faces planas"
 
-#: ui/selectionmodel.cpp:462
+#: ui/selectionmodel.cpp:473
 #, fuzzy, c-format
 msgid "%d item"
 msgstr "%d item"
 
-#: ui/selectionmodel.cpp:462
+#: ui/selectionmodel.cpp:473
 #, fuzzy, c-format
 msgid "%d items"
 msgstr "%d itens"

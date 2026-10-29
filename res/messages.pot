@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: SolveSpace 3.3\n"
 "Report-Msgid-Bugs-To: phkahler@gmail.com\n"
-"POT-Creation-Date: 2026-10-28 15:53-0700\n"
+"POT-Creation-Date: 2026-10-28 19:21-0700\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -513,26 +513,26 @@ msgctxt "group-name"
 msgid "#references"
 msgstr ""
 
-#: file.cpp:662
+#: file.cpp:693
 msgid "The file is empty. It may be corrupt."
 msgstr ""
 
-#: file.cpp:667
+#: file.cpp:698
 msgid "Unrecognized data in file. This file may be corrupt, or from a newer version of the program."
 msgstr ""
 
-#: file.cpp:1008
+#: file.cpp:1039
 msgctxt "title"
 msgid "Missing File"
 msgstr ""
 
-#: file.cpp:1009
+#: file.cpp:1040
 #, c-format
 msgctxt "dialog"
 msgid "The linked file “%s” is not present."
 msgstr ""
 
-#: file.cpp:1011
+#: file.cpp:1042
 msgctxt "dialog"
 msgid ""
 "Do you want to locate it manually?\n"
@@ -540,17 +540,17 @@ msgid ""
 "If you decline, any geometry that depends on the missing file will be permanently removed."
 msgstr ""
 
-#: file.cpp:1014
+#: file.cpp:1045
 msgctxt "button"
 msgid "&Yes"
 msgstr ""
 
-#: file.cpp:1016
+#: file.cpp:1047
 msgctxt "button"
 msgid "&No"
 msgstr ""
 
-#: file.cpp:1018 solvespace.cpp:684
+#: file.cpp:1049 solvespace.cpp:684
 msgctxt "button"
 msgid "&Cancel"
 msgstr ""
@@ -1357,131 +1357,131 @@ msgctxt "group-name"
 msgid "translate"
 msgstr ""
 
-#: group.cpp:448
+#: group.cpp:468
 #, c-format
 msgid ""
 "Bad selection for a new %s group. Select edges of the solid (the lines and curves an extrusion, "
 "lathe, revolve, helix or pattern makes), or faces, for all their edges."
 msgstr ""
 
-#: group.cpp:451
+#: group.cpp:471
 msgid "chamfer"
 msgstr ""
 
-#: group.cpp:451
+#: group.cpp:471
 msgid "fillet"
 msgstr ""
 
-#: group.cpp:456
+#: group.cpp:476
 msgid "Fillets and chamfers need the Open CASCADE kernel, which this build lacks."
 msgstr ""
 
-#: group.cpp:462
+#: group.cpp:482
 msgctxt "group-name"
 msgid "chamfer"
 msgstr ""
 
-#: group.cpp:462
+#: group.cpp:482
 msgctxt "group-name"
 msgid "fillet"
 msgstr ""
 
-#: group.cpp:470
+#: group.cpp:490
 msgid ""
 "Bad selection for a new shell group. Select the faces of the solid to leave open, or nothing for "
 "a closed shell."
 msgstr ""
 
-#: group.cpp:477
+#: group.cpp:497
 msgid "Shells need the Open CASCADE kernel, which this build lacks."
 msgstr ""
 
-#: group.cpp:483
+#: group.cpp:503
 msgid "There is no solid to make a shell of."
 msgstr ""
 
-#: group.cpp:501
+#: group.cpp:521
 msgctxt "group-name"
 msgid "shell"
 msgstr ""
 
-#: group.cpp:517
+#: group.cpp:537
 msgid ""
 "Bad selection for a new draft group. Select side faces of an extrusion; they taper about its "
 "sketch plane, along its direction."
 msgstr ""
 
-#: group.cpp:522
+#: group.cpp:542
 msgid "Drafts need the Open CASCADE kernel, which this build lacks."
 msgstr ""
 
-#: group.cpp:527
+#: group.cpp:547
 msgctxt "group-name"
 msgid "draft"
 msgstr ""
 
-#: group.cpp:541
+#: group.cpp:561
 msgid ""
 "Bad selection for a new hole group. Select the hole centres: points in a workplane, such as a "
 "sketch on a face. The holes go into the face, against the workplane's normal."
 msgstr ""
 
-#: group.cpp:547
+#: group.cpp:567
 msgid "Holes need the Open CASCADE kernel, which this build lacks."
 msgstr ""
 
-#: group.cpp:555
+#: group.cpp:575
 msgctxt "group-name"
 msgid "hole"
 msgstr ""
 
-#: group.cpp:573
+#: group.cpp:593
 msgid ""
 "Bad selection for a new loft group. Select a curve of each profile, in order: two or more closed "
 "shapes, each in its own sketch."
 msgstr ""
 
-#: group.cpp:578
+#: group.cpp:598
 msgid "Lofts need the Open CASCADE kernel, which this build lacks."
 msgstr ""
 
-#: group.cpp:582
+#: group.cpp:602
 msgctxt "group-name"
 msgid "loft"
 msgstr ""
 
-#: group.cpp:604
+#: group.cpp:624
 msgid ""
 "Bad selection for a new sweep group. Select a curve of the profile (a closed shape in a sketch) "
 "first, then the path's curves, connected end to end, in another sketch."
 msgstr ""
 
-#: group.cpp:610
+#: group.cpp:630
 msgid "Sweeps need the Open CASCADE kernel, which this build lacks."
 msgstr ""
 
-#: group.cpp:615
+#: group.cpp:635
 msgctxt "group-name"
 msgid "sweep"
 msgstr ""
 
-#: group.cpp:736
+#: group.cpp:756
 msgid "(unnamed)"
 msgstr ""
 
-#: groupmesh.cpp:714
+#: groupmesh.cpp:715
 msgid "not closed contour, or not all same style!"
 msgstr ""
 
-#: groupmesh.cpp:727
+#: groupmesh.cpp:728
 msgid "points not all coplanar!"
 msgstr ""
 
-#: groupmesh.cpp:729
+#: groupmesh.cpp:730
 msgid "contour is self-intersecting!"
 msgstr ""
 
-#: groupmesh.cpp:731
+#: groupmesh.cpp:732
 msgid "zero-length edge!"
 msgstr ""
 
@@ -1640,89 +1640,89 @@ msgstr ""
 msgid "the fit's clearance couldn't be added to the profile"
 msgstr ""
 
-#: kernel/occtkernel.cpp:711
+#: kernel/occtkernel.cpp:770
 #, c-format
 msgid "%d of the %d edges were not found on the solid"
 msgstr ""
 
-#: kernel/occtkernel.cpp:924 kernel/occtkernel.cpp:966
+#: kernel/occtkernel.cpp:983 kernel/occtkernel.cpp:1025
 #, c-format
 msgid "%d of the %d faces were not found on the solid"
 msgstr ""
 
-#: kernel/occtkernel.cpp:947
+#: kernel/occtkernel.cpp:1006
 msgid "the draft failed on a face it cannot taper"
 msgstr ""
 
-#: kernel/occtkernel.cpp:955
+#: kernel/occtkernel.cpp:1014
 msgid "none of the faces were found on the solid"
 msgstr ""
 
-#: kernel/occtkernel.cpp:962
+#: kernel/occtkernel.cpp:1021
 msgid "the draft failed; the angle may be too big for the solid"
 msgstr ""
 
-#: kernel/occtkernel.cpp:1086
+#: kernel/occtkernel.cpp:1145
 msgid "the split's plane is gone"
 msgstr ""
 
-#: kernel/occtkernel.cpp:1102
+#: kernel/occtkernel.cpp:1161
 msgid "the solid couldn't be split"
 msgstr ""
 
-#: kernel/occtkernel.cpp:1109
+#: kernel/occtkernel.cpp:1168
 msgid "the cut is too small for a dowel this size"
 msgstr ""
 
-#: kernel/occtkernel.cpp:1121
+#: kernel/occtkernel.cpp:1180
 msgid "the dowel pockets couldn't be cut"
 msgstr ""
 
-#: kernel/occtkernel.cpp:1165
+#: kernel/occtkernel.cpp:1224
 msgid "the thread could not be made"
 msgstr ""
 
-#: kernel/occtkernel.cpp:1172
+#: kernel/occtkernel.cpp:1231
 msgid "the holes could not be made"
 msgstr ""
 
-#: kernel/occtkernel.cpp:1188 kernel/occtkernel.cpp:1326 kernel/occtkernel.cpp:1427
+#: kernel/occtkernel.cpp:1247 kernel/occtkernel.cpp:1385 kernel/occtkernel.cpp:1486
 msgid "the holes could not be cut"
 msgstr ""
 
-#: kernel/occtkernel.cpp:1193
+#: kernel/occtkernel.cpp:1252
 msgid "the holes miss the solid"
 msgstr ""
 
-#: kernel/occtkernel.cpp:1300 kernel/occtkernel.cpp:1328
+#: kernel/occtkernel.cpp:1359 kernel/occtkernel.cpp:1387
 msgid "the loft failed"
 msgstr ""
 
-#: kernel/occtkernel.cpp:1311
+#: kernel/occtkernel.cpp:1370
 msgid "holes are lofted only when every profile has as many; these are left out"
 msgstr ""
 
-#: kernel/occtkernel.cpp:1319
+#: kernel/occtkernel.cpp:1378
 msgid "the holes could not be lofted"
 msgstr ""
 
-#: kernel/occtkernel.cpp:1337
+#: kernel/occtkernel.cpp:1396
 msgid "the sweep has no profile or no path"
 msgstr ""
 
-#: kernel/occtkernel.cpp:1364
+#: kernel/occtkernel.cpp:1423
 msgid "the path's corners are too tight for that radius; they stay sharp"
 msgstr ""
 
-#: kernel/occtkernel.cpp:1395
+#: kernel/occtkernel.cpp:1454
 msgid "the sweep's path is not connected"
 msgstr ""
 
-#: kernel/occtkernel.cpp:1412 kernel/occtkernel.cpp:1429
+#: kernel/occtkernel.cpp:1471 kernel/occtkernel.cpp:1488
 msgid "the sweep failed"
 msgstr ""
 
-#: kernel/occtkernel.cpp:1415
+#: kernel/occtkernel.cpp:1474
 msgid "the holes could not be swept"
 msgstr ""
 
@@ -2510,16 +2510,17 @@ msgid "Align view to active workplane"
 msgstr ""
 
 #: ui/drawtool.cpp:27 ui/properties.cpp:706 ui/properties.cpp:708 ui/properties.cpp:709
-#: ui/selectionmodel.cpp:437 ui/selectionmodel.cpp:447 ui/stylespanel.cpp:116
+#: ui/selectionmodel.cpp:448 ui/selectionmodel.cpp:458 ui/stylespanel.cpp:116
 msgid "angle"
 msgstr ""
 
 #: ui/drawtool.cpp:27 ui/drawtool.cpp:28 ui/properties.cpp:176 ui/selectionmodel.cpp:159
+#: ui/selectionmodel.cpp:381
 msgid "length"
 msgstr ""
 
 #: ui/drawtool.cpp:30 ui/properties.cpp:174 ui/properties.cpp:382 ui/selectionmodel.cpp:186
-#: ui/selectionmodel.cpp:195 ui/selectionmodel.cpp:390
+#: ui/selectionmodel.cpp:195 ui/selectionmodel.cpp:401
 msgid "diameter"
 msgstr ""
 
@@ -3553,6 +3554,22 @@ msgid ""
 "but not constrained."
 msgstr ""
 
+#: ui/problemsmodel.cpp:115
+#, c-format
+msgid "%d edge is held by where it is"
+msgstr ""
+
+#: ui/problemsmodel.cpp:116
+#, c-format
+msgid "%d edges are held by where they are"
+msgstr ""
+
+#: ui/problemsmodel.cpp:117
+msgid ""
+"No sketch or feature line describes it, so it is found again by its place: if the model changes "
+"there it may be lost, and nothing can be constrained to it."
+msgstr ""
+
 #: ui/properties.cpp:83
 #, c-format
 msgid "a dowel's pocket; the other is in %s"
@@ -3701,8 +3718,8 @@ msgstr ""
 msgid "face"
 msgstr ""
 
-#: ui/properties.cpp:228 ui/selectionmodel.cpp:388 ui/selectionmodel.cpp:398
-#: ui/selectionmodel.cpp:420
+#: ui/properties.cpp:228 ui/selectionmodel.cpp:399 ui/selectionmodel.cpp:409
+#: ui/selectionmodel.cpp:431
 msgid "point"
 msgstr ""
 
@@ -3824,13 +3841,13 @@ msgid "hole centres"
 msgstr ""
 
 #: ui/properties.cpp:421 ui/selectionmodel.cpp:187 ui/selectionmodel.cpp:196
-#: ui/selectionmodel.cpp:391 ui/toolpanels.cpp:147
+#: ui/selectionmodel.cpp:402 ui/toolpanels.cpp:147
 msgid "radius"
 msgstr ""
 
 #: ui/properties.cpp:422 ui/properties.cpp:707 ui/properties.cpp:708 ui/selectionmodel.cpp:316
-#: ui/selectionmodel.cpp:379 ui/selectionmodel.cpp:392 ui/selectionmodel.cpp:401
-#: ui/selectionmodel.cpp:454
+#: ui/selectionmodel.cpp:390 ui/selectionmodel.cpp:403 ui/selectionmodel.cpp:412
+#: ui/selectionmodel.cpp:465
 msgid "distance"
 msgstr ""
 
@@ -4052,11 +4069,11 @@ msgstr ""
 msgid "limits"
 msgstr ""
 
-#: ui/properties.cpp:750 ui/selectionmodel.cpp:157 ui/selectionmodel.cpp:377
+#: ui/properties.cpp:750 ui/selectionmodel.cpp:157 ui/selectionmodel.cpp:388
 msgid "from"
 msgstr ""
 
-#: ui/properties.cpp:756 ui/selectionmodel.cpp:158 ui/selectionmodel.cpp:378
+#: ui/properties.cpp:756 ui/selectionmodel.cpp:158 ui/selectionmodel.cpp:389
 msgid "to"
 msgstr ""
 
@@ -4217,7 +4234,7 @@ msgid "Constraint"
 msgstr ""
 
 #: ui/selectionmodel.cpp:113 ui/selectionmodel.cpp:114 ui/selectionmodel.cpp:248
-#: ui/selectionmodel.cpp:345 ui/selectionmodel.cpp:427
+#: ui/selectionmodel.cpp:345 ui/selectionmodel.cpp:438
 msgid "workplane"
 msgstr ""
 
@@ -4265,7 +4282,7 @@ msgstr ""
 msgid "Arc of a circle"
 msgstr ""
 
-#: ui/selectionmodel.cpp:183 ui/selectionmodel.cpp:194 ui/selectionmodel.cpp:389
+#: ui/selectionmodel.cpp:183 ui/selectionmodel.cpp:194 ui/selectionmodel.cpp:400
 #: ui/stylespanel.cpp:123
 msgid "center"
 msgstr ""
@@ -4356,7 +4373,7 @@ msgstr ""
 msgid "attached to"
 msgstr ""
 
-#: ui/selectionmodel.cpp:317 ui/selectionmodel.cpp:380
+#: ui/selectionmodel.cpp:317 ui/selectionmodel.cpp:391
 msgid "offset (x, y, z)"
 msgstr ""
 
@@ -4384,102 +4401,106 @@ msgstr ""
 msgid "measures"
 msgstr ""
 
-#: ui/selectionmodel.cpp:376
-msgid "Two points"
-msgstr ""
-
-#: ui/selectionmodel.cpp:386
-msgid "Point and a circle"
+#: ui/selectionmodel.cpp:380
+msgid "Edge of the solid"
 msgstr ""
 
 #: ui/selectionmodel.cpp:387
-msgid "Point and an arc"
+msgid "Two points"
 msgstr ""
 
 #: ui/selectionmodel.cpp:397
-msgid "A point and a plane face"
+msgid "Point and a circle"
 msgstr ""
 
-#: ui/selectionmodel.cpp:399
-msgid "plane normal"
-msgstr ""
-
-#: ui/selectionmodel.cpp:400
-msgid "plane through"
-msgstr ""
-
-#: ui/selectionmodel.cpp:406
-msgid "Two points and a vector"
-msgstr ""
-
-#: ui/selectionmodel.cpp:407
-msgid "point A"
+#: ui/selectionmodel.cpp:398
+msgid "Point and an arc"
 msgstr ""
 
 #: ui/selectionmodel.cpp:408
-msgid "point B"
-msgstr ""
-
-#: ui/selectionmodel.cpp:409
-msgid "vector"
+msgid "A point and a plane face"
 msgstr ""
 
 #: ui/selectionmodel.cpp:410
-msgid "projected distance"
+msgid "plane normal"
+msgstr ""
+
+#: ui/selectionmodel.cpp:411
+msgid "plane through"
 msgstr ""
 
 #: ui/selectionmodel.cpp:417
-msgid "Line segment and point"
+msgid "Two points and a vector"
 msgstr ""
 
 #: ui/selectionmodel.cpp:418
-msgid "line through"
+msgid "point A"
+msgstr ""
+
+#: ui/selectionmodel.cpp:419
+msgid "point B"
+msgstr ""
+
+#: ui/selectionmodel.cpp:420
+msgid "vector"
 msgstr ""
 
 #: ui/selectionmodel.cpp:421
+msgid "projected distance"
+msgstr ""
+
+#: ui/selectionmodel.cpp:428
+msgid "Line segment and point"
+msgstr ""
+
+#: ui/selectionmodel.cpp:429
+msgid "line through"
+msgstr ""
+
+#: ui/selectionmodel.cpp:432
 msgid "distance to line"
 msgstr ""
 
-#: ui/selectionmodel.cpp:434
+#: ui/selectionmodel.cpp:445
 msgid "Two vectors"
 msgstr ""
 
-#: ui/selectionmodel.cpp:435
+#: ui/selectionmodel.cpp:446
 msgid "vector A"
 msgstr ""
 
-#: ui/selectionmodel.cpp:436
+#: ui/selectionmodel.cpp:447
 msgid "vector B"
 msgstr ""
 
-#: ui/selectionmodel.cpp:437 ui/selectionmodel.cpp:447
+#: ui/selectionmodel.cpp:448 ui/selectionmodel.cpp:458
 #, c-format
 msgid "%.2f degrees"
 msgstr ""
 
-#: ui/selectionmodel.cpp:440 ui/selectionmodel.cpp:450
+#: ui/selectionmodel.cpp:451 ui/selectionmodel.cpp:461
 #, c-format
 msgid "%.2f (mod 180)"
 msgstr ""
 
-#: ui/selectionmodel.cpp:440 ui/selectionmodel.cpp:450
+#: ui/selectionmodel.cpp:451 ui/selectionmodel.cpp:461
 msgid "or"
 msgstr ""
 
-#: ui/selectionmodel.cpp:442
+#: ui/selectionmodel.cpp:453
 msgid "Two plane faces"
 msgstr ""
 
-#: ui/selectionmodel.cpp:457
+#: ui/selectionmodel.cpp:468
 msgid "Three plane faces"
 msgstr ""
 
-#: ui/selectionmodel.cpp:462
+#: ui/selectionmodel.cpp:473
 #, c-format
 msgid "%d item"
 msgstr ""
 
-#: ui/selectionmodel.cpp:462
+#: ui/selectionmodel.cpp:473
 #, c-format
 msgid "%d items"
 msgstr ""

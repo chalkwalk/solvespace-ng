@@ -404,7 +404,7 @@ void Tessellate(const KernelShape &ks, RgbaColor color, SMesh *mesh,
                 }
             }
             if(!sharp && l->facet.Equals(r->facet)) continue;
-            outlines->AddEdge(l->a, l->b, l->facet, r->facet, sharp ? 1 : 0);
+            outlines->AddEdge(l->a, l->b, l->facet, r->facet, sharp ? 1 : 0, es.first);
         }
     }
 }
@@ -678,6 +678,51 @@ bool OnCurves(const TopoDS_Edge &edge, const std::vector<SBezier> &curves) {
     return true;
 }
 
+// How near a mark an edge must pass: the mark was taken on the B-rep itself.
+const double MARK_TOLERANCE = 1e-4;
+
+// The edge of shape passing within tol of p and running along dir there (either way), the
+// nearest if several; and its mark at its point nearest p.
+bool NearestEdge(const TopoDS_Shape &shape, Vector p, Vector dir, double tol, TopoDS_Edge *found,
+                 EdgeMark *mark) {
+    TopTools_IndexedMapOfShape edges;
+    TopExp::MapShapes(shape, TopAbs_EDGE, edges);
+    TopoDS_Vertex v    = BRepBuilderAPI_MakeVertex(gp_Pnt(p.x, p.y, p.z));
+    Vector        way  = dir.WithMagnitude(1);
+    double        best = tol;
+    bool          ok   = false;
+    Bnd_Box       near;
+    near.Add(gp_Pnt(p.x, p.y, p.z));
+    near.Enlarge(tol);
+    for(int i = 1; i <= edges.Extent(); i++) {
+        const TopoDS_Edge &edge = TopoDS::Edge(edges(i));
+        if(BRep_Tool::Degenerated(edge)) continue;
+        Bnd_Box box;
+        BRepBndLib::Add(edge, box);
+        if(box.IsOut(near)) continue;
+        BRepExtrema_DistShapeShape d(v, edge);
+        if(!d.IsDone() || d.NbSolution() == 0 || d.Value() > best) continue;
+        double t;
+        if(d.SupportTypeShape2(1) == BRepExtrema_IsOnEdge) {
+            d.ParOnEdgeS2(1, t);
+        } else {
+            t = BRep_Tool::Parameter(TopoDS::Vertex(d.SupportOnShape2(1)), edge);
+        }
+        BRepAdaptor_Curve curve(edge);
+        gp_Pnt            q;
+        gp_Vec            dq;
+        curve.D1(t, q, dq);
+        if(dq.Magnitude() < 1e-12) continue;
+        Vector along = Vec(dq.XYZ()).WithMagnitude(1);
+        if(along.Cross(way).Magnitude() > 0.2) continue;
+        best   = d.Value();
+        ok     = true;
+        *found = edge;
+        if(mark) *mark = { Vec(q.XYZ()), along };
+    }
+    return ok;
+}
+
 // The previous body with the job's edges rounded or bevelled, or null if nothing was;
 // *problem says what went wrong.
 std::shared_ptr<KernelShape> RoundEdges(const KernelJob &job, KernelProblem *problem) {
@@ -707,10 +752,24 @@ std::shared_ptr<KernelShape> RoundEdges(const KernelJob &job, KernelProblem *pro
         }
         if(!found) missing++;
     }
+    // The edges held by where they are: the one through each mark, if it is still there.
+    for(const EdgeMark &mark : job.edgeMarks) {
+        TopoDS_Edge edge;
+        if(!NearestEdge(prev.shape, mark.at, mark.along, MARK_TOLERANCE, &edge, nullptr)) {
+            missing++;
+            continue;
+        }
+        if(!added.Add(edge)) continue;
+        if(fillet) {
+            makeFillet.Add(job.size, edge);
+        } else {
+            makeChamfer.Add(job.size, edge);
+        }
+    }
     if(missing > 0) {
         *problem = N_("%d of the %d edges were not found on the solid");
         problem->count[0] = missing;
-        problem->count[1] = (int)job.edgeCurves.size();
+        problem->count[1] = (int)(job.edgeCurves.size() + job.edgeMarks.size());
     }
     // The picked faces' edges: all, or those with only one picked face beside them.
     if(!job.faceNames.empty()) {
@@ -1694,6 +1753,13 @@ static TopoDS_Shape Placed(const TopoDS_Shape &shape, Quaternion q, Vector t) {
     trsf.SetRotation(gp_Quaternion(q.vx, q.vy, q.vz, q.w));
     trsf.SetTranslationPart(gp_Vec(t.x, t.y, t.z));
     return shape.Moved(TopLoc_Location(trsf));
+}
+
+bool KernelMarkEdge(const std::shared_ptr<const KernelShape> &ks, Vector p, Vector dir,
+                    double tol, EdgeMark *mark) {
+    if(IsEmpty(ks)) return false;
+    TopoDS_Edge edge;
+    return NearestEdge(ks->shape, p, dir, tol, &edge, mark);
 }
 
 bool KernelMinDistance(const std::shared_ptr<const KernelShape> &a, Quaternion qa, Vector ta,

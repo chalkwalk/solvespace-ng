@@ -577,3 +577,95 @@ TEST_CASE(the_outline_of_picked_faces_skips_the_edges_between_them) {
     CHECK_TRUE(outline.volume > whole.volume + 0.1);
 }
 #endif
+
+#if defined(HAVE_OCCT)
+// #6: an edge no entity describes, picked on the solid. The box and a copy of it moved by
+// (5, 5, 0), joined: where the copy's y = 5 face meets the box's x = 10 face, at (10, 5), is a
+// corner of neither box. A fillet there fills the inside corner: (1 - pi/4) r^2 30 more.
+namespace {
+
+Group *JoinedBoxes() {
+    SS.GW.ActivateCommand(Command::GROUP_TRANS);
+    SS.Refresh();
+    Group *t = SK.GetGroup(SS.GW.activeGroup);
+    t->valA        = 2; // the box and one copy
+    t->meshCombine = Group::CombineAs::UNION;
+    // Each copy moves by twice the parameters.
+    SK.GetParam(t->h.param(0))->val = 2.5;
+    SK.GetParam(t->h.param(1))->val = 2.5;
+    SK.GetParam(t->h.param(2))->val = 0;
+    SS.MarkGroupDirty(t->h);
+    SS.GenerateAll(SolveSpaceUI::Generate::ALL);
+    return SK.GetGroup(SS.GW.activeGroup);
+}
+
+// The solid's edge through p, as the viewport picks it.
+GraphicsWindow::Selection SolidEdgeAt(Group *g, Vector p) {
+    GraphicsWindow::Selection sel = {};
+    g->GenerateDisplayItems(); // as drawing the viewport does
+    for(const SOutline &so : g->ShownOutlines().l) {
+        if(so.edge != 0 && p.DistanceToLine(so.a, so.b.Minus(so.a)) < 1e-6 &&
+           p.Minus(so.a).Dot(p.Minus(so.b)) <= 0) {
+            sel.solidEdge      = so.edge;
+            sel.solidEdgeGroup = g->h;
+        }
+    }
+    return sel;
+}
+
+}
+
+TEST_CASE(a_fillet_rounds_an_edge_no_entity_describes) {
+    CHECK_LOAD("box.slvs");
+    SS.SetKernel(KernelKind::OCCT);
+    Group *t = JoinedBoxes();
+    CHECK_TRUE(t->type == Group::Type::TRANSLATE);
+    double joined = Volume(t);
+    CHECK_TRUE(fabs(joined - (2 * 6000 - 5 * 15 * 30)) < 1e-3);
+    GraphicsWindow::Selection sel = SolidEdgeAt(t, Vector::From(10, 5, 15));
+    CHECK_TRUE(sel.solidEdge != 0);
+    SS.GW.ClearSelection();
+    SS.GW.selection.Add(&sel);
+    int before = SK.groupOrder.n;
+    Group::MenuGroup(Command::GROUP_FILLET);
+    CHECK_TRUE(SK.groupOrder.n == before + 1);
+    Group *g = SK.GetGroup(SS.GW.activeGroup);
+    CHECK_TRUE(g->type == Group::Type::FILLET);
+    CHECK_TRUE(g->edges.empty() && g->edgeMarks.size() == 1);
+    Resize(g, "2");
+    g = SK.GetGroup(SS.GW.activeGroup);
+    CHECK_TRUE(g->featureProblem.empty());
+    double added = Volume(g) - joined;
+    CHECK_TRUE(fabs(added - (1 - PI / 4) * 4 * 30) < 1.5);
+
+    // The mark is saved.
+    hGroup         hg   = g->h;
+    Platform::Path path = helper->GetAssetPath(__FILE__, "marked.slvs", "out");
+    CHECK_TRUE(SS.SaveToFile(path));
+    CHECK_TRUE(SS.LoadFromFile(path));
+    SS.AfterNewFile();
+    SS.GenerateAll(SolveSpaceUI::Generate::ALL);
+    g = SK.GetGroup(hg);
+    CHECK_TRUE(g->edgeMarks.size() == 1);
+    CHECK_TRUE(fabs(Volume(g) - joined - added) < 1e-3);
+    remove(path.raw.c_str());
+}
+
+TEST_CASE(an_edge_held_by_where_it_is_can_be_lost) {
+    CHECK_LOAD("box.slvs");
+    SS.SetKernel(KernelKind::OCCT);
+    Group *t = JoinedBoxes();
+    GraphicsWindow::Selection sel = SolidEdgeAt(t, Vector::From(10, 5, 15));
+    SS.GW.ClearSelection();
+    SS.GW.selection.Add(&sel);
+    Group::MenuGroup(Command::GROUP_FILLET);
+    hGroup hg = SS.GW.activeGroup;
+    Resize(SK.GetGroup(hg), "2");
+    // The copy moves: the edge is at (10, 7) now, not where it was picked.
+    t = SK.GetGroup(t->h);
+    SK.GetParam(t->h.param(1))->val = 3.5;
+    SS.MarkGroupDirty(t->h);
+    SS.GenerateAll(SolveSpaceUI::Generate::ALL);
+    CHECK_FALSE(SK.GetGroup(hg)->featureProblem.empty());
+}
+#endif

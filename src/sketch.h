@@ -399,6 +399,9 @@ public:
         Vector   into[2] = {};  // as found, for a face without an entity
     };
     std::vector<EdgeFaces> edgeFaces;
+    // FILLET, CHAMFER: edges no entity describes, held by where they are (#6; saved as
+    // Group.edgeMarks).
+    std::vector<EdgeMark> edgeMarks;
     // How many of the edges have no derived lines to constrain (curved, or beside a curved
     // face): a note in Problems (#7). Not saved.
     int curvedEdges = 0;

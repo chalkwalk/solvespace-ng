@@ -359,6 +359,11 @@ bool KernelMassProperties(const std::shared_ptr<const KernelShape> &, MassProps 
     return false;
 }
 
+bool KernelMarkEdge(const std::shared_ptr<const KernelShape> &, Vector, Vector, double,
+                    EdgeMark *) {
+    return false;
+}
+
 bool KernelMinDistance(const std::shared_ptr<const KernelShape> &, Quaternion, Vector,
                        const std::shared_ptr<const KernelShape> &, Quaternion, Vector, double *) {
     return false;

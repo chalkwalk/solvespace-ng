@@ -440,11 +440,31 @@ void Group::MenuGroup(Command id, Platform::Path linkFile) {
                     shortest = std::min(shortest, EdgeLength(e));
                 } else if(e && IsSolidFace(e)) {
                     g.faces.push_back(e->h);
+                } else if(!e && s.solidEdge != 0) {
+                    // An edge no entity describes (#6): held by where it is, at the middle of
+                    // its longest piece, on the B-rep.
+                    Group          *on   = SK.GetGroup(s.solidEdgeGroup);
+                    const SOutline *best = nullptr;
+                    for(const SOutline &so : on->ShownOutlines().l) {
+                        if(so.edge != s.solidEdge) continue;
+                        if(!best || so.b.Minus(so.a).Magnitude() > best->b.Minus(best->a).Magnitude()) {
+                            best = &so;
+                        }
+                    }
+                    EdgeMark mark;
+                    if(best && KernelMarkEdge(on->runningShape, best->a.Plus(best->b).ScaledBy(0.5),
+                                              best->b.Minus(best->a), 2 * SS.ChordTolMm() + 0.01,
+                                              &mark)) {
+                        g.edgeMarks.push_back(mark);
+                        shortest = std::min(shortest, best->b.Minus(best->a).Magnitude());
+                    } else {
+                        bad = true;
+                    }
                 } else {
                     bad = true;
                 }
             }
-            if(bad || (g.edges.empty() && g.faces.empty())) {
+            if(bad || (g.edges.empty() && g.faces.empty() && g.edgeMarks.empty())) {
                 Error(_("Bad selection for a new %s group. Select edges of the solid (the "
                         "lines and curves an extrusion, lathe, revolve, helix or pattern "
                         "makes), or faces, for all their edges."),

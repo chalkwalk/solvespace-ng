@@ -198,8 +198,9 @@ void PolylineBuilder::MakeFromEdges(const SEdgeList &sel) {
 void PolylineBuilder::MakeFromOutlines(const SOutlineList &ol) {
     for(const SOutline &so : ol.l) {
         // Use outline tag as kind, so that emphasized and contour outlines
-        // would not be composed together.
-        AddEdge(so.a, so.b, (uint32_t)so.tag, reinterpret_cast<uintptr_t>(&so));
+        // would not be composed together; nor the solid's edges (#6).
+        AddEdge(so.a, so.b, (uint32_t)so.tag | ((uint32_t)so.edge << 8),
+                reinterpret_cast<uintptr_t>(&so));
     }
 }
 
@@ -226,19 +227,19 @@ void PolylineBuilder::GenerateOutlines(SOutlineList *sol) {
     Vector prev;
     auto startFunc = [&](Vertex *start, Vertex *next, Edge *e) {
         SOutline *so = e->outline;
-        sol->AddEdge(start->pos, next->pos, so->nl, so->nr, so->tag);
+        sol->AddEdge(start->pos, next->pos, so->nl, so->nr, so->tag, so->edge);
         prev = next->pos;
     };
 
     auto nextFunc = [&](Vertex *next, Edge *e) {
         SOutline *so = e->outline;
-        sol->AddEdge(prev, next->pos, so->nl, so->nr, so->tag);
+        sol->AddEdge(prev, next->pos, so->nl, so->nr, so->tag, so->edge);
         prev = next->pos;
     };
 
     auto aloneFunc = [&](Edge *e) {
         SOutline *so = e->outline;
-        sol->AddEdge(so->a, so->b, so->nl, so->nr, so->tag);
+        sol->AddEdge(so->a, so->b, so->nl, so->nr, so->tag, so->edge);
     };
 
     Generate(startFunc, nextFunc, aloneFunc);

@@ -894,6 +894,10 @@ public:
 
         hEntity     entity;
         hConstraint constraint;
+        // An edge of the shown solid that no entity describes (#6): its number in the
+        // outlines of solidEdgeGroup's solid (SOutline::edge), or 0.
+        int         solidEdge;
+        hGroup      solidEdgeGroup;
         bool        emphasized;
 
         void Draw(bool isHovered, Canvas *canvas);

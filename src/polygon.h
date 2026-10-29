@@ -319,6 +319,7 @@ public:
 class SOutline {
 public:
     int    tag;
+    int    edge; // the solid's edge it is part of (the kernel's number for it), or 0
     Vector a, b, nl, nr;
 
     bool IsVisible(Vector projDir) const;
@@ -329,7 +330,7 @@ public:
     List<SOutline> l;
 
     void Clear();
-    void AddEdge(Vector a, Vector b, Vector nl, Vector nr, int tag = 0);
+    void AddEdge(Vector a, Vector b, Vector nl, Vector nr, int tag = 0, int edge = 0);
     void ListTaggedInto(SEdgeList *el, int auxA = 0, int auxB = 0);
 
     void MakeFromCopyOf(SOutlineList *ol);

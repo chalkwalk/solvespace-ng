@@ -370,8 +370,13 @@ no solid is known, e.g. with SolveSpace's kernel), so constraints on them are ne
 When an edge's faces change on the fresh solid, `GenerateAll` solves the later groups once
 more. An edge rounded away is hidden while its fillet is shown. Edges with no lines
 (curved, or beside a curved face) are a note in Problems (2026-10-28, #7; notes don't open
-the panel). Not yet: edges no entity describes (two bodies' intersection), derived entities
-for curved edges.
+the panel). Edges no entity describes (where two bodies meet; 2026-10-28, #6) are picked
+on the solid: each outline segment carries its B-rep edge (`SOutline::edge`), the viewport
+hovers the edges the solid doesn't hide (`Selection::solidEdge`), and the group holds such an
+edge by where it is (`Group.edgeMarks`: a point on it and its direction, snapped to the B-rep
+by `KernelMarkEdge`), found again as the edge through that point running that way. Problems
+notes each such group, and a mark no edge passes any more is a missing edge. Not yet:
+derived entities for curved edges.
 
 **Built in M3c (2026-10-21, branch `ng/m3c-features`):** Inspect ▸ Mass Properties (volume,
 surface area, mass at a density set in Preferences, centre of mass; exact from the B-rep via

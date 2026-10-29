@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: SolveSpace 3.0\n"
 "Report-Msgid-Bugs-To: phkahler@gmail.com\n"
-"POT-Creation-Date: 2026-10-28 15:53-0700\n"
+"POT-Creation-Date: 2026-10-28 19:21-0700\n"
 "PO-Revision-Date: 2025-01-27 12:58+0200\n"
 "Last-Translator: https://github.com/Symbian9\n"
 "Language-Team: app4soft\n"
@@ -685,11 +685,11 @@ msgctxt "group-name"
 msgid "#references"
 msgstr "#базові-площини"
 
-#: file.cpp:662
+#: file.cpp:693
 msgid "The file is empty. It may be corrupt."
 msgstr "Файл порожній. Він може бути пошкодженим."
 
-#: file.cpp:667
+#: file.cpp:698
 msgid ""
 "Unrecognized data in file. This file may be corrupt, or from a newer version "
 "of the program."
@@ -697,18 +697,18 @@ msgstr ""
 "Нерозпізнані дані у файлі. Цей файл може бути пошкодженим або збереженим "
 "новою версією програми."
 
-#: file.cpp:1008
+#: file.cpp:1039
 msgctxt "title"
 msgid "Missing File"
 msgstr "Втрачений Файл"
 
-#: file.cpp:1009
+#: file.cpp:1040
 #, c-format
 msgctxt "dialog"
 msgid "The linked file “%s” is not present."
 msgstr "Приєднаний файл “%s” відсутній."
 
-#: file.cpp:1011
+#: file.cpp:1042
 msgctxt "dialog"
 msgid ""
 "Do you want to locate it manually?\n"
@@ -720,17 +720,17 @@ msgstr ""
 "\n"
 "При відмові, уся геометрія, що залежить від втраченого файлу буде видалена."
 
-#: file.cpp:1014
+#: file.cpp:1045
 msgctxt "button"
 msgid "&Yes"
 msgstr "&Так"
 
-#: file.cpp:1016
+#: file.cpp:1047
 msgctxt "button"
 msgid "&No"
 msgstr "&Ні"
 
-#: file.cpp:1018 solvespace.cpp:684
+#: file.cpp:1049 solvespace.cpp:684
 msgctxt "button"
 msgid "&Cancel"
 msgstr "&Відмінити"
@@ -1634,7 +1634,7 @@ msgctxt "group-name"
 msgid "translate"
 msgstr "перекладання"
 
-#: group.cpp:448
+#: group.cpp:468
 #, fuzzy, c-format
 msgid ""
 "Bad selection for a new %s group. Select edges of the solid (the lines and "
@@ -1645,36 +1645,36 @@ msgstr ""
 "криві, які створюють видавлювання, проточування, прокручування, спіраль або "
 "масив) або грані: для всіх їхніх ребер."
 
-#: group.cpp:451
+#: group.cpp:471
 #, fuzzy
 msgid "chamfer"
 msgstr "фаска"
 
-#: group.cpp:451
+#: group.cpp:471
 #, fuzzy
 msgid "fillet"
 msgstr "скруглення"
 
-#: group.cpp:456
+#: group.cpp:476
 #, fuzzy
 msgid ""
 "Fillets and chamfers need the Open CASCADE kernel, which this build lacks."
 msgstr ""
 "Скруглення і фаски потребують ядра Open CASCADE, якого немає в цій збірці."
 
-#: group.cpp:462
+#: group.cpp:482
 #, fuzzy
 msgctxt "group-name"
 msgid "chamfer"
 msgstr "фаска"
 
-#: group.cpp:462
+#: group.cpp:482
 #, fuzzy
 msgctxt "group-name"
 msgid "fillet"
 msgstr "скруглення"
 
-#: group.cpp:470
+#: group.cpp:490
 #, fuzzy
 msgid ""
 "Bad selection for a new shell group. Select the faces of the solid to leave "
@@ -1683,23 +1683,23 @@ msgstr ""
 "Неправильне виділення для нової групи оболонки. Оберіть грані тіла, які "
 "залишаться відкритими, або нічого для замкненої оболонки."
 
-#: group.cpp:477
+#: group.cpp:497
 #, fuzzy
 msgid "Shells need the Open CASCADE kernel, which this build lacks."
 msgstr "Оболонки потребують ядра Open CASCADE, якого немає в цій збірці."
 
-#: group.cpp:483
+#: group.cpp:503
 #, fuzzy
 msgid "There is no solid to make a shell of."
 msgstr "Немає тіла, з якого можна зробити оболонку."
 
-#: group.cpp:501
+#: group.cpp:521
 #, fuzzy
 msgctxt "group-name"
 msgid "shell"
 msgstr "оболонка"
 
-#: group.cpp:517
+#: group.cpp:537
 #, fuzzy
 msgid ""
 "Bad selection for a new draft group. Select side faces of an extrusion; they "
@@ -1709,18 +1709,18 @@ msgstr ""
 "видавлювання: вони звужуються навколо площини свого креслення, вздовж його "
 "напряму."
 
-#: group.cpp:522
+#: group.cpp:542
 #, fuzzy
 msgid "Drafts need the Open CASCADE kernel, which this build lacks."
 msgstr "Ухили потребують ядра Open CASCADE, якого немає в цій збірці."
 
-#: group.cpp:527
+#: group.cpp:547
 #, fuzzy
 msgctxt "group-name"
 msgid "draft"
 msgstr "ухил"
 
-#: group.cpp:541
+#: group.cpp:561
 #, fuzzy
 msgid ""
 "Bad selection for a new hole group. Select the hole centres: points in a "
@@ -1731,18 +1731,18 @@ msgstr ""
 "в робочій площині, наприклад креслення на грані. Отвори йдуть у грань, проти "
 "нормалі робочої площини."
 
-#: group.cpp:547
+#: group.cpp:567
 #, fuzzy
 msgid "Holes need the Open CASCADE kernel, which this build lacks."
 msgstr "Отвори потребують ядра Open CASCADE, якого немає в цій збірці."
 
-#: group.cpp:555
+#: group.cpp:575
 #, fuzzy
 msgctxt "group-name"
 msgid "hole"
 msgstr "отвір"
 
-#: group.cpp:573
+#: group.cpp:593
 #, fuzzy
 msgid ""
 "Bad selection for a new loft group. Select a curve of each profile, in "
@@ -1752,19 +1752,19 @@ msgstr ""
 "профілю по порядку: дві або більше замкнених фігур, кожна у власному "
 "кресленні."
 
-#: group.cpp:578
+#: group.cpp:598
 #, fuzzy
 msgid "Lofts need the Open CASCADE kernel, which this build lacks."
 msgstr ""
 "Групи «за перерізами» потребують ядра Open CASCADE, якого немає в цій збірці."
 
-#: group.cpp:582
+#: group.cpp:602
 #, fuzzy
 msgctxt "group-name"
 msgid "loft"
 msgstr "за-перерізами"
 
-#: group.cpp:604
+#: group.cpp:624
 #, fuzzy
 msgid ""
 "Bad selection for a new sweep group. Select a curve of the profile (a closed "
@@ -1775,36 +1775,36 @@ msgstr ""
 "криву профілю (замкненої фігури в кресленні), потім криві траєкторії, "
 "з'єднані одна з одною, в іншому кресленні."
 
-#: group.cpp:610
+#: group.cpp:630
 #, fuzzy
 msgid "Sweeps need the Open CASCADE kernel, which this build lacks."
 msgstr ""
 "Групи «за траєкторією» потребують ядра Open CASCADE, якого немає в цій "
 "збірці."
 
-#: group.cpp:615
+#: group.cpp:635
 #, fuzzy
 msgctxt "group-name"
 msgid "sweep"
 msgstr "за-траєкторією"
 
-#: group.cpp:736
+#: group.cpp:756
 msgid "(unnamed)"
 msgstr "(безіменне)"
 
-#: groupmesh.cpp:714
+#: groupmesh.cpp:715
 msgid "not closed contour, or not all same style!"
 msgstr "не замкнений контур або не все в єдиному стилі!"
 
-#: groupmesh.cpp:727
+#: groupmesh.cpp:728
 msgid "points not all coplanar!"
 msgstr "не всі точки знаходяться в одній площині!"
 
-#: groupmesh.cpp:729
+#: groupmesh.cpp:730
 msgid "contour is self-intersecting!"
 msgstr "контур самоперетинається!"
 
-#: groupmesh.cpp:731
+#: groupmesh.cpp:732
 msgid "zero-length edge!"
 msgstr "ребро нульової довжини!"
 
@@ -2008,78 +2008,78 @@ msgstr "від %s до %s"
 msgid "the fit's clearance couldn't be added to the profile"
 msgstr "не вдалося додати зазор посадки до профілю"
 
-#: kernel/occtkernel.cpp:711
+#: kernel/occtkernel.cpp:770
 #, fuzzy, c-format
 msgid "%d of the %d edges were not found on the solid"
 msgstr "%d з %d ребер не знайдено на тілі"
 
-#: kernel/occtkernel.cpp:924 kernel/occtkernel.cpp:966
+#: kernel/occtkernel.cpp:983 kernel/occtkernel.cpp:1025
 #, fuzzy, c-format
 msgid "%d of the %d faces were not found on the solid"
 msgstr "%d з %d граней не знайдено на тілі"
 
-#: kernel/occtkernel.cpp:947
+#: kernel/occtkernel.cpp:1006
 #, fuzzy
 msgid "the draft failed on a face it cannot taper"
 msgstr "ухил не вдався на грані, яку не можна нахилити"
 
-#: kernel/occtkernel.cpp:955
+#: kernel/occtkernel.cpp:1014
 #, fuzzy
 msgid "none of the faces were found on the solid"
 msgstr "жодної з граней не знайдено на тілі"
 
-#: kernel/occtkernel.cpp:962
+#: kernel/occtkernel.cpp:1021
 #, fuzzy
 msgid "the draft failed; the angle may be too big for the solid"
 msgstr "ухил не вдався; можливо, кут завеликий для тіла"
 
-#: kernel/occtkernel.cpp:1086
+#: kernel/occtkernel.cpp:1145
 #, fuzzy
 msgid "the split's plane is gone"
 msgstr "площини розділення більше немає"
 
-#: kernel/occtkernel.cpp:1102
+#: kernel/occtkernel.cpp:1161
 #, fuzzy
 msgid "the solid couldn't be split"
 msgstr "не вдалося розділити тіло"
 
-#: kernel/occtkernel.cpp:1109
+#: kernel/occtkernel.cpp:1168
 #, fuzzy
 msgid "the cut is too small for a dowel this size"
 msgstr "зріз замалий для штифта такого розміру"
 
-#: kernel/occtkernel.cpp:1121
+#: kernel/occtkernel.cpp:1180
 #, fuzzy
 msgid "the dowel pockets couldn't be cut"
 msgstr "не вдалося вирізати гнізда для штифтів"
 
-#: kernel/occtkernel.cpp:1165
+#: kernel/occtkernel.cpp:1224
 #, fuzzy
 msgid "the thread could not be made"
 msgstr "не вдалося побудувати різьбу"
 
-#: kernel/occtkernel.cpp:1172
+#: kernel/occtkernel.cpp:1231
 #, fuzzy
 msgid "the holes could not be made"
 msgstr "не вдалося побудувати отвори"
 
-#: kernel/occtkernel.cpp:1188 kernel/occtkernel.cpp:1326
-#: kernel/occtkernel.cpp:1427
+#: kernel/occtkernel.cpp:1247 kernel/occtkernel.cpp:1385
+#: kernel/occtkernel.cpp:1486
 #, fuzzy
 msgid "the holes could not be cut"
 msgstr "не вдалося вирізати отвори"
 
-#: kernel/occtkernel.cpp:1193
+#: kernel/occtkernel.cpp:1252
 #, fuzzy
 msgid "the holes miss the solid"
 msgstr "отвори не зачіпають тіло"
 
-#: kernel/occtkernel.cpp:1300 kernel/occtkernel.cpp:1328
+#: kernel/occtkernel.cpp:1359 kernel/occtkernel.cpp:1387
 #, fuzzy
 msgid "the loft failed"
 msgstr "лофт не вдався"
 
-#: kernel/occtkernel.cpp:1311
+#: kernel/occtkernel.cpp:1370
 #, fuzzy
 msgid ""
 "holes are lofted only when every profile has as many; these are left out"
@@ -2087,32 +2087,32 @@ msgstr ""
 "отвори потрапляють у лофт, лише якщо в кожного профілю їх порівну; ці "
 "пропущено"
 
-#: kernel/occtkernel.cpp:1319
+#: kernel/occtkernel.cpp:1378
 #, fuzzy
 msgid "the holes could not be lofted"
 msgstr "не вдалося побудувати лофт отворів"
 
-#: kernel/occtkernel.cpp:1337
+#: kernel/occtkernel.cpp:1396
 #, fuzzy
 msgid "the sweep has no profile or no path"
 msgstr "у протягування немає профілю або траєкторії"
 
-#: kernel/occtkernel.cpp:1364
+#: kernel/occtkernel.cpp:1423
 #, fuzzy
 msgid "the path's corners are too tight for that radius; they stay sharp"
 msgstr "кути траєкторії загострі для цього радіуса; вони лишаються гострими"
 
-#: kernel/occtkernel.cpp:1395
+#: kernel/occtkernel.cpp:1454
 #, fuzzy
 msgid "the sweep's path is not connected"
 msgstr "траєкторія протягування не зв'язна"
 
-#: kernel/occtkernel.cpp:1412 kernel/occtkernel.cpp:1429
+#: kernel/occtkernel.cpp:1471 kernel/occtkernel.cpp:1488
 #, fuzzy
 msgid "the sweep failed"
 msgstr "протягування не вдалося"
 
-#: kernel/occtkernel.cpp:1415
+#: kernel/occtkernel.cpp:1474
 #, fuzzy
 msgid "the holes could not be swept"
 msgstr "не вдалося протягнути отвори"
@@ -3033,21 +3033,21 @@ msgid "Align view to active workplane"
 msgstr "Вирівняти вигляд до активної робочої площини"
 
 #: ui/drawtool.cpp:27 ui/properties.cpp:706 ui/properties.cpp:708
-#: ui/properties.cpp:709 ui/selectionmodel.cpp:437 ui/selectionmodel.cpp:447
+#: ui/properties.cpp:709 ui/selectionmodel.cpp:448 ui/selectionmodel.cpp:458
 #: ui/stylespanel.cpp:116
 #, fuzzy
 msgid "angle"
 msgstr "кут"
 
 #: ui/drawtool.cpp:27 ui/drawtool.cpp:28 ui/properties.cpp:176
-#: ui/selectionmodel.cpp:159
+#: ui/selectionmodel.cpp:159 ui/selectionmodel.cpp:381
 #, fuzzy
 msgid "length"
 msgstr "довжина"
 
 #: ui/drawtool.cpp:30 ui/properties.cpp:174 ui/properties.cpp:382
 #: ui/selectionmodel.cpp:186 ui/selectionmodel.cpp:195
-#: ui/selectionmodel.cpp:390
+#: ui/selectionmodel.cpp:401
 #, fuzzy
 msgid "diameter"
 msgstr "діаметр"
@@ -4318,14 +4318,12 @@ msgstr ""
 "Можливо, допоможе примусове перетворення NURBS-поверхонь у трикутну сітку."
 
 #: ui/problemsmodel.cpp:101
-#, c-format
-#, fuzzy
+#, fuzzy, c-format
 msgid "%d edge has no lines to constrain"
 msgstr "У %d ребра немає ліній для обмежень"
 
 #: ui/problemsmodel.cpp:102
-#, c-format
-#, fuzzy
+#, fuzzy, c-format
 msgid "%d edges have no lines to constrain"
 msgstr "У %d ребер немає ліній для обмежень"
 
@@ -4334,7 +4332,29 @@ msgstr "У %d ребер немає ліній для обмежень"
 msgid ""
 "It is curved, or a face beside it is: what it makes has no closed form, so "
 "it can be snapped to but not constrained."
-msgstr "Воно криве або сусідня грань крива: результат не має замкненої форми, до нього можна прив'язатися, але не можна накласти обмеження."
+msgstr ""
+"Воно криве або сусідня грань крива: результат не має замкненої форми, до "
+"нього можна прив'язатися, але не можна накласти обмеження."
+
+#: ui/problemsmodel.cpp:115
+#, c-format
+#, fuzzy
+msgid "%d edge is held by where it is"
+msgstr "%d ребро утримується за своїм положенням"
+
+#: ui/problemsmodel.cpp:116
+#, c-format
+#, fuzzy
+msgid "%d edges are held by where they are"
+msgstr "%d ребер утримуються за своїм положенням"
+
+#: ui/problemsmodel.cpp:117
+#, fuzzy
+msgid ""
+"No sketch or feature line describes it, so it is found again by its place: "
+"if the model changes there it may be lost, and nothing can be constrained to "
+"it."
+msgstr "Його не описує жодна лінія ескізу чи елемента, тому воно знаходиться знову за своїм місцем: якщо модель там зміниться, воно може загубитися, і до нього нічого не можна прив'язати обмеженням."
 
 #: ui/properties.cpp:83
 #, fuzzy, c-format
@@ -4516,8 +4536,8 @@ msgstr "крива"
 msgid "face"
 msgstr "грань"
 
-#: ui/properties.cpp:228 ui/selectionmodel.cpp:388 ui/selectionmodel.cpp:398
-#: ui/selectionmodel.cpp:420
+#: ui/properties.cpp:228 ui/selectionmodel.cpp:399 ui/selectionmodel.cpp:409
+#: ui/selectionmodel.cpp:431
 #, fuzzy
 msgid "point"
 msgstr "точка"
@@ -4668,15 +4688,15 @@ msgid "hole centres"
 msgstr "центри отворів"
 
 #: ui/properties.cpp:421 ui/selectionmodel.cpp:187 ui/selectionmodel.cpp:196
-#: ui/selectionmodel.cpp:391 ui/toolpanels.cpp:147
+#: ui/selectionmodel.cpp:402 ui/toolpanels.cpp:147
 #, fuzzy
 msgid "radius"
 msgstr "радіус"
 
 #: ui/properties.cpp:422 ui/properties.cpp:707 ui/properties.cpp:708
-#: ui/selectionmodel.cpp:316 ui/selectionmodel.cpp:379
-#: ui/selectionmodel.cpp:392 ui/selectionmodel.cpp:401
-#: ui/selectionmodel.cpp:454
+#: ui/selectionmodel.cpp:316 ui/selectionmodel.cpp:390
+#: ui/selectionmodel.cpp:403 ui/selectionmodel.cpp:412
+#: ui/selectionmodel.cpp:465
 #, fuzzy
 msgid "distance"
 msgstr "відстань"
@@ -4950,12 +4970,12 @@ msgstr "навколо Z"
 msgid "limits"
 msgstr "межі"
 
-#: ui/properties.cpp:750 ui/selectionmodel.cpp:157 ui/selectionmodel.cpp:377
+#: ui/properties.cpp:750 ui/selectionmodel.cpp:157 ui/selectionmodel.cpp:388
 #, fuzzy
 msgid "from"
 msgstr "від"
 
-#: ui/properties.cpp:756 ui/selectionmodel.cpp:158 ui/selectionmodel.cpp:378
+#: ui/properties.cpp:756 ui/selectionmodel.cpp:158 ui/selectionmodel.cpp:389
 #, fuzzy
 msgid "to"
 msgstr "до"
@@ -5161,7 +5181,7 @@ msgstr "Обмеження"
 
 #: ui/selectionmodel.cpp:113 ui/selectionmodel.cpp:114
 #: ui/selectionmodel.cpp:248 ui/selectionmodel.cpp:345
-#: ui/selectionmodel.cpp:427
+#: ui/selectionmodel.cpp:438
 #, fuzzy
 msgid "workplane"
 msgstr "робоча площина"
@@ -5223,7 +5243,7 @@ msgid "Arc of a circle"
 msgstr "Дуга кола"
 
 #: ui/selectionmodel.cpp:183 ui/selectionmodel.cpp:194
-#: ui/selectionmodel.cpp:389 ui/stylespanel.cpp:123
+#: ui/selectionmodel.cpp:400 ui/stylespanel.cpp:123
 #, fuzzy
 msgid "center"
 msgstr "центр"
@@ -5333,7 +5353,7 @@ msgstr "площина %c через"
 msgid "attached to"
 msgstr "прикріплено до"
 
-#: ui/selectionmodel.cpp:317 ui/selectionmodel.cpp:380
+#: ui/selectionmodel.cpp:317 ui/selectionmodel.cpp:391
 #, fuzzy
 msgid "offset (x, y, z)"
 msgstr "зсув (x, y, z)"
@@ -5368,122 +5388,127 @@ msgstr "обмежує"
 msgid "measures"
 msgstr "вимірює"
 
-#: ui/selectionmodel.cpp:376
+#: ui/selectionmodel.cpp:380
+#, fuzzy
+msgid "Edge of the solid"
+msgstr "Ребро тіла"
+
+#: ui/selectionmodel.cpp:387
 #, fuzzy
 msgid "Two points"
 msgstr "Дві точки"
 
-#: ui/selectionmodel.cpp:386
+#: ui/selectionmodel.cpp:397
 #, fuzzy
 msgid "Point and a circle"
 msgstr "Точка і коло"
 
-#: ui/selectionmodel.cpp:387
+#: ui/selectionmodel.cpp:398
 #, fuzzy
 msgid "Point and an arc"
 msgstr "Точка і дуга"
 
-#: ui/selectionmodel.cpp:397
+#: ui/selectionmodel.cpp:408
 #, fuzzy
 msgid "A point and a plane face"
 msgstr "Точка і плоска грань"
 
-#: ui/selectionmodel.cpp:399
+#: ui/selectionmodel.cpp:410
 #, fuzzy
 msgid "plane normal"
 msgstr "нормаль площини"
 
-#: ui/selectionmodel.cpp:400
+#: ui/selectionmodel.cpp:411
 #, fuzzy
 msgid "plane through"
 msgstr "площина через"
 
-#: ui/selectionmodel.cpp:406
+#: ui/selectionmodel.cpp:417
 #, fuzzy
 msgid "Two points and a vector"
 msgstr "Дві точки і вектор"
 
-#: ui/selectionmodel.cpp:407
+#: ui/selectionmodel.cpp:418
 #, fuzzy
 msgid "point A"
 msgstr "точка A"
 
-#: ui/selectionmodel.cpp:408
+#: ui/selectionmodel.cpp:419
 #, fuzzy
 msgid "point B"
 msgstr "точка B"
 
-#: ui/selectionmodel.cpp:409
+#: ui/selectionmodel.cpp:420
 #, fuzzy
 msgid "vector"
 msgstr "вектор"
 
-#: ui/selectionmodel.cpp:410
+#: ui/selectionmodel.cpp:421
 #, fuzzy
 msgid "projected distance"
 msgstr "проєкція відстані"
 
-#: ui/selectionmodel.cpp:417
+#: ui/selectionmodel.cpp:428
 #, fuzzy
 msgid "Line segment and point"
 msgstr "Відрізок і точка"
 
-#: ui/selectionmodel.cpp:418
+#: ui/selectionmodel.cpp:429
 #, fuzzy
 msgid "line through"
 msgstr "пряма через"
 
-#: ui/selectionmodel.cpp:421
+#: ui/selectionmodel.cpp:432
 #, fuzzy
 msgid "distance to line"
 msgstr "відстань до прямої"
 
-#: ui/selectionmodel.cpp:434
+#: ui/selectionmodel.cpp:445
 #, fuzzy
 msgid "Two vectors"
 msgstr "Два вектори"
 
-#: ui/selectionmodel.cpp:435
+#: ui/selectionmodel.cpp:446
 #, fuzzy
 msgid "vector A"
 msgstr "вектор A"
 
-#: ui/selectionmodel.cpp:436
+#: ui/selectionmodel.cpp:447
 #, fuzzy
 msgid "vector B"
 msgstr "вектор B"
 
-#: ui/selectionmodel.cpp:437 ui/selectionmodel.cpp:447
+#: ui/selectionmodel.cpp:448 ui/selectionmodel.cpp:458
 #, fuzzy, c-format
 msgid "%.2f degrees"
 msgstr "%.2f градуса"
 
-#: ui/selectionmodel.cpp:440 ui/selectionmodel.cpp:450
+#: ui/selectionmodel.cpp:451 ui/selectionmodel.cpp:461
 #, fuzzy, c-format
 msgid "%.2f (mod 180)"
 msgstr "%.2f (за модулем 180)"
 
-#: ui/selectionmodel.cpp:440 ui/selectionmodel.cpp:450
+#: ui/selectionmodel.cpp:451 ui/selectionmodel.cpp:461
 #, fuzzy
 msgid "or"
 msgstr "або"
 
-#: ui/selectionmodel.cpp:442
+#: ui/selectionmodel.cpp:453
 #, fuzzy
 msgid "Two plane faces"
 msgstr "Дві плоскі грані"
 
-#: ui/selectionmodel.cpp:457
+#: ui/selectionmodel.cpp:468
 #, fuzzy
 msgid "Three plane faces"
 msgstr "Три плоскі грані"
 
-#: ui/selectionmodel.cpp:462
+#: ui/selectionmodel.cpp:473
 #, fuzzy, c-format
 msgid "%d item"
 msgstr "%d елемент"
 
-#: ui/selectionmodel.cpp:462
+#: ui/selectionmodel.cpp:473
 #, fuzzy, c-format
 msgid "%d items"
 msgstr "%d елементів"

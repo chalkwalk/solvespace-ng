@@ -214,6 +214,7 @@ KernelJob Group::BuildKernelJob() {
             job.edgeCurves.emplace_back(sbl.l.begin(), sbl.l.end());
             sbl.Clear();
         }
+        job.edgeMarks = edgeMarks;
     } else if(type == Type::LOFT) {
         job.op = KernelJob::Op::LOFT;
         for(hEntity he : profiles) {

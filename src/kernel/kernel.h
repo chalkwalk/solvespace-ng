@@ -35,6 +35,12 @@ struct Body {
     }
 };
 
+// An edge of a solid held by where it is (#6: no entity describes it): a point on it and its
+// direction there.
+struct EdgeMark {
+    Vector at, along;
+};
+
 enum class KernelCombine { UNION, DIFFERENCE, INTERSECTION, ASSEMBLE };
 
 enum class KernelFeature {
@@ -128,6 +134,8 @@ struct KernelJob {
     // curves of an edge entity, matching the B-rep edges that lie on them; the radius or
     // distance.
     std::vector<std::vector<SBezier>> edgeCurves;
+    // ...and the edges through these marks, running their way (#6).
+    std::vector<EdgeMark> edgeMarks;
     double size = 0;
     // SHELL: the faces left open (face entity handles); the wall thickness is size.
     std::vector<uint32_t> faceNames;
@@ -267,6 +275,10 @@ struct MassProps {
     Vector centre = {};
     bool   exact  = false;
 };
+// The edge of the B-rep passing within tol of p and running along dir there (either way): its
+// mark at its point nearest p. False if there is none (or no B-rep).
+bool KernelMarkEdge(const std::shared_ptr<const KernelShape> &shape, Vector p, Vector dir,
+                    double tol, EdgeMark *mark);
 // The smallest distance between two B-reps, each moved by its rotation and translation
 // (x -> q x + t); 0 where they touch or overlap. False if either has no B-rep.
 bool KernelMinDistance(const std::shared_ptr<const KernelShape> &a, Quaternion qa, Vector ta,

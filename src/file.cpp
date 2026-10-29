@@ -126,6 +126,7 @@ const SolveSpaceUI::SaveTable SolveSpaceUI::SAVED[] = {
     { 'g',  "Group.remap",              'M',    &(SS.sv.g.remap)              },
     { 'g',  "Group.edges",              'E',    &(SS.sv.g.edges)              },
     { 'g',  "Group.faces",              'E',    &(SS.sv.g.faces)              },
+    { 'g',  "Group.edgeMarks",          'K',    &(SS.sv.g.edgeMarks)          },
     { 'g',  "Group.featureOutline",     'd',    &(SS.sv.g.featureOutline)     },
     { 'g',  "Group.shellSide",          'd',    &(SS.sv.g.shellSide)          },
     { 'g',  "Group.points",             'E',    &(SS.sv.g.points)             },
@@ -272,6 +273,7 @@ const SolveSpaceUI::SaveTable SolveSpaceUI::SAVED[] = {
 struct SAVEDptr {
     EntityMap      &M() { return *((EntityMap *)this); }
     std::vector<hEntity> &E() { return *((std::vector<hEntity> *)this); }
+    std::vector<EdgeMark> &K() { return *((std::vector<EdgeMark> *)this); }
     std::string    &S() { return *((std::string *)this); }
     Platform::Path &P() { return *((Platform::Path *)this); }
     bool      &b() { return *((bool *)this); }
@@ -296,6 +298,7 @@ void SolveSpaceUI::SaveUsingTable(const Platform::Path &filename, int type) {
         if(fmt == 'x' && p->x() == 0)             continue;
         if(fmt == 'i')                            continue;
         if(fmt == 'E' && p->E().empty())          continue;
+        if(fmt == 'K' && p->K().empty())          continue;
 
         fprintf(fh, "%s=", SAVED[i].desc);
         switch(fmt) {
@@ -335,6 +338,17 @@ void SolveSpaceUI::SaveUsingTable(const Platform::Path &filename, int type) {
                 const char *sep = "";
                 for(hEntity he : p->E()) {
                     fprintf(fh, "%s%08x", sep, he.v);
+                    sep = " ";
+                }
+                break;
+            }
+
+            case 'K': {
+                // Each mark: its point, then its direction.
+                const char *sep = "";
+                for(const EdgeMark &m : p->K()) {
+                    fprintf(fh, "%s%.20f %.20f %.20f %.20f %.20f %.20f", sep, m.at.x, m.at.y,
+                            m.at.z, m.along.x, m.along.y, m.along.z);
                     sep = " ";
                 }
                 break;
@@ -552,6 +566,23 @@ void SolveSpaceUI::LoadUsingTable(const Platform::Path &filename, char *key, cha
                         unsigned long v = strtoul(at, &end, 16);
                         if(end == at) break;
                         p->E().push_back(hEntity{ (uint32_t)v });
+                    }
+                    break;
+                }
+
+                case 'K': {
+                    p->K().clear();
+                    double v[6];
+                    char  *at = val, *end;
+                    for(;;) {
+                        int k = 0;
+                        for(; k < 6; k++, at = end) {
+                            v[k] = strtod(at, &end);
+                            if(end == at) break;
+                        }
+                        if(k < 6) break;
+                        p->K().push_back({ Vector::From(v[0], v[1], v[2]),
+                                           Vector::From(v[3], v[4], v[5]) });
                     }
                     break;
                 }

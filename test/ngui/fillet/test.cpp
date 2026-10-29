@@ -112,3 +112,39 @@ TEST_CASE(ng_drags_holds_and_edits_a_fillets_radius) {
     CHECK_TRUE(Driver::ClickItem("hold this size (a dimension)"));
     CHECK_TRUE(SK.constraint.FindByIdNoOops(size) == nullptr);
 }
+
+// #6: the box and a copy moved (5, 5, 0), joined; the edge where the copy's front face meets
+// the box's right face, at (10, 5), is no entity, but it is picked on the solid and rounded.
+TEST_CASE(ng_fillets_an_edge_no_entity_describes) {
+    CHECK_LOAD("box.slvs");
+    SS.GW.ActivateCommand(Command::GROUP_TRANS);
+    Group *t       = Active();
+    t->valA        = 2;
+    t->meshCombine = Group::CombineAs::UNION;
+    SK.GetParam(t->h.param(0))->val = 2.5; // each copy moves twice this
+    SK.GetParam(t->h.param(1))->val = 2.5;
+    SK.GetParam(t->h.param(2))->val = 0;
+    SS.MarkGroupDirty(t->h);
+    SS.GenerateAll(SolveSpaceUI::Generate::ALL);
+    // The isometric view (from (1, 1, 1)) looks at the corner from behind the copy: hidden,
+    // so not picked.
+    Driver::Key("Shift+7");
+    Point2d hidden = At({ 10, 5, 15 });
+    Driver::Move(hidden.x, hidden.y);
+    CHECK_TRUE(SS.GW.hover.solidEdge == 0);
+    // Seen from (1, -1, 1), into the corner.
+    SS.GW.projRight = Vector::From(1, 1, 0).WithMagnitude(1);
+    SS.GW.projUp    = Vector::From(-1, 1, 2).WithMagnitude(1);
+    SS.GW.offset    = Vector::From(-10, -12, -15);
+    SS.GW.Invalidate();
+    Driver::Key("Escape");
+    Point2d edge = At({ 10, 5, 15 });
+    Driver::Move(edge.x, edge.y);
+    CHECK_TRUE(SS.GW.hover.solidEdge != 0);
+    ClickAt(edge);
+    CHECK_TRUE(SS.GW.selection.n == 1 && SS.GW.selection[0].solidEdge != 0);
+    Driver::Key("F");
+    CHECK_TRUE(Active()->type == Group::Type::FILLET);
+    CHECK_TRUE(Active()->edgeMarks.size() == 1);
+    CHECK_TRUE(Active()->featureProblem.empty());
+}

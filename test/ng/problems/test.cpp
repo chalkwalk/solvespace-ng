@@ -132,4 +132,36 @@ TEST_CASE(a_fillet_on_a_curved_edge_is_a_note) {
         CHECK_TRUE(problems[0].title.find("1 edge") != std::string::npos);
     }
 }
+
+TEST_CASE(an_edge_held_by_where_it_is_is_a_note) {
+    // #6, AGENTS.md section 6: an edge picked on the solid, not as an entity, is found again
+    // by its place, and Problems says so.
+    CHECK_LOAD("../../group/fillet/box.slvs");
+    SS.kernelKind = KernelKind::OCCT;
+    SS.GenerateAll(SolveSpaceUI::Generate::ALL);
+    Group *box = SK.GetGroup(SS.GW.activeGroup);
+    box->GenerateDisplayItems();
+    GraphicsWindow::Selection sel = {};
+    Vector p = Vector::From(10, 0, 15); // the box's side edge at x = 10, y = 0
+    for(const SOutline &so : box->ShownOutlines().l) {
+        if(so.edge != 0 && p.DistanceToLine(so.a, so.b.Minus(so.a)) < 1e-6 &&
+           p.Minus(so.a).Dot(p.Minus(so.b)) <= 0) {
+            sel.solidEdge      = so.edge;
+            sel.solidEdgeGroup = box->h;
+        }
+    }
+    CHECK_TRUE(sel.solidEdge != 0);
+    SS.GW.ClearSelection();
+    SS.GW.selection.Add(&sel);
+    Group::MenuGroup(Command::GROUP_FILLET);
+    SS.SetFeatureSize(SS.GW.activeGroup, "1");
+    SS.GenerateAll(SolveSpaceUI::Generate::ALL);
+    std::vector<Problem> problems = BuildProblems();
+    CHECK_TRUE(problems.size() == 1);
+    if(problems.size() == 1) {
+        CHECK_TRUE(problems[0].kind == Problem::Kind::NOTE);
+        CHECK_TRUE(problems[0].title.find("1 edge") != std::string::npos);
+        CHECK_TRUE(problems[0].title.find("where it is") != std::string::npos);
+    }
+}
 #endif

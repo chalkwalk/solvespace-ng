@@ -105,6 +105,20 @@ std::vector<Problem> BuildProblems() {
                             "form, so it can be snapped to but not constrained.");
             out.push_back(p);
         }
+        if(!g->edgeMarks.empty() &&
+           (g->type == Group::Type::FILLET || g->type == Group::Type::CHAMFER)) {
+            int n = (int)g->edgeMarks.size();
+            Problem p;
+            p.group     = hg;
+            p.groupName = g->name;
+            p.kind      = Problem::Kind::NOTE;
+            p.title     = ssprintf(n == 1 ? _("%d edge is held by where it is")
+                                          : _("%d edges are held by where they are"), n);
+            p.detail    = _("No sketch or feature line describes it, so it is found again by "
+                            "its place: if the model changes there it may be lost, and nothing "
+                            "can be constrained to it.");
+            out.push_back(p);
+        }
         if(hg == SS.GW.activeGroup) break;
     }
     return out;

@@ -1111,13 +1111,14 @@ void SOutlineList::Clear() {
     l.Clear();
 }
 
-void SOutlineList::AddEdge(Vector a, Vector b, Vector nl, Vector nr, int tag) {
+void SOutlineList::AddEdge(Vector a, Vector b, Vector nl, Vector nr, int tag, int edge) {
     SOutline so = {};
     so.a   = a;
     so.b   = b;
     so.nl  = nl;
     so.nr  = nr;
-    so.tag = tag;
+    so.tag  = tag;
+    so.edge = edge;
     l.Add(&so);
 }
 

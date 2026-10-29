@@ -144,3 +144,29 @@ TEST_CASE(a_dimension_shows_its_readable_type) {
     CHECK_TRUE(type != nullptr);
     if(type) CHECK_EQ_STR(type->value, "Distance");
 }
+
+#if defined(HAVE_OCCT)
+TEST_CASE(an_edge_of_the_solid_shows_its_length) {
+    // #6: an edge picked on the solid, not as an entity.
+    CHECK_LOAD("../../group/fillet/box.slvs"); // 10 x 20, extruded 30
+    SS.kernelKind = KernelKind::OCCT;
+    SS.GenerateAll(SolveSpaceUI::Generate::ALL);
+    Group *box = SK.GetGroup(SS.GW.activeGroup);
+    box->GenerateDisplayItems();
+    GraphicsWindow::Selection sel = {};
+    Vector p = Vector::From(10, 0, 15);
+    for(const SOutline &so : box->ShownOutlines().l) {
+        if(so.edge != 0 && p.DistanceToLine(so.a, so.b.Minus(so.a)) < 1e-6 &&
+           p.Minus(so.a).Dot(p.Minus(so.b)) <= 0) {
+            sel.solidEdge      = so.edge;
+            sel.solidEdgeGroup = box->h;
+        }
+    }
+    SS.GW.ClearSelection();
+    SS.GW.selection.Add(&sel);
+    SelectionModel m = BuildSelection();
+    CHECK_TRUE(m.title == "Edge of the solid");
+    const SelectionRow *length = Row(m, "length");
+    CHECK_TRUE(length != nullptr && length->value.find("30") != std::string::npos);
+}
+#endif

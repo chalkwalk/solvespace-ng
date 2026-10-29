@@ -12,12 +12,15 @@ namespace SolveSpace {
 bool GraphicsWindow::Selection::Equals(Selection *b) {
     if(entity     != b->entity)     return false;
     if(constraint != b->constraint) return false;
+    if(solidEdge  != b->solidEdge)  return false;
+    if(solidEdge && solidEdgeGroup != b->solidEdgeGroup) return false;
     return true;
 }
 
 bool GraphicsWindow::Selection::IsEmpty() {
     if(entity.v)        return false;
     if(constraint.v)    return false;
+    if(solidEdge)       return false;
     return true;
 }
 
@@ -29,6 +32,8 @@ bool GraphicsWindow::Selection::HasEndpoints() {
 
 void GraphicsWindow::Selection::Clear() {
     entity.v = constraint.v = 0;
+    solidEdge      = 0;
+    solidEdgeGroup = {};
     emphasized = false;
 }
 
@@ -43,6 +48,16 @@ void GraphicsWindow::Selection::Draw(bool isHovered, Canvas *canvas) {
                 canvas);
         if(emphasized) {
             e->GetReferencePoints(&refs);
+        }
+    }
+    if(solidEdge) {
+        if(Group *g = SK.group.FindByIdNoOops(solidEdgeGroup)) {
+            Canvas::Stroke stroke = Style::Stroke(isHovered ? Style::HOVERED : Style::SELECTED);
+            stroke.layer          = Canvas::Layer::FRONT;
+            Canvas::hStroke hcs   = canvas->GetStroke(stroke);
+            for(const SOutline &so : g->ShownOutlines().l) {
+                if(so.edge == solidEdge) canvas->DrawLine(so.a, so.b, hcs);
+            }
         }
     }
     if(constraint.v) {
@@ -417,6 +432,18 @@ GraphicsWindow::Selection GraphicsWindow::ChooseFromHoverToDrag() {
     return sel;
 }
 
+// Whether a face of g's shown solid lies between p and the eye (towards eye), more than a
+// pixel or two in front of p.
+static bool SolidHides(Group *g, Vector p, Vector eye) {
+    double margin = 2 / SS.GW.scale;
+    Vector from   = p.Plus(eye.WithMagnitude(margin));
+    for(const STriangle &tr : g->ShownMesh().l) {
+        double t;
+        if(tr.Raytrace(from, eye, &t, nullptr) && t > 0) return true;
+    }
+    return false;
+}
+
 void GraphicsWindow::HitTestMakeSelection(Point2d mp) {
     hoverList.Clear();
     Selection sel = {};
@@ -494,8 +521,36 @@ void GraphicsWindow::HitTestMakeSelection(Point2d mp) {
     sel = ChooseFromHoverToSelect();
 
     if(pending.operation == Pending::NONE) {
+        // Edges of the active group's solid that no entity describes (#6), where the
+        // solid doesn't hide them, before the faces they bound.
+        if(sel.IsEmpty() && showShaded && showEdges) {
+            Group  *g    = SK.GetGroup(activeGroup);
+            // Nearer than the faces' own picking: the face under the cursor wins unless the
+            // edge is close.
+            double  best = canvas.selRadius / 2;
+            Vector  eye  = projRight.Cross(projUp); // towards the viewer
+            for(const SOutline &so : g->ShownOutlines().l) {
+                if(so.edge == 0 || so.tag == 0) continue;
+                Point2d a = ProjectPoint(so.a), b = ProjectPoint(so.b);
+                double  d = mp.DistanceToLine(a, b.Minus(a), /*asSegment=*/true);
+                if(d >= best) continue;
+                // Its nearest point to the cursor, and whether a face nearer the eye hides it.
+                double  t = 0, len = b.Minus(a).MagSquared();
+                if(len > 0) t = std::max(0.0, std::min(1.0, mp.Minus(a).Dot(b.Minus(a)) / len));
+                Vector  p = so.a.Plus(so.b.Minus(so.a).ScaledBy(t));
+                if(SolidHides(g, p, eye)) continue;
+                best               = d;
+                sel.solidEdge      = so.edge;
+                sel.solidEdgeGroup = g->h;
+            }
+            if(sel.solidEdge) {
+                Hover hov = {};
+                hov.selection = sel;
+                hoverList.Add(&hov);
+            }
+        }
         // Faces, from the triangle mesh; these are lowest priority
-        if(sel.constraint.v == 0 && sel.entity.v == 0 && showShaded && showFaces) {
+        if(sel.IsEmpty() && showShaded && showFaces) {
             Group *g = SK.GetGroup(activeGroup);
             SMesh *m = &(g->ShownMesh());
 
