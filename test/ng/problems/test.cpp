@@ -117,6 +117,11 @@ TEST_CASE(a_fillet_on_a_curved_edge_is_a_note) {
     SK.GetEntity(c.entity(1))->PointForceTo({ 5, 10, 0 });
     SK.GetEntity(c.entity(64))->DistanceForceTo(2);
     SS.GW.activeGroup = extrude;
+    // Slanted: the hole's wall doesn't meet the top square, so its rim has no closed-form
+    // circles (a square rim has, #7).
+    SS.ChangeGroupOption(extrude, GroupOption::SKEWED);
+    SK.GetParam(SK.GetGroup(extrude)->h.param(0))->val = 3;
+    SS.MarkGroupDirty(extrude);
     SS.GenerateAll(SolveSpaceUI::Generate::ALL);
     SS.GW.ClearSelection();
     GraphicsWindow::Selection sel = {};

@@ -1722,6 +1722,10 @@ void Group::MakeFeatureLines(EntityList *el) {
         Entity *e = SK.entity.FindByIdNoOops(edges[i]);
         if(e == nullptr) continue;
         e->roundedBy = h;
+        if(e->type == Entity::Type::CIRCLE || e->type == Entity::Type::ARC_OF_CIRCLE) {
+            if(!MakeFeatureCircles(el, i, e, shape)) curvedEdges++;
+            continue;
+        }
         if(e->type != Entity::Type::LINE_SEGMENT) {
             curvedEdges++;
             continue;
@@ -1779,6 +1783,133 @@ void Group::MakeFeatureLines(EntityList *el) {
             AddFeatureLine(el, edges[i], REMAP_CHAMFER_EDGE_2, a, b, u[1]);
         }
     }
+}
+
+// Along a circle or arc between a flat face and a cylinder meeting square (#7): a fillet's
+// tangent circles (1 on the flat face, 2 on the cylinder) and its axis circle, or a
+// chamfer's edge circles, each the edge moved by the size: in or out on the flat face, along
+// the axis on the cylinder. With no solid known yet they lie on the edge; false if the faces
+// there are any others (no closed form: a note in Problems).
+bool Group::MakeFeatureCircles(EntityList *el, size_t i, Entity *e,
+                               const std::shared_ptr<const KernelShape> &shape) {
+    bool   fillet = type == Type::FILLET;
+    Vector c      = SK.GetEntity(e->point[0])->PointGetNum();
+    Vector n      = e->Normal()->NormalN();
+    // A point on the edge, away from its ends, and the way out from the axis there.
+    Vector rho = e->Normal()->NormalU();
+    double r   = 0;
+    if(e->type == Entity::Type::CIRCLE) {
+        r = SK.GetEntity(e->distance)->DistanceGetNum();
+    } else {
+        double thetaa, thetab, dtheta;
+        e->ArcGetAngles(&thetaa, &thetab, &dtheta);
+        double mid = thetaa + dtheta / 2;
+        rho = e->Normal()->NormalU().ScaledBy(cos(mid)).Plus(
+            e->Normal()->NormalV().ScaledBy(sin(mid)));
+        r   = SK.GetEntity(e->point[1])->PointGetNum().Minus(c).Magnitude();
+    }
+    if(r < LENGTH_EPS) return false;
+    Vector p = c.Plus(rho.ScaledBy(r));
+
+    // Which way the faces go, from the previous solid when it has this edge; else as last
+    // found: sign[0] in or out on the flat face (along rho), sign[1] along n on the cylinder.
+    EdgeFaces     &known = edgeFaces[i];
+    KernelEdgeSide sides[2];
+    if(KernelEdgeSidesAt(shape, p, n.Cross(rho), sides)) {
+        EdgeFaces now;
+        now.known = true;
+        int flat = 0, round = 0;
+        for(const KernelEdgeSide &s : sides) {
+            if(s.surface == KernelSurface::PLANE && fabs(s.into.Dot(n)) < 1e-6 &&
+               fabs(fabs(s.into.Dot(rho)) - 1) < 1e-6) {
+                now.face[0] = s.face;
+                now.sign[0] = s.into.Dot(rho) > 0 ? 1 : -1;
+                flat++;
+            } else if(fabs(fabs(s.into.Dot(n)) - 1) < 1e-6) {
+                // Square to the flat face along the edge: the cylinder (as OCCT has it, often
+                // a spline surface: SolveSpace's circles are arcs).
+                now.face[1] = s.face;
+                now.sign[1] = s.into.Dot(n) > 0 ? 1 : -1;
+                round++;
+            }
+        }
+        if(flat != 1 || round != 1) return false;
+        bool changed = !known.known || known.sign[0] != now.sign[0] || known.sign[1] != now.sign[1];
+        if(changed && SS.derivedTopologyChanged.v == 0) SS.derivedTopologyChanged = h;
+        known = now;
+    }
+    Vector axial  = known.known ? n.ScaledBy(known.sign[1]) : Vector::From(0, 0, 0);
+    double radial = known.known ? known.sign[0] : 0;
+    if(fillet) {
+        AddFeatureCircle(el, e, REMAP_FILLET_TANGENT_1, Vector::From(0, 0, 0), radial);
+        AddFeatureCircle(el, e, REMAP_FILLET_TANGENT_2, axial, 0);
+        AddFeatureCircle(el, e, REMAP_FILLET_AXIS, axial, radial);
+    } else {
+        AddFeatureCircle(el, e, REMAP_CHAMFER_EDGE_1, Vector::From(0, 0, 0), radial);
+        AddFeatureCircle(el, e, REMAP_CHAMFER_EDGE_2, axial, 0);
+    }
+    return true;
+}
+
+// The circle or arc e moved by the feature's size: its centre along `axial` and its radius
+// by `radial` per unit of it. Remap(e, which) is the curve; its centre which + 10, its normal
+// which + 20, its radius (a circle) or ends (an arc) which + 30 and + 40.
+void Group::AddFeatureCircle(EntityList *el, Entity *e, int which, Vector axial, double radial) {
+    Vector c = SK.GetEntity(e->point[0])->PointGetNum();
+    Entity en = {};
+    en.group  = h;
+    en.style  = hStyle{ Style::REFERENCE };
+
+    en.type      = Entity::Type::POINT_ALONG_PARAM;
+    en.param[0]  = h.param(0);
+    en.h         = Remap(e->h, which + 10);
+    en.numPoint  = c;
+    en.numNormal = Quaternion::From(0, axial.x, axial.y, axial.z);
+    el->Add(&en);
+
+    Entity nn    = {};
+    nn.group     = h;
+    nn.style     = en.style;
+    nn.type      = Entity::Type::NORMAL_N_COPY;
+    nn.h         = Remap(e->h, which + 20);
+    nn.numNormal = e->Normal()->NormalGetNum();
+    nn.point[0]  = Remap(e->h, which + 10);
+    el->Add(&nn);
+
+    Entity cv   = {};
+    cv.group    = h;
+    cv.style    = en.style;
+    cv.h        = Remap(e->h, which);
+    cv.point[0] = Remap(e->h, which + 10);
+    cv.normal   = Remap(e->h, which + 20);
+    if(e->type == Entity::Type::CIRCLE) {
+        Entity d      = {};
+        d.group       = h;
+        d.style       = en.style;
+        d.type        = Entity::Type::DISTANCE_ALONG_PARAM;
+        d.h           = Remap(e->h, which + 30);
+        d.param[0]    = h.param(0);
+        d.numDistance = SK.GetEntity(e->distance)->DistanceGetNum();
+        d.numNormal   = Quaternion::From(0, radial, 0, 0);
+        el->Add(&d);
+        cv.type     = Entity::Type::CIRCLE;
+        cv.distance = d.h;
+    } else {
+        // Each end moves along the axis and out from it.
+        for(int k = 1; k <= 2; k++) {
+            Vector end = SK.GetEntity(e->point[k])->PointGetNum();
+            Vector out = end.Minus(c).WithMagnitude(radial);
+            Vector way = axial.Plus(radial != 0 ? out : Vector::From(0, 0, 0));
+            en.h         = Remap(e->h, which + 20 + 10 * k);
+            en.numPoint  = end;
+            en.numNormal = Quaternion::From(0, way.x, way.y, way.z);
+            el->Add(&en);
+        }
+        cv.type     = Entity::Type::ARC_OF_CIRCLE;
+        cv.point[1] = Remap(e->h, which + 30);
+        cv.point[2] = Remap(e->h, which + 40);
+    }
+    el->Add(&cv);
 }
 
 void Group::MakeLatheCircles(EntityList *el, ParamList *param, hEntity in, Vector pt, Vector axis) {
@@ -2011,6 +2142,7 @@ void Group::CopyEntity(EntityList *el,
 
         case Entity::Type::DISTANCE_N_COPY:
         case Entity::Type::DISTANCE:
+        case Entity::Type::DISTANCE_ALONG_PARAM:
             en.type = Entity::Type::DISTANCE_N_COPY;
             en.numDistance = ep->actDistance*fabs(scale);
             break;

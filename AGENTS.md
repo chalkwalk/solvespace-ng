@@ -378,8 +378,12 @@ on the solid: each outline segment carries its B-rep edge (`SOutline::edge`), th
 hovers the edges the solid doesn't hide (`Selection::solidEdge`), and the group holds such an
 edge by where it is (`Group.edgeMarks`: a point on it and its direction, snapped to the B-rep
 by `KernelMarkEdge`), found again as the edge through that point running that way. Problems
-notes each such group, and a mark no edge passes any more is a missing edge. Not yet:
-derived entities for curved edges.
+notes each such group, and a mark no edge passes any more is a missing edge. Along a circle
+or arc between a flat face and a wall square to it (2026-10-28, #7), a fillet declares
+tangent circles (1 on the flat face, 2 on the wall) and an axis circle, a chamfer its edge
+circles: centres `POINT_ALONG_PARAM` along the axis, radii `DISTANCE_ALONG_PARAM` (a new
+entity type, base + rate × size) or arc ends moved along and out, which way from the solid
+(`KernelEdgeSidesAt`); other curved edges stay a note.
 
 **Built in M3c (2026-10-21, branch `ng/m3c-features`):** Inspect ▸ Mass Properties (volume,
 surface area, mass at a density set in Preferences, centre of mass; exact from the B-rep via

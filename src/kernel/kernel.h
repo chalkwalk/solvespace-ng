@@ -257,6 +257,18 @@ enum class KernelEdgeFacesResult { NOT_FOUND, NOT_PLANAR, FOUND };
 KernelEdgeFacesResult KernelEdgeFaces(const std::shared_ptr<const KernelShape> &shape, Vector a,
                                       Vector b, KernelEdgeFace out[2]);
 
+// The two faces of shape meeting at the B-rep edge through p running along dir there (#7):
+// each face's name (or 0), the way into it from the edge at p (square to the edge, along the
+// face), and the kind of its surface. False if there is no such edge with two faces.
+enum class KernelSurface { OTHER, PLANE, CYLINDER };
+struct KernelEdgeSide {
+    uint32_t      face    = 0;
+    Vector        into    = {};
+    KernelSurface surface = KernelSurface::OTHER;
+};
+bool KernelEdgeSidesAt(const std::shared_ptr<const KernelShape> &shape, Vector p, Vector dir,
+                       KernelEdgeSide out[2]);
+
 // A named planar face of a B-rep: its name (a face entity's handle) and outward normal.
 struct KernelFaceNormal {
     uint32_t face = 0;

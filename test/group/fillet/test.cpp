@@ -668,4 +668,125 @@ TEST_CASE(an_edge_held_by_where_it_is_can_be_lost) {
     SS.GenerateAll(SolveSpaceUI::Generate::ALL);
     CHECK_FALSE(SK.GetGroup(hg)->featureProblem.empty());
 }
+
+// #7: along a circular edge between a flat face and a cylinder meeting square, a fillet
+// declares tangent circles and an axis circle, a chamfer its edge circles. box.slvs with a
+// hole of radius 2 through it at (5, 10).
+namespace {
+
+hEntity HoleRim() {
+    SS.checkClosedContour = false;
+    hGroup extrude = Extrusion()->h;
+    SS.GW.activeGroup = SK.groupOrder[1]; // the sketch
+    hRequest c = SS.GW.AddRequest(Request::Type::CIRCLE, /*rememberForUndo=*/false);
+    SS.GenerateAll(SolveSpaceUI::Generate::ALL);
+    SK.GetEntity(c.entity(1))->PointForceTo({ 5, 10, 0 });
+    SK.GetEntity(c.entity(64))->DistanceForceTo(2);
+    SS.GW.activeGroup = extrude;
+    SS.GenerateAll(SolveSpaceUI::Generate::ALL);
+    return Extrusion()->Remap(c.entity(0), Group::REMAP_TOP);
+}
+
+bool CircleIs(Group *g, hEntity edge, int which, Vector centre, double radius) {
+    Entity *e = SK.entity.FindByIdNoOops(g->Remap(edge, which));
+    if(e == nullptr || e->type != Entity::Type::CIRCLE) return false;
+    return SK.GetEntity(e->point[0])->PointGetNum().Equals(centre, 1e-6) &&
+           fabs(SK.GetEntity(e->distance)->DistanceGetNum() - radius) < 1e-6 &&
+           fabs(fabs(e->Normal()->NormalN().z) - 1) < 1e-6;
+}
+
+}
+
+TEST_CASE(a_fillet_on_a_hole_rim_declares_its_circles) {
+    CHECK_LOAD("box.slvs");
+    SS.kernelKind = KernelKind::OCCT;
+    hEntity rim = HoleRim();
+    Group  *g   = MakeFeature(Command::GROUP_FILLET, { rim });
+    Resize(g, "0.5");
+    g = SK.GetGroup(SS.GW.activeGroup);
+    // On the top, out from the hole; down the hole's wall; and the round's centre.
+    CHECK_TRUE(CircleIs(g, rim, Group::REMAP_FILLET_TANGENT_1, { 5, 10, 30 }, 2.5));
+    CHECK_TRUE(CircleIs(g, rim, Group::REMAP_FILLET_TANGENT_2, { 5, 10, 29.5 }, 2));
+    CHECK_TRUE(CircleIs(g, rim, Group::REMAP_FILLET_AXIS, { 5, 10, 29.5 }, 2.5));
+    CHECK_TRUE(g->curvedEdges == 0);
+    Resize(g, "1");
+    g = SK.GetGroup(SS.GW.activeGroup);
+    CHECK_TRUE(CircleIs(g, rim, Group::REMAP_FILLET_AXIS, { 5, 10, 29 }, 3));
+}
+
+TEST_CASE(a_chamfer_on_a_hole_rim_declares_its_circles) {
+    CHECK_LOAD("box.slvs");
+    SS.kernelKind = KernelKind::OCCT;
+    hEntity rim = HoleRim();
+    Group  *g   = MakeFeature(Command::GROUP_CHAMFER, { rim });
+    Resize(g, "0.5");
+    g = SK.GetGroup(SS.GW.activeGroup);
+    CHECK_TRUE(CircleIs(g, rim, Group::REMAP_CHAMFER_EDGE_1, { 5, 10, 30 }, 2.5));
+    CHECK_TRUE(CircleIs(g, rim, Group::REMAP_CHAMFER_EDGE_2, { 5, 10, 29.5 }, 2));
+}
+
+TEST_CASE(a_diameter_on_a_tangent_circle_sets_the_radius) {
+    CHECK_LOAD("box.slvs");
+    SS.kernelKind = KernelKind::OCCT;
+    hEntity rim = HoleRim();
+    hGroup  hg  = MakeFeature(Command::GROUP_FILLET, { rim })->h;
+    Constraint c = {};
+    c.type       = Constraint::Type::DIAMETER;
+    c.group      = hg;
+    c.workplane  = Entity::FREE_IN_3D;
+    c.entityA    = SK.GetGroup(hg)->Remap(rim, Group::REMAP_FILLET_TANGENT_1);
+    c.valA       = 7; // radius 3.5: the round is 1.5
+    Constraint::AddConstraint(&c, /*rememberForUndo=*/false);
+    SS.GenerateAll(SolveSpaceUI::Generate::ALL);
+    CHECK_EQ_EPS(Radius(hg), 1.5);
+    // The constraint on the derived circle survives saving and reloading.
+    Platform::Path path = helper->GetAssetPath(__FILE__, "rim.slvs", "out");
+    CHECK_TRUE(SS.SaveToFile(path));
+    CHECK_TRUE(SS.LoadFromFile(path));
+    SS.AfterNewFile();
+    SS.GenerateAll(SolveSpaceUI::Generate::ALL);
+    CHECK_EQ_EPS(Radius(hg), 1.5);
+    remove(path.raw.c_str());
+}
+
+TEST_CASE(a_fillet_on_an_arc_rim_declares_its_arcs) {
+    // A D-shaped hole: half a circle of radius 2 about (5, 10), closed by its diameter.
+    CHECK_LOAD("box.slvs");
+    SS.kernelKind         = KernelKind::OCCT;
+    SS.checkClosedContour = false;
+    hGroup extrude    = Extrusion()->h;
+    SS.GW.activeGroup = SK.groupOrder[1];
+    hRequest arc  = SS.GW.AddRequest(Request::Type::ARC_OF_CIRCLE, /*rememberForUndo=*/false);
+    hRequest line = SS.GW.AddRequest(Request::Type::LINE_SEGMENT, /*rememberForUndo=*/false);
+    SS.GenerateAll(SolveSpaceUI::Generate::ALL);
+    SK.GetEntity(arc.entity(1))->PointForceTo({ 5, 10, 0 });
+    SK.GetEntity(arc.entity(2))->PointForceTo({ 7, 10, 0 });
+    SK.GetEntity(arc.entity(3))->PointForceTo({ 3, 10, 0 });
+    SK.GetEntity(line.entity(1))->PointForceTo({ 3, 10, 0 });
+    SK.GetEntity(line.entity(2))->PointForceTo({ 7, 10, 0 });
+    Constraint::Constrain(Constraint::Type::POINTS_COINCIDENT, arc.entity(3), line.entity(1),
+                          Entity::NO_ENTITY);
+    Constraint::Constrain(Constraint::Type::POINTS_COINCIDENT, arc.entity(2), line.entity(2),
+                          Entity::NO_ENTITY);
+    SS.GW.activeGroup = extrude;
+    SS.GenerateAll(SolveSpaceUI::Generate::ALL);
+    hEntity rim = Extrusion()->Remap(arc.entity(0), Group::REMAP_TOP);
+    Group  *g   = MakeFeature(Command::GROUP_FILLET, { rim });
+    Resize(g, "0.5");
+    g = SK.GetGroup(SS.GW.activeGroup);
+    CHECK_TRUE(g->curvedEdges == 0);
+    Entity *t1 = SK.entity.FindByIdNoOops(g->Remap(rim, Group::REMAP_FILLET_TANGENT_1));
+    CHECK_TRUE(t1 != nullptr && t1->type == Entity::Type::ARC_OF_CIRCLE);
+    if(t1 != nullptr) {
+        CHECK_TRUE(SK.GetEntity(t1->point[0])->PointGetNum().Equals({ 5, 10, 30 }, 1e-6));
+        CHECK_TRUE(SK.GetEntity(t1->point[1])->PointGetNum().Equals({ 7.5, 10, 30 }, 1e-6));
+        CHECK_TRUE(SK.GetEntity(t1->point[2])->PointGetNum().Equals({ 2.5, 10, 30 }, 1e-6));
+    }
+    Entity *ax = SK.entity.FindByIdNoOops(g->Remap(rim, Group::REMAP_FILLET_AXIS));
+    CHECK_TRUE(ax != nullptr && ax->type == Entity::Type::ARC_OF_CIRCLE);
+    if(ax != nullptr) {
+        CHECK_TRUE(SK.GetEntity(ax->point[0])->PointGetNum().Equals({ 5, 10, 29.5 }, 1e-6));
+        CHECK_TRUE(SK.GetEntity(ax->point[1])->PointGetNum().Equals({ 7.5, 10, 29.5 }, 1e-6));
+    }
+}
 #endif

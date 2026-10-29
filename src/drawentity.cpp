@@ -118,6 +118,7 @@ void Entity::GetReferencePoints(std::vector<Vector> *refs) {
 
         case Type::DISTANCE:
         case Type::DISTANCE_N_COPY:
+        case Type::DISTANCE_ALONG_PARAM:
         case Type::FACE_NORMAL_PT:
         case Type::FACE_XPROD:
         case Type::FACE_N_ROT_TRANS:
@@ -238,7 +239,7 @@ bool Entity::CanBeDragged() const {
 void Entity::CalculateNumerical(bool forExport) {
     if(IsPoint()) actPoint = PointGetNum();
     if(IsNormal()) actNormal = NormalGetNum();
-    if(type == Type::DISTANCE || type == Type::DISTANCE_N_COPY) {
+    if(IsDistance()) {
         actDistance = DistanceGetNum();
     }
     if(IsFace()) {
@@ -720,6 +721,7 @@ void Entity::Draw(DrawAs how, Canvas *canvas) {
 
         case Type::DISTANCE:
         case Type::DISTANCE_N_COPY:
+        case Type::DISTANCE_ALONG_PARAM:
             // These are used only as data structures, nothing to display.
             return;
 

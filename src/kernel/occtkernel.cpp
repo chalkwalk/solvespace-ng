@@ -72,6 +72,7 @@
 #include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
 #include <TopTools_IndexedMapOfShape.hxx>
 #include <TopTools_MapOfShape.hxx>
+#include <Geom2d_Curve.hxx>
 #include <TopTools_ShapeMapHasher.hxx>
 #include <TopoDS.hxx>
 #include <TopoDS_Compound.hxx>
@@ -684,7 +685,7 @@ const double MARK_TOLERANCE = 1e-4;
 // The edge of shape passing within tol of p and running along dir there (either way), the
 // nearest if several; and its mark at its point nearest p.
 bool NearestEdge(const TopoDS_Shape &shape, Vector p, Vector dir, double tol, TopoDS_Edge *found,
-                 EdgeMark *mark) {
+                 EdgeMark *mark, double *at = nullptr) {
     TopTools_IndexedMapOfShape edges;
     TopExp::MapShapes(shape, TopAbs_EDGE, edges);
     TopoDS_Vertex v    = BRepBuilderAPI_MakeVertex(gp_Pnt(p.x, p.y, p.z));
@@ -719,6 +720,7 @@ bool NearestEdge(const TopoDS_Shape &shape, Vector p, Vector dir, double tol, To
         ok     = true;
         *found = edge;
         if(mark) *mark = { Vec(q.XYZ()), along };
+        if(at) *at = t;
     }
     return ok;
 }
@@ -1753,6 +1755,59 @@ static TopoDS_Shape Placed(const TopoDS_Shape &shape, Quaternion q, Vector t) {
     trsf.SetRotation(gp_Quaternion(q.vx, q.vy, q.vz, q.w));
     trsf.SetTranslationPart(gp_Vec(t.x, t.y, t.z));
     return shape.Moved(TopLoc_Location(trsf));
+}
+
+bool KernelEdgeSidesAt(const std::shared_ptr<const KernelShape> &ks, Vector p, Vector dir,
+                       KernelEdgeSide out[2]) {
+    if(IsEmpty(ks)) return false;
+    TopoDS_Edge edge;
+    double      t;
+    if(!NearestEdge(ks->shape, p, dir, 1e-3, &edge, nullptr, &t)) return false;
+    TopTools_IndexedDataMapOfShapeListOfShape facesOf;
+    TopExp::MapShapesAndAncestors(ks->shape, TopAbs_EDGE, TopAbs_FACE, facesOf);
+    if(!facesOf.Contains(edge)) return false;
+    std::vector<TopoDS_Face> faces;
+    TopTools_MapOfShape      seen;
+    for(const TopoDS_Shape &f : facesOf.FindFromKey(edge)) {
+        if(seen.Add(f)) faces.push_back(TopoDS::Face(f));
+    }
+    if(faces.size() != 2) return false;
+    for(int n = 0; n < 2; n++) {
+        const TopoDS_Face &face = faces[n];
+        double               f, l;
+        Handle(Geom2d_Curve) pc = BRep_Tool::CurveOnSurface(edge, face, f, l);
+        if(pc.IsNull()) return false;
+        BRepAdaptor_Surface surface(face);
+        gp_Pnt2d            uv = pc->Value(t);
+        gp_Pnt              q;
+        gp_Vec              du, dv;
+        surface.D1(uv.X(), uv.Y(), q, du, dv);
+        gp_Vec normal = du.Crossed(dv);
+        if(normal.Magnitude() < 1e-12) return false;
+        if(face.Orientation() == TopAbs_REVERSED) normal.Reverse();
+        // As for KernelEdgeFaces: the face lies to the left of its boundary.
+        TopAbs_Orientation along = TopAbs_FORWARD;
+        for(TopExp_Explorer ex(face, TopAbs_EDGE); ex.More(); ex.Next()) {
+            if(ex.Current().IsSame(edge)) {
+                along = ex.Current().Orientation();
+                break;
+            }
+        }
+        BRepAdaptor_Curve curve(edge);
+        gp_Pnt            c;
+        gp_Vec            tangent;
+        curve.D1(t, c, tangent);
+        if(along == TopAbs_REVERSED) tangent.Reverse();
+        gp_Vec into = normal.Crossed(tangent);
+        if(into.Magnitude() < 1e-12) return false;
+        out[n].into           = Vec(into.Normalized().XYZ());
+        const FaceInfo *info  = ks->faces.Seek(face);
+        out[n].face           = info ? info->face : 0;
+        out[n].surface        = surface.GetType() == GeomAbs_Plane      ? KernelSurface::PLANE
+                                : surface.GetType() == GeomAbs_Cylinder ? KernelSurface::CYLINDER
+                                                                        : KernelSurface::OTHER;
+    }
+    return true;
 }
 
 bool KernelMarkEdge(const std::shared_ptr<const KernelShape> &ks, Vector p, Vector dir,

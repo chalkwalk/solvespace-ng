@@ -220,13 +220,16 @@ void EntityBase::WorkplaneGetPlaneExprs(ExprVector *n, Expr **dn) const {
 
 bool EntityBase::IsDistance() const {
     return (type == Type::DISTANCE) ||
-           (type == Type::DISTANCE_N_COPY);
+           (type == Type::DISTANCE_N_COPY) ||
+           (type == Type::DISTANCE_ALONG_PARAM);
 }
 double EntityBase::DistanceGetNum() const {
     if(type == Type::DISTANCE) {
         return SK.GetParam(param[0])->val;
     } else if(type == Type::DISTANCE_N_COPY) {
         return numDistance;
+    } else if(type == Type::DISTANCE_ALONG_PARAM) {
+        return numDistance + numNormal.vx * SK.GetParam(param[0])->val;
     } else ssassert(false, "Unexpected entity type");
 }
 Expr *EntityBase::DistanceGetExpr() const {
@@ -234,6 +237,9 @@ Expr *EntityBase::DistanceGetExpr() const {
         return Expr::From(param[0]);
     } else if(type == Type::DISTANCE_N_COPY) {
         return Expr::From(numDistance);
+    } else if(type == Type::DISTANCE_ALONG_PARAM) {
+        return Expr::From(numDistance)->Plus(
+            Expr::From(numNormal.vx)->Times(Expr::From(param[0])));
     } else ssassert(false, "Unexpected entity type");
 }
 void EntityBase::DistanceForceTo(double v) {
@@ -241,6 +247,11 @@ void EntityBase::DistanceForceTo(double v) {
         (SK.GetParam(param[0]))->val = v;
     } else if(type == Type::DISTANCE_N_COPY) {
         // do nothing, it's locked
+    } else if(type == Type::DISTANCE_ALONG_PARAM) {
+        // The size that makes it v.
+        if(fabs(numNormal.vx) > LENGTH_EPS) {
+            SK.GetParam(param[0])->val = (v - numDistance) / numNormal.vx;
+        }
     } else ssassert(false, "Unexpected entity type");
 }
 

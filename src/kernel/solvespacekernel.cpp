@@ -359,6 +359,11 @@ bool KernelMassProperties(const std::shared_ptr<const KernelShape> &, MassProps 
     return false;
 }
 
+bool KernelEdgeSidesAt(const std::shared_ptr<const KernelShape> &, Vector, Vector,
+                       KernelEdgeSide[2]) {
+    return false;
+}
+
 bool KernelMarkEdge(const std::shared_ptr<const KernelShape> &, Vector, Vector, double,
                     EdgeMark *) {
     return false;

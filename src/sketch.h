@@ -581,6 +581,9 @@ public:
     SnapshotFaceNamer FaceSnapshot() const;
     void MakeExtrusionLines(EntityList *el, hEntity in);
     void MakeFeatureLines(EntityList *el);
+    bool MakeFeatureCircles(EntityList *el, size_t i, Entity *e,
+                            const std::shared_ptr<const KernelShape> &shape);
+    void AddFeatureCircle(EntityList *el, Entity *e, int which, Vector axial, double radial);
     void AddFeatureLine(EntityList *el, hEntity edge, int which, Vector a, Vector b,
                         Vector along);
     // A fillet's, chamfer's, shell's or draft's size: its parameter, solved (M3h).
@@ -733,6 +736,9 @@ public:
 
         DISTANCE               =  4000,
         DISTANCE_N_COPY        =  4001,
+        // numDistance + numNormal.vx * param[0]: a derived circle's radius that a feature
+        // size changes (#7)
+        DISTANCE_ALONG_PARAM   =  4002,
 
         FACE_NORMAL_PT         =  5000,
         FACE_XPROD             =  5001,
