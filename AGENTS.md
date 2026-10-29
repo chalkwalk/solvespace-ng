@@ -246,7 +246,10 @@ field is being typed in (`ngshell.html`).
   solve in the Errors red lightened against the failed solve's dark red canvas. On by default in
   NG (Preferences ▸ SolveSpace NG), off in stock SolveSpace so its render tests and old
   frontends look as before. The glyph shapes stay SolveSpace's: the shelf icons mirror them.
-- Optional matcap shading, clean edge lines, a grid on the active sketch plane.
+- Optional matcap shading, clean edge lines, a grid on the active sketch plane. (Matcap
+  built 2026-10-28, #19: Preferences ▸ matcap shading, off until the owner has seen it; a
+  studio light fixed to the view, computed in `res/shaders/mesh.frag`, so no texture asset.
+  Clean edge lines are still to come.)
 - Design the theme tokens first in M1, and review them on screenshots before building panels.
   ImGui must not look like a developer tool.
 

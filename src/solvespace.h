@@ -456,7 +456,7 @@ enum class SettingToggle {
     EXPORT_BACKGROUND_COLOR, DRAW_BACK_FACES, TURNTABLE_NAV, CAMERA_NAV,
     IMMEDIATELY_EDIT_DIMENSION, SHOW_CONTOUR_AREAS, CHECK_CLOSED_CONTOUR,
     AUTOMATIC_LINE_CONSTRAINTS, EXPORT_SHADED_TRIANGLES, EXPORT_PWL_CURVES,
-    EXPORT_CANVAS_SIZE_AUTO, CONSTRAINT_STATE_COLORS, EXPORT_LAY_FLAT,
+    EXPORT_CANVAS_SIZE_AUTO, CONSTRAINT_STATE_COLORS, EXPORT_LAY_FLAT, MATCAP_SHADING,
 };
 
 class SolveSpaceUI {
@@ -584,6 +584,8 @@ public:
     bool     constraintStateColors;
     // Export Parts turns each part onto its largest flat face, standing on z = 0 (M4b).
     bool     exportLayFlat;
+    // Solids shaded by a studio light that follows the view (a matcap, #19), not the lights.
+    bool     matcapShading;
     bool     cameraNav;
     bool     turntableNav;
     bool     immediatelyEditDimension;

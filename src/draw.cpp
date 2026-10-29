@@ -364,6 +364,7 @@ Lighting GraphicsWindow::GetLighting() const {
     lighting.lightIntensity[1] = SS.lightIntensity[1];
     lighting.lightDirection[0] = SS.lightDir[0];
     lighting.lightDirection[1] = SS.lightDir[1];
+    lighting.matcap            = SS.matcapShading;
     return lighting;
 }
 

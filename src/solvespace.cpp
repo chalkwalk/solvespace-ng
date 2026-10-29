@@ -123,6 +123,7 @@ void SolveSpaceUI::Init() {
     showToolbar = settings->ThawBool("ShowToolbar", true);
     constraintStateColors = settings->ThawBool("ConstraintStateColors", false);
     exportLayFlat = settings->ThawBool("ExportLayFlat", false);
+    matcapShading = settings->ThawBool("MatcapShading", false);
     // The geometry kernel (0 SolveSpace's, 1 Open CASCADE where built)
     density    = settings->ThawFloat("Density", 1.24);
     kernelKind = settings->ThawInt("Kernel", 0) == 1 && KernelAvailable(KernelKind::OCCT)
@@ -321,6 +322,7 @@ void SolveSpaceUI::SaveSettings() {
     settings->FreezeBool("ShowToolbar", showToolbar);
     settings->FreezeBool("ConstraintStateColors", constraintStateColors);
     settings->FreezeBool("ExportLayFlat", exportLayFlat);
+    settings->FreezeBool("MatcapShading", matcapShading);
     settings->FreezeInt("Kernel", (int)kernelKind);
     settings->FreezeFloat("Density", density);
     // Autosave timer

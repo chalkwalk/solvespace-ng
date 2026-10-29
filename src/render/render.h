@@ -68,6 +68,7 @@ public:
     double      ambientIntensity;
     double      lightIntensity[2];
     Vector      lightDirection[2];
+    bool        matcap; // a studio light fixed to the view instead (gl3 renderer)
 };
 
 class BatchCanvas;

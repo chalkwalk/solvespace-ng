@@ -342,6 +342,7 @@ void MeshRenderer::UseShaded(const Lighting &lighting) {
     lightShader.SetUniformVector("lightDir1", dir1);
     lightShader.SetUniformFloat("lightInt1", (float)lighting.lightIntensity[1]);
     lightShader.SetUniformFloat("ambient", (float)lighting.ambientIntensity);
+    lightShader.SetUniformFloat("matcap", lighting.matcap ? 1.0f : 0.0f);
     selectedShader = &lightShader;
 }
 

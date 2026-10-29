@@ -131,6 +131,8 @@ static void Ng(std::function<void()> *run) {
     }
     // Under-constrained as the Constraints style, fully constrained quieter, culprits red.
     Toggle(_("colour constraints by state"), SettingToggle::CONSTRAINT_STATE_COLORS, run);
+    // A studio light that turns with the view, for reading a part's shape (#19).
+    Toggle(_("matcap shading"), SettingToggle::MATCAP_SHADING, run);
     // The material mass properties weigh: a common filament, or any density.
     ImGui::TextDisabled(_("material for mass properties"));
     for(const SolveSpaceUI::Material &m : SolveSpaceUI::Materials()) {

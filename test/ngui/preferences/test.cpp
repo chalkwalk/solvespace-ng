@@ -102,6 +102,19 @@ TEST_CASE(constraint_state_colours_are_on_and_can_be_turned_off) {
     CHECK_FALSE(SS.constraintStateColors);
 }
 
+TEST_CASE(matcap_shading_is_off_and_can_be_turned_on) {
+    // #19: shading that follows the view (a matcap), for reading the shape of a part.
+    CHECK_LOAD("../../group/fillet/box.slvs");
+    CHECK_FALSE(SS.matcapShading);
+    CHECK_FALSE(SS.GW.GetLighting().matcap);
+    Driver::Key("Ctrl+,");
+    CHECK_TRUE(RevealIn("Preferences", "matcap shading"));
+    CHECK_TRUE(Driver::ClickItem("matcap shading"));
+    CHECK_TRUE(SS.matcapShading);
+    CHECK_TRUE(SS.GW.GetLighting().matcap);
+    Driver::Key("Escape"); // a frame drawn with it (the shader compiles)
+}
+
 TEST_CASE(ng_makes_solids_with_occt_only) {
     CHECK_LOAD("line.slvs");
     CHECK_TRUE(SS.kernelKind == KernelKind::OCCT);

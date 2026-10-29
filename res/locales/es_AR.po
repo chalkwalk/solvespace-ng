@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: SolveSpace 3.0\n"
 "Report-Msgid-Bugs-To: phkahler@gmail.com\n"
-"POT-Creation-Date: 2026-10-28 19:21-0700\n"
+"POT-Creation-Date: 2026-10-28 19:30-0700\n"
 "PO-Revision-Date: 2021-09-17 \n"
 "Last-Translator: Maxi Vasquez <mvasquez@epet12smandes.edu.ar>\n"
 "Language-Team: AndesFreeDesign\n"
@@ -740,7 +740,7 @@ msgctxt "button"
 msgid "&No"
 msgstr "&No"
 
-#: file.cpp:1049 solvespace.cpp:684
+#: file.cpp:1049 solvespace.cpp:686
 msgctxt "button"
 msgid "&Cancel"
 msgstr "&Cancelar"
@@ -2370,7 +2370,7 @@ msgstr ""
 "No se puede dibujar una imagen en 3D; primero, active un plano de trabajo "
 "con Croquis -> En Plano de Trabajo."
 
-#: platform/gui.cpp:85 platform/gui.cpp:90 solvespace.cpp:615
+#: platform/gui.cpp:85 platform/gui.cpp:90 solvespace.cpp:617
 msgctxt "file-type"
 msgid "SolveSpace models"
 msgstr "Modelos SolveSpace"
@@ -2433,7 +2433,7 @@ msgid "Quad mesh for Blender, with creases (USD)"
 msgstr "Malla de cuadriláteros para Blender, con pliegues (USD)"
 
 #: platform/gui.cpp:110 platform/gui.cpp:117 platform/gui.cpp:124
-#: solvespace.cpp:850
+#: solvespace.cpp:852
 msgctxt "file-type"
 msgid "STEP file"
 msgstr "Archivo STEP"
@@ -2525,73 +2525,73 @@ msgstr ""
 "El factor de perspectiva no tendrá ningún efecto hasta que habilite Ver -> "
 "Usar Proyección Perspectiva."
 
-#: solvespace.cpp:184
+#: solvespace.cpp:185
 msgctxt "title"
 msgid "Autosave Available"
 msgstr "Autoguardado Disponible"
 
-#: solvespace.cpp:185
+#: solvespace.cpp:186
 msgctxt "dialog"
 msgid "An autosave file is available for this sketch."
 msgstr "Un archivo de autoguardado está disponible para este croquis."
 
-#: solvespace.cpp:186
+#: solvespace.cpp:187
 msgctxt "dialog"
 msgid "Do you want to load the autosave file instead?"
 msgstr "¿Desea cargar el archivo de autoguardado en su lugar?"
 
-#: solvespace.cpp:187
+#: solvespace.cpp:188
 msgctxt "button"
 msgid "&Load autosave"
 msgstr "&Cargar autoguardado"
 
-#: solvespace.cpp:189
+#: solvespace.cpp:190
 msgctxt "button"
 msgid "Do&n't Load"
 msgstr "&No Cargar"
 
-#: solvespace.cpp:672
+#: solvespace.cpp:674
 msgctxt "title"
 msgid "Modified File"
 msgstr "Archivo Modificado"
 
-#: solvespace.cpp:674
+#: solvespace.cpp:676
 #, c-format
 msgctxt "dialog"
 msgid "Do you want to save the changes you made to the sketch “%s”?"
 msgstr "¿Desea guardar los cambios que realizó en el croquis “%s”?"
 
-#: solvespace.cpp:677
+#: solvespace.cpp:679
 msgctxt "dialog"
 msgid "Do you want to save the changes you made to the new sketch?"
 msgstr "¿Desea guardar los cambios que realizó en el nuevo croquis?"
 
-#: solvespace.cpp:680
+#: solvespace.cpp:682
 msgctxt "dialog"
 msgid "Your changes will be lost if you don't save them."
 msgstr "Sus cambios se perderán si no los guarda."
 
-#: solvespace.cpp:681
+#: solvespace.cpp:683
 msgctxt "button"
 msgid "&Save"
 msgstr "&Guardar"
 
-#: solvespace.cpp:683
+#: solvespace.cpp:685
 msgctxt "button"
 msgid "Do&n't Save"
 msgstr "&No Guardar"
 
-#: solvespace.cpp:704
+#: solvespace.cpp:706
 msgctxt "title"
 msgid "(new sketch)"
 msgstr "(nuevo croquis)"
 
-#: solvespace.cpp:715
+#: solvespace.cpp:717
 msgctxt "title"
 msgid "Property Browser"
 msgstr "Explorador de Propiedades"
 
-#: solvespace.cpp:778
+#: solvespace.cpp:780
 msgid ""
 "Constraints are currently shown, and will be exported in the toolpath. This "
 "is probably not what you want; hide them by clicking the link at the top of "
@@ -2601,30 +2601,30 @@ msgstr ""
 "Probablemente esto no sea lo que querés; ocultalos haciendo clic en el "
 "enlace en la parte superior de la ventana de texto."
 
-#: solvespace.cpp:834
+#: solvespace.cpp:836
 #, fuzzy
 msgctxt "file-type"
 msgid "STL mesh, one per part"
 msgstr "Malla STL, una por pieza"
 
-#: solvespace.cpp:835
+#: solvespace.cpp:837
 #, fuzzy
 msgctxt "file-type"
 msgid "3MF, an object per part"
 msgstr "3MF, un objeto por pieza"
 
-#: solvespace.cpp:836
+#: solvespace.cpp:838
 #, fuzzy
 msgctxt "file-type"
 msgid "STEP file, one per part"
 msgstr "Archivo STEP, uno por pieza"
 
-#: solvespace.cpp:844
+#: solvespace.cpp:846
 #, fuzzy, c-format
 msgid "Exported %d parts:%s"
 msgstr "Se exportaron %d piezas:%s"
 
-#: solvespace.cpp:856
+#: solvespace.cpp:858
 #, fuzzy
 msgid ""
 "The assembly needs the Open CASCADE kernel and a solid to export as STEP."
@@ -2632,7 +2632,7 @@ msgstr ""
 "El ensamblaje necesita el núcleo Open CASCADE y un sólido para exportarse "
 "como STEP."
 
-#: solvespace.cpp:907
+#: solvespace.cpp:909
 #, c-format
 msgid ""
 "Can't identify file type from file extension of filename '%s'; try .dxf "
@@ -2641,21 +2641,21 @@ msgstr ""
 "No se puede identificar el tipo de archivo a partir de la extensión del "
 "nombre del archivo '%s'; intente .dxf o .dwg."
 
-#: solvespace.cpp:959
+#: solvespace.cpp:961
 msgid "Constraint must have a label, and must not be a reference dimension."
 msgstr ""
 "La restricción debe tener una etiqueta y no debe ser una cota de referencia."
 
-#: solvespace.cpp:963
+#: solvespace.cpp:965
 msgid "Bad selection for step dimension; select a constraint."
 msgstr ""
 "Selección incorrecta para la cota del paso; seleccione una restricción."
 
-#: solvespace.cpp:987
+#: solvespace.cpp:989
 msgid "The assembly does not interfere, good."
 msgstr "El ensamble no interfiere, bien."
 
-#: solvespace.cpp:1019
+#: solvespace.cpp:1021
 #, c-format
 msgid ""
 "The volume of the solid model is:\n"
@@ -2666,7 +2666,7 @@ msgstr ""
 "\n"
 "    %s"
 
-#: solvespace.cpp:1029
+#: solvespace.cpp:1031
 #, c-format
 msgid ""
 "\n"
@@ -2679,7 +2679,7 @@ msgstr ""
 "\n"
 "    %s"
 
-#: solvespace.cpp:1034 solvespace.cpp:1379
+#: solvespace.cpp:1036 solvespace.cpp:1381
 msgid ""
 "\n"
 "\n"
@@ -2691,7 +2691,7 @@ msgstr ""
 "Las superficies curvas se han aproximado como triángulos.\n"
 "Esto introduce un error, normalmente alrededor del 1%."
 
-#: solvespace.cpp:1049
+#: solvespace.cpp:1051
 #, c-format
 msgid ""
 "The surface area of the selected faces is:\n"
@@ -2708,7 +2708,7 @@ msgstr ""
 "Las curvas se han aproximado como lineales por partes.\n"
 "Esto introduce un error, normalmente alrededor del 1%%."
 
-#: solvespace.cpp:1058
+#: solvespace.cpp:1060
 msgid ""
 "This group does not contain a correctly-formed 2d closed area. It is open, "
 "not coplanar, or self-intersecting."
@@ -2716,7 +2716,7 @@ msgstr ""
 "Este grupo no contiene un área cerrada 2d correctamente formada. Está "
 "abierta, no coplanares, o auto-intersectantes."
 
-#: solvespace.cpp:1070
+#: solvespace.cpp:1072
 #, c-format
 msgid ""
 "The area of the region sketched in this group is:\n"
@@ -2733,7 +2733,7 @@ msgstr ""
 "Las curvas se han aproximado como lineales por partes.\n"
 "Esto introduce un error, normalmente alrededor del 1%%."
 
-#: solvespace.cpp:1090
+#: solvespace.cpp:1092
 #, c-format
 msgid ""
 "The total length of the selected entities is:\n"
@@ -2750,38 +2750,38 @@ msgstr ""
 "Las curvas se han aproximado como lineales por partes.\n"
 "Esto introduce un error, normalmente alrededor del 1%%."
 
-#: solvespace.cpp:1096
+#: solvespace.cpp:1098
 msgid "Bad selection for perimeter; select line segments, arcs, and curves."
 msgstr ""
 "Selección incorrecta de perímetro; seleccione segmentos de línea, arcos y "
 "curvas."
 
-#: solvespace.cpp:1112
+#: solvespace.cpp:1114
 msgid "Bad selection for trace; select a single point."
 msgstr "Selección incorrecta de rastreo; seleccione un solo punto."
 
-#: solvespace.cpp:1139
+#: solvespace.cpp:1141
 #, c-format
 msgid "Couldn't write to '%s'"
 msgstr "No pude escribir a '%s'"
 
-#: solvespace.cpp:1169
+#: solvespace.cpp:1171
 msgid "The mesh is self-intersecting (NOT okay, invalid)."
 msgstr "La malla se intersecta a si misma (NO está bien, no es válida)."
 
-#: solvespace.cpp:1170
+#: solvespace.cpp:1172
 msgid "The mesh is not self-intersecting (okay, valid)."
 msgstr "La malla no se intersecta (está bien, es válida)."
 
-#: solvespace.cpp:1172
+#: solvespace.cpp:1174
 msgid "The mesh has naked edges (NOT okay, invalid)."
 msgstr "La malla tiene bordes desnudos (NO está bien, no es válida)."
 
-#: solvespace.cpp:1173
+#: solvespace.cpp:1175
 msgid "The mesh is watertight (okay, valid)."
 msgstr "La malla es estanca (está bien, es válida)."
 
-#: solvespace.cpp:1176
+#: solvespace.cpp:1178
 #, c-format
 msgid ""
 "\n"
@@ -2792,7 +2792,7 @@ msgstr ""
 "\n"
 "El modelo contiene %d triángulos, desde %d superficies."
 
-#: solvespace.cpp:1180
+#: solvespace.cpp:1182
 #, c-format
 msgid ""
 "%s\n"
@@ -2807,7 +2807,7 @@ msgstr ""
 "\n"
 "Cero aristas problemáticas, bien.%s"
 
-#: solvespace.cpp:1183
+#: solvespace.cpp:1185
 #, c-format
 msgid ""
 "%s\n"
@@ -2822,7 +2822,7 @@ msgstr ""
 "\n"
 "%d aristas problemáticas, mal.%s"
 
-#: solvespace.cpp:1196
+#: solvespace.cpp:1198
 #, c-format
 msgid ""
 "This is SolveSpace version %s.\n"
@@ -2851,12 +2851,12 @@ msgstr ""
 "\n"
 "© 2008-%d Jonathan Westhues y otros autores.\n"
 
-#: solvespace.cpp:1365
+#: solvespace.cpp:1367
 #, fuzzy
 msgid "There is no solid in the active group."
 msgstr "No hay ningún sólido en el grupo activo."
 
-#: solvespace.cpp:1373
+#: solvespace.cpp:1375
 #, fuzzy, c-format
 msgid ""
 "Volume:  %s\n"
@@ -2869,22 +2869,22 @@ msgstr ""
 "Masa:  %s (%s)\n"
 "Centro de masa:  (%s, %s, %s)"
 
-#: solvespace.cpp:1418
+#: solvespace.cpp:1420
 #, fuzzy
 msgid "A part's name can't be empty."
 msgstr "El nombre de una pieza no puede estar vacío."
 
-#: solvespace.cpp:1504
+#: solvespace.cpp:1506
 #, fuzzy
 msgid "No part has a solid yet."
 msgstr "Ninguna pieza tiene todavía un sólido."
 
-#: solvespace.cpp:1508
+#: solvespace.cpp:1510
 #, fuzzy, c-format
 msgid "%s%s:  %s, %s, %.2f g;  %s x %s x %s\n"
 msgstr "%s%s:  %s, %s, %.2f g;  %s x %s x %s\n"
 
-#: solvespace.cpp:1515
+#: solvespace.cpp:1517
 #, fuzzy, c-format
 msgid ""
 "\n"
@@ -2893,7 +2893,7 @@ msgstr ""
 "\n"
 "%d piezas, %.2f g en total."
 
-#: solvespace.cpp:1617
+#: solvespace.cpp:1619
 #, fuzzy
 msgid ""
 "Parts export as STL, 3MF or STEP; choose a .stl, .3mf or .step file name."
@@ -2901,7 +2901,7 @@ msgstr ""
 "Las piezas se exportan como STL, 3MF o STEP; elija un nombre de "
 "archivo .stl, .3mf o .step."
 
-#: solvespace.cpp:1652
+#: solvespace.cpp:1654
 #, fuzzy, c-format
 msgid "STEP needs the Open CASCADE kernel; part '%s' was not written."
 msgstr "STEP necesita el núcleo Open CASCADE; la pieza '%s' no se escribió."
@@ -3223,7 +3223,7 @@ msgstr "Guardar como..."
 msgid "Import..."
 msgstr "Importar..."
 
-#: ui/menulayout.cpp:60 ui/prefspanel.cpp:156
+#: ui/menulayout.cpp:60 ui/prefspanel.cpp:158
 #, fuzzy
 msgid "Export"
 msgstr "Exportar"
@@ -3852,7 +3852,7 @@ msgstr "Commit en GitHub"
 msgid "Website / Manual"
 msgstr "Sitio web / manual"
 
-#: ui/menulayout.cpp:186 ui/prefspanel.cpp:163
+#: ui/menulayout.cpp:186 ui/prefspanel.cpp:165
 #, fuzzy
 msgid "About"
 msgstr "Acerca de"
@@ -4214,50 +4214,55 @@ msgstr "colorear restricciones según su estado"
 
 #: ui/prefspanel.cpp:135
 #, fuzzy
+msgid "matcap shading"
+msgstr "sombreado matcap"
+
+#: ui/prefspanel.cpp:137
+#, fuzzy
 msgid "material for mass properties"
 msgstr "material para las propiedades de masa"
 
-#: ui/prefspanel.cpp:146
+#: ui/prefspanel.cpp:148
 #, fuzzy
 msgid "density (g/cm³)"
 msgstr "densidad (g/cm³)"
 
-#: ui/prefspanel.cpp:154
+#: ui/prefspanel.cpp:156
 #, fuzzy
 msgid "Display"
 msgstr "Pantalla"
 
-#: ui/prefspanel.cpp:155
+#: ui/prefspanel.cpp:157
 #, fuzzy
 msgid "Navigation"
 msgstr "Navegación"
 
-#: ui/prefspanel.cpp:157
+#: ui/prefspanel.cpp:159
 #, fuzzy
 msgid "Solver and files"
 msgstr "Solucionador y archivos"
 
-#: ui/prefspanel.cpp:158
+#: ui/prefspanel.cpp:160
 #, fuzzy
 msgid "redundant constraint timeout (ms)"
 msgstr "tiempo límite de restricciones redundantes (ms)"
 
-#: ui/prefspanel.cpp:160
+#: ui/prefspanel.cpp:162
 #, fuzzy
 msgid "autosave interval (minutes)"
 msgstr "intervalo de autoguardado (minutos)"
 
-#: ui/prefspanel.cpp:166
+#: ui/prefspanel.cpp:168
 #, fuzzy, c-format
 msgid "gl vendor   %s"
 msgstr "fabricante de GL   %s"
 
-#: ui/prefspanel.cpp:167
+#: ui/prefspanel.cpp:169
 #, fuzzy, c-format
 msgid "gl renderer %s"
 msgstr "renderizador GL %s"
 
-#: ui/prefspanel.cpp:168
+#: ui/prefspanel.cpp:170
 #, fuzzy, c-format
 msgid "gl version  %s"
 msgstr "versión de GL  %s"
@@ -4389,14 +4394,12 @@ msgstr ""
 "así que se puede usar para enganchar pero no restringir."
 
 #: ui/problemsmodel.cpp:115
-#, c-format
-#, fuzzy
+#, fuzzy, c-format
 msgid "%d edge is held by where it is"
 msgstr "%d arista se mantiene por su posición"
 
 #: ui/problemsmodel.cpp:116
-#, c-format
-#, fuzzy
+#, fuzzy, c-format
 msgid "%d edges are held by where they are"
 msgstr "%d aristas se mantienen por su posición"
 
@@ -4406,7 +4409,10 @@ msgid ""
 "No sketch or feature line describes it, so it is found again by its place: "
 "if the model changes there it may be lost, and nothing can be constrained to "
 "it."
-msgstr "Ninguna línea de croquis ni de operación la describe, así que se la vuelve a encontrar por su lugar: si el modelo cambia ahí puede perderse, y no se le puede restringir nada."
+msgstr ""
+"Ninguna línea de croquis ni de operación la describe, así que se la vuelve a "
+"encontrar por su lugar: si el modelo cambia ahí puede perderse, y no se le "
+"puede restringir nada."
 
 #: ui/properties.cpp:83
 #, fuzzy, c-format

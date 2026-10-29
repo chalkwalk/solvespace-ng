@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: SolveSpace 3.0\n"
 "Report-Msgid-Bugs-To: phkahler@gmail.com\n"
-"POT-Creation-Date: 2026-10-28 19:21-0700\n"
+"POT-Creation-Date: 2026-10-28 19:30-0700\n"
 "PO-Revision-Date: 2025-01-27 12:58+0200\n"
 "Last-Translator: https://github.com/Symbian9\n"
 "Language-Team: app4soft\n"
@@ -730,7 +730,7 @@ msgctxt "button"
 msgid "&No"
 msgstr "&Ні"
 
-#: file.cpp:1049 solvespace.cpp:684
+#: file.cpp:1049 solvespace.cpp:686
 msgctxt "button"
 msgid "&Cancel"
 msgstr "&Відмінити"
@@ -2329,7 +2329,7 @@ msgstr ""
 "Неможливо накреслити зображення у 3д; спочатку активуйте робочу площину в "
 "Креслення -> У Робочій Площині."
 
-#: platform/gui.cpp:85 platform/gui.cpp:90 solvespace.cpp:615
+#: platform/gui.cpp:85 platform/gui.cpp:90 solvespace.cpp:617
 msgctxt "file-type"
 msgid "SolveSpace models"
 msgstr "SolveSpace модел"
@@ -2392,7 +2392,7 @@ msgid "Quad mesh for Blender, with creases (USD)"
 msgstr "Чотирикутна сітка для Blender, з ребрами згину (USD)"
 
 #: platform/gui.cpp:110 platform/gui.cpp:117 platform/gui.cpp:124
-#: solvespace.cpp:850
+#: solvespace.cpp:852
 msgctxt "file-type"
 msgid "STEP file"
 msgstr "STEP файл"
@@ -2484,73 +2484,73 @@ msgstr ""
 "Значення перспективи не матиме ефекту допоки не ввімкнено Вигляд -> "
 "Використовувати Перспективну Проєкцію."
 
-#: solvespace.cpp:184
+#: solvespace.cpp:185
 msgctxt "title"
 msgid "Autosave Available"
 msgstr "Наявні автозбереження"
 
-#: solvespace.cpp:185
+#: solvespace.cpp:186
 msgctxt "dialog"
 msgid "An autosave file is available for this sketch."
 msgstr "Наявні автозбереження для цього креслення."
 
-#: solvespace.cpp:186
+#: solvespace.cpp:187
 msgctxt "dialog"
 msgid "Do you want to load the autosave file instead?"
 msgstr "Завантажити файл автозбереження?"
 
-#: solvespace.cpp:187
+#: solvespace.cpp:188
 msgctxt "button"
 msgid "&Load autosave"
 msgstr "&Завантажити автозбереження"
 
-#: solvespace.cpp:189
+#: solvespace.cpp:190
 msgctxt "button"
 msgid "Do&n't Load"
 msgstr "&Не Завантажувати"
 
-#: solvespace.cpp:672
+#: solvespace.cpp:674
 msgctxt "title"
 msgid "Modified File"
 msgstr "Файл Змінено"
 
-#: solvespace.cpp:674
+#: solvespace.cpp:676
 #, c-format
 msgctxt "dialog"
 msgid "Do you want to save the changes you made to the sketch “%s”?"
 msgstr "Чи хочете ви зберегти зміни зроблені вами у ескізі “%s”?"
 
-#: solvespace.cpp:677
+#: solvespace.cpp:679
 msgctxt "dialog"
 msgid "Do you want to save the changes you made to the new sketch?"
 msgstr "Чи хочете ви зберегти зміни зроблені вами у новому ескізі?"
 
-#: solvespace.cpp:680
+#: solvespace.cpp:682
 msgctxt "dialog"
 msgid "Your changes will be lost if you don't save them."
 msgstr "Ваші зміни буде втрачено якщо ви не збережете їх."
 
-#: solvespace.cpp:681
+#: solvespace.cpp:683
 msgctxt "button"
 msgid "&Save"
 msgstr "&Зберегти"
 
-#: solvespace.cpp:683
+#: solvespace.cpp:685
 msgctxt "button"
 msgid "Do&n't Save"
 msgstr "&Не Зберігати"
 
-#: solvespace.cpp:704
+#: solvespace.cpp:706
 msgctxt "title"
 msgid "(new sketch)"
 msgstr "(нове креслення)"
 
-#: solvespace.cpp:715
+#: solvespace.cpp:717
 msgctxt "title"
 msgid "Property Browser"
 msgstr "Браузер Властивостей"
 
-#: solvespace.cpp:778
+#: solvespace.cpp:780
 msgid ""
 "Constraints are currently shown, and will be exported in the toolpath. This "
 "is probably not what you want; hide them by clicking the link at the top of "
@@ -2560,36 +2560,36 @@ msgstr ""
 "Скоріш за все, це не те, чого ви домагаєтеся; cховайте їх клікнувши на "
 "посилання над текстовим вікном."
 
-#: solvespace.cpp:834
+#: solvespace.cpp:836
 #, fuzzy
 msgctxt "file-type"
 msgid "STL mesh, one per part"
 msgstr "Сітка STL, по файлу на деталь"
 
-#: solvespace.cpp:835
+#: solvespace.cpp:837
 #, fuzzy
 msgctxt "file-type"
 msgid "3MF, an object per part"
 msgstr "3MF, об'єкт на деталь"
 
-#: solvespace.cpp:836
+#: solvespace.cpp:838
 #, fuzzy
 msgctxt "file-type"
 msgid "STEP file, one per part"
 msgstr "Файл STEP, по файлу на деталь"
 
-#: solvespace.cpp:844
+#: solvespace.cpp:846
 #, fuzzy, c-format
 msgid "Exported %d parts:%s"
 msgstr "Експортовано деталей: %d:%s"
 
-#: solvespace.cpp:856
+#: solvespace.cpp:858
 #, fuzzy
 msgid ""
 "The assembly needs the Open CASCADE kernel and a solid to export as STEP."
 msgstr "Для експорту збірки в STEP потрібні ядро Open CASCADE і тверде тіло."
 
-#: solvespace.cpp:907
+#: solvespace.cpp:909
 #, c-format
 msgid ""
 "Can't identify file type from file extension of filename '%s'; try .dxf "
@@ -2597,19 +2597,19 @@ msgid ""
 msgstr ""
 "Неможливо визначити тип файлу з розширення '%s'; спробуйте .dxf чи .dwg."
 
-#: solvespace.cpp:959
+#: solvespace.cpp:961
 msgid "Constraint must have a label, and must not be a reference dimension."
 msgstr "Обмежувач має містити мітку і бути не відносним розміром."
 
-#: solvespace.cpp:963
+#: solvespace.cpp:965
 msgid "Bad selection for step dimension; select a constraint."
 msgstr "Поганий вибір для крокової зміни розміру; оберіть обмежувач."
 
-#: solvespace.cpp:987
+#: solvespace.cpp:989
 msgid "The assembly does not interfere, good."
 msgstr "Збірка не перетинається, очман."
 
-#: solvespace.cpp:1019
+#: solvespace.cpp:1021
 #, c-format
 msgid ""
 "The volume of the solid model is:\n"
@@ -2620,7 +2620,7 @@ msgstr ""
 "\n"
 "    %s"
 
-#: solvespace.cpp:1029
+#: solvespace.cpp:1031
 #, c-format
 msgid ""
 "\n"
@@ -2633,7 +2633,7 @@ msgstr ""
 "\n"
 "    %s"
 
-#: solvespace.cpp:1034 solvespace.cpp:1379
+#: solvespace.cpp:1036 solvespace.cpp:1381
 msgid ""
 "\n"
 "\n"
@@ -2645,7 +2645,7 @@ msgstr ""
 "Скруглені поверхні були апроксимовані до трикутників.\n"
 "Це створює похибку, зазвичай біля 1%."
 
-#: solvespace.cpp:1049
+#: solvespace.cpp:1051
 #, c-format
 msgid ""
 "The surface area of the selected faces is:\n"
@@ -2662,7 +2662,7 @@ msgstr ""
 "Криві були апроксимовані як дрібні відрізки.\n"
 "Це створює похибку, зазвичай біля 1%%."
 
-#: solvespace.cpp:1058
+#: solvespace.cpp:1060
 msgid ""
 "This group does not contain a correctly-formed 2d closed area. It is open, "
 "not coplanar, or self-intersecting."
@@ -2670,7 +2670,7 @@ msgstr ""
 "Ця група не місить коректно сформованого замкненої 2D площини. Вона "
 "відкрита, не компланарна, або ж самоперетинається."
 
-#: solvespace.cpp:1070
+#: solvespace.cpp:1072
 #, c-format
 msgid ""
 "The area of the region sketched in this group is:\n"
@@ -2687,7 +2687,7 @@ msgstr ""
 "Криві наближено до ламаних ліній.\n"
 "Це вносить похибку, зазвичай близько 1%%."
 
-#: solvespace.cpp:1090
+#: solvespace.cpp:1092
 #, c-format
 msgid ""
 "The total length of the selected entities is:\n"
@@ -2704,36 +2704,36 @@ msgstr ""
 "Криві наближено до ламаних ліній.\n"
 "Це вносить похибку, зазвичай близько 1%%."
 
-#: solvespace.cpp:1096
+#: solvespace.cpp:1098
 msgid "Bad selection for perimeter; select line segments, arcs, and curves."
 msgstr "Поганий вибір для периметру; оберіть відрізки, дуги та криві."
 
-#: solvespace.cpp:1112
+#: solvespace.cpp:1114
 msgid "Bad selection for trace; select a single point."
 msgstr "Поганий вибір для вістежування шляху; оберіть одну точку."
 
-#: solvespace.cpp:1139
+#: solvespace.cpp:1141
 #, c-format
 msgid "Couldn't write to '%s'"
 msgstr "Неможливо записати у '%s'"
 
-#: solvespace.cpp:1169
+#: solvespace.cpp:1171
 msgid "The mesh is self-intersecting (NOT okay, invalid)."
 msgstr "Меш самоперетинається (НЕ добре, недійсний)."
 
-#: solvespace.cpp:1170
+#: solvespace.cpp:1172
 msgid "The mesh is not self-intersecting (okay, valid)."
 msgstr "Меш самоперетинається (добре, дійсний)."
 
-#: solvespace.cpp:1172
+#: solvespace.cpp:1174
 msgid "The mesh has naked edges (NOT okay, invalid)."
 msgstr "Меш містить оголені ребра (НЕ добре, недійсний)."
 
-#: solvespace.cpp:1173
+#: solvespace.cpp:1175
 msgid "The mesh is watertight (okay, valid)."
 msgstr "Меш водонепроникний (добре, дійсний)."
 
-#: solvespace.cpp:1176
+#: solvespace.cpp:1178
 #, c-format
 msgid ""
 "\n"
@@ -2744,7 +2744,7 @@ msgstr ""
 "\n"
 "Модель складається з %d трикутників, що розташовані на %d поверхнях."
 
-#: solvespace.cpp:1180
+#: solvespace.cpp:1182
 #, c-format
 msgid ""
 "%s\n"
@@ -2759,7 +2759,7 @@ msgstr ""
 "\n"
 "Відсутні проблемні ребра, добре.%s"
 
-#: solvespace.cpp:1183
+#: solvespace.cpp:1185
 #, c-format
 msgid ""
 "%s\n"
@@ -2774,7 +2774,7 @@ msgstr ""
 "\n"
 "%d проблемних ребер, погано.%s"
 
-#: solvespace.cpp:1196
+#: solvespace.cpp:1198
 #, c-format
 msgid ""
 "This is SolveSpace version %s.\n"
@@ -2803,12 +2803,12 @@ msgstr ""
 "\n"
 "© 2008-%d Jonathan Westhues та інші автори.\n"
 
-#: solvespace.cpp:1365
+#: solvespace.cpp:1367
 #, fuzzy
 msgid "There is no solid in the active group."
 msgstr "В активній групі немає тіла."
 
-#: solvespace.cpp:1373
+#: solvespace.cpp:1375
 #, fuzzy, c-format
 msgid ""
 "Volume:  %s\n"
@@ -2821,22 +2821,22 @@ msgstr ""
 "Маса:  %s (%s)\n"
 "Центр мас:  (%s, %s, %s)"
 
-#: solvespace.cpp:1418
+#: solvespace.cpp:1420
 #, fuzzy
 msgid "A part's name can't be empty."
 msgstr "Ім'я деталі не може бути порожнім."
 
-#: solvespace.cpp:1504
+#: solvespace.cpp:1506
 #, fuzzy
 msgid "No part has a solid yet."
 msgstr "Жодна деталь ще не має тіла."
 
-#: solvespace.cpp:1508
+#: solvespace.cpp:1510
 #, fuzzy, c-format
 msgid "%s%s:  %s, %s, %.2f g;  %s x %s x %s\n"
 msgstr "%s%s:  %s, %s, %.2f г;  %s x %s x %s\n"
 
-#: solvespace.cpp:1515
+#: solvespace.cpp:1517
 #, fuzzy, c-format
 msgid ""
 "\n"
@@ -2845,7 +2845,7 @@ msgstr ""
 "\n"
 "Деталей: %d, усього %.2f г."
 
-#: solvespace.cpp:1617
+#: solvespace.cpp:1619
 #, fuzzy
 msgid ""
 "Parts export as STL, 3MF or STEP; choose a .stl, .3mf or .step file name."
@@ -2853,7 +2853,7 @@ msgstr ""
 "Деталі експортуються як STL, 3MF або STEP; оберіть ім'я файлу .stl, .3mf "
 "або .step."
 
-#: solvespace.cpp:1652
+#: solvespace.cpp:1654
 #, fuzzy, c-format
 msgid "STEP needs the Open CASCADE kernel; part '%s' was not written."
 msgstr "STEP потребує ядра Open CASCADE; деталь '%s' не записано."
@@ -3173,7 +3173,7 @@ msgstr "Зберегти як…"
 msgid "Import..."
 msgstr "Імпорт…"
 
-#: ui/menulayout.cpp:60 ui/prefspanel.cpp:156
+#: ui/menulayout.cpp:60 ui/prefspanel.cpp:158
 #, fuzzy
 msgid "Export"
 msgstr "Експорт"
@@ -3802,7 +3802,7 @@ msgstr "Коміт на GitHub"
 msgid "Website / Manual"
 msgstr "Сайт / посібник"
 
-#: ui/menulayout.cpp:186 ui/prefspanel.cpp:163
+#: ui/menulayout.cpp:186 ui/prefspanel.cpp:165
 #, fuzzy
 msgid "About"
 msgstr "Про програму"
@@ -4164,50 +4164,55 @@ msgstr "колір обмежень за станом"
 
 #: ui/prefspanel.cpp:135
 #, fuzzy
+msgid "matcap shading"
+msgstr "затінення matcap"
+
+#: ui/prefspanel.cpp:137
+#, fuzzy
 msgid "material for mass properties"
 msgstr "матеріал для масових характеристик"
 
-#: ui/prefspanel.cpp:146
+#: ui/prefspanel.cpp:148
 #, fuzzy
 msgid "density (g/cm³)"
 msgstr "густина (г/см³)"
 
-#: ui/prefspanel.cpp:154
+#: ui/prefspanel.cpp:156
 #, fuzzy
 msgid "Display"
 msgstr "Відображення"
 
-#: ui/prefspanel.cpp:155
+#: ui/prefspanel.cpp:157
 #, fuzzy
 msgid "Navigation"
 msgstr "Навігація"
 
-#: ui/prefspanel.cpp:157
+#: ui/prefspanel.cpp:159
 #, fuzzy
 msgid "Solver and files"
 msgstr "Розв'язувач і файли"
 
-#: ui/prefspanel.cpp:158
+#: ui/prefspanel.cpp:160
 #, fuzzy
 msgid "redundant constraint timeout (ms)"
 msgstr "таймаут надлишкових обмежень (мс)"
 
-#: ui/prefspanel.cpp:160
+#: ui/prefspanel.cpp:162
 #, fuzzy
 msgid "autosave interval (minutes)"
 msgstr "інтервал автозбереження (хв)"
 
-#: ui/prefspanel.cpp:166
+#: ui/prefspanel.cpp:168
 #, fuzzy, c-format
 msgid "gl vendor   %s"
 msgstr "постачальник GL   %s"
 
-#: ui/prefspanel.cpp:167
+#: ui/prefspanel.cpp:169
 #, fuzzy, c-format
 msgid "gl renderer %s"
 msgstr "відтворювач GL %s"
 
-#: ui/prefspanel.cpp:168
+#: ui/prefspanel.cpp:170
 #, fuzzy, c-format
 msgid "gl version  %s"
 msgstr "версія GL  %s"
@@ -4337,14 +4342,12 @@ msgstr ""
 "нього можна прив'язатися, але не можна накласти обмеження."
 
 #: ui/problemsmodel.cpp:115
-#, c-format
-#, fuzzy
+#, fuzzy, c-format
 msgid "%d edge is held by where it is"
 msgstr "%d ребро утримується за своїм положенням"
 
 #: ui/problemsmodel.cpp:116
-#, c-format
-#, fuzzy
+#, fuzzy, c-format
 msgid "%d edges are held by where they are"
 msgstr "%d ребер утримуються за своїм положенням"
 
@@ -4354,7 +4357,10 @@ msgid ""
 "No sketch or feature line describes it, so it is found again by its place: "
 "if the model changes there it may be lost, and nothing can be constrained to "
 "it."
-msgstr "Його не описує жодна лінія ескізу чи елемента, тому воно знаходиться знову за своїм місцем: якщо модель там зміниться, воно може загубитися, і до нього нічого не можна прив'язати обмеженням."
+msgstr ""
+"Його не описує жодна лінія ескізу чи елемента, тому воно знаходиться знову "
+"за своїм місцем: якщо модель там зміниться, воно може загубитися, і до нього "
+"нічого не можна прив'язати обмеженням."
 
 #: ui/properties.cpp:83
 #, fuzzy, c-format

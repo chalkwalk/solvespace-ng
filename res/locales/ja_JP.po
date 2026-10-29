@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: SolveSpace 3.0\n"
 "Report-Msgid-Bugs-To: phkahler@gmail.com\n"
-"POT-Creation-Date: 2026-10-28 19:21-0700\n"
+"POT-Creation-Date: 2026-10-28 19:30-0700\n"
 "PO-Revision-Date: 2025-02-01 10:31+0900\n"
 "Last-Translator: https://github.com/verylowfreq\n"
 "Language-Team: \n"
@@ -750,7 +750,7 @@ msgctxt "button"
 msgid "&No"
 msgstr "いいえ (&N)"
 
-#: file.cpp:1049 solvespace.cpp:684
+#: file.cpp:1049 solvespace.cpp:686
 msgctxt "button"
 msgid "&Cancel"
 msgstr "キャンセル (&C)"
@@ -2362,7 +2362,7 @@ msgstr ""
 "三次元空間内に画像はスケッチできません。「スケッチ -> 作業平面上でスケッチす"
 "る」で作業平面をアクティブにしてください。"
 
-#: platform/gui.cpp:85 platform/gui.cpp:90 solvespace.cpp:615
+#: platform/gui.cpp:85 platform/gui.cpp:90 solvespace.cpp:617
 msgctxt "file-type"
 msgid "SolveSpace models"
 msgstr "SolveSpaceモデル"
@@ -2425,7 +2425,7 @@ msgid "Quad mesh for Blender, with creases (USD)"
 msgstr "Blender 用の四角形メッシュ、折り目付き (USD)"
 
 #: platform/gui.cpp:110 platform/gui.cpp:117 platform/gui.cpp:124
-#: solvespace.cpp:850
+#: solvespace.cpp:852
 msgctxt "file-type"
 msgid "STEP file"
 msgstr "STEP ファイル"
@@ -2517,73 +2517,73 @@ msgstr ""
 "透視投影の拡大率は、「表示 -> 透視投影で表示」を有効にするまで反映されませ"
 "ん。"
 
-#: solvespace.cpp:184
+#: solvespace.cpp:185
 msgctxt "title"
 msgid "Autosave Available"
 msgstr "オートセーブファイルがあります"
 
-#: solvespace.cpp:185
+#: solvespace.cpp:186
 msgctxt "dialog"
 msgid "An autosave file is available for this sketch."
 msgstr "このスケッチにはオートセーブファイルがあります。"
 
-#: solvespace.cpp:186
+#: solvespace.cpp:187
 msgctxt "dialog"
 msgid "Do you want to load the autosave file instead?"
 msgstr "代わりにオートセーブファイル読み込みますか？"
 
-#: solvespace.cpp:187
+#: solvespace.cpp:188
 msgctxt "button"
 msgid "&Load autosave"
 msgstr "オートセーブファイルを読み込む (&L)"
 
-#: solvespace.cpp:189
+#: solvespace.cpp:190
 msgctxt "button"
 msgid "Do&n't Load"
 msgstr "読み込まない (&n)"
 
-#: solvespace.cpp:672
+#: solvespace.cpp:674
 msgctxt "title"
 msgid "Modified File"
 msgstr "編集済みファイル"
 
-#: solvespace.cpp:674
+#: solvespace.cpp:676
 #, c-format
 msgctxt "dialog"
 msgid "Do you want to save the changes you made to the sketch “%s”?"
 msgstr "スケッチ \"%s\" への変更を保存しますか？"
 
-#: solvespace.cpp:677
+#: solvespace.cpp:679
 msgctxt "dialog"
 msgid "Do you want to save the changes you made to the new sketch?"
 msgstr "新規スケッチへの変更を保存しますか？"
 
-#: solvespace.cpp:680
+#: solvespace.cpp:682
 msgctxt "dialog"
 msgid "Your changes will be lost if you don't save them."
 msgstr "（未保存の変更があります。）"
 
-#: solvespace.cpp:681
+#: solvespace.cpp:683
 msgctxt "button"
 msgid "&Save"
 msgstr "保存する (&S)"
 
-#: solvespace.cpp:683
+#: solvespace.cpp:685
 msgctxt "button"
 msgid "Do&n't Save"
 msgstr "保存しない (&n)"
 
-#: solvespace.cpp:704
+#: solvespace.cpp:706
 msgctxt "title"
 msgid "(new sketch)"
 msgstr "(新規スケッチ)"
 
-#: solvespace.cpp:715
+#: solvespace.cpp:717
 msgctxt "title"
 msgid "Property Browser"
 msgstr "プロパティブラウザ"
 
-#: solvespace.cpp:778
+#: solvespace.cpp:780
 msgid ""
 "Constraints are currently shown, and will be exported in the toolpath. This "
 "is probably not what you want; hide them by clicking the link at the top of "
@@ -2593,30 +2593,30 @@ msgstr ""
 "した動作ではないかもしれません。プロパティブラウザの上部にあるボタンで非表示"
 "にできます。"
 
-#: solvespace.cpp:834
+#: solvespace.cpp:836
 #, fuzzy
 msgctxt "file-type"
 msgid "STL mesh, one per part"
 msgstr "STL メッシュ、部品ごとに1つ"
 
-#: solvespace.cpp:835
+#: solvespace.cpp:837
 #, fuzzy
 msgctxt "file-type"
 msgid "3MF, an object per part"
 msgstr "3MF、部品ごとのオブジェクト"
 
-#: solvespace.cpp:836
+#: solvespace.cpp:838
 #, fuzzy
 msgctxt "file-type"
 msgid "STEP file, one per part"
 msgstr "STEP ファイル、部品ごとに1つ"
 
-#: solvespace.cpp:844
+#: solvespace.cpp:846
 #, fuzzy, c-format
 msgid "Exported %d parts:%s"
 msgstr "%d 個の部品を書き出しました:%s"
 
-#: solvespace.cpp:856
+#: solvespace.cpp:858
 #, fuzzy
 msgid ""
 "The assembly needs the Open CASCADE kernel and a solid to export as STEP."
@@ -2624,7 +2624,7 @@ msgstr ""
 "アセンブリを STEP としてエクスポートするには Open CASCADE カーネルとソリッド"
 "が必要です。"
 
-#: solvespace.cpp:907
+#: solvespace.cpp:909
 #, c-format
 msgid ""
 "Can't identify file type from file extension of filename '%s'; try .dxf "
@@ -2633,19 +2633,19 @@ msgstr ""
 "拡張子からファイル形式を特定できませんでした ( '%s' )。 \".dxf\" や \".dwg\" "
 "を試してください。"
 
-#: solvespace.cpp:959
+#: solvespace.cpp:961
 msgid "Constraint must have a label, and must not be a reference dimension."
 msgstr "参照寸法ではなく、かつ、値のある拘束を選択してください。"
 
-#: solvespace.cpp:963
+#: solvespace.cpp:965
 msgid "Bad selection for step dimension; select a constraint."
 msgstr "寸法の段階的変更には無効な選択です。値のある拘束を選択してください。"
 
-#: solvespace.cpp:987
+#: solvespace.cpp:989
 msgid "The assembly does not interfere, good."
 msgstr "部品の干渉はありませんでした。"
 
-#: solvespace.cpp:1019
+#: solvespace.cpp:1021
 #, c-format
 msgid ""
 "The volume of the solid model is:\n"
@@ -2656,7 +2656,7 @@ msgstr ""
 "\n"
 "    %s"
 
-#: solvespace.cpp:1029
+#: solvespace.cpp:1031
 #, c-format
 msgid ""
 "\n"
@@ -2669,7 +2669,7 @@ msgstr ""
 "\n"
 "    %s"
 
-#: solvespace.cpp:1034 solvespace.cpp:1379
+#: solvespace.cpp:1036 solvespace.cpp:1381
 msgid ""
 "\n"
 "\n"
@@ -2681,7 +2681,7 @@ msgstr ""
 "曲面はトライアングルに近似します。\n"
 "これにより通常、約 1% の誤差が発生します。"
 
-#: solvespace.cpp:1049
+#: solvespace.cpp:1051
 #, c-format
 msgid ""
 "The surface area of the selected faces is:\n"
@@ -2698,7 +2698,7 @@ msgstr ""
 "曲線は区分線形に近似します。\n"
 "これにより通常、約 1%% の誤差が発生します。"
 
-#: solvespace.cpp:1058
+#: solvespace.cpp:1060
 msgid ""
 "This group does not contain a correctly-formed 2d closed area. It is open, "
 "not coplanar, or self-intersecting."
@@ -2706,7 +2706,7 @@ msgstr ""
 "このグループは正常に構成された二次元の閉じた領域が含まれていません。領域が開"
 "いているか、同一平面上にないか、自己交差しています。"
 
-#: solvespace.cpp:1070
+#: solvespace.cpp:1072
 #, c-format
 msgid ""
 "The area of the region sketched in this group is:\n"
@@ -2723,7 +2723,7 @@ msgstr ""
 "曲線は区分線形に近似します。\n"
 "これにより通常、約 1%% の誤差が発生します。"
 
-#: solvespace.cpp:1090
+#: solvespace.cpp:1092
 #, c-format
 msgid ""
 "The total length of the selected entities is:\n"
@@ -2740,37 +2740,37 @@ msgstr ""
 "曲線は区分線形に近似します。\n"
 "これにより通常、約 1%% の誤差が発生します。"
 
-#: solvespace.cpp:1096
+#: solvespace.cpp:1098
 msgid "Bad selection for perimeter; select line segments, arcs, and curves."
 msgstr ""
 "外周長の計測には無効な選択です。線分、円弧、もしくは曲線を選択してください。"
 
-#: solvespace.cpp:1112
+#: solvespace.cpp:1114
 msgid "Bad selection for trace; select a single point."
 msgstr "点の位置の記録には無効な選択です。ひとつの点を選択してください。"
 
-#: solvespace.cpp:1139
+#: solvespace.cpp:1141
 #, c-format
 msgid "Couldn't write to '%s'"
 msgstr "'%s' へ書き込めませんでした。"
 
-#: solvespace.cpp:1169
+#: solvespace.cpp:1171
 msgid "The mesh is self-intersecting (NOT okay, invalid)."
 msgstr "メッシュが自身と交差しています (警告)"
 
-#: solvespace.cpp:1170
+#: solvespace.cpp:1172
 msgid "The mesh is not self-intersecting (okay, valid)."
 msgstr "メッシュは自己交差していません (適切)"
 
-#: solvespace.cpp:1172
+#: solvespace.cpp:1174
 msgid "The mesh has naked edges (NOT okay, invalid)."
 msgstr "メッシュには浮いたエッジが含まれています (警告)"
 
-#: solvespace.cpp:1173
+#: solvespace.cpp:1175
 msgid "The mesh is watertight (okay, valid)."
 msgstr "メッシュには隙間はありません (適切)"
 
-#: solvespace.cpp:1176
+#: solvespace.cpp:1178
 #, c-format
 msgid ""
 "\n"
@@ -2782,7 +2782,7 @@ msgstr ""
 "モデルには %d 個のトライアングルがあり、これが %d 個のサーフェスを構成しま"
 "す。"
 
-#: solvespace.cpp:1180
+#: solvespace.cpp:1182
 #, c-format
 msgid ""
 "%s\n"
@@ -2797,7 +2797,7 @@ msgstr ""
 "\n"
 "問題のあるエッジは見つかりませんでした。%s"
 
-#: solvespace.cpp:1183
+#: solvespace.cpp:1185
 #, c-format
 msgid ""
 "%s\n"
@@ -2812,7 +2812,7 @@ msgstr ""
 "\n"
 "%d 個の問題のあるエッジが見つかりました。%s"
 
-#: solvespace.cpp:1196
+#: solvespace.cpp:1198
 #, fuzzy, c-format
 msgid ""
 "This is SolveSpace version %s.\n"
@@ -2840,12 +2840,12 @@ msgstr ""
 "\n"
 "© 2008-%d Jonathan Westhues and other authors.\n"
 
-#: solvespace.cpp:1365
+#: solvespace.cpp:1367
 #, fuzzy
 msgid "There is no solid in the active group."
 msgstr "アクティブなグループにソリッドがありません。"
 
-#: solvespace.cpp:1373
+#: solvespace.cpp:1375
 #, fuzzy, c-format
 msgid ""
 "Volume:  %s\n"
@@ -2858,22 +2858,22 @@ msgstr ""
 "質量:  %s (%s)\n"
 "重心:  (%s, %s, %s)"
 
-#: solvespace.cpp:1418
+#: solvespace.cpp:1420
 #, fuzzy
 msgid "A part's name can't be empty."
 msgstr "部品の名前は空にできません。"
 
-#: solvespace.cpp:1504
+#: solvespace.cpp:1506
 #, fuzzy
 msgid "No part has a solid yet."
 msgstr "まだソリッドを持つ部品がありません。"
 
-#: solvespace.cpp:1508
+#: solvespace.cpp:1510
 #, fuzzy, c-format
 msgid "%s%s:  %s, %s, %.2f g;  %s x %s x %s\n"
 msgstr "%s%s:  %s、%s、%.2f g;  %s x %s x %s\n"
 
-#: solvespace.cpp:1515
+#: solvespace.cpp:1517
 #, fuzzy, c-format
 msgid ""
 "\n"
@@ -2882,7 +2882,7 @@ msgstr ""
 "\n"
 "部品 %d 個、合計 %.2f g。"
 
-#: solvespace.cpp:1617
+#: solvespace.cpp:1619
 #, fuzzy
 msgid ""
 "Parts export as STL, 3MF or STEP; choose a .stl, .3mf or .step file name."
@@ -2890,7 +2890,7 @@ msgstr ""
 "部品は STL、3MF、STEP で書き出せます。.stl、.3mf、.step のファイル名を選んで"
 "ください。"
 
-#: solvespace.cpp:1652
+#: solvespace.cpp:1654
 #, fuzzy, c-format
 msgid "STEP needs the Open CASCADE kernel; part '%s' was not written."
 msgstr ""
@@ -3213,7 +3213,7 @@ msgstr "名前を付けて保存..."
 msgid "Import..."
 msgstr "読み込み..."
 
-#: ui/menulayout.cpp:60 ui/prefspanel.cpp:156
+#: ui/menulayout.cpp:60 ui/prefspanel.cpp:158
 #, fuzzy
 msgid "Export"
 msgstr "書き出し"
@@ -3842,7 +3842,7 @@ msgstr "GitHub のコミット"
 msgid "Website / Manual"
 msgstr "Web サイト / マニュアル"
 
-#: ui/menulayout.cpp:186 ui/prefspanel.cpp:163
+#: ui/menulayout.cpp:186 ui/prefspanel.cpp:165
 #, fuzzy
 msgid "About"
 msgstr "バージョン情報"
@@ -4204,50 +4204,55 @@ msgstr "状態に応じて拘束の色を変える"
 
 #: ui/prefspanel.cpp:135
 #, fuzzy
+msgid "matcap shading"
+msgstr "マットキャップシェーディング"
+
+#: ui/prefspanel.cpp:137
+#, fuzzy
 msgid "material for mass properties"
 msgstr "質量特性の材質"
 
-#: ui/prefspanel.cpp:146
+#: ui/prefspanel.cpp:148
 #, fuzzy
 msgid "density (g/cm³)"
 msgstr "密度 (g/cm³)"
 
-#: ui/prefspanel.cpp:154
+#: ui/prefspanel.cpp:156
 #, fuzzy
 msgid "Display"
 msgstr "表示"
 
-#: ui/prefspanel.cpp:155
+#: ui/prefspanel.cpp:157
 #, fuzzy
 msgid "Navigation"
 msgstr "操作"
 
-#: ui/prefspanel.cpp:157
+#: ui/prefspanel.cpp:159
 #, fuzzy
 msgid "Solver and files"
 msgstr "ソルバーとファイル"
 
-#: ui/prefspanel.cpp:158
+#: ui/prefspanel.cpp:160
 #, fuzzy
 msgid "redundant constraint timeout (ms)"
 msgstr "冗長な拘束の時間制限 (ms)"
 
-#: ui/prefspanel.cpp:160
+#: ui/prefspanel.cpp:162
 #, fuzzy
 msgid "autosave interval (minutes)"
 msgstr "自動保存の間隔 (分)"
 
-#: ui/prefspanel.cpp:166
+#: ui/prefspanel.cpp:168
 #, fuzzy, c-format
 msgid "gl vendor   %s"
 msgstr "GL ベンダー   %s"
 
-#: ui/prefspanel.cpp:167
+#: ui/prefspanel.cpp:169
 #, fuzzy, c-format
 msgid "gl renderer %s"
 msgstr "GL レンダラー %s"
 
-#: ui/prefspanel.cpp:168
+#: ui/prefspanel.cpp:170
 #, fuzzy, c-format
 msgid "gl version  %s"
 msgstr "GL バージョン  %s"
@@ -4375,14 +4380,12 @@ msgstr ""
 "できますが、拘束はできません。"
 
 #: ui/problemsmodel.cpp:115
-#, c-format
-#, fuzzy
+#, fuzzy, c-format
 msgid "%d edge is held by where it is"
 msgstr "%d 本のエッジを位置で保持しています"
 
 #: ui/problemsmodel.cpp:116
-#, c-format
-#, fuzzy
+#, fuzzy, c-format
 msgid "%d edges are held by where they are"
 msgstr "%d 本のエッジを位置で保持しています"
 
@@ -4392,7 +4395,9 @@ msgid ""
 "No sketch or feature line describes it, so it is found again by its place: "
 "if the model changes there it may be lost, and nothing can be constrained to "
 "it."
-msgstr "スケッチやフィーチャーの線で表されていないため、位置で探し直します。モデルがそこで変わると見失うことがあり、拘束もできません。"
+msgstr ""
+"スケッチやフィーチャーの線で表されていないため、位置で探し直します。モデルが"
+"そこで変わると見失うことがあり、拘束もできません。"
 
 #: ui/properties.cpp:83
 #, fuzzy, c-format
